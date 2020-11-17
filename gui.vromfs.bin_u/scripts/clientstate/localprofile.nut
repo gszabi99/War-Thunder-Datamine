@@ -1,23 +1,6 @@
+local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local { isPlatformSony } = require("scripts/clientState/platform.nut")
-
-const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
-
-{
-  local lastSaveTime = -PS4_SAVE_PROFILE_DELAY_MSEC
-  ::save_profile_offline_limited <- function save_profile_offline_limited(isForced = false)
-  {
-    if (!isForced && isPlatformSony
-      && ::dagor.getCurTime() - lastSaveTime < PS4_SAVE_PROFILE_DELAY_MSEC)
-      return
-
-    lastSaveTime = ::dagor.getCurTime()
-    if (::g_login.isProfileReceived())
-      ::save_profile(false)
-    else
-      ::save_common_local_settings()
-  }
-}
+local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 
 ::onUpdateProfile <- function onUpdateProfile(taskId, action, transactionType = ::EATT_UNKNOWN) //code callback on profile update
 {
@@ -33,7 +16,7 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
 }
 
 //save/load settings by account. work only after local profile received from host.
-::save_local_account_settings <- function save_local_account_settings(path, value, forceSave = false)
+::save_local_account_settings <- function save_local_account_settings(path, value)
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
@@ -43,8 +26,8 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
   }
 
   local cdb = ::get_local_custom_settings_blk()
-  if (::set_blk_value_by_path(cdb, path, value))
-    ::save_profile_offline_limited(forceSave)
+  if (set_blk_value_by_path(cdb, path, value))
+    saveProfile()
 }
 
 ::load_local_account_settings <- function load_local_account_settings(path, defValue = null)
@@ -57,21 +40,21 @@ const PS4_SAVE_PROFILE_DELAY_MSEC = 60000
   }
 
   local cdb = ::get_local_custom_settings_blk()
-  return ::get_blk_value_by_path(cdb, path, defValue)
+  return get_blk_value_by_path(cdb, path, defValue)
 }
 
 //save/load setting to local profile, not depend on account, so can be usable before login.
-::save_local_shared_settings <- function save_local_shared_settings(path, value, isForced = false)
+::save_local_shared_settings <- function save_local_shared_settings(path, value)
 {
   local blk = ::get_common_local_settings_blk()
-  if (::set_blk_value_by_path(blk, path, value))
-    ::save_profile_offline_limited(isForced)
+  if (set_blk_value_by_path(blk, path, value))
+    saveProfile()
 }
 
 ::load_local_shared_settings <- function load_local_shared_settings(path, defValue = null)
 {
   local blk = ::get_common_local_settings_blk()
-  return ::get_blk_value_by_path(blk, path, defValue)
+  return get_blk_value_by_path(blk, path, defValue)
 }
 
 local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
@@ -105,7 +88,7 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
       return  //no need save when no changes
     else
       cdb[rootName][name] = value
-  ::save_profile_offline_limited()
+  saveProfile()
 }
 
 //remove all data by screen size from all size blocks
@@ -132,7 +115,7 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
       cdb.removeBlockById(idx)
   }
   if (hasChanges)
-    ::save_profile_offline_limited()
+    saveProfile()
 }
 
 // Deprecated, for storing new data use load_local_account_settings() instead.
@@ -150,14 +133,14 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
   local profileBlk = cdb?.accounts?[id]
   if (profileBlk)
   {
-    local value = ::get_blk_value_by_path(profileBlk, path)
+    local value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
   profileBlk = cdb?.accounts?[::my_user_id_str]
   if (profileBlk)
   {
-    local value = ::get_blk_value_by_path(profileBlk, path)
+    local value = get_blk_value_by_path(profileBlk, path)
     if (value != null)
       return value
   }
@@ -165,7 +148,7 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 }
 
 // Deprecated, for storing new data use save_local_account_settings() instead.
-::saveLocalByAccount <- function saveLocalByAccount(path, value, forceSave = false, shouldSaveProfile = true)
+::saveLocalByAccount <- function saveLocalByAccount(path, value, saveFunc = saveProfile)
 {
   if (!::should_disable_menu() && !::g_login.isProfileReceived())
   {
@@ -176,6 +159,6 @@ local getRootSizeText = @() "{0}x{1}".subst(::screen_width(), ::screen_height())
 
   local cdb = ::get_local_custom_settings_blk()
   local id = ::my_user_id_str + "." + (::isProductionCircuit() ? "production" : ::get_cur_circuit_name())
-  if (::set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value) && shouldSaveProfile)
-    ::save_profile_offline_limited(forceSave)
+  if (set_blk_value_by_path(cdb, "accounts/" + id + "/" + path, value))
+    saveFunc()
 }

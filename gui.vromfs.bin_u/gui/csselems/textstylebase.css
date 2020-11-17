@@ -1,0 +1,327 @@
+titletext, menutitle, dyncampresult, debriefingTitle
+{
+  re-type:text;
+  font:@fontMedium;
+  text-shade-x:0;
+  text-shade-y:0;
+  text-shade-color:@mainTitleStrokeColor;
+  color:@mainTitleTextColor;
+  text-align:center;
+}
+
+debriefingTitle {
+  font:@fontBigBold;
+  text-shade:smooth;
+  text-shade-x:1;
+  text-shade-y:1;
+  text-shade-color:#CC000000;
+}
+
+titletext {
+  position:absolute;
+  pos:@titlePos,1@topBarHeight;
+  text-align:left;
+}
+
+[type=shop] titletext {
+  pos:@titlePos,12*@scrn_tgt/100.0-h;
+}
+
+menutitle {
+  position:absolute;
+  pos:@titlePos,8.5*@scrn_tgt/100.0;
+  text-align:left;
+}
+
+textarea, textAreaCentered, helpText, awardText, framedMessage, textAreaNoScroll,
+textareaNoTab, titleTextArea,textAreaSmall, tooltipDesc {
+  font:@fontNormal;
+  behaviour:textArea;
+  re-type:textarea;
+  color:@commonTextColor;
+}
+
+CheckBox[enable=no] > textarea {
+  color:@minorTextColor;
+}
+
+blankTextArea {
+  behaviour:textArea;
+  re-type:textarea;
+}
+
+sessionInfoText {
+  behaviour:textArea;
+  re-type:textarea;
+  width:pw;
+  text-align:right;
+  font:@fontSmall;
+  color:@commonTextColor;
+}
+
+tooltipDesc {
+  max-width:70*@scrn_tgt/100.0;
+  font:@fontSmall;
+}
+
+descriptionNest tooltipDesc {
+  max-width:@narrowTooltipWidth;
+}
+
+chatBlock {
+  border:yes;
+  border-offset:@dp;
+  border-color: @frameDarkBorderColor;
+  background-color: @frameDarkBackgroundColor;
+  padding: 1@framePadding;
+}
+
+chatBlock[paddingSize=small] {
+  padding: 1@dp;
+}
+
+chatLog {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@commonTextColor;
+  font:@fontSmall;
+  wrap-indent:3*@scrn_tgt/100.0;
+  paragraph-indent:0;
+}
+
+hudMessageStack {
+  behaviour:hudMessageStack;
+}
+
+titleTextArea {
+  width:pw;
+  font:@fontMedium;
+  color:@titleTextColor;
+}
+textareaNoTab[caption=yes] {
+  font:@fontMedium;
+  color:@titleTextColor;
+}
+
+textarea, textAreaNoScroll {
+  paragraph-indent:3*@scrn_tgt/100.0;
+}
+textAreaNoScroll.active, textAreaCentered.active, textarea.active {
+  color:@activeTextColor;
+}
+
+textarea.parInvert {
+  paragraph-indent:0;
+  wrap-indent:3*@scrn_tgt/100.0;
+  font:@fontTiny;
+}
+
+textAreaCentered, framedMessage {
+  text-align:center;
+  paragraph-indent:0;
+  wrap-indent:0;
+}
+textarea[text-align=center] {
+  paragraph-indent:0;
+  wrap-indent:0;
+}
+
+textAreaSmall {
+  font:@fontNormal;
+  color:@activeTextColor;
+}
+
+helpText {
+  position:absolute;
+  wrap-indent:1*@scrn_tgt/100.0;
+  color:@activeTextColor;
+}
+
+awardText {
+  width:pw;
+  margin:0, 0.5*@scrn_tgt/100.0, 0, 0.5*@scrn_tgt/100.0;
+  padding-top:1.5*@scrn_tgt/100.0;
+  padding-left:8*@scrn_tgt/100.0;
+  min-height:7*@scrn_tgt/100.0;
+}
+
+awardText > awardImg {
+  height:40*@sf/@pf_outdated;
+  width:h;
+  pos:4*@scrn_tgt/100.0-50%w,50%ph-50%h;
+  position:absolute;
+}
+
+awardText[type=unlocked] > awardImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#unlocked;
+}
+
+awardText[type=newrank] > awardImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#icon_primary_success;
+}
+
+awardText[type=arcade] > awardImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#mission_complete_arcade;
+}
+
+awardText[type=realistic] > awardImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#mission_complete_realistic;
+}
+
+awardText[type=hardcore] > awardImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#mission_complete_simulator;
+}
+
+awardText[type=image] > awardImg { background-color:@white; }
+
+text, optiontext, optionValueText, header,
+optionheader, activeText, textButtonHint
+{
+  re-type:text;
+  color:@commonTextColor;
+  font:@fontNormal;
+}
+
+text[textHide=yes][text=""], activeText[textHide=yes][text=""],
+textAreaCentered[textHide=yes][text=""], textareaNoTab[textHide=yes][text=""] {
+  display:hide;
+}
+
+.normalFont text, .normalFont textareaNoTab {
+  font:@fontNormal;
+}
+
+versionText {
+  re-type:text;
+  color:@commonTextColor;
+  font:@fontSmall;
+  id:"version_text";
+  pos:0, 50%ph-50%h;
+  position:relative;
+}
+
+activeText {
+  color:@activeTextColor;
+  text-align:left;
+}
+
+activeText[parseTags=yes] {
+  behaviour:textArea;
+  re-type:textarea;
+}
+
+[commonTextColor=yes] activeText, activeText[commonTextColor=yes] {
+  color:@commonTextColor;
+}
+
+textareaNoTab[commonButtonColor=yes], activeText[commonButtonColor=yes] {
+  color:@commonMenuButtonColor;
+}
+
+activeText[noMargin=yes] {
+  margin-left:0;
+  margin-top:0;
+  margin-right:0;
+  margin-bottom:0;
+}
+
+[gamertag] activeText, [gamertag] text {
+  font:@fontSmall;
+}
+
+activeText[cardItem] {
+  color:@cardItemNameColor;
+}
+
+activeText[cardItem=info] {
+  color:@cardItemInfoColor;
+}
+
+activeText[changeColor=fixedAxis] {
+  color:@fixedAxisColor;
+}
+activeText[changeColor=inQueue] {
+  color:@inQueueTextColor;
+}
+
+activeText[talign=right], text[talign=right],
+textareaNoTab[talign=right] {
+  text-align:right;
+}
+
+text[talign=left], activeText[talign=left] {
+  text-align:left;
+  padding:0, 0, 0, 0;
+}
+
+[textStyle=mis-descr] > text {
+  hideEmptyText:yes;
+  color:@activeTextColor;
+}
+
+[textStyle=mis-descr] > textareaNoTab {
+  width:pw;
+  font:@fontNormal;
+  pos:1*@scrn_tgt/100.0, -1*@scrn_tgt/100.0;
+  padding-left:0.01*@scrn_tgt + 0.01*@scrn_tgt*@isWide;
+  position:relative;
+  hideEmptyText:yes;
+}
+
+[textStyle=mis-map] > textareaNoTab {
+  width:pw-2@blockInterval;
+  font:@fontNormal;
+  hideEmptyText:yes;
+}
+
+[textStyle=mis-middle] text, [textStyle=mis-middle] textareaNoTab {
+  width:50%pw;
+  hideEmptyText:yes;
+  padding:1*@scrn_tgt/100.0, 0;
+}
+
+CheckBox:hover > textareaNoTab {
+  color:@hoverMenuButtonColor;
+}
+
+CheckBox:pushed > textareaNoTab {
+  color:@pushedMenuButtonColor;
+}
+
+animText {
+  behaviour:textArea;
+  re-type:textarea;
+  color:@commonTextColor;
+}
+
+framedMessage {
+  background-color:@frameDarkBackgroundColor;
+  border-color:@frameDarkBorderColor;
+  border:yes;
+  border-offset:@dp;
+  input-transparent:yes;
+  padding:15@sf/@pf, 3@sf/@pf;
+}
+
+advertDiv {
+  re-type:9rect;
+  background-color:@gray;
+  background-image:#ui/gameuiskin#subtitles_backgr_middle;
+  background-repeat:expand;
+  input-transparent:yes;
+}
+
+advertDiv > textAreaCentered {
+  font:@fontNormal;
+  color:@advertTextColor;
+  text-align:center;
+}
+
+framedMessage[text=""] {
+  display:hide;
+}

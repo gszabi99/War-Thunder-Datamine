@@ -25,7 +25,7 @@
   "sound": "57mm_zis4",
   "sound_inside": "57mm_zis4_interior",
   "soundLoop": false,
-  "sfxReloadBullet": "grd_cannon_belt_reload",
+  "sfxReloadBullet": "grd_begleitpanzer_reload",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
@@ -41,9 +41,10 @@
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
+    "stucking": 0.3,
+    "stuckingAngle": 40.0,
     "bulletType": "apcbc_tank",
     "slopeEffectPreset": "apc",
-    "modelName": "tank_bullet_apcbc",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "57_438mm_ap",
     "relativeVelHitShift": [300.0,1000.0],
@@ -205,9 +206,10 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
+      "stucking": 0.3,
+      "stuckingAngle": 40.0,
       "bulletType": "apcbc_tank",
       "slopeEffectPreset": "apc",
-      "modelName": "tank_bullet_apcbc",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "57_438mm_ap",
       "relativeVelHitShift": [300.0,1000.0],
@@ -372,9 +374,10 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
+      "stucking": 0.3,
+      "stuckingAngle": 40.0,
       "bulletType": "aphebc_tank",
       "slopeEffectPreset": "apbc",
-      "modelName": "tank_bullet_aphebc",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "57_438mm_sap",
       "relativeVelHitShift": [300.0,1000.0],
@@ -543,21 +546,14 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
       "bulletName": "57_438mm_he",
       "selfDestructionInAir": true,
       "hitPowerMult": 5.0,
-      "nearHitPower": [1.0,50.0],
-      "midHitPower": [0.9,300.0],
-      "farHitPower": [0.1,700.0],
-      "endHitPower": [0.008,1500.0],
-      "relativeVelHitShift": [300.0,1000.0],
-      "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.4,
+      "fuseDelayDist": 0.0,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [0.7,0.8],
@@ -567,13 +563,68 @@
         "mod2": [20.0,0.6],
         "mod3": [30.0,1.0]
       },
-      "armorpower": {
-        "ArmorPower0m": [2.0,10.0],
-        "ArmorPower100m": [2.0,100.0],
-        "ArmorPower500m": [1.5,500.0],
-        "ArmorPower1000m": [1.0,1000.0],
-        "ArmorPower1450m": [0.5,1450.0],
-        "ArmorPower1500m": [0.0,1500.0]
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower5000m": [0.5,5000.0],
+        "HitPower7000m": [0.1,7000.0]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic"
+        },
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.4
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [0.0,74.0],
+              "countPortion": 0.3
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [75.0,100.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [101.0,260.0],
+              "countPortion": 0.3
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.5,
+              "angles": [261.0,285.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [286.0,359.0],
+              "countPortion": 0.3
+            }
+          }
+        ]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -706,7 +757,6 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_radio_fuse",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "bulletName": "57_438mm_he_vt",
@@ -721,7 +771,7 @@
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "explodeTreshold": 0.1,
-      "fuseDelayDist": 0.4,
+      "fuseDelayDist": 0.0,
       "ricochetEffect": "cannon_ricochet",
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [0.7,0.8],

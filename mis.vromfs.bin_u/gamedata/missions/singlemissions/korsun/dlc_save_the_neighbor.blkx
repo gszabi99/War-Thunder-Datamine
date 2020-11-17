@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 764.0,
-      "temperature": -3.0
-    },
     "stars": {
       "latitude": 48.0,
       "longitude": 44.0,
@@ -24,13 +20,17 @@
     "mission": {
       "level": "levels/korsun.bin",
       "type": "singleMission",
-      "restoreType": "tactical control",
-      "optionalTakeOff": false,
       "environment": "Evening",
       "weather": "hazy",
+      "gt_cooperative": true,
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
       "windSpeed": [3.0,5.0],
-      "windDirectionDeg": [100.0,110.0],
-      "gt_cooperative": true
+      "windDirectionDeg": [100.0,110.0]
+    },
+    "atmosphere": {
+      "pressure": 764.0,
+      "temperature": -3.0
     },
     "briefing": {
       "place_loc": "",
@@ -51,6 +51,9 @@
             "picture": ""
           },
           {
+            "showAirMap": false
+          },
+          {
             "arrow": [
               {
                 "width": 1
@@ -62,7 +65,7 @@
                 "point": "player_wing"
               },
               {
-                "point": "airfield_02_start"
+                "point": "airfield_02"
               }
             ]
           },
@@ -70,7 +73,7 @@
             "icon": {
               "icontype": "airfield",
               "side": "ally",
-              "target": "airfield_02_start"
+              "target": "airfield_02"
             }
           },
           {
@@ -78,7 +81,7 @@
               "icontype": "fighter",
               "side": "enemy",
               "target": "fw_190_01",
-              "lookAt": "airfield_02_start"
+              "lookAt": "airfield_02"
             }
           },
           {
@@ -86,7 +89,7 @@
               "icontype": "fighter",
               "side": "player",
               "target": "player_wing",
-              "lookAt": "airfield_02_start"
+              "lookAt": "airfield_02"
             }
           }
         ]
@@ -111,75 +114,19 @@
       "conditions": [],
       "actions": [
         {
-          "addAirfield": [
-            {
-              "runwayStart": "airfield_01_start"
-            },
-            {
-              "runwayEnd": "airfield_01_end"
-            },
-            {
-              "runwayWidth": 10.0
-            },
-            {
-              "army": 1
-            },
-            {
-              "spawnPoint": "airfield_01_spawn_01"
-            },
-            {
-              "spawnPoint": "airfield_01_spawn_02"
-            },
-            {
-              "spawnPoint": "airfield_01_spawn_03"
-            },
-            {
-              "spawnPoint": "airfield_01_spawn_04"
-            }
-          ]
-        },
-        {
-          "addAirfield": [
-            {
-              "runwayStart": "airfield_02_start"
-            },
-            {
-              "runwayEnd": "airfield_02_end"
-            },
-            {
-              "runwayWidth": 10.0
-            },
-            {
-              "army": 1
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_01"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_02"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_03"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_04"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_05"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_06"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_07"
-            },
-            {
-              "spawnPoint": "airfield_02_spawn_08"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "squad_fw_109_01"
             },
@@ -211,6 +158,18 @@
         },
         {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "allies_01"
             },
@@ -261,7 +220,7 @@
         },
         {
           "spawnOnAirfield": {
-            "runwayName": "airfield_01_start",
+            "runwayName": "airfield_01",
             "objects": "player_wing"
           }
         },
@@ -310,12 +269,23 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "squad_fw_109_01"
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_save_the_neighbor_takeoff"
+            "target": "dlc_save_the_neighbor_takeoff",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -338,7 +308,8 @@
             }
           ]
         }
-      ]
+      ],
+      "else_actions": []
     },
     "check_wave_1_for_2_players": {
       "is_enabled": false,
@@ -359,6 +330,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -366,7 +339,8 @@
         "unitWakeUp": {
           "target": "fw_190_01_2_players_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_wave_1_for_3_players": {
       "is_enabled": false,
@@ -387,6 +361,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -394,7 +370,8 @@
         "unitWakeUp": {
           "target": "fw_190_01_3_players_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_wave_1_for_4_players": {
       "is_enabled": false,
@@ -415,6 +392,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -422,7 +401,8 @@
         "unitWakeUp": {
           "target": "fw_190_01_4_players_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "update_timer_indicator": {
       "is_enabled": false,
@@ -440,14 +420,15 @@
       "conditions": [],
       "actions": {
         "varModify": {
-          "var": "timer",
           "operator": "add",
-          "value": -1.0
+          "value": -1.0,
+          "var": "timer"
         },
         "missionSetTimeIndicator": {
           "var": "timer"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_for_reach_first_target": {
       "is_enabled": false,
@@ -489,6 +470,10 @@
       "actions": {
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "enemy_squad"
         },
         "unitAttackTarget": {
@@ -518,7 +503,8 @@
             "target": "second_way_appear"
           }
         ]
-      }
+      },
+      "else_actions": []
     },
     "update_enemies_indicator": {
       "is_enabled": false,
@@ -542,9 +528,13 @@
           "icon": "air",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "enemy_squad"
         }
-      }
+      },
+      "else_actions": []
     },
     "second_way_appear": {
       "is_enabled": false,
@@ -570,6 +560,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "squad_fw_109_01"
         }
       },
@@ -640,7 +632,8 @@
             "fightAreaOuterRadius": 5000.0
           }
         ]
-      }
+      },
+      "else_actions": []
     },
     "check_wave_2_for_2_players": {
       "is_enabled": false,
@@ -661,6 +654,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -668,7 +663,8 @@
         "unitWakeUp": {
           "target": "fw_190_02_2_player_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_wave_2_for_3_players": {
       "is_enabled": false,
@@ -689,6 +685,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -696,7 +694,8 @@
         "unitWakeUp": {
           "target": "fw_190_02_3_player_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_wave_2_for_4_players": {
       "is_enabled": false,
@@ -717,6 +716,8 @@
           "object_marking": 0,
           "func": "equal",
           "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "player_wing"
         }
       },
@@ -724,7 +725,8 @@
         "unitWakeUp": {
           "target": "fw_190_02_4_player_add"
         }
-      }
+      },
+      "else_actions": []
     },
     "check_for_end_of_blocking": {
       "is_enabled": false,
@@ -745,6 +747,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "enemy_squad"
         }
       },
@@ -753,7 +757,7 @@
           "target": "allies_01"
         },
         "spawnOnAirfield": {
-          "runwayName": "airfield_02_start",
+          "runwayName": "airfield_02",
           "objects": "allies_01"
         },
         "unitAttackTarget": {
@@ -765,9 +769,12 @@
         },
         "moSetObjectiveStatus": {
           "target": "dlc_save_the_neighbor_takeoff",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
-      }
+      },
+      "else_actions": []
     },
     "mission_failed_timer_end": {
       "is_enabled": true,
@@ -808,13 +815,18 @@
             "icon": "air",
             "icon army": 2,
             "set": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "enemy_squad"
           }
         },
         {
           "moSetObjectiveStatus": {
             "target": "dlc_save_the_neighbor_takeoff",
-            "status": 3
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -851,7 +863,7 @@
         },
         {
           "spawnOnAirfield": {
-            "runwayName": "airfield_02_start",
+            "runwayName": "airfield_02",
             "objects": "allies_02"
           }
         },
@@ -940,7 +952,8 @@
         {
           "missionFailed": []
         }
-      ]
+      ],
+      "else_actions": []
     },
     "mission_success": {
       "is_enabled": false,
@@ -961,6 +974,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 4,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "enemy_squad"
         }
       },
@@ -983,6 +998,9 @@
             "icon": "air",
             "icon army": 2,
             "set": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "enemy_squad"
           }
         },
@@ -995,13 +1013,24 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "enemy_squad"
           }
         },
         {
           "moSetObjectiveStatus": {
             "target": "dlc_save_the_neighbor_takeoff",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1022,7 +1051,8 @@
         {
           "missionDebriefing": []
         }
-      ]
+      ],
+      "else_actions": []
     },
     "check_for_simulator": {
       "is_enabled": true,
@@ -1045,13 +1075,14 @@
       },
       "actions": {
         "varModify": {
-          "var": "timer",
           "operator": "add",
           "value": 1.0,
+          "var": "timer",
           "use_variable": true,
           "var_value": "simulator_add_timer"
         }
-      }
+      },
+      "else_actions": []
     },
     "permanent_attack": {
       "is_enabled": true,
@@ -1076,7 +1107,8 @@
           "playerAttractedCount": 1,
           "playerAttractedEffRate": 0.5
         }
-      }
+      },
+      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -1113,9 +1145,20 @@
           [0.0,0.0,1.0],
           [-11952.2,411.95,-8825.55]
         ],
-        "closed_waypoints": false,
         "unit_class": "p-39n_su",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "p_39_n_su_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 4,
@@ -1149,9 +1192,20 @@
           [0.130526,0.0,-0.991445],
           [-23702.0,750.0,1659.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190a-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190A-5_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -1185,9 +1239,20 @@
           [0.0,0.0,1.0],
           [-25482.2,428.6,1223.55]
         ],
-        "closed_waypoints": false,
         "unit_class": "yak-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Yak3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 8,
@@ -1222,9 +1287,20 @@
           [0.130526,0.0,-0.991445],
           [-19618.0,921.8,1659.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -1258,9 +1334,20 @@
           [0.999048,0.0,-0.0436193],
           [-23701.5,1233.7,2278.65]
         ],
-        "closed_waypoints": false,
         "unit_class": "ju-87d-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Ju87_D3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 30,
@@ -1294,9 +1381,20 @@
           [0.0,0.0,1.0],
           [-23387.9,428.6,1507.15]
         ],
-        "closed_waypoints": false,
         "unit_class": "yak-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Yak3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 8,
@@ -1331,18 +1429,17 @@
           [0.0,0.0,1.0],
           [-23251.5,20.95,634.0]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "squad_fw_109_01"
           },
           {
             "squad_members": "squad_fw_109_02"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -1354,9 +1451,20 @@
           [0.130526,0.0,-0.991445],
           [-23702.0,750.0,1787.65]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -1390,9 +1498,20 @@
           [0.130526,0.0,-0.991445],
           [-23702.0,750.0,1901.15]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -1426,9 +1545,20 @@
           [0.130526,0.0,-0.991445],
           [-23702.0,750.0,2022.05]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 8,
@@ -1462,10 +1592,10 @@
           [0.0,0.0,1.0],
           [-25255.1,145.45,2974.05]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "fw_190_01"
           },
@@ -1478,8 +1608,7 @@
           {
             "squad_members": "fw_190_01_4_players_add"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -1491,9 +1620,20 @@
           [0.130526,0.0,-0.991445],
           [-19618.0,921.8,1747.55]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 2,
@@ -1527,9 +1667,20 @@
           [0.130526,0.0,-0.991445],
           [-19618.0,921.8,1831.1]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -1563,9 +1714,20 @@
           [0.130526,0.0,-0.991445],
           [-19618.0,921.8,1885.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 8,
@@ -1599,10 +1761,10 @@
           [0.0,0.0,1.0],
           [-19776.4,67.35,1416.65]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "fw_190_02"
           },
@@ -1615,8 +1777,41 @@
           {
             "squad_members": "fw_190_02_4_player_add"
           }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23966.8,53.1,1429.5]
         ],
-        "way": []
+        "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_01",
+        "tm": [
+          [0.0871558,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,0.0871558],
+          [-14165.4,67.699,-8057.75]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
       }
     }
   ],
@@ -1641,126 +1836,6 @@
       ],
       "props": []
     },
-    "airfield_01_start": {
-      "type": "Sphere",
-      "tm": [
-        [108.7,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,108.7],
-        [-14332.4,70.65,-8965.6]
-      ],
-      "props": []
-    },
-    "airfield_01_end": {
-      "type": "Sphere",
-      "tm": [
-        [108.7,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,108.7],
-        [-14343.7,70.65,-7063.85]
-      ],
-      "props": []
-    },
-    "airfield_01_spawn_01": {
-      "type": "Sphere",
-      "tm": [
-        [54.35,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,54.35],
-        [-14332.4,70.65,-8702.3]
-      ],
-      "props": []
-    },
-    "airfield_01_spawn_02": {
-      "type": "Sphere",
-      "tm": [
-        [54.35,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,54.35],
-        [-14332.3,70.65,-8757.35]
-      ],
-      "props": []
-    },
-    "airfield_01_spawn_03": {
-      "type": "Sphere",
-      "tm": [
-        [54.35,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,54.35],
-        [-14332.5,70.65,-8812.5]
-      ],
-      "props": []
-    },
-    "airfield_01_spawn_04": {
-      "type": "Sphere",
-      "tm": [
-        [54.35,0.0,0.0],
-        [0.0,108.7,0.0],
-        [0.0,0.0,54.35],
-        [-14332.9,70.65,-8868.4]
-      ],
-      "props": []
-    },
-    "airfield_02_start": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23279.6,56.05,1344.15]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_01": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23501.7,56.05,1319.8]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_02": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23454.2,56.05,1319.8]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_03": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23399.8,56.05,1319.8]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_04": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23350.8,56.05,1319.8]
-      ],
-      "props": []
-    },
-    "airfield_02_end": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-25031.8,56.05,1146.35]
-      ],
-      "props": []
-    },
     "battle_area": {
       "type": "Sphere",
       "tm": [
@@ -1770,46 +1845,8 @@
         [-23923.6,56.05,1345.6]
       ],
       "props": []
-    },
-    "airfield_02_spawn_05": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23501.7,56.05,1367.35]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_06": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23452.6,56.05,1367.35]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_07": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23399.3,56.05,1367.35]
-      ],
-      "props": []
-    },
-    "airfield_02_spawn_08": {
-      "type": "Sphere",
-      "tm": [
-        [51.5,0.0,0.0],
-        [0.0,51.5,0.0],
-        [0.0,0.0,51.5],
-        [-23346.3,56.05,1367.35]
-      ],
-      "props": []
     }
-  }
+  },
+  "objLayers": [],
+  "wayPoints": []
 }

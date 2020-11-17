@@ -35,8 +35,8 @@ frame{
         size:t='pw, 0.04@sf'
         on_select:t = 'onClanTypeSelect'
         on_set_focus:t='onFocus'
-        on_wrap_up:t='onWrapUp'
-        on_wrap_down:t='onWrapDown'
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         margin-bottom:t='0.01@sf'
         shortcutsNavigator:t='yes'
         navigatorShortcuts:t='yes'
@@ -87,14 +87,14 @@ frame{
         width:t = 'pw';
         position:t='relative';
         max-len:t='32';
-        mouse-focusable:t='yes';
         <<^isNonLatinCharsAllowedInClanName>>
         char-mask:t='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 _-';
         <</isNonLatinCharsAllowedInClanName>>
         text:t='';
-        switchFocus:t='yes'
         noActivate:t='yes'
         on_set_focus:t='onFocus';
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         on_change_value:t='onFieldChange';
         on_cancel_edit:t='clanCanselEdit';
       }
@@ -123,14 +123,14 @@ frame{
           id:t = 'newclan_tag';
           width:t = 'pw';
           max-len:t='5';
-          mouse-focusable:t='yes';
           <<^isNonLatinCharsAllowedInClanName>>
           char-mask:t='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
           <</isNonLatinCharsAllowedInClanName>>
           text:t='';
-          switchFocus:t='yes'
           noActivate:t='yes'
           on_set_focus:t='onFocus';
+          on_hover:t='onHover'
+          on_unhover:t='onHover'
           on_change_value:t='updateDecoration';
           on_cancel_edit:t='clanCanselEdit';
         }
@@ -147,7 +147,8 @@ frame{
         ComboBox{
           id:t = 'newclan_tag_decoration';
           size:t='pw, @buttonHeight';
-          btnName:t='X'
+          on_hover:t='onHover'
+          on_unhover:t='onHover'
           on_select:t='onFieldChange'
         }
       }
@@ -176,11 +177,11 @@ frame{
         id:t = 'newclan_slogan';
         width:t='pw';
         max-len:t='100';
-        mouse-focusable:t='yes';
         text:t='';
-        switchFocus:t='yes'
         noActivate:t='yes'
         on_set_focus:t='onFocus';
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         on_change_value:t='onFieldChange';
         on_cancel_edit:t='clanCanselEdit';
       }
@@ -219,11 +220,11 @@ frame{
         id:t='newclan_region';
         width:t='pw';
         max-len:t='64';
-        mouse-focusable:t='yes';
         text:t='';
-        switchFocus:t='yes'
         noActivate:t='yes'
         on_set_focus:t='onFocus';
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         on_change_value:t='onFieldChange';
         on_cancel_edit:t='clanCanselEdit';
       }
@@ -255,10 +256,10 @@ frame{
         size:t='pw, 12*@sf/100';
         multiline='yes';
         max-len:t='512';
-        mouse-focusable:t='yes';
         text:t='';
-        switchFocus:t='yes'
         on_set_focus:t='onFocus';
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         on_change_value:t='onFieldChange';
         on_cancel_edit:t='clanCanselEdit';
       }
@@ -296,10 +297,10 @@ frame{
         size:t='pw, 12*@sf/100';
         multiline='yes';
         max-len:t='512';
-        mouse-focusable:t='yes';
         text:t='';
-        switchFocus:t='yes'
         on_set_focus:t='onFocus';
+        on_hover:t='onHover'
+        on_unhover:t='onHover'
         on_change_value:t='onFieldChange';
         on_cancel_edit:t='clanCanselEdit';
       }
@@ -343,7 +344,7 @@ frame{
       Button_text{
         id:t='btn_submit';
         hideText:t='yes'
-        btnName:t='A';
+        btnName:t='X';
         visualStyle:t='purchase'
         _on_click:t='onSubmit';
         buttonWink{}
@@ -360,7 +361,7 @@ frame{
       Button_text {
         id:t='btn_disbandClan'
         display:t='hide'
-        btnName:t='LB'
+        btnName:t='L3'
         text:t = '#clan/btnDisbandClan'
         tooltip:t = '#clan/btnDisbandClan'
         on_click:t = 'onDisbandClan'

@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 

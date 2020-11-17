@@ -20,11 +20,6 @@
   "fireParamsPreset": "600kph",
   "fightAiBehaviour": "fighter",
   "DamageParts": {
-    "armor3": {
-      "armor1_dm": {
-        "hp": 45.9
-      }
-    },
     "armor10": {
       "mgun1_dm": {
         "hp": 15.0
@@ -45,6 +40,11 @@
         "hp": 15.0
       }
     },
+    "armor3": {
+      "armor1_dm": {
+        "hp": 35.0
+      }
+    },
     "armor8": {
       "armor2_dm": {
         "hp": 40.0
@@ -53,7 +53,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 35.3
+        "hp": 33.5
       }
     },
     "c_dural3": {
@@ -92,7 +92,7 @@
     },
     "c_dural7": {
       "fuse_dm": {
-        "hp": 93.4
+        "hp": 93.7
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -100,7 +100,7 @@
       },
       "wing1_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 65.9
+        "hp": 65.8
       },
       "wing1_r_dm": {
         "genericDamageMult": 0.3,
@@ -108,11 +108,11 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 41.7
+        "hp": 41.9
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 41.7
+        "hp": 41.9
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
@@ -134,7 +134,7 @@
         "hp": 19.5
       },
       "cover4_dm": {
-        "hp": 21.9
+        "hp": 22.3
       }
     },
     "dural40": {
@@ -145,10 +145,10 @@
         "hp": 60.5
       },
       "spar2_l_dm": {
-        "hp": 34.9
+        "hp": 46.2
       },
       "spar2_r_dm": {
-        "hp": 34.9
+        "hp": 46.2
       },
       "spar_l_dm": {
         "hp": 60.5
@@ -212,10 +212,10 @@
         "hp": 63.8
       },
       "tank2_dm": {
-        "hp": 54.4
+        "hp": 54.2
       },
       "tank3_dm": {
-        "hp": 41.7
+        "hp": 39.5
       }
     }
   },
@@ -1030,8 +1030,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1039,8 +1039,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1048,8 +1048,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1057,8 +1057,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2083,6 +2083,11 @@
         "part": "engine4"
       }
     ]
+  },
+  "flexWing": {
+    "wingStrainCoeff": 0.2,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
   },
   "commonWeapons": [
     {

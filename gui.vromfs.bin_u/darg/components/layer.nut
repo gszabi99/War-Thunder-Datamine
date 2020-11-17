@@ -29,7 +29,7 @@ local immutable_types = ["string", "float", "integer"]
 
 //clear unaccasseble widgets on reload
 foreach (layerName, layerState in layerManagersData){
-  layerState.update(layerState.value.filter_inplace(@(widget) immutable_types.indexof(::type(widget.uid)!=null)))
+  layerState.update(@(v) v.filter(@(widget) immutable_types.indexof(::type(widget.uid)!=null)))
 }
 
 

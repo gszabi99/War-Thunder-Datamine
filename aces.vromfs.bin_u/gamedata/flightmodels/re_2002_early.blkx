@@ -41,14 +41,12 @@
       },
       "armor2_dm": {
         "hp": 40.0
-      }
-    },
-    "glass50": {
+      },
       "armor3_dm": {
         "hp": 40.0
       }
     },
-    "armor_engine_light": {
+    "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
         "hp": 65.6
@@ -123,11 +121,11 @@
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 44.9
+        "hp": 60.5
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 44.9
+        "hp": 60.5
       }
     },
     "dural": {
@@ -1190,8 +1188,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1199,8 +1197,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1208,8 +1206,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1217,8 +1215,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1979,6 +1977,11 @@
       }
     }
   ],
+  "flexWing": {
+    "wingStrainCoeff": 0.5,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
   "DamageArcade": {
     "hp": 150.0
   },

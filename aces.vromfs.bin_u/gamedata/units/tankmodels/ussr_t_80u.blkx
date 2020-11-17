@@ -192,7 +192,7 @@
           "armorClass": "CHA_tank_modern",
           "createSecondaryShatters": false
         },
-        "turret_02_back_dm": {
+        "turret_01_back_dm": {
           "armorThickness": 250.0,
           "armorClass": "CHA_tank_modern",
           "variableThickness": true,
@@ -516,6 +516,7 @@
         "ex_armor_body_l_10_dm": [],
         "ex_armor_body_r_09_dm": [],
         "ex_armor_body_l_09_dm": [],
+        "turret_10_side_dm": [],
         "timber": {
           "armorClass": "ship_wood",
           "armorThickness": 100.0,
@@ -976,6 +977,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -1102,7 +1104,7 @@
         "armorArrayText": [
           {
             "layer": {
-              "dmPart": "turret_02_back_dm",
+              "dmPart": "turret_01_back_dm",
               "xrayTextThickness": [60.0,110.0]
             }
           },
@@ -1132,7 +1134,7 @@
           },
           {
             "layer": {
-              "dmPart": "turret_02_back_dm",
+              "dmPart": "turret_01_back_dm",
               "xrayTextThickness": [130.0,220.0]
             }
           }
@@ -2164,6 +2166,7 @@
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
+          "aimForOperatedShell": true,
           "autoLoader": true,
           "speedYaw": 24.0,
           "speedPitch": 4.4,
@@ -3004,6 +3007,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3025,7 +3037,7 @@
     "cockpit": {
       "zoomOutFov": 27.54,
       "zoomInFov": 6.14,
-      "sightFov": 15.0,
+      "sightFov": 13.5,
       "sightName": "1g_46",
       "headPos": [0.0,3.5,-8.0],
       "headPosOnShooting": [-0.1,3.0,0.4],
@@ -3109,6 +3121,7 @@
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",
+                "aimForOperatedShell": true,
                 "autoLoader": true,
                 "speedYaw": 24.0,
                 "speedPitch": 4.4,

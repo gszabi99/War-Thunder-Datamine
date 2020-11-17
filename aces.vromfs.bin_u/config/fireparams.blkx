@@ -168,6 +168,17 @@
       "fxPresetName": "turret_fire",
       "nonExtinguishFireTime": 5.0
     },
+    "ship_aux_turrets": {
+      "damage": 0.01,
+      "radiusScale": 0.5,
+      "radiusScales": [0.5,0.6],
+      "maxFireTime": [5.0,60.0],
+      "extinguishChance": 0.9,
+      "allowMultipleFires": false,
+      "allowMultipleFx": true,
+      "fxPresetName": "turret_aux_fire",
+      "nonExtinguishFireTime": 4.0
+    },
     "ship_fuel_tank": {
       "damage": 0.04,
       "radiusScale": 0.1,
@@ -255,6 +266,17 @@
       "fxPresetName": "fuel_exterior",
       "extinguishChance": 0.99,
       "allowMultipleFx": true
+    },
+    "fuel_internal": {
+      "damage": 0.05,
+      "radiusScale": 1.5,
+      "fxPresetName": "fuel_internal",
+      "maxFireTime": [20.0,30.0],
+      "engineExtinguishFireSpeed": [0.0,55.0],
+      "engineExtinguishFireSpeedChance": [0.9,1.0],
+      "nonExtinguishFireTime": 1.0,
+      "underwaterExtinguishTime": 1.0,
+      "underwaterExtinguishAdditionalWater": 0.05
     },
     "hull_bustle": {
       "damage": 1.0,

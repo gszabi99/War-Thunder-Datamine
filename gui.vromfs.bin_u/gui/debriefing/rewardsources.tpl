@@ -6,7 +6,7 @@ activeText {
   text:t='<<multiplier>>'
 }
 activeText {
-  style:t='color:@fadedTextColor'
+  style:t='color:@minorTextColor'
   smallFont:t='yes'
   text:t='#ui/multiply'
 }
@@ -26,7 +26,7 @@ activeText {
 <</noBonus>>
 <<#premAcc>>
 activeText {
-  style:t='color:@fadedTextColor'
+  style:t='color:@minorTextColor'
   smallFont:t='yes'
   text:t='+'
 }
@@ -47,7 +47,7 @@ activeText {
 <</premAcc>>
 <<#premMod>>
 activeText {
-  style:t='color:@fadedTextColor'
+  style:t='color:@minorTextColor'
   smallFont:t='yes'
   text:t='+'
 }
@@ -68,7 +68,7 @@ activeText {
 <</premMod>>
 <<#booster>>
 activeText {
-  style:t='color:@fadedTextColor'
+  style:t='color:@minorTextColor'
   smallFont:t='yes'
   text:t='+'
 }
@@ -89,7 +89,7 @@ activeText {
 <</booster>>
 <<#prevUnitEfficiency>>
 activeText {
-  style:t='color:@fadedTextColor'
+  style:t='color:@minorTextColor'
   smallFont:t='yes'
   text:t='+'
 }

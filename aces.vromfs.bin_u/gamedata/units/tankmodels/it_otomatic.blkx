@@ -647,6 +647,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2587,6 +2588,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2608,7 +2618,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 6.5,
+      "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,5.5,-10.0],
       "headPosOnShooting": [-1.1,4.9,0.87],

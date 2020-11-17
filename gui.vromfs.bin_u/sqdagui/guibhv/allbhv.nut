@@ -10,19 +10,13 @@ if (!("gui_bhv_deprecated" in ::getroottable()))
 
 foreach (fn in [
                  "wrapDir.nut"
-                 "lastNavigatorWrap.nut"
-                 "bhvOptionsNavigator.nut"
-                 "bhvTableNavigator.nut" //depend on OptionsNavigator
-                 "bhvColumnNavigator.nut"
-                 "bhvWrapNavigator.nut"
-                 "bhvWrapBroadcast.nut"
                  "bhvPosNavigator.nut"
                  "bhvMultiSelect.nut" //depend on PosNavigator
                  "bhvActivateSelect.nut" //depend on PosNavigator
                  "bhvPosOptionsNavigator.nut" //depend on PosNavigator
+                 "bhvWrapBroadcast.nut"
                  "bhvTimer.nut"
                  "bhvBasic.nut"
-                 "bhvControlsGrid.nut"
                  "bhvControlsInput.nut"
                  "bhvAnim.nut"
                ])

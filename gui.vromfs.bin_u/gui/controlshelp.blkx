@@ -6,14 +6,10 @@
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down"
   },
-  "div": {
-    "background-color": "@shadeBackgroundColor",
-    "size": "sw,sh",
-    "pos": "0,0",
-    "position": "root"
-  },
   "root": {
     "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "menutitle": {
       "id": "msgbox-title"
     },
@@ -313,12 +309,7 @@
           "position": "absolute",
           "class": "optionsTable",
           "baseRow": "yes",
-          "focus": "yes",
-          "behavior": "OptionsNavigator",
-          "cur_col": "0",
-          "cur_row": "0",
-          "cur_min": "1",
-          "num_rows": "-1",
+          "behavior": "PosOptionsNavigator",
           "tr": [
             {
               "width": "pw"

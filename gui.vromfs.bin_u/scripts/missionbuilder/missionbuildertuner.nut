@@ -53,12 +53,8 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
     local misObj = ""
     misObj = ::loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
     scene.findObject("mission-objectives").setValue(misObj)
-    initFocusArray()
-  }
 
-  function getMainFocusObj()
-  {
-    return scene.findObject("tuner_options")
+    ::move_mouse_on_obj(scene.findObject("btn_apply"))
   }
 
   function buildAircraftOptions(aircrafts, curA, isPlayer)
@@ -160,7 +156,6 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
 
     local wLeft  = "45%pw"
     local wRight = "55%pw"
-    local selectedRow = 0
     local separator = ""
 
     local isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
@@ -334,11 +329,7 @@ class ::gui_handlers.MissionBuilderTuner extends ::gui_handlers.BaseGuiHandlerWT
         class:t = 'optionsTable';
         baseRow:t = 'yes';
         focus:t = 'yes';
-        behavior:t = 'OptionsNavigator';
-        cur_col:t='" + selectedRow + @"';
-        cur_row:t='0';
-        cur_min:t='1';
-        num_rows:t='-1';
+        behavior:t = 'PosOptionsNavigator';
         "
         + data + @"
       }

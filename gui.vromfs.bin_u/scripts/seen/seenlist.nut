@@ -1,4 +1,4 @@
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 local time = require("scripts/time.nut")
 local seenListEvents = require("scripts/seen/seenListEvents.nut")
 

@@ -114,6 +114,18 @@
     "depthTraceCriticalDepth": 2.0
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [48.79,3.25,-0.72]
+  },
+  {
+    "spawn_count": {
+      "numSpawnsPerBattleArcade": 3,
+      "numSpawnsPerBattleHistorical": 3
+    }
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -123,6 +135,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -195,6 +213,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2418,8 +2442,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -2804,10 +2828,10 @@
             "useEmitter": true
           },
           {
-            "barrelDP": "main_caliber_gun_01_dm"
+            "barrelDP": "main_caliber_gun_02_dm"
           },
           {
-            "breechDP": "main_caliber_gun_01_dm"
+            "breechDP": "main_caliber_gun_02_dm"
           },
           {
             "defaultYaw": 0.0
@@ -2949,8 +2973,8 @@
           "emitter": "emtr_gun_flame_03",
           "flash": "emtr_gun_flame_03",
           "useEmitter": true,
-          "barrelDP": "main_caliber_gun_01_dm",
-          "breechDP": "main_caliber_gun_01_dm",
+          "barrelDP": "main_caliber_gun_03_dm",
+          "breechDP": "main_caliber_gun_03_dm",
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "speedYaw": 8.0,
@@ -3553,10 +3577,10 @@
           "fatalExplosion": false
         },
         {
-          "explosionEvent": "ammo_aux_explosion_2"
+          "explosionEvent": "ammo_aux_explosion_1"
         },
         {
-          "fireEvent": "ammo_aux_fire_2"
+          "fireEvent": "ammo_aux_fire_1"
         },
         {
           "fireParamsPreset": "ship_ammo_fire"

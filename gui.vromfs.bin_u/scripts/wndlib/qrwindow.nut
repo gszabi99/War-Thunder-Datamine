@@ -30,7 +30,6 @@ local class qrWindow extends ::gui_handlers.BaseGuiHandlerWT {
       goBack()
 
     scene.findObject("wnd_update").setUserData(this)
-    restoreFocus()
   }
 
   function getQrCodeView() {

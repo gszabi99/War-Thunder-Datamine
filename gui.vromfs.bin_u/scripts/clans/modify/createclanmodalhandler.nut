@@ -58,10 +58,8 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
   {
     base.initScreen()
     updateSubmitButtonText()
-    local nObj = scene.findObject("newclan_name")
-    nObj.select()
+    ::select_editbox(scene.findObject("newclan_name"))
     resetTagDecorationObj()
-    initFocusArray()
     updateDescription()
     updateAnnouncement()
   }
@@ -70,7 +68,6 @@ class ::gui_handlers.CreateClanModalHandler extends ::gui_handlers.ModifyClanMod
   {
     if (!::checkObj(obj))
       return
-    obj.select() // Sets focus on click.
     prepareClanData(false, true)
     updateTagMaxLength()
     resetTagDecorationObj()

@@ -1,7 +1,7 @@
 <<#showAllCheckBoxEnabled>>
 CheckBox {
   id:t='checkbox_show_all_promo_blocks'
-  pos:t='pw - 1@bw - w, 0'
+  pos:t='pw - 1@promoButtonPadding - w, 0'
   position:t='relative'
   on_change_value:t='onShowAllCheckBoxChange'
 
@@ -38,8 +38,8 @@ promoButton {
     invisibleHover:t='yes'
   <</inputTransparent>>
   collapsed:t='<<collapsed>>'
-
-  bgGradientRight {}
+  blur {}
+  blur_foreground {}
 
   <<#isMultiblock>>
   behavior:t = 'Timer'
@@ -53,15 +53,9 @@ promoButton {
   timer_interval_msec:t='1000'
   <</timerFunc>>
 
-  <<#image>>
-  class:t='withImage'
-  <</image>>
-
   uncollapsedContainer {
-    <<#isMultiblock>>
-      <<@aspect_ratio>>
-    <</isMultiblock>>
-
+    size:t='1@arrowButtonWidth, <<h_ratio>>w+1@arrowButtonHeight'
+    headerBg {}
     <<#fillBlocks>>
     fillBlock {
       id:t = '<<blockId>>'
@@ -69,32 +63,29 @@ promoButton {
       animation:t='<<#blockShow>>show<</blockShow>><<^blockShow>>hide<</blockShow>>'
       _transp-timer:t='<<#blockShow>>1<</blockShow>><<^blockShow>>0<</blockShow>>'
       <</isMultiblock>>
-
-      <<@aspect_ratio>>
-
       <<#link>> link:t='<<link>>' <</link>>
 
       <<#action>> on_click:t='<<action>>' <</action>>
-
       <<#image>>
-        imageFade {
-          <<@aspect_ratio>>
-          img {
-            background-image:t='<<image>>';
-          }
+      imageFade {
+        size:t='1@arrowButtonWidth, <<h_ratio>>w'
+        img {
+          background-image:t='<<image>>'
         }
+      }
       <</image>>
-
       textareaFade {
-
+        position:t='relative'
+        pos:t='0, 0.5@arrowButtonHeight-0.5h'
         <<#isMultiblock>>
         RadioButtonList {
           id:t='multiblock_radiobuttons_list'
           blockId:t='<<id>>'
           position:t='absolute'
-          pos:t='pw/2-w/2, -h - 1@framePadding'
+          pos:t='0.5pw-0.5w, ph+1@framePadding'
           on_select:t='switchBlock'
           on_click:t='manualSwitchBlock'
+          highlightSelected:t='yes'
           class:t='promo'
           <<#radiobuttons>>
             RadioButton {
@@ -106,31 +97,40 @@ promoButton {
         <</isMultiblock>>
 
         <<^showTextShade>>display:t='hide'<</showTextShade>>
-        textarea {
-          id:t='<<id>>_text'
-          text:t='<<text>>'
-          <<#needTextShade>>textShade:t='yes'<</needTextShade>>
+        tdiv {
+          width:t='fw'
+          position:t='relative'
+          top:t='0.5ph-0.5h'
+          overflow:t='hidden'
+          css-hier-invalidate:t='yes'
+          textareaNoTab {
+            id:t='<<id>>_text'
+            position:t='relative'
+            needAutoScroll:t='<<needAutoScroll>>'
+            <<#needTextShade>>textShade:t='yes'<</needTextShade>>
+            text:t='<<text>>'
 
-          <<#link>>
-            underline{}
-          <</link>>
+            <<#link>>
+              underline{}
+            <</link>>
 
-          <<#notifyNew>>
-          newIconWidget {
-            id:t='<<id>>_new_icon_widget_container';
-            position:t='absolute'
-            pos:t='-w, 50%ph-50%h'
+            <<#notifyNew>>
+            newIconWidget {
+              id:t='<<id>>_new_icon_widget_container';
+              position:t='absolute'
+              pos:t='-w, 50%ph-50%h'
+            }
+            <</notifyNew>>
+
+            <<#unseenIcon>>
+            unseenIcon {
+              position:t='absolute'
+              pos:t='-w-1@blockInterval, 50%ph-50%h'
+              value:t='<<unseenIcon>>'
+              unseenText {}
+            }
+            <</unseenIcon>>
           }
-          <</notifyNew>>
-
-          <<#unseenIcon>>
-          unseenIcon {
-            position:t='absolute'
-            pos:t='-w-1@blockInterval, 50%ph-50%h'
-            value:t='<<unseenIcon>>'
-            unseenText {}
-          }
-          <</unseenIcon>>
         }
       }
       <<^showTextShade>>
@@ -204,15 +204,6 @@ promoButton {
     id:t='<<id>>_toggle'
     on_click:t='onToggleItem'
     type:t='right'
-
-    <<#needNavigateToCollapseButtton>>
-    behaviour:t='wrapBroadcast'
-    navigatorShortcuts:t='SpaceA'
-    on_wrap_up:t='onWrapUp'
-    on_wrap_down:t='onWrapDown'
-    on_wrap_right:t='onWrapRight'
-    on_wrap_left:t='onWrapLeft'
-    <</needNavigateToCollapseButtton>>
 
     directionImg {}
   }

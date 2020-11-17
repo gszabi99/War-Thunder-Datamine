@@ -12,12 +12,12 @@
     "mission": {
       "level": "levels/mozdok.bin",
       "type": "testFlight",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "good",
       "windDirection": [1.0,0.0,0.0],
-      "locName": "missions/testFlight"
+      "locName": "missions/testFlight",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "spectator_points": [],
     "briefing": {
@@ -193,6 +193,15 @@
             "runwayName": "airfield00",
             "objects": "armada_01"
           }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "ussr_tank_05",
+            "target": "spawn_shtora_tank",
+            "randomObjectsCount": 1
+          }
         }
       ],
       "else_actions": []
@@ -311,11 +320,11 @@
           [0.275962,0.0,0.961169],
           [-1292.66,371.967,-4572.24]
         ],
-        "unit_class": "mi_24v",
+        "unit_class": "ah_1s_late",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "",
+        "weapons": "ah_1s_late_rocket_8xTOW",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -324,6 +333,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "free_distance": 70.0,
@@ -372,6 +382,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "modification": "manual_extinguisher",
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -409,6 +420,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "modification": "manual_extinguisher",
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -479,6 +491,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -515,6 +528,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -551,6 +565,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -587,6 +602,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -623,6 +639,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -659,6 +676,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -695,6 +713,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -731,6 +750,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -835,6 +855,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -871,6 +892,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -907,6 +929,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -943,6 +966,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -979,6 +1003,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1015,6 +1040,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1086,6 +1112,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "modification": "manual_extinguisher",
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1123,6 +1150,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "modification": "manual_extinguisher",
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1188,6 +1216,9 @@
           },
           {
             "squad_members": "ussr_tank_04"
+          },
+          {
+            "squad_members": "ussr_tank_05"
           }
         ]
       }
@@ -1216,6 +1247,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1314,6 +1346,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1448,6 +1481,9 @@
         },
         {
           "modification": "tank_tool_kit"
+        },
+        {
+          "crewSkillK": 0.0
         },
         {
           "props": {
@@ -1785,6 +1821,9 @@
           "modification": "tank_tool_kit"
         },
         {
+          "crewSkillK": 0.0
+        },
+        {
           "props": {
             "army": 2,
             "count": 1,
@@ -2057,6 +2096,45 @@
           }
         }
       ]
+    },
+    {
+      "tankModels": {
+        "name": "ussr_tank_05",
+        "tm": [
+          [0.72602,0.0,0.687674],
+          [0.0,1.0,0.0],
+          [-0.687674,0.0,0.72602],
+          [-3183.95,398.65,-6468.55]
+        ],
+        "unit_class": "ussr_t_90a",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "manual_extinguisher",
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
     }
   ],
   "areas": {
@@ -2088,6 +2166,17 @@
         [-10.2858,0.0,-75.8054],
         [-1185.64,371.998,-4617.28]
       ],
+      "props": []
+    },
+    "spawn_shtora_tank": {
+      "type": "Sphere",
+      "tm": [
+        [9.08218,0.0,8.58859],
+        [0.0,12.5,0.0],
+        [-8.58859,0.0,9.08218],
+        [-3183.9,398.562,-6468.5]
+      ],
+      "objLayer": 0,
       "props": []
     }
   },

@@ -102,6 +102,7 @@ local allowed_mission_settings = { //only this settings are allowed in room
      useTankBots = false
      ranks = {}
      useShipBots = false
+     keepDead = true
      isLimitedAmmo = false
      isLimitedFuel = false
      optionalTakeOff = false
@@ -466,7 +467,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
   local userAllowedUnitTypesMask = missionSettings?.userAllowedUnitTypesMask ?? 0
   if (userAllowedUnitTypesMask)
     foreach (unitType in unitTypes.types)
-      if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit))
+      if (unitType.isAvailableByMissionSettings(_settings.mission) && !(userAllowedUnitTypesMask & unitType.bit) && unitType.isPresentOnMatching)
         _settings.mission[unitType.missionSettingsAvailabilityFlag] = false
 
   local mrankMin = missionSettings?.mrankMin ?? 0
@@ -622,7 +623,7 @@ SessionLobby.fillTeamsInfo <- function fillTeamsInfo(_settings, misBlk)
   teamData.allowedCrafts <- []
 
   foreach (unitType in unitTypes.types)
-    if (unitType.isAvailableByMissionSettings(_settings.mission))
+    if (unitType.isAvailableByMissionSettings(_settings.mission) && unitType.isPresentOnMatching)
     {
       local rule = { ["class"] = unitType.getMissionAllowedCraftsClassName() }
       if (_settings?.mranks)
@@ -870,7 +871,7 @@ SessionLobby.getNotAvailableUnitByBRText <- function getNotAvailableUnitByBRText
           lockedUnitType = ::colorize("userlogColoredText",
             ::loc("mainmenu/type_" + unit.unitType.lowerName)),
           battleRatingDiff = ::colorize("userlogColoredText", ::format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
-          reqUnitType = ::colorize("userlogColoredText", ::loc("mainmenu/type_ship"))
+          reqUnitType = ::colorize("userlogColoredText", ::loc("mainmenu/type_ship_and_boat"))
         })
       : null
 }
@@ -1089,11 +1090,13 @@ SessionLobby.uploadUserMission <- function uploadUserMission(afterDoneFunc = nul
   local missionId = getMissionName()
   local missionInfo = ::DataBlock()
   missionInfo.setFrom(::get_mission_meta_info(missionId))
-  local missionBlk = missionInfo && missionInfo.mis_file && ::DataBlock(missionInfo.mis_file)
+  local missionBlk = DataBlock()
+  if (missionInfo)
+    missionBlk.load(missionInfo.mis_file)
   //dlog("GP: upload mission!")
   //debugTableData(missionBlk)
 
-  local blkData = missionBlk && base64.encodeBlk(missionBlk)
+  local blkData = base64.encodeBlk(missionBlk)
   //dlog("GP: data = " + blkData)
   //debugTableData(blkData)
   if (!blkData || !("result" in blkData) || !blkData.result.len())

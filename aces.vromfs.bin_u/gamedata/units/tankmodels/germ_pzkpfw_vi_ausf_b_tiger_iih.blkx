@@ -1299,12 +1299,12 @@
           "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-          "emitter": "bone_mg_aa_h_01",
+          "emitter": "bone_mg_aa_barrel",
           "flash": "emtr_mg_flame_03",
-          "rollOrientationDeg": 90.0,
+          "useEmitter": true,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_03_dm",
+          "barrelDP": "gun_barrel_02_dm",
           "parkInDeadzone": false,
           "speedYaw": 30.0,
           "speedPitch": 20.0,
@@ -1323,13 +1323,13 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_mg_aa_v_01",
+            "head": "bone_turret_01",
+            "gun": "bone_mg_aa",
             "gunnerDm": "commander_dm"
           },
           "limits": {
-            "yaw": [-10.0,23.0],
-            "pitch": [-60.0,60.0]
+            "yaw": [-55.0,158.0],
+            "pitch": [-10.0,25.0]
           }
         }
       }
@@ -2106,6 +2106,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2314,6 +2323,7 @@
         "wheel_l_drive_dm": [],
         "wheel_l_back_dm": [],
         "wheel_r_back_dm": [],
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 30.0,
@@ -2669,8 +2679,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2692,8 +2704,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2910,12 +2923,12 @@
                 "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-                "emitter": "bone_mg_aa_h_01",
+                "emitter": "bone_mg_aa_barrel",
                 "flash": "emtr_mg_flame_03",
-                "rollOrientationDeg": 90.0,
+                "useEmitter": true,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_03_dm",
+                "barrelDP": "gun_barrel_02_dm",
                 "parkInDeadzone": false,
                 "speedYaw": 30.0,
                 "speedPitch": 20.0,
@@ -2934,13 +2947,13 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_mg_aa_v_01",
+                  "head": "bone_turret_01",
+                  "gun": "bone_mg_aa",
                   "gunnerDm": "commander_dm"
                 },
                 "limits": {
-                  "yaw": [-10.0,23.0],
-                  "pitch": [-60.0,60.0]
+                  "yaw": [-55.0,158.0],
+                  "pitch": [-10.0,25.0]
                 }
               }
             },
@@ -3075,6 +3088,17 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "hinterhalt_daimler",
+      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
+      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_hinterhalt_daimler*"
       }
     }
   }

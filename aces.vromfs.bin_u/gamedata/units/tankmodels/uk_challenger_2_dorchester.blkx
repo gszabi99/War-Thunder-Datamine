@@ -182,6 +182,10 @@
         "composite_armor_hull_05_dm": {
           "armorThickness": 25.0,
           "hidableInXrayViewer": true
+        },
+        "turret_09_top_dm": {
+          "armorThickness": 10.0,
+          "armorClass": "tank_structural_steel"
         }
       },
       "hull_turret_spaced_armor": {
@@ -434,8 +438,7 @@
           "armorThickness": 8.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 25.4,
-          "armorClass": "tank_structural_steel"
+          "armorThickness": 50.0
         },
         "ex_armor_03_dm": {
           "armorThickness": 25.4,
@@ -448,6 +451,9 @@
         "ex_armor_r_02_dm": {
           "armorThickness": 25.4,
           "armorClass": "tank_structural_steel"
+        },
+        "turret_09_side_dm": {
+          "armorThickness": 60.0
         }
       },
       "grille": {
@@ -998,6 +1004,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -3658,6 +3665,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3706,13 +3722,17 @@
         "image": "#ui/gameuiskin#tank_reinforcement_uk"
       },
       "modern_tank_laser_rangefinder": [],
-      "120mm_britain_L37A7_HESH": [],
-      "120mm_britain_L26_APDSFS": [],
-      "120mm_britain_L26_APDSFS_ammo_pack": [],
       "120mm_britain_Smoke": [],
       "120mm_britain_Smoke_ammo_pack": {
         "tier": 1
       },
+      "120mm_britain_L37A7_HESH": [],
+      "120mm_britain_L26_APDSFS": [],
+      "120mm_britain_L26_APDSFS_ammo_pack": {
+        "tier": 1
+      },
+      "120mm_britain_L27_APDSFS": [],
+      "120mm_britain_L27_APDSFS_ammo_pack": [],
       "art_support": [],
       "tank_engine_smoke_screen_system": [],
       "challenger_dorchester_protection_improvement": {

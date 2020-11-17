@@ -10,6 +10,7 @@
 
 const scale = 1000
 const recScale = 0.001
+const maxSliderSteps = 50
 const firstColumnWidth = 0.45
 
 ::get_lut_index_by_texture <- function get_lut_index_by_texture(texture)
@@ -82,6 +83,7 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
 
   function createOneSlider(name, value, cb, params, showValue)
   {
+    params.step <- params?.step ?? ::max(1, ::round((params.max - params.min) / maxSliderSteps).tointeger())
     local markuo = ::create_option_slider("postfx_settings_" + name, value.tointeger(), cb, true, "slider", params)
     if (showValue)
       markuo += format(" optionValueText { id:t='%s' } ", name+"_value");
@@ -104,30 +106,37 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
 
   function createObjects()
   {
-    createOneSlider("vignette", (1 - ::get_postfx_vignette_multiplier()) * scale, "onVignetteChanged", {min = 0.01 * scale, max = scale, step = 20}, false);
+    createOneSlider("vignette", (1 - ::get_postfx_vignette_multiplier()) * scale, "onVignetteChanged",
+      { min = 0.01 * scale, max = scale }, false)
 
-    createOneSlider("sharpenTPS", ::get_sharpenTPS() * scale, "onSharpenTPSChanged", {min = 0, max = 0.4 * scale, step = 20}, false);
-    createOneSlider("sharpenGunner", ::get_sharpenGunner() * scale, "onSharpenGunnerChanged", {min = 0, max = 0.7 * scale, step = 20}, false);
-    createOneSlider("sharpenBomber", ::get_sharpenBomber() * scale, "onSharpenBomberChanged", {min = 0, max = 0.7 * scale, step = 20}, false);
-    createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged", {min = 0, max = 0.7 * scale, step = 20}, false);
+    createOneSlider("sharpenTPS", ::get_sharpenTPS() * scale, "onSharpenTPSChanged",
+      { min = 0, max = 0.4 * scale }, false)
+    createOneSlider("sharpenGunner", ::get_sharpenGunner() * scale, "onSharpenGunnerChanged",
+      { min = 0, max = 0.7 * scale }, false)
+    createOneSlider("sharpenBomber", ::get_sharpenBomber() * scale, "onSharpenBomberChanged",
+      { min = 0, max = 0.7 * scale }, false)
+    createOneSlider("sharpenCockpit", ::get_sharpenCockpit() * scale, "onSharpenCockpitChanged",
+      { min = 0, max = 0.7 * scale }, false)
 
     createOneSpinner("lutTexture", ::lut_list, get_lut_index_by_texture(::get_lut_texture()), "onLutTextureChanged");
 
     if (::use_lense_flares())
     {
-      createOneSpinner("lenseFlareMode", ::lenseFlareMode_list, ::get_lenseFlareMode(), "onLenseFlareModeChanged");
-      createOneSlider("lenseFlareHaloPower", ::get_lenseFlareHaloPower() * scale, "onLenseFlareHaloPowerChanged", {min = 0, max = scale, step = 1}, true);
-      createOneSlider("lenseFlareGhostsPower", ::get_lenseFlareGhostsPower() * scale, "onLenseFlareGhostsPowerChanged", {min = 0, max = scale, step = 1}, true);
+      createOneSpinner("lenseFlareMode", ::lenseFlareMode_list, ::get_lenseFlareMode(), "onLenseFlareModeChanged")
+      createOneSlider("lenseFlareHaloPower", ::get_lenseFlareHaloPower() * scale, "onLenseFlareHaloPowerChanged",
+        { min = 0, max = scale }, true)
+      createOneSlider("lenseFlareGhostsPower", ::get_lenseFlareGhostsPower() * scale, "onLenseFlareGhostsPowerChanged",
+        { min = 0, max = scale }, true)
     }
-    createOneSpinner("tonemappingMode", ::tonemappingMode_list, ::get_tonemappingMode(), "onTonemappingModeChanged");
-    createOneSlider("L_inv_white", ::get_L_inv_white() * scale, "onLInvWhiteChanged", {min = 0, max = scale, step = 1}, true);
-    createOneSlider("U_A", ::get_U_A() * scale, "onUAChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("U_B", ::get_U_B() * scale, "onUBChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("U_C", ::get_U_C() * scale, "onUCChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("U_D", ::get_U_D() * scale, "onUDChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("U_E", ::get_U_E() * scale, "onUEChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("U_F", ::get_U_F() * scale, "onUFChanged", {min = 0.01 * scale, max = 5 * scale, step = 1}, true);
-    createOneSlider("UWhite", ::get_UWhite() * scale, "onUWhiteChanged", {min = 0.01 * scale, max = 4 * scale, step = 1}, true);
+    createOneSpinner("tonemappingMode", ::tonemappingMode_list, ::get_tonemappingMode(), "onTonemappingModeChanged")
+    createOneSlider("L_inv_white", ::get_L_inv_white() * scale, "onLInvWhiteChanged", { min = 0, max = scale }, true)
+    createOneSlider("U_A", ::get_U_A() * scale, "onUAChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("U_B", ::get_U_B() * scale, "onUBChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("U_C", ::get_U_C() * scale, "onUCChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("U_D", ::get_U_D() * scale, "onUDChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("U_E", ::get_U_E() * scale, "onUEChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("U_F", ::get_U_F() * scale, "onUFChanged", { min = 0.01 * scale, max = 5 * scale }, true)
+    createOneSlider("UWhite", ::get_UWhite() * scale, "onUWhiteChanged", { min = 0.01 * scale, max = 4 * scale }, true)
 
     updateVisibility();
   }
@@ -153,7 +162,7 @@ class ::gui_handlers.PostFxSettings extends ::gui_handlers.BaseGuiHandlerWT
       ::set_lenseFlareMode(::get_lenseFlareMode());
 
     createObjects();
-
+    ::move_mouse_on_child(scene.findObject("postfx_table"), 0)
     ::enable_menu_gradient(false);
   }
 

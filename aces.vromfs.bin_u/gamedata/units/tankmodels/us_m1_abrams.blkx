@@ -193,45 +193,45 @@
         "armorClass": "leopard_2a5_turret_nera",
         "composite_armor_hull_01_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.42
+          "cumulativeArmorQuality": 1.08,
+          "genericArmorQuality": 0.41
         },
         "composite_armor_turret_01_dm": {
           "armorThickness": 305.0,
-          "cumulativeArmorQuality": 1.0,
+          "cumulativeArmorQuality": 0.82,
           "genericArmorQuality": 0.42
         },
         "composite_armor_turret_02_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.42
+          "cumulativeArmorQuality": 1.3,
+          "genericArmorQuality": 0.58
         },
         "composite_armor_turret_03_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.42
+          "cumulativeArmorQuality": 1.33,
+          "genericArmorQuality": 0.61
         },
         "composite_armor_turret_04_dm": {
           "armorThickness": 300.0,
           "armorEffectiveThicknessMax": 600.0,
-          "cumulativeArmorQuality": 0.75,
-          "genericArmorQuality": 0.15
+          "cumulativeArmorQuality": 1.75,
+          "genericArmorQuality": 0.55
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 300.0,
           "armorEffectiveThicknessMax": 600.0,
-          "cumulativeArmorQuality": 0.75,
-          "genericArmorQuality": 0.15
+          "cumulativeArmorQuality": 2.0,
+          "genericArmorQuality": 0.45
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 350.0,
-          "cumulativeArmorQuality": 0.75,
-          "genericArmorQuality": 0.08
+          "cumulativeArmorQuality": 1.0,
+          "genericArmorQuality": 0.11
         },
         "composite_armor_turret_07_dm": {
           "armorThickness": 350.0,
-          "cumulativeArmorQuality": 0.75,
-          "genericArmorQuality": 0.08
+          "cumulativeArmorQuality": 1.0,
+          "genericArmorQuality": 0.11
         }
       },
       "rha_plates": {
@@ -329,7 +329,8 @@
         },
         "turret_02_front_dm": {
           "armorThickness": 31.75,
-          "createSecondaryShatters": false
+          "createSecondaryShatters": false,
+          "cumulativeArmorQuality": 0.1
         },
         "turret_03_bottom_dm": {
           "armorThickness": 31.75
@@ -464,6 +465,8 @@
         },
         "turret_front_dm": {
           "armorThickness": 38.1,
+          "cumulativeArmorQuality": 0.1,
+          "genericArmorQuality": 0.1,
           "createSecondaryShatters": false
         },
         "turret_commander_dm": {
@@ -977,6 +980,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -3137,6 +3141,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

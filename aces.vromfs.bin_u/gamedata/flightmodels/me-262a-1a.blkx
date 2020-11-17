@@ -1256,8 +1256,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1265,8 +1265,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1274,8 +1274,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1283,8 +1283,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2311,14 +2311,130 @@
       "preset": {
         "name": "me-262a-1a_r4m_rocket24",
         "blk": "gameData/FlightModels/weaponPresets/me-262a-1a_r4m_rocket24.blk",
-        "reqModification": "me262_r1"
+        "reqModification": "me262_r1",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/de_r4m_orkan_rocket.blk"
+            },
+            {
+              "amountPerTier": 4.0
+            },
+            {
+              "iconType": "rockets_he_small_group"
+            },
+            {
+              "tier": {
+                "idx": 3
+              }
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            },
+            {
+              "tier": {
+                "idx": 9
+              }
+            }
+          ]
+        }
       }
     },
     {
       "preset": {
         "name": "me-262a-1a_r4m_rocket48",
         "blk": "gameData/FlightModels/weaponPresets/me-262a-1a_r4m_rocket48.blk",
-        "reqModification": "me262_r1_2"
+        "reqModification": "me262_r1_2",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/de_r4m_orkan_rocket.blk"
+            },
+            {
+              "amountPerTier": 4.0
+            },
+            {
+              "iconType": "rockets_he_small_group"
+            },
+            {
+              "tier": {
+                "idx": 0
+              }
+            },
+            {
+              "tier": {
+                "idx": 1
+              }
+            },
+            {
+              "tier": {
+                "idx": 2
+              }
+            },
+            {
+              "tier": {
+                "idx": 3
+              }
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            },
+            {
+              "tier": {
+                "idx": 9
+              }
+            },
+            {
+              "tier": {
+                "idx": 10
+              }
+            },
+            {
+              "tier": {
+                "idx": 11
+              }
+            },
+            {
+              "tier": {
+                "idx": 12
+              }
+            }
+          ]
+        }
       }
     }
   ],
@@ -2334,7 +2450,7 @@
     {
       "dp": [
         {
-          "dm": "wing_l_dm"
+          "dm": "spar_l_dm"
         },
         {
           "separateDm": true
@@ -2433,6 +2549,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2494,6 +2613,9 @@
         },
         {
           "dp": "gear_3c_dm"
+        },
+        {
+          "dm1": "wing_l_dm"
         },
         {
           "axis1": [0.0,0.0,1.0]
@@ -2542,7 +2664,7 @@
     {
       "dp": [
         {
-          "dm": "wing1_l_dm"
+          "dm": "spar1_l_dm"
         },
         {
           "separateDm": true
@@ -2644,6 +2766,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2705,6 +2830,9 @@
         },
         {
           "dp": "gear_3c_dm"
+        },
+        {
+          "dm1": "wing1_l_dm"
         },
         {
           "axis1": [0.0,0.0,1.0]
@@ -2741,7 +2869,7 @@
     {
       "dp": [
         {
-          "dm": "wing2_l_dm"
+          "dm": "spar2_l_dm"
         },
         {
           "separateDm": true
@@ -2843,6 +2971,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2906,6 +3037,9 @@
           "dp": "gear_3c_dm"
         },
         {
+          "dm1": "wing2_l_dm"
+        },
+        {
           "axis1": [0.0,0.0,1.0]
         },
         {
@@ -2940,7 +3074,7 @@
     {
       "dp": [
         {
-          "dm": "wing_r_dm"
+          "dm": "spar_r_dm"
         },
         {
           "separateDm": true
@@ -3039,6 +3173,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3100,6 +3237,9 @@
         },
         {
           "dp": "gear_3c_dm"
+        },
+        {
+          "dm1": "wing_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]
@@ -3148,7 +3288,7 @@
     {
       "dp": [
         {
-          "dm": "wing1_r_dm"
+          "dm": "spar1_r_dm"
         },
         {
           "separateDm": true
@@ -3250,6 +3390,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3311,6 +3454,9 @@
         },
         {
           "dp": "gear_3c_dm"
+        },
+        {
+          "dm1": "wing1_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]
@@ -3347,7 +3493,7 @@
     {
       "dp": [
         {
-          "dm": "wing2_r_dm"
+          "dm": "spar2_r_dm"
         },
         {
           "separateDm": true
@@ -3449,6 +3595,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3510,6 +3659,9 @@
         },
         {
           "dp": "gear_3c_dm"
+        },
+        {
+          "dm1": "wing2_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]
@@ -3643,6 +3795,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -3836,6 +3991,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -4034,6 +4192,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -4228,6 +4389,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -4426,6 +4590,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -4622,6 +4789,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -4719,7 +4889,7 @@
     {
       "dp": [
         {
-          "dm": "wing_l_dm"
+          "dm": "spar_l_dm"
         },
         {
           "separateDm": true
@@ -4741,6 +4911,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing_l_dm"
         },
         {
           "axis1": [0.0,0.0,1.0]
@@ -4804,7 +4977,7 @@
     {
       "dp": [
         {
-          "dm": "wing1_l_dm"
+          "dm": "spar1_l_dm"
         },
         {
           "separateDm": true
@@ -4826,6 +4999,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing1_l_dm"
         },
         {
           "axis1": [0.0,0.0,1.0]
@@ -4877,7 +5053,7 @@
     {
       "dp": [
         {
-          "dm": "wing2_l_dm"
+          "dm": "spar2_l_dm"
         },
         {
           "separateDm": true
@@ -4899,6 +5075,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing2_l_dm"
         },
         {
           "axis1": [0.0,0.0,1.0]
@@ -4950,7 +5129,7 @@
     {
       "dp": [
         {
-          "dm": "wing_r_dm"
+          "dm": "spar_r_dm"
         },
         {
           "separateDm": true
@@ -4972,6 +5151,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]
@@ -5035,7 +5217,7 @@
     {
       "dp": [
         {
-          "dm": "wing1_r_dm"
+          "dm": "spar1_r_dm"
         },
         {
           "separateDm": true
@@ -5057,6 +5239,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing1_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]
@@ -5108,7 +5293,7 @@
     {
       "dp": [
         {
-          "dm": "wing2_r_dm"
+          "dm": "spar2_r_dm"
         },
         {
           "separateDm": true
@@ -5130,6 +5315,9 @@
         },
         {
           "dp": "engine%d_dm"
+        },
+        {
+          "dm1": "wing2_r_dm"
         },
         {
           "axis1": [0.0,0.0,-1.0]

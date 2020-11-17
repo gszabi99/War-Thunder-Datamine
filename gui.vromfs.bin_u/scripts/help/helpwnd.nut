@@ -1,11 +1,12 @@
-local u = require("sqStdLibs/helpers/u.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { search, isEmpty, isTMatrix } = require("sqStdLibs/helpers/u.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local helpTabs = require("scripts/controls/help/controlsHelpTabs.nut")
 local helpMarkup = require("scripts/controls/help/controlsHelpMarkup.nut")
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
-::require("scripts/viewUtils/bhvHelpFrame.nut")
+require("scripts/viewUtils/bhvHelpFrame.nut")
 
 ::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet)
 {
@@ -59,14 +60,16 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
-    ::g_hud_event_manager.onHudEvent("helpOpened")
-
     preset = preset || ::g_controls_manager.getCurPreset()
-
     visibleTabs = helpTabs.getTabs(contentSet)
-
     fillTabs()
-    initFocusArray()
+
+    local subTabsObj = scene.findObject("sub_tabs_list")
+    ::move_mouse_on_child_by_value(subTabsObj?.isVisible()
+      ? subTabsObj
+      : scene.findObject("tabs_list"))
+
+    ::g_hud_event_manager.onHudEvent("helpOpened")
   }
 
   function fillTabs()
@@ -124,8 +127,6 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
       local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
       guiScene.replaceContentFromText(subTabsObj, data, data.len(), this)
-
-      restoreFocus()
     }
 
     fillSubTabContent()
@@ -168,7 +169,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local sheetObj = scene.findObject("help_sheet")
     local pageBlkName = ::getTblValue("pageBlkName", tab, "")
-    if (!::u.isEmpty(pageBlkName))
+    if (!isEmpty(pageBlkName))
       guiScene.replaceContent(sheetObj, pageBlkName, this)
 
     local fillFuncName = ::getTblValue("pageFillfuncName", tab)
@@ -232,7 +233,7 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local basePresets = preset.getBasePresetNames()
     local haveIconsForControls = ::is_xinput_device() ||
-      (u.search(basePresets, @(val) val == "keyboard"|| val == "keyboard_shooter") != null)
+      (search(basePresets, @(val) val == "keyboard"|| val == "keyboard_shooter") != null)
     showDefaultControls(haveIconsForControls)
     if ("moveControlsFrames" in tab)
       tab.moveControlsFrames(haveIconsForControls, scene)
@@ -689,14 +690,14 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       local altitudeTop = 0
 
       local misInfoBlk = ::get_mission_meta_info(::get_current_mission_name())
-      local misBlk = misInfoBlk?.mis_file ? ::DataBlock(misInfoBlk.mis_file) : null
+      local misBlk = misInfoBlk?.mis_file ? blkFromPath(misInfoBlk.mis_file) : null
       local areasBlk = misBlk?.areas
       if (areasBlk)
       {
         for (local i = 0; i < areasBlk.blockCount(); i++)
         {
           local block = areasBlk.getBlock(i)
-          if (block && block.type == "Cylinder" && ::u.isTMatrix(block.tm))
+          if (block && block.type == "Cylinder" && isTMatrix(block.tm))
           {
             altitudeBottom = ::ceil(block.tm[3].y)
             altitudeTop = ::ceil(block.tm[1].y + block.tm[3].y)
@@ -771,10 +772,5 @@ class ::gui_handlers.helpWndModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       viewItem.icon <- actionBarType.getIcon(null, ::getAircraftByName(actionBar?.unitId ?? ""))
 
     return viewItem
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("sub_tabs_list")
   }
 }

@@ -32,6 +32,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
   prevShadeRangePos = [-1, -1]
 
   pointingDevice = null
+  isGamepadMouse = false
   canUseShortcuts = true
   shouldMapClickDoApply = true
   mapCoords = null
@@ -64,7 +65,10 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     watchAxis = ::joystickInterface.getAxisWatch(false, true)
-    pointingDevice = ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN : ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.MOUSE
+    isGamepadMouse = ::g_gamepad_cursor_controls.getValue()
+    pointingDevice = ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN
+      : ::is_xinput_device() && !isGamepadMouse ? POINTING_DEVICE.GAMEPAD
+      : POINTING_DEVICE.MOUSE
 
     canUseShortcuts = !::use_touchscreen || ::is_xinput_device()
     shouldMapClickDoApply = !::use_touchscreen && !::is_xinput_device()
@@ -85,12 +89,11 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     mapCoords = isStick ? [0.5, 0.5] : null
     stuckAxis = ::joystickInterface.getAxisStuck(watchAxis)
 
-    if (::is_xinput_device())
-      ::g_gamepad_cursor_controls.pause(true)
-
     scene.findObject("update_timer").setUserData(this)
     update(null, 0.0)
     updateShotcutImages()
+
+    ::move_mouse_on_obj(scene.findObject("tactical_map"))
   }
 
   function update(obj = null, dt = 0.0)
@@ -106,7 +109,12 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
     local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData)
 
-    if (joystickData.x || joystickData.y)
+    if (mousePos[0] != prevMousePos[0] || mousePos[1] != prevMousePos[1])
+    {
+      curPointingice = ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
+      mapCoords = getMouseCursorMapCoords()
+    }
+    else if (!isGamepadMouse && (joystickData.x || joystickData.y))
     {
       curPointingice = ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : POINTING_DEVICE.JOYSTICK
       local displasement = ::joystickInterface.getPositionDelta(dt, 3, joystickData)
@@ -115,11 +123,6 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
         ::clamp(prevMapCoords[0] + displasement[0], 0.0, 1.0),
         ::clamp(prevMapCoords[1] + displasement[1], 0.0, 1.0)
       ]
-    }
-    else if (mousePos[0] != prevMousePos[0] || mousePos[1] != prevMousePos[1])
-    {
-      curPointingice = ::is_xinput_device() ? POINTING_DEVICE.GAMEPAD : ::use_touchscreen ? POINTING_DEVICE.TOUCHSCREEN : POINTING_DEVICE.MOUSE
-      mapCoords = getMouseCursorMapCoords()
     }
 
     prevMousePos = mousePos
@@ -247,7 +250,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     ]
 
     local reqDevice = ::STD_MOUSE_DEVICE_ID
-    if (pointingDevice == POINTING_DEVICE.GAMEPAD || pointingDevice == POINTING_DEVICE.JOYSTICK)
+    if (::show_console_buttons || pointingDevice == POINTING_DEVICE.GAMEPAD || pointingDevice == POINTING_DEVICE.JOYSTICK)
       reqDevice = ::JOYSTICK_DEVICE_0_ID
     else if (pointingDevice == POINTING_DEVICE.TOUCHSCREEN)
       reqDevice = ::STD_KEYBOARD_DEVICE_ID
@@ -361,7 +364,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function getMouseCursorMapCoords()
   {
-    local res = ::is_xinput_device() ? mapCoords : null
+    local res = ::is_xinput_device() && !isGamepadMouse ? mapCoords : null
 
     local cursorPos = ::get_dagui_mouse_cursor_pos()
     if (cursorPos[0] >= mapPos[0] && cursorPos[0] <= mapPos[0] + mapSize[0] && cursorPos[1] >= mapPos[1] && cursorPos[1] <= mapPos[1] + mapSize[1])
@@ -380,6 +383,12 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     // dispersion radius, and then [Apply] button to call artillery.
     if (shouldMapClickDoApply)
       onApply()
+  }
+
+  function onOutsideMapClick()
+  {
+    if (shouldMapClickDoApply)
+      goBack()
   }
 
   function onApplyByShortcut()
@@ -410,8 +419,6 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
   function doQuit()
   {
     ::on_artillery_close()
-    if (::is_xinput_device())
-      ::g_gamepad_cursor_controls.pause(false)
     base.goBack()
   }
 

@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::condition_text_functions <- {
   leaderboardCondition = function (rewardBlk, progress = null)
   {
@@ -213,7 +214,7 @@ EventRewards.initConfigs <- function initConfigs()
 
 EventRewards.getRewardsBlk <- function getRewardsBlk(event)
 {
-  return ::get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event) + "/awards")
+  return get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event) + "/awards")
 }
 
 EventRewards.getTournamentInfoBlk <- function getTournamentInfoBlk(event)
@@ -265,7 +266,7 @@ EventRewards.getRewardCondition <- function getRewardCondition(reward_blk)
 
 EventRewards.getBaseVictoryReward <- function getBaseVictoryReward(event)
 {
-  local rewardsBlk = ::get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event))
+  local rewardsBlk = get_blk_value_by_path(::get_tournaments_blk(), ::events.getEventEconomicName(event))
   if (!rewardsBlk)
     return null
 

@@ -13,6 +13,7 @@
   "toGround": false,
   "useOldExplosion": false,
   "expClass": "exp_zero",
+  "fireFx": "fire_ground_black_fx",
   "DamageEffects": {
     "part": {
       "name": "body_dm",
@@ -27,14 +28,13 @@
   "explosion": {
     "expl": {
       "partNo": 0,
-      "timeToExplode": 0.0,
-      "preEffectName": "ship_model_fire",
-      "postEffectName": "ship_model_fire",
-      "explosionEffectName": "ship_model_expl",
-      "timeForPostEffect": 100500.0,
-      "preScale": 2.0,
-      "explScale": 2.3,
-      "postScale": 4.0
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
     }
   },
   "DamageParts": {

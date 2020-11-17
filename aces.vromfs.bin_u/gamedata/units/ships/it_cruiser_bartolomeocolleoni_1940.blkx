@@ -114,6 +114,12 @@
     "depthTraceCriticalDepth": 5.3
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [69.13,7.05,-5.1]
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -123,6 +129,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -195,6 +207,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -1356,47 +1374,47 @@
         "armorThickness": 1.45,
         "oneSided": true,
         "compartment_01_dm": {
-          "hp": 4295.0
+          "hp": 3000.0
         },
         "compartment_02_dm": {
-          "hp": 4263.0
+          "hp": 3000.0
         },
         "compartment_03_dm": {
-          "hp": 8508.0
+          "hp": 3000.0
         },
         "compartment_04_dm": {
-          "hp": 6220.0
+          "hp": 3000.0
         },
         "compartment_05_dm": {
-          "hp": 6776.0
+          "hp": 3000.0
         },
         "compartment_06_dm": {
-          "hp": 4205.0
+          "hp": 3000.0
         },
         "compartment_07_dm": {
-          "hp": 5961.0
+          "hp": 3000.0
         },
         "compartment_08_dm": {
-          "hp": 4820.0
+          "hp": 3000.0
         },
         "bridge_dm": {
           "hp": 400.0
         },
         "radio_station_dm": {
-          "hp": 500.0
+          "hp": 300.0
         }
       },
       "cover": {
         "fireParamsPreset": "ship_cover_cruiser",
-        "stopChanceOnDeadPart": 0.9,
+        "stopChanceOnDeadPart": 0.6,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 25.4,
+        "armorThickness": 20.0,
         "hidableInViewer": true,
         "cover_01_dm": {
           "hp": 4500.0
         },
         "cover_02_dm": {
-          "hp": 3704.0
+          "hp": 3701.0
         },
         "cover_03_dm": {
           "hp": 4500.0
@@ -1408,10 +1426,10 @@
           "hp": 4500.0
         },
         "cover_06_dm": {
-          "hp": 3995.0
+          "hp": 3853.0
         },
         "cover_07_dm": {
-          "hp": 2234.0
+          "hp": 2231.0
         }
       },
       "superstructures": {
@@ -1522,15 +1540,15 @@
         "fireProtectionHp": 6.0,
         "engine_room_01_dm": {
           "armorThrough": 500.0,
-          "hp": 2838.0
+          "hp": 3000.0
         },
         "engine_room_02_dm": {
           "armorThrough": 500.0,
-          "hp": 2677.0
+          "hp": 3000.0
         },
         "engine_room_03_dm": {
           "armorThrough": 500.0,
-          "hp": 2500.0
+          "hp": 3000.0
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.2,
@@ -1987,6 +2005,18 @@
         },
         "torpedo_04_dm": {
           "hp": 250.0
+        },
+        "torpedo_05_dm": {
+          "hp": 251.0
+        },
+        "torpedo_06_dm": {
+          "hp": 251.0
+        },
+        "torpedo_07_dm": {
+          "hp": 251.0
+        },
+        "torpedo_08_dm": {
+          "hp": 251.0
         }
       },
       "elevators": {
@@ -2052,97 +2082,172 @@
       "sailor1": {
         "dmPart": "bridge_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 10
       },
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 39
+        "crew": 25
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 39
+        "crew": 25
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 78
+        "crew": 26
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 57
+        "crew": 25
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 62
+        "crew": 25
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 38
+        "crew": 25
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 54
+        "crew": 25
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 44
+        "crew": 25
       },
       "sailor10": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 14
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 14
       },
       "sailor12": {
         "dmPart": "main_caliber_turret_03_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 14
       },
       "sailor13": {
         "dmPart": "main_caliber_turret_04_dm",
         "role": "sailor",
-        "crew": 15
+        "crew": 14
       },
       "sailor14": {
         "dmPart": "auxiliary_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 10
       },
       "sailor15": {
         "dmPart": "auxiliary_caliber_turret_02_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 10
       },
       "sailor16": {
         "dmPart": "auxiliary_caliber_turret_03_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 10
       },
       "sailor17": {
         "dmPart": "tt_01_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 8
       },
       "sailor18": {
         "dmPart": "tt_02_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 8
       },
       "sailor19": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
+        "crew": 5
+      },
+      "sailor20": {
+        "dmPart": "ammunition_storage_aux_01_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor21": {
+        "dmPart": "ammunition_storage_aux_02_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor22": {
+        "dmPart": "ammunition_storage_charges_01_dm",
+        "role": "sailor",
         "crew": 10
+      },
+      "sailor23": {
+        "dmPart": "ammunition_storage_charges_02_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      "sailor24": {
+        "dmPart": "ammunition_storage_charges_03_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      "sailor25": {
+        "dmPart": "ammunition_storage_charges_04_dm",
+        "role": "sailor",
+        "crew": 10
+      },
+      "sailor26": {
+        "dmPart": "elevator_01_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor27": {
+        "dmPart": "elevator_02_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor28": {
+        "dmPart": "elevator_03_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor29": {
+        "dmPart": "elevator_04_dm",
+        "role": "sailor",
+        "crew": 8
+      },
+      "sailor30": {
+        "dmPart": "engine_room_01_dm",
+        "role": "sailor",
+        "crew": 25
+      },
+      "sailor31": {
+        "dmPart": "engine_room_02_dm",
+        "role": "sailor",
+        "crew": 25
+      },
+      "sailor32": {
+        "dmPart": "engine_room_03_dm",
+        "role": "sailor",
+        "crew": 25
+      },
+      "sailor33": {
+        "dmPart": "transmission_01_dm",
+        "role": "sailor",
+        "crew": 20
+      },
+      "sailor34": {
+        "dmPart": "transmission_02_dm",
+        "role": "sailor",
+        "crew": 20
       }
     }
   },
@@ -2783,6 +2888,12 @@
             "name": "cover_09_dm"
           },
           {
+            "name": "cover_10_dm"
+          },
+          {
+            "name": "cover_11_dm"
+          },
+          {
             "onHit": {
               "damageType": "explosion",
               "fire": 0.03,
@@ -2879,8 +2990,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -6033,6 +6144,12 @@
           "weaponTrigger": "gunner13"
         },
         {
+          "replenishmentDelay": 5.0
+        },
+        {
+          "replenishmentTime": 10.0
+        },
+        {
           "removeLoadedAmmo": false
         },
         {
@@ -6058,6 +6175,7 @@
         },
         {
           "shells": {
+            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_01_dm": {
               "count": 1
@@ -6066,8 +6184,25 @@
         },
         {
           "shells": {
+            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_02_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "damageEffect": "ammunition_torpedoes",
+            "torpedo_05_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "damageEffect": "ammunition_torpedoes",
+            "torpedo_06_dm": {
               "count": 1
             }
           }
@@ -6078,6 +6213,12 @@
           "weaponTrigger": "gunner14"
         },
         {
+          "replenishmentDelay": 5.0
+        },
+        {
+          "replenishmentTime": 10.0
+        },
+        {
           "removeLoadedAmmo": false
         },
         {
@@ -6103,6 +6244,7 @@
         },
         {
           "shells": {
+            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_03_dm": {
               "count": 1
@@ -6111,8 +6253,25 @@
         },
         {
           "shells": {
+            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_04_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "damageEffect": "ammunition_torpedoes",
+            "torpedo_07_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "damageEffect": "ammunition_torpedoes",
+            "torpedo_08_dm": {
               "count": 1
             }
           }

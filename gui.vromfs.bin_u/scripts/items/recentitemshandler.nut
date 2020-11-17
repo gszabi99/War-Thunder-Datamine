@@ -1,3 +1,5 @@
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+
 class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
@@ -30,6 +32,7 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
         ticketBuyWindow = false
         hasButton = false
         onClick = !!mainActionData ? "onItemAction" : null
+        interactive = true
         contentIcon = false
         hasTimer = false
         addItemName = false
@@ -51,10 +54,13 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
     numOtherItems = ::g_recent_items.getNumOtherItems()
 
     local promoView = ::getTblValue(scene.id, ::g_promo.getConfig(), {})
+    local otherItemsText = createOtherItemsText(numOtherItems)
     local view = {
       id = ::g_promo.getActionParamsKey(scene.id)
       items = ::handyman.renderCached("gui/items/item", createItemsView(recentItems))
-      otherItemsText = createOtherItemsText(numOtherItems)
+      otherItemsText = otherItemsText
+      needAutoScroll = getStringWidthPx(otherItemsText, "fontNormal", guiScene)
+        > ::to_pixels("1@arrowButtonWidth") ? "yes" : "no"
       action = ::g_promo.PERFORM_ACTON_NAME
       collapsedAction = ::g_promo.PERFORM_ACTON_NAME
       collapsedText = ::g_promo.getCollapsedText(promoView, scene.id)

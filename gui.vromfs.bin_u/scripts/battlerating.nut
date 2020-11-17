@@ -1,14 +1,18 @@
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+
 const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
-local recentBR = 0
-local recentGameMode = null
 local isUpdating = false
-local isNeedRewrite = false
 local userData = null
-local cache = {}
 
-local calcSquadBattleRating = function(brData)
-{
+local brInfoByGamemodeId = persist("brInfoByGamemodeId", @() ::Watched({}))
+local recentBrGameModeId = persist("recentBrGameModeId", @() ::Watched(""))
+local recentBrSourceGameModeId = persist("recentBrSourceGameModeId", @() ::Watched(null))
+local recentBR = ::Computed(@() brInfoByGamemodeId.value?[recentBrSourceGameModeId.value].br ?? 0)
+
+recentBR.subscribe(@(_) ::broadcastEvent("BattleRatingChanged"))
+
+local function calcSquadBattleRating(brData) {
   if (!brData)
     return 0
 
@@ -25,8 +29,7 @@ local calcSquadBattleRating = function(brData)
   return maxBR < 0 ? 0 : ::calc_battle_rating_from_rank(maxBR)
 }
 
-local calcBattleRating = function (brData)
-{
+local function calcBattleRating(brData) {
   if (::g_squad_manager.isInSquad())
     return calcSquadBattleRating(brData)
 
@@ -36,8 +39,7 @@ local calcBattleRating = function (brData)
   return myData?[0] == null ? 0 : ::calc_battle_rating_from_rank(myData[0].mrank)
 }
 
-local getCrafts = function (data, country = null)
-{
+local function getCrafts(data, country = null) {
   local crafts = []
   local craftData = data?.crewAirs?[country ?? data?.country ?? ""]
   if (craftData == null)
@@ -61,38 +63,29 @@ local getCrafts = function (data, country = null)
   return crafts
 }
 
-local isBRKnown = function(recentUserData)
-{
+local function isBRKnown(recentUserData) {
   local id = recentUserData?.gameModeId
-  if(id in cache && ::u.isEqual(recentUserData.players, cache[id].players))
-    return true
-
-  return false
+  return id in brInfoByGamemodeId.value
+    && ::u.isEqual(recentUserData.players, brInfoByGamemodeId.value[id].players)
 }
 
-local setBattleRating = function(recentUserData, brData)
-{
-  if (brData)
-  {
+local function setBattleRating(recentUserData, brData) {
+  if (recentUserData == null)
+    return
+
+  local { gameModeId, players } = recentUserData
+  if (brData) {
     local br = calcBattleRating(brData)
-    recentBR = isNeedRewrite ? br : recentBR
-    cache[recentUserData.gameModeId] <- {br = br, players = recentUserData.players}
+    brInfoByGamemodeId[gameModeId] <- { br, players }
   }
-  else
-    recentBR = cache[recentUserData.gameModeId].br
-
-  if (isNeedRewrite)
-    ::broadcastEvent("BattleRatingChanged")
+  else if (gameModeId in brInfoByGamemodeId.value)
+    brInfoByGamemodeId(@(v) delete v[gameModeId])
 }
 
-local resetBattleRating = function()
+local function getBestCountryData(event)
 {
-  recentBR = 0
-  ::broadcastEvent("BattleRatingChanged")
-}
-
-local getBestCountryData = function(event)
-{
+  if (!event)
+    return null
   local teams = ::events.getAvailableTeams(event)
   local membersTeams = ::events.getMembersTeamsData(event, null, teams)
   if (!membersTeams)
@@ -101,9 +94,8 @@ local getBestCountryData = function(event)
   return ::events.getMembersInfo(teams, membersTeams.teamsData).data
 }
 
-local getUserData = function()
-{
-  local gameModeId = recentGameMode?.source?.gameModeId
+local function getUserData() {
+  local gameModeId = recentBrSourceGameModeId.value
   if (gameModeId == null)
     return null
 
@@ -111,7 +103,7 @@ local getUserData = function()
 
   if (::g_squad_manager.isSquadLeader())
   {
-    local countryData = getBestCountryData(::events.getEvent(recentGameMode?.id))
+    local countryData = getBestCountryData(::events.getEvent(recentBrGameModeId.value))
     foreach(member in ::g_squad_manager.getMembers())
     {
       if (!member.online || member.country == "")
@@ -148,10 +140,8 @@ local getUserData = function()
   }
 }
 
-local requestBattleRating = function (cb, recentUserData, onError=null)
-{
+local function requestBattleRating(cb, recentUserData, onError=null) {
   isUpdating = true
-  isNeedRewrite = false
   lastRequestTimeMsec  = ::dagor.getCurTime()
 
   ::request_matching("match.calc_ranks", cb, onError, recentUserData, {
@@ -160,25 +150,22 @@ local requestBattleRating = function (cb, recentUserData, onError=null)
 }
 
 local updateBattleRating
-updateBattleRating = function (gameMode = null, brData = null)
+updateBattleRating = function(gameMode = null, brData = null) //!!FIX ME: why outside update request and internal callback the same function?
+  //it make harder to read it, and can have a lot of errors.
 {
-  recentGameMode = gameMode ?? ::game_mode_manager.getCurrentGameMode()
+  gameMode = gameMode ?? ::game_mode_manager.getCurrentGameMode()
+  recentBrGameModeId(gameMode?.id ?? "")
+  recentBrSourceGameModeId(gameMode?.source.gameModeId)
   local recentUserData = getUserData()
-  if(!recentGameMode || !recentUserData)
-  {
-    isNeedRewrite = true
-    resetBattleRating()
+  if (recentBrSourceGameModeId.value == null || !recentUserData) {
+    brInfoByGamemodeId(@(v) v.clear())
     return
   }
 
   if (isUpdating && !(::dagor.getCurTime() - lastRequestTimeMsec >= MATCHING_REQUEST_LIFETIME))
   {
     if(isBRKnown(recentUserData))
-    {
-      isNeedRewrite = true
       setBattleRating(recentUserData, null)
-    }
-
     return
   }
 
@@ -188,28 +175,48 @@ updateBattleRating = function (gameMode = null, brData = null)
     return
   }
 
-  if (isBRKnown(recentUserData))
-  {
-    setBattleRating(recentUserData, null)
+  if (isBRKnown(recentUserData)) //!!FIX ME: this cache does not work, it always request again when switch between 2 units by single mouse click
     return
-  }
 
-  local callback = function (resp){
-    // isNeedRewrite becomes to false when request sent and will be true again as response have been received
-    // except the cases when BR can be found without request.
-    // If it's false that mean current BR does not changed but new data should be added to cache
-    isNeedRewrite = !isNeedRewrite
-    isUpdating = false
-    updateBattleRating(recentGameMode, resp)
+  local callback = function(resp) {
+    isUpdating = false //FIX ME: it a bad idea to change this flag in very different places. Also it not switch off on error
+    updateBattleRating(gameMode, resp)
   }
 
   userData = clone recentUserData
   requestBattleRating(callback, userData)
 }
 
+local isRequestDelayed = false
+local function updateBattleRatingDelayed() {
+  if (isRequestDelayed || ::is_in_flight()) //do not recalc while in the battle
+    return
+  isRequestDelayed = true
+  ::handlersManager.doDelayed(function() {
+    isRequestDelayed = false
+    updateBattleRating()
+  })
+}
+
+local function updateLeaderRatingDelayed(p) {
+  if (::g_squad_manager.isSquadLeader())
+    updateBattleRatingDelayed()
+}
+
+addListenersWithoutEnv({
+  ProfileUpdated             = @(p) updateBattleRatingDelayed()
+  CrewChanged                = @(p) updateBattleRatingDelayed()
+  CurrentGameModeIdChanged   = @(p) updateBattleRatingDelayed()
+  EventsDataUpdated          = @(p) updateBattleRatingDelayed()
+  LoadingStateChange         = @(p) updateBattleRatingDelayed()
+
+  SquadStatusChanged         = updateLeaderRatingDelayed
+  SquadOnlineChanged         = updateLeaderRatingDelayed
+  SquadMemberVehiclesChanged = updateLeaderRatingDelayed
+})
+
 return {
-  updateBattleRating = updateBattleRating
-  getCrafts = getCrafts
-  getRecentGameModeId = function (){return recentGameMode?.id ?? ""}
-  getBR = function (){return recentBR}
+  getCrafts
+  recentBrGameModeId
+  recentBR
 }

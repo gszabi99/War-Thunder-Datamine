@@ -17,8 +17,9 @@ class ::gui_handlers.commentModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("comment_wnd_title").setValue(titleText)
     if (buttonText && buttonText.len())
       scene.findObject("ok_btn").setValue(buttonText)
-    scene.findObject("comment_editbox").select()
     onChangeComment()
+
+    ::select_editbox(scene.findObject("comment_editbox"))
   }
 
   function onChangeComment()

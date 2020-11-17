@@ -1,16 +1,15 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
-    "flow": "vertical",
     "type": "big",
+    "flow": "vertical",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
       "width": "1@srw",
-      "height": "0.70@sf",
+      "height": "1@maxWindowHeight",
       "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)",
       "position": "absolute",
-      "padding": "0.05@sf, 0",
-      "class": "leaderboard",
-      "type": "big",
+      "class": "wndNav",
       "frame_header": [
         {
           "ComboBox": {
@@ -416,27 +415,6 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
-                            "behaviour": "wrapNavigator"
-                          },
-                          {
-                            "navigatorShortcuts": "yes"
-                          },
-                          {
-                            "childsActivate": "yes"
-                          },
-                          {
-                            "on_wrap_up": "onWrapUp"
-                          },
-                          {
-                            "on_wrap_down": "onWrapDown"
-                          },
-                          {
-                            "on_wrap_left": "onTopGCPanelLeft"
-                          },
-                          {
-                            "on_wrap_right": "onTopGCPanelRight"
-                          },
-                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -527,27 +505,6 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
-                        },
-                        {
-                          "behaviour": "wrapNavigator"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "childsActivate": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_left": "onTopGCPanelLeft"
-                        },
-                        {
-                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -763,9 +720,6 @@
               "shadowSafeArea": []
             },
             {
-              "line": []
-            },
-            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -806,7 +760,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "pos": "1@dp, 0"
+                      "display": "hide"
                     }
                   }
                 },
@@ -863,14 +817,7 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header",
-                    "behaviour": "wrapNavigator",
-                    "navigatorShortcuts": "yes",
-                    "childsActivate": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_wrap_left": "onWrapLeft",
-                    "on_wrap_right": "onWrapRight"
+                    "class": "header"
                   }
                 },
                 {
@@ -886,27 +833,6 @@
                     },
                     {
                       "class": "header"
-                    },
-                    {
-                      "behaviour": "wrapNavigator"
-                    },
-                    {
-                      "navigatorShortcuts": "yes"
-                    },
-                    {
-                      "childsActivate": "yes"
-                    },
-                    {
-                      "on_wrap_up": "onWrapUp"
-                    },
-                    {
-                      "on_wrap_down": "onWrapDown"
-                    },
-                    {
-                      "on_wrap_left": "onBottomGCPanelLeft"
-                    },
-                    {
-                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

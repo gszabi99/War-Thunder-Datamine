@@ -1,4 +1,4 @@
-class ScriptReloaderStorage
+::ScriptReloaderStorage <- class
 {
   contextWeak = null
   paramsArray = null

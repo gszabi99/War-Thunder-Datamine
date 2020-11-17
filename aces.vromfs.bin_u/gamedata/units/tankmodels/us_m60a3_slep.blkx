@@ -887,6 +887,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2290,44 +2291,93 @@
         }
       },
       {
-        "Weapon": {
-          "trigger": "gunner1",
-          "triggerGroup": "machinegun",
-          "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
-          "emitter": "bone_gun_barrel_02",
-          "flash": "emtr_gun_flame_02",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "barrelDP": "gun_barrel_02_dm",
-          "speedYaw": 30.0,
-          "speedPitch": 30.0,
-          "fireConeAngle": 1.0,
-          "bullets": 900,
-          "salvoAmount": 100.0,
-          "ChainfireTime": 0.0,
-          "DelayAfterShoot": 5.0,
-          "AttackMaxDistance": 1000.0,
-          "AttackMaxRadius": 1000.0,
-          "AttackMaxHeight": 1000.0,
-          "accuracyAir": 0.0,
-          "accuracyGnd": 1.5,
-          "errMeasureVel": 0.0,
-          "errMeasureVelFast": 0.0,
-          "errMeasureVelFwdShift": 0.0,
-          "errMeasureVelDir": 0.0,
-          "errTargettingOn100kmph": 0.0,
-          "errTargetting": 3.0,
-          "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_turret_02",
-            "gun": "bone_gun_barrel_02",
-            "gunnerDm": "commander_dm"
+        "Weapon": [
+          {
+            "trigger": "gunner1"
           },
-          "limits": {
-            "yaw": [-95.0,160.0],
-            "pitch": [-4.0,60.0]
+          {
+            "triggerGroup": "machinegun"
+          },
+          {
+            "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk"
+          },
+          {
+            "emitter": "bone_gun_barrel_02"
+          },
+          {
+            "flash": "emtr_gun_flame_02"
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "barrelDP": "gun_barrel_02_dm"
+          },
+          {
+            "speedYaw": 30.0
+          },
+          {
+            "speedPitch": 30.0
+          },
+          {
+            "fireConeAngle": 1.0
+          },
+          {
+            "bullets": 900
+          },
+          {
+            "fireConeAngle": 15.0
+          },
+          {
+            "ChainfireTime": 0.5
+          },
+          {
+            "DelayAfterShoot": 2.0
+          },
+          {
+            "accuracyAir": 1.5
+          },
+          {
+            "accuracyGnd": 0.0
+          },
+          {
+            "errMeasureVel": 0.0
+          },
+          {
+            "errMeasureVelFast": 0.0
+          },
+          {
+            "errMeasureVelFwdShift": 0.0
+          },
+          {
+            "errMeasureVelDir": 0.0
+          },
+          {
+            "errTargettingOn100kmph": 0.0
+          },
+          {
+            "errTargetting": 3.0
+          },
+          {
+            "errExplTime": 0.0
+          },
+          {
+            "turret": {
+              "head": "bone_turret_02",
+              "gun": "bone_gun_barrel_02",
+              "gunnerDm": "commander_dm"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-95.0,160.0],
+              "pitch": [-4.0,60.0]
+            }
           }
-        }
+        ]
       },
       {
         "Weapon": [
@@ -3070,6 +3120,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3216,44 +3275,93 @@
               }
             },
             {
-              "Weapon": {
-                "trigger": "gunner1",
-                "triggerGroup": "machinegun",
-                "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk",
-                "emitter": "bone_gun_barrel_02",
-                "flash": "emtr_gun_flame_02",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "barrelDP": "gun_barrel_02_dm",
-                "speedYaw": 30.0,
-                "speedPitch": 30.0,
-                "fireConeAngle": 1.0,
-                "bullets": 900,
-                "salvoAmount": 100.0,
-                "ChainfireTime": 0.0,
-                "DelayAfterShoot": 5.0,
-                "AttackMaxDistance": 1000.0,
-                "AttackMaxRadius": 1000.0,
-                "AttackMaxHeight": 1000.0,
-                "accuracyAir": 0.0,
-                "accuracyGnd": 1.5,
-                "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_turret_02",
-                  "gun": "bone_gun_barrel_02",
-                  "gunnerDm": "commander_dm"
+              "Weapon": [
+                {
+                  "trigger": "gunner1"
                 },
-                "limits": {
-                  "yaw": [-95.0,160.0],
-                  "pitch": [-4.0,60.0]
+                {
+                  "triggerGroup": "machinegun"
+                },
+                {
+                  "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M85_user_machinegun.blk"
+                },
+                {
+                  "emitter": "bone_gun_barrel_02"
+                },
+                {
+                  "flash": "emtr_gun_flame_02"
+                },
+                {
+                  "defaultYaw": 0.0
+                },
+                {
+                  "defaultPitch": 0.0
+                },
+                {
+                  "barrelDP": "gun_barrel_02_dm"
+                },
+                {
+                  "speedYaw": 30.0
+                },
+                {
+                  "speedPitch": 30.0
+                },
+                {
+                  "fireConeAngle": 1.0
+                },
+                {
+                  "bullets": 900
+                },
+                {
+                  "fireConeAngle": 15.0
+                },
+                {
+                  "ChainfireTime": 0.5
+                },
+                {
+                  "DelayAfterShoot": 2.0
+                },
+                {
+                  "accuracyAir": 1.5
+                },
+                {
+                  "accuracyGnd": 0.0
+                },
+                {
+                  "errMeasureVel": 0.0
+                },
+                {
+                  "errMeasureVelFast": 0.0
+                },
+                {
+                  "errMeasureVelFwdShift": 0.0
+                },
+                {
+                  "errMeasureVelDir": 0.0
+                },
+                {
+                  "errTargettingOn100kmph": 0.0
+                },
+                {
+                  "errTargetting": 3.0
+                },
+                {
+                  "errExplTime": 0.0
+                },
+                {
+                  "turret": {
+                    "head": "bone_turret_02",
+                    "gun": "bone_gun_barrel_02",
+                    "gunnerDm": "commander_dm"
+                  }
+                },
+                {
+                  "limits": {
+                    "yaw": [-95.0,160.0],
+                    "pitch": [-4.0,60.0]
+                  }
                 }
-              }
+              ]
             },
             {
               "Weapon": [

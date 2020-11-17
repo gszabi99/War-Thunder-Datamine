@@ -22,10 +22,10 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
-  "sound": "40mm_m2",
-  "sound_inside": "40mm_m2_interior",
+  "sound": "40mm_kan",
+  "sound_inside": "40mm_kan_interior",
   "soundLoop": false,
-  "sfxReloadBullet": "grd_cannon_belt_reload",
+  "sfxReloadBullet": "grd_begleitpanzer_reload",
   "isBulletBelt": false,
   "overheat": [
     {
@@ -42,10 +42,10 @@
     "bulletCount": 25,
     "mass": 0.25,
     "caliber": 0.04,
-    "damageCaliber": 0.01,
-    "ballisticCaliber": 0.01,
+    "damageCaliber": 0.016,
+    "ballisticCaliber": 0.016,
     "speed": 1465.0,
-    "Cx": 0.365,
+    "Cx": 0.14,
     "maxDistance": 10000.0,
     "normalizationPreset": "default",
     "ricochetPreset": "apds_fs_long",
@@ -56,7 +56,6 @@
     "stabilityReductionAfterPenetration": 0.05,
     "bulletType": "apds_fs_long_tank",
     "slopeEffectPreset": "apds_fs_long",
-    "modelName": "tank_bullet_apdsfs_long",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "40mm_slpprj_m90",
     "onHitChanceMultExplFuel": 0.1,
@@ -82,6 +81,11 @@
         "mod4": [50.0,0.7]
       }
     ],
+    "tracePattern": {
+      "caliber": 10.0,
+      "circleCount": 2,
+      "pointCount": 6
+    },
     "hitpower": {
       "HitPower0m": [1.0,1000.0],
       "HitPower10000m": [0.8,10000.0]
@@ -228,7 +232,6 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "useEffectiveArmorThicknessForShatter": true,
@@ -414,7 +417,6 @@
       "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_radio_fuse",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "bulletName": "40mm_kulsgr_m90",
@@ -612,10 +614,10 @@
       "bulletCount": 25,
       "mass": 0.25,
       "caliber": 0.04,
-      "damageCaliber": 0.01,
-      "ballisticCaliber": 0.01,
+      "damageCaliber": 0.016,
+      "ballisticCaliber": 0.016,
       "speed": 1495.0,
-      "Cx": 0.365,
+      "Cx": 0.14,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -626,7 +628,6 @@
       "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
-      "modelName": "tank_bullet_apdsfs_long",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "40mm_slpprj_m01",
       "onHitChanceMultExplFuel": 0.1,
@@ -652,6 +653,11 @@
           "mod4": [50.0,0.7]
         }
       ],
+      "tracePattern": {
+        "caliber": 10.0,
+        "circleCount": 2,
+        "pointCount": 6
+      },
       "hitpower": {
         "HitPower0m": [1.0,1000.0],
         "HitPower10000m": [0.8,10000.0]

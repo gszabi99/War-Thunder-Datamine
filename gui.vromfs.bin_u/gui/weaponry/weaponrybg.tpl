@@ -31,15 +31,24 @@ modBlockHeaderRow {
 
   <<#columnsList>>
     <<#needDivLine>>
-    modBlockLine {
-      height:t='<<height>>@modCellHeight'
+    tdiv {
+      size:t='1@dp, <<height>>@modCellHeight-4@dp'
+      pos:t='0, ph+2@dp'
+      position:t='relative'
+      background-color:t='@modSeparatorColor'
     }
     <</needDivLine>>
-
     <<#name>>
     modBlockHeader {
       width:t='<<width>>@modCellWidth'
-      <<#needDivLine>>pos:t='-1, 0'<</needDivLine>>
+      <<#needDivLine>>
+      pos:t='-1@dp, 0'
+      tdiv {
+        size:t='1@dp, ph-1@dp'
+        position:t='absolute'
+        background-color:t='@modBgColor'
+      }
+      <</needDivLine>>
       <<#isSmallFont>>smallFont:t='yes'<</isSmallFont>>
       text:t='<<name>>'
     }

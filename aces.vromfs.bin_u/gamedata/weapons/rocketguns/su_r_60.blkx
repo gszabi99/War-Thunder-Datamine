@@ -45,7 +45,7 @@
       "explosiveType": "tnt"
     },
     {
-      "explosiveMass": 3.5
+      "explosiveMass": 1.15
     },
     {
       "massEnd": 34.0
@@ -84,13 +84,16 @@
       "timeFire": 3.0
     },
     {
+      "fireDelay": 0.15
+    },
+    {
       "spawnExplosionFx": false
     },
     {
       "spawnExplosionWreckage": false
     },
     {
-      "explosionEffect": "atgm_hit"
+      "explosionEffect": "explosion_midair_medium"
     },
     {
       "defFxScale": [2.2,2.5]
@@ -114,7 +117,16 @@
       "explosionPatchRadius": 5.0
     },
     {
-      "smokeEffect": "hydra_smoke_modern"
+      "fireEffect": "rocket_fire_light_huge"
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.5
     },
     {
       "maxDistance": 15000.0
@@ -169,9 +181,6 @@
     },
     {
       "explodeRadius": [1.0,3.5]
-    },
-    {
-      "explosionPatchRadius": 5.0
     },
     {
       "rendinstDamageRadius": 15.0
@@ -386,7 +395,7 @@
         "angleMax": 45.0,
         "rateMax": 35.0,
         "prolongationTimeMax": 1.0,
-        "targetDesignator": true
+        "designationSourceTypeMask": 2
       }
     },
     {

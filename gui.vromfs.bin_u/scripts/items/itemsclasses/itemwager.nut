@@ -1,4 +1,4 @@
-local chooseAmountWnd = ::require("scripts/wndLib/chooseAmountWnd.nut")
+local chooseAmountWnd = require("scripts/wndLib/chooseAmountWnd.nut")
 
 class ::items_classes.Wager extends ::BaseItem
 {

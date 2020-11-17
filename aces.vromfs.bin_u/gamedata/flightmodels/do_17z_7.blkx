@@ -121,7 +121,7 @@
           "hp": 40.0
         }
       },
-      "armor_engine": {
+      "armor_engine_light": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
           "hp": 49.5
@@ -176,17 +176,13 @@
           "genericDamageMult": 0.3,
           "hp": 39.5
         },
-        "elevator_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 59.9
-        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 60.5
+          "hp": 39.5
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 60.5
+          "hp": 39.5
         },
         "fin1_dm": {
           "hp": 39.5
@@ -496,63 +492,6 @@
       {
         "part": [
           {
-            "name": "elevator_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 4.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
             "name": "elevator0_dm"
           },
           {
@@ -752,26 +691,12 @@
       },
       {
         "part": {
-          "name": "fin1_dm",
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          },
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
+          "name": "fin1_dm"
         }
       },
       {
         "part": {
-          "name": "fin2_dm",
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          },
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
+          "name": "fin2_dm"
         }
       },
       {
@@ -1391,8 +1316,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1400,8 +1325,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1409,8 +1334,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1418,8 +1343,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -2464,7 +2389,70 @@
       {
         "preset": {
           "name": "do_17z_7_SC50",
-          "blk": "gameData/FlightModels/weaponPresets/do_17z_7_SC50.blk"
+          "blk": "gameData/FlightModels/weaponPresets/do_17z_7_SC50.blk",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "iconType": "bombs_small"
+              },
+              {
+                "tier": {
+                  "idx": 1
+                }
+              },
+              {
+                "tier": {
+                  "idx": 2
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10
+                }
+              },
+              {
+                "tier": {
+                  "idx": 11
+                }
+              }
+            ]
+          }
         }
       },
       {

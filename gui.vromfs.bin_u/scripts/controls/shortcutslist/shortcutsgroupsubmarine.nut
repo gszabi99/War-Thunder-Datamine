@@ -6,7 +6,7 @@ return [
   {
     id = "ID_SUBMARINE_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = unitTypes.SHIP
+    unitTypes = [ unitTypes.SHIP ]
     unitTag = "submarine"
     showFunc = @() ::has_feature("SpecialShips") || ::get_player_cur_unit()?.isSubmarine()
     needShowInHelp = true
@@ -42,7 +42,6 @@ return [
   {
     id = "submarine_main_engine"
     type = CONTROL_TYPE.AXIS
-    def_relative = true
     checkGroup = ctrlGroups.SUBMARINE
     axisDirection = AxisDirection.Y
     checkAssign = false

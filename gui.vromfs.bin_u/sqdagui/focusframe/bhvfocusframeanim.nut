@@ -16,11 +16,12 @@ const SWITCH_OFF_TIME = 10000000
 
 local PROPID_TIMER_TIMENOW = ::dagui_propid.add_name_id("timer-timenow")
 ::dagui_propid.add_name_id("focusImageSource")
+::dagui_propid.add_name_id("focusAnimColor")
 
 local bhvFocusFrameAnim = class
 {
   eventMask = ::EV_TIMER
-  imageParamsList = ["image", "color", "position", "repeat", "svg-size", "rotation"]
+  imageParamsList = ["image", "position", "repeat", "svg-size", "rotation"]
 
   function onAttach(obj)
   {
@@ -57,13 +58,6 @@ local bhvFocusFrameAnim = class
 
     obj.setUserData(curData)
 
-    if (hideTgtImageTimeMsec > 0)
-    {
-      //restore target image to collect data
-      focusTarget.unhideImage(targetObj)
-      animObj.getScene().applyPendingChanges(false)
-    }
-
     //set image visual from target
     local focusImageSource = targetObj.getFinalProp("focusImageSource")
     local imagePrefixList = {
@@ -71,23 +65,19 @@ local bhvFocusFrameAnim = class
       ["foreground-"] = focusImageSource != "background"
     }
 
-    animObj["re-type"] = targetObj.getFinalProp("re-type") ?? "root"
-    foreach(prefix, isUsed in imagePrefixList)
-      foreach(key in imageParamsList)
-      {
-        local fullKey = prefix + key
+    animObj["re-type"] = targetObj.getFinalProp("re-type") ?? "9rect"
+    foreach(prefix, isUsed in imagePrefixList) {
+      animObj[$"{prefix}color"] = isUsed ? (targetObj.getFinalProp("focusAnimColor") ?? "") : ""
+      foreach(key in imageParamsList) {
+        local fullKey = $"{prefix}{key}"
         animObj[fullKey] = isUsed ? targetObj.getFinalProp(fullKey) ?? "" : ""
       }
-
-    if (hideTgtImageTimeMsec > 0)
-    {
-      focusTarget.hideImage(targetObj)
-      setDelay(obj, hideTgtImageTimeMsec)
     }
 
+    if (hideTgtImageTimeMsec > 0)
+      setDelay(obj, hideTgtImageTimeMsec)
+
     //set position and size
-    local pos = targetObj.getPosRC()
-    local size = targetObj.getSize()
     obj.position = "root"
     obj.left = curData.pos[0]
     obj.top = curData.pos[1]

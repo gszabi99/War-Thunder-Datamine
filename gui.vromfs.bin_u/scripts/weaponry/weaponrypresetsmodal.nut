@@ -18,6 +18,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   unit                 = null
   chosenPresetIdx      = null
   curPresetIdx         = null
+  curTierIdx           = -1
   presetsList          = null
   chooseMenuList       = null
   weaponryByPresetInfo = null
@@ -30,9 +31,10 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   onChangeValueCb      = null
   weaponItemParams     = null
   favoriteArr          = null
-  isTiersNestSelected  = false
   chapterPos           = 0
   wndWidth             = 0
+
+  presetIdxToChildIdx  = null
 
   function getSceneTplView()
   {
@@ -66,11 +68,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function initScreen()
   {
     selectPreset(chosenPresetIdx)
-    initFocusArray()
+    ::move_mouse_on_obj(scene.findObject($"presetHeader_{chosenPresetIdx}"))
   }
 
   function getPresetsMarkup()
   {
+    presetIdxToChildIdx = {}
     local res = []
     local curChapterOrd = 0
     foreach (idx, preset in weaponryByPresetInfo.presets)
@@ -88,131 +91,97 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
         weaponItemParams.__merge({visualDisabled = !preset.isEnabled}) : {}
       params.__update({
           collapsable = true
-          selected = idx == chosenPresetIdx
           showButtons = true
           actionBtnText = onChangeValueCb != null ? ::loc("mainmenu/btnSelect") : null
         })
+      presetIdxToChildIdx[idx] <- res.len()
       res.append({
         presetId = idx
-        weaponryItem = getWeaponItemViewParams($"item_{idx}", unit, presetsList[idx],
-          params).__update({
-              presetTextWidth = presetTextWidth
-              isTypeNone = preset.purposeType == "NONE"
-              tiers = presetsList[idx].tiers.map(@(t) {
-                tierId        = t.tierId
-                img           = t?.img ?? ""
-                tierTooltipId = t?.tierTooltipId ?? ""
-              })
+        chosen = idx == chosenPresetIdx ? "yes" : "no"
+        weaponryItem = getWeaponItemViewParams($"item_{idx}", unit, presetsList[idx], params)
+          .__update({
+            presetTextWidth = presetTextWidth
+            isTypeNone = preset.purposeType == "NONE"
+            tiers = presetsList[idx].tiers.map(@(t) {
+              tierId        = t.tierId
+              img           = t?.img ?? ""
+              tierTooltipId = !::show_console_buttons ? t?.tierTooltipId : null
+              isActive      = "img" in t
             })
+          })
       })
     }
 
     return res
   }
 
-  function onItemSelect(obj)
-  {
-    local presetObj = obj.getChild(obj.getValue())
-    if (!::check_obj(presetObj))
+  function selectPreset(presetIdx) {
+    if (curPresetIdx == presetIdx)
+    {
+      updateDesc()
       return
-    curPresetIdx = presetObj.presetId != "" ? presetObj.presetId.tointeger() : null
-    presetObj.select()
+    }
+
+    local nestObj = scene.findObject("presetNest")
+    local childIdx = presetIdxToChildIdx?[curPresetIdx]
+    if (childIdx != null)
+      nestObj.getChild(childIdx).selected = "no"
+
+    local row = scene.findObject($"tiersNest_{curPresetIdx}")
+    if (::check_obj(row))
+      row.setValue(-1)
+
+    curPresetIdx = presetIdx
+    childIdx = presetIdxToChildIdx?[presetIdx]
+    if (childIdx != null)
+      nestObj.getChild(childIdx).selected = "yes"
+
     updateDesc()
   }
 
-  function getCurrPresetObjParams()
-  {
-    local nestObj = scene.findObject("presetNest")
-    for (local i=0; i < nestObj.childrenCount(); i++)
-    {
-      local presetObj = nestObj.getChild(i)
-      if (presetObj.presetId == (curPresetIdx?.tostring() ?? ""))
-        return {idx = i, obj = presetObj}
-    }
-
-    return null
+  function selectTier(tierIdx) {
+    curTierIdx = tierIdx
+    updateTierDesc()
   }
 
-  function selectPreset(presetIdx)
-  {
-    curPresetIdx = presetIdx
-    local nestObj = scene.findObject("presetNest")
-    local params = getCurrPresetObjParams()
-    if (params == null)
-    {
-      restoreFocus()
-      return
-    }
-
-    nestObj.setValue(params.idx)
-    params.obj.select()
-  }
-
-  function onTierClick(obj)
-  {
-    local nestObj = obj.getParent()
-    if (!::check_obj(nestObj))
-      return
-
-    local presetId = nestObj.findObject("presetHeader").presetId.tointeger()
-    local tierId = obj.tierId.tointeger()
-    selectPreset(presetId)
-    if (!presetsList[presetId].tiers?[tierId].img)
-    {
-      isTiersNestSelected = false
-      updateTierDesc(null)
-      if (tierId >= TIERS_NUMBER)
-      {
-        local message = $"Appears about preset {presetsList[presetId].name} in unit {unit.name}" // warning disable: -declared-never-used
-        ::script_net_assert_once("unexist tier ID", $"Error: Tier ID > {TIERS_NUMBER}")
-      }
-
-      return
-    }
-
-    updateTierDesc(tierId)
-    nestObj.setValue(tierId + 1)
-    nestObj.select()
-    isTiersNestSelected = true
-  }
-
-  function onPresetClick(obj)
+  function onPresetSelect(obj)
   {
     selectPreset(obj.presetId.tointeger())
-    local isPreset = (obj?.id ?? "") == "preset"
-    if (!isPreset)
-      return
-
-    local selectObj = isTiersNestSelected ?
-      getCurrPresetObjParams()?.obj : obj.findObject("tiersNest")
-    if (!::check_obj(selectObj))
-      return
-
-    selectObj.select()
-    updateTierDesc(isTiersNestSelected ?
-      null : selectObj.getChild(selectObj.getValue())?.tierId.tointeger())
-    isTiersNestSelected = !isTiersNestSelected
   }
 
-  function updateTierDesc(tierId)
+  function onCellSelect(obj)
+  {
+    local presetId = obj.presetId.tointeger()
+    local value = obj.getValue()
+    if (value < 0) {
+      if (presetId == curPresetIdx) {
+        selectPreset(null)
+        selectTier(null)
+      }
+      return
+    }
+
+    selectPreset(presetId)
+    selectTier(value - 1)
+  }
+
+  function onPresetUnhover(obj) {
+    if (::show_console_buttons)
+      obj.setValue(-1)
+  }
+
+  function updateTierDesc()
   {
     local data = ""
     local descObj = scene.findObject("tierDesc")
-    if (!::check_obj(descObj))
-      return
-    if (tierId != null && curPresetIdx != null)
+    if (curTierIdx >= 0 && curPresetIdx != null)
     {
       local item = presetsList[curPresetIdx]
-      local weaponry = ::u.search(item.tiers, @(p) p.tierId == tierId)?.weaponry
+      local weaponry = item.tiers?[curTierIdx].weaponry
       data = weaponry ? ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
-        getTierDescTbl(unit, weaponry, item.name, tierId)) : ""
+        getTierDescTbl(unit, weaponry, item.name, curTierIdx)) : ""
     }
     guiScene.replaceContentFromText(descObj, data, data.len())
-  }
-
-  function onTierSelect(obj)
-  {
-    updateTierDesc(obj.getChild(obj.getValue())?.tierId.tointeger())
   }
 
   function onModItemDblClick(obj)
@@ -295,9 +264,6 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function updateDesc()
   {
     local descObj = scene.findObject("desc")
-    if (!::check_obj(descObj))
-      return
-
     if (curPresetIdx == null)
     {
       guiScene.replaceContentFromText(descObj, "", 0, this)
@@ -413,11 +379,6 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       else if (!isShow && idx == -1)
         collapsedPresets.append(itemObj.id)
     }
-  }
-
-  function getMainFocusObj()
-  {
-    return getCurrPresetObjParams()?.obj
   }
 
   function onChangeFavorite(obj)

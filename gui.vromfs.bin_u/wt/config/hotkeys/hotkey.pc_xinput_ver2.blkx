@@ -2,6 +2,17 @@
   "hotkeys": [
     {
       "event": {
+        "name": "vtol",
+        "shortcut": {
+          "button": {
+            "deviceId": 3,
+            "buttonId": 2
+          }
+        }
+      }
+    },
+    {
+      "event": {
         "name": "ID_CONTROL_MODE_HELICOPTER",
         "shortcut": [
           {
@@ -936,7 +947,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 9
+            "buttonId": 0
           }
         }
       }
@@ -2601,37 +2612,73 @@
       ]
     },
     {
-      "event": {
-        "name": "ID_FIRE_GM",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 17
+      "event": [
+        {
+          "name": "ID_FIRE_GM"
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 3,
+              "buttonId": 17
+            }
+          }
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 1,
+              "buttonId": 0
+            }
           }
         }
-      }
+      ]
     },
     {
-      "event": {
-        "name": "ID_FIRE_GM_SECONDARY_GUN",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 17
+      "event": [
+        {
+          "name": "ID_FIRE_GM_SECONDARY_GUN"
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 3,
+              "buttonId": 17
+            }
+          }
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 1,
+              "buttonId": 0
+            }
           }
         }
-      }
+      ]
     },
     {
-      "event": {
-        "name": "ID_FIRE_GM_MACHINE_GUN",
-        "shortcut": {
-          "button": {
-            "deviceId": 3,
-            "buttonId": 17
+      "event": [
+        {
+          "name": "ID_FIRE_GM_MACHINE_GUN"
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 3,
+              "buttonId": 17
+            }
+          }
+        },
+        {
+          "shortcut": {
+            "button": {
+              "deviceId": 1,
+              "buttonId": 0
+            }
           }
         }
-      }
+      ]
     },
     {
       "event": [
@@ -3676,6 +3723,15 @@
       "USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER": 10,
       "USEROPT_GUNNER_VIEW_SENSE": 80,
       "USEROPT_GUNNER_VIEW_ZOOM_SENS": 50,
+      "vtol": {
+        "axisId": 3,
+        "relative": true,
+        "inverse": true,
+        "keepDisabledValue": true
+      },
+      "climb": {
+        "relative": true
+      },
       "helicopter_camx": {
         "axisId": 2
       },

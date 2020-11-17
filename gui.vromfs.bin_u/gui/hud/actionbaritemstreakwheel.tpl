@@ -6,7 +6,7 @@ action_bar_item {
   background-color:t='#77333333';
   selected:t='<<selected>>';
   active:t='<<active>>';
-  enabled:t='<<enabled>>';
+  enable:t='<<enable>>';
   css-hier-invalidate:t='yes';
   behaviour:t='button';
   behaviour:t='touchArea';

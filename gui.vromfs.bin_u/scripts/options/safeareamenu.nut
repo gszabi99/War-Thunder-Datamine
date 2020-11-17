@@ -1,4 +1,4 @@
-local screenInfo = ::require("scripts/options/screenInfo.nut")
+local screenInfo = require("scripts/options/screenInfo.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local sony = require("sony")
 

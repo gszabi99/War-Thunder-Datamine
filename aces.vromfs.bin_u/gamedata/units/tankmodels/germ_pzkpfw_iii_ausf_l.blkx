@@ -182,6 +182,9 @@
         "turret_03_front_dm": {
           "armorThickness": 20.0
         },
+        "turret_04_back_dm": {
+          "armorThickness": 31.5
+        },
         "ex_decor_04_dm": {
           "armorThickness": 5.0,
           "armorClass": "tank_structural_steel"
@@ -249,6 +252,14 @@
           "armorThickness": 3.0,
           "hp": 20.0
         },
+        "optic_body_03_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_body_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
         "optic_turret_01_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
@@ -266,6 +277,18 @@
           "hp": 20.0
         },
         "optic_turret_05_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_06_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_07_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_08_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         }
@@ -662,8 +685,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -685,8 +710,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2520,6 +2546,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2541,7 +2576,7 @@
     "cockpit": {
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "headPos": [0.0,4.0,-8.0],
       "headPosOnShooting": [-0.2,3.1,0.0],

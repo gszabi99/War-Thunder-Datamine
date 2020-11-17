@@ -157,14 +157,38 @@ CheckBox.with_image[text] {
 CheckBox.with_image[text] > CheckBoxImg {
   left:1.5ph - 0.5h;
 }
+
+CheckBox.with_image[text][type=rightSideCb] {
+  height:1@buttonHeight;
+}
+
+CheckBox.with_image[text][type=rightSideCb] {
+  padding-left:1h;
+}
+CheckBox.with_image[text][type=rightSideCb] > CheckBoxImg {
+  left:pw-h-1@blockInterval;
+}
+
 CheckBox.with_image[text] > infoImg {
   position:absolute;
+}
+
+CheckBox.with_image[text][type=rightSideCb] > infoImg {
+  pos:1@blockInterval, 0.5ph-0.5h;
 }
 
 CheckBox.with_image:checked > infoImg {
   background-color:#eeeeee;
 }
 
+CheckBox.with_image[text][type=rightSideCb]:focus,
+CheckBox.with_image[text][type=rightSideCb]:hover {
+  background-color: @buttonColor;
+  color:@activeTextColor;
+}
+
+CheckBox.with_image[text][type=rightSideCb]:focus > infoImg,
+CheckBox.with_image[text][type=rightSideCb]:hover > infoImg,
 CheckBox.with_image:hover > infoImg {
   background-color:@white;
 }
@@ -187,24 +211,6 @@ CheckBox[smallFont=yes] {
 {
   fullSizeIcons:yes;
   padding-left:h + 1@buttonIconHeight + 0.01*@sf;
-}
-
-.checkBoxRow > CheckBox {
-  height:@checkboxSize + 2@blockInterval;
-  min-width:15*@scrn_tgt/100.0;
-  padding:1@blockInterval;
-  margin-right:1@blockInterval;
-  background-color:@frameBackgroundColor;
-  border-color:@frameBorderColor;
-  border:yes;
-}
-
-.checkBoxRow > CheckBox > CheckBoxImg {
-  left:1@blockInterval;
-}
-
-.checkBoxRow > CheckBox[isLastCheckBox=yes] {
-  margin-right:0;
 }
 
 playbackCheckbox {

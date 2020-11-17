@@ -1,4 +1,4 @@
-local avatars = ::require("scripts/user/avatars.nut")
+local avatars = require("scripts/user/avatars.nut")
 
 /**
   client api:

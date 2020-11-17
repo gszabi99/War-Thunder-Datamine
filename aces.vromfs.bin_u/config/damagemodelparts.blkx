@@ -29,7 +29,7 @@
       "body_bottom": [],
       "ship_hull": [],
       "composite_armor_hull_NN": {
-        "template": "composite_armor_hull_#15#"
+        "template": "composite_armor_hull_#16#"
       },
       "composite_armor_turret_NN": {
         "template": "composite_armor_turret_#15#"
@@ -88,7 +88,7 @@
         "template": "armor_belt_#16#"
       },
       "armor_cit_NN": {
-        "template": "armor_cit_#30#"
+        "template": "armor_cit_#50#"
       },
       "at_bulge_NN": {
         "template": "at_bulge_#16#"
@@ -124,6 +124,13 @@
       },
       "engine_room_NN": {
         "template": "engine_room_#10#"
+      }
+    }
+  },
+  {
+    "nozzle_angle": {
+      "nozzle_angleN": {
+        "template": "nozzle_angle#1:8#"
       }
     }
   },
@@ -164,7 +171,7 @@
         "fire": true
       },
       "fuel_tank_NN": {
-        "template": "fuel_tank_#10#",
+        "template": "fuel_tank_#15#",
         "hitTestType": "inner",
         "genName": "tank_fuel_tank",
         "vital": true,
@@ -239,10 +246,10 @@
         "template": "main_caliber_turret_#20#"
       },
       "auxiliary_caliber_gun_NN": {
-        "template": "auxiliary_caliber_gun_#20#"
+        "template": "auxiliary_caliber_gun_#30#"
       },
       "auxiliary_caliber_turret_NN": {
-        "template": "auxiliary_caliber_turret_#20#"
+        "template": "auxiliary_caliber_turret_#30#"
       },
       "aa_gun_NN": {
         "template": "aa_gun_#40#"
@@ -541,6 +548,9 @@
       "ecm_NN": {
         "template": "ecm_#10#",
         "hitTestType": "inner"
+      },
+      "countermeasure_NN": {
+        "template": "countermeasure_#04#"
       }
     }
   },
@@ -570,16 +580,16 @@
     }
   },
   {
-    "pump": []
-  },
-  {
-    "pump_NN": {
-      "template": "pump_#05#"
+    "pump": {
+      "pump": [],
+      "pump_NN": {
+        "template": "pump_#05#"
+      }
     }
   },
   {
     "elevator_NN": {
-      "template": "elevator_#20#"
+      "template": "elevator_#30#"
     }
   },
   {
@@ -606,7 +616,7 @@
   },
   {
     "coal_bunker_NN": {
-      "template": "coal_bunker_#10#"
+      "template": "coal_bunker_#20#"
     }
   },
   {
@@ -616,12 +626,12 @@
   },
   {
     "ammunition_storage_shells_NN": {
-      "template": "ammunition_storage_shells_#20#"
+      "template": "ammunition_storage_shells_#30#"
     }
   },
   {
     "ammunition_storage_charges_NN": {
-      "template": "ammunition_storage_charges_#20#"
+      "template": "ammunition_storage_charges_#30#"
     }
   },
   {
@@ -714,22 +724,22 @@
       "turret_top": [],
       "turret_bottom": [],
       "turret_NN_front": {
-        "template": "turret_#40#_front"
+        "template": "turret_#60#_front"
       },
       "turret_NN_back": {
-        "template": "turret_#40#_back"
+        "template": "turret_#60#_back"
       },
       "turret_NN_side": {
-        "template": "turret_#40#_side"
+        "template": "turret_#60#_side"
       },
       "turret_NN_top": {
-        "template": "turret_#40#_top"
+        "template": "turret_#60#_top"
       },
       "turret_NN_bottom": {
-        "template": "turret_#40#_bottom"
+        "template": "turret_#60#_bottom"
       },
       "turret_NN": {
-        "template": "turret_#40#"
+        "template": "turret_#60#"
       }
     }
   },
@@ -886,56 +896,64 @@
   {
     "aircraft_engine": {
       "engineN": {
-        "template": "engine#8#"
+        "template": "engine#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_transmission": {
       "transmissionN": {
-        "template": "transmission#2#"
+        "template": "transmission#2#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_engine_shaft": {
       "engine_shaftN": {
-        "template": "engine_shaft#8#"
+        "template": "engine_shaft#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_propeller": {
       "propellerN": {
-        "template": "prop01_#8#"
+        "template": "prop01_#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_propeller_disc": {
       "propellerN": {
-        "template": "prop02_#8#"
+        "template": "prop02_#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_propeller_3": {
       "propellerN": {
-        "template": "prop03_#8#"
+        "template": "prop03_#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_propeller_side": {
       "propellerN": {
-        "template": "prop_side_#8#"
+        "template": "prop_side_#8#",
+        "hitTestType": "inner"
       }
     }
   },
   {
     "aircraft_propeller_shaft": {
       "propeller_shaftN": {
-        "template": "propeller_shaft#8#"
+        "template": "propeller_shaft#8#",
+        "hitTestType": "inner"
       }
     }
   },
@@ -1040,14 +1058,22 @@
   },
   {
     "wingcontrol": {
-      "wingcontrol": [],
-      "wingcontrol_l": [],
-      "wingcontrol_r": []
+      "wingcontrol": {
+        "hitTestType": "inner"
+      },
+      "wingcontrol_l": {
+        "hitTestType": "inner"
+      },
+      "wingcontrol_r": {
+        "hitTestType": "inner"
+      }
     }
   },
   {
     "tailcontrol": {
-      "tailcontrol": []
+      "tailcontrol": {
+        "hitTestType": "inner"
+      }
     }
   },
   {
@@ -1131,8 +1157,12 @@
   },
   {
     "pilot": {
-      "pilot": [],
-      "pilot1": []
+      "pilot": {
+        "hitTestType": "inner"
+      },
+      "pilot1": {
+        "hitTestType": "inner"
+      }
     }
   },
   {
@@ -1190,7 +1220,8 @@
   },
   {
     "rotor01_N": {
-      "template": "rotor01_#6#"
+      "template": "rotor01_#6#",
+      "hitTestType": "inner"
     }
   },
   {

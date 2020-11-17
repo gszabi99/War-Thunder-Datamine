@@ -1265,6 +1265,44 @@
     },
     {
       "event": {
+        "name": "vtol_rangeMax",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 56
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 36
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": {
+        "name": "vtol_rangeMin",
+        "shortcut": [
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 56
+            }
+          },
+          {
+            "button": {
+              "deviceId": 2,
+              "buttonId": 22
+            }
+          }
+        ]
+      }
+    },
+    {
+      "event": {
         "name": "ID_CONTROL_MODE_HELICOPTER",
         "shortcut": {
           "button": {
@@ -4551,6 +4589,12 @@
       "ship_sight_distance": {
         "relative": true,
         "relSens": 0.09
+      },
+      "vtol": {
+        "relative": true
+      },
+      "climb": {
+        "relative": true
       },
       "helicopter_collective": {
         "relative": true

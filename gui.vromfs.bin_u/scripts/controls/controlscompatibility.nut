@@ -95,6 +95,15 @@ local joystick_params_template = {
     axis.mouseAxisId <- idx
   }
 
+  resetAxis = function(idx)
+  {
+    local curPreset = ::g_controls_manager.getCurPreset()
+    local name = ::get_axis_name(idx)
+    if (name != null)
+      curPreset.resetAxis(name)
+    ::g_controls_manager.commitControls()
+  }
+
   applyParams = function(joy) {
     ::g_controls_manager.commitControls()
   }

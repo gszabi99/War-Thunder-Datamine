@@ -217,11 +217,16 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function updateHeader(text)
+  function updateHeader(text, isPremium = false)
   {
-    local header = scene.findObject("content_header")
-    if(::checkObj(header))
-      header.setValue(text)
+    local header = scene.findObject("header_background")
+    if(!::check_obj(header))
+      return
+
+    header.type = isPremium ? "transparent" : ""
+    header.findObject("content_header").setValue(text)
+    header.findObject("header_premium_background").show(isPremium)
+    header.findObject("premium_vehicle_icon").show(isPremium)
   }
 
   function updateAirInfo(force = false)
@@ -234,9 +239,9 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
 
     updateTestDriveButtonText(unit)
     updateWeaponryDiscounts(unit)
-    ::showAirInfo(unit, true, contentObj)
+    ::showAirInfo(unit, true, contentObj, null, {showRewardsInfoOnlyForPremium = true})
     ::showBtn("aircraft-name", false, scene)
-    updateHeader(::getUnitName(unit))
+    updateHeader(::getUnitName(unit), ::isUnitSpecial(unit))
   }
 
   function checkUpdateAirInfo()
@@ -470,5 +475,10 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
   function onEventUnitWeaponChanged(params)
   {
     doWhenActiveOnce("updateAirInfo")
+  }
+
+  function uncollapse() {
+    if (listboxObj.getValue() < 0)
+      onCollapseButton()
   }
 }

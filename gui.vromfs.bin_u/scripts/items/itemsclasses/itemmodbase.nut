@@ -1,4 +1,5 @@
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
+local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 local ModificationBase = class extends ::BaseItem
 {
@@ -68,7 +69,8 @@ local ModificationBase = class extends ::BaseItem
     }
     if (unitTypes)
     {
-      local locUnitTypes = u.map(unitTypes, @(unitType) ::loc("mainmenu/type_" + unitType))
+      local processedUnitTypes = processUnitTypeArray(unitTypes)
+      local locUnitTypes = u.map(processedUnitTypes, @(unitType) ::loc($"mainmenu/type_{unitType}"))
       textParts.append(::loc("mainmenu/btnUnits") + ::loc("ui/colon")
           + ::colorize("activeTextColor", ::g_string.implode(locUnitTypes, ", ")))
     }

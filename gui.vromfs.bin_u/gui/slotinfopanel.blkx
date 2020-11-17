@@ -2,16 +2,21 @@
   "behavior": "Timer",
   "aircraft": "",
   "css-hier-invalidate": "yes",
-  "bgGradientLeft": [],
   "tdiv": [
     {
       "id": "slot_info_side_panel"
     },
     {
-      "padding-left": "@bw"
+      "left": "@promoButtonPadding"
+    },
+    {
+      "position": "relative"
     },
     {
       "flow": "horizontal"
+    },
+    {
+      "overflow": "hidden"
     },
     {
       "css-hier-invalidate": "yes"
@@ -20,23 +25,80 @@
       "display": "hide"
     },
     {
+      "blur": []
+    },
+    {
+      "blur_foreground": []
+    },
+    {
       "tdiv": {
-        "padding": "@airInfoPadding",
         "flow": "vertical",
         "tdiv": {
           "id": "slot_collapse",
           "css-hier-invalidate": "yes",
           "baseToggleButton": {
             "on_click": "onCollapseButton",
-            "alwaysShow": "yes",
+            "headerBg": [
+              {
+                "id": "header_background"
+              },
+              {
+                "tdiv": {
+                  "id": "header_premium_background",
+                  "position": "absolute",
+                  "size": "pw, ph",
+                  "display": "hide",
+                  "tdiv": {
+                    "size": "1@arrowButtonHeight, ph",
+                    "background-color": "@frameDarkTransparentBgColor"
+                  },
+                  "fadingBox": {
+                    "size": "1.2pw, ph",
+                    "pos": "1@arrowButtonHeight + 1@dp, ph-h",
+                    "position": "absolute",
+                    "background-color": "@premiumHeaderBgColor",
+                    "background-position": "4",
+                    "tdiv": {
+                      "size": "pw, 1@dp",
+                      "pos": "0, ph-h",
+                      "position": "absolute",
+                      "background-color": "@premiumHeaderBottomBorderColor"
+                    }
+                  }
+                }
+              },
+              {
+                "tdiv": {
+                  "position": "relative",
+                  "pos": "1@arrowButtonHeight + 0.5@airInfoPanelDmSwitcherWidth - 0.5w, 0.5ph-0.5h",
+                  "cardImg": {
+                    "id": "premium_vehicle_icon",
+                    "type": "medium",
+                    "margin-right": "1@blockInterval",
+                    "background-image": "#ui/gameuiskin#talisman",
+                    "display": "hide"
+                  },
+                  "airInfoHeader": {
+                    "id": "content_header"
+                  }
+                }
+              }
+            ],
             "directionImg": []
           }
         },
         "VerticalListBox": {
           "id": "slot_info_listbox",
-          "withImages": "yes",
+          "position": "relative",
+          "top": "1@dp",
+          "width": "1@arrowButtonHeight",
+          "padding-left": "0",
+          "padding-bottom": "0",
+          "padding-top": "0",
           "navigator": "posNavigator",
           "canSelectNone": "yes",
+          "move-only-hover": "yes",
+          "navigatorShortcuts": "onlyActivate",
           "on_select": "updateContentVisibility"
         }
       }
@@ -47,7 +109,13 @@
           "id": "slot_info_content"
         },
         {
-          "padding": "@airInfoPadding"
+          "position": "relative"
+        },
+        {
+          "top": "1@arrowButtonHeight+1@dp"
+        },
+        {
+          "padding": "1@blockInterval"
         },
         {
           "padding-left": "0"
@@ -56,26 +124,19 @@
           "flow": "vertical"
         },
         {
-          "min-width": "@airInfoPanelWidth + @airInfoPanelShadowWidth"
-        },
-        {
-          "airInfoHeader": {
-            "id": "content_header"
-          }
-        },
-        {
           "tdiv": {
             "id": "unlockachievement_content",
-            "min-width": "@airInfoPanelWidth",
+            "width": "1@airInfoPanelDmSwitcherWidth",
             "display": "hide",
             "flow": "vertical",
             "tdiv": {
               "id": "favorite_unlocks_placeholder",
+              "width": "pw",
               "max-height": "1@maxInfoPanelContentHeightWithSlotbar - 1@buttonHeight - 1@blockInterval"
             },
             "Button_text": {
               "margin-top": "@blockInterval",
-              "style": "width:pw",
+              "width": "pw",
               "on_click": "onAchievementsButtonClicked",
               "text": "#mainmenu/btnUnlockAchievementsAll",
               "showConsoleImage": "no"
@@ -85,7 +146,7 @@
         {
           "tdiv": {
             "id": "crew_info_content",
-            "min-width": "@airInfoPanelWidth",
+            "width": "1@airInfoPanelDmSwitcherWidth",
             "display": "hide"
           }
         },
@@ -108,8 +169,8 @@
                 "id": "air_info_content_info",
                 "position": "relative",
                 "max-height": "sh -1@infoPanelVertPosition -1@bottomBarHeight",
-                "maxHeightWithSlotbar": "sh -1@infoPanelVertPosition -4@buttonHeight -7@dp -1@airInfoToggleButtonSize -2@airInfoPadding -1@shopBottomOffset",
-                "maxHeightWithoutSlotbar": "sh -1@infoPanelVertPosition -4@buttonHeight -7@dp -1@airInfoToggleButtonSize -2@airInfoPadding -1@bottomBarHeight",
+                "maxHeightWithSlotbar": "sh -1@infoPanelVertPosition -4@buttonHeight -7@dp -1@airInfoToggleButtonSize -2@blockInterval -1@shopBottomOffset",
+                "maxHeightWithoutSlotbar": "sh -1@infoPanelVertPosition -4@buttonHeight -7@dp -1@airInfoToggleButtonSize -2@blockInterval -1@bottomBarHeight",
                 "flow": "vertical",
                 "overflow-y": "auto",
                 "scroll-align": "right",
@@ -121,7 +182,7 @@
                     "flow": "vertical"
                   },
                   {
-                    "padding-top": "1*@scrn_tgt/100.0"
+                    "padding": "1@airInfoPannelContentPadding, 1@blockInterval"
                   },
                   {
                     "activeText": {
@@ -232,7 +293,7 @@
                     "textarea": {
                       "id": "weaponsInfo",
                       "margin-bottom": "0.01@sf",
-                      "max-width": "@airInfoPanelWidth"
+                      "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
                     }
                   },
                   {
@@ -250,7 +311,7 @@
                         "showStatsProgress": "no"
                       },
                       {
-                        "width": "@airInfoPanelWidth"
+                        "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
                       },
                       {
                         "tr": [
@@ -1182,6 +1243,72 @@
                             }
                           }
                         ]
+                      },
+                      {
+                        "tr": [
+                          {
+                            "id": "aircraft-research-efficiency-tr"
+                          },
+                          {
+                            "td": {
+                              "textarea": {
+                                "text": "#shop/most_effective_research_tr"
+                              }
+                            }
+                          },
+                          {
+                            "td": {
+                              "textarea": {
+                                "id": "aircraft-research-efficiency"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "tr": [
+                          {
+                            "id": "aircraft-reward_rp-tr"
+                          },
+                          {
+                            "td": {
+                              "textarea": {
+                                "id": "aircraft-reward_rp-label",
+                                "text": ""
+                              }
+                            }
+                          },
+                          {
+                            "td": {
+                              "hasIncreasedSize": "yes",
+                              "tdiv": {
+                                "id": "aircraft-reward_rp"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "tr": [
+                          {
+                            "id": "aircraft-reward_wp-tr"
+                          },
+                          {
+                            "td": {
+                              "textarea": {
+                                "id": "aircraft-reward_wp-label",
+                                "text": ""
+                              }
+                            }
+                          },
+                          {
+                            "td": {
+                              "tdiv": {
+                                "id": "aircraft-reward_wp"
+                              }
+                            }
+                          }
+                        ]
                       }
                     ]
                   }
@@ -1191,10 +1318,7 @@
             {
               "tdiv": [
                 {
-                  "position": "relative"
-                },
-                {
-                  "width": "@airInfoPanelDmSwitcherWidth"
+                  "width": "1@airInfoPanelDmSwitcherWidth"
                 },
                 {
                   "flow": "vertical"
@@ -1208,16 +1332,28 @@
                       "width": "pw"
                     },
                     {
+                      "type": "transparent"
+                    },
+                    {
                       "on_select": "onAirInfoToggleDMViewer"
                     },
                     {
                       "withImages": "yes"
                     },
                     {
-                      "margin-bottom": "1@dp"
+                      "padding-top": "1@blockInterval"
+                    },
+                    {
+                      "padding-bottom": "1@blockInterval"
                     },
                     {
                       "smallFont": "yes"
+                    },
+                    {
+                      "move-only-hover": "yes"
+                    },
+                    {
+                      "navigatorShortcuts": "yes"
                     },
                     {
                       "shopFilter": {
@@ -1261,6 +1397,7 @@
                   "CheckBox": {
                     "id": "dmviewer_show_external_dm",
                     "text": "#mainmenu/btnShowExternalDmParts",
+                    "tooltip": "#mainmenu/btnShowExternalDmParts",
                     "on_change_value": "onShowExternalDmPartsChange",
                     "value": "yes",
                     "width": "pw",
@@ -1273,6 +1410,7 @@
                   "CheckBox": {
                     "id": "dmviewer_show_extra_xray",
                     "text": "#mainmenu/btnShowExtraXrayParts",
+                    "tooltip": "#mainmenu/btnShowExtraXrayParts",
                     "on_change_value": "onShowHiddenXrayPartsChange",
                     "value": "yes",
                     "width": "pw",

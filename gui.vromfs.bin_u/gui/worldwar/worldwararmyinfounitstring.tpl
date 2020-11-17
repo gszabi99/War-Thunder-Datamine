@@ -62,16 +62,36 @@ tdiv {
     <</presetCount>>
 
     <<#hasBomb>>
-      img { size:t='0.4@tableIcoSize,@tableIcoSize' top:t='50%ph-50%h' position:t='relative' background-image:t='#ui/gameuiskin#weap_bomb' }
+    img {
+      top:t='50%ph-50%h'; position:t='relative'
+      size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-image:t='#ui/gameuiskin#weap_bomb.svg'
+    }
     <</hasBomb>>
     <<#hasRocket>>
-      img { size:t='0.6@tableIcoSize,@tableIcoSize' top:t='50%ph-50%h' position:t='relative' background-image:t='#ui/gameuiskin#weap_missile' }
+    img {
+      top:t='50%ph-50%h'; position:t='relative'
+      size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-image:t='#ui/gameuiskin#weap_missile.svg'
+    }
     <</hasRocket>>
     <<#hasTorpedo>>
-      img { size:t='0.4@tableIcoSize,@tableIcoSize' top:t='50%ph-50%h' position:t='relative' background-image:t='#ui/gameuiskin#weap_torpedo' }
+    img {
+      top:t='50%ph-50%h'; position:t='relative'
+      size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-image:t='#ui/gameuiskin#weap_torpedo.svg'
+    }
     <</hasTorpedo>>
     <<#hasAdditionalGuns>>
-      img { size:t='0.4@tableIcoSize,@tableIcoSize' top:t='50%ph-50%h' position:t='relative' background-image:t='#ui/gameuiskin#weap_pod' }
+    img {
+      top:t='50%ph-50%h'; position:t='relative'
+      size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-svg-size:t='0.375@tableIcoSize,@tableIcoSize'
+      background-image:t='#ui/gameuiskin#weap_pod.svg'
+    }
     <</hasAdditionalGuns>>
 
     <<#presetCount>>

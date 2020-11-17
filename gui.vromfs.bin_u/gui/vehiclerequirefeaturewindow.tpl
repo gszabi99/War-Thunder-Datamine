@@ -1,12 +1,13 @@
 root {
-  background-color:t='@shadeBackgroundColor';
+  blur {}
+  blur_foreground {}
 
   frame {
     pos:t='50%pw-50%w, 50%ph-50%h';
     position:t='absolute';
     width:t='80%sh';
     max-width:t='800*@sf/@pf_outdated + 2@framePadding';
-    max-height:t='sh';
+    max-height:t='@rh'
     class:t='wndNav';
 
     timer {
@@ -57,10 +58,7 @@ root {
       class:t='crewTable';
       pos:t='0.5(pw-w), 0.03sh';
       position:t='relative';
-      behavior:t = 'OptionsNavigator';
-      cur_col:t='0';
-      cur_row:t='0';
-      num_rows:t='-1';
+      behavior:t = 'PosNavigator';
 
       <<#entitlements>>
       tr{
@@ -115,7 +113,7 @@ root {
             on_click:t='onRowBuy';
             pos:t='0, 50%ph-50%h';
             position:t='relative';
-            showOn:t='hoverOrSelect';
+            showOn:t='hoverOrPcSelect'
             btnName:t='A';
             noMargin:t='yes'
             entitlementId:t='<<entitlementId>>';

@@ -43,36 +43,82 @@
         "initMission": []
       },
       "conditions": [],
-      "actions": {
-        "unitMoveTo": {
-          "target": "wp_for_plane",
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "follow_target": false,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": false,
-          "shouldKeepFormation": false,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_marking": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "ai_plane"
+      "actions": [
+        {
+          "unitMoveTo": {
+            "target": "wp_for_plane",
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_plane"
+          }
         },
-        "missionBattleArea": {
-          "air": true,
-          "ground": true,
-          "mapArea": true,
-          "killOutOfBattleArea": true,
-          "target": "battlearea",
-          "killArea": false,
-          "detectionArea": false,
-          "newGridHorizontalCellCount": 0,
-          "area": "battlearea"
+        {
+          "missionBattleArea": {
+            "air": true,
+            "ground": true,
+            "mapArea": true,
+            "killOutOfBattleArea": true,
+            "target": "battlearea",
+            "killArea": false,
+            "detectionArea": false,
+            "newGridHorizontalCellCount": 0,
+            "area": "battlearea"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ai_ship02"
+            },
+            {
+              "object": "ai_ship01"
+            },
+            {
+              "object": "ai_ship"
+            },
+            {
+              "object": "ai_plane"
+            },
+            {
+              "forceVisibleOnMap": true
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_ship02",
+            "speed": 90.0,
+            "lockSpeed": true
+          }
         }
-      },
+      ],
       "else_actions": []
     },
     "end": {

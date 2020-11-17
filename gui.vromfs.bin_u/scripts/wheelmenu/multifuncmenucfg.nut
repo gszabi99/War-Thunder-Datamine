@@ -1,4 +1,5 @@
-local vehicleModel = require_native("vehicleModel")
+local { blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local vehicleModel = require("vehicleModel")
 local { is_bit_set, number_of_set_bits } = require("std/math.nut")
 local { getCantUseVoiceMessagesReason } = require("scripts/wheelmenu/voiceMessages.nut")
 local memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
@@ -18,10 +19,12 @@ local hasCockpitDoor = ::memoize(@(unitId) ::get_fm_file(unitId)?.AvailableContr
 local hasBayDoor = memoizeByMission(@(unitId) vehicleModel.hasBayDoor())
 local hasSchraegeMusik = ::memoize(@(unitId) vehicleModel.hasSchraegeMusik())
 local hasCountermeasureFlareGuns = ::memoize(@(unitId) vehicleModel.hasCountermeasureFlareGuns())
+local hasCountermeasureSystemIRCM = ::memoize(@(unitId) vehicleModel.hasCountermeasureSystemIRCM())
 
 local hasCollimatorSight = ::memoize(@(unitId) vehicleModel.hasCollimatorSight())
 local hasSightStabilization = ::memoize(@(unitId) vehicleModel.hasSightStabilization())
 local hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
+local hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
 local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
 local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
 local hasNightVision = ::memoize(@(unitId) vehicleModel.hasNightVision())
@@ -150,13 +153,27 @@ local cfg = {
     ]
   },
 
+  ["root_boat"] = {
+    title = "hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU"
+    items = [
+      { section = "radar" }
+      { section = "gunners_ship" }
+      null
+      { section = "weapons_ship" }
+      null
+      null
+      null
+      voiceMessagesMenuFunc
+    ]
+  },
+
   ["radar"] = {
     title = "radar"
     enable = ::memoize(function(unitId) {
       local unitBlk = ::get_full_unit_blk(unitId)
       if (unitBlk?.sensors)
         foreach (sensor in (unitBlk.sensors % "sensor")) {
-          local sensorBlk = ::DataBlock(sensor?.blk ?? "")
+          local sensorBlk = blkOptFromPath(sensor?.blk)
           if (sensorBlk?.type == "radar" && (sensorBlk?.showOnHud ?? true))
             return true
         }
@@ -230,7 +247,7 @@ local cfg = {
       { shortcut = [ "ID_CHANGE_SHOT_FREQ_HELICOPTER" ], enable = hasAlternativeShotFrequency }
       null
       null
-      null
+      { shortcut = [ "ID_IRCM_SWITCH_HELICOPTER" ], enable = hasCountermeasureSystemIRCM }
       { section = "flares" }
       null
     ]
@@ -450,7 +467,7 @@ local cfg = {
       { shortcut = [ "ID_UNLOCK_TARGETING_AT_POINT", "ID_UNLOCK_TARGETING_AT_POINT_HELICOPTER" ], enable = hasSightStabilization }
       { shortcut = [ "ID_TOGGLE_COCKPIT_LIGHTS", "ID_TOGGLE_COCKPIT_LIGHTS_HELICOPTER" ] }
       { shortcut = [ "ID_TOGGLE_COCKPIT_DOOR", "ID_TOGGLE_COCKPIT_DOOR_HELICOPTER" ], enable = hasCockpitDoor }
-      { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = hasMissionBombingZones }
+      { shortcut = [ "ID_SWITCH_REGISTERED_BOMB_TARGETING_POINT" ], enable = hasMissionBombingZones && hasCCRPSightMode }
       { shortcut = [ "ID_SWITCH_COCKPIT_SIGHT_MODE", "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER" ], enable = hasCCIPSightMode }
       null
     ]
@@ -479,7 +496,7 @@ local cfg = {
       { shortcut = [ "ID_TARGETING_HOLD_GM" ], enable = canUseTargetTracking }
       { shortcut = [ "ID_ENABLE_GUN_STABILIZER_GM" ], enable = hasGunStabilizer }
       { shortcut = [ "ID_THERMAL_WHITE_IS_HOT" ], enable = hasNightVision }
-      null
+      { shortcut = [ "ID_IRCM_SWITCH_TANK" ], enable = hasCountermeasureSystemIRCM }
       null
     ]
   },

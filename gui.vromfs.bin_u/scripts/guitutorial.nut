@@ -1,5 +1,7 @@
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 
+const TITOR_STEP_TIMEOUT_SEC  = 30
+
 //req handyman
 ::guiTutor <- {
   _id = "tutor_screen_root"
@@ -163,6 +165,7 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
   canceled = true
 
   isTutorialCancelable = false
+  stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
 
   function initScreen()
   {
@@ -172,6 +175,8 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
     ownerWeak = ownerWeak.weakref()
     guiScene.setUpdatesEnabled(true, true)
     showSceneBtn("close_btn", isTutorialCancelable)
+    if (!isTutorialCancelable)
+      scene.findObject("allow_cancel_timer").setUserData(this)
     showStep()
   }
 
@@ -244,6 +249,8 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
     local waitTime = ::getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY? 1 : -1)
     if (waitTime > 0)
       ::Timer(scene, waitTime, (@(stepIdx) function() {timerNext(stepIdx)})(stepIdx), this)
+
+    stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
   }
 
   function updateObjectsPos(blocks, needArrow = true)
@@ -333,5 +340,16 @@ class ::gui_handlers.Tutor extends ::gui_handlers.BaseGuiHandlerWT
   {
     canceled = false
     goBack()
+  }
+
+  function onAllowCancelTimer(obj, dt)
+  {
+    if (isTutorialCancelable)
+      return
+    stepTimeoutSec -= dt
+    if (stepTimeoutSec > 0)
+      return
+    isTutorialCancelable = true
+    showSceneBtn("close_btn", isTutorialCancelable)
   }
 }

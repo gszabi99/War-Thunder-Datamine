@@ -114,6 +114,12 @@
     "depthTraceCriticalDepth": 5.3
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [84.39,7.05,-2.77]
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -123,6 +129,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -195,6 +207,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2910,31 +2928,31 @@
         "armorThickness": 1.45,
         "oneSided": true,
         "compartment_01_dm": {
-          "hp": 8403.0
+          "hp": 4484.0
         },
         "compartment_02_dm": {
-          "hp": 5101.0
+          "hp": 3000.0
         },
         "compartment_03_dm": {
-          "hp": 5650.0
+          "hp": 3000.0
         },
         "compartment_04_dm": {
-          "hp": 7420.0
+          "hp": 3986.0
         },
         "compartment_05_dm": {
-          "hp": 6903.0
+          "hp": 6751.0
         },
         "compartment_06_dm": {
-          "hp": 7245.0
+          "hp": 6471.0
         },
         "compartment_07_dm": {
-          "hp": 8871.0
+          "hp": 4355.0
         },
         "compartment_08_dm": {
-          "hp": 6883.0
+          "hp": 3000.0
         },
         "compartment_09_dm": {
-          "hp": 7298.0
+          "hp": 3000.0
         },
         "bridge_dm": {
           "hp": 400.0
@@ -2945,7 +2963,7 @@
       },
       "cover": {
         "fireParamsPreset": "ship_cover_cruiser",
-        "stopChanceOnDeadPart": 0.9,
+        "stopChanceOnDeadPart": 0.6,
         "armorClass": "ship_STS",
         "armorThickness": 16.0,
         "hidableInViewer": true,
@@ -3064,19 +3082,19 @@
         "fireProtectionHp": 6.0,
         "engine_room_01_dm": {
           "armorThrough": 500.0,
-          "hp": 2556.0
+          "hp": 3000.0
         },
         "engine_room_02_dm": {
           "armorThrough": 500.0,
-          "hp": 2556.0
+          "hp": 3000.0
         },
         "engine_room_03_dm": {
           "armorThrough": 500.0,
-          "hp": 2500.0
+          "hp": 3000.0
         },
         "engine_room_04_dm": {
           "armorThrough": 500.0,
-          "hp": 2500.0
+          "hp": 3000.0
         },
         "funnel_01_dm": {
           "shatterDamageMult": 1.2,
@@ -3935,110 +3953,371 @@
     }
   },
   {
-    "tank_crew": {
-      "minCrewMemberRepairCount": 415,
-      "minCrewMemberAliveCount": 356,
-      "sailor1": {
-        "dmPart": "bridge_dm",
-        "role": "sailor",
-        "crew": 15
+    "tank_crew": [
+      {
+        "minCrewMemberRepairCount": 415
       },
-      "sailor2": {
-        "dmPart": "compartment_01_dm",
-        "role": "sailor",
-        "crew": 131
+      {
+        "minCrewMemberAliveCount": 356
       },
-      "sailor3": {
-        "dmPart": "compartment_02_dm",
-        "role": "sailor",
-        "crew": 79
+      {
+        "sailor1": {
+          "dmPart": "bridge_dm",
+          "role": "sailor",
+          "crew": 10
+        }
       },
-      "sailor4": {
-        "dmPart": "compartment_03_dm",
-        "role": "sailor",
-        "crew": 88
+      {
+        "sailor2": {
+          "dmPart": "compartment_01_dm",
+          "role": "sailor",
+          "crew": 74
+        }
       },
-      "sailor5": {
-        "dmPart": "compartment_04_dm",
-        "role": "sailor",
-        "crew": 115
+      {
+        "sailor3": {
+          "dmPart": "compartment_02_dm",
+          "role": "sailor",
+          "crew": 49
+        }
       },
-      "sailor6": {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 107
+      {
+        "sailor4": {
+          "dmPart": "compartment_03_dm",
+          "role": "sailor",
+          "crew": 49
+        }
       },
-      "sailor7": {
-        "dmPart": "compartment_06_dm",
-        "role": "sailor",
-        "crew": 113
+      {
+        "sailor5": {
+          "dmPart": "compartment_04_dm",
+          "role": "sailor",
+          "crew": 66
+        }
       },
-      "sailor8": {
-        "dmPart": "compartment_07_dm",
-        "role": "sailor",
-        "crew": 139
+      {
+        "sailor6": {
+          "dmPart": "compartment_05_dm",
+          "role": "sailor",
+          "crew": 112
+        }
       },
-      "sailor9": {
-        "dmPart": "compartment_08_dm",
-        "role": "sailor",
-        "crew": 107
+      {
+        "sailor7": {
+          "dmPart": "compartment_06_dm",
+          "role": "sailor",
+          "crew": 106
+        }
       },
-      "sailor10": {
-        "dmPart": "compartment_09_dm",
-        "role": "sailor",
-        "crew": 114
+      {
+        "sailor8": {
+          "dmPart": "compartment_07_dm",
+          "role": "sailor",
+          "crew": 71
+        }
       },
-      "sailor11": {
-        "dmPart": "radio_station_dm",
-        "role": "sailor",
-        "crew": 10
+      {
+        "sailor8": {
+          "dmPart": "compartment_08_dm",
+          "role": "sailor",
+          "crew": 49
+        }
       },
-      "sailor12": {
-        "dmPart": "main_caliber_turret_01_dm",
-        "role": "sailor",
-        "crew": 30
+      {
+        "sailor9": {
+          "dmPart": "compartment_09_dm",
+          "role": "sailor",
+          "crew": 49
+        }
       },
-      "sailor13": {
-        "dmPart": "main_caliber_turret_02_dm",
-        "role": "sailor",
-        "crew": 30
+      {
+        "sailor10": {
+          "dmPart": "radio_station_dm",
+          "role": "sailor",
+          "crew": 7
+        }
       },
-      "sailor14": {
-        "dmPart": "main_caliber_turret_03_dm",
-        "role": "sailor",
-        "crew": 30
+      {
+        "sailor11": {
+          "dmPart": "main_caliber_turret_01_dm",
+          "role": "sailor",
+          "crew": 24
+        }
       },
-      "sailor15": {
-        "dmPart": "main_caliber_turret_04_dm",
-        "role": "sailor",
-        "crew": 30
+      {
+        "sailor12": {
+          "dmPart": "main_caliber_turret_02_dm",
+          "role": "sailor",
+          "crew": 24
+        }
       },
-      "sailor16": {
-        "dmPart": "main_caliber_turret_05_dm",
-        "role": "sailor",
-        "crew": 30
+      {
+        "sailor13": {
+          "dmPart": "main_caliber_turret_03_dm",
+          "role": "sailor",
+          "crew": 24
+        }
       },
-      "sailor17": {
-        "dmPart": "auxiliary_caliber_turret_01_dm",
-        "role": "sailor",
-        "crew": 5
+      {
+        "sailor14": {
+          "dmPart": "main_caliber_turret_04_dm",
+          "role": "sailor",
+          "crew": 24
+        }
       },
-      "sailor18": {
-        "dmPart": "auxiliary_caliber_turret_02_dm",
-        "role": "sailor",
-        "crew": 5
+      {
+        "sailor15": {
+          "dmPart": "main_caliber_turret_05_dm",
+          "role": "sailor",
+          "crew": 24
+        }
       },
-      "sailor19": {
-        "dmPart": "auxiliary_caliber_turret_03_dm",
-        "role": "sailor",
-        "crew": 5
+      {
+        "sailor16": {
+          "dmPart": "ammunition_storage_aux_01_dm",
+          "role": "sailor",
+          "crew": 8
+        }
       },
-      "sailor20": {
-        "dmPart": "auxiliary_caliber_turret_04_dm",
-        "role": "sailor",
-        "crew": 5
+      {
+        "sailor17": {
+          "dmPart": "ammunition_storage_aux_02_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor18": {
+          "dmPart": "ammunition_storage_aux_03_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor19": {
+          "dmPart": "ammunition_storage_aux_04_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor20": {
+          "dmPart": "ammunition_storage_aux_05_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor21": {
+          "dmPart": "ammunition_storage_aux_06_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor22": {
+          "dmPart": "ammunition_storage_charges_01_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor23": {
+          "dmPart": "ammunition_storage_charges_02_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor24": {
+          "dmPart": "ammunition_storage_charges_03_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor25": {
+          "dmPart": "ammunition_storage_charges_04_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor26": {
+          "dmPart": "ammunition_storage_charges_05_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor27": {
+          "dmPart": "elevator_01_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor28": {
+          "dmPart": "elevator_02_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor29": {
+          "dmPart": "elevator_03_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor30": {
+          "dmPart": "elevator_05_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor31": {
+          "dmPart": "elevator_06_dm",
+          "role": "sailor",
+          "crew": 4
+        }
+      },
+      {
+        "sailor32": {
+          "dmPart": "elevator_08_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor33": {
+          "dmPart": "elevator_09_dm",
+          "role": "sailor",
+          "crew": 4
+        }
+      },
+      {
+        "sailor34": {
+          "dmPart": "elevator_11_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor35": {
+          "dmPart": "elevator_12_dm",
+          "role": "sailor",
+          "crew": 4
+        }
+      },
+      {
+        "sailor36": {
+          "dmPart": "elevator_14_dm",
+          "role": "sailor",
+          "crew": 8
+        }
+      },
+      {
+        "sailor37": {
+          "dmPart": "elevator_15_dm",
+          "role": "sailor",
+          "crew": 4
+        }
+      },
+      {
+        "sailor38": {
+          "dmPart": "elevator_16_dm",
+          "role": "sailor",
+          "crew": 10
+        }
+      },
+      {
+        "sailor39": {
+          "dmPart": "engine_room_01_dm",
+          "role": "sailor",
+          "crew": 25
+        }
+      },
+      {
+        "sailor40": {
+          "dmPart": "engine_room_02_dm",
+          "role": "sailor",
+          "crew": 25
+        }
+      },
+      {
+        "sailor41": {
+          "dmPart": "engine_room_03_dm",
+          "role": "sailor",
+          "crew": 25
+        }
+      },
+      {
+        "sailor42": {
+          "dmPart": "engine_room_04_dm",
+          "role": "sailor",
+          "crew": 25
+        }
+      },
+      {
+        "sailor43": {
+          "dmPart": "transmission_01_dm",
+          "role": "sailor",
+          "crew": 20
+        }
+      },
+      {
+        "sailor44": {
+          "dmPart": "transmission_02_dm",
+          "role": "sailor",
+          "crew": 20
+        }
+      },
+      {
+        "sailor45": {
+          "dmPart": "transmission_03_dm",
+          "role": "sailor",
+          "crew": 20
+        }
+      },
+      {
+        "sailor46": {
+          "dmPart": "transmission_04_dm",
+          "role": "sailor",
+          "crew": 20
+        }
+      },
+      {
+        "sailor47": {
+          "dmPart": "auxiliary_caliber_turret_01_dm",
+          "role": "sailor",
+          "crew": 15
+        }
+      },
+      {
+        "sailor48": {
+          "dmPart": "auxiliary_caliber_turret_02_dm",
+          "role": "sailor",
+          "crew": 15
+        }
+      },
+      {
+        "sailor49": {
+          "dmPart": "auxiliary_caliber_turret_03_dm",
+          "role": "sailor",
+          "crew": 15
+        }
+      },
+      {
+        "sailor50": {
+          "dmPart": "auxiliary_caliber_turret_04_dm",
+          "role": "sailor",
+          "crew": 15
+        }
       }
-    }
+    ]
   },
   {
     "DamageEffects": [
@@ -4677,6 +4956,12 @@
             "name": "cover_09_dm"
           },
           {
+            "name": "cover_10_dm"
+          },
+          {
+            "name": "cover_11_dm"
+          },
+          {
             "onHit": {
               "damageType": "explosion",
               "fire": 0.03,
@@ -4773,8 +5058,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]

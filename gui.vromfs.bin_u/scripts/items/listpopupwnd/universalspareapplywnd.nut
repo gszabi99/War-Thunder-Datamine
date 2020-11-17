@@ -10,12 +10,6 @@ class ::gui_handlers.UniversalSpareApplyWnd extends ::gui_handlers.ItemsListWndB
   maxAmount = 1
   minAmount = 1
 
-  currentFocusItem = 0
-  focusArray = [
-    @() itemsList.len() > 1 ? "items_list" : null
-    "amount_slider"
-  ]
-
   static function open(unitToActivate, wndAlignObj = null, wndAlign = AL_ORIENT.BOTTOM)
   {
     local list = ::ItemsManager.getInventoryList(itemType.UNIVERSAL_SPARE)

@@ -1,6 +1,5 @@
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local { getButtonConfigById } = require("scripts/mainmenu/topMenuButtons.nut")
-local { stickedDropDown } = require("scripts/baseGuiHandlerWT.nut")
 
 class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -13,8 +12,6 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
   objForWidth = null
 
   GCDropdownsList = null
-  focusArray = null
-  isPrimaryFocus = false
 
   maxSectionsCount = 0
   sectionsOrder = null
@@ -41,7 +38,6 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
   function getSceneTplView()
   {
     GCDropdownsList = []
-    focusArray = ["top_menu_panel_place"]
     return {
       section = getSectionsView()
     }
@@ -54,15 +50,6 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
 
     scene.show(true)
     updateButtonsStatus()
-    initFocusArray()
-  }
-
-  function getFocusObj()
-  {
-    if (curGCDropdown)
-      return findObjInFocusArray(false)
-
-    return scene.findObject("top_menu_panel_place")
   }
 
   function getMaxSectionsCount()
@@ -171,6 +158,8 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
   {
     local needHideVisDisabled = ::has_feature("HideDisabledTopMenuActions")
     local isInQueue = ::checkIsInQueue()
+    local skipNavigation = parentHandlerWeak?.scene
+      .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
 
     foreach (idx, section in sectionsOrder)
     {
@@ -203,6 +192,12 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
           isVisualDisable = isVisualDisable || (button.isInactiveInQueue && isInQueue)
           btnObj.inactiveColor = isVisualDisable? "yes" : "no"
         }
+      }
+
+      if (skipNavigation)
+      {
+        sectionObj["skip-navigation"] = "yes"
+        sectionObj.findObject($"{sectionObj.id}_btn")["skip-navigation"] = "yes"
       }
 
       sectionObj.show(isVisibleAnyButton)
@@ -294,47 +289,14 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
 
     mergeIdx += direction
 
-    if (mergeIdx < 0)
+    if (mergeIdx < 0 || mergeIdx >= sectionsOrder.len())
     {
-      onWrapLeft(panelObj)
-      return
-    }
-    else if (mergeIdx >= sectionsOrder.len())
-    {
-      onWrapRight(panelObj)
+      ::set_dirpad_event_processed(false)
       return
     }
 
     onGCDropdown(panelObj.getChild(mergeIdx))
     panelObj.setValue(mergeIdx)
-  }
-
-  function onWrapDown(obj)
-  {
-    if (::show_console_buttons)
-      onGCDropdown(obj.getChild(obj.getValue()))
-    else
-      base.onWrapDown(obj)
-  }
-
-  function onWrapLeft(obj)
-  {
-    local prevDropDown = stickedDropDown
-    if (::handlersManager.isHandlerValid(parentHandlerWeak))
-      parentHandlerWeak.onTopGCPanelLeft(obj)
-
-    if (::check_obj(prevDropDown))
-      prevDropDown.stickHover = "no"
-  }
-
-  function onWrapRight(obj)
-  {
-    local prevDropDown = stickedDropDown
-    if (::handlersManager.isHandlerValid(parentHandlerWeak))
-      parentHandlerWeak.onTopGCPanelRight(obj)
-
-    if (::check_obj(prevDropDown))
-      prevDropDown.stickHover = "no"
   }
 
   function onEventGameModesAvailability(p)

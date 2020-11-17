@@ -1,17 +1,16 @@
-local networkState = require("networkState.nut")
 local activeOrder = require("activeOrder.nut")
 local shipStateModule = require("shipStateModule.nut")
 local hudLogs = require("hudLogs.nut")
 local voiceChat = require("chat/voiceChat.nut")
-local screenState = require("style/screenState.nut")
+local { safeAreaSizeHud } = require("style/screenState.nut")
 local radarComponent = require("radarComponent.nut")
 
 
 local shipHud = @(){
-  watch = networkState.isMultiplayer
+  watch = safeAreaSizeHud
   size = [SIZE_TO_CONTENT, flex()]
   padding = [0, 0, hdpx(32) + ::fpx(6), 0]
-  margin = screenState.safeAreaSizeHud.value.borders
+  margin = safeAreaSizeHud.value.borders
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_LEFT
@@ -19,7 +18,7 @@ local shipHud = @(){
   children = [
     voiceChat
     activeOrder
-    networkState.isMultiplayer.value ? hudLogs : null
+    hudLogs
     shipStateModule
   ]
 }

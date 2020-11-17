@@ -38,17 +38,15 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
+        "hp": 30.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
-      },
-      "propeller_shaft2_dm": {
-        "hp": 4.2
+        "hp": 30.5
       },
       "transmission1_dm": {
-        "hp": 20.4
+        "genericDamageMult": 1.6,
+        "hp": 30.5
       }
     },
     "boron_carbide20": {
@@ -108,8 +106,11 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
-        "hp": 63.8
+        "hp": 80.5
       },
       "wingcontrol_dm": {
         "hp": 59.5
@@ -304,28 +305,22 @@
         },
         {
           "onHit": {
-            "fire": 0.01
-          }
-        },
-        {
-          "onHit": {
-            "damage": 2.7,
-            "fire": 0.01,
-            "leak_oil": 0.5,
+            "fire": 0.001,
+            "leak_oil": 0.8,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.1,
-            "leak_oil": 1.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 30.0,
+            "fire": 25.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -333,7 +328,7 @@
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 30.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -347,28 +342,22 @@
         },
         {
           "onHit": {
-            "fire": 0.01
-          }
-        },
-        {
-          "onHit": {
-            "damage": 2.7,
-            "fire": 0.01,
-            "leak_oil": 0.5,
+            "fire": 0.001,
+            "leak_oil": 0.8,
             "cut": 0.0
           }
         },
         {
           "onHit": {
             "damage": 30.0,
-            "fire": 0.1,
-            "leak_oil": 1.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
             "cut": 0.0
           }
         },
         {
           "onKill": {
-            "fire": 30.0,
+            "fire": 25.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -376,7 +365,7 @@
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 30.0,
             "leak_oil": 10.0,
             "cut": 0.0
           }
@@ -852,9 +841,41 @@
       ]
     },
     {
-      "part": {
-        "name": "transmission1_dm"
-      }
+      "part": [
+        {
+          "name": "transmission1_dm"
+        },
+        {
+          "onHit": {
+            "fire": 0.001,
+            "leak_oil": 0.8,
+            "cut": 0.0
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "fire": 0.005,
+            "leak_oil": 0.95,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "fire": 25.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        }
+      ]
     },
     {
       "part": [
@@ -1261,8 +1282,8 @@
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [1.07,0.6,0.0],
-    "headPosOnShooting": [1.07,0.6,0.0],
+    "headPos": [1.0,0.6,0.0],
+    "headPosOnShooting": [1.0,0.6,0.0],
     "lightPos1": [1.771234,0.096575,-0.003519],
     "lightColor1": [0.01,0.6,0.1],
     "lightRadius1": 0.4,
@@ -1505,7 +1526,7 @@
     }
   ],
   "gunnerFps": {
-    "pos": [-1.49,1.27,0.0],
+    "pos": [-1.01,1.27,0.0],
     "head": "turret1"
   },
   "gunnerOpticFps": {
@@ -2271,6 +2292,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2462,6 +2486,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -2657,6 +2684,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2848,6 +2878,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -3046,6 +3079,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3240,6 +3276,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -3438,6 +3477,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3632,6 +3674,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"

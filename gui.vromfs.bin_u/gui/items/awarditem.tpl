@@ -2,6 +2,11 @@
 awardItemDiv {
   emptyBlock:t='<<emptyBlock>>'
   flow:t='vertical'
+  interactive:t='yes'
+
+  <<#skipNavigation>>
+  skip-navigation:t='yes'
+  <</skipNavigation>>
 
   awardItemHeader {
     size:t='pw, 1@awardItemHeaderHeight';

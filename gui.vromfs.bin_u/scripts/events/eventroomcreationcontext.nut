@@ -10,7 +10,7 @@ enum CREWS_READY_STATUS
 const CHOSEN_EVENT_MISSIONS_SAVE_ID = "events/chosenMissions/"
 const CHOSEN_EVENT_MISSIONS_SAVE_KEY = "mission"
 
-class EventRoomCreationContext
+::EventRoomCreationContext <- class
 {
   mGameMode = null
   onUnitAvailabilityChanged = null

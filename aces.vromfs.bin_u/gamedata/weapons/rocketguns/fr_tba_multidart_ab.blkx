@@ -24,7 +24,6 @@
     "stabilityReductionAfterPenetration": 0.05,
     "bulletType": "apds_fs_long_tank",
     "slopeEffectPreset": "apds_fs_long",
-    "modelName": "tank_bullet_apdsfs_long",
     "fresnel": [0.23,0.1,2.0],
     "bulletName": "us_starstreak",
     "maxDeltaAngle": 2.5,
@@ -50,7 +49,7 @@
     "autoAiming": false,
     "maxAxisValues": 0.5,
     "autoAimTrackingSensitivity": 0.3,
-    "explosionEffect": "atgm_hit",
+    "explosionEffect": "explosion_midair_medium",
     "defFxScale": [2.2,2.5],
     "groundCollisionEffect": "art_ground_splash",
     "groundFxScale": [1.5,1.7],
@@ -58,7 +57,10 @@
     "waterCollisionEffect": "120-203_he_water_splash",
     "waterFxScale": [1.2,1.4],
     "explosionPatchRadius": 5.0,
-    "smokeEffect": "hydra_smoke_modern",
+    "fireEffect": "rocket_fire_light",
+    "smokeEffect": "",
+    "hazeEffect": "",
+    "endSmokeViscosity": 0.05,
     "maxDistance": 8000.0,
     "minDistance": 30.0,
     "spawnExplosionWreckage": false,
@@ -81,12 +83,6 @@
     "amountPerTier": 4.0,
     "iconType": "nar_ap_middle",
     "strikingPart": [
-      {
-        "spinOffset": 0.5
-      },
-      {
-        "spinFreq": 3.0
-      },
       {
         "mesh": "starstreak_hvm_dart"
       },
@@ -118,13 +114,16 @@
         "stabilityReductionAfterPenetration": 0.15
       },
       {
+        "stucking": 0.3
+      },
+      {
+        "stuckingAngle": 40.0
+      },
+      {
         "bulletType": "ap_tank"
       },
       {
         "slopeEffectPreset": "ap"
-      },
-      {
-        "modelName": "tank_bullet_ap"
       },
       {
         "fresnel": [0.23,0.1,2.0]
@@ -196,7 +195,16 @@
         "explosionPatchRadius": 1.5
       },
       {
+        "fireEffect": ""
+      },
+      {
         "smokeEffect": ""
+      },
+      {
+        "hazeEffect": ""
+      },
+      {
+        "endSmokeViscosity": 0.05
       },
       {
         "maxDistance": 8000.0
@@ -419,6 +427,11 @@
         "mod4": [50.0,0.7]
       }
     ],
+    "tracePattern": {
+      "caliber": 10.0,
+      "circleCount": 2,
+      "pointCount": 6
+    },
     "collisions": {
       "steel": {
         "fx": "cannon_hit_armor_cumulative",

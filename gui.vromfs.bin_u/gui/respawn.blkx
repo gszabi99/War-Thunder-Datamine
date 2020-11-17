@@ -209,9 +209,6 @@
                             "position": "relative",
                             "class": "optionsTable",
                             "navigatorShortcuts": "yes",
-                            "on_wrap_up": "onWrapUp",
-                            "on_wrap_down": "onWrapDown",
-                            "on_wrap_right": "onWrapRight",
                             "disableFixedCoord": "yes",
                             "cell": [
                               {
@@ -256,9 +253,9 @@
                           "position": "relative",
                           "flow": "vertical",
                           "display": "hide",
-                          "slotbarItemPlace": {
+                          "slotbarTable": {
                             "id": "air_item_place",
-                            "class": "slotbarTable"
+                            "interactiveChildren": "yes"
                           }
                         }
                       }
@@ -294,21 +291,6 @@
                         },
                         {
                           "enable": "no"
-                        },
-                        {
-                          "behaviour": "wrapBroadcast"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_right": "onWrapRight"
                         },
                         {
                           "dropMenuArrow": []
@@ -601,9 +583,6 @@
                 "shadowSafeArea": []
               },
               {
-                "line": []
-              },
-              {
                 "tdiv": {
                   "size": "pw, 0.02@sf",
                   "pos": "0, ph",
@@ -644,7 +623,7 @@
                         "id": "slotbar-presetsPlace",
                         "size": "pw, ph",
                         "position": "absolute",
-                        "pos": "1@dp, 0"
+                        "display": "hide"
                       }
                     }
                   },
@@ -701,14 +680,7 @@
                       "position": "relative",
                       "top": "0.5(ph-h)",
                       "margin-right": "2@buttonTextPadding",
-                      "class": "header",
-                      "behaviour": "wrapNavigator",
-                      "navigatorShortcuts": "yes",
-                      "childsActivate": "yes",
-                      "on_wrap_up": "onWrapUp",
-                      "on_wrap_down": "onWrapDown",
-                      "on_wrap_left": "onWrapLeft",
-                      "on_wrap_right": "onWrapRight"
+                      "class": "header"
                     }
                   },
                   {
@@ -724,27 +696,6 @@
                       },
                       {
                         "class": "header"
-                      },
-                      {
-                        "behaviour": "wrapNavigator"
-                      },
-                      {
-                        "navigatorShortcuts": "yes"
-                      },
-                      {
-                        "childsActivate": "yes"
-                      },
-                      {
-                        "on_wrap_up": "onWrapUp"
-                      },
-                      {
-                        "on_wrap_down": "onWrapDown"
-                      },
-                      {
-                        "on_wrap_left": "onBottomGCPanelLeft"
-                      },
-                      {
-                        "on_wrap_right": "onBottomGCPanelRight"
                       },
                       {
                         "Button_text": [

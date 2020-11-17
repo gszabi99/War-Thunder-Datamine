@@ -227,12 +227,6 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
     //--- After all units filled ---
     fillFlyOutDescription(true)
     fillArmyLimitDescription()
-    initFocusArray()
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("unit_blocks_place")
   }
 
   function onTabSelect(obj)

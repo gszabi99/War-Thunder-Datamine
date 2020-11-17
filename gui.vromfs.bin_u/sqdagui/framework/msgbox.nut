@@ -137,6 +137,24 @@ local g_string =  require("std/string.nut")
         onButtonId(obj.id.slice(3))
       }
 
+      function onAcceptSelectionAccessKey(obj)
+      {
+        if (showButtonsTimer > 0)
+          return
+        local btnObj = ::check_obj(boxObj) ? boxObj.findObject("buttons_holder") : null
+        if (!::check_obj(btnObj) || !btnObj.isVisible())
+          return
+        local button = btnObj.getChild(btnObj.getValue())
+        for (local i = 0; i < btnObj.childrenCount(); i++)
+        {
+          local bObj = btnObj.getChild(i)
+          if (bObj.isHovered())
+            button = bObj
+        }
+        if (::check_obj(button) && button.isEnabled())
+          return onButtonId(button.id)
+      }
+
       function onUpdate(obj, dt)
       {
         ::reset_msg_box_check_anim_time()
@@ -152,8 +170,7 @@ local g_string =  require("std/string.nut")
               {
                 btnObj.show(true)
                 btnObj.enable(true)
-                if (::check_obj(defBtn))
-                  defBtn.select()
+                btnObj.select()
               }
             }
           }
@@ -171,7 +188,6 @@ local g_string =  require("std/string.nut")
       boxId = null
       boxObj = null
       showButtonsTimer = -1
-      defBtn = null
       startingDialogNow = false
       need_cancel_fn = null
     }
@@ -181,6 +197,7 @@ local g_string =  require("std/string.nut")
           {
             id:t = 'ak_select_btn';
             btnName:t='A';
+            on_click:t = 'onAcceptSelectionAccessKey'
             text:t = '#mainmenu/btnSelect';
             display:t='none'
             ButtonImg {}
@@ -196,8 +213,10 @@ local g_string =  require("std/string.nut")
         buttons.append(["", cancel_fn])
     }
 
+    local defBtnIdx = 0
+    local idx = -1
     local animParams = needAnim ? "color-factor:t='0';" : ""
-    foreach (btn in buttons)
+    foreach(btn in buttons)
     {
       if (btn[0]!="")
       {
@@ -206,6 +225,9 @@ local g_string =  require("std/string.nut")
         if (buttons.len() == 1)
           btnText += "btnName:t='AB'; " //Enter and Esc for the single button
         blkText += "Button_text { " + animParams + btnText + "}"
+        idx++
+        if (btn[0] == def_btn)
+          defBtnIdx = idx
       }
       if (btn[0] == "cancel" || btn[0] == "")
       {
@@ -232,35 +254,22 @@ local g_string =  require("std/string.nut")
     handlerObj.need_cancel_fn = needCancelFn
 
     local holderObj = msgbox.findObject("buttons_holder")
-    if (holderObj != null)
-    {
+    if (holderObj != null) {
       gui_scene.appendWithBlk(holderObj, blkText, handlerObj)
-      if (def_btn != null && def_btn.len() > 0)
-      {
-        local defBtnObj = msgbox.findObject(def_btn)
-        if (defBtnObj != null)
-        {
-          defBtnObj.select()
-          handlerObj.defBtn = defBtnObj
-        }
-      }
 
-      if (delayedButtons>0)
-      {
+      if (delayedButtons>0) {
         msgbox.findObject("msg_box_timer").setUserData(handlerObj)
         holderObj.show(false)
         holderObj.enable(false)
         handlerObj.showButtonsTimer = delayedButtons
       }
+      else
+        holderObj.setValue(defBtnIdx)
     }
 
     local navObj = msgbox.findObject("msg-nav-bar")
     if (navObj != null)
       gui_scene.appendWithBlk(navObj, navText, handlerObj)
-
-//    local navBar = gui_scene["nav-help"]
-//    if (navBar != null)
-//      navBar.display = "none"
   } else
     needWaitAnim = true  //if no buttons, than wait anim always need
 
@@ -307,6 +316,9 @@ local g_string =  require("std/string.nut")
       obj.show(true)
     }
   }
+
+  if (delayedButtons == 0)
+    msgbox.findObject("buttons_holder")?.select()
 
   ::scene_msg_boxes_list.append(msgbox)
   ::broadcastEvent("MsgBoxCreated")

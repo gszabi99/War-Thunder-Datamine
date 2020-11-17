@@ -4,10 +4,11 @@
     "id": "slotb-aircraft-choose-root",
     "size": "sw, sh",
     "position": "root",
-    "background-color": "@shadeBackgroundColor",
     "btnName": "B",
     "on_click": "onCancelSlotChoose",
-    "tooltip": ""
+    "tooltip": "",
+    "blur": [],
+    "blur_foreground": []
   },
   "div": {
     "id": "tablePlace",
@@ -38,21 +39,21 @@
         "pos": "0.5*pw - 0.5*w, 2*@sf/@pf_outdated",
         "size": "@shop_width, ph"
       },
-      "table": {
+      "shopTable": {
         "id": "airs_table",
         "left": "50%pw-50%w",
         "position": "relative",
         "margin": "0,1",
-        "class": "slotbarTable",
+        "flow": "vertical",
         "slotDiscountsPos": "rightInside",
-        "behavior": "columnNavigator",
-        "navigatorShortcuts": "active",
-        "cur_col": "0",
-        "cur_row": "0",
-        "fixed_row": "0",
+        "navigatorShortcuts": "yes",
+        "alwaysShowBorder": "yes",
+        "canSelectNone": "yes",
+        "behavior": "posNavigator",
         "on_click": "onAircraftClick",
         "on_select": "onUnitSelect",
-        "on_dbl_click": "onDoubleClick"
+        "on_activate": "onAircraftClick",
+        "on_dbl_click": "onUnitDblClick"
       }
     }
   },

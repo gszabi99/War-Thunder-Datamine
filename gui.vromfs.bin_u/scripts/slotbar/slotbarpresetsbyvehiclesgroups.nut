@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 local curPreset = {
   groupsList = {} //groups config by country

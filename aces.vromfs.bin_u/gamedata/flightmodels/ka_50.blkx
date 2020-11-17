@@ -56,14 +56,6 @@
         "genericDamageMult": 1.6,
         "hp": 30.5
       },
-      "propeller_shaft1_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
-      "propeller_shaft2_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -109,6 +101,12 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft1_dm": {
+        "hp": 60.5
+      },
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 80.5
       },
@@ -544,78 +542,14 @@
       }
     },
     {
-      "part": [
-        {
-          "name": "propeller_shaft1_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "propeller_shaft1_dm"
+      }
     },
     {
-      "part": [
-        {
-          "name": "propeller_shaft2_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "propeller_shaft2_dm"
+      }
     },
     {
       "part": [
@@ -1381,8 +1315,11 @@
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [2.35,0.64,0.0],
-    "headPosOnShooting": [2.35,0.64,0.0],
+    "headPos": [2.35,0.58,0.0],
+    "headPosOnShooting": [2.35,0.58,0.0],
+    "mirror": true,
+    "mirrorPos": [3.007,0.863,0.0],
+    "mirrorNorm": [0.685,0.45,0.0],
     "lightPos": [2.908533,0.111968,0.000123],
     "lightColor": [0.01,0.6,0.1],
     "lightRadius": 0.45,
@@ -1394,52 +1331,45 @@
     "devices": {
       "stick_ailerons": [-1.0,1.0],
       "stick_elevator": [-1.0,1.0],
-      "weapon1": [0.0,1.0],
-      "weapon2": [0.0,1.0],
-      "weapon3": [0.0,1.0],
-      "weapon4": [0.0,1.0],
-      "throttle": [0.0,1.0],
       "pedals": [-1.0,1.0],
       "pedals1": [-1.0,1.0],
       "pedals2": [-1.0,1.0],
       "pedals3": [-1.0,1.0],
       "pedals4": [-1.0,1.0],
-      "pedals5": [-1.0,1.0],
-      "pedals6": [-1.0,1.0],
-      "pedals7": [-1.0,1.0],
-      "aviahorizon_pitch": [-90.0,90.0],
-      "aviahorizon_roll": [-90.0,90.0],
-      "aviahorizon_pitch1": [-90.0,90.0],
-      "aviahorizon_roll1": [-90.0,90.0],
-      "bank": [-1.0,1.0],
-      "bank1": [-1.0,1.0],
-      "turn": [-45.0,45.0],
-      "g_meter": [-2.0,4.0],
-      "g_meter_min": [-2.0,4.0],
-      "g_meter_max": [-2.0,4.0],
-      "clock_hour": [0.0,12.0],
-      "clock_min": [0.0,60.0],
-      "clock_sec": [0.0,60.0],
+      "throttle": [0.0,1.0],
+      "weapon2": [0.0,1.0],
+      "weapon3": [0.0,1.0],
+      "gears": [0.0,1.0],
+      "gears_lamp": [0.0,0.0],
+      "speed": [0.0,97.22],
       "compass": [0.0,360.0],
       "compass1": [0.0,360.0],
       "vario": [-30.0,30.0],
-      "speed": [0.0,125.0],
-      "altitude_hour": [0.0,10000.0],
+      "g_meter": [-2.0,4.0],
+      "g_meter_min": [-2.0,4.0],
+      "g_meter_max": [-2.0,4.0],
+      "altitude_hour": [0.0,30000.0],
       "altitude_min": [0.0,1000.0],
-      "altitude_min1": [0.0,800.0],
+      "radio_altitude": [0.0,300.0],
       "altitude_koef": 1.0,
-      "head_temperature": [0.0,1200.0],
-      "head_temperature1": [0.0,1200.0],
-      "water_temperature": [0.0,1000.0],
-      "water_temperature1": [0.0,1000.0],
-      "oil_pressure": [0.0,8.0],
-      "oil_pressure1": [0.0,8.0],
-      "oil_temperature": [-50.0,150.0],
-      "oil_temperature1": [-50.0,150.0],
-      "fuel1": [0.0,2500.0],
-      "rpm": [0.0,15400.0],
-      "rpm1": [0.0,15400.0],
-      "gears_lamp": [0.0,0.0]
+      "bank": [-8.0,8.0],
+      "bank1": [-8.0,8.0],
+      "turn": [-0.23562,0.23562],
+      "aviahorizon_pitch": [-90.0,90.0],
+      "aviahorizon_roll": [-60.0,60.0],
+      "aviahorizon_pitch1": [-90.0,90.0],
+      "aviahorizon_roll1": [-60.0,60.0],
+      "clock_hour": [0.0,12.0],
+      "clock_min": [0.0,60.0],
+      "clock_sec": [0.0,60.0],
+      "rpm": [0.0,12600.0],
+      "rpm1": [0.0,12600.0],
+      "oil_temperature": [0.0,150.0],
+      "oil_temperature1": [0.0,150.0],
+      "water_temperature": [0.0,1200.0],
+      "water_temperature1": [0.0,1200.0],
+      "fuel": [0.0,800.0],
+      "fuel1": [0.0,800.0]
     },
     "multifunctionDisplays": [
       {
@@ -2068,6 +1998,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2259,6 +2192,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -2454,6 +2390,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -2645,6 +2584,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -2843,6 +2785,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3037,6 +2982,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -3235,6 +3183,9 @@
           "dp": "tailcontrol_dm"
         },
         {
+          "dp": "engine%d_dm"
+        },
+        {
           "dp": "oil%d_dm"
         },
         {
@@ -3429,6 +3380,9 @@
         },
         {
           "dp": "tailcontrol_dm"
+        },
+        {
+          "dp": "engine%d_dm"
         },
         {
           "dp": "oil%d_dm"
@@ -4489,6 +4443,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 64,
@@ -4499,6 +4454,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 64,

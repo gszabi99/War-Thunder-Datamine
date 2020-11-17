@@ -356,13 +356,16 @@
   "ps4": {
     "garlic_size_mb": 2450,
     "neo_garlic_size_mb": 2800,
-    "onion_size_mb": 128,
+    "onion_size_mb": 160,
     "dcb_size_mb": 8,
     "ccb_size_mb": 8,
     "onion_blocks": 16384,
     "max_genmip_tex_sz": 2052,
     "mem_reserve_mb": 256,
     "emergency_buffer_pages": 20,
+    "shader_garlic_size_kb": 2048,
+    "dynbuf_heap_garlic_mb": 96,
+    "dynbuf_heap_onion_mb": 32,
     "enable_deferred_mipgen": true,
     "neo_4k_scale": 167,
     "guiWebCacheCircuit": "production",
@@ -374,9 +377,8 @@
     "mem_shader_heap_size_kb": 8192,
     "mem_reserve_mb": 256,
     "max_genmip_tex_sz": 2052,
-    "emergency_buffer_pages": 20,
+    "dynbuf_heap_gpu_mb": 160,
     "enable_deferred_mipgen": true,
-    "neo_4k_scale": 100,
     "guiWebCacheCircuit": "production",
     "enable_defrag": true
   },
@@ -501,7 +503,9 @@
     "water3d": true,
     "clipmap": true,
     "rendinstClipmapShadows": true,
-    "fxReflection": true
+    "fxReflection": true,
+    "detailedWaterForPlanes": true,
+    "wakeFoamWithoutAA": true
   },
   "clipmap": {
     "sideSize": 768,
@@ -510,6 +514,10 @@
     "stackCount": 8,
     "step": 1.7,
     "finalSize": 0.0
+  },
+  "clipmapImpostor": {
+    "enabled": false,
+    "distance": 1300.0
   },
   "aviWriter": {
     "quality": 100,
@@ -574,7 +582,7 @@
     },
     {
       "win32": {
-        "enableStreaming": false
+        "enableStreaming": true
       }
     },
     {

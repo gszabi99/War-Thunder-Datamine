@@ -5,7 +5,7 @@ local psnSystem = require("sony.sys")
 
 local seenEnumId = SEEN.EXT_PS4_SHOP
 
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local seenList = require("scripts/seen/seenList.nut").get(seenEnumId)
 local shopData = require("scripts/onlineShop/ps4ShopData.nut")
 
@@ -154,7 +154,6 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
       {callsite = "on_event_shop_sheets_inited", status = "ok"})
 
     fillItemsList()
-    restoreFocus()
     updateItemInfo()
   }
 

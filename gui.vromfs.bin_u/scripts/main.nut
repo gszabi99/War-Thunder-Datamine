@@ -20,12 +20,12 @@ local frp = require("frp")
 ::regexp2 <- require("regexp2")
 
 ::script_protocol_version <- null
-::dagor.runScript("scripts/version.nut")
-::dagor.runScript("sqStdLibs/scriptReloader/scriptReloader.nut")
+require("scripts/version.nut")
+require("sqStdLibs/scriptReloader/scriptReloader.nut")
 require("scripts/sqModuleHelpers.nut")
-::g_script_reloader.loadOnce("sqStdLibs/helpers/backCompatibility.nut")
-::g_script_reloader.loadOnce("scripts/compatibility.nut")
-::g_script_reloader.loadOnce("scripts/clientState/errorHandling.nut")
+require("sqStdLibs/helpers/backCompatibility.nut")
+require("scripts/compatibility.nut")
+require("scripts/clientState/errorHandling.nut")
 local { get_local_unixtime } = ::require_native("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
@@ -165,15 +165,19 @@ global enum itemType { //bit values for easy multitype search
   WARBONDS        = 0x00400000
   INTERNAL_ITEM   = 0x00800000 //external inventory coupon which gives internal item
   ENTITLEMENT     = 0x01000000
+  WARPOINTS       = 0x02000000
+  UNLOCK          = 0x04000000
+  BATTLE_PASS     = 0x08000000
+  RENTED_UNIT     = 0x10000000
 
   //workshop
-  CRAFT_PART      = 0x10000000
-  RECIPES_BUNDLE  = 0x20000000
-  CRAFT_PROCESS   = 0x40000000
+  CRAFT_PART      = 0x20000000
+  RECIPES_BUNDLE  = 0x40000000
+  CRAFT_PROCESS   = 0x80000000
 
   //masks
   ALL             = 0xFFFFFFFF
-  INVENTORY_ALL   = 0x0FBFFFFF //~CRAFT_PART ~CRAFT_PROCESS ~WARBONDS
+  INVENTORY_ALL   = 0x57BFFFFF //~CRAFT_PART ~CRAFT_PROCESS ~WARBONDS
 }
 
 global enum PREVIEW_MODE
@@ -234,7 +238,7 @@ global enum squadMemberState
   SQUAD_MEMBER_OFFLINE
 }
 
-::ES_UNIT_TYPE_TOTAL_RELEASED <- 2
+::ES_UNIT_TYPE_TOTAL_RELEASED <- 3
 
 global const SAVE_ONLINE_JOB_DIGIT = 123 //super secure digit for job tag :)
 global const SAVE_WEAPON_JOB_DIGIT = 321
@@ -297,8 +301,6 @@ global enum USERLOG_POPUP {
   NONE                  = 0x0000
 }
 
-global const MAIN_FOCUS_ITEM_IDX = 4
-
 global enum squadState
 {
   NOT_IN_SQUAD
@@ -318,11 +320,11 @@ randomize()
 
 //------- vvv files before login vvv ----------
 
-::g_string <- ::require("std/string.nut") //put g_string to root_table
-::u <- ::require("sqStdLibs/helpers/u.nut") //put u to roottable
-::Callback <- ::require("sqStdLibs/helpers/callback.nut").Callback
+::g_string <- require("std/string.nut") //put g_string to root_table
+::u <- require("sqStdLibs/helpers/u.nut") //put u to roottable
+::Callback <- require("sqStdLibs/helpers/callback.nut").Callback
 
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 ::g_listener_priority <- {
   DEFAULT = 0
   DEFAULT_HANDLER = 1
@@ -365,6 +367,7 @@ foreach (fn in [
   "scripts/viewUtils/projectAwards.nut"
 
   "scripts/util.nut"
+  "sqStdLibs/helpers/datablockUtils.nut"
   "sqDagui/timer/timer.nut"
 
   "scripts/clientState/localProfile.nut"
@@ -460,14 +463,16 @@ foreach(bhvName, bhvClass in ::gui_bhv_deprecated)
 )
 
   // Independed Modules (before login)
-::require("sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
-::require("scripts/clientState/elems/dlDataStatElem.nut")
-::require("sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
+require("sqDagui/elemUpdater/bhvUpdater.nut").setAssertFunction(::script_net_assert_once)
+require("scripts/clientState/elems/dlDataStatElem.nut")
+require("sqDagui/framework/progressMsg.nut").setTextLocIdDefault("charServer/purchase0")
   // end of Independed Modules
 
 local platform = require("scripts/clientState/platform.nut")
-::cross_call_api.platform <- platform
-::cross_call_api.platform.is_pc <- @() platform.isPlatformPC
+::cross_call_api.platform <- {
+  getPlayerName = platform.getPlayerName
+  is_pc = @() platform.isPlatformPC
+}
 
 ::use_touchscreen <- ::init_use_touchscreen()
 ::is_small_screen <- ::use_touchscreen // FIXME: Touch screen is not always small.
@@ -565,7 +570,6 @@ local isFullScriptsLoaded = false
     "promo/promoViewUtils.nut"
     "promo/promo.nut"
     "promo/promoHandler.nut"
-    "promo/BattleTasksPromoHandler.nut"
     "mainmenu/topMenuSections.nut"
     "mainmenu/topMenuSectionsConfigs.nut"
     "mainmenu/topMenuButtonsHandler.nut"
@@ -688,6 +692,7 @@ local isFullScriptsLoaded = false
     "unlocks/showUnlock.nut"
     "unlocks/battleTaskDifficulty.nut"
     "unlocks/battleTasks.nut"
+    "promo/BattleTasksPromoHandler.nut"
     "unlocks/personalUnlocks.nut"
     "unlocks/battleTasksHandler.nut"
     "unlocks/battleTasksSelectNewTask.nut"
@@ -726,7 +731,7 @@ local isFullScriptsLoaded = false
     "matchingRooms/mpLobby.nut"
     "matchingRooms/mRoomMembersWnd.nut"
 
-    "flightMenu.nut"
+    "flightMenu/flightMenu.nut"
     "misCustomRules/missionCustomState.nut"
     "mpStatistics.nut"
     "respawn/misLoadingState.nut"
@@ -887,13 +892,13 @@ local isFullScriptsLoaded = false
     ::g_script_reloader.loadIfExist("scripts/worldWar/worldWar.nut")
 
   // Independed Modules (after login)
-  ::require("scripts/social/playerInfoUpdater.nut")
-  ::require("scripts/seen/bhvUnseen.nut")
-  ::require("scripts/items/roulette/bhvRoulette.nut")
-  ::require("scripts/squads/elems/voiceChatElem.nut")
-  ::require("scripts/slotbar/elems/discountIconElem.nut")
-  ::require("scripts/slotbar/elems/squadronExpIconElem.nut")
-  ::require("scripts/matching/serviceNotifications/showInfo.nut")
+  require("scripts/social/playerInfoUpdater.nut")
+  require("scripts/seen/bhvUnseen.nut")
+  require("scripts/items/roulette/bhvRoulette.nut")
+  require("scripts/squads/elems/voiceChatElem.nut")
+  require("scripts/slotbar/elems/discountIconElem.nut")
+  require("scripts/slotbar/elems/squadronExpIconElem.nut")
+  require("scripts/matching/serviceNotifications/showInfo.nut")
   require("scripts/unit/unitContextMenu.nut")
   require("sqDagui/guiBhv/bhvUpdateByWatched.nut")
   require("scripts/social/activityFeed/activityFeedModule.nut")
@@ -914,7 +919,7 @@ local isFullScriptsLoaded = false
   }
   // end of Independed Modules
 
-  ::require("scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
+  require("scripts/utils/systemMsg.nut").registerColors(colorTagToColors)
 }
 
 //app does not exist on script load, so we cant to use ::app->shouldDisableMenu

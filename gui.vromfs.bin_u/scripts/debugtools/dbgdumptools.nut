@@ -248,7 +248,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     { id = "_fake_get_current_mission_desc", value = function() { local b = ::DataBlock();
       ::get_current_mission_desc(b); return b } }
     { id = "get_user_custom_state", args = [ ::my_user_id_int64, false ] }
-    { id = "_fake_mpchat_log", value = ::require("scripts/chat/mpChatModel.nut").getLog() }
+    { id = "_fake_mpchat_log", value = require("scripts/chat/mpChatModel.nut").getLog() }
     "LAST_SESSION_DEBUG_INFO"
     "get_game_type"
     "get_game_mode"
@@ -310,15 +310,16 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
         "shop_is_aircraft_purchased", "wp_get_cost", "wp_get_cost_gold", "get_aircraft_max_fuel" ])
         list.append({ id = id, args = [ unit.name ] })
       list.append({ id = "get_available_respawn_bases", args = [ unit.tags ] })
-      list.append({ id = "shop_get_spawn_score", args = [ unit.name, "" ] })
+      list.append({ id = "shop_get_spawn_score", args = [ unit.name, "", [] ] })
       list.append({ id = "is_crew_slot_was_ready_at_host", args = [ crew.idInCountry, unit.name, false ] })
       list.append({ id = "get_aircraft_fuel_consumption", args = [ unit.name, ::get_mission_difficulty(), true ] })
 
       foreach (weapon in unit.weapons)
       {
-        foreach (id in [ "shop_get_spawn_score", "wp_get_cost2", "wp_get_cost_gold2",
-          "shop_is_weapon_purchased", "shop_get_weapon_baseval" ])
+        foreach (id in [ "wp_get_cost2", "wp_get_cost_gold2", "shop_is_weapon_purchased",
+          "shop_get_weapon_baseval" ])
           list.append({ id = id, args = [ unit.name, weapon.name ] })
+        list.append({ id = "shop_get_spawn_score", args = [ unit.name, weapon.name, [] ] })
         list.append({ id = "shop_is_weapon_available", args = [ unit.name, weapon.name, true, false ] })
       }
     }
@@ -347,7 +348,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   ::g_mis_custom_state.getCurMissionRules()
   ::g_crews_list.crewsList = []
   ::SquadIcon.initListLabelsSquad()
-  ::require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
+  require("scripts/chat/mpChatModel.nut")?.setLog(::_fake_mpchat_log)
   ::gui_start_respawn()
   ::broadcastEvent("MpChatLogUpdated")
   ::broadcastEvent("BattleLogMessage")

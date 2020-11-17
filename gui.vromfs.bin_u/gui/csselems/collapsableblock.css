@@ -6,6 +6,7 @@ collapsableBlock[type=decoratorsList] > content {
 
   flow:h-flow;
   disableFocusParent:yes;
+  not-input-transparent:yes;
 
   background-image:#ui/gameuiskin#block_bg;
   background-color:@white;
@@ -14,17 +15,28 @@ collapsableBlock[type=decoratorsList] > content {
   max-width: pw;
 }
 
+collapsableBlock > content {
+  display:hide;
+}
+collapsableBlock[selected=yes] > content {
+  display:show;
+}
+
 collapsableBlock {
   width:pw;
   flow:vertical;
+  input-transparent:yes;
   css-hier-invalidate:yes;
 }
 collapsableBlock > header {
   size:pw, @baseTrHeight;
   css-hier-invalidate:yes;
+  input-transparent:yes;
+  total-input-transparent:yes;
 }
 collapsableBlock > header > fullSizeCollapseBtn {
   tooltip:"";
+  shortcutActivate:"";
   css-hier-invalidate:yes;
 }
 collapsableBlock > header > fullSizeCollapseBtn > text {
@@ -49,7 +61,11 @@ collapsableBlock[selected=yes] > header > fullSizeCollapseBtn {
 }
 
 collapsableBlock > header > fullSizeCollapseBtn:hover > text,
-collapsableBlock:focus > header > fullSizeCollapseBtn > text,
-collapsableBlock[selected=yes] > header > fullSizeCollapseBtn:[selected=yes] > text {
+collapsableBlock > header:hover > fullSizeCollapseBtn > text,
+collapsableBlock[selected=yes] > header > fullSizeCollapseBtn[selected=yes] > text {
   color:@activeTextColor;
+}
+
+[show_console_buttons=yes] fullSizeCollapseBtn:hover {
+  needFocusBorder:yes;
 }

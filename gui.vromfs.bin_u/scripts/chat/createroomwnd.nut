@@ -27,13 +27,6 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
   curTitle = ""
   isValuesValid = false
 
-  focusArray = [
-    "room_name"
-    "room_password"
-    "thread_title"
-  ]
-  currentFocusItem = 0
-
   function initScreen()
   {
     tabsList = []
@@ -103,9 +96,6 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
       showSceneBtn(blockName, blockName == curTabBlock)
 
     checkValues()
-
-    guiScene.applyPendingChanges(false)
-    delayedRestoreFocus()
   }
 
   function initCategories()

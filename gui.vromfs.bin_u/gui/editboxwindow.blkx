@@ -1,11 +1,13 @@
 {
   "root": {
-    "background-color": "@shadeBackgroundColor2",
+    "blur": [],
+    "blur_foreground": [],
     "frame": {
       "width": "50*@scrn_tgt/100.0",
       "pos": "50%pw-50%w, 40%ph-40%h",
       "position": "absolute",
       "flow": "vertical",
+      "class": "wnd",
       "frame_header": {
         "activeText": {
           "id": "edit_box_window_header",
@@ -38,7 +40,6 @@
           "EditBox": {
             "id": "edit_box_window_text",
             "width": "pw",
-            "mouse-focusable": "yes",
             "display": "hide",
             "enable": "no",
             "on_activate": "onOk",
@@ -51,7 +52,6 @@
             "id": "edit_box_window_text_multiline",
             "size": "pw, 4@buttonHeight",
             "multiline": "yes",
-            "mouse-focusable": "yes",
             "display": "hide",
             "enable": "no",
             "_on_cancel_edit": "goBack",
@@ -66,7 +66,7 @@
           "id": "btn_ok",
           "text": "#msgbox/btn_ok",
           "on_click": "onOk",
-          "btnName": "A",
+          "btnName": "X",
           "ButtonImg": []
         }
       }

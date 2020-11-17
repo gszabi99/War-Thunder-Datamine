@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 ::hudEnemyDamage <- {
   // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
   thresholdShowHealthBelow = 0.25
@@ -61,6 +62,7 @@
         "tank_drive_turret_h"
         "tank_drive_turret_v"
         "tank_ammo"
+        "tank_countermeasure"
         "ship_main_caliber_gun"
         "ship_auxiliary_caliber_gun"
         "ship_main_caliber_turret"
@@ -344,7 +346,7 @@
     local diffCode = ::get_mission_difficulty_int()
     local settingsName = ::g_difficulty.getDifficultyByDiffCode(diffCode).settingsName
     local path = "difficulty_settings/baseDifficulty/" + settingsName + "/changeCrewTime"
-    local changeCrewTime = ::get_blk_value_by_path(::dgs_get_game_params(), path)
+    local changeCrewTime = get_blk_value_by_path(::dgs_get_game_params(), path)
     return changeCrewTime != null ? 1 : 2
   }
 }

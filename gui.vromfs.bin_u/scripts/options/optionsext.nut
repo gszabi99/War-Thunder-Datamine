@@ -1,21 +1,25 @@
 local time = require("scripts/time.nut")
-local colorCorrector = require_native("colorCorrector")
+local colorCorrector = ::require_native("colorCorrector")
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
-local globalEnv = require_native("globalEnv")
-local avatars = ::require("scripts/user/avatars.nut")
+local globalEnv = ::require_native("globalEnv")
+local avatars = require("scripts/user/avatars.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local optionsUtils = require("scripts/options/optionsUtils.nut")
-local optionsMeasureUnits = ::require("scripts/options/optionsMeasureUnits.nut")
+local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
-local soundDevice = require_native("soundDevice")
+local soundDevice = ::require_native("soundDevice")
 local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
 local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { reloadDargUiScript } = require_native("reactiveGuiCommand")
+local { reloadDargUiScript } = require("reactiveGuiCommand")
 local {bombNbr} = require("scripts/unit/unitStatus.nut")
+local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+//
+
+
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -399,19 +403,15 @@ local isWaitMeasureEvent = false
 
   local minVal = ::getTblValue("min", params, 0)
   local maxVal = ::getTblValue("max", params, 100)
-  local data = format("id:t = '%s'; min:t='%d'; max:t='%d'; step:t = '%s'; value:t = '%d'; clicks-by-points:t='%s'; ",
-                  id,
-                  minVal,
-                  maxVal,
-                  ::getTblValue("step", params, 5).tostring(),
-                  value,
-                  ::abs(maxVal - minVal) == 1 ? "yes" : "no"
-               )
-  if (cb != null)
-    data += "on_change_value:t = '" +  cb + "';"
-
+  local step = params?.step ?? 5
+  local clickByPoints = ::abs(maxVal - minVal) == 1 ? "yes" : "no"
+  local data = "".concat(
+    $"id:t = '{id}'; min:t='{minVal}'; max:t='{maxVal}'; step:t = '{step}'; value:t = '{value}'; ",
+    $"clicks-by-points:t='{clickByPoints}'; ",
+    cb == null ? "" : $"on_change_value:t = '{cb}'; "
+  )
   if (isFull)
-    data = sliderType + " { " + data + " }"
+    data = "{0} { {1} focus_border{} tdiv{} }".subst(sliderType, data) //tdiv need to focus border not count as slider button
 
   return data
 }
@@ -558,8 +558,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_BOMB_ACTIVATION_TIME:
       local isBombActivationAssault = ::get_option_bomb_activation_type() == 1
       local assaultFuseTime = ::get_bomb_activation_auto_time()
-      local diffOptions = ::get_option(::USEROPT_DIFFICULTY)
-      local diffCode = context?.diffCode ?? diffOptions.diffCode[diffOptions.value]
+      local diffCode = context?.diffCode ?? ::get_difficulty_by_ediff(::get_mission_mode()).diffCode
       local bombActivationTime = ::max(::load_local_account_settings(
         $"useropt/bomb_activation_time/{diffCode}",
           ::get_option_bomb_activation_time()), assaultFuseTime)
@@ -703,6 +702,23 @@ local isWaitMeasureEvent = false
       defaultValue = 0
       break
 
+    case ::USEROPT_TORPEDO_DIVE_DEPTH:
+      descr.id = "torpedo_dive_depth"
+      local items = ::get_options_torpedo_dive_depth()
+      descr.items = []
+      descr.values = []
+      foreach(val in items)
+      {
+        descr.items.append(val.tostring())
+        descr.values.append(val)
+      }
+      if(::aircraft_for_weapons)
+        descr.value = ::find_in_array(descr.values, ::get_unit_option(::aircraft_for_weapons, ::USEROPT_TORPEDO_DIVE_DEPTH), null)
+      if (!::is_numeric(descr.value))
+        descr.value = ::find_in_array(descr.values, ::get_option_torpedo_dive_depth(), null)
+      defaultValue = 0
+      break
+
     case ::USEROPT_AEROBATICS_SMOKE_TYPE:
       descr.id = "aerobatics_smoke_type"
       descr.cb = "onTripleAerobaticsSmokeSelected";
@@ -815,7 +831,7 @@ local isWaitMeasureEvent = false
       descr.id = "gamepadVibrationForEngine"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
-      defaultValue = true
+      defaultValue = false
       break
 
     case ::USEROPT_JOY_MIN_VIBRATION:
@@ -1131,8 +1147,10 @@ local isWaitMeasureEvent = false
       descr.controlName <- "switchbox"
       descr.textChecked <- ::loc("options/enabled")
       descr.textUnchecked <- ::loc("#options/disabled")
-      descr.hint = ::loc("options/sound") + "\n" +
-        ::colorize("warningTextColor", ::loc("guiHints/restart_required"))
+      descr.hint = ::loc("options/sound")
+      if(!::is_sound_inited())
+        descr.hint = "".concat(descr.hint, "\n",
+           ::colorize("warningTextColor", ::loc("guiHints/restart_required")))
       descr.value = ::getSystemConfigOption("sound/fmod_sound_enable", true)
       break
 
@@ -1242,10 +1260,7 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
       descr.id = "multiplier_gunner_view_zoom"
-      if (::have_per_vehicle_zoom_sens)
-        descr.value = (::get_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
-      else
-        descr.value = 0
+      descr.value = (::get_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS) * 100.0).tointeger()
       break
 
     case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
@@ -1255,10 +1270,7 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
       descr.id = "atgm_aim_zoom_sens_helicopter"
-      if (::have_per_vehicle_zoom_sens)
-        descr.value = (::get_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER) * 100.0).tointeger()
-      else
-        descr.value = 0
+      descr.value = (::get_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER) * 100.0).tointeger()
       break
 
     case ::USEROPT_MOUSE_SMOOTH:
@@ -1297,6 +1309,9 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_MASTER) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_MASTER)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_MUSIC:
       descr.id = "volume_music"
@@ -1304,30 +1319,45 @@ local isWaitMeasureEvent = false
       descr.title = ::loc(::has_feature("Radio") ? "options/volume_music/and_radio" : "options/volume_music")
       descr.value = (::get_sound_volume(::SND_TYPE_MUSIC) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_MUSIC)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_MENU_MUSIC:
       descr.id = "volume_menu_music"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_MENU_MUSIC) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_MENU_MUSIC)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_SFX:
       descr.id = "volume_sfx"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_SFX) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_SFX)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_GUNS:
       descr.id = "volume_guns"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_GUNS) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_GUNS)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_TINNITUS:
       descr.id = "volume_tinnitus"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_TINNITUS) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_TINNITUS)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_HANGAR_SOUND:
       descr.id = "hangar_sound"
@@ -1340,26 +1370,36 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_RADIO) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_RADIO)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_ENGINE:
       descr.id = "volume_engine"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_ENGINE) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_ENGINE)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_MY_ENGINE:
       descr.id = "volume_my_engine"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_MY_ENGINE) * 100).tointeger()
       descr.cb = "onVolumeChange"
-      descr.min <- 20
-      descr.max <- 100
+      local limits = ::get_volume_limits(::SND_TYPE_MY_ENGINE)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_DIALOGS:
       descr.id = "volume_dialogs"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_DIALOGS) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_DIALOGS)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
 
     case ::USEROPT_VOLUME_VOICE_IN:
@@ -1367,19 +1407,25 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_VOICE_IN) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_VOICE_IN)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
     case ::USEROPT_VOLUME_VOICE_OUT:
       descr.id = "volume_voice_out"
       descr.controlType = optionControlType.SLIDER
       descr.value = (::get_sound_volume(::SND_TYPE_VOICE_OUT) * 100).tointeger()
       descr.cb = "onVolumeChange"
+      local limits = ::get_volume_limits(::SND_TYPE_VOICE_OUT)
+      descr.min <- limits.x.tointeger()
+      descr.max <- limits.y.tointeger()
       break
 
     case ::USEROPT_CONTROLS_PRESET:
       descr.id = "controls_preset"
       descr.items = []
       descr.values = ::g_controls_presets.getControlsPresetsList()
-      descr.trParams <- "optionWidthInc:t='triple';"
+      descr.trParams <- "optionWidthInc:t='double';"
 
       if (!isPlatformSony && !isPlatformXboxOne)
         descr.values.insert(0, "") //custom preset
@@ -1570,6 +1616,15 @@ local isWaitMeasureEvent = false
       defaultValue = true
       if (::SessionLobby.isInRoom())
         prevValue = ::SessionLobby.getMissionParam("useShipBots", null)
+      break
+
+    case ::USEROPT_KEEP_DEAD:
+      descr.id = "keepDead"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      defaultValue = true
+      if (::SessionLobby.isInRoom())
+        prevValue = ::SessionLobby.getMissionParam("keepDead", null)
       break
 
     case ::USEROPT_BOTS_RANKS:
@@ -1999,6 +2054,13 @@ local isWaitMeasureEvent = false
       descr.value = ::get_option_use_radar_hud_in_cockpit()
       break
 
+    case ::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
+      descr.id = "activate_airborne_active_counter_measures_on_spawn"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_option_activate_airborne_active_counter_measures_on_spawn()
+      break
+
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       descr.id = "save_ai_target_type"
       descr.controlType = optionControlType.CHECKBOX
@@ -2230,10 +2292,10 @@ local isWaitMeasureEvent = false
       }
       break
 
-    case USEROPT_CONTENT_ALLOWED_PRESET_ARCADE:
-    case USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC:
-    case USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR:
-    case USEROPT_CONTENT_ALLOWED_PRESET:
+    case ::USEROPT_CONTENT_ALLOWED_PRESET_ARCADE:
+    case ::USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC:
+    case ::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR:
+    case ::USEROPT_CONTENT_ALLOWED_PRESET:
       local difficulty = contentPreset.getDifficultyByOptionId(optionId)
       defaultValue = difficulty.contentAllowedPresetOptionDefVal
       descr.id = "content_allowed_preset"
@@ -2256,7 +2318,7 @@ local isWaitMeasureEvent = false
       break
 
 
-    case USEROPT_TANK_SKIN_CONDITION:
+    case ::USEROPT_TANK_SKIN_CONDITION:
       descr.id = "skin_condition"
       descr.controlType = optionControlType.SLIDER
       descr.min <- -100
@@ -2267,7 +2329,7 @@ local isWaitMeasureEvent = false
       descr.cb = "onChangeTankSkinCondition"
       break
 
-    case USEROPT_TANK_CAMO_SCALE:
+    case ::USEROPT_TANK_CAMO_SCALE:
       descr.id = "camo_scale"
       descr.controlType = optionControlType.SLIDER
       descr.min <- (-100 * TANK_CAMO_SCALE_SLIDER_FACTOR).tointeger()
@@ -2278,7 +2340,7 @@ local isWaitMeasureEvent = false
       descr.cb = "onChangeTankCamoScale"
       break
 
-    case USEROPT_TANK_CAMO_ROTATION:
+    case ::USEROPT_TANK_CAMO_ROTATION:
       descr.id = "camo_rotation"
       descr.controlType = optionControlType.SLIDER
       descr.min <- -100
@@ -2543,13 +2605,14 @@ local isWaitMeasureEvent = false
 
       foreach (unitType in unitTypes.types)
       {
-        if (unitType == unitTypes.INVALID)
+        if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
           continue
         local isVisible = !!(availableUnitTypesMask & unitType.bit)
+        local armyLocName = (unitType == unitTypes.SHIP) ? ::loc("mainmenu/fleet") : unitType.getArmyLocName()
         descr.values.append(unitType.esUnitType)
         descr.items.append({
           id = "bit_" + unitType.tag
-          text = unitType.fontIcon + " " + unitType.getArmyLocName()
+          text = unitType.fontIcon + " " + armyLocName
           enabled = isVisible
           isVisible = isVisible
         })
@@ -2594,7 +2657,7 @@ local isWaitMeasureEvent = false
         prevValue = ::SessionLobby.getMissionParam("raceLaps", null)
       break
 
-    case USEROPT_RACE_WINNERS:
+    case ::USEROPT_RACE_WINNERS:
       descr.id = "race_winners"
       descr.values = [1, 2, 3]
       defaultValue = 1
@@ -2605,7 +2668,7 @@ local isWaitMeasureEvent = false
         prevValue = ::SessionLobby.getMissionParam("raceWinners", null)
       break
 
-    case USEROPT_RACE_CAN_SHOOT:
+    case ::USEROPT_RACE_CAN_SHOOT:
       descr.id = "race_can_shoot"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
@@ -3648,6 +3711,13 @@ local isWaitMeasureEvent = false
       descr.value = ::get_activate_ground_radar_on_spawn()
       break
 
+    case ::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
+      descr.id = "activate_ground_active_counter_measures_on_spawn"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_activate_ground_active_counter_measures_on_spawn()
+      break
+
     case ::USEROPT_FPS_CAMERA_PHYSICS:
       descr.id = "fps_camera_physics"
       descr.value = clamp((::get_option_multiplier(::OPTION_FPS_CAMERA_PHYS) * 100.0).tointeger(), 0, 100)
@@ -3772,6 +3842,14 @@ local isWaitMeasureEvent = false
       descr.value = crossplayModule.isCrossPlayEnabled()
       descr.enabled <- !::checkIsInQueue()
       break
+    //
+
+
+
+
+
+
+
     case ::USEROPT_PS4_CROSSNETWORK_CHAT:
       descr.id = "ps4_crossnetwork_chat"
       descr.controlType = optionControlType.CHECKBOX
@@ -3957,6 +4035,11 @@ local isWaitMeasureEvent = false
       if (::aircraft_for_weapons)
         ::set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
       break
+    case ::USEROPT_TORPEDO_DIVE_DEPTH:
+      ::set_option_torpedo_dive_depth(descr.values[value])
+      if (::aircraft_for_weapons)
+        ::set_unit_option(::aircraft_for_weapons, optionId, descr.values[value])
+      break
     case ::USEROPT_AEROBATICS_SMOKE_TYPE:
       ::set_option_aerobatics_smoke_type(descr.values[value])
       break
@@ -4094,6 +4177,7 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_SOUND_ENABLE:
+      ::set_mute_sound(value)
       ::setSystemConfigOption("sound/fmod_sound_enable", value)
       break
 
@@ -4220,10 +4304,8 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_GUNNER_VIEW_ZOOM_SENS:
-      if (::have_per_vehicle_zoom_sens) {
-        local val = value / 100.0
-        ::set_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS, val)
-      }
+      local val = value / 100.0
+      ::set_option_multiplier(::OPTION_GUNNER_VIEW_ZOOM_SENS, val)
       break
 
     case ::USEROPT_ATGM_AIM_SENS_HELICOPTER:
@@ -4232,10 +4314,8 @@ local isWaitMeasureEvent = false
       break
 
     case ::USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER:
-      if (::have_per_vehicle_zoom_sens) {
-        local val = value / 100.0
-        ::set_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, val)
-      }
+      local val = value / 100.0
+      ::set_option_multiplier(::OPTION_ATGM_AIM_ZOOM_SENS_HELICOPTER, val)
       break
 
     case ::USEROPT_MOUSE_SMOOTH:
@@ -4359,6 +4439,9 @@ local isWaitMeasureEvent = false
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       ::set_option_use_radar_hud_in_cockpit(value)
       break;
+    case ::USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
+      ::set_option_activate_airborne_active_counter_measures_on_spawn(value)
+      break;
     case ::USEROPT_SAVE_AI_TARGET_TYPE:
       ::set_option_ai_target_type(value ? 1 : 0)
       break;
@@ -4426,7 +4509,7 @@ local isWaitMeasureEvent = false
         if (cdb?[::cur_aircraft_name] != ::getTblValue(value, descr.values, ""))
         {
           cdb[::cur_aircraft_name] = ::getTblValue(value, descr.values, "")
-          ::save_profile_offline_limited()
+          saveProfile()
         }
       }
       else
@@ -4742,6 +4825,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_IS_BOTS_ALLOWED:
     case ::USEROPT_USE_TANK_BOTS:
     case ::USEROPT_USE_SHIP_BOTS:
+    case ::USEROPT_KEEP_DEAD:
     case ::USEROPT_DEDICATED_REPLAY:
     case ::USEROPT_AUTOBALANCE:
     case ::USEROPT_MAX_PLAYERS:
@@ -4896,6 +4980,10 @@ local isWaitMeasureEvent = false
       ::set_activate_ground_radar_on_spawn(value)
       break
 
+    case ::USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN:
+      ::set_activate_ground_active_counter_measures_on_spawn(value)
+      break
+
     case ::USEROPT_FPS_CAMERA_PHYSICS:
       ::set_option_multiplier(::OPTION_FPS_CAMERA_PHYS, value / 100.0)
       break
@@ -4929,6 +5017,11 @@ local isWaitMeasureEvent = false
     case ::USEROPT_PS4_CROSSPLAY:
       crossplayModule.setCrossPlayStatus(value)
       break
+    //
+
+
+
+
     case ::USEROPT_PS4_CROSSNETWORK_CHAT:
       crossplayModule.setCrossNetworkChatStatus(value)
       break
@@ -4978,7 +5071,7 @@ local isWaitMeasureEvent = false
   ::saveLocalByAccount("wnd/diffMode", mode)
 }
 
-::create_options_container <- function create_options_container(name, options, is_focused, is_centered, columnsRatio = 0.5, fullTable = true, absolutePos=true, context = null)
+::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, fullTable = true, absolutePos=true, context = null)
 {
   local data = ""
   local selectedRow = 0
@@ -5122,18 +5215,12 @@ local isWaitMeasureEvent = false
                     "width:t='pw'; pos:t='(pw-w)/2, %s'; position:t = '%s'; " +
                     "class:t = 'optionsTable'; " +
                     "baseRow:t = 'yes'; " +
-                    "focus:t = '%s'; " +
-                    "behavior:t = 'OptionsNavigator'; " +
-                    "cur_col:t='0'; cur_row:t='%d'; num_rows:t='-1'; " +
-                    "on_wrap_up:t='onWrapUp';" +
-                    "on_wrap_down:t='onWrapDown';" +
-                    "selfFocusBorder:t='yes';" +
+                    "behavior:t = 'PosOptionsNavigator'; value:t='%d'; " +
                     "%s" +
                     "\n%s\n" +
                   "}",
                   name,
                   is_centered? "(ph-h)/2":"0", absolutePos? "absolute":"relative",
-                  is_focused? "yes":"no",
                   selectedRow,
                   onTblClick ? "on_click:t=" + onTblClick : "",
                   data

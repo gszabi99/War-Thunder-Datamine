@@ -22,6 +22,15 @@ optionlist_container {
   font:@fontMedium;
 }
 
+optionlist_container[type=msg_box] {
+  foreground-color:@white;
+  background-color:@shadeBackgroundColor4;
+  foreground-position:1,5;
+  foreground-repeat:expand;
+  foreground-image:#ui/gameuiskin#option_select_odd;
+  height:ph + 0.02@scrn_tgt;'
+}
+
 frame > optionlist_container, frame > container {
   width:pw;
   height:fh;
@@ -54,6 +63,10 @@ optionlist_container[type=big], [type=big] > optionlist_container {
 
 optionlist_container[type=mpstatistics] {
   height:(66*@scrn_tgt/100.0) $min (sh -2(1@bh + 1@titleLogoPlateHeight + 0.02@scrn_tgt + 1@multiplayerScoreHeight));
+}
+
+optionlist_container[type=mpstatistics][hasMissionResultPadding=yes] {
+  pos:50%pw-50%w, 1@bh + 1@titleLogoPlateHeight + 1@multiplayerScoreHeight + 1@missionResultNestHeight;
 }
 
 optionlist_container[type=artillerymap] {
@@ -89,7 +102,6 @@ optionsBoxRightScroll {
   width:pw;
   max-height:@bigOptionsHeight;
   overflow-y:auto;
-  total-input-transparent:yes;
 }
 
 optionsBox[noTopPos=yes] {
@@ -103,6 +115,7 @@ optionsBoxRightScroll {
 optionsBox table.optionsTable, optionsBoxRightScroll table.optionsTable {
   pos:50%pw-50%w,0;
   position:relative;
+  total-input-transparent:yes;
 }
 
 optionsBox table.optionsTable[disablePosition=yes], optionsBoxRightScroll table.optionsTable[disablePosition=yes] {
@@ -199,4 +212,31 @@ PosOptionsNavigator > cell {
 
 gamercard_div[isRespawnBottomGamercard=yes] > gamercard > BottomMenuPanel > tdiv {
   width:@respawnOptListContainerWidth;
+}
+
+axisPoint1 {
+  size:3*@scrn_tgt/100.0, 3*@scrn_tgt/100.0;
+  background-color:#FFFF0000;
+  background-image:#ui/gameuiskin#axis_point1;
+}
+
+[locked=yes] > axisPoint1 {
+  background-color:#FFFFFF00;
+}
+
+axisPoint2 {
+  size:3*@scrn_tgt/100.0, 3*@scrn_tgt/100.0;
+  background-color:#FF00FF00;
+  background-image:#ui/gameuiskin#axis_point2;
+}
+
+fieldReq{
+  width: 25*@scrn_tgt/100.0;
+  pos: p.p.w, ph/1.55-h/2;
+  position: absolute;
+  padding: 15@sf/@pf;
+  background-color:@frameHeaderBackgroundColor;
+  border-color:@frameDarkMenuBorderColor;
+  border:yes;
+  border-offset:@dp;
 }

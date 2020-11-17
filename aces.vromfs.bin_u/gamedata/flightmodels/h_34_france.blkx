@@ -74,13 +74,11 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
-      },
-      "propeller_shaft2_dm": {
-        "hp": 11.7
+        "hp": 60.5
       },
       "transmission1_dm": {
-        "hp": 13.1
+        "genericDamageMult": 1.6,
+        "hp": 60.5
       }
     },
     "c_dural10": {
@@ -103,6 +101,9 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 80.5
       },
@@ -888,9 +889,47 @@
       ]
     },
     {
-      "part": {
-        "name": "transmission1_dm"
-      }
+      "part": [
+        {
+          "name": "transmission1_dm"
+        },
+        {
+          "onHit": {
+            "fire": 0.01
+          }
+        },
+        {
+          "onHit": {
+            "damage": 2.7,
+            "fire": 0.01,
+            "leak_oil": 0.5,
+            "cut": 0.0
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "fire": 0.1,
+            "leak_oil": 1.0,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "fire": 30.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "fire": 44.0,
+            "leak_oil": 10.0,
+            "cut": 0.0
+          }
+        }
+      ]
     },
     {
       "part": {

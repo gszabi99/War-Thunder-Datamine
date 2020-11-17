@@ -461,7 +461,7 @@ local bodyButtonsConfig = {
 local buttonViewParams = {
   shortcut = ""
   btnName = "A"
-  showOnSelect = "focus"
+  showOnSelect = "hover"
   actionParamsMarkup = ""
 }
 local function getButtonView(bodyConfig, itemSizes) {
@@ -500,7 +500,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType          = handlerType.MODAL
   sceneTplName     = "gui/items/craftTreeWnd"
-  focusArray       = ["craft_body"]
   branches         = null
   workshopSet      = null
   craftTree        = null
@@ -529,7 +528,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     scene.findObject("update_timer").setUserData(this)
     itemsListObj = scene.findObject("craft_body")
-    restoreFocus()
     setFocusItem(showItemOnInit)
   }
 

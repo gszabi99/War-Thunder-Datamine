@@ -43,7 +43,7 @@ local function tabCtor(tab, is_current, handler) {
       onElemState = @(sf) stateFlags.update(sf)
 
       children = {
-        rendObj = ROBJ_STEXT
+        rendObj = ROBJ_DTEXT
         font = fontsState.get("small")
         color = textColor
         text = tab.text

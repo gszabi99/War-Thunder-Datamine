@@ -22,7 +22,7 @@ expandable {
             position:t='relative'
             margin-right:t='0.01@scrn_tgt'
             showOnSelect:t='yes'
-            btnName:t='X'
+            btnName:t='Y'
           }
 
           textareaNoTab {
@@ -76,7 +76,7 @@ expandable {
           inviteUid:t='<<uid>>'
           class:t="double"
           tooltip:t = '#invite/accept'
-          btnName:t='A'
+          btnName:t='X'
           showOnSelect:t='yes'
           on_click:t = 'onAccept'
 
@@ -93,7 +93,7 @@ expandable {
           class:t="double"
           showOnSelect:t='yes'
           tooltip:t = '#invite/reject'
-          btnName:t='Y'
+          btnName:t='LB'
           on_click:t = 'onReject'
           ButtonImg {}
           img { background-image:t='#ui/gameuiskin#icon_primary_fail.svg' }

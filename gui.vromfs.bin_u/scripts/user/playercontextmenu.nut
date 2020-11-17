@@ -524,7 +524,6 @@ local getActions = function(contact, params)
 local showMenu = function(_contact, handler, params = {})
 {
   local contact = _contact || ::g_contacts.verifyContact(params)
-
   local showMenu = ::callee()
   if (contact && contact.needCheckXboxId())
     return contact.getXboxId(@() showMenu(contact, handler, params))
@@ -534,7 +533,7 @@ local showMenu = function(_contact, handler, params = {})
 
   updateContactsStatusByContacts([contact], ::Callback(function() {
     local menu = getActions(contact, params)
-    ::gui_right_click_menu(menu, handler, params?.position, params?.orientation)
+    ::gui_right_click_menu(menu, handler, params?.position, params?.orientation, params?.onClose)
   }, this))
 }
 

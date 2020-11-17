@@ -1,4 +1,4 @@
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 
 const ANY_CHANGED_ID = "___ANY___"
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10

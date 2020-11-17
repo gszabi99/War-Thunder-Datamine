@@ -14,6 +14,7 @@ class ::gui_handlers.CrewBuyPointsHandler extends ::gui_handlers.BaseGuiHandlerW
     local rootObj = scene.findObject("wnd_frame")
     rootObj["class"] = "wnd"
     loadSceneTpl()
+    ::move_mouse_on_child(scene.findObject("buy_table"), 0)
   }
 
   function loadSceneTpl()
@@ -89,5 +90,11 @@ class ::gui_handlers.CrewBuyPointsHandler extends ::gui_handlers.BaseGuiHandlerW
       return
 
     ::g_crew_points.buyPack(crew, buyPointsPacks[row], ::Callback(goBack, this))
+  }
+
+  function onEventModalWndDestroy(params)
+  {
+    if (isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(getObj("buy_table"))
   }
 }

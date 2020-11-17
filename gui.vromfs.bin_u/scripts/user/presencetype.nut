@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 
 enum presenceCheckOrder {

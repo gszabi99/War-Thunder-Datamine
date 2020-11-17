@@ -2,7 +2,7 @@ local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 
 const timeToShowAll = 500.0
 
-class gui_bhv.CreditsScroll
+class ::gui_bhv.CreditsScroll
 {
   function onTimer(obj, dt)
   {

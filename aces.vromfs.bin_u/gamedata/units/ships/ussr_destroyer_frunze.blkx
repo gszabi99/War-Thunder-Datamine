@@ -111,6 +111,18 @@
     "depthTraceCriticalDepth": 2.0
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [45.1,3.34,-0.85]
+  },
+  {
+    "spawn_count": {
+      "numSpawnsPerBattleArcade": 3,
+      "numSpawnsPerBattleHistorical": 3
+    }
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -120,6 +132,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -192,6 +210,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -3040,8 +3064,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -3644,14 +3668,16 @@
           "speedYaw": 10.0,
           "speedPitch": 15.0,
           "bullets": 350,
+          "useGunnerTargetingQuality": false,
+          "fireConeAngle": 1.0,
           "allowableDelta": 2.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
-          "aimMaxDist": 7000.0,
+          "aimMaxDist": 4500.0,
           "randomAngle": 0.0,
-          "accuracyBotMultAir": 0.0,
-          "accuracyAir": 0.0,
+          "accuracyBotMultAir": 0.55,
+          "accuracyAir": 1.0,
           "accuracyGnd": 0.5,
           "errMeasureVel": 0.0,
           "errTargettingOn100kmph": 0.0,

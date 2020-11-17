@@ -2,12 +2,9 @@
 @const popupArrowHeight: 12@dp;
 @const popupOffset: 0.7@popupArrowHeight;
 
-@const popupMenuBgColor: #12181d;
-@const popupMenuBorderColor: #3d4a52;
-
 popup_menu {
-  background-color:@popupMenuBgColor;
-  border-color:@popupMenuBorderColor;
+  background-color:@frameBackgroundColor;
+  border-color:@frameBorderColor;
   border:yes;
   border-offset:@dp;
   padding:1@framePadding;
@@ -56,4 +53,5 @@ rootUnderPopupMenu {
   position:root;
   pos:0, 0;
   behavior:button;
+  skip-navigation:yes;
 }

@@ -162,7 +162,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     onSheetChange(null)
     initShortcuts()
-    initFocusArray()
   }
 
   function initSheetsList()
@@ -281,7 +280,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local obj = scene.findObject("btn_profile_icon")
     if (::checkObj(obj))
       obj.btnName = "X"
-    obj = scene.findObject("profile-currentUser-title")
+    obj = scene.findObject("profile_currentUser_btn_title")
     if (::checkObj(obj))
       obj.btnName = "Y"
     scene.findObject("unseen_titles").setValue(SEEN.TITLES)
@@ -344,13 +343,12 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     }
     else if (sheet=="Medal" || sheet=="UnlockDecal")
     {
-      showSheetDiv("decals", true)
+      local isMedal = sheet=="Medal"
+      showSheetDiv(isMedal ? "medals" : "decals", true)
 
-      local selCategory = ""
-      if (sheet == "UnlockDecal")
-        selCategory = filterGroupName || ::loadLocalByAccount("wnd/decalsCategory", "")
-      else if (sheet == "Medal")
-        selCategory = filterCountryName || ::get_profile_country_sq()
+      local selCategory = isMedal
+        ? filterCountryName || ::get_profile_country_sq()
+        : filterGroupName || ::loadLocalByAccount("wnd/decalsCategory", "")
 
       local selIdx = 0
       local view = { items = [] }
@@ -358,14 +356,15 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       {
         if (filter == selCategory)
           selIdx = idx
-
-        view.items.append({
-          text = (sheet == "Medal"? ("#") : ("#decals/category/")) + filter
-        })
+        if (isMedal)
+          view.items.append({ text = $"#{filter}"})
+        else
+          view.items.append({ itemText = $"#decals/category/{filter}" })
       }
 
-      local data = ::handyman.renderCached("gui/commonParts/shopFilter", view)
-      local pageList = scene.findObject("decals_list")
+      local tplPath = isMedal ? "gui/commonParts/shopFilter" : "gui/missions/missionBoxItemsList"
+      local data = ::handyman.renderCached(tplPath, view)
+      local pageList = scene.findObject($"{isMedal ? "medals" : "decals_group"}_list")
       guiScene.replaceContentFromText(pageList, data, data.len(), this)
 
       local isEqualIdx = selIdx == pageList.getValue()
@@ -412,7 +411,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       showSheetDiv("")
 
     updateButtons()
-    focusCurSheetObj()
   }
 
   function getPageIdByName(name)
@@ -425,7 +423,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function showSheetDiv(name, pages = false, subPages = false)
   {
-    foreach(div in ["profile", "unlocks", "stats", "decals"])
+    foreach(div in ["profile", "unlocks", "stats", "medals", "decals"])
     {
       local show = div == name
       local divObj = scene.findObject(div + "-container")
@@ -448,8 +446,10 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (!(sheet in unlockFilters) || !unlockFilters[sheet])
       return
 
-    if(sheet=="Medal" || sheet=="UnlockDecal")
-      pageIdx = scene.findObject("decals_list").getValue()
+    if(sheet=="Medal")
+      pageIdx = scene.findObject("medals_list").getValue()
+    else if (sheet=="UnlockDecal")
+      pageIdx = scene.findObject("decals_group_list").getValue()
     else
       pageIdx = scene.findObject("pages_list").getValue()
 
@@ -615,8 +615,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local data = ""
     local lowerCurPage = curPage.tolower()
     local pageTypeId = ::get_unlock_type(lowerCurPage)
-    local iconsListStyle = pageTypeId == ::UNLOCKABLE_MEDAL || pageTypeId == ::UNLOCKABLE_DECAL
     local isNeedDecalDesc = pageTypeId == ::UNLOCKABLE_MEDAL
+    local itemSelectFunc  = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
+    local containerObjId = pageTypeId == ::UNLOCKABLE_MEDAL ? "medals_zone"
+      : pageTypeId == ::UNLOCKABLE_DECAL ? "decals_zone"
+      : "unlocks_group_list"
     unlocksTree = {}
 
     local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(pageTypeId)
@@ -631,8 +634,11 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       data = ::handyman.renderCached("gui/commonParts/imgFrame", view)
     }
 
-    showSceneBtn("decal_info", isNeedDecalDesc)
-    local unlocksObj = scene.findObject(iconsListStyle ? "decals_zone" : "unlocks_group_list")
+    showSceneBtn("medals_info", isNeedDecalDesc)
+    foreach (id in [ "medals_zone", "decals_zone" ])
+      showSceneBtn(id, id == containerObjId)
+    local unlocksObj = scene.findObject(containerObjId)
+
     local curIndex = 0
     local isAchievementPage = lowerCurPage == "achievement"
     local view = { items = [] }
@@ -673,8 +679,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     unlocksObj.setValue(curIndex)
 
     collapse()
-    if (isNeedDecalDesc)
-      onDecalSelect(unlocksObj)
+    itemSelectFunc?(unlocksObj)
 
     isPageFilling = false
     updateFavoritesCheckboxesInList()
@@ -818,6 +823,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
           backlight = true
           bottomCenterText = text
           statusLock = status
+          onClick = "onDecalClick"
         }
       })
     }
@@ -1203,7 +1209,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     return unlockId + "_block"
   }
 
-  function onDecalSelect(obj)
+  function onMedalSelect(obj)
   {
     if (!::check_obj(obj))
       return
@@ -1215,8 +1221,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (!unlock)
       return
 
-    local containerObj = scene.findObject("decal_info")
-    local descObj = check_obj(containerObj) && containerObj.findObject("decal_desc")
+    local containerObj = scene.findObject("medals_info")
+    local descObj = check_obj(containerObj) && containerObj.findObject("medals_desc")
     if (!::check_obj(descObj))
       return
 
@@ -1253,14 +1259,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onDecalClick(obj)
   {
-    if (!::check_obj(obj) || getCurSheet() != "UnlockDecal")
-      return
-
-    local idx = obj.getValue()
-    local itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
-    local decoratorId = ::check_obj(itemObj) ? (itemObj?.id ?? "") : ""
+    local decoratorId = ::check_obj(obj) ? (obj?.id ?? "") : ""
     local decorator = ::g_decorator.getDecoratorById(decoratorId)
-
     if (canAcquireDecorator(decorator))
       askAcquireDecorator(decorator, null)
   }
@@ -1330,7 +1330,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function getStatRowData(name, func, mode, fm_idx=null, timeFormat = false)
   {
-    local row = [{ text = name, tdAlign = "left"}]
+    local row = [{ text = name, tdalign = "left"}]
     for (local diff=0; diff < 3; diff++)
     {
       local value = 0
@@ -1543,52 +1543,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     return ::my_stats.getStats()
   }
 
-  function getAchivementPageFocusObj()
-  {
-    if (!::checkObj(scene))
-      return null
-
-    local unlocksListObj = scene.findObject("unlocks_list")
-    if (::checkObj(unlocksListObj) && unlocksListObj.isFocused())
-      return unlocksListObj
-    return scene.findObject("unlocks_group_list")
-  }
-
-  function switchAchiFocusObj(obj)
-  {
-    local id = obj?.id
-    local objsList = ["unlocks_group_list", "unlocks_list", "pages_list"]
-    local idx = ::find_in_array(objsList, id)
-    if (idx < 0)
-      return
-    for (local i = 1; i < objsList.len(); ++i)
-    {
-      local index = (idx + i) % objsList.len()
-      local sObj = getObj(objsList[index])
-      if (::checkObj(sObj) && sObj.isVisible() && sObj.isEnabled() && sObj.childrenCount())
-      {
-        if (sObj?.id == "unlocks_list")
-        {
-          local unlocksList = getCurUnlockList()
-          local unlocksCount = unlocksList.len()
-          if (unlocksCount <= 0)
-          {
-            obj.select()
-            return
-          }
-          sObj.select()
-        }
-        else
-        {
-          sObj.select()
-          if (sObj.getValue() < 0)
-            sObj.setValue(0)
-        }
-        return
-      }
-    }
-  }
-
   function getCurUnlockList()
   {
     local list = scene.findObject("unlocks_group_list")
@@ -1617,8 +1571,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function onGroupCancel(obj)
   {
-    if (getCurSheet() == "UnlockSkin")
-      onWrapUp(obj)
+    if (::show_console_buttons && getCurSheet() == "UnlockSkin")
+      ::move_mouse_on_child_by_value(scene.findObject("pages_list"))
     else
       goBack()
   }
@@ -1639,36 +1593,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
   {
     ::g_user_utils.launchXboxEmailRegistration()
     doWhenActiveOnce("updateButtons")
-  }
-
-  function getMainFocusObj()
-  {
-    local curSheet = getCurSheet()
-    if (::isInArray(curSheet, ["Medal", "UnlockDecal"]))
-      return getObj("decals_list")
-    if (curSheet == "UnlockSkin")
-      return getObj("unit_type_list")
-    if (curSheet == "UnlockAchievement")
-      return getAchivementPageFocusObj()
-    return base.getMainFocusObj()
-  }
-
-  function getMainFocusObj2()
-  {
-    local curSheet = getCurSheet()
-    if (curSheet == "Medal")
-      return getObj("decals_zone")
-    if (curSheet == "UnlockSkin")
-      return getObj("pages_list")
-    return base.getMainFocusObj2()
-  }
-
-  function getMainFocusObj3()
-  {
-    local curSheet = getCurSheet()
-    if (curSheet == "UnlockSkin")
-      return getObj("unlocks_group_list")
-    return base.getMainFocusObj3()
   }
 
   function onEventUnlocksCacheInvalidate(p)

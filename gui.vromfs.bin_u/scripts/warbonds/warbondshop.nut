@@ -1,8 +1,9 @@
 local time = require("scripts/time.nut")
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
-local seenWarbondsShop = ::require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local seenWarbondsShop = require("scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-
+local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
+local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 
 class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -20,13 +21,14 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
 
   slotbarActions = [ "preview", "testflight", "sec_weapons", "weapons", "info" ]
 
+  hoverHoldAction = null
+
   function initScreen()
   {
     wbList = ::g_warbonds.getList(filterFunc)
     if (!wbList.len())
       return goBack()
 
-    scene.findObject("filter_block").show(false)
     curPageAwards = []
     if (!(curWbIdx in wbList))
       curWbIdx = 0
@@ -39,8 +41,10 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     initItemsListSize()
     fillTabs()
     updateBalance()
+    ::move_mouse_on_child(getItemsListObj(), 0)
 
     scene.findObject("update_timer").setUserData(this)
+    hoverHoldAction = mkHoverHoldAction(scene.findObject("hover_hold_timer"))
   }
 
   function fillTabs()
@@ -97,9 +101,23 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   function initItemsListSize()
   {
     guiScene.applyPendingChanges(false)
-    local sizes = ::g_dagui_utils.adjustWindowSize(scene.findObject("wnd_items_shop"), getItemsListObj(),
-                                                   "@itemWidth", "@itemHeight", "@itemSpacing", "@itemSpacing")
-    itemsPerPage = sizes.itemsCountX * sizes.itemsCountY
+
+    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    local itemsCountX = ::to_pixels($"@rw-1@shopInfoMinWidth-3@itemSpacing")
+      / ::to_pixels(itemWidthWithSpace)
+    local itemsCountY = ::to_pixels(
+      "sh-@bottomMenuPanelHeight-1@frameHeaderHeight-0.08@scrn_tgt-1@frameFooterHeight-3@itemSpacing-1@blockInterval")
+        / ::to_pixels(itemHeightWithSpace)
+    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    scene.findObject("main_block").height = $"{itemsCountY}*({itemHeightWithSpace})"
+    showSceneBtn("nav_separator", false)
+    getItemsListObj().width = contentWidth
+    scene.findObject("empty_items_list").width = contentWidth
+    scene.findObject("item_info_nest").width = "fw"
+    scene.findObject("shop_level_progress_place").left = $"0.5({contentWidth})-0.5w"
+    scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w"
+    itemsPerPage = (itemsCountX * itemsCountY ).tointeger()
   }
 
   function updateCurPageAwardsList()
@@ -123,6 +141,9 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       items = curPageAwards
       enableBackground = true
       hasButton = true
+      hasFocusBorder = true
+      onHover = "onItemHover"
+      tooltipFloat = "left"
     }
 
     local listObj = getItemsListObj()
@@ -134,7 +155,9 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     local total = curPageAwards.len()
     if (total && value >= total)
       listObj.setValue(total - 1)
-    listObj.select()
+    if (value < 0)
+      listObj.setValue(0)
+    ::move_mouse_on_child_by_value(listObj)
 
     updateItemInfo()
 
@@ -164,6 +187,16 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   {
     local value = getItemsListObj().getValue()
     return ::getTblValue(value, curPageAwards)
+  }
+
+  function getCurAwardObj()
+  {
+    local itemListObj = getItemsListObj()
+    local value = ::get_obj_valid_index(itemListObj)
+    if (value < 0)
+      return null
+
+    return itemListObj.getChild(value)
   }
 
   function fillItemDesc(award)
@@ -196,11 +229,25 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     markAwardSeen(award)
     fillItemDesc(award)
     fillCommonDesc(award)
+    showSceneBtn("jumpToDescPanel", ::show_console_buttons && award != null)
     updateButtons()
+  }
+
+  function updateButtonsBar() {
+    local obj = getItemsListObj()
+    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    showSceneBtn("item_actions_bar", isButtonsVisible)
+    return isButtonsVisible
   }
 
   function updateButtons()
   {
+    if (!updateButtonsBar())
+      return
+
+    if (::has_feature("BattlePass"))
+      showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
+
     local award = getCurAward()
     showSceneBtn("btn_specialTasks", award != null
       && award.isRequiredSpecialTasksComplete()
@@ -310,10 +357,7 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     local medalsPlaceObj = scene.findObject("special_tasks_progress_block")
     medalsPlaceObj.show(showAnyMedalProgress)
     if (showAnyMedalProgress)
-    {
       ::g_warbonds_view.createSpecialMedalsProgress(curWb, medalsPlaceObj, this)
-      scene.findObject("medals_block").tooltip = ::g_warbonds_view.getSpecialMedalsTooltip(curWb)
-    }
   }
 
   function onItemAction(buttonObj)
@@ -359,6 +403,11 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       if (!curPageAwards[i].isItemLocked())
         list.append(curPageAwards[i].getSeenId())
     seenWarbondsShop.markSeen(list)
+  }
+
+  function onShowBattlePass()
+  {
+    openBattlePassWnd()
   }
 
   function onShowSpecialTasks(obj)
@@ -433,6 +482,34 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
       }
   }
 
+  function onItemsListFocusChange() {
+    if (isValid())
+      updateButtons()
+  }
+
+  function onJumpToDescPanelAccessKey(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local containerObj = scene.findObject("item_info_nest")
+    if (::check_obj(containerObj) && containerObj.isHovered())
+      ::move_mouse_on_obj(getCurAwardObj())
+    else
+      ::move_mouse_on_obj(containerObj)
+  }
+
+  function onItemHover(obj) {
+    if (!::show_console_buttons)
+      return
+    hoverHoldAction(obj, function(focusObj) {
+      local id = focusObj?.holderId
+      local value = curPageAwards.findindex(@(a) a.getFullId() == id)
+      local listObj = getItemsListObj()
+      if (value != null && listObj.getValue() != value)
+        listObj.setValue(value)
+    }.bindenv(this))
+  }
+
   //dependence by blk
   function onToShopButton(obj) {}
   function onToMarketplaceButton(obj) {}
@@ -442,11 +519,4 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
   function onAltAction(obj) {}
   function onChangeSortOrder(obj) {}
   onChangeSortParam = @(obj) null
-
-  function onUnitHover(obj)
-  {
-    openUnitActionsList(obj, true, true)
-  }
-
-  function onItemsListFocusChange() {}
 }

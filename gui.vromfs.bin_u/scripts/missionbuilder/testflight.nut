@@ -84,11 +84,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       }
     }
 
-    initFocusArray()
-
-    local focusObj = getMainFocusObj2()
-    focusObj.select()
-    checkCurrentFocusItem(focusObj)
+    ::move_mouse_on_obj(scene.findObject("btn_select"))
   }
 
   function updateLinkedOptions() {
@@ -124,22 +120,11 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
 
-  function getMainFocusObj()
-  {
-    return weaponsSelectorWeak && weaponsSelectorWeak.getMainFocusObj()
-  }
-
-  function getMainFocusObj2()
-  {
-    return scene.findObject("testflight_options")
-  }
-
   function updateWeaponsSelector()
   {
     if (weaponsSelectorWeak)
     {
       weaponsSelectorWeak.setUnit(unit)
-      delayedRestoreFocus()
       return
     }
 
@@ -147,14 +132,12 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     local handler = ::handlersManager.loadHandler(::gui_handlers.unitWeaponsHandler,
                                        { scene = weaponryObj
                                          unit = unit
-                                         parentHandlerWeak = this
                                          canChangeBulletsAmount = true
                                          isForcedAvailable = ::isUnitSpecial(unit)
                                        })
 
     weaponsSelectorWeak = handler.weakref()
     registerSubHandler(handler)
-    delayedRestoreFocus()
   }
 
   function getCantFlyText(checkUnit)
@@ -194,11 +177,17 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
         [::USEROPT_FLARES_PERIODS, "spinner"]
       )
 
-    if (unit?.isShip())
+    if (unit?.isShipOrBoat())
+    {
       options.append(
         [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
         [::USEROPT_ROCKET_FUSE_DIST, "spinner"]
       )
+      if (!get_option_torpedo_dive_depth_auto())
+        options.append(
+          [::USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
+        )
+    }
 
     options.append(
       [::USEROPT_MODIFICATIONS, "spinner"],
@@ -240,7 +229,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     ::aircraft_for_weapons = unit.name
     ::set_gui_option(::USEROPT_AIRCRAFT, unit.name)
 
-    local container = create_options_container("testflight_options", options, true, true, 0.5)
+    local container = create_options_container("testflight_options", options, true, 0.5)
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
 
     optionsContainers = [container.descr]

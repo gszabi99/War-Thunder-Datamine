@@ -1,4 +1,12 @@
 // Put to global namespace for compatibility
+::getroottable().__update(require("daRg"))
+require("daRg/library.nut")
+require("sqStdLibs/helpers/backCompatibility.nut")
+require("reactiveGui/compatibility.nut")
+require("reactiveGui/library.nut")
+require("scripts/sqModuleHelpers.nut")
+require("scripts/sharedEnums.nut")
+
 ::math <- require("math")
 ::string <- require("string")
 ::loc <- require("dagor.localize").loc

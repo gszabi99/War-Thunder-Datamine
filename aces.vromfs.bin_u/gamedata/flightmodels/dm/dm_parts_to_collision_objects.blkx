@@ -1,23 +1,39 @@
 [
   {
+    "usePartsMasses": false
+  },
+  {
     "object": [
+      {
+        "fm": "fuselage"
+      },
+      {
+        "elementType": "common"
+      },
       {
         "dm": "fuse_dm"
       },
       {
         "dm": "fuse%d_dm"
+      },
+      {
+        "impulseVelLimits": [3.0,1000000.0]
       }
     ]
   },
   {
     "object": {
+      "fm": "tail",
       "dm": "tail_dm",
-      "impulseVelLimits": [3.0,10.0],
+      "elementType": "common",
+      "impulseVelLimits": [3.0,8.0],
       "dmCut": "tail_dm"
     }
   },
   {
     "object": {
+      "fm": "wing_root_l",
+      "elementType": "common",
       "dm": "wing_l_dm",
       "impulseVelLimits": [3.0,10.0],
       "dmCut": "spar_l_dm"
@@ -25,6 +41,8 @@
   },
   {
     "object": {
+      "fm": "wing_middle_l",
+      "elementType": "common",
       "dm": "wing1_l_dm",
       "impulseVelLimits": [3.0,10.0],
       "dmCut": "spar1_l_dm"
@@ -32,13 +50,17 @@
   },
   {
     "object": {
+      "fm": "wing_middle_l",
+      "elementType": "common",
       "dm": "wing2_l_dm",
-      "impulseVelLimits": [3.0,10.0],
+      "impulseVelLimits": [3.0,8.0],
       "dmCut": "spar2_l_dm"
     }
   },
   {
     "object": {
+      "fm": "wing_root_r",
+      "elementType": "common",
       "dm": "wing_r_dm",
       "impulseVelLimits": [3.0,10.0],
       "dmCut": "spar_r_dm"
@@ -46,6 +68,8 @@
   },
   {
     "object": {
+      "fm": "wing_middle_r",
+      "elementType": "common",
       "dm": "wing1_r_dm",
       "impulseVelLimits": [3.0,10.0],
       "dmCut": "spar1_r_dm"
@@ -53,13 +77,24 @@
   },
   {
     "object": {
+      "fm": "wing_end_r",
+      "elementType": "common",
       "dm": "wing2_r_dm",
-      "impulseVelLimits": [3.0,10.0],
+      "impulseVelLimits": [3.0,8.0],
       "dmCut": "spar2_r_dm"
     }
   },
   {
     "object": [
+      {
+        "fm": "hor_stab_l"
+      },
+      {
+        "fm": "hor_stab_r"
+      },
+      {
+        "elementType": "common"
+      },
       {
         "dm": "stab_dm"
       },
@@ -73,7 +108,7 @@
         "dm": "elevator%d_dm"
       },
       {
-        "impulseVelLimits": [3.0,10.0]
+        "impulseVelLimits": [2.0,5.0]
       },
       {
         "dmCut": "stab_dm"
@@ -86,13 +121,19 @@
   {
     "object": [
       {
+        "fm": "ver_stab"
+      },
+      {
+        "elementType": "common"
+      },
+      {
         "dm": "fin_dm"
       },
       {
         "dm": "rudder_dm"
       },
       {
-        "impulseVelLimits": [3.0,10.0]
+        "impulseVelLimits": [2.0,5.0]
       },
       {
         "dmCut": "fin_dm"
@@ -102,13 +143,19 @@
   {
     "object": [
       {
+        "fm": "ver_stab"
+      },
+      {
+        "elementType": "common"
+      },
+      {
         "dm": "fin1_dm"
       },
       {
         "dm": "rudder0_dm"
       },
       {
-        "impulseVelLimits": [3.0,10.0]
+        "impulseVelLimits": [2.0,5.0]
       },
       {
         "dmCut": "fin1_dm"
@@ -121,10 +168,13 @@
         "dm": "fin2_dm"
       },
       {
+        "elementType": "common"
+      },
+      {
         "dm": "rudder1_dm"
       },
       {
-        "impulseVelLimits": [3.0,10.0]
+        "impulseVelLimits": [2.0,5.0]
       },
       {
         "dmCut": "fin2_dm"
@@ -133,48 +183,63 @@
   },
   {
     "object": {
-      "dm": "engine1_dm",
+      "fm": "engine1",
       "elementType": "engine",
-      "elementIndex": 0
+      "elementIndex": 0,
+      "dm": "engine1_dm"
     }
   },
   {
     "object": {
-      "dm": "engine2_dm",
+      "fm": "engine2",
       "elementType": "engine",
-      "elementIndex": 1
+      "elementIndex": 1,
+      "dm": "engine2_dm"
     }
   },
   {
     "object": {
-      "dm": "engine3_dm",
+      "fm": "engine3",
       "elementType": "engine",
-      "elementIndex": 2
+      "elementIndex": 2,
+      "dm": "engine3_dm"
     }
   },
   {
     "object": {
-      "dm": "engine4_dm",
+      "fm": "engine4",
       "elementType": "engine",
-      "elementIndex": 3
+      "elementIndex": 3,
+      "dm": "engine4_dm"
     }
   },
   {
     "object": {
-      "dm": "engine5_dm",
+      "fm": "engine5",
       "elementType": "engine",
-      "elementIndex": 4
+      "elementIndex": 4,
+      "dm": "engine5_dm"
     }
   },
   {
     "object": {
-      "dm": "engine6_dm",
+      "fm": "engine6",
       "elementType": "engine",
-      "elementIndex": 5
+      "elementIndex": 5,
+      "dm": "engine6_dm"
     }
   },
   {
     "object": [
+      {
+        "fm": "gear_l"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 0
+      },
       {
         "dm": "_ClipLGear"
       },
@@ -194,12 +259,6 @@
         "dm": "wheel%d_l_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 0
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -209,6 +268,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_l"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 1
+      },
       {
         "dm": "_Clip1LGear"
       },
@@ -228,12 +296,6 @@
         "dm": "wheel%d_1l_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 1
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -243,6 +305,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_r"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 2
+      },
       {
         "dm": "_ClipRGear"
       },
@@ -262,12 +333,6 @@
         "dm": "wheel%d_r_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 2
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -277,6 +342,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_r"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 3
+      },
       {
         "dm": "_Clip1RGear"
       },
@@ -296,12 +370,6 @@
         "dm": "wheel%d_1r_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 3
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -311,6 +379,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_c"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 4
+      },
       {
         "dm": "_ClipCGear"
       },
@@ -330,12 +407,6 @@
         "dm": "wheel%d_c_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 4
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -345,6 +416,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_c"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 5
+      },
       {
         "dm": "_Clip2CGear"
       },
@@ -364,12 +444,6 @@
         "dm": "wheel%d_2c_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 5
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -379,6 +453,15 @@
   },
   {
     "object": [
+      {
+        "fm": "gear_c"
+      },
+      {
+        "elementType": "gear"
+      },
+      {
+        "elementIndex": 6
+      },
       {
         "dm": "_Clip3CGear"
       },
@@ -398,12 +481,6 @@
         "dm": "wheel%d_3c_dm"
       },
       {
-        "elementType": "gear"
-      },
-      {
-        "elementIndex": 6
-      },
-      {
         "impulseVelLimits": [2.0,6.0]
       },
       {
@@ -413,49 +490,55 @@
   },
   {
     "object": {
-      "dm": "_Clip_prop_1_%02d",
+      "fm": "propeller1",
       "elementType": "propeller",
       "elementIndex": 0,
+      "dm": "_Clip_prop_1_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   },
   {
     "object": {
-      "dm": "_Clip_prop_2_%02d",
+      "fm": "propeller2",
       "elementType": "propeller",
       "elementIndex": 1,
+      "dm": "_Clip_prop_2_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   },
   {
     "object": {
-      "dm": "_Clip_prop_3_%02d",
+      "fm": "propeller3",
       "elementType": "propeller",
       "elementIndex": 2,
+      "dm": "_Clip_prop_3_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   },
   {
     "object": {
-      "dm": "_Clip_prop_4_%02d",
+      "fm": "propeller4",
       "elementType": "propeller",
       "elementIndex": 3,
+      "dm": "_Clip_prop_4_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   },
   {
     "object": {
-      "dm": "_Clip_prop_5_%02d",
+      "fm": "propeller5",
       "elementType": "propeller",
       "elementIndex": 4,
+      "dm": "_Clip_prop_5_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   },
   {
     "object": {
-      "dm": "_Clip_prop_6_%02d",
+      "fm": "propeller6",
       "elementType": "propeller",
       "elementIndex": 5,
+      "dm": "_Clip_prop_6_%02d",
       "impulseVelLimits": [1.0,3.0]
     }
   }

@@ -98,7 +98,9 @@
         "margin-left": "0.05@sf",
         "pos": "0, 50%ph-50%h",
         "position": "relative",
-        "flow": "horizontal"
+        "flow": "horizontal",
+        "behavior": "PosNavigator",
+        "navigatorShortcuts": "noSelect"
       },
       "CheckBox": {
         "id": "checkbox-favorites",
@@ -108,11 +110,12 @@
         "smallFont": "yes",
         "btnName": "",
         "tooltip": "",
+        "skip-navigation": "yes",
         "on_change_value": "unlockToFavorites",
         "unlockId": "",
         "CheckBoxImg": [],
         "ButtonImg": {
-          "showOnSelect": "focus",
+          "showOnSelect": "hover",
           "btnName": "A"
         }
       }

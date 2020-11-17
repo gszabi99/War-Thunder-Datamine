@@ -15,6 +15,7 @@
   "maxAngAccelV": 0.0,
   "maxAngAccel": 0.0,
   "groundNormSmoothViscosity": 0.1,
+  "fireFx": "fire_ground_black_fx",
   "DamageParts": {
     "steel": {
       "body_dm": {
@@ -38,13 +39,13 @@
     "expl": {
       "node": "body",
       "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_fire",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 45.0,
-      "preScale": 4.0,
-      "postScale": 4.0
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "smoke_ground_black_fx",
+      "explosionEffectName": "explosion_midair_medium",
+      "timeForPostEffect": 60.0,
+      "preScale": 1.0,
+      "postScale": 1.0
     }
   }
 }

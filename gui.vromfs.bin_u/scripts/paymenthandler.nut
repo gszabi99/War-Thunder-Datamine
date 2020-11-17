@@ -29,6 +29,7 @@ class ::gui_handlers.PaymentHandler extends ::gui_handlers.BaseGuiHandlerWT
       payItem.findObject("payIcon")["background-image"] = getTblValue("icon", item, "")
       payItem.findObject("payText").setValue(getTblValue("icon", item, "")=="" ? ::loc(getTblValue("name", item, "")) : "")
     }
+    ::move_mouse_on_child(paymentsObj)
   }
 
   function onPaymentSelect(obj)

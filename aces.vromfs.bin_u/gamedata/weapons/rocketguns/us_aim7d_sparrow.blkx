@@ -84,13 +84,16 @@
       "timeFire": 2.1
     },
     {
+      "fireDelay": 0.25
+    },
+    {
       "spawnExplosionFx": false
     },
     {
       "spawnExplosionWreckage": false
     },
     {
-      "explosionEffect": "atgm_hit"
+      "explosionEffect": "explosion_midair_big"
     },
     {
       "defFxScale": [2.2,2.5]
@@ -114,7 +117,16 @@
       "explosionPatchRadius": 5.0
     },
     {
-      "smokeEffect": "hydra_smoke_modern"
+      "fireEffect": "rocket_fire_light_huge"
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.5
     },
     {
       "maxDistance": 45000.0
@@ -172,9 +184,6 @@
     },
     {
       "explodeRadius": [1.0,3.5]
-    },
-    {
-      "explosionPatchRadius": 5.0
     },
     {
       "rendinstDamageRadius": 15.0
@@ -382,7 +391,7 @@
         "angleMax": 45.0,
         "rateMax": 12.0,
         "prolongationTimeMax": 1.0,
-        "targetDesignator": true,
+        "designationSourceTypeMask": 2,
         "transmitter": {
           "power": 200.0,
           "antenna": {

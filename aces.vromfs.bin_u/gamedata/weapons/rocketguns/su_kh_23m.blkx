@@ -1,0 +1,115 @@
+{
+  "rocketGun": true,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "su_kh_23m_missile",
+  "tags": [],
+  "rocket": {
+    "operated": true,
+    "operatedDist": 10000.0,
+    "operationTimer": 0.01,
+    "autoAiming": true,
+    "autoAimingFirstPerson": false,
+    "autoAimingInArcade": true,
+    "autoLeveling": false,
+    "autoAimingMaxAngle": 5.0,
+    "aimSensitivity": 15.0,
+    "maxAxisValues": 0.12,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat_fs",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.001,
+    "bulletType": "heat_fs_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "fresnel": [0.23,0.1,2.0],
+    "bulletName": "su_kh_23m_missile",
+    "caliber": 0.275,
+    "mass": 289.0,
+    "explosiveType": "tg_40",
+    "explosiveMass": 75.0,
+    "massEnd": 222.0,
+    "maxDeltaAngle": 0.02,
+    "dragCx": 0.025,
+    "length": 3.49,
+    "distFromCmToStab": 0.1,
+    "CxK": 2.5,
+    "WdK": [0.1,0.1,0.1],
+    "force": 28000.0,
+    "timeFire": 6.5,
+    "fireDelay": 0.17,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "explosionEffect": "explosion_midair_big",
+    "groundCollisionEffect": "bomb_expl_100kg",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [1.5,1.7],
+    "explosionPatchRadius": 5.0,
+    "maxDistance": 10000.0,
+    "minDistance": 600.0,
+    "distanceFuse": false,
+    "hitPowerMult": 400.0,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "rendinstDamageRadius": 15.0,
+    "statType": "hydra",
+    "fireEffect": "rocket_fire_light",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "advancedMissiles": false,
+    "useStartSpeed": false,
+    "startSpeed": 30.0,
+    "endSpeed": 750.0,
+    "speedViscosity": 0.2,
+    "timeLife": 60.0,
+    "machMax": 2.0,
+    "loadFactorMax": 2.0,
+    "rangeMax": 10000.0,
+    "price": 3000.0,
+    "amountPerTier": 1.0,
+    "iconType": "missile_air_to_uni",
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [0.3,-0.15,0.0],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_small"
+      },
+      "armor": {
+        "fx": "explosion_midair_small"
+      },
+      "buildings": {
+        "fx": "explosion_midair_small"
+      },
+      "wood": {
+        "fx": "explosion_midair_small"
+      }
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "100mmRed",
+        "trail": "noTrail"
+      }
+    }
+  }
+}

@@ -13,7 +13,7 @@ frame {
     Button_close { id:t = 'btn_back' }
   }
 
-  frameBlock {
+  tdiv {
     id:t='items_list'
     width:t='<<width>> + 1@itemSpacing + 6'
     height:t='<<height>> + 1@itemSpacing + 4'
@@ -23,20 +23,26 @@ frame {
     flow:t='h-flow'
     flow-align:t='center'
 
+    total-input-transparent:t='yes'
+
     behavior:t='posNavigator'
-    navigatorShortcuts:t='yes'
+    navigatorShortcuts:t='noSelect'
     moveX:t='closest'
     moveY:t='closest'
-    clearOnFocusLost:t='no'
+    clearOnFocusLost:t='yes'
 
     on_select:t='updateButtons'
+    _on_hover:t='onItemsListFocusChange'
+    _on_unhover:t='onItemsListFocusChange'
 
     itemShopList:t='yes'
     smallItems:t='<<smallItems>>'
     <<@trophyItems>>
   }
 
-  frameBlock {
+  chapterSeparator {}
+
+  tdiv {
     id:t='item_info'
     width:t='fw';
     height:t='<<height>> + 1@itemSpacing'
@@ -56,6 +62,8 @@ frame {
 
   navBar {
     navRight {
+      id:t='item_actions_bar'
+
       textarea {
         id:t='warning_text'
         position:t='relative'
@@ -69,6 +77,7 @@ frame {
         _on_click:t = 'onSelectedItemAction'
         hideText:t='yes'
         css-hier-invalidate:t='yes'
+        skip-navigation:t='yes'
         showButtonImageOnConsole:t='no'
         display:t='hide'
         visualStyle:t='purchase'

@@ -122,6 +122,23 @@ local list = function(sessionIds = [], onFinishCb = psn.noOpCb) {
   )
 }
 
+local changeLeadership = function(sessionId, accountId, platform, onFinishCb = psn.noOpCb) {
+  psn.send(
+    psn.sessionManager.changeLeader(sessionId, accountId, platform)
+    function(response, err) {
+      ::dagor.debug($"[PSSM] Change leadership: {sessionId} : {accountId} : {platform}")
+
+      if (err) {
+        statsd.send_counter("sq.psn_player_sessions.change_leadership", 1,
+          {status = "error", request = "change_leadership", error_code = err.code})
+        ::dagor.debug($"[PSSM] Change leadership: {sessionId}: {accountId}: {platform}: Error: {::toString(err, 4)}")
+      }
+
+      onFinishCb(response, err)
+    }
+  )
+}
+
 return {
   create
   updateInfo
@@ -130,4 +147,5 @@ return {
   joinAsSpectator
   invite
   list
+  changeLeadership
 }

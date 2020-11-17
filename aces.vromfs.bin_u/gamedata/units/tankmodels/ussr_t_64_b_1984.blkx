@@ -1660,6 +1660,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1829,13 +1838,6 @@
           "variableThickness": true,
           "solidArmorTestDepth": 900.0
         },
-        "turret_07_side_dm": {
-          "armorThickness": 130.0,
-          "genericArmorQuality": 1.5,
-          "cumulativeArmorQuality": 0.0,
-          "armorEffectiveThicknessMax": 400.0,
-          "createSecondaryShatters": false
-        },
         "turret_07_back_dm": {
           "armorThickness": 140.0,
           "genericArmorQuality": 1.5,
@@ -1926,6 +1928,9 @@
           "armorThickness": 140.0
         },
         "turret_07_top_dm": {
+          "armorThickness": 45.0
+        },
+        "turret_01_bottom_dm": {
           "armorThickness": 45.0
         },
         "turret_07_front_dm": {
@@ -2074,6 +2079,7 @@
         "ex_decor_09_dm": [],
         "ex_decor_10_dm": [],
         "ex_decor_13_dm": [],
+        "turret_07_side_dm": [],
         "turret_06_bottom_dm": {
           "armorThickness": 6.0,
           "secondaryShatterArmorQuality": 0.8
@@ -2104,6 +2110,10 @@
           "hp": 20.0
         },
         "optic_turret_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_05_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -2513,6 +2523,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2941,11 +2952,31 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "commander_dm"
-          },
+          "turret": [
+            {
+              "head": "bone_mg_aa_h_01"
+            },
+            {
+              "gun": "bone_mg_aa_v_01"
+            },
+            {
+              "gunnerDm": "commander_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mg_aa_optic",
+                "verLimits": [-5.0,60.0],
+                "verOriginLimits": [-5.0,70.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_mg_aa_mount_01",
+                "verLimits": [-5.0,61.0],
+                "verOriginLimits": [-5.0,70.0]
+              }
+            }
+          ],
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-5.0,70.0]
@@ -3351,11 +3382,31 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_mg_aa_v_01",
-                  "gunnerDm": "commander_dm"
-                },
+                "turret": [
+                  {
+                    "head": "bone_mg_aa_h_01"
+                  },
+                  {
+                    "gun": "bone_mg_aa_v_01"
+                  },
+                  {
+                    "gunnerDm": "commander_dm"
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mg_aa_optic",
+                      "verLimits": [-5.0,60.0],
+                      "verOriginLimits": [-5.0,70.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_mg_aa_mount_01",
+                      "verLimits": [-5.0,61.0],
+                      "verOriginLimits": [-5.0,70.0]
+                    }
+                  }
+                ],
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-5.0,70.0]

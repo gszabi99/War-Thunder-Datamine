@@ -21,7 +21,7 @@ local OUT_OF_DATE_DAYS_INVENTORY = 0
   getInventoryList(typeMask = itemType.ALL) - get items list by type mask
 */
 
-class BoosterEffectType
+::BoosterEffectType <- class
 {
   static RP = {
     name = "xpRate"
@@ -104,6 +104,10 @@ foreach (fn in [
                  "itemCraftProcess.nut"
                  "itemRecipesBundle.nut"
                  "itemEntitlement.nut"
+                 "itemWarpoints.nut"
+                 "itemUnlock.nut"
+                 "itemBattlePass.nut"
+                 "itemRentedUnit.nut"
                ])
   ::g_script_reloader.loadOnce("scripts/items/itemsClasses/" + fn)
 
@@ -515,6 +519,10 @@ ItemsManager.getInventoryItemType <- function getInventoryItemType(blkType)
       case "craft_process":       return itemType.CRAFT_PROCESS
       case "internal_item":       return itemType.INTERNAL_ITEM
       case "entitlement":         return itemType.ENTITLEMENT
+      case "warpoints":           return itemType.WARPOINTS
+      case "unlock":              return itemType.UNLOCK
+      case "battlePass":          return itemType.BATTLE_PASS
+      case "rented_unit":         return itemType.RENTED_UNIT
     }
 
     blkType = ::item_get_type_id_by_type_name(blkType)
@@ -798,8 +806,8 @@ ItemsManager._getItemsFromList <- function _getItemsFromList(list, typeMask, fil
 ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null)
 {
   handler = handler || ::get_cur_base_gui_handler()
-
   item = item?.getSubstitutionItem() ?? item
+
   local obj = holderObj.findObject("item_name")
   if (::checkObj(obj))
     obj.setValue(item? item.getDescriptionTitle() : "")
@@ -873,7 +881,6 @@ ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = 
     }
     item.setIcon(obj, iconSetParams)
   }
-  obj.scrollToView()
 
   if (item && item?.getDescTimers)
     foreach(timerData in item.getDescTimers())

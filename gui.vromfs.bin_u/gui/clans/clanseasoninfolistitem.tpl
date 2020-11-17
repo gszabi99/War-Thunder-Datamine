@@ -61,6 +61,7 @@ expandable {
             size:t='<<ratio>>@profileUnlockIconSize, 1@profileUnlockIconSize'
             background-image:t='<<image>>'
             background-repeat:t='aspect-ratio'
+            interactive:t='yes'
             <<#tooltipId>>
             title:t='$tooltipObj'
             tooltipObj {
@@ -142,6 +143,7 @@ expandable {
       tooltip:t='<<?mainmenu/btnExpand>>'
       on_click:t='onShowBonuses'
       isTextBtn:t='yes'
+      interactive:t='yes'
       style:t='width:pw; min-width:pw;'
       css-hier-invalidate:t='yes'
     }

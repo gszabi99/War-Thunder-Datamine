@@ -1,0 +1,47 @@
+{
+  "model": "unit_hangar_technic_black",
+  "subclass": "fortification",
+  "animChar": "unit_hangar_technic_black_idle_standing_a_char",
+  "dynCollisionGeom": false,
+  "hasExpl": false,
+  "hasDmg2": false,
+  "hasDmg2Collision": false,
+  "hasDmg": false,
+  "damageableByGun": false,
+  "expClass": "exp_zero",
+  "renderInWaterReflection": true,
+  "toGround": false,
+  "forceFastPhysForAI": true,
+  "useDestrPhysObj": false,
+  "substRI": false,
+  "damageCollisionMultiplier": 0.1,
+  "explosionImpulse": 100.0,
+  "timeToFire": 4.0,
+  "InitAnimParamsRandomly": {
+    "part": {
+      "name": "play_derrick_anim",
+      "range": [0.0,10.0]
+    }
+  },
+  "DamageParts": {
+    "steel": {
+      "armorClass": "tank_structural_steel",
+      "body_dm": {
+        "armorThickness": 1000.0,
+        "hp": 1000000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.0,
+        "fire": 0.0
+      },
+      "onKill": {
+        "expl": 0.0
+      }
+    }
+  }
+}

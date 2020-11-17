@@ -200,9 +200,13 @@ itemDiv[showButtonAlways=yes] > Button_text {
   enable:yes;
 }
 
-[show_console_buttons=yes] :focus > itemDiv[selected=yes] > Button_text,
-[show_console_buttons=yes] craftBranchBody:focus > itemBlock[selected=yes] > itemDiv > Button_text,
-itemDiv:hover > Button_text, itemDiv > Button_text:hover {
+[show_console_buttons=yes] itemDiv {
+  tooltip-timeout:800;
+}
+
+[show_console_buttons=yes] craftBranchBody > itemBlock:hover > itemDiv > Button_text,
+[show_console_buttons=no] itemDiv:hover > Button_text,
+[show_console_buttons=no] itemDiv > Button_text:hover {
   display:show;
   enable:yes;
 }
@@ -484,6 +488,10 @@ warbondShopLevel[status=current] > textareaNoTab {
   color:@userlogColoredText;
 }
 
+warbondShopLevel[hasOverlayIcon=no] {
+  foreground-color:@transparent;
+}
+
 itemAmountText {
   pos:pw-w-1@itemPadding, 1@itemPadding;
   position:absolute;
@@ -685,6 +693,10 @@ prizeNest > chanceIconPlace > chanceIcon,
 prizeChanceLegend chanceIcon {
   size:1@sIco, 1@sIco;
   background-svg-size:1@sIco, 1@sIco;
+}
+
+prizeNest > chanceIconPlace > chanceIcon {
+  interactive:yes;
 }
 
 [smallFont=yes] prizeNest > chanceIconPlace,

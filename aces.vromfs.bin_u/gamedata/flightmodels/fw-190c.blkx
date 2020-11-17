@@ -35,9 +35,9 @@
         "hp": 15.0
       }
     },
-    "armor12": {
+    "armor20": {
       "armor2_dm": {
-        "hp": 40.0
+        "hp": 50.0
       }
     },
     "armor8": {
@@ -45,15 +45,10 @@
         "hp": 40.0
       }
     },
-    "glass57": {
-      "armor1_dm": {
-        "hp": 100.0
-      }
-    },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 49.5
+        "hp": 33.7
       }
     },
     "c_dural3": {
@@ -65,17 +60,13 @@
         "genericDamageMult": 0.3,
         "hp": 23.8
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 25.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 25.5
+        "hp": 14.5
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 25.5
+        "hp": 14.5
       },
       "flap_l_dm": {
         "hp": 24.1
@@ -155,15 +146,20 @@
         "hp": 47.7
       }
     },
+    "glass70": {
+      "armor1_dm": {
+        "hp": 100.0
+      }
+    },
     "protected_controls": {
       "tailcontrol_dm": {
         "hp": 60.5
       },
       "wingcontrol_l_dm": {
-        "hp": 53.8
+        "hp": 51.6
       },
       "wingcontrol_r_dm": {
-        "hp": 59.3
+        "hp": 51.6
       }
     },
     "steel": {
@@ -199,7 +195,7 @@
         "hp": 39.5
       },
       "tank2_dm": {
-        "hp": 49.9
+        "hp": 44.4
       }
     }
   },
@@ -352,63 +348,6 @@
       "part": {
         "name": "cover2_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [
@@ -1067,8 +1006,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1076,8 +1015,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1085,8 +1024,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1094,8 +1033,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1950,7 +1889,7 @@
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.0,1.0,0.3]
+        "flexionDir": [0.3,1.0,0.0]
       }
     },
     {
@@ -1959,7 +1898,7 @@
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [0.0,1.0,-0.3]
+        "flexionDir": [-0.3,1.0,0.0]
       }
     }
   ],

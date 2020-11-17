@@ -1,4 +1,5 @@
 // warning disable: -file:forbidden-function
+local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 
 ::debug_show_test_unlocks <- function debug_show_test_unlocks(chapter = "test", group = null)
 {
@@ -167,3 +168,5 @@ web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
       needShowUnitTutorial = needTutorial
     })
 }
+
+::open_battle_pass_wnd <- @() openBattlePassWnd()

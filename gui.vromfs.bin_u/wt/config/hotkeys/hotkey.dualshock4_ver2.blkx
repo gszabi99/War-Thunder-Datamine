@@ -30,6 +30,17 @@
   "hotkeys": [
     {
       "event": {
+        "name": "vtol",
+        "shortcut": {
+          "button": {
+            "deviceId": 3,
+            "buttonId": 2
+          }
+        }
+      }
+    },
+    {
+      "event": {
         "name": "ID_CONTROL_MODE_HELICOPTER",
         "shortcut": [
           {
@@ -964,7 +975,7 @@
         "shortcut": {
           "button": {
             "deviceId": 3,
-            "buttonId": 9
+            "buttonId": 0
           }
         }
       }
@@ -2933,6 +2944,15 @@
       "USEROPT_GUNNER_VIEW_SENSE": 80,
       "USEROPT_GUNNER_VIEW_ZOOM_SENS": 50,
       "USEROPT_AUTOMATIC_TRANSMISSION_TANK": true,
+      "vtol": {
+        "axisId": 3,
+        "relative": true,
+        "inverse": true,
+        "keepDisabledValue": true
+      },
+      "climb": {
+        "relative": true
+      },
       "helicopter_camx": {
         "axisId": 2
       },

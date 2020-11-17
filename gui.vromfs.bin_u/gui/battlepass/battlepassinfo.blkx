@@ -1,0 +1,185 @@
+[
+  {
+    "flow": "vertical"
+  },
+  {
+    "padding": "2@blockInterval"
+  },
+  {
+    "tdiv": [
+      {
+        "id": "battle_pass_info"
+      },
+      {
+        "size": "pw, fh"
+      },
+      {
+        "flow": "vertical"
+      },
+      {
+        "overflow-y": "auto"
+      },
+      {
+        "tdiv": {
+          "size": "pw, 1@battlePassRankInfoHeight",
+          "textareaNoTab": {
+            "top": "1@battlePassBigFlagTextAbsPos",
+            "position": "relative",
+            "text": "#mainmenu/rank",
+            "bigBoldFont": "yes",
+            "margin": "3@blockInterval, 0"
+          },
+          "battlePassFlag": {
+            "id": "season_lvl",
+            "behaviour": "bhvUpdateByWatched",
+            "top": "0.5ph-0.5h",
+            "position": "relative",
+            "margin-right": "3@blockInterval",
+            "flagSize": "big",
+            "textareaNoTab": {
+              "id": "flag_text",
+              "text": ""
+            }
+          },
+          "tdiv": {
+            "id": "level_exp",
+            "behaviour": "bhvUpdateByWatched",
+            "size": "fw, ph",
+            "expProgress": {
+              "id": "progress_bar",
+              "width": "pw",
+              "position": "relative",
+              "pos": "0, 0.5ph-h",
+              "value": "0",
+              "big": "yes",
+              "type": "battlePassRank",
+              "activeText": {
+                "id": "progress_text",
+                "position": "absolute",
+                "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                "tinyFont": "yes"
+              }
+            }
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "width": "pw + 4@blockInterval",
+          "left": "0.5pw-0.5w",
+          "position": "relative",
+          "padding": "2@blockInterval, 2@dp",
+          "background-color": "@separatorBlockColor",
+          "textareaNoTab": {
+            "id": "rest_of_day",
+            "pos": "pw-w, 0.5ph-0.5h",
+            "position": "relative",
+            "text": "",
+            "smallFont": "yes"
+          }
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "today_login_exp",
+          "textareaNoTab": {
+            "id": "text"
+          }
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "login_streak",
+          "textareaNoTab": {
+            "id": "text"
+          }
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "tomorow_login_exp",
+          "textareaNoTab": {
+            "id": "text"
+          }
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "easy_daily_task_progress",
+          "css-hier-invalidate": "yes",
+          "textareaNoTab": {
+            "id": "text"
+          },
+          "icon": []
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "medium_daily_task_progress",
+          "css-hier-invalidate": "yes",
+          "textareaNoTab": {
+            "id": "text"
+          },
+          "icon": []
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "season_tasks_progress",
+          "textareaNoTab": {
+            "text": "#battlePass/info/season_tasks_progress"
+          },
+          "expProgress": {
+            "id": "progress_bar",
+            "width": "fw",
+            "position": "relative",
+            "pos": "0, 0.5ph-0.5h",
+            "margin-left": "1@blockInterval",
+            "value": "0",
+            "big": "yes",
+            "type": "battlePassTask",
+            "activeText": {
+              "id": "progress_text",
+              "position": "absolute",
+              "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+              "tinyFont": "yes",
+              "text": ""
+            }
+          }
+        }
+      },
+      {
+        "battlePassInfoWatch": {
+          "id": "left_special_tasks_bought_count",
+          "textareaNoTab": {
+            "id": "text"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "tdiv": {
+      "width": "pw",
+      "padding-top": "1@blockInterval",
+      "Button_text": {
+        "id": "btn_warbondsShop",
+        "display": "hide",
+        "enable": "no",
+        "pos": "pw-w, 0",
+        "position": "relative",
+        "noMargin": "yes",
+        "visualStyle": "secondary",
+        "btnName": "LT",
+        "on_click": "onWarbondsShop",
+        "buttonWink": [],
+        "buttonGlance": [],
+        "ButtonImg": [],
+        "textarea": {
+          "class": "buttonText",
+          "text": "#mainmenu/btnWarbondsShop"
+        }
+      }
+    }
+  }
+]

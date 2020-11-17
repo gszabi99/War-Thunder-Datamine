@@ -1,6 +1,8 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
+    "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "id": "wnd_frame"
@@ -28,7 +30,9 @@
             "text": "#mainmenu/btnControlsWizard",
             "textHide": "yes"
           },
-          "Button_close": []
+          "Button_close": {
+            "id": "btn_back"
+          }
         }
       },
       {
@@ -58,52 +62,27 @@
             "tdalign": "center"
           },
           {
-            "behaviour": "ControlsInput"
-          },
-          {
-            "shortcutCancel": "Esc"
-          },
-          {
-            "shortcutActivate": "J:Start"
-          },
-          {
-            "on_activate": "switchAllListenModes"
-          },
-          {
-            "on_end_edit": "onButtonEntered"
-          },
-          {
-            "on_cancel_edit": "onCancelButtonInput"
-          },
-          {
-            "on_change_value": "onButtonAdded"
-          },
-          {
-            "check_analog": "0"
-          },
-          {
-            "device0": ""
-          },
-          {
-            "button0": ""
-          },
-          {
-            "device1": ""
-          },
-          {
-            "button1": ""
-          },
-          {
-            "device2": ""
-          },
-          {
-            "button2": ""
-          },
-          {
-            "behavior": "Timer"
-          },
-          {
-            "timer_handler_func": "onAxisInputTimer"
+            "tdiv": {
+              "id": "input-listener",
+              "size": "sw, sh",
+              "position": "root",
+              "behaviour": "ControlsInput",
+              "shortcutCancel": "Esc",
+              "shortcutActivate": "J:Start",
+              "on_activate": "switchAllListenModes",
+              "on_end_edit": "onButtonEntered",
+              "on_cancel_edit": "onCancelButtonInput",
+              "on_change_value": "onButtonAdded",
+              "check_analog": "0",
+              "device0": "",
+              "button0": "",
+              "device1": "",
+              "button1": "",
+              "device2": "",
+              "button2": "",
+              "behavior": "Timer",
+              "timer_handler_func": "onAxisInputTimer"
+            }
           },
           {
             "activeText": {
@@ -209,8 +188,7 @@
             "max-width": "pw",
             "pos": "50%pw-50%w, ph + 0.4(57%p.p.h - 50%ph - h)",
             "position": "absolute",
-            "flow": "h-flow",
-            "childsActivate": "yes"
+            "flow": "h-flow"
           }
         }
       },
@@ -448,10 +426,10 @@
                 "id": "keep_assign_btn",
                 "text": "#hotkeys/tip/KeepCurrentAssign",
                 "display": "hide",
-                "accessKey": "Esc | J:A",
+                "accessKey": "Esc | J:X",
                 "on_click": "onCancelButtonInput",
                 "hideConsoleImage": "no",
-                "btnName": "A",
+                "btnName": "X",
                 "ButtonImg": []
               }
             },
@@ -462,7 +440,7 @@
                 "text": "#mainmenu/btnControlsWizard",
                 "_on_click": "onContinue",
                 "hideConsoleImage": "no",
-                "btnName": "A",
+                "btnName": "X",
                 "ButtonImg": []
               }
             },
@@ -473,7 +451,7 @@
                 "text": "#controls/presetSelect",
                 "_on_click": "onPresetDone",
                 "hideConsoleImage": "no",
-                "btnName": "A",
+                "btnName": "X",
                 "ButtonImg": []
               }
             }
@@ -763,27 +741,6 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
-                            "behaviour": "wrapNavigator"
-                          },
-                          {
-                            "navigatorShortcuts": "yes"
-                          },
-                          {
-                            "childsActivate": "yes"
-                          },
-                          {
-                            "on_wrap_up": "onWrapUp"
-                          },
-                          {
-                            "on_wrap_down": "onWrapDown"
-                          },
-                          {
-                            "on_wrap_left": "onTopGCPanelLeft"
-                          },
-                          {
-                            "on_wrap_right": "onTopGCPanelRight"
-                          },
-                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -874,27 +831,6 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
-                        },
-                        {
-                          "behaviour": "wrapNavigator"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "childsActivate": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_left": "onTopGCPanelLeft"
-                        },
-                        {
-                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -1110,9 +1046,6 @@
               "shadowSafeArea": []
             },
             {
-              "line": []
-            },
-            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -1153,7 +1086,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "pos": "1@dp, 0"
+                      "display": "hide"
                     }
                   }
                 },
@@ -1210,14 +1143,7 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header",
-                    "behaviour": "wrapNavigator",
-                    "navigatorShortcuts": "yes",
-                    "childsActivate": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_wrap_left": "onWrapLeft",
-                    "on_wrap_right": "onWrapRight"
+                    "class": "header"
                   }
                 },
                 {
@@ -1233,27 +1159,6 @@
                     },
                     {
                       "class": "header"
-                    },
-                    {
-                      "behaviour": "wrapNavigator"
-                    },
-                    {
-                      "navigatorShortcuts": "yes"
-                    },
-                    {
-                      "childsActivate": "yes"
-                    },
-                    {
-                      "on_wrap_up": "onWrapUp"
-                    },
-                    {
-                      "on_wrap_down": "onWrapDown"
-                    },
-                    {
-                      "on_wrap_left": "onBottomGCPanelLeft"
-                    },
-                    {
-                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

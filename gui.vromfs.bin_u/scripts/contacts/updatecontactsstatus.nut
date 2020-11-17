@@ -1,9 +1,8 @@
 local { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
 local { appendOnce, isEmpty } = require("sqStdLibs/helpers/u.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
-local timeBase = require("std/timeLoc.nut")
-
-local UPDATE_DELAY_MSEC = timeBase.secondsToMilliseconds(60)
+local UPDATE_DELAY_MSEC = isPlatformSony? 60000 : 1800000 //60 sec for psn, 30 minutes for others
 local lastUpdate = persist("lastUpdate", @() ::Watched(0))
 local saveLastUpdate = function() { lastUpdate(::dagor.getCurTime()) }
 local canUpdate = @() ::dagor.getCurTime() - lastUpdate.value >= UPDATE_DELAY_MSEC
@@ -71,7 +70,7 @@ local updateBlocklist = function() {
   )
 }
 
-local updateContactsStatusByUids = function(uids) { // warning disable: -declared-never-used
+local updateContactsStatusByUids = function(uids) {
   foreach (uid in uids) {
     if (uid && (cachedUids.value?[uid.tostring()] == null) && !::is_my_userid(uid))
       appendOnce(uid, pendingUids.value)
@@ -87,9 +86,8 @@ local invalidateCache = function() {
 }
 
 local updateContactsStatusByContacts = function(arr, cb = @() null) {
-  cb()
-  //afterUpdateCb = cb
-  //updateContactsStatusByUids(arr.map(@(c) c?.uidInt64))
+  afterUpdateCb = cb
+  updateContactsStatusByUids(arr.map(@(c) c?.uidInt64))
 }
 
 local checkInRoomMembers = function() {

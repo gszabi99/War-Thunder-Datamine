@@ -1,3 +1,5 @@
+local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+
 class ::gui_handlers.WeaponWarningHandler extends ::gui_handlers.SkipableMsgBox
 {
   skipOption = ::USEROPT_SKIP_WEAPON_WARNING
@@ -19,6 +21,6 @@ class ::gui_handlers.WeaponWarningHandler extends ::gui_handlers.SkipableMsgBox
   function skipFunc(value)
   {
     ::set_gui_option(skipOption, value)
-    ::save_profile_offline_limited()
+    saveProfile()
   }
 }

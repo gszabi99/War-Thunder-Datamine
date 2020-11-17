@@ -60,11 +60,11 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 51.8
+        "hp": 32.8
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 51.8
+        "hp": 32.8
       }
     },
     "c_dural10": {
@@ -90,7 +90,7 @@
       },
       "wing_l_dm": {
         "genericDamageMult": 0.35,
-        "hp": 118.6
+        "hp": 125.5
       },
       "wing_r_dm": {
         "genericDamageMult": 0.35,
@@ -158,16 +158,16 @@
     },
     "dural70": {
       "spar1_l_dm": {
-        "hp": 59.5
+        "hp": 90.5
       },
       "spar1_r_dm": {
-        "hp": 59.5
+        "hp": 90.5
       },
       "spar2_l_dm": {
-        "hp": 59.5
+        "hp": 67.5
       },
       "spar2_r_dm": {
-        "hp": 59.5
+        "hp": 67.5
       },
       "spar_l_dm": {
         "hp": 90.5
@@ -194,10 +194,10 @@
         "hp": 80.5
       },
       "wingcontrol_l_dm": {
-        "hp": 59.5
+        "hp": 80.5
       },
       "wingcontrol_r_dm": {
-        "hp": 59.5
+        "hp": 80.5
       }
     },
     "steel": {
@@ -239,7 +239,7 @@
     },
     "steel_tank_m": {
       "tank1_dm": {
-        "hp": 73.7
+        "hp": 75.5
       },
       "tank2_dm": {
         "hp": 75.5
@@ -472,9 +472,10 @@
         },
         {
           "onHit": {
-            "damage": 2.7,
+            "damage": 2.0,
             "fire": 0.01,
             "leak_oil": 0.5,
+            "leak_water": 0.45,
             "cut": 0.0
           }
         },
@@ -482,7 +483,8 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.1,
-            "leak_oil": 1.0,
+            "leak_oil": 0.8,
+            "leak_water": 1.0,
             "cut": 0.0
           }
         },
@@ -490,14 +492,16 @@
           "onKill": {
             "fire": 30.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 45.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         }
@@ -515,9 +519,10 @@
         },
         {
           "onHit": {
-            "damage": 2.7,
+            "damage": 2.0,
             "fire": 0.01,
             "leak_oil": 0.5,
+            "leak_water": 0.45,
             "cut": 0.0
           }
         },
@@ -525,7 +530,8 @@
           "onHit": {
             "damage": 30.0,
             "fire": 0.1,
-            "leak_oil": 1.0,
+            "leak_oil": 0.8,
+            "leak_water": 1.0,
             "cut": 0.0
           }
         },
@@ -533,14 +539,16 @@
           "onKill": {
             "fire": 30.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         },
         {
           "onKill": {
             "damage": 30.0,
-            "fire": 44.0,
+            "fire": 45.0,
             "leak_oil": 10.0,
+            "leak_water": 10.0,
             "cut": 0.0
           }
         }
@@ -1105,8 +1113,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1114,8 +1122,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1123,8 +1131,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1132,8 +1140,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1866,6 +1874,11 @@
       }
     }
   ],
+  "flexWing": {
+    "wingStrainCoeff": 0.03,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
   "ikPilot": [
     {
       "model": "pilot_german_char"

@@ -135,8 +135,8 @@
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
         "fuel_consume": [0.0,62.838],
-        "rpm": [0.0,11000.0],
-        "rpm1": [0.0,11000.0],
+        "rpm": [0.0,8800.0],
+        "rpm_hour": [0.0,8800.0],
         "oil_pressure": [0.0,160.0],
         "water_temperature": [0.0,1000.0],
         "fuel_pressure": [0.0,15.0],
@@ -529,6 +529,13 @@
     ]
   },
   {
+    "flexWing": {
+      "wingStrainCoeff": 0.5,
+      "wingOverloadCoeff": 1.0,
+      "wingStrainLimitDown": 1.0
+    }
+  },
+  {
     "cutting": {
       "_emtr_break_wing0_l_from": [0.0521411,-0.512769,1.00286],
       "_emtr_break_wing0_l_to": [0.0521411,-0.512769,1.49547],
@@ -674,16 +681,16 @@
           "hp": 49.9
         },
         "spar2_l_dm": {
-          "hp": 51.4
+          "hp": 51.3
         },
         "spar2_r_dm": {
-          "hp": 51.4
+          "hp": 51.3
         },
         "spar_l_dm": {
-          "hp": 55.0
+          "hp": 55.3
         },
         "spar_r_dm": {
-          "hp": 55.0
+          "hp": 55.4
         }
       },
       "glass38": {
@@ -1587,8 +1594,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1596,8 +1603,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1605,8 +1612,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1614,8 +1621,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },

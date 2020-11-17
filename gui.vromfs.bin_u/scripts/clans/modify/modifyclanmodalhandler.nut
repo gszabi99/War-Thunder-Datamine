@@ -1,6 +1,7 @@
 local { clearBorderSymbols } = require("std/string.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
 class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -17,18 +18,16 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
   newClanType = ::g_clan_type.NORMAL
   newClanRegion = ""
   newClanAnnouncement = ""
-  lastShownReq = null
-  focusArray = [
-    function() { return getCurrentTopGCPanel() }     //gamercard top
-    function() { return getCurGCDropdownMenu() }     //gamercard menu
-    "newclan_type"
-    "newclan_name"
-    "newclan_tag"
-    "newclan_slogan"
-    "newclan_region"
-    "newclan_description"
-    "newclan_announcement"
-    function() { return getCurrentBottomGCPanel() }    //gamercard bottom
+  lastShownHintObj = null
+
+  tabFocusArray = [
+    "newclan_type",
+    "newclan_name",
+    "newclan_tag",
+    "newclan_slogan",
+    "newclan_region",
+    "newclan_description",
+    "newclan_announcement",
   ]
 
   // Abstract method.
@@ -48,7 +47,7 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
     if (::checkObj(newClanTypeObj))
       newClanTypeObj.setValue(0)
 
-    lastShownReq = scene.findObject("req_newclan_name")
+    lastShownHintObj = scene.findObject("req_newclan_name")
 
     local regionObj = scene.findObject("region_nest")
     if (!::has_feature("ClanRegions") && ::checkObj(regionObj))
@@ -261,13 +260,29 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
 
   function onFocus(obj)
   {
-    local req = obj?.id && scene.findObject("req_" + obj.id)
-    if(lastShownReq && !lastShownReq.isEqual(req))
-      lastShownReq.show(false)
-    if(!req)
-      return
-    req.show(true)
-    lastShownReq = req
+    if (!::show_console_buttons)
+      updateHint(obj, true)
+  }
+
+  function onHover(obj)
+  {
+    if (::show_console_buttons)
+      updateHint(obj, obj.isHovered())
+  }
+
+  function updateHint(obj, isShow)
+  {
+    local hintObj = obj?.id != null ? scene.findObject($"req_{obj.id}") : null
+    if (::check_obj(lastShownHintObj) && (hintObj == null || !lastShownHintObj.isEqual(hintObj)))
+    {
+      lastShownHintObj.show(false)
+      lastShownHintObj = null
+    }
+    if (::check_obj(hintObj))
+    {
+      hintObj.show(isShow)
+      lastShownHintObj = hintObj
+    }
   }
 
   function clanCanselEdit(obj)
@@ -308,4 +323,7 @@ class ::gui_handlers.ModifyClanModalHandler extends ::gui_handlers.BaseGuiHandle
       }
     }
   }
+
+  onKbdWrapUp   = @() setFocusToNextObj(scene, tabFocusArray, -1)
+  onKbdWrapDown = @() setFocusToNextObj(scene, tabFocusArray, 1)
 }

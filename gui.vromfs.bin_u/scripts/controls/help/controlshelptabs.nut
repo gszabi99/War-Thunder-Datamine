@@ -1,4 +1,4 @@
-local u = require("sqStdLibs/helpers/u.nut")
+local { search } = require("sqStdLibs/helpers/u.nut")
 local platform = require("scripts/clientState/platform.nut")
 local helpTypes = require("scripts/controls/help/controlsHelpTypes.nut")
 
@@ -89,7 +89,7 @@ local function getPrefferableType(contentSet)
     CONTROL_HELP_PATTERN.RADAR,
   ])
   {
-    local helpType = ::u.search(helpTypes.types, @(t) t.helpPattern == pattern
+    local helpType = search(helpTypes.types, @(t) t.helpPattern == pattern
       && t.needShow(contentSet)
       && t.showByUnit(unit, unitTag))
     if (helpType)

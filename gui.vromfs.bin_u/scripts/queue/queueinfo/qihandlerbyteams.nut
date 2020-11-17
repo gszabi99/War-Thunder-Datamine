@@ -149,7 +149,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
     local params = []
     params.append({
                     text = clusterNameLoc
-                    tdAlign = "center"
+                    tdalign = "center"
                     width="0.4pw"
                  })
 
@@ -157,7 +157,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
     {
       params.append({
         text = ::getTblValue(i.tostring(), queueStatData, 0).tostring()
-        tdAlign = "center"
+        tdalign = "center"
       })
     }
     return params
@@ -170,7 +170,7 @@ class ::gui_handlers.QiHandlerByTeams extends ::gui_handlers.QiHandlerBase
     {
       headerData.append({
         text = ::get_roman_numeral(i)
-        tdAlign = "center"
+        tdalign = "center"
       })
     }
     return ::buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")

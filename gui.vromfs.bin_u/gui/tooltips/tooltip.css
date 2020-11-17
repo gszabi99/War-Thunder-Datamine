@@ -1,0 +1,32 @@
+tooltipObj, tooltip {
+  background-color:@frameHeaderBackgroundColor;
+  border-color:@frameDarkMenuBorderColor;
+  border:yes;
+  padding:@framePadding;
+  tooltip-screen-offset:1@bw, 1@bh;
+}
+
+tooltip {
+  re-type:textarea;
+  behaviour:textarea;
+  position:absolute;
+  pos:25@sf/@pf, 25@sf/@pf;
+  max-width:0.7@sf;
+  color:@commonTextColor;
+  font:@fontSmall;
+  font-bold:@fontNormal;
+  timeout:250;
+}
+
+tooltipObj {
+  color-factor:255;
+}
+
+tooltipObj.empty {
+  background-color:@transparent;
+  border:no;
+}
+
+tooltipObj[type=dark] {
+  background-color: @frameBackgroundColor;
+}

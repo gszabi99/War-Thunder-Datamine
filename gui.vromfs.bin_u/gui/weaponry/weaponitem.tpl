@@ -27,17 +27,27 @@ weaponry_item {
       text:t='<<discountText>>'
     }
   }
-  weaponBody{
+  weaponBody {
     id:t='centralBlock'
     holderId:t='<<id>>'
-    size:t='pw, 1@modItemHeight'
+    size:t='pw, ph'
     pos:t='50%pw-50%w, 0'
     position:t='absolute'
     behaviour:t='button'
     on_click:t='onModItemClick'
     on_dbl_click:t = 'onModItemDblClick'
 
+    topLine {}
+    wallpaper {
+      size:t='pw, ph'
+      position:t='absolute'
+      css-hier-invalidate:t='yes'
+      pattern {}
+    }
+
     include "gui/weaponry/weaponIcon"
+    itemWinkBlock { buttonWink { _transp-timer:t='0' } }
+    hoverHighlight {}
 
     img {
       id:t='status_icon'
@@ -48,7 +58,7 @@ weaponry_item {
       background-svg-size:t='1@weaponStatusIconSize, 1@weaponStatusIconSize'
     }
 
-    weaponInfoBg {
+    tdiv {
       size:t='fw, ph'
       pos:t='0,50%ph-50%h'
       position:t='relative'
@@ -252,6 +262,7 @@ weaponry_item {
             position:t='relative'
             behaviour:t='button'
             on_click:t='onModCheckboxClick'
+            skip-navigation:t='yes'
             <<^isShowStatusImg>>
             display:t='hide'
             <</isShowStatusImg>>
@@ -272,29 +283,21 @@ weaponry_item {
     }
     tdiv{
       id:t='modItem_visualHasMenu'
-      size:t='19, 10'
+      size:t='19@sf/@pf, 10@sf/@pf'
       position:t='absolute'
       pos:t='0.5pw - 0.5w, ph'
       <<#hideVisualHasMenu>>display:t='hide'<</hideVisualHasMenu>>
 
       background-repeat:t='expand'
       background-position:t='0, 0'
-      background-image:t='#ui/gameuiskin#drop_menu_arrow_black_bg'
-      background-color:t='@white'
-
-      tdiv{
-        size:t='15@sf/@pf, 10@sf/@pf'
-        pos:t='50%pw-50%w, -1.4@sf/@pf'
-        position:t='absolute'
-        background-repeat:t='expand'
-        background-image:t='#ui/gameuiskin#drop_menu_icon.svg'
-        background-svg-size:t='15@sf/@pf, 10@sf/@pf'
-        background-color:t='@gray'
-      }
+      background-image:t='#ui/gameuiskin#drop_menu_arrow_bg.svg'
+      background-svg-size:t='19@sf/@pf, 10@sf/@pf'
+      background-color:t='@dropMenuArrowColor'
     }
   }
 
   title:t='$tooltipObj'
+  tooltip-float:t='horizontal'
   tooltipObj {
     id:t='tooltip_<<id>>'
     <<^useGenericTooltip>>
@@ -320,6 +323,7 @@ weaponry_item {
       btnName:t='X'
       on_click:t='onAltModAction'
       visualStyle:t='purchase'
+      skip-navigation:t='yes'
       buttonWink {}
       buttonGlance{}
       textarea {
@@ -338,6 +342,7 @@ weaponry_item {
       class:t='additional'
       canShow:t='<<actionBtnCanShow>>'
       visualStyle:t='common'
+      skip-navigation:t='yes'
       text:t='<<actionBtnText>>'
       on_click:t='onModActionBtn'
       display:t='hide'

@@ -481,7 +481,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
         fontIcon      = paramType.fontIcon
         fontIconType  = "fontIcon32"
         text          = paramType.fontIcon ? null : tooltip
-        tdAlign       = "center"
+        tdalign       = "center"
         active        = false
       })
     }
@@ -499,7 +499,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
         data.rowHeader[name][0] = {
           image   = isMyTeam ? "#ui/gameuiskin#mp_logo_allies.svg" : "#ui/gameuiskin#mp_logo_axis.svg"
           tooltip = isMyTeam ? "#multiplayer/teamA" : "#multiplayer/teamB"
-          tdAlign = "center"
+          tdalign = "center"
           active  = false
         }
 
@@ -529,12 +529,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     onViewReplay()
   }
 
-  function doSelectList()
-  {
-    local list = scene.findObject("items_list")
-    if (list != null)
-      list.select()
-  }
+  doSelectList = @() ::move_mouse_on_child_by_value(scene.findObject("items_list"))
 
   function goBack()
   {
@@ -668,7 +663,7 @@ class ::gui_handlers.RenameReplayHandler extends ::gui_handlers.BaseGuiHandlerWT
     editBoxObj.show(true)
     editBoxObj.enable(true)
     editBoxObj.setValue(baseName)
-    editBoxObj.select()
+    ::select_editbox(editBoxObj)
   }
 
   function checkName(newName)

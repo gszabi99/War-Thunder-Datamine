@@ -105,6 +105,14 @@
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 40.5
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 77.9
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 77.9
       }
     },
     "dural": {
@@ -184,14 +192,6 @@
       },
       "tank6_dm": {
         "hp": 120.5
-      }
-    },
-    "wood": {
-      "wing_l_dm": {
-        "hp": 74.1
-      },
-      "wing_r_dm": {
-        "hp": 74.1
       }
     }
   },
@@ -1049,8 +1049,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1058,8 +1058,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1067,8 +1067,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1076,8 +1076,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2070,6 +2070,7 @@
         "altitude_min": [0.0,1000.0],
         "altitude1_min": [0.0,1000.0],
         "altitude1_hour": [0.0,50000.0],
+        "radio_altitude": [0.0,50000.0],
         "altitude_koef": 3.28,
         "mach_hour": [0.0,10.0],
         "mach_min": [0.0,10.0],
@@ -2105,138 +2106,12 @@
     },
     {
       "multifunctionDisplays": {
-        "display": [
-          {
-            "textureArea": [0.0,0.0,0.5,0.5]
-          },
-          {
-            "page": {
-              "type": "map"
-            }
-          },
-          {
-            "page": {
-              "type": "rwr"
-            }
-          },
-          {
-            "page": {
-              "type": "devices",
-              "speed": {
-                "texture": "us_mfd_speed",
-                "position": [120.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.91,0.89],
-                "size": [192.0,192.0],
-                "color": "#ffff00ff",
-                "valueTextSize": 30.0,
-                "valueMul": 0.54,
-                "ranges": [
-                  {
-                    "limits": [50.0,100.0,-0.24,0.3]
-                  },
-                  {
-                    "limits": [100.0,150.0,0.3,0.69]
-                  },
-                  {
-                    "limits": [150.0,200.0,0.69,1.0]
-                  },
-                  {
-                    "limits": [200.0,250.0,1.0,1.32]
-                  }
-                ]
-              },
-              "vario": {
-                "texture": "us_mfd_vario",
-                "position": [552.0,110.0],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "valueMul": 0.1969,
-                "ranges": [
-                  {
-                    "limits": [-6.0,-4.0,0.05,0.22]
-                  },
-                  {
-                    "limits": [-4.0,-2.0,0.22,0.56]
-                  },
-                  {
-                    "limits": [-2.0,-1.0,0.56,0.72]
-                  },
-                  {
-                    "limits": [-1.0,1.0,0.72,1.28]
-                  },
-                  {
-                    "limits": [1.0,2.0,1.28,1.44]
-                  },
-                  {
-                    "limits": [2.0,4.0,1.44,1.78]
-                  },
-                  {
-                    "limits": [4.0,6.0,1.78,1.95]
-                  }
-                ]
-              },
-              "altitude_hour": {
-                "texture": "us_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.47,0.92,0.86,1.0],
-                "size": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,10.0,-0.5,1.5]
-                }
-              },
-              "altitude_min": {
-                "texture": "us_mfd_altitude",
-                "position": [552.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.93,0.4,0.97],
-                "size": [192.0,192.0],
-                "color": "#1e1effff",
-                "valueTextSize": 30.0,
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [0.0,1000.0,-0.5,1.5]
-                }
-              },
-              "compass": {
-                "texture": "us_mfd_compass",
-                "position": [130.0,402.0],
-                "backgroundTexCoord": [0.0,0.0,0.5,1.0],
-                "arrowTexCoord": [0.5,0.0,1.0,1.0],
-                "size": [192.0,192.0],
-                "arrowSize": [192.0,192.0],
-                "ranges": {
-                  "limits": [0.0,360.0,0.0,-2.0]
-                }
-              },
-              "aviahorizon_pitch": {
-                "texture": "us_mfd_ahorizon",
-                "arrowTex": "us_mfd_ahorizon_scale",
-                "position": [340.0,256.0],
-                "backgroundTexCoord": [0.11,0.0,0.89,0.89],
-                "arrowTexCoord": [0.0,0.4,1.0,0.6],
-                "size": [180.0,180.0],
-                "ranges": {
-                  "limits": [-90.0,90.0,0.35,-0.35]
-                }
-              },
-              "aviahorizon_roll": {
-                "texture": "us_mfd_ahorizon",
-                "position": [340.0,256.0],
-                "arrowTexCoord": [0.2,0.9,0.8,1.0],
-                "size": [180.0,180.0],
-                "notDrawBackground": true,
-                "ranges": {
-                  "limits": [-180.0,180.0,-1.0,1.0]
-                }
-              }
-            }
+        "display": {
+          "textureArea": [0.0,0.0,0.5,0.5],
+          "page": {
+            "type": "map"
           }
-        ]
+        }
       }
     },
     {

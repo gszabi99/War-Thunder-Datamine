@@ -114,17 +114,17 @@
     "mission": {
       "level": "levels/arcade_norway_green.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "scoreLimit": 2400,
-      "timeLimit": 25,
-      "deathPenaltyMul": 0.0,
-      "country_axis": "germany",
-      "country_allies": "ussr",
       "locName": "missions/_GS/heavy_tank;location/arcade_norway_green",
       "locDesc": "missions/_GS/desc",
+      "scoreLimit": 7000,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.2,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -304,22 +304,6 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/gs_objectives_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
         "file": "gameData/missions/templates/land_units_death_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -352,7 +336,39 @@
     },
     {
       "import_record": {
+        "file": "gameData/missions/templates/destroy_bomb_areas_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
         "file": "gameData/missions/templates/destroy_airfield_zone_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/gs_objectives_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -384,7 +400,23 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/destroy_bomb_areas_template.blk",
+        "file": "gameData/missions/templates/air_templates/gs/assaults_gs_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/gs/template_at_gs_planeset.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -415,6 +447,12 @@
       },
       "conditions": [],
       "actions": [
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "barabashka_enabled"
+          }
+        },
         {
           "varSetInt": {
             "value": 4,
@@ -728,7 +766,7 @@
       "else_actions": []
     },
     "update_indicators": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -787,12 +825,12 @@
       "objectGroups": {
         "name": "t1_airfield",
         "tm": [
-          [0.952024,0.0,0.730514],
-          [0.0,1.2,0.0],
-          [-0.730514,0.0,0.952024],
-          [3701.43,245.726,6735.69]
+          [0.963088,-0.0114771,0.715772],
+          [-0.00981525,1.19952,0.0324405],
+          [-0.715796,-0.0318904,0.96261],
+          [4780.09,255.413,8860.43]
         ],
-        "unit_class": "dynAF_britain_ally",
+        "unit_class": "dynaf_universal_1line_b",
         "props": {
           "army": 1,
           "active": true
@@ -806,9 +844,9 @@
           [-1.18973,0.0,0.156632],
           [0.0,1.2,0.0],
           [-0.156632,0.0,-1.18973],
-          [-8130.13,251.297,-1559.31]
+          [-9871.49,236.187,-1626.7]
         ],
-        "unit_class": "dynAF_britain_ally",
+        "unit_class": "dynaf_universal_1line_b",
         "props": {
           "army": 2,
           "active": true
@@ -819,10 +857,10 @@
       "armada": {
         "name": "t1_player01",
         "tm": [
-          [0.766045,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,0.766045],
-          [-8541.15,2000.0,-7166.25]
+          [-0.949634,0.00885063,-0.313238],
+          [0.0,0.999601,0.028244],
+          [0.313363,0.0268215,-0.949255],
+          [8093.37,1976.56,6484.92]
         ],
         "unit_class": "yak-9t",
         "closed_waypoints": false,
@@ -837,6 +875,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -865,10 +904,10 @@
       "tracked_vehicles": {
         "name": "t1_tank_01",
         "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [-2118.69,290.675,5574.93]
+          [-0.992003,-0.00500482,-0.126113],
+          [-0.0084686,0.999601,0.0269445],
+          [0.125928,0.0277971,-0.99165],
+          [-2139.56,288.611,5590.73]
         ],
         "unit_class": "germ_tigerII",
         "closed_waypoints": false,
@@ -883,6 +922,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -1013,10 +1053,10 @@
       "tracked_vehicles": {
         "name": "t1_tank_02",
         "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [-874.304,305.674,6602.55]
+          [-0.987194,-0.00500482,-0.159445],
+          [-0.00937109,0.999601,0.0266441],
+          [0.159248,0.0277971,-0.986847],
+          [-933.219,307.308,6585.64]
         ],
         "unit_class": "germ_tigerI",
         "closed_waypoints": false,
@@ -1031,9 +1071,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [8.0,6.0],
@@ -1177,10 +1218,10 @@
       "wheeled_vehicles": {
         "name": "t1_truck_01",
         "tm": [
-          [-0.866025,0.0,0.5],
-          [0.0,1.0,0.0],
-          [-0.5,0.0,-0.866025],
-          [-1908.35,299.1,5528.55]
+          [-0.863669,-0.0208924,0.503626],
+          [-0.0084686,0.999601,0.0269445],
+          [-0.503988,0.0190061,-0.863501],
+          [-1929.52,290.94,5543.67]
         ],
         "unit_class": "germ_sdKfz_251",
         "closed_waypoints": false,
@@ -1195,6 +1236,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 8,
@@ -1325,10 +1367,10 @@
       "wheeled_vehicles": {
         "name": "t1_truck_02",
         "tm": [
-          [-0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,-0.991445],
-          [-521.297,356.743,6518.99]
+          [-0.994773,-0.0120287,0.101402],
+          [-0.00937109,0.999601,0.0266441],
+          [-0.101682,0.0255546,-0.994489],
+          [-578.43,317.313,6513.84]
         ],
         "unit_class": "germ_sdKfz_251",
         "closed_waypoints": false,
@@ -1343,6 +1385,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 8,
@@ -1489,10 +1532,10 @@
       "tracked_vehicles": {
         "name": "t1_tank_03",
         "tm": [
-          [-0.976296,0.0,0.21644],
-          [0.0,1.0,0.0],
-          [-0.21644,0.0,-0.976296],
-          [-1631.3,355.85,5529.9]
+          [-0.975248,-0.0142101,0.220657],
+          [-0.0084686,0.999601,0.0269445],
+          [-0.220952,0.0244089,-0.974979],
+          [-1652.96,328.66,5545.32]
         ],
         "unit_class": "germ_pzIVc",
         "closed_waypoints": false,
@@ -1507,6 +1550,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 3,
@@ -1637,10 +1681,10 @@
       "tracked_vehicles": {
         "name": "t1_tank_04",
         "tm": [
-          [-0.866025,0.0,0.5],
-          [0.0,1.0,0.0],
-          [-0.5,0.0,-0.866025],
-          [-144.124,293.904,6376.29]
+          [-0.787826,-0.0208924,-0.615542],
+          [-0.0281644,0.999601,0.00211947],
+          [0.615252,0.0190061,-0.788101],
+          [-195.83,180.373,2228.0]
         ],
         "unit_class": "germ_tigerII",
         "closed_waypoints": false,
@@ -1655,9 +1699,10 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
-          "count": 2,
+          "count": 3,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [8.0,6.0],
@@ -1672,13 +1717,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-299.05,308.128,6451.1]
+              [-301.812,226.812,2116.85]
             ],
             "props": {
-              "speed": 40.0,
+              "speed": 30.0,
+              "tas": false,
               "moveType": "GATHER_TO",
               "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           },
@@ -1688,13 +1733,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-1695.53,327.551,5543.49]
+              [-3280.17,323.847,3767.26]
             ],
             "props": {
-              "speed": 40.0,
+              "speed": 30.0,
+              "tas": false,
               "moveType": "USE_SPLINES",
               "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           },
@@ -1704,93 +1749,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-3659.18,292.496,5523.74]
+              [-4479.93,154.637,4310.59]
             ],
             "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
+              "speed": 30.0,
               "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_04_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5461.92,300.448,3866.84]
-            ],
-            "props": {
-              "speed": 40.0,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5594.41,300.829,3675.02]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_04_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-9836.85,294.849,1042.28]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_04_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-10075.4,264.059,-1136.55]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_tank_04_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-8518.83,246.307,-1539.32]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           }
@@ -1846,6 +1811,9 @@
           },
           {
             "squad_members": "t1_truck_02"
+          },
+          {
+            "squad_members": "t1_truck_03"
           }
         ]
       }
@@ -1916,6 +1884,9 @@
             "object_marking": 0
           },
           {
+            "squad_members": "t1_land_squad"
+          },
+          {
             "squad_members": "t1_tanks_squad"
           },
           {
@@ -1949,6 +1920,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2049,6 +2021,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2149,6 +2122,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -2274,6 +2248,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 5,
@@ -2358,11 +2333,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -2522,11 +2498,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -2702,11 +2679,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -2848,10 +2826,10 @@
       "tracked_vehicles": {
         "name": "t2_tank_04",
         "tm": [
-          [0.953717,0.0,0.300706],
+          [-0.0520177,0.0,0.998646],
           [0.0,1.0,0.0],
-          [-0.300706,0.0,0.953717],
-          [-8228.65,324.685,1739.57]
+          [-0.998646,0.0,-0.0520177],
+          [-2749.91,648.222,31.8087]
         ],
         "unit_class": "germ_tigerII",
         "closed_waypoints": false,
@@ -2866,11 +2844,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
-          "count": 2,
+          "count": 3,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -2883,13 +2862,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-8065.6,316.95,1789.0]
+              [-2759.81,685.394,223.212]
             ],
             "props": {
-              "speed": 40.0,
+              "speed": 30.0,
+              "tas": false,
               "moveType": "GATHER_TO",
               "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           },
@@ -2899,13 +2878,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-6385.15,295.483,2371.9]
+              [-2526.78,819.745,697.218]
             ],
             "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
+              "speed": 30.0,
               "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           },
@@ -2915,13 +2894,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-5474.81,300.776,3848.37]
+              [-3306.59,320.427,3775.1]
             ],
             "props": {
-              "speed": 40.0,
+              "speed": 30.0,
+              "tas": false,
               "moveType": "USE_SPLINES",
               "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           },
@@ -2931,93 +2910,13 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [-3894.29,194.015,5161.17]
+              [-4020.6,169.384,4394.84]
             ],
             "props": {
-              "speed": 40.0,
+              "speed": 30.0,
+              "tas": false,
               "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3843.98,222.888,5311.15]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_04_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1848.5,302.301,5555.5]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_04_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-929.05,308.427,6555.83]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_04_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1938.13,277.428,6062.36]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_04_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3068.63,246.117,6369.64]
-            ],
-            "props": {
-              "speed": 40.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
               "canUsePathFinder": false
             }
           }
@@ -3046,11 +2945,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 8,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -3210,11 +3110,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 8,
           "formation_type": "rows",
-          "formation_div": 3,
+          "formation_div": 2,
           "formation_step": [8.0,6.0],
           "formation_noise": [0.4,0.5],
           "uniqueName": "",
@@ -3390,6 +3291,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -3501,6 +3403,9 @@
           },
           {
             "squad_members": "t2_truck_02"
+          },
+          {
+            "squad_members": "t2_truck_03"
           }
         ]
       }
@@ -3579,6 +3484,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3727,6 +3633,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -3875,6 +3782,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4040,6 +3948,9 @@
             "object_marking": 0
           },
           {
+            "squad_members": "t2_land_squad"
+          },
+          {
             "squad_members": "t2_tanks_squad"
           },
           {
@@ -4073,6 +3984,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4108,6 +4020,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4143,6 +4056,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4160,10 +4074,10 @@
       "squad": {
         "name": "t1_cargo_ships_squad",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10617.6,-0.00146484,18064.6]
+          [0.952626,0.00859024,-0.304022],
+          [0.0,0.999601,0.028244],
+          [0.304144,-0.026906,0.952246],
+          [13658.3,-199.238,12678.8]
         ],
         "props": [
           {
@@ -4231,6 +4145,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4266,6 +4181,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4301,6 +4217,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4371,14 +4288,14 @@
       "objectGroups": {
         "name": "objectGroups_01",
         "tm": [
-          [-0.172612,0.0830857,-0.981479],
-          [0.176974,0.982835,0.0520768],
-          [0.96896,-0.164708,-0.184354],
-          [-5126.32,167.861,5614.89]
+          [-0.462945,0.107977,-0.879785],
+          [0.184429,0.982562,0.0235451],
+          [0.866987,-0.151358,-0.474788],
+          [-5126.32,168.285,5614.89]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4387,9 +4304,9 @@
       "objectGroups": {
         "name": "objectGroups_02",
         "tm": [
-          [0.26563,-0.00746415,0.964046],
-          [0.01157,0.999921,0.00455399],
-          [-0.964005,0.00994434,0.265697],
+          [0.26563,0.00956034,0.964027],
+          [0.01157,0.999846,-0.0131035],
+          [-0.964005,0.0146345,0.26548],
           [-3562.32,271.462,4928.56]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
@@ -4406,7 +4323,7 @@
           [-0.294558,-0.0013825,0.955632],
           [-0.0553226,0.998347,-0.0156079],
           [-0.954031,-0.0574655,-0.294148],
-          [-3971.8,149.507,4680.2]
+          [-3971.8,156.964,4680.2]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
@@ -4426,7 +4343,7 @@
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4438,11 +4355,11 @@
           [0.905864,-0.0313513,-0.422407],
           [0.0999543,0.984914,0.141254],
           [0.411606,-0.170178,0.895332],
-          [-4778.49,194.126,3947.34]
+          [-4778.49,195.277,3947.34]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4451,10 +4368,10 @@
       "objectGroups": {
         "name": "objectGroups_06",
         "tm": [
-          [-0.510926,0.0599306,0.857533],
-          [-0.167036,0.971631,-0.167426],
-          [-0.84324,-0.228782,-0.486421],
-          [-4240.47,227.951,5773.31]
+          [-0.508626,0.107705,0.854224],
+          [-0.145585,0.967099,-0.208622],
+          [-0.84859,-0.230474,-0.476211],
+          [-4240.47,228.533,5773.31]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
@@ -4467,14 +4384,14 @@
       "objectGroups": {
         "name": "objectGroups_07",
         "tm": [
-          [-0.122945,-0.011045,0.992352],
-          [-0.237391,0.971236,-0.018601],
-          [-0.963603,-0.237862,-0.122031],
-          [6150.66,21.4505,4068.43]
+          [-0.96413,0.0920277,0.248967],
+          [0.0809425,0.995232,-0.0544242],
+          [-0.252788,-0.0323196,-0.966982],
+          [543.171,55.0027,2239.05]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 1,
           "active": true
         }
       }
@@ -4483,10 +4400,10 @@
       "objectGroups": {
         "name": "objectGroups_08",
         "tm": [
-          [0.255168,0.0808216,0.963513],
-          [-0.237391,0.971236,-0.018601],
-          [-0.937302,-0.223983,0.267015],
-          [6186.04,25.3192,3653.81]
+          [-0.837729,0.0603457,-0.542743],
+          [0.223563,0.94467,-0.240036],
+          [0.498228,-0.322422,-0.804869],
+          [49.4548,54.3522,1955.39]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
@@ -4499,14 +4416,14 @@
       "objectGroups": {
         "name": "objectGroups_09",
         "tm": [
-          [0.908102,-0.0108775,-0.418606],
-          [0.0973958,0.977733,0.185879],
-          [0.407263,-0.209567,0.888942],
-          [-4060.94,36.768,-3724.78]
+          [-0.619228,-0.142979,-0.772083],
+          [0.157972,0.940492,-0.300863],
+          [0.769156,-0.30827,-0.559793],
+          [-1819.59,49.2672,-764.952]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4515,14 +4432,14 @@
       "objectGroups": {
         "name": "objectGroups_10",
         "tm": [
-          [0.913046,0.116835,-0.390763],
-          [-0.0397123,0.979006,0.199925],
-          [0.405918,-0.167023,0.898518],
-          [-4413.87,32.6364,-3647.27]
+          [-0.642112,-0.196389,-0.741028],
+          [0.0855772,0.942225,-0.323864],
+          [0.76182,-0.271373,-0.588208],
+          [-2155.97,53.4007,-893.88]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4531,14 +4448,14 @@
       "objectGroups": {
         "name": "objectGroups_11",
         "tm": [
-          [0.142096,0.0154495,-0.989731],
-          [0.225834,0.973001,0.0476115],
-          [0.963746,-0.23028,0.134771],
-          [1927.71,1289.94,-3751.05]
+          [0.141188,-0.00349678,-0.989975],
+          [0.140344,0.989964,0.0165189],
+          [0.979984,-0.141269,0.140262],
+          [1927.71,1282.86,-3751.05]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4547,14 +4464,14 @@
       "objectGroups": {
         "name": "objectGroups_12",
         "tm": [
-          [0.856245,0.165744,-0.489257],
-          [-0.07494,0.976964,0.199811],
-          [0.511105,-0.134422,0.848942],
-          [2443.39,1292.21,-3970.17]
+          [0.84938,0.158086,-0.503548],
+          [-0.11595,0.98667,0.114176],
+          [0.514887,-0.0385919,0.856389],
+          [2443.39,1289.8,-3970.17]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 2,
           "active": true
         }
       }
@@ -4563,14 +4480,14 @@
       "objectGroups": {
         "name": "objectGroups_13",
         "tm": [
-          [-0.368164,-0.213325,0.904957],
-          [-0.07494,0.976964,0.199811],
-          [-0.926736,0.00574575,-0.37567],
-          [3857.12,1228.6,-3054.79]
+          [-0.366452,-0.181228,0.912616],
+          [-0.0382004,0.98295,0.179856],
+          [-0.929652,0.0310463,-0.367128],
+          [3857.12,1223.84,-3054.79]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 1,
           "active": true
         }
       }
@@ -4579,14 +4496,14 @@
       "objectGroups": {
         "name": "objectGroups_14",
         "tm": [
-          [-0.858011,0.0504294,0.51115],
-          [0.0453837,0.99872,-0.0223517],
-          [-0.511622,0.00401994,-0.859201],
-          [4160.8,1163.66,-2092.36]
+          [-0.859339,-0.00982197,0.511312],
+          [-0.00328239,0.999901,0.013691],
+          [-0.511396,0.010087,-0.859286],
+          [4066.82,1168.06,-2313.21]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
         "props": {
-          "army": 0,
+          "army": 1,
           "active": true
         }
       }
@@ -4595,10 +4512,10 @@
       "structures": {
         "name": "t1_art_01",
         "tm": [
-          [-0.819152,0.0,-0.573577],
-          [0.0,1.0,0.0],
-          [0.573577,0.0,-0.819152],
-          [3888.71,1267.04,-3127.12]
+          [-0.824244,0.0261824,-0.56563],
+          [0.0427905,0.998954,-0.0161145],
+          [0.564616,-0.0374858,-0.824502],
+          [3889.69,1262.71,-3128.07]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4613,6 +4530,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4630,10 +4548,10 @@
       "structures": {
         "name": "t1_art_02",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [3799.92,1225.42,-2989.78]
+          [-0.771898,0.0228156,-0.635337],
+          [0.0427905,0.998954,-0.0161145],
+          [0.634305,-0.0396251,-0.772067],
+          [3800.62,1227.1,-2989.23]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4648,6 +4566,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4665,10 +4584,10 @@
       "structures": {
         "name": "t1_art_03",
         "tm": [
-          [-0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,-0.173648],
-          [4233.41,1174.95,-2132.83]
+          [-0.173653,0.0270419,-0.984436],
+          [-0.0486698,0.998166,0.0360044],
+          [0.983604,0.0541646,-0.172019],
+          [4138.79,1184.32,-2353.13]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4683,6 +4602,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4700,10 +4620,10 @@
       "structures": {
         "name": "t1_art_04",
         "tm": [
-          [-0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,-0.173648],
-          [4075.79,1179.19,-2074.47]
+          [-0.173653,0.0270419,-0.984436],
+          [-0.0486698,0.998166,0.0360044],
+          [0.983604,0.0541646,-0.172019],
+          [3981.16,1178.78,-2294.9]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4718,6 +4638,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4735,10 +4656,10 @@
       "structures": {
         "name": "t1_art_05",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [6165.14,32.8715,3573.6]
+          [0.998135,-0.0422501,-0.0440566],
+          [0.037831,0.994592,-0.0967205],
+          [0.0479048,0.0948735,0.994336],
+          [119.483,63.5638,1999.42]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4753,6 +4674,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4770,10 +4692,10 @@
       "structures": {
         "name": "t1_art_06",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [6179.33,36.5257,3741.19]
+          [0.998135,-0.0422501,-0.0440566],
+          [0.037831,0.994592,-0.0967205],
+          [0.0479048,0.0948735,0.994336],
+          [-4.4654,60.8942,1885.71]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4788,6 +4710,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4805,10 +4728,10 @@
       "structures": {
         "name": "t1_art_07",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [6161.21,41.9536,3986.25]
+          [0.333449,0.116457,-0.935548],
+          [0.149392,0.973276,0.1744],
+          [0.930857,-0.197917,0.30714],
+          [626.067,66.3668,2222.18]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4823,6 +4746,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4840,10 +4764,10 @@
       "structures": {
         "name": "t1_art_08",
         "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [6111.88,26.2419,4147.03]
+          [0.333449,0.116457,-0.935548],
+          [0.149392,0.973276,0.1744],
+          [0.930857,-0.197917,0.30714],
+          [457.694,74.0924,2233.21]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4858,6 +4782,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4878,7 +4803,7 @@
           [-0.608761,0.0,-0.793353],
           [0.0,1.0,0.0],
           [0.793353,0.0,-0.608761],
-          [-3945.74,161.672,4602.0]
+          [-3945.74,162.957,4602.0]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4893,6 +4818,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4913,7 +4839,7 @@
           [-0.608761,0.0,-0.793353],
           [0.0,1.0,0.0],
           [0.793353,0.0,-0.608761],
-          [-4023.83,156.196,4750.76]
+          [-4023.83,157.481,4750.76]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -4928,6 +4854,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4963,6 +4890,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -4998,6 +4926,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5015,10 +4944,10 @@
       "structures": {
         "name": "t1_art_13",
         "tm": [
-          [-0.382683,0.0,-0.92388],
-          [0.0,1.0,0.0],
-          [0.92388,0.0,-0.382683],
-          [-4197.69,242.378,5702.47]
+          [-0.383497,-0.0308057,-0.923028],
+          [0.022204,0.998847,-0.0425614],
+          [0.923275,-0.0368171,-0.382371],
+          [-4197.45,238.978,5701.92]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5033,6 +4962,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5050,10 +4980,10 @@
       "structures": {
         "name": "t1_art_14",
         "tm": [
-          [-0.300706,0.0,-0.953717],
-          [0.0,1.0,0.0],
-          [0.953717,0.0,-0.300706],
-          [-4307.56,237.102,5829.14]
+          [-0.30157,-0.0338973,-0.952841],
+          [0.022204,0.998847,-0.0425614],
+          [0.953186,-0.0339922,-0.30047],
+          [-4307.28,241.54,5828.7]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5068,6 +4998,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5143,10 +5074,10 @@
       "structures": {
         "name": "t2_art_01",
         "tm": [
-          [0.300706,0.0,0.953717],
-          [0.0,1.0,0.0],
-          [-0.953717,0.0,0.300706],
-          [2528.46,1318.14,-3985.58]
+          [0.298894,0.0955497,0.949491],
+          [-0.0417118,0.995332,-0.0870322],
+          [-0.953374,-0.0135916,0.301484],
+          [2527.33,1317.82,-3987.95]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5161,6 +5092,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5178,10 +5110,10 @@
       "structures": {
         "name": "t2_art_02",
         "tm": [
-          [0.0871557,0.0,0.996195],
-          [0.0,1.0,0.0],
-          [-0.996195,0.0,0.0871557],
-          [2370.73,1294.48,-3929.92]
+          [0.0854607,0.090343,0.992237],
+          [-0.0417118,0.995332,-0.0870322],
+          [-0.995468,-0.0339502,0.0888301],
+          [2370.63,1292.54,-3930.12]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5196,6 +5128,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5213,10 +5146,10 @@
       "structures": {
         "name": "t2_art_03",
         "tm": [
-          [0.737277,0.0,0.67559],
-          [0.0,1.0,0.0],
-          [-0.67559,0.0,0.737277],
-          [1968.87,1291.2,-3828.52]
+          [0.733821,0.0854047,0.673952],
+          [-0.0869351,0.995715,-0.0315215],
+          [-0.673757,-0.035459,0.738101],
+          [1968.68,1285.24,-3828.59]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5231,6 +5164,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5248,10 +5182,10 @@
       "structures": {
         "name": "t2_art_04",
         "tm": [
-          [0.737277,0.0,0.67559],
-          [0.0,1.0,0.0],
-          [-0.67559,0.0,0.737277],
-          [1915.63,1303.61,-3669.0]
+          [0.733821,0.0854047,0.673952],
+          [-0.0869351,0.995715,-0.0315215],
+          [-0.673757,-0.035459,0.738101],
+          [1914.41,1298.01,-3669.45]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5266,6 +5200,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5283,10 +5218,10 @@
       "structures": {
         "name": "t2_art_05",
         "tm": [
-          [0.173648,0.0,0.984808],
-          [0.0,1.0,0.0],
-          [-0.984808,0.0,0.173648],
-          [-3973.85,39.953,-3733.17]
+          [0.916961,-0.0672082,-0.393277],
+          [0.0,0.98571,-0.168451],
+          [0.398978,0.154463,0.903857],
+          [-1848.1,38.4729,-847.024]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5301,6 +5236,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5318,10 +5254,10 @@
       "structures": {
         "name": "t2_art_06",
         "tm": [
-          [0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436193],
-          [-4135.65,49.5663,-3689.71]
+          [0.961193,-0.0464718,-0.271935],
+          [0.0,0.98571,-0.168451],
+          [0.275877,0.161914,0.947457],
+          [-1768.03,72.7386,-703.583]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5336,6 +5272,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5353,10 +5290,10 @@
       "structures": {
         "name": "t2_art_07",
         "tm": [
-          [0.0436193,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436193],
-          [-4327.09,45.2845,-3652.82]
+          [0.939391,0.00700425,-0.342774],
+          [-0.118482,0.944824,-0.305399],
+          [0.321722,0.327502,0.88839],
+          [-2187.1,36.8656,-974.375]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5371,6 +5308,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5388,10 +5326,10 @@
       "structures": {
         "name": "t2_art_08",
         "tm": [
-          [0.300706,0.0,0.953717],
-          [0.0,1.0,0.0],
-          [-0.953717,0.0,0.300706],
-          [-4490.22,35.1687,-3615.29]
+          [0.824115,-0.0779983,-0.561027],
+          [-0.118482,0.944824,-0.305399],
+          [0.553893,0.318156,0.769402],
+          [-2104.4,81.4317,-835.459]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5406,6 +5344,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5426,7 +5365,7 @@
           [0.300706,0.0,0.953717],
           [0.0,1.0,0.0],
           [-0.953717,0.0,0.300706],
-          [-4691.2,195.124,3939.12]
+          [-4691.2,196.275,3939.12]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5441,6 +5380,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5461,7 +5401,7 @@
           [-0.0871559,0.0,0.996195],
           [0.0,1.0,0.0],
           [-0.996195,0.0,-0.0871559],
-          [-4853.05,207.955,3982.23]
+          [-4853.05,209.106,3982.23]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5476,6 +5416,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5511,6 +5452,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5546,6 +5488,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5563,10 +5506,10 @@
       "structures": {
         "name": "t2_art_13",
         "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [-5111.6,178.378,5528.97]
+          [0.991909,-0.00358555,0.126899],
+          [0.0,0.999601,0.028244],
+          [-0.126949,-0.0280155,0.991514],
+          [-5138.43,181.236,5528.89]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5581,6 +5524,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5598,10 +5542,10 @@
       "structures": {
         "name": "t2_art_14",
         "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-5112.01,173.216,5697.17]
+          [0.990968,0.00378756,-0.134048],
+          [0.0,0.999601,0.028244],
+          [0.134101,-0.0279889,0.990573],
+          [-5087.66,171.547,5689.04]
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
@@ -5616,6 +5560,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5691,10 +5636,10 @@
       "air_defence": {
         "name": "t1_aaa_01",
         "tm": [
-          [-0.906308,0.0,-0.422618],
-          [0.0,1.0,0.0],
-          [0.422618,0.0,-0.906308],
-          [3896.78,1235.22,-3027.05]
+          [-0.909767,0.032294,-0.413862],
+          [0.0427905,0.998954,-0.0161145],
+          [0.412909,-0.0323698,-0.910197],
+          [3897.42,1232.14,-3027.58]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5709,6 +5654,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5726,10 +5672,10 @@
       "air_defence": {
         "name": "t1_aaa_02",
         "tm": [
-          [-0.906308,0.0,-0.422618],
-          [0.0,1.0,0.0],
-          [0.422618,0.0,-0.906308],
-          [4176.83,1174.45,-2046.24]
+          [-0.905325,-0.0288584,-0.423739],
+          [-0.0486698,0.998166,0.0360044],
+          [0.421923,0.0532189,-0.905068],
+          [4082.32,1177.95,-2266.71]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5744,6 +5690,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5761,10 +5708,10 @@
       "air_defence": {
         "name": "t1_aaa_03",
         "tm": [
-          [-0.906308,0.0,-0.422618],
-          [0.0,1.0,0.0],
-          [0.422618,0.0,-0.906308],
-          [6232.66,45.97,3651.24]
+          [0.951726,-0.0653656,-0.299909],
+          [0.037831,0.994592,-0.0967205],
+          [0.30461,0.0807056,0.949052],
+          [17.7684,79.3602,1986.65]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5779,6 +5726,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5796,10 +5744,10 @@
       "air_defence": {
         "name": "t1_aaa_04",
         "tm": [
-          [-0.793353,0.0,-0.608761],
-          [0.0,1.0,0.0],
-          [0.608761,0.0,-0.793353],
-          [6194.3,43.8883,4084.89]
+          [0.292527,0.124979,-0.948054],
+          [0.149392,0.973276,0.1744],
+          [0.944515,-0.192648,0.266039],
+          [546.222,68.6594,2288.88]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5814,6 +5762,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5849,6 +5798,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5869,7 +5819,7 @@
           [-0.737277,0.0,-0.67559],
           [0.0,1.0,0.0],
           [0.67559,0.0,-0.737277],
-          [-3930.23,164.495,4704.16]
+          [-3930.23,165.78,4704.16]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5884,6 +5834,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5901,10 +5852,10 @@
       "air_defence": {
         "name": "t1_aaa_07",
         "tm": [
-          [-0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,-0.5],
-          [-4206.57,255.259,5804.77]
+          [-0.500728,-0.0257365,-0.865221],
+          [0.022204,0.998847,-0.0425614],
+          [0.865319,-0.0405231,-0.49958],
+          [-4205.94,256.395,5803.58]
         ],
         "unit_class": "germ_37mm_flak43_noground",
         "closed_waypoints": false,
@@ -5919,6 +5870,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -5973,10 +5925,10 @@
       "air_defence": {
         "name": "t2_aaa_01",
         "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [2427.77,1316.22,-4015.75]
+          [0.128801,0.0917379,0.987418],
+          [-0.0417118,0.995332,-0.0870322],
+          [-0.990793,-0.0299772,0.132026],
+          [2426.86,1309.08,-4017.64]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -5991,6 +5943,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6008,10 +5961,10 @@
       "air_defence": {
         "name": "t2_aaa_02",
         "tm": [
-          [0.887011,0.0,0.461749],
-          [0.0,1.0,0.0],
-          [-0.461749,0.0,0.887011],
-          [1883.28,1312.3,-3767.98]
+          [0.883198,0.0916721,0.459954],
+          [-0.0869351,0.995715,-0.0315215],
+          [-0.460873,-0.0121464,0.887384],
+          [1881.52,1300.72,-3768.6]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -6026,6 +5979,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6043,10 +5997,10 @@
       "air_defence": {
         "name": "t2_aaa_03",
         "tm": [
-          [-0.0871557,0.0,0.996195],
-          [0.0,1.0,0.0],
-          [-0.996195,0.0,-0.0871557],
-          [-4070.43,63.6753,-3771.76]
+          [0.988979,-0.0249403,-0.145941],
+          [0.0,0.98571,-0.168451],
+          [0.148057,0.166594,0.974847],
+          [-1863.05,79.1938,-749.567]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -6061,6 +6015,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6078,10 +6033,10 @@
       "air_defence": {
         "name": "t2_aaa_04",
         "tm": [
-          [-0.0871557,0.0,0.996195],
-          [0.0,1.0,0.0],
-          [-0.996195,0.0,-0.0871557],
-          [-4423.79,55.7625,-3693.99]
+          [0.973349,0.0496919,-0.223884],
+          [-0.118482,0.944824,-0.305399],
+          [0.196355,0.323786,0.925531],
+          [-2200.43,77.4994,-877.801]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -6096,6 +6051,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6116,7 +6072,7 @@
           [-0.0871557,0.0,0.996195],
           [0.0,1.0,0.0],
           [-0.996195,0.0,-0.0871557],
-          [-4788.28,212.031,3900.51]
+          [-4788.28,213.182,3900.51]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -6131,6 +6087,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6166,6 +6123,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6183,10 +6141,10 @@
       "air_defence": {
         "name": "t2_aaa_07",
         "tm": [
-          [0.991445,0.0,0.130526],
-          [0.0,1.0,0.0],
-          [-0.130526,0.0,0.991445],
-          [-5174.26,195.369,5613.59]
+          [0.984175,0.00500482,-0.177128],
+          [0.0,0.999601,0.028244],
+          [0.177199,-0.0277971,0.983783],
+          [-5172.39,195.405,5629.0]
         ],
         "unit_class": "germ_20mmx4_flak38_noground",
         "closed_waypoints": false,
@@ -6201,6 +6159,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6255,12 +6214,12 @@
       "structures": {
         "name": "t1_bunker_01",
         "tm": [
-          [-0.984808,0.0,-0.173648],
-          [0.0,1.0,0.0],
-          [0.173648,0.0,-0.984808],
-          [3844.41,1243.27,-3043.45]
+          [-0.985636,0.0395715,-0.164184],
+          [0.0427905,0.998954,-0.0161145],
+          [0.163375,-0.0229085,-0.986298],
+          [3845.28,1242.18,-3043.61]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6273,6 +6232,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6290,12 +6250,12 @@
       "structures": {
         "name": "t1_bunker_02",
         "tm": [
-          [-0.422618,0.0,-0.906308],
-          [0.0,1.0,0.0],
-          [0.906308,0.0,-0.422618],
-          [4147.93,1181.8,-2095.27]
+          [-0.422311,0.0121017,-0.90637],
+          [-0.0486698,0.998166,0.0360044],
+          [0.905143,0.0593179,-0.420948],
+          [4053.08,1185.64,-2315.48]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6308,6 +6268,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6325,12 +6286,12 @@
       "structures": {
         "name": "t1_bunker_03",
         "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [6178.95,43.135,3665.43]
+          [0.816079,-0.0866089,-0.571414],
+          [0.037831,0.994592,-0.0967205],
+          [0.576701,0.0573145,0.814943],
+          [47.4496,70.8809,1940.38]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6343,6 +6304,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6360,12 +6322,12 @@
       "structures": {
         "name": "t1_bunker_04",
         "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [6138.99,38.1843,4077.65]
+          [0.0381006,0.170582,-0.984607],
+          [0.149392,0.973276,0.1744],
+          [0.988044,-0.153737,0.0115988],
+          [533.119,74.5226,2234.67]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6378,6 +6340,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6400,7 +6363,7 @@
           [-0.173648,0.0,-0.984808],
           [-3567.18,290.256,4941.0]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6413,6 +6376,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6433,9 +6397,9 @@
           [-0.92388,0.0,-0.382683],
           [0.0,1.0,0.0],
           [0.382683,0.0,-0.92388],
-          [-3983.92,173.412,4687.69]
+          [-3983.92,174.697,4687.69]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6448,6 +6412,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6465,12 +6430,12 @@
       "structures": {
         "name": "t1_bunker_07",
         "tm": [
-          [-0.793353,0.0,-0.608761],
-          [0.0,1.0,0.0],
-          [0.608761,0.0,-0.793353],
-          [-4254.55,241.548,5776.28]
+          [-0.793756,-0.00826993,-0.608179],
+          [0.022204,0.998847,-0.0425614],
+          [0.60783,-0.0472874,-0.792657],
+          [-4254.24,242.554,5775.7]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6483,6 +6448,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6537,12 +6503,12 @@
       "structures": {
         "name": "t2_bunker_01",
         "tm": [
-          [0.573576,0.0,0.819152],
-          [0.0,1.0,0.0],
-          [-0.819152,0.0,0.573576],
-          [2455.52,1313.78,-3966.65]
+          [0.571745,0.0952144,0.814888],
+          [-0.0417118,0.995332,-0.0870322],
+          [-0.81937,0.0157698,0.573047],
+          [2454.6,1312.08,-3968.56]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6555,6 +6521,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6572,12 +6539,12 @@
       "structures": {
         "name": "t2_bunker_02",
         "tm": [
-          [0.953717,0.0,0.300706],
-          [0.0,1.0,0.0],
-          [-0.300706,0.0,0.953717],
-          [1939.1,1307.53,-3760.23]
+          [0.94981,0.0923886,0.298873],
+          [-0.0869351,0.995715,-0.0315215],
+          [-0.300505,0.00395683,0.953772],
+          [1937.54,1301.07,-3760.8]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6590,6 +6557,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6607,12 +6575,12 @@
       "structures": {
         "name": "t2_bunker_03",
         "tm": [
-          [0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,0.5],
-          [-4046.32,52.9839,-3718.98]
+          [0.725202,-0.115984,-0.678697],
+          [0.0,0.98571,-0.168451],
+          [0.688536,0.122161,0.714839],
+          [-1817.36,62.6286,-783.031]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6625,6 +6593,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6642,12 +6611,12 @@
       "structures": {
         "name": "t2_bunker_04",
         "tm": [
-          [0.573577,0.0,0.819152],
-          [0.0,1.0,0.0],
-          [-0.819152,0.0,0.573577],
-          [-4401.35,51.3145,-3641.61]
+          [0.619413,-0.17006,-0.766425],
+          [-0.118482,0.944824,-0.305399],
+          [0.776073,0.279976,0.565088],
+          [-2156.31,67.0764,-912.602]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6660,6 +6629,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6680,9 +6650,9 @@
           [0.34202,0.0,0.939692],
           [0.0,1.0,0.0],
           [-0.939692,0.0,0.34202],
-          [-4764.26,211.097,3953.13]
+          [-4764.26,212.248,3953.13]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6695,6 +6665,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6717,7 +6688,7 @@
           [-0.0436192,0.0,0.999048],
           [-4975.16,232.569,4607.42]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6730,6 +6701,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6747,12 +6719,12 @@
       "structures": {
         "name": "t2_bunker_07",
         "tm": [
-          [0.999048,0.0,-0.0436195],
-          [0.0,1.0,0.0],
-          [0.0436195,0.0,0.999048],
-          [-5116.74,183.82,5603.32]
+          [0.938453,0.00975568,-0.345269],
+          [0.0,0.999601,0.028244],
+          [0.345407,-0.0265057,0.938078],
+          [-5120.71,184.631,5601.41]
         ],
-        "unit_class": "uk_bunker",
+        "unit_class": "uk_bunker_light_fat",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -6765,6 +6737,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6819,10 +6792,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4199.65,305.679,6874.34]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [5304.76,299.914,9019.08]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -6837,6 +6810,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6854,10 +6828,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3878.46,246.414,6470.15]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4977.9,248.788,8618.33]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -6872,6 +6846,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6889,10 +6864,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3172.71,286.43,6139.99]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4221.55,291.609,8093.58]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -6907,6 +6882,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6924,10 +6900,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3030.61,286.43,6552.14]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4131.11,279.299,8714.18]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -6942,6 +6918,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6959,10 +6936,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_05",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3458.16,286.43,6967.41]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4708.53,271.799,9255.12]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -6977,6 +6954,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6994,10 +6972,10 @@
       "air_defence": {
         "name": "t1_small_def_aaa_06",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3933.81,286.43,7191.3]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [5043.98,269.861,9339.38]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7012,6 +6990,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7029,10 +7008,10 @@
       "air_defence": {
         "name": "t1_big_def_aaa_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4096.97,286.43,7149.05]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [5316.95,266.53,9545.14]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7047,6 +7026,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7064,10 +7044,10 @@
       "air_defence": {
         "name": "t1_big_def_aaa_02",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3669.73,286.43,6484.56]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4769.1,286.608,8636.97]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7082,6 +7062,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7099,10 +7080,10 @@
       "air_defence": {
         "name": "t1_big_def_aaa_03",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3260.98,286.43,6314.81]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [3697.56,254.859,8448.87]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7117,6 +7098,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7134,10 +7116,10 @@
       "air_defence": {
         "name": "t1_big_def_aaa_04",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3277.74,286.43,6685.89]
+          [0.999849,0.00859024,-0.0151169],
+          [-0.00817938,0.999601,0.0270337],
+          [0.0153431,-0.026906,0.99952],
+          [4380.25,277.823,8844.13]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7152,6 +7134,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7218,7 +7201,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-8603.41,381.806,-1723.45]
+          [-10359.1,376.851,-1781.77]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7233,6 +7216,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7253,7 +7237,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-8407.5,381.806,-1297.36]
+          [-10163.2,376.851,-1355.68]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7268,6 +7252,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7288,7 +7273,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-7737.8,283.076,-1412.09]
+          [-9493.52,278.121,-1470.41]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7303,6 +7288,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7323,7 +7309,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-7192.84,381.806,-1579.96]
+          [-8837.09,264.838,-1560.98]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7338,6 +7324,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7358,7 +7345,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-7525.48,381.806,-1916.77]
+          [-9281.2,376.851,-1975.09]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7373,6 +7360,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7393,7 +7381,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-8068.82,381.806,-1820.93]
+          [-9824.54,376.851,-1879.25]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -7408,6 +7396,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7428,7 +7417,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-8404.41,381.806,-1846.01]
+          [-10160.1,376.851,-1904.33]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7443,6 +7432,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7463,7 +7453,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-8741.15,381.806,-1323.4]
+          [-10496.9,376.851,-1381.72]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7478,6 +7468,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7498,7 +7489,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-7446.87,381.806,-1366.55]
+          [-9202.59,376.851,-1424.87]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7513,6 +7504,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7533,7 +7525,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-7270.83,381.806,-1741.36]
+          [-8903.53,250.196,-2030.07]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -7548,6 +7540,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -7611,10 +7604,10 @@
       "objectGroups": {
         "name": "t1_bomb_target_01",
         "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3218.5,300.55,5342.8]
+          [0.952626,0.00859024,-0.304022],
+          [0.0,0.999601,0.028244],
+          [0.304144,-0.026906,0.952246],
+          [-3210.24,306.223,5348.19]
         ],
         "unit_class": "dynBase_ammunition_camp_square",
         "objLayer": 2,
@@ -7740,6 +7733,208 @@
         "props": {
           "army": 2,
           "active": true
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_truck_03",
+        "tm": [
+          [-0.787826,-0.0208924,-0.615542],
+          [-0.0281644,0.999601,0.00211947],
+          [0.615252,0.0190061,-0.788101],
+          [20.3636,180.373,2279.72]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [8.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tank_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-100.946,162.339,2249.22]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_06_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3280.17,323.847,3767.26]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_tank_06_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4479.93,154.637,4310.59]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_truck_03",
+        "tm": [
+          [-0.587593,0.0,0.809157],
+          [0.0,1.0,0.0],
+          [-0.809157,0.0,-0.587593],
+          [-2552.44,648.222,-242.767]
+        ],
+        "unit_class": "germ_sdKfz_251",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [8.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2756.58,685.394,217.486]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_06_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2523.55,819.745,691.492]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_06_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3303.36,320.427,3769.37]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_06_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4017.37,169.384,4389.11]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_truck_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2687.52,535.034,-130.737]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
         }
       }
     }
@@ -7902,20 +8097,20 @@
     "t1_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [859.36,0.0,659.411],
+        [1745.38,0.0,1339.28],
         [0.0,350.0,0.0],
-        [-165.918,0.0,216.228],
-        [3629.0,245.838,6693.9]
+        [-456.572,0.0,595.014],
+        [4795.36,230.365,8819.63]
       ],
       "props": []
     },
     "t2_airfield_bombing_zone": {
       "type": "Box",
       "tm": [
-        [1073.93,0.0,-141.386],
+        [2181.18,0.0,-287.158],
         [0.0,350.0,0.0],
-        [35.5748,0.0,270.218],
-        [-8086.8,242.25,-1578.65]
+        [97.8944,0.0,743.584],
+        [-9842.52,230.458,-1636.97]
       ],
       "props": []
     },
@@ -8291,6 +8486,116 @@
         [0.0,450.0,0.0],
         [0.0,0.0,450.0],
         [-4583.23,219.11,-4525.21]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [13788.8,0.0,11570.2],
+        [0.0,18000.0,0.0],
+        [-11570.2,0.0,13788.8],
+        [0.0,652.21,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_area": {
+      "type": "Sphere",
+      "tm": [
+        [12256.8,0.0,10284.6],
+        [0.0,16000.0,0.0],
+        [-10284.6,0.0,12256.8],
+        [8.52771,2700.0,12.2773]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [-0.625241,0.0,0.780431],
+        [0.0,1.0,0.0],
+        [-0.780431,0.0,-0.625241],
+        [6565.59,2700.0,-4565.29]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_01_01": {
+      "type": "Point",
+      "tm": [
+        [-0.625241,0.0,0.780431],
+        [0.0,1.0,0.0],
+        [-0.780431,0.0,-0.625241],
+        [1417.19,2700.0,-7861.53]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [0.625241,0.0,-0.780431],
+        [0.0,1.0,0.0],
+        [0.780431,0.0,0.625241],
+        [-3366.43,2699.99,7276.74]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_01_02": {
+      "type": "Point",
+      "tm": [
+        [0.625241,0.0,-0.780431],
+        [0.0,1.0,0.0],
+        [0.780431,0.0,0.625241],
+        [-7506.78,2699.99,2771.39]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [-0.625241,0.0,0.780431],
+        [0.0,1.0,0.0],
+        [-0.780431,0.0,-0.625241],
+        [7554.49,2700.0,-2708.74]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_02_01": {
+      "type": "Point",
+      "tm": [
+        [-0.625241,0.0,0.780431],
+        [0.0,1.0,0.0],
+        [-0.780431,0.0,-0.625241],
+        [3392.43,2700.0,-7235.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t1_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [0.625241,0.0,-0.780431],
+        [0.0,1.0,0.0],
+        [0.780431,0.0,0.625241],
+        [-1414.46,2699.99,7898.93]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "at_t2_spawn_02_02": {
+      "type": "Point",
+      "tm": [
+        [0.625241,0.0,-0.780431],
+        [0.0,1.0,0.0],
+        [0.780431,0.0,0.625241],
+        [-6544.6,2699.99,4600.94]
       ],
       "objLayer": 0,
       "props": []

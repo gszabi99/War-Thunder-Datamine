@@ -459,7 +459,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
         id = "name"
         width = "3fw"
         textRawParam = "width:t='pw'; pare-text:t='yes';"
-        tdAlign = "left"
+        tdalign = "left"
         text = text
         tooltip = forClan ? name : ""
         active = false
@@ -469,7 +469,7 @@ class ::gui_handlers.EventDescription extends ::gui_handlers.BaseGuiHandlerWT
     if (lbCategory)
     {
       local td = lbCategory.getItemCell(::getTblValue(lbCategory.field, row, -1))
-      td.tdAlign <- "right"
+      td.tdalign <- "right"
       rowData.append(td)
     }
     local data = ::buildTableRow(rowName, rowData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")

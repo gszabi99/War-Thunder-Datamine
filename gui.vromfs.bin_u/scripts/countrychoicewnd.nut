@@ -1,4 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { createBatchTrainCrewRequestBlk } = require("scripts/crew/crewActions.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -125,7 +126,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
 
   function createUnitTypeChoice()
   {
-    local columns = ::min(3, unitTypesList.len())
+    local columns = ::min(4, unitTypesList.len())
     setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
 
     local view = {
@@ -178,9 +179,10 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
 
     local listBoxObj = listObj.getChild(0)
-    listBoxObj.select()
-    if (focusItemNum != null)
+    if (focusItemNum != null) {
       listBoxObj.setValue(focusItemNum)
+      ::move_mouse_on_child(listBoxObj, 0)
+    }
   }
 
   function getNotAvailableCountryMsg(country)
@@ -418,7 +420,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
       if (presetDataItem.unitType == presetsData.selectedUnitType)
         foreach (taskData in presetDataItem.tasksData)
           requestData.append(taskData)
-    return ::create_batch_train_crew_request_blk(requestData)
+    return createBatchTrainCrewRequestBlk(requestData)
   }
 
   function clnSetStartingInfo(presetsData, onComplete)

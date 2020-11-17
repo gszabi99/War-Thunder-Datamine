@@ -1,13 +1,37 @@
 options indenting = 2
+require strings
 
 var
   DAS_PAK_ROOT = "."
 
+def join(it; separator:string)
+  static_if !typeinfo(is_iterable it)
+    concept_assert(false,"can't join non-iterable type")
+    return ""
+  else
+    let st = build_string() <| $ (var writer)
+      var skip_first = true
+      for elem in it
+        if skip_first
+          skip_first = false
+        else
+          write(writer, separator)
+        if typeinfo(is_string it)
+          write_char(writer, elem)
+        else
+          write(writer, elem)
+    return st
+
+def split_by_chars ( text, delim : string ) : array<string>
+  var res : array<string>
+  builtin_string_split_by_char (text, delim) <| $ ( arr : array<string># ) : void
+    res := arr
+  return <- res
+
 [export]
 def module_get(req, from:string) : tuple<string;string;string> const
-  let rs <- split(req,".")
+  let rs <- split_by_chars(req,".")
   let mod_name = rs[length(rs)-1]
   let path_name = join(rs,"/") + ".das"
   let alias_name = rs[length(rs)-1]
   return [[auto mod_name, DAS_PAK_ROOT + "/" + path_name, alias_name]]
-

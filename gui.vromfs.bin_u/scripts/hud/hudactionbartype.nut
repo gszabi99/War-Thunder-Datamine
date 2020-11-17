@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
@@ -64,7 +64,7 @@ local getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
 
     if (unit?.isSubmarine())
       return "ID_SUBMARINE_ACTION_BAR_ITEM_" + (shortcutIdx + 1)
-    if (unit?.isShip())
+    if (unit?.isShipOrBoat())
       return "ID_SHIP_ACTION_BAR_ITEM_" + (shortcutIdx + 1)
     //
 
@@ -82,7 +82,7 @@ local getActionDescByWeaponTriggerGroup = function(actionItem, triggerGroup)
       unit = ::getAircraftByName(::get_action_bar_unit_name())
     if (unit?.isSubmarine())
       return "ID_SUBMARINE_KILLSTREAK_WHEEL_MENU"
-    if (unit?.isShip())
+    if (unit?.isShipOrBoat())
       return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
     //
 
@@ -162,10 +162,6 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _icon = "#ui/gameuiskin#depth_charge"
     getShortcut = @(actionItem, unit = null)
       unit?.isSubmarine() ? "ID_SUBMARINE_WEAPON_DEPTH_CHARGE" : "ID_SHIP_WEAPON_DEPTH_CHARGE"
-    getIcon = function(killStreakTag = null, unit = null) {
-      unit = unit || ::getAircraftByName(::get_action_bar_unit_name())
-      return unit?.isMinesAvailable?() ? "#ui/gameuiskin#naval_mine" : _icon
-    }
     getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "bombs")
   }
 
@@ -174,7 +170,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     _name = "mine"
     _icon = "#ui/gameuiskin#naval_mine"
     getShortcut = @(actionItem, unit = null) "ID_SHIP_WEAPON_MINE"
-    getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "bombs")
+    getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "mines")
   }
 
   MORTAR = {
@@ -192,8 +188,21 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     {
       if (unit?.isSubmarine())
         return "ID_SUBMARINE_WEAPON_ROCKETS"
-      if (unit?.isShip())
+      if (unit?.isShipOrBoat())
         return "ID_SHIP_WEAPON_ROCKETS"
+      if (unit?.isTank())
+        return "ID_FIRE_GM_SPECIAL_GUN"
+      return "ID_ROCKETS"
+    }
+    getTooltipText = @(actionItem = null) getActionDescByWeaponTriggerGroup(actionItem, "rockets")
+  }
+
+  GRENADE = {
+    code = ::EII_GRENADE
+    _name = "grenade"
+    _icon = "#ui/gameuiskin#vog_ship"
+    getShortcut = function(actionItem, unit = null)
+    {
       if (unit?.isTank())
         return "ID_FIRE_GM_SPECIAL_GUN"
       return "ID_ROCKETS"
@@ -207,11 +216,11 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
     _icon = "#ui/gameuiskin#smoke_screen"
     getTitle = @(killStreakTag = null)
-      !::getAircraftByName(::get_action_bar_unit_name())?.isShip()
+      !::getAircraftByName(::get_action_bar_unit_name())?.isShipOrBoat()
         ? ::loc("hotkeys/ID_SMOKE_SCREEN")
         : ::loc("hotkeys/ID_SHIP_SMOKE_GRENADE")
     getShortcut = @(actionItem, unit = null)
-      !unit?.isShip()
+      !unit?.isShipOrBoat()
         ? "ID_SMOKE_SCREEN"
         : "ID_SHIP_SMOKE_GRENADE"
   }
@@ -226,7 +235,7 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     {
       if (unit?.isSubmarine())
         return "ID_SUBMARINE_ACOUSTIC_COUNTERMEASURES"
-      if (unit?.isShip())
+      if (unit?.isShipOrBoat())
         return "ID_SHIP_SMOKE_SCREEN_GENERATOR"
       return "ID_SMOKE_SCREEN_GENERATOR"
     }
@@ -287,28 +296,28 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
 
   EXTINGUISHER = {
     code = ::EII_EXTINGUISHER
-    isForWheelMenu = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShip()
-    canSwitchAutomaticMode = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShip()
+    isForWheelMenu = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShipOrBoat()
+    canSwitchAutomaticMode = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShipOrBoat()
     _name = "extinguisher"
     _icon = "#ui/gameuiskin#extinguisher"
     _title = ::loc("hotkeys/ID_ACTION_BAR_ITEM_6")
     needAnimOnIncrementCount = true
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || ::getAircraftByName(::get_action_bar_unit_name())
-      return unit?.isShip() ? "#ui/gameuiskin#manual_ship_extinguisher" : "#ui/gameuiskin#extinguisher"
+      return unit?.isShipOrBoat() ? "#ui/gameuiskin#manual_ship_extinguisher" : "#ui/gameuiskin#extinguisher"
     }
   }
 
   TOOLKIT = {
     code = ::EII_TOOLKIT
-    isForWheelMenu = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShip()
-    canSwitchAutomaticMode = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShip()
+    isForWheelMenu = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShipOrBoat()
+    canSwitchAutomaticMode = @() ::getAircraftByName(::get_action_bar_unit_name())?.isShipOrBoat()
     _name = "toolkit"
     _icon = "#ui/gameuiskin#tank_tool_kit"
     _title = ::loc("hotkeys/ID_SHIP_ACTION_BAR_ITEM_11")
     getIcon = function(killStreakTag = null, unit = null) {
       unit = unit || ::getAircraftByName(::get_action_bar_unit_name())
-      return unit?.isShip() ? "#ui/gameuiskin#ship_tool_kit" : "#ui/gameuiskin#tank_tool_kit"
+      return unit?.isShipOrBoat() ? "#ui/gameuiskin#ship_tool_kit" : "#ui/gameuiskin#tank_tool_kit"
     }
   }
 
@@ -472,6 +481,28 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
       return null
     }
   }
+
+  AI_GUNNERS_STATE = {
+    code = ::EII_AI_GUNNERS
+    _name = "ai_gunners"
+    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire"
+    getShortcut = @(actionItem, unit = null) "ID_SHIP_TOGGLE_GUNNERS"
+    getIcon = function (killStreakTag = null, unit = null) {
+      switch (::get_ai_gunners_state())
+      {
+        case AI_GUNNERS_DISABLED:
+          return "#ui/gameuiskin#ship_gunner_state_hold_fire"
+        case AI_GUNNERS_ALL_TARGETS:
+          return "#ui/gameuiskin#ship_gunner_state_fire_at_will"
+        case AI_GUNNERS_AIR_TARGETS:
+          return "#ui/gameuiskin#ship_gunner_state_air_targets"
+        case AI_GUNNERS_GROUND_TARGETS:
+          return "#ui/gameuiskin#ship_gunner_state_naval_targets"
+      }
+      return _icon
+    }
+  }
+
 })
 
 g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code)

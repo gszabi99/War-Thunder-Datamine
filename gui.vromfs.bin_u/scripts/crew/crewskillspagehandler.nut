@@ -7,7 +7,6 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
   wndType = handlerType.CUSTOM
   sceneBlkName = "gui/empty.blk"
   sceneTplName = "gui/crew/crewSkillRow"
-  isPrimaryFocus = false
   pageBonuses = null
   repeatButton = false
   needAskBuySkills = false
@@ -35,7 +34,6 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     pageOnInit = true
     updateSkills()
 
-    initFocusArray()
     pageOnInit = false
   }
 
@@ -73,13 +71,6 @@ local class CrewSkillsPageHandler extends ::gui_handlers.BaseGuiHandlerWT
     local totalRows = scene.childrenCount()
     if (totalRows > 0 && totalRows <= scene.getValue())
       scene.setValue(0)
-    else
-      ::selectTableNavigatorObj(scene)
-  }
-
-  function getMainFocusObj()
-  {
-    return scene
   }
 
   function setHandlerVisible(value)

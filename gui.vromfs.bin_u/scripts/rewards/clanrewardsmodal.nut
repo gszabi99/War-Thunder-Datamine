@@ -55,7 +55,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
   function initScreen()
   {
     fillBestRewardsIds()
-    scene.findObject("rewards_list").select()
+    ::move_mouse_on_child_by_value(scene.findObject("rewards_list"))
   }
 
   function fillBestRewardsIds()
@@ -113,7 +113,7 @@ class ::gui_handlers.clanRewardsModal extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local taskId = ::char_send_custom_action("cln_set_clan_best_rewards",
-      EATT_SIMPLE_OK,
+      ::EATT_SIMPLE_OK,
       ::DataBlock(),
       ::json_to_string({clanId = clanId, bestRewards = getBestRewardsConfig()}, false),
       -1)

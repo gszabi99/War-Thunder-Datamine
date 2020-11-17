@@ -1,3 +1,4 @@
+local { blkFromPath, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { AMMO,
@@ -25,6 +26,7 @@ local TRIGGER_TYPE = {
   SMOKE       = "smoke"
   FLARES      = "flares"
   BOMBS       = "bombs"
+  MINES       = "mines"
   TORPEDOES   = "torpedoes"
   ROCKETS     = "rockets"
   AAM         = "aam"
@@ -39,6 +41,7 @@ local WEAPON_TYPE = {
   SMOKE       = "smoke"
   FLARES      = "flares"    // Flares (countermeasure)
   BOMBS       = "bombs"
+  MINES       = "mines"
   TORPEDOES   = "torpedoes"
   ROCKETS     = "rockets"   // Rockets
   AAM         = "aam"       // Air-to-Air Missiles
@@ -46,7 +49,7 @@ local WEAPON_TYPE = {
 }
 
 local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
-  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
+  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
 
 local WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -190,9 +193,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     if (!weapon?.blk)
       continue
 
-    local weaponBlk = ::DataBlock( weapon.blk )
-    if (!weaponBlk)
-      continue
+    local weaponBlk = blkOptFromPath( weapon.blk )
 
     if (weaponsFilterFunc?(weapon.blk, weaponBlk) == false)
       continue
@@ -219,7 +220,10 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     }
     else if (weaponBlk?.bombGun)
     {
-      currentTypeName = WEAPON_TYPE.BOMBS
+      if (weapon?.trigger == TRIGGER_TYPE.MINES)
+        currentTypeName = WEAPON_TYPE.MINES
+      else
+        currentTypeName = WEAPON_TYPE.BOMBS
       weaponTag = WEAPON_TAG.BOMB
     }
     else if (weaponBlk?.torpedoGun)
@@ -624,7 +628,7 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
     {
       if (wp.name == unit.weapons?[weaponPresetIdx]?.name)
       {
-        wpBlk = ::DataBlock(wp.blk)
+        wpBlk = blkFromPath(wp.blk)
         wConf = wp?.weaponConfig
         if (wConf?.presetType != null)
             unit.weapons[weaponPresetIdx].presetType <- wConf.presetType
@@ -632,8 +636,6 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
       }
     }
 
-    if (!wpBlk)
-      return weapons
     weapons = addWeaponsFromBlk(weapons, wpBlk, unit, p.weaponsFilterFunc, wConf)
   }
 

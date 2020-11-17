@@ -57,165 +57,26 @@
       "restoreType": "attempts",
       "optionalTakeOff": false,
       "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 33,
-      "customWeather": {
-        "windDir": [0.6,0.8],
-        "wind_scale": 1.0,
-        "max_wind_strength": 6.0,
-        "sky": {
-          "mie_height": 0.5,
-          "mieG": 0.5,
-          "betaMScale": 0.7,
-          "clouds_overcast": 0.2
-        },
-        "clouds_gen": {
-          "humidity": 0.1,
-          "persistence": 0.66,
-          "asymmetry": 0.4
-        },
-        "clouds_position": {
-          "start_altitude": 1.0,
-          "thickness": 4.5,
-          "light_extinction": 0.2,
-          "amb_extinction_mul": 0.2
-        },
-        "clouds_render": {
-          "silver_lining": 1.0,
-          "sun_light": 1.5,
-          "ambient": 1.5,
-          "silver_lining_eccentricity": 0.6
-        },
-        "strata_clouds": {
-          "amount": 0.5,
-          "altitude": 11.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
-        }
-      }
+      "skiesInitialRandomSeed": 33
     },
     "spectator_points": []
   },
-  "imports": [
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_heli_streaks_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_rank1_template.blk",
-        "rankRange": [0,4],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_rank2_template.blk",
-        "rankRange": [5,8],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_rank3_template.blk",
-        "rankRange": [9,12],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_rank4_template.blk",
-        "rankRange": [13,16],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
-        "file": "gameData/missions/templates/tank_arcade_streaks_rank5_template.blk",
-        "rankRange": [17,30],
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/tank_arcade_streaks_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
     }
-  ],
+  },
   "triggers": {
     "isCategory": true,
     "is_enabled": true,

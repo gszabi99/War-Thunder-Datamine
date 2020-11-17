@@ -25,7 +25,6 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateTrophyInfo()
     updateContent()
-    initFocusArray()
   }
 
   function updateContent()
@@ -33,7 +32,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     fillTrophiesList()
     setDescription()
     updateHeader()
-    setNextItemInFocus()
+    setupSelection()
   }
 
   function setDescription()
@@ -43,7 +42,20 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     guiScene.replaceContent(obj, "gui/items/itemDesc.blk", this)
+    obj.scrollToView(true)
     ::ItemsManager.fillItemDescr(trophy, obj, this)
+  }
+
+  function setupSelection()
+  {
+    for (local i = 0; i < trophy.numTotal; i++)
+      if (!isTrophyPurchased(i))
+      {
+        local listObj = getItemsListObj()
+        listObj.setValue(i)
+        ::move_mouse_on_child(listObj, i)
+        return
+      }
   }
 
   function updateTrophyInfo()
@@ -149,39 +161,9 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
   }
 
-  function getBestFocusValue()
-  {
-    local obj = getMainFocusObj()
-    local total = obj.childrenCount()
-    local startIdx = ::max(focusIdx, 0)
-    for (local i = startIdx; i < startIdx + total; i++)
-    {
-      local index = i % total
-      if (!isTrophyPurchased(index))
-        return index
-    }
-
-    return 0
-  }
-
-  function setNextItemInFocus()
-  {
-    local obj = getMainFocusObj()
-    if (!::checkObj(obj))
-      return
-
-    local bestVal = getBestFocusValue()
-    obj.setValue(bestVal)
-  }
-
   function isTrophyPurchased(value)
   {
     return stdMath.is_bit_set(bitMask, value)
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("items_list")
   }
 
   function onItemAction(obj)
@@ -190,11 +172,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
       doAction(obj.holderId.tointeger())
   }
 
-  function onSelectedItemAction()
-  {
-    local value = getMainFocusObj().getValue()
-    doAction(value)
-  }
+  onSelectedItemAction = @() doAction(getItemsListObj().getValue())
 
   function doAction(index)
   {
@@ -211,6 +189,23 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     updateContent()
   }
 
+  function onItemsListFocusChange()
+  {
+    if (isValid())
+      updateButtonsBar()
+  }
+
+  function getItemsListObj()
+  {
+    return scene.findObject("items_list")
+  }
+
+  function updateButtonsBar()
+  {
+    local isButtonsBarVisible = !::show_console_buttons || getItemsListObj().isHovered()
+    showSceneBtn("item_actions_bar", isButtonsBarVisible)
+  }
+
   function updateButtons(obj = null)
   {
     if (!::checkObj(obj))
@@ -220,9 +215,9 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
     local mainActionData = trophy.getMainActionData()
     showSceneBtn("btn_main_action", !isPurchased)
     setDoubleTextToButton(scene,
-                            "btn_main_action",
-                            mainActionData?.btnName,
-                            mainActionData?.btnColoredName || mainActionData?.btnName)
+      "btn_main_action",
+      mainActionData?.btnName,
+      mainActionData?.btnColoredName || mainActionData?.btnName)
     showSceneBtn("warning_text", isPurchased)
   }
 }

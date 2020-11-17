@@ -1,0 +1,217 @@
+@const battlePassStageWidth: 1@itemWidth;
+@const battlePassFlagSize: 50*@sf/@pf \ 1;
+@const battlePassFlagBigSize: 84@sf/@pf \ 1;
+@const battlePassFlagSmallSize: 1@dIco;
+@const battlePassStageHeight: 1@itemHeight + 1@battlePassFlagSize + 1@buttonHeight + 2@blockInterval;
+@const battlePassStageMargin: 2@dp;
+@const battlePassFreeTextHeight: 1@fontHeightNormal + 10@sf/@pf;
+@const battlePassFreeTextMargin: 1@dp;
+@const battlePassRankInfoHeight: 128@sf/@pf \ 1;
+@const battlePassBigFlagTextAbsPos: 0.5@battlePassRankInfoHeight - 0.5@battlePassFlagBigSize + 1@blockInterval;
+@const battlePassStampWidth: 135@sf/@pf \ 1;
+@const battlePassStampHeight: 41@sf/@pf \ 1;
+
+@const battlePassPromoBottomMargin: 1@battlePassFreeTextHeight;
+@const battlePassWndPreferredWidth: (10@battlePassStageWidth + 11@battlePassStageMargin) \ 1;
+@const battlePassWndPreferredPromoWidth: (0.55*450/800)@battlePassWndPreferredWidth;
+@const battlePassWndPromoHeight: 1@battlePassWndPreferredPromoWidth $min (1@maxWindowHeight - 2@frameHeaderHeight - 1@battlePassStageHeight - 2@battlePassFreeTextHeight- 2@battlePassStageMargin - 1@frameFooterHeight);
+@const battlePassWndWidth: 1@battlePassWndPreferredWidth $min ((100.0/55)*800.0/450)@battlePassWndPromoHeight);
+
+@const battlePassStageBgColor: #252c37;
+@const battlePassCurStageBgColor: #3b4351;
+@const battlePassCurStageBorderColor: #4f6079;
+@const battlePassFlagColor: #f04b4b;
+@const battlePassLockedFlagColor: #5f6d82;
+@const battlePassLockedFlagTextColor: #c3c3c3;
+@const battlePassBottomBarColor: #4d5563;
+@const battlePassLockedIconColor: #96a7be;
+@const battlePassFreeBgColor: #589768;
+@const battlePassFreeNestBgColor: #101318;
+
+@const battlePassProgressBGColor: #404A5A;
+@const battlePassProgressFGColor: #CE4747;
+@const battlePassTaskProgressFGColor: #667284;
+@const battlePassTimeLineBgColor: #353E4C;
+@const battlePassStampMainPromoColor: #B4A37B;
+
+battlePassStage {
+  behaviour:button;
+  size:1@battlePassStageWidth, 1@battlePassStageHeight;
+  background-repeat:expand-svg;
+  background-image:#ui/gameuiskin#item_gradient.svg;
+  background-svg-size:10@dp, 186@dp;
+  background-position:1@dp;
+  background-color:@battlePassStageBgColor;
+  interactive:yes;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+battlePassStage > border {
+  position: absolute;
+  size: pw, ph;
+  re-type:9rect;
+  background-color:@battlePassCurStageBorderColor;
+  background-image:#ui/gameuiskin#item_selection;
+  background-position:8@dp;
+  background-repeat:expand;
+  input-transparent:yes;
+  display:hide;
+}
+
+battlePassFlag {
+  size:1@battlePassFlagSize, 1@battlePassFlagSize;
+  background-image:#ui/gameuiskin#stage_flag.svg;
+  background-svg-size:1@battlePassFlagSize, 1@battlePassFlagSize;
+  background-color:@battlePassFlagColor;
+  css-hier-invalidate:yes;
+}
+
+battlePassFlag > textareaNoTab {
+  pos:50%pw-50%w, 2@blockInterval;
+  position:absolute;
+  color:@activeTextColor;
+  smallFont:yes;
+}
+
+battlePassFlag[flagSize=small] {
+  size:1@battlePassFlagSmallSize, 1@battlePassFlagSmallSize;
+  background-svg-size:1@battlePassFlagSmallSize, 1@battlePassFlagSmallSize;
+}
+
+battlePassFlag[flagSize=small] > textareaNoTab {
+  pos:50%pw-50%w, 1.5@blockInterval;
+  tinyFont:yes;
+}
+
+battlePassFlag[flagSize=big] {
+  size:1@battlePassFlagBigSize, 1@battlePassFlagBigSize;
+  background-svg-size:1@battlePassFlagBigSize, 1@battlePassFlagBigSize;
+}
+
+battlePassFlag[flagSize=big] > textareaNoTab {
+  pos:50%pw-50%w, 1@blockInterval;
+  bigBoldFont:yes;
+}
+
+battlePassStage > battlePassFlag {
+  pos:pw-w, 1@blockInterval;
+  position:absolute;
+}
+
+battlePassStage > bottomBar {
+  size: pw, 1@buttonHeight;
+  pos:0, ph - h;
+  position:absolute;
+  background-color:@transparent;
+  css-hier-invalidate:yes;
+}
+
+battlePassStage > bottomBar > buttonNest,
+battlePassStage > bottomBar > statusImg {
+  pos:50%pw-50%w, 50%ph - 50%h;
+  position:relative;
+  display:hide;
+  css-hier-invalidate:yes;
+}
+
+battlePassStage > bottomBar > statusImg {
+  size:1@cIco, 1@cIco;
+  background-svg-size:1@cIco, 1@cIco;
+}
+
+battlePassStage[stageStatus=current] {
+  background-color:@battlePassCurStageBgColor;
+}
+
+battlePassStage[stageStatus=current] > border {
+  display:show;
+}
+
+battlePassStage[stageStatus=future] > battlePassFlag {
+  background-color:@battlePassLockedFlagColor;
+}
+
+battlePassStage[stageStatus=future] > battlePassFlag > textareaNoTab {
+  color:@battlePassLockedFlagTextColor;
+}
+
+battlePassStage[stageStatus=past][prizeStatus=received] > battlePassFlag,
+battlePassStage[stageStatus=past][prizeStatus=received] > battlePassFlag > textareaNoTab {
+  color-factor:128;
+}
+
+battlePassStage[prizeStatus=notAvailable] > bottomBar {
+  background-color:@battlePassBottomBarColor;
+}
+
+battlePassStage[prizeStatus=notAvailable] > bottomBar > statusImg {
+  background-color:@battlePassLockedIconColor;
+  background-image:#ui/gameuiskin#stage_locked.svg;
+  display:show;
+}
+
+battlePassStage[prizeStatus=received] > bottomBar > statusImg {
+  background-color:@white;
+  background-image:#ui/gameuiskin#task_check.svg;
+  display:show;
+}
+
+battlePassStage[prizeStatus=available] > bottomBar > buttonNest {
+  display:show;
+}
+
+battlePassStage[stageStatus=future] > bottomBar {
+  background-color:@transparent;
+}
+
+battlePassStage[stageStatus=future] > bottomBar > buttonNest,
+battlePassStage[stageStatus=future] > bottomBar > statusImg {
+  display:hide;
+}
+
+expProgress[type=battlePassRank] {
+  background-color:@battlePassProgressBGColor;
+  foreground-color:@battlePassProgressFGColor;
+}
+
+expProgress[type=battlePassTask] {
+  background-color:@battlePassProgressBGColor;
+  foreground-color:@battlePassTaskProgressFGColor;
+}
+
+battlePassInfoWatch {
+  behaviour:bhvUpdateByWatched;
+  width:pw;
+  margin: 0, 1@blockInterval;
+}
+
+battlePassInfoWatch > textareaNoTab {
+  smallFont:yes;
+}
+
+battlePassInfoWatch > icon {
+  size:@fontHeightSmall, @fontHeightSmall;
+  pos:1@blockInterval, 50%ph-50%h;
+  position:relative;
+  background-svg-size:@fontHeightSmall, @fontHeightSmall;
+  background-image:#ui/gameuiskin#task_fail.svg;
+  background-color:@white;
+}
+
+promoButton battlePassInfoWatch > icon {
+  pos:pw-w, 50%ph-50%h;
+  position:absolute;
+}
+
+battlePassInfoWatch[status=done] > icon {
+  background-image:#ui/gameuiskin#task_check.svg;
+}
+
+battlePassStamp {
+  size:1@battlePassStampWidth, 1@battlePassStampHeight;
+  rotation: -10;
+  background-svg-size:1@battlePassStampWidth, 1@battlePassStampHeight;
+  background-image:#ui/gameuiskin#battle_pass_stamp.svg;
+  background-color:@white;
+}

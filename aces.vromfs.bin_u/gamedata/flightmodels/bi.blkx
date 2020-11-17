@@ -69,7 +69,6 @@
   "RollLeveling": false,
   "ArcadeMaxRollCoeff": 0.95,
   "ArcadeYawMutilpliers": [1.0,1.5,1.0],
-  "ArcadePitchModificators": [0.0,1.0,2.0],
   "AileronMaxDv": 20.0,
   "ElevatorMaxDv": 10.0,
   "RudderMaxDv": 10.0,
@@ -143,7 +142,7 @@
     "FocusOffset": -0.01,
     "WingVertPos": 0.39,
     "AlphaShift": -0.04,
-    "FlapsShift": [0.02,0.04],
+    "FlapsShift": [0.05,0.1],
     "AirbrakesShift": [0.0,0.0],
     "GearFocusShift": [0.01,0.05],
     "GearShift": -0.001,
@@ -236,7 +235,7 @@
     },
     "FullFlaps": {
       "Cl0": 0.79,
-      "alphaCritHigh": 15.5,
+      "alphaCritHigh": 14.0,
       "alphaCritLow": -14.5,
       "ClCritHigh": 1.52,
       "ClCritLow": -0.35,
@@ -328,10 +327,10 @@
       "MultMachMax5": 2.0,
       "MultLineCoeff5": 1.1,
       "MultLimit5": 5.0,
-      "MachCrit6": -0.1,
-      "MachMax6": 0.2,
-      "MultMachMax6": 0.5,
-      "MultLineCoeff6": -10.0,
+      "MachCrit6": 0.1,
+      "MachMax6": 0.15,
+      "MultMachMax6": 2.0,
+      "MultLineCoeff6": -15.0,
       "MultLimit6": 0.0,
       "MachCrit7": 0.0,
       "MachMax7": 1.0,
@@ -415,8 +414,8 @@
       "RPMAfterburner": 1600.0,
       "RPMMaxAllowed": 2600.0,
       "StandbyFriction": 0.055,
-      "FuelConsumptionOnIdle": 0.7,
-      "FuelConsumptionOnHalfThr": 3.0,
+      "FuelConsumptionOnIdle": 3.0,
+      "FuelConsumptionOnHalfThr": 4.0,
       "FuelConsumptionOnFullThr": 6.0,
       "FuelConsumptionOnWEP": 6.0,
       "CarbueretorType": 0,
@@ -750,9 +749,9 @@
     "CenterGearBrakes": false,
     "FullBrakeSlidingFrictionMult": 0.4,
     "FrontalSpringsHeight": 0.3,
-    "TailSpringsHeight": 0.3,
+    "TailSpringsHeight": 0.1,
     "FrontalSpringsCoeff": 160000.0,
-    "TailSpringsCoeff": 170000.0,
+    "TailSpringsCoeff": 160000.0,
     "HasWheels": true,
     "LeftWheelRadius": 0.312,
     "RightWheelRadius": 0.312,
@@ -2252,8 +2251,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2261,8 +2260,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2270,8 +2269,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2279,8 +2278,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },

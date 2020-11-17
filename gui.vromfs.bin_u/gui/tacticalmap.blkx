@@ -137,17 +137,13 @@
             "baseRow": "yes",
             "selType": "left",
             "text-valign": "center",
-            "behavior": "TableNavigator",
+            "behavior": "PosNavigator",
             "selfFocusBorder": "yes",
             "total-input-transparent": "yes",
             "navigatorShortcuts": "yes",
-            "cur_row": "0",
-            "cur_col": "0",
-            "num_rows": "-1",
             "css-hier-invalidate": "all",
             "on_dbl_click": "onStart",
-            "on_click": "onPilotsSelect",
-            "focus": "yes"
+            "on_click": "onPilotsSelect"
           }
         }
       }
@@ -192,12 +188,7 @@
           "ButtonImg": []
         }
       }
-    ],
-    "dummy": {
-      "_on_click": "onSelect",
-      "behaviour": "accesskey",
-      "accessKey": "Esc | J:B"
-    }
+    ]
   },
   "root_button": {
     "id": "screen_button_back",
@@ -206,6 +197,11 @@
     "size": "sw,sh",
     "behavior": "button",
     "_on_click": "goBack"
+  },
+  "dummy": {
+    "_on_click": "onSelect",
+    "behaviour": "accesskey",
+    "accessKey": "Esc | J:B"
   },
   "tdiv": {
     "id": "update_timer",

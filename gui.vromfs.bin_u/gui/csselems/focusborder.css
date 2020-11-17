@@ -18,9 +18,18 @@ focus_border_in_scroll {
   display:hide;
 }
 
-itemDiv > focus_border, recipe > focus_border,
-mapNest > focus_border, imgButton > focus_border {
+imgButton > focus_border, mapNest > focus_border {
   alwaysVisible:yes;
+}
+
+itemDiv > focus_border, recipe > focus_border {
+  alwaysVisible:yes;
+  order-popup:yes;
+}
+
+itemDiv[hasButton=yes] > focus_border,
+imgButton[hasButton=yes] > focus_border {
+  order-popup:no;
 }
 
 [selected=yes] > focus_border[alwaysVisible=yes] {
@@ -41,60 +50,58 @@ mapNest > focus_border {
   display:show;
 }
 
-[alwaysShowBorder="yes"]:focus > unitItemContainer[selected=yes] > shopItem > focus_border,
-table[alwaysShowBorder="yes"]:focus > tr > td[selected=yes] > shopItem > focus_border,
-[show_console_buttons=yes] :focus > focus_border,
-[show_console_buttons=yes] .slotbarTable:focus [selected=yes] > shopItem > focus_border,
-[show_console_buttons=yes] :focus > [selected=yes] > focus_border,
-[show_console_buttons=yes] :focus > wwConflictSideBlock[selected=yes] > conflictCountry > focus_border,
-[show_console_buttons=yes] :focus focus_border_in_scroll,
-[show_console_buttons=yes] [childsActivate=yes] > Button_text:focus,
-[show_console_buttons=yes] [childsActivate=yes] > button:focus,
-[show_console_buttons=yes] [childsActivate=yes] > emptyButton:focus,
-[show_console_buttons=yes] [childsActivate=yes] > emptyButton[selected=yes],
-[show_console_buttons=yes] spectatorFrame[childsActivate=yes] > hoverButton[selected=yes],
-[show_console_buttons=yes] [showSelect=yes] > Button_text[selected=yes],
-[show_console_buttons=yes] [showSelect=yes] > button[selected=yes],
-[show_console_buttons=yes] [showSelect=yes] > CheckBox[selected=yes],
+[alwaysShowBorder="yes"] > unitItemContainer:hover > shopItem > focus_border,
+[alwaysShowBorder="yes"] > unitCell[selected=yes]:hover > shopItem > focus_border,
+[show_console_buttons=yes] :hover > focus_border,
+[show_console_buttons=yes] slotbarTable :hover > shopItem > focus_border,
+[show_console_buttons=yes] [selected=yes]:hover > focus_border,
+[show_console_buttons=yes] wwConflictSideBlock:hover > conflictCountry > focus_border,
+[show_console_buttons=yes] :hover focus_border_in_scroll,
+[show_console_buttons=yes] button:hover,
+[show_console_buttons=yes] emptyButton:hover,
+[show_console_buttons=yes] hoverButton:hover,
+[show_console_buttons=yes] CheckBox:hover,
+[show_console_buttons=yes] baseToggleButton:hover,
+[show_console_buttons=yes] paymentItem:hover,
 [showSelect=always] > Button_text[selected=yes],
-[show_console_buttons=yes] verticalCellsOptions[selfFocusBorder=yes] > tr[selected=yes],
-[show_console_buttons=yes] table[selfFocusBorder=yes] > tr[selected=yes],
-[show_console_buttons=yes] table[focusSelectedRow=yes]:focus > tr[selected=yes],
-[show_console_buttons=yes] [selfFocusBorder=yes]:focus > tr[selected=yes],
-[show_console_buttons=yes] CheckBox:focus,
-[show_console_buttons=yes] HorizontalListBox:focus > shopFilter[selected=yes],
-[show_console_buttons=yes] VerticalListBox:focus > shopFilter[selected=yes],
-[show_console_buttons=yes] :focus > RadioButton:current,
-[show_console_buttons=yes] :focus > collapsableBlock[selected=yes],
-[show_console_buttons=yes] :focus > imgButton[selected=yes] > focus_border,
+[show_console_buttons=yes] [selfFocusBorder=yes] > tr:hover,
+[show_console_buttons=yes] shopFilter:hover,
+[show_console_buttons=yes] RadioButton:hover,
+[show_console_buttons=yes] collapsableBlock:hover,
 [show_console_buttons=yes] buttonPlayer[selected=yes],
-[show_console_buttons=yes] [childsActivate=yes] > gameModeItem:focus,
-[show_console_buttons=yes] [childsActivate=yes] > div.dropDown:focus,
-[show_console_buttons=yes] MultiSelect:focus > multiOption[selected=yes],
+[show_console_buttons=yes] gameModeItem:hover,
+[show_console_buttons=yes] div.dropDown:hover,
+[show_console_buttons=yes] multiOption:hover,
 [show_console_buttons=yes] gameModeBlock[selected=yes],
-[show_console_buttons=yes] :focus > activateTab[selected=yes],
-[show_console_buttons=yes] promoButton:focus,
-[show_console_buttons=yes] :focus > promoButton[type=simpleList][selected=yes],
+[show_console_buttons=yes] activateTab:hover,
+[show_console_buttons=yes] promoButton[hasFocusBorder=yes]:hover,
+[show_console_buttons=yes] promoButton[isBattlePass=yes] > headerBg:hover,
+[show_console_buttons=yes] promoButton[isBattlePass=yes] > collapsedContainer:hover,
+[show_console_buttons=yes] battlePassStage:hover,
 [show_console_buttons=yes] PosOptionsNavigator > cell[selected=yes],
-[show_console_buttons=yes] gameModeChangeButton[navigatorShortcuts]:focus,
-[show_console_buttons=yes] baseToggleButton[navigatorShortcuts]:focus,
-[show_console_buttons=yes] ComboBox[focusFrame=yes]:focus,
-[show_console_buttons=yes] popup_actions_list > itemsList > actionListItem:focus,
-[show_console_buttons=yes] popup_actions_list > itemsList > button:focus,
-[show_console_buttons=yes] VerticalListBox:focus > expandable[selected=yes],
-[show_console_buttons=yes] :focus > expandable[selected=yes],
-[show_console_buttons=yes] [move=no] weaponBundleBlock:focus weaponry_item[selected=yes],
-[show_console_buttons=yes] modificationsBlock:focus weaponry_item[selected=yes],
+[show_console_buttons=yes] gameModeChangeButton[navigatorShortcuts]:hover,
+[show_console_buttons=yes] baseToggleButton[navigatorShortcuts]:hover,
+[show_console_buttons=yes] ComboBox:hover,
+[show_console_buttons=yes] actionListItem:hover,
+[show_console_buttons=yes] expandable:hover,
+[show_console_buttons=yes] weaponry_item:hover,
 [show_console_buttons=yes] ww_map_item[selected=yes],
 [show_console_buttons=yes] wwTopNest[selected=yes],
-[show_console_buttons=yes] :focus > WwBattlesGroup:current,
-[show_console_buttons=yes] :focus > imgSelectable[selected=yes],
-[show_console_buttons=yes] listbox:focus > expandable[selected=yes],
-[show_console_buttons=yes] activateSelect:focus > shopFilter[selected=yes],
-[show_console_buttons=yes] VerticalListBox:focus > memberView[selected=yes],
-[show_console_buttons=yes] craftBranchBody:focus > itemBlock[selected=yes] > itemDiv > focus_border,
-[show_console_buttons=yes] craftBranchBody:focus > Button_text[selected=yes],
-[show_console_buttons=yes] SwitchBox[selectable=yes]:focus {
+[show_console_buttons=yes] WwBattlesGroup:hover,
+[show_console_buttons=yes] imgSelectable:hover,
+[show_console_buttons=yes] memberView:hover,
+[show_console_buttons=yes] craftBranchBody > itemBlock:hover > itemDiv > focus_border,
+[show_console_buttons=yes] clanBattleSeasonFrame:hover,
+[show_console_buttons=yes] imgFrame:hover,
+[show_console_buttons=yes] SwitchBox:hover {
+  needFocusBorder:yes;
+}
+
+Button_text.bottomAirItem, button.fullscreenBgButton {
+  needFocusBorder:no;
+}
+
+[needFocusBorder=yes] {
   re-type:9rect;
   foreground-color: @gamepadFocusFrameColor;
   foreground-image: #ui/gameuiskin#item_selection;
@@ -102,16 +109,34 @@ table[alwaysShowBorder="yes"]:focus > tr > td[selected=yes] > shopItem > focus_b
   foreground-repeat: expand;
   behavior:focusFrameTarget;
   focusImageSource:foreground;
+  focusAnimColor:@gamepadFocusFrameColor;
+  display:show;
+}
+
+[needFocusBorder=back] {
+  re-type:9rect;
+  background-color: @gamepadFocusFrameColor;
+  background-image: #ui/gameuiskin#item_selection;
+  background-position: 8, 10, 8, 8;
+  background-repeat: expand;
+  behavior:focusFrameTarget;
+  focusImageSource:background;
+  focusAnimColor:@gamepadFocusFrameColor;
   display:show;
 }
 
 shopItem > focus_border {
-  pos: -1@dp, -2@dp;
-  size: pw +2@dp, ph +2@dp;
+  pos: -3@dp, -3@dp;
+  size: pw +6@dp, ph +3@dp;
 }
 shopItem[group=yes] > focus_border {
-  pos: -1@dp, -8@dp;
-  size: pw +2@dp, ph +8@dp;
+  pos: -3@dp, -3@dp -1@slotGroupTagHeight;
+  size: pw +6@dp, ph +3@dp +1@slotGroupTagHeight;
+}
+
+invisSlider > focus_border, slider > focus_border {
+  pos: -2@dp, -1@dp;
+  size: pw +4@dp, ph +2@dp;
 }
 
 itemDiv > focus_border, recipe > focus_border,

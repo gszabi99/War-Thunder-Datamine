@@ -113,7 +113,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
       })
 
     if (getCurPreset().updateDeviceMapping(realMapping))
-      ::broadcastEvent("ControlsMappingChanged", realMapping)
+      ::broadcastEvent("ControlsPresetChanged")
   }
 
   cachedShortcutGroupMap = null
@@ -170,8 +170,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
       return
 
     foreach (shortcut in ::shortcutsList)
-      if (shortcut.type == CONTROL_TYPE.AXIS &&
-        ::getTblValue("def_relative", shortcut) && ::getTblValue("isAbsOnlyWhenRealAxis", shortcut))
+      if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false))
       {
         local axis = curPreset.getAxis(shortcut.id)
         if (axis.axisId == -1)

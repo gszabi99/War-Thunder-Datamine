@@ -39,10 +39,6 @@
         "genericDamageMult": 1.6,
         "hp": 30.5
       },
-      "propeller_shaft2_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
@@ -79,6 +75,9 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 80.5
       },
@@ -138,16 +137,6 @@
     {
       "part": {
         "name": "cover1_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "flares1_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "flares2_dm"
       }
     },
     {
@@ -263,6 +252,16 @@
           }
         }
       ]
+    },
+    {
+      "part": {
+        "name": "flares1_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "flares2_dm"
+      }
     },
     {
       "part": [
@@ -503,41 +502,9 @@
       }
     },
     {
-      "part": [
-        {
-          "name": "propeller_shaft2_dm"
-        },
-        {
-          "onHit": {
-            "fire": 0.001,
-            "leak_oil": 0.8,
-            "cut": 0.0
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "fire": 0.005,
-            "leak_oil": 0.95,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "fire": 25.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "fire": 30.0,
-            "leak_oil": 10.0,
-            "cut": 0.0
-          }
-        }
-      ]
+      "part": {
+        "name": "propeller_shaft2_dm"
+      }
     },
     {
       "part": [
@@ -1108,7 +1075,7 @@
       "rpm1": [0.0,4500.0],
       "rpm2": [0.0,4500.0],
       "rpm3": [0.0,4500.0],
-      "rpm_hour": [0.0,10000.0],
+      "rpm_hour": [10000.0,30000.0],
       "rpm_min": [0.0,1000.0],
       "water_temperature": [0.0,1000.0],
       "manifold_pressure": [0.334,2.507],
@@ -1659,6 +1626,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "dm": "flares1_dm",
@@ -1670,6 +1638,7 @@
           {
             "Weapon": {
               "trigger": "flares",
+              "startFx": "",
               "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "dm": "flares2_dm",

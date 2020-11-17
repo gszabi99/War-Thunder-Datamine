@@ -14,7 +14,7 @@
       "type": "training",
       "gt_training": false,
       "environment": "Day",
-      "weather": "good",
+      "weather": "cloudy",
       "forceSimulInitialRandomSeed": true,
       "simulInitialRandomSeed": 12,
       "reqFeature": "ShipsFirstChoice",
@@ -28,7 +28,9 @@
       "restoreType": "manual",
       "difficulty": "arcade",
       "optionalTakeOff": false,
-      "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_boat_hud_elements.blk"
+      "tutorialObjectsFile": "config/tutorial_hud_elements/tutorial_boat_hud_elements.blk",
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 5
     },
     "spectator_points": []
   },
@@ -284,9 +286,9 @@
             "killArea": false,
             "detectionArea": false,
             "killOutOfBattleArea": true,
-            "newGridHorizontalCellCount": 0,
             "airMapArea": false,
-            "area": "battle_area01"
+            "area": "battle_area01",
+            "newGridHorizontalCellCount": 0
           }
         },
         {
@@ -4201,9 +4203,6 @@
               "killOutOfBattleArea": true
             },
             {
-              "newGridHorizontalCellCount": 0
-            },
-            {
               "airMapArea": false
             },
             {
@@ -4211,6 +4210,9 @@
             },
             {
               "area": "battle_area01"
+            },
+            {
+              "newGridHorizontalCellCount": 0
             }
           ]
         },
@@ -5022,9 +5024,13 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -5237,9 +5243,13 @@
             "timeMultiplier": 1.0,
             "disableZone": true,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -5249,9 +5259,13 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": false,
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -5939,9 +5953,6 @@
               "killOutOfBattleArea": true
             },
             {
-              "newGridHorizontalCellCount": 0
-            },
-            {
               "airMapArea": false
             },
             {
@@ -5952,6 +5963,9 @@
             },
             {
               "area": "battle_area03"
+            },
+            {
+              "newGridHorizontalCellCount": 0
             }
           ]
         },
@@ -6560,10 +6574,14 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
             "zoneType": "capture",
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -6649,10 +6667,14 @@
           "timeMultiplier": 1.0,
           "disableZone": false,
           "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
           "target": "capture_zone",
           "canCaptureByGM": true,
           "onlyPlayersCanCapture": true,
           "zoneType": "capture",
+          "useHUDMarkers": true,
           "zoneDefenders": []
         },
         "wait": {
@@ -6742,9 +6764,13 @@
             "timeMultiplier": 1.0,
             "disableZone": true,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": false,
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -6754,9 +6780,13 @@
             "timeMultiplier": 1.0,
             "disableZone": false,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureByGM": true,
             "onlyPlayersCanCapture": true,
+            "useHUDMarkers": true,
             "zoneDefenders": []
           }
         },
@@ -7959,6 +7989,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "modification": "40mm_bofors_l60_navy_universal",
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7995,6 +8026,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8062,6 +8094,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8128,6 +8161,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8179,6 +8213,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8230,6 +8265,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8345,6 +8381,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8381,6 +8418,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8417,6 +8455,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8453,6 +8492,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8489,6 +8529,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8525,6 +8566,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8561,6 +8603,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8597,6 +8640,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8633,6 +8677,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8669,6 +8714,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8705,6 +8751,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8741,6 +8788,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8777,6 +8825,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8813,6 +8862,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8849,6 +8899,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8885,6 +8936,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,

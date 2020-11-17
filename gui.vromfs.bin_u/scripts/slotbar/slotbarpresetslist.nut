@@ -1,4 +1,4 @@
-class SlotbarPresetsList
+::SlotbarPresetsList <- class
 {
   scene = null
   ownerWeak = null
@@ -16,6 +16,7 @@ class SlotbarPresetsList
     if (!::checkObj(scene))
       return
 
+    scene.show(true)
     maxPresets = ::slotbarPresets.getTotalPresetsCount()
     curPresetsData = array(maxPresets, NULL_PRESET_DATA)
     local view = {
@@ -222,11 +223,6 @@ class SlotbarPresetsList
     })
   }
 
-  function onWrapUp(obj)   { ownerWeak.onWrapUp(obj) }
-  function onWrapDown(obj) { ownerWeak.onWrapDown(obj) }
-  function onBottomGCPanelLeft(obj)  { ownerWeak.onBottomGCPanelLeft(obj) }
-  function onBottomGCPanelRight(obj) { ownerWeak.onBottomGCPanelRight(obj) }
-
   function onEventSlotbarPresetLoaded(p)
   {
     update()
@@ -247,7 +243,7 @@ class SlotbarPresetsList
     updateSizes(true)
   }
 
-  function onEventSquadDataUpdated(p)
+  function onEventSquadStatusChanged(p)
   {
     scene.getScene().performDelayed(this, function()
     {

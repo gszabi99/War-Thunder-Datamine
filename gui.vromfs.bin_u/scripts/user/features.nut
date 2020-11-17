@@ -1,5 +1,5 @@
-local { isDataBlock } = ::require("sqStdLibs/helpers/u.nut")
-local { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
+local { isDataBlock } = require("sqStdLibs/helpers/u.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 local defaults = ::Watched({  //def value when feature not found in game_settings.blk
              // not in this list are false
@@ -38,6 +38,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   Ships = ::disable_network()
   ShipsVisibleInShop = ::disable_network()
+  BoatsFirstChoice = false
   ShipsFirstChoice = false
   SpendGoldForShips = false
   Tanks = true
@@ -48,27 +49,35 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   UsaAircraftsInFirstCountryChoice      = true
   UsaTanksInFirstCountryChoice          = true
+  UsaBoatsInFirstCountryChoice          = true
   UsaShipsInFirstCountryChoice          = true
   GermanyAircraftsInFirstCountryChoice  = true
   GermanyTanksInFirstCountryChoice      = true
+  GermanyBoatsInFirstCountryChoice      = true
   GermanyShipsInFirstCountryChoice      = true
   UssrAircraftsInFirstCountryChoice     = true
   UssrTanksInFirstCountryChoice         = true
+  UssrBoatsInFirstCountryChoice         = true
   UssrShipsInFirstCountryChoice         = true
   BritainAircraftsInFirstCountryChoice  = true
   BritainTanksInFirstCountryChoice      = true
+  BritainBoatsInFirstCountryChoice      = true
   BritainShipsInFirstCountryChoice      = true
   JapanAircraftsInFirstCountryChoice    = true
   JapanTanksInFirstCountryChoice        = ::disable_network()
+  JapanBoatsInFirstCountryChoice        = ::disable_network()
   JapanShipsInFirstCountryChoice        = ::disable_network()
   ChinaAircraftsInFirstCountryChoice    = true
   ChinaTanksInFirstCountryChoice        = true
+  ChinaBoatsInFirstCountryChoice        = ::disable_network()
   ChinaShipsInFirstCountryChoice        = ::disable_network()
   ItalyAircraftsInFirstCountryChoice    = true
   ItalyTanksInFirstCountryChoice        = true
+  ItalyBoatsInFirstCountryChoice        = ::disable_network()
   ItalyShipsInFirstCountryChoice        = ::disable_network()
   FranceAircraftsInFirstCountryChoice   = true
   FranceTanksInFirstCountryChoice       = ::disable_network()
+  FranceBoatsInFirstCountryChoice       = ::disable_network()
   FranceShipsInFirstCountryChoice       = ::disable_network()
 
   Helicopters = ::disable_network()
@@ -222,7 +231,6 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AerobaticTricolorSmoke = ::disable_network()
 
   XRayDescription = ::disable_network()
-  GamepadCursorControl = true
   ControlsHelp = true
 
   SeparateTopMenuButtons = false

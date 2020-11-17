@@ -84,23 +84,24 @@ global enum HelicopterParams
   AAM = 10,
   BOMBS = 11,
   FLARES = 12,
-  RATE_OF_FIRE = 13,
-  OIL_1 = 14,
-  OIL_2 = 15,
-  OIL_3 = 16,
-  WATER_1 = 17,
-  WATER_2 = 18,
-  WATER_3 = 19,
-  ENGINE_1 = 20,
-  ENGINE_2 = 21,
-  ENGINE_3 = 22,
-  TRANSMISSION_1 = 23,
-  TRANSMISSION_2 = 24,
-  TRANSMISSION_3 = 25,
-  TRANSMISSION_4 = 26,
-  TRANSMISSION_5 = 27,
-  TRANSMISSION_6 = 28,
-  FUEL = 29
+  IRCM = 13,
+  RATE_OF_FIRE = 14,
+  OIL_1 = 15,
+  OIL_2 = 16,
+  OIL_3 = 17,
+  WATER_1 = 18,
+  WATER_2 = 19,
+  WATER_3 = 20,
+  ENGINE_1 = 21,
+  ENGINE_2 = 22,
+  ENGINE_3 = 23,
+  TRANSMISSION_1 = 24,
+  TRANSMISSION_2 = 25,
+  TRANSMISSION_3 = 26,
+  TRANSMISSION_4 = 27,
+  TRANSMISSION_5 = 28,
+  TRANSMISSION_6 = 29,
+  FUEL = 30
 };
 
 global enum TemperatureState
@@ -117,7 +118,10 @@ global enum HelicopterThrottleMode
   DEFAULT_MODE = 0,
   BRAKE = 1,
   CLIMB = 2,
-  WEP = 3
+  WEP = 3,
+  AIRCRAFT_DEFAULT_MODE = 4,
+  AIRCRAFT_BRAKE = 5,
+  AIRCRAFT_WEP = 6
 };
 
 global enum RadarViewMode
@@ -137,5 +141,12 @@ global enum WeaponMode
 {
   CCIP_MODE = 1,
   CCRP_MODE = 2
+};
+
+global enum IRCMMode
+{
+  IRCM_ENABLED = 1,
+  IRCM_DAMAGED = 2,
+  IRCM_DISABLED = 3
 };
 

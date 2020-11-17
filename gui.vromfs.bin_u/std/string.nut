@@ -13,6 +13,8 @@ local floatRegExp = null
 local trimRegExp = null
 local stripTagsConfig = null
 local escapeConfig = null
+local utf8 = require_optional("utf8")
+
 /**
  * Joins array elements into a string with the glue string between each element.
  * This function is a reverse operation to g_string.split()
@@ -554,26 +556,25 @@ local function trim(str) {
 }
 
 /*
-  getroottable()["rfsUnitTest"] <- function()
-  {
+  getroottable()["rfsUnitTest"] <- function() {
     local resArr = []
-    local testValArray = [0.9999, 1.0, 12.0, 123.0, 6548.0, 72356.0, 120.0, 4300.0, 1234567.0]
-    for(local presize = 1e+6; presize >= 1e-10; presize *= 0.1)
-      resArr.append("presize " + presize + " -> "
-        + implode(testValArray.map(@(val) roundedFloatToString(presize * val, presize)), ", "))
-    return implode(resArr, "\n")
+    local testValArray = [0.0, 0.000024325, 0.0001, 0.5, 0.9999, 1.0, 5.126, 12.0, 120.057, 123.0, 6548.0, 72356.0, 1234567.0]
+    for (local presize = 1e+6; presize >= 1e-10; presize *= 0.1) {
+      local positive = ", ".join(testValArray.map(@(val) floatToStringRounded(val * presize, presize)))
+      local negative = ", ".join(testValArray.map(@(val) floatToStringRounded(-val * presize, presize)))
+      resArr.append($"presize {presize} -> {positive}, {negative}")
+    }
+    return "\n".join(resArr)
   }
-  //presize 1e+06 -> 1000000, 12000000, 123000000, 6547000000, 72356000000, 120000000, 4300000000, 1234567000000
-  //presize 0.001 -> 0.001, 0.012, 0.123, 6.548, 72.356, 0.120, 4.300, 1234.567
-  //presize 1e-10 -> 0.0000000001, 0.0000000012, 0.0000000123, 0.0000006548, 0.0000072356, 0.0000000120, 0.0000004300, 0.0001234567'
+//presize 1e+06 -> 1000000, 12000000, 123000000, 6547000000, 72356000000, 120000000, 4300000000, 1234567000000
+//presize 0.001 -> 0.001, 0.012, 0.123, 6.548, 72.356, 0.120, 4.300, 1234.567
+//presize 1e-10 -> 0.0000000001, 0.0000000012, 0.0000000123, 0.0000006548, 0.0000072356, 0.0000000120, 0.0000004300, 0.0001234567'
 */
 
 local function floatToStringRounded(value, presize) {
   if (presize >= 1) {
-    local res = [(value / presize + 0.5).tointeger()]
-    for(local p = presize; p > 1; p /= 10)
-      res.append("0") //we no need float trash below presize
-    return "".join(res) //we no need e+8 in the big numbers too
+    local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
+    return res == 0 ? "0" : "".join([res].extend(array(math.log10(presize).tointeger(), "0")))
   }
   return string.format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
 }
@@ -621,6 +622,8 @@ local function isStringFloat(str, separator=".") {
 }
 
 local function toIntegerSafe(str, defValue = 0, needAssert = true) {
+  if (::type(str) == "string")
+    str = string.strip(str)
   if (isStringInteger(str))
     return str.tointeger()
   if (needAssert)
@@ -634,8 +637,6 @@ local function toIntegerSafe(str, defValue = 0, needAssert = true) {
 local intToUtf8Char
 local utf8ToUpper
 local utf8ToLower
-
-local utf8 = require_optional("utf8")
 
 if (utf8 != null) {
   intToUtf8Char = function intToUtf8CharImpl(c) {

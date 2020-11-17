@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 
 global enum LB_MODE

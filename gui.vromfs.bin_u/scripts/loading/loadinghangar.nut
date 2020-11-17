@@ -14,8 +14,6 @@ class ::gui_handlers.LoadingHangarHandler extends ::gui_handlers.BaseGuiHandlerW
     setVersionText()
     setHelpTextOnLoading(scene.findObject("help_text"))
 
-    initFocusArray()
-
     local updObj = scene.findObject("cutscene_update")
     if (::checkObj(updObj))
       updObj.setUserData(this)

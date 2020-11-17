@@ -15,11 +15,6 @@ MultiSelect {
   snd_switch_on:t='<<#sndSwitchOn>><<snd_switch_on>><</sndSwitchOn>><<^sndSwitchOn>>choose<</sndSwitchOn>>'
   snd_switch_off:t='<<#sndSwitchOff>><<sndSwitchOff>><</sndSwitchOff>><<^sndSwitchOff>>choose<</sndSwitchOff>>'
 
-  <<#needWrapNavigation>>
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
-  <</needWrapNavigation>>
-
   <<#list>>
   multiOption {
     <<^show>>

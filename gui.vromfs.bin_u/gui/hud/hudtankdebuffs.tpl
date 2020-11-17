@@ -69,6 +69,24 @@ debuffsTextNest {
   }
 }
 
+debuffsTextNest {
+  behaviour:t='bhvUpdateByWatched'
+  position:t='absolute'
+  rotation:t='38'
+  pos:t='(pw/2 - w/2) + 0.30pw, 0.20ph - h/2'
+  css-hier-invalidate:t='yes'
+  value:t='<<ircmValue>>'
+  display:t='hide'
+
+  text {
+    id:t='ircm'
+    hudTankDebuff:t='yes'
+    state:t='<<stateValue>>'
+    text:t='#HUD/TXT_IRCM'
+    css-hier-invalidate:t='yes'
+  }
+}
+
 icon {
   id:t='fire_status';
   display:t='hide';

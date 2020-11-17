@@ -1737,6 +1737,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2179,6 +2188,12 @@
           "hp": 80.0
         }
       },
+      "sensor": {
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 10.0,
+        "hp": 200.0,
+        "countermeasure_01_dm": []
+      },
       "era_turret_hull": {
         "armorClass": "us_era_m_60",
         "kineticProtectionEquivalent": 5.0,
@@ -2566,6 +2581,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -3259,6 +3275,21 @@
       "replace_tex": {
         "from": "fr_camo_vert_olive_arme*",
         "to": "ger_camo_carc*"
+      }
+    }
+  },
+  {
+    "counterMeasures": {
+      "counterMeasure": {
+        "turretIndex": 0,
+        "blk": "gameData/counterMeasures/eirel.blk",
+        "dmPart": "countermeasure_01_dm",
+        "ircmProjector": {
+          "node": "ex_decor_03",
+          "beamRadius": [500.0,50.0],
+          "power": [0.02,0.04],
+          "glowOffset": [0.15,0.0,0.0]
+        }
       }
     }
   }

@@ -1675,6 +1675,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1696,7 +1705,7 @@
     "cockpit": {
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "headPos": [0.0,4.0,-8.0],
       "headPosOnShooting": [-0.2,3.1,0.0],
@@ -1777,6 +1786,9 @@
         },
         "turret_03_front_dm": {
           "armorThickness": 20.0
+        },
+        "turret_04_back_dm": {
+          "armorThickness": 31.5
         }
       },
       "body_shields": {
@@ -1925,6 +1937,14 @@
           "armorThickness": 3.0,
           "hp": 20.0
         },
+        "optic_body_03_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_body_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
         "optic_turret_01_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
@@ -1942,6 +1962,18 @@
           "hp": 20.0
         },
         "optic_turret_05_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_06_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_07_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_08_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         }
@@ -2307,8 +2339,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2330,8 +2364,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2387,61 +2422,6 @@
       "EngineNameAi": "engine_tank_ai_middle",
       "TrackSoundNameAi": "tracks_ai_middle",
       "gun_turn": "turret_turn_mg_light"
-    }
-  },
-  {
-    "skin": {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
     }
   },
   {
@@ -2679,8 +2659,9 @@
           "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-          "emitter": "bone_mg_aa_h_01",
+          "emitter": "bone_mg_aa_barrel",
           "flash": "emtr_mg_flame_03",
+          "useEmitter": true,
           "rollOrientationDeg": 90.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -2703,13 +2684,13 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_mg_aa_h_01",
-            "gun": "bone_mg_aa_v_01",
+            "head": "bone_turret_01",
+            "gun": "bone_mg_aa",
             "gunnerDm": "commander_dm"
           },
           "limits": {
-            "yaw": [-10.0,23.0],
-            "pitch": [-60.0,60.0]
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,25.0]
           }
         }
       }
@@ -3025,8 +3006,9 @@
                 "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-                "emitter": "bone_mg_aa_h_01",
+                "emitter": "bone_mg_aa_barrel",
                 "flash": "emtr_mg_flame_03",
+                "useEmitter": true,
                 "rollOrientationDeg": 90.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3049,13 +3031,13 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_mg_aa_h_01",
-                  "gun": "bone_mg_aa_v_01",
+                  "head": "bone_turret_01",
+                  "gun": "bone_mg_aa",
                   "gunnerDm": "commander_dm"
                 },
                 "limits": {
-                  "yaw": [-10.0,23.0],
-                  "pitch": [-60.0,60.0]
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-10.0,25.0]
                 }
               }
             },
@@ -3106,6 +3088,69 @@
             }
           ]
         }
+      }
+    }
+  },
+  {
+    "user_skin": {
+      "name": "pzkpfw_III_ausf_N",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "green",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green",
+      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "blots",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "lines",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_dunkelgelb*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_winter_waves",
+      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
+      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_waves_bicolor*"
       }
     }
   }

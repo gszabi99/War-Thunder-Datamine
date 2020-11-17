@@ -15,10 +15,6 @@ modificationsBlock {
   //on_select:t = 'updateDependingButtons';
   //on_click:t='onAircraftClick'
   on_activate:t='onWeaponryActivate'
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
-  on_wrap_left:t='onWrapLeft'
-  on_wrap_right:t='onWrapRight'
 
   <<@weaponryList>>
 }

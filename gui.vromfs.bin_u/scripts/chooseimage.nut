@@ -1,5 +1,5 @@
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
-local seenList = ::require("scripts/seen/seenList.nut")
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local seenList = require("scripts/seen/seenList.nut")
 local stdMath = require("std/math.nut")
 
 /*
@@ -64,8 +64,8 @@ class ::gui_handlers.ChooseImage extends ::gui_handlers.BaseGuiHandlerWT
     currentPage = ::max(0, (value / itemsPerPage).tointeger())
 
     contentObj = scene.findObject("images_list")
-    contentObj.select()
     fillPage()
+    ::move_mouse_on_child(contentObj, 0)
 
     showSceneBtn("btn_select", ::show_console_buttons)
   }

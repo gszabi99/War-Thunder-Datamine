@@ -1,7 +1,8 @@
 {
   "root": {
-    "background-color": "@modalShadeColor",
     "type": "big",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "size": "@srw, 1@maxWindowHeight"
@@ -33,7 +34,6 @@
         "tdiv": {
           "id": "profile-container",
           "size": "pw, fh",
-          "margin-top": "1@blockInterval",
           "flow": "vertical",
           "tdiv": [
             {
@@ -48,17 +48,15 @@
                   "size": "0.55@scrn_tgt, ph"
                 },
                 {
-                  "pos": "0, 0"
+                  "padding-right": "1@blockInterval"
                 },
                 {
-                  "position": "relative"
-                },
-                {
-                  "frameBlock": {
+                  "tdiv": {
                     "width": "pw",
                     "pos": "50%pw-50%w, 0",
                     "position": "relative",
                     "padding": "1@blockInterval",
+                    "background-color": "@separatorBlockColor",
                     "Button_text": {
                       "id": "btn_profile_icon",
                       "_on_click": "onChangePilotIcon",
@@ -113,25 +111,27 @@
                         }
                       },
                       {
-                        "textareaNoTab": {
-                          "id": "profile-currentUser-title",
-                          "showAsButton": "yes",
-                          "smallFont": "yes",
+                        "Button_text": {
+                          "id": "profile_currentUser_btn_title",
+                          "visualStyle": "noBgr",
                           "on_click": "openChooseTitleWnd",
-                          "margin-top": "3@dp",
-                          "max-width": "pw",
+                          "width": "pw",
                           "hideEmptyText": "yes",
-                          "text": "",
                           "css-hier-invalidate": "yes",
-                          "ButtonImg": {
-                            "style": "top:50%ph-50%h;"
+                          "textareaNoTab": {
+                            "id": "profile-currentUser-title",
+                            "pos": "0, 0.5ph-0.5h",
+                            "position": "relative",
+                            "smallFont": "yes",
+                            "unseenIcon": {
+                              "id": "unseen_titles",
+                              "pos": "pw + 1@blockInterval, 50%ph-50%h",
+                              "position": "absolute",
+                              "unseenText": []
+                            }
                           },
-                          "unseenIcon": {
-                            "id": "unseen_titles",
-                            "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                            "position": "absolute",
-                            "unseenText": []
-                          }
+                          "focus_border": [],
+                          "ButtonImg": []
                         }
                       },
                       {
@@ -208,7 +208,7 @@
                   }
                 },
                 {
-                  "frameBlock": {
+                  "tdiv": {
                     "id": "medals_block",
                     "size": "pw, fh",
                     "pos": "0, @blockInterval",
@@ -226,12 +226,9 @@
                       "id": "medals_country_tabs",
                       "pos": "pw/2-w/2, 0",
                       "position": "relative",
-                      "class": "countries_small",
+                      "type": "transparent",
                       "on_select": "onMedalsCountrySelect",
-                      "navigatorShortcuts": "yes",
-                      "on_wrap_up": "onWrapUp",
-                      "on_wrap_down": "onWrapDown",
-                      "focus": "yes"
+                      "navigatorShortcuts": "yes"
                     },
                     "tdiv": {
                       "id": "medals_nest",
@@ -251,7 +248,7 @@
                   }
                 },
                 {
-                  "frameBlock": {
+                  "tdiv": {
                     "id": "titles_block",
                     "size": "pw, fh",
                     "pos": "0, @blockInterval",
@@ -280,18 +277,9 @@
                   }
                 },
                 {
-                  "frameBlock": {
+                  "tdiv": {
                     "size": "pw, 1@usercardLeaderboardHeight",
-                    "pos": "0, @blockInterval",
-                    "position": "relative",
-                    "padding": "@blockInterval",
                     "flow": "vertical",
-                    "activeText": {
-                      "pos": "pw/2-w/2, 0",
-                      "position": "relative",
-                      "padding-bottom": "@blockInterval",
-                      "text": "#lobby/vehicles"
-                    },
                     "tdiv": {
                       "id": "country_stats_nest",
                       "width": "pw"
@@ -299,6 +287,9 @@
                   }
                 }
               ]
+            },
+            {
+              "chapterSeparator": []
             },
             {
               "tdiv": [
@@ -319,18 +310,15 @@
                     "total-input-transparent": "yes",
                     "HorizontalListBox": {
                       "id": "modes_list",
+                      "type": "transparent",
                       "position": "relative",
                       "navigatorShortcuts": "yes",
-                      "on_select": "onProfileStatsModeChange",
-                      "on_wrap_up": "onWrapUp",
-                      "on_wrap_down": "onWrapDown",
-                      "focus": "yes"
+                      "move-only-hover": "yes",
+                      "on_select": "onProfileStatsModeChange"
                     },
-                    "frameBlock": {
+                    "tdiv": {
                       "size": "pw, fh",
-                      "position": "relative",
-                      "pos": "0, 1@blockInterval",
-                      "padding": "1@blockInterval",
+                      "padding": "0, 1@blockInterval",
                       "overflow-y": "auto",
                       "scrollbarShortcuts": "yes",
                       "table": {
@@ -343,52 +331,61 @@
                   }
                 },
                 {
-                  "tdiv": {
-                    "width": "pw",
-                    "pos": "0, 0",
-                    "position": "relative",
-                    "padding-top": "1@blockInterval",
-                    "flow": "vertical",
-                    "tdiv": {
-                      "width": "pw",
-                      "margin-bottom": "1@blockInterval",
-                      "ComboBox": {
-                        "id": "leaderboard_modes_list",
-                        "position": "relative",
-                        "pos": "0, 50%ph-50%h",
-                        "width": "0.3@sf",
-                        "display": "hide",
-                        "enable": "no",
-                        "on_select": "onLbModeSelect",
-                        "behaviour": "wrapBroadcast",
-                        "focusFrame": "yes",
-                        "navigatorShortcuts": "yes",
-                        "on_wrap_up": "onWrapUp",
-                        "on_wrap_down": "onWrapDown"
-                      },
-                      "CheckBox": {
-                        "id": "stats_type_profile",
-                        "display": "hide",
-                        "pos": "pw-w-@blockInterval, 50%ph-50%h",
-                        "position": "absolute",
-                        "text": "#mainmenu/btnMonthLb",
-                        "on_change_value": "onStatsTypeChange",
-                        "value": "yes",
-                        "btnName": "LT",
-                        "CheckBoxImg": [],
-                        "ButtonImg": []
+                  "tdiv": [
+                    {
+                      "width": "pw"
+                    },
+                    {
+                      "pos": "0, 0"
+                    },
+                    {
+                      "position": "relative"
+                    },
+                    {
+                      "padding-top": "1@blockInterval"
+                    },
+                    {
+                      "flow": "vertical"
+                    },
+                    {
+                      "tdiv": {
+                        "width": "pw",
+                        "margin-bottom": "1@blockInterval",
+                        "ComboBox": {
+                          "id": "leaderboard_modes_list",
+                          "position": "relative",
+                          "pos": "0, 50%ph-50%h",
+                          "width": "0.3@sf",
+                          "display": "hide",
+                          "enable": "no",
+                          "on_select": "onLbModeSelect"
+                        },
+                        "CheckBox": {
+                          "id": "stats_type_profile",
+                          "display": "hide",
+                          "pos": "pw-w-@blockInterval, 50%ph-50%h",
+                          "position": "absolute",
+                          "text": "#mainmenu/btnMonthLb",
+                          "on_change_value": "onStatsTypeChange",
+                          "value": "yes",
+                          "btnName": "LT",
+                          "CheckBoxImg": [],
+                          "ButtonImg": []
+                        }
                       }
                     },
-                    "frameBlock": {
-                      "size": "pw, 1@usercardLeaderboardHeight",
-                      "table": {
-                        "id": "profile_leaderboard",
-                        "width": "pw",
-                        "class": "lbTable",
-                        "text-halign": "center"
+                    {
+                      "tdiv": {
+                        "size": "pw, 1@usercardLeaderboardHeight",
+                        "table": {
+                          "id": "profile_leaderboard",
+                          "width": "pw",
+                          "class": "lbTable",
+                          "text-halign": "center"
+                        }
                       }
                     }
-                  }
+                  ]
                 }
               ]
             }
@@ -406,123 +403,177 @@
         }
       },
       {
-        "tdiv": {
-          "id": "stats-container",
-          "size": "pw, fh",
-          "margin-top": "1@blockInterval",
-          "total-input-transparent": "yes",
-          "flow": "vertical",
-          "HorizontalListBox": {
-            "id": "modes_list",
-            "height": "4*@scrn_tgt/100.0",
-            "pos": "0, 0",
-            "position": "relative",
-            "activeAccesskeys": "LeftRight",
-            "navigatorShortcuts": "yes",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
-            "on_select": "onStatsModeChange"
+        "tdiv": [
+          {
+            "id": "stats-container"
           },
-          "tdiv": [
-            {
-              "width": "pw"
-            },
-            {
-              "tdiv": {
-                "id": "countries_boxes",
-                "margin": "1@blockInterval, 1@blockInterval",
-                "behaviour": "wrapNavigator",
-                "navigatorShortcuts": "yes",
-                "childsActivate": "yes",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_right": "onWrapDown"
-              }
-            },
-            {
-              "tdiv": {
-                "id": "units_boxes",
-                "pos": "pw-w, 0",
-                "position": "absolute",
-                "margin": "1@blockInterval, 1@blockInterval",
-                "behaviour": "wrapNavigator",
-                "navigatorShortcuts": "yes",
-                "childsActivate": "yes",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_left": "onWrapUp"
-              }
+          {
+            "size": "pw, fh"
+          },
+          {
+            "total-input-transparent": "yes"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "HorizontalListBox": {
+              "id": "modes_list",
+              "type": "transparent",
+              "navigatorShortcuts": "yes",
+              "move-only-hover": "yes",
+              "on_select": "onStatsModeChange"
             }
-          ],
-          "frameBlock": [
-            {
-              "size": "pw, fh"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "pos": "50%pw-50%w, 0"
-            },
-            {
-              "position": "relative"
-            },
-            {
-              "padding-top": "1@blockInterval"
-            },
-            {
-              "table": {
-                "id": "airs_stats_table",
-                "size": "pw, ph",
-                "pos": "50%pw-50%w, 0",
+          },
+          {
+            "tdiv": {
+              "flow": "horizontal",
+              "height": "1@buttonHeight+2@blockInterval",
+              "Button_text": {
+                "id": "filter_button",
+                "margin-left": "0",
+                "text": "#stats_filter_show",
+                "on_click": "onShowFilterBtnClick",
+                "btnName": "Y",
+                "ButtonImg": []
+              },
+              "tdiv": {
+                "id": "icon_nest",
+                "flow": "horizontal",
                 "position": "relative",
-                "class": "lbTable",
-                "higlightRowOnHover": "yes",
-                "text-valign": "center",
-                "text-halign": "center"
+                "pos": "0, 0.5ph-0.5h"
               }
             }
-          ],
-          "animated_wait_icon": {
-            "id": "stats_loading",
-            "pos": "50%pw-50%w, 50%ph-50%h",
-            "position": "absolute",
-            "background-rotation": "0"
+          },
+          {
+            "tdiv": [
+              {
+                "size": "pw, fh"
+              },
+              {
+                "position": "relative"
+              },
+              {
+                "pos": "0.5pw-0.5w, 0"
+              },
+              {
+                "position": "relative"
+              },
+              {
+                "table": {
+                  "id": "airs_stats_table",
+                  "size": "pw, ph",
+                  "pos": "0.5pw-0.5w, 0",
+                  "position": "relative",
+                  "class": "lbTable",
+                  "higlightRowOnHover": "yes",
+                  "text-valign": "center",
+                  "text-halign": "center"
+                }
+              }
+            ]
+          },
+          {
+            "popup_menu": [
+              {
+                "id": "stats_filter"
+              },
+              {
+                "position": "absolute"
+              },
+              {
+                "top": "2@buttonHeight+2@blockInterval"
+              },
+              {
+                "height": "10@buttonHeight+2@framePadding"
+              },
+              {
+                "display": "hide"
+              },
+              {
+                "enable": "no"
+              },
+              {
+                "flow": "horizontal"
+              },
+              {
+                "not-input-transparent": "yes"
+              },
+              {
+                "css-hier-invalidate": "yes"
+              },
+              {
+                "rootUnderPopupMenu": {
+                  "on_click": "onShowFilterBtnClick",
+                  "on_r_click": "onShowFilterBtnClick"
+                }
+              },
+              {
+                "tdiv": {
+                  "id": "countries_boxes",
+                  "width": "0.5pw",
+                  "position": "relative",
+                  "flow": "vertical"
+                }
+              },
+              {
+                "tdiv": {
+                  "size": "1@dp, 10@buttonHeight",
+                  "position": "relative",
+                  "margin": "1@blockInterval, 0",
+                  "background-color": "@separatorBlockColor"
+                }
+              },
+              {
+                "tdiv": {
+                  "id": "units_boxes",
+                  "width": "0.5pw",
+                  "position": "relative",
+                  "flow": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "animated_wait_icon": {
+              "id": "stats_loading",
+              "pos": "50%pw-50%w, 50%ph-50%h",
+              "position": "absolute",
+              "background-rotation": "0"
+            }
           }
-        }
+        ]
       },
       {
-        "optionlist_container": [
+        "tdiv": [
           {
-            "id": "decals-container"
+            "id": "medals-container"
           },
           {
-            "noPad": "yes"
+            "size": "pw, fh"
           },
           {
             "tdiv": {
               "size": "fw, ph",
               "flow": "vertical",
               "HorizontalListBox": {
-                "id": "decals_list",
+                "id": "medals_list",
                 "width": "pw",
-                "pos": "50%pw-50%w, 0",
                 "position": "relative",
                 "class": "hflow",
+                "type": "transparent",
                 "flow": "h-flow",
-                "flow-align": "center",
+                "flow-align": "left",
                 "navigator": "posNavigator",
                 "moveX": "linear",
                 "moveY": "closest",
                 "navigatorShortcuts": "yes",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "clearOnFocusLost": "no",
+                "move-only-hover": "yes",
                 "on_select": "onPageChange"
               },
               "tdiv": {
                 "size": "pw, fh",
-                "pos": "0, @blockInterval",
+                "pos": "0, 1@blockInterval",
                 "position": "relative",
                 "tdiv": {
                   "size": "fw, ph",
@@ -530,9 +581,8 @@
                   "total-input-transparent": "yes",
                   "div": {
                     "pos": "50%pw-50%w, 0",
-                    "position": "relative",
-                    "id": "decals_zone",
-                    "class": "hoverFrame",
+                    "position": "absolute",
+                    "id": "medals_zone",
                     "flow": "h-flow",
                     "flow-align": "center",
                     "max-width": "pw",
@@ -541,11 +591,8 @@
                     "moveX": "linear",
                     "moveY": "closest",
                     "navigatorShortcuts": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
                     "clearOnFocusLost": "no",
-                    "on_select": "onDecalSelect",
-                    "on_click": "onDecalClick"
+                    "on_select": "onMedalSelect"
                   }
                 }
               }
@@ -553,20 +600,19 @@
           },
           {
             "chapterSeparator": {
-              "margin-left": "@blockInterval"
+              "margin": "1@blockInterval, 0"
             }
           },
           {
             "tdiv": {
-              "id": "decal_info",
-              "size": "33%pw, ph",
+              "id": "medals_info",
+              "size": "0.3pw, ph",
               "margin-left": "@blockInterval",
               "flow": "vertical",
               "overflow-y": "auto",
               "total-input-transparent": "yes",
-              "padding-top": "@cIco",
               "tdiv": {
-                "id": "decal_desc",
+                "id": "medals_desc",
                 "flow": "vertical",
                 "width": "pw"
               },
@@ -588,10 +634,48 @@
         ]
       },
       {
-        "optionlist_container": {
+        "tdiv": {
+          "id": "decals-container",
+          "flow": "vertical",
+          "size": "pw, fh",
+          "tdiv": {
+            "size": "pw, fh",
+            "listbox": {
+              "id": "decals_group_list",
+              "size": "0.25pw, ph",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "flow": "vertical",
+              "navigatorShortcuts": "full",
+              "on_select": "onPageChange"
+            },
+            "chapterSeparator": {
+              "margin": "1@blockInterval, 0"
+            },
+            "tdiv": {
+              "size": "fw, ph",
+              "padding-left": "1@blockInterval",
+              "flow": "vertical",
+              "overflow-y": "auto",
+              "total-input-transparent": "yes",
+              "tdiv": {
+                "id": "decals_zone",
+                "width": "pw",
+                "padding-top": "@blockInterval",
+                "class": "hoverFrame",
+                "flow": "h-flow",
+                "flow-align": "center",
+                "display": "hide"
+              }
+            }
+          }
+        }
+      },
+      {
+        "tdiv": {
           "id": "unlocks-container",
           "flow": "vertical",
-          "noPad": "yes",
+          "size": "pw, fh",
           "tdiv": [
             {
               "size": "pw, fh"
@@ -599,23 +683,20 @@
             {
               "listbox": {
                 "id": "unlocks_group_list",
-                "size": "36%pw, ph",
-                "pos": "0, 50%ph-50%h",
+                "size": "0.36pw, ph",
+                "pos": "0, 0.5ph-0.5h",
                 "position": "relative",
                 "flow": "vertical",
-                "navigatorShortcuts": "full",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_left": "switchAchiFocusObj",
-                "on_wrap_right": "switchAchiFocusObj",
+                "navigatorShortcuts": "cancel",
                 "on_dbl_click": "onGroupCollapse",
                 "on_cancel_edit": "onGroupCancel",
-                "on_select": "onUnlockSelect"
+                "on_select": "onUnlockSelect",
+                "move-only-hover": "yes"
               }
             },
             {
               "chapterSeparator": {
-                "margin-left": "0.01*@scrn_tgt, 0"
+                "margin-left": "1@blockInterval"
               }
             },
             {
@@ -625,12 +706,8 @@
                 "size": "fw, ph",
                 "overflow": "auto",
                 "itemInterval": "@unlocksListboxItemInterval",
-                "padding": "@blockInterval",
-                "navigatorShortcuts": "full",
+                "navigatorShortcuts": "active",
                 "scrollbarShortcuts": "yes",
-                "on_wrap_left": "switchAchiFocusObj",
-                "on_wrap_right": "switchAchiFocusObj",
-                "on_cancel_edit": "switchAchiFocusObj",
                 "on_dbl_click": "unlockToFavoritesByActivateItem"
               }
             },
@@ -643,15 +720,18 @@
                   "size": "fw, ph"
                 },
                 {
+                  "padding-left": "1@blockInterval"
+                },
+                {
                   "tdiv": [
                     {
                       "HorizontalListBox": {
                         "id": "pages_list",
                         "class": "countries_small",
+                        "type": "transparent",
                         "activeAccesskeys": "LeftRight",
                         "navigatorShortcuts": "yes",
-                        "on_wrap_up": "onWrapUp",
-                        "on_wrap_down": "onWrapDown",
+                        "move-only-hover": "yes",
                         "on_select": "onPageChange"
                       }
                     },
@@ -659,10 +739,12 @@
                       "HorizontalListBox": {
                         "id": "unit_type_list",
                         "margin-left": "4@framePadding",
+                        "padding-right": "0",
+                        "class": "countries_small",
+                        "type": "transparent",
                         "activeAccesskeys": "LeftRight",
                         "navigatorShortcuts": "yes",
-                        "on_wrap_up": "onWrapUp",
-                        "on_wrap_down": "onWrapDown",
+                        "move-only-hover": "yes",
                         "on_select": "onSubPageChange"
                       }
                     }
@@ -670,10 +752,9 @@
                 },
                 {
                   "tdiv": {
-                    "class": "checkBoxRow",
+                    "padding-top": "1@blockInterval",
                     "CheckBox": {
                       "id": "checkbox_only_for_bought",
-                      "behaviour": "wrapBroadcast",
                       "text": "#profile/only_for_bought",
                       "tooltip": "#profile/only_for_bought/hint",
                       "on_change_value": "onOnlyForBoughtCheck",
@@ -1082,27 +1163,6 @@
                             "gcButtonsInterval": "yes"
                           },
                           {
-                            "behaviour": "wrapNavigator"
-                          },
-                          {
-                            "navigatorShortcuts": "yes"
-                          },
-                          {
-                            "childsActivate": "yes"
-                          },
-                          {
-                            "on_wrap_up": "onWrapUp"
-                          },
-                          {
-                            "on_wrap_down": "onWrapDown"
-                          },
-                          {
-                            "on_wrap_left": "onTopGCPanelLeft"
-                          },
-                          {
-                            "on_wrap_right": "onTopGCPanelRight"
-                          },
-                          {
                             "Button_text": {
                               "id": "gc_clanTag",
                               "tooltip": "#mainmenu/btnClanCard",
@@ -1193,27 +1253,6 @@
                         },
                         {
                           "gcButtonsInterval": "yes"
-                        },
-                        {
-                          "behaviour": "wrapNavigator"
-                        },
-                        {
-                          "navigatorShortcuts": "yes"
-                        },
-                        {
-                          "childsActivate": "yes"
-                        },
-                        {
-                          "on_wrap_up": "onWrapUp"
-                        },
-                        {
-                          "on_wrap_down": "onWrapDown"
-                        },
-                        {
-                          "on_wrap_left": "onTopGCPanelLeft"
-                        },
-                        {
-                          "on_wrap_right": "onTopGCPanelRight"
                         },
                         {
                           "Button_text": [
@@ -1429,9 +1468,6 @@
               "shadowSafeArea": []
             },
             {
-              "line": []
-            },
-            {
               "tdiv": {
                 "size": "pw, 0.02@sf",
                 "pos": "0, ph",
@@ -1472,7 +1508,7 @@
                       "id": "slotbar-presetsPlace",
                       "size": "pw, ph",
                       "position": "absolute",
-                      "pos": "1@dp, 0"
+                      "display": "hide"
                     }
                   }
                 },
@@ -1529,14 +1565,7 @@
                     "position": "relative",
                     "top": "0.5(ph-h)",
                     "margin-right": "2@buttonTextPadding",
-                    "class": "header",
-                    "behaviour": "wrapNavigator",
-                    "navigatorShortcuts": "yes",
-                    "childsActivate": "yes",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_wrap_left": "onWrapLeft",
-                    "on_wrap_right": "onWrapRight"
+                    "class": "header"
                   }
                 },
                 {
@@ -1552,27 +1581,6 @@
                     },
                     {
                       "class": "header"
-                    },
-                    {
-                      "behaviour": "wrapNavigator"
-                    },
-                    {
-                      "navigatorShortcuts": "yes"
-                    },
-                    {
-                      "childsActivate": "yes"
-                    },
-                    {
-                      "on_wrap_up": "onWrapUp"
-                    },
-                    {
-                      "on_wrap_down": "onWrapDown"
-                    },
-                    {
-                      "on_wrap_left": "onBottomGCPanelLeft"
-                    },
-                    {
-                      "on_wrap_right": "onBottomGCPanelRight"
                     },
                     {
                       "Button_text": [

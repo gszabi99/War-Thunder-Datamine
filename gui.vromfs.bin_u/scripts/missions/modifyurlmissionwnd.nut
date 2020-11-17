@@ -1,4 +1,5 @@
 local { clearBorderSymbols } = require("std/string.nut")
+local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 
 class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -13,11 +14,10 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
   curUrl = ""
   isValuesValid = false
 
-  focusArray = [
-    "name_editbox"
-    "url_editbox"
+  tabFocusArray = [
+    "name_editbox",
+    "url_editbox",
   ]
-  currentFocusItem = 0
 
   function initScreen()
   {
@@ -31,7 +31,7 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
     } else
       scene.findObject("btn_apply").setValue(::loc("chat/create"))
 
-    restoreFocus()
+    ::select_editbox(scene.findObject("name_editbox"))
   }
 
   function onChangeName(obj)
@@ -52,7 +52,7 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
     checkValues()
   }
 
-  function onChangeUrl(obj)
+    function onChangeUrl(obj)
   {
     if (!obj)
       return
@@ -89,4 +89,6 @@ class ::gui_handlers.modifyUrlMissionWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     return validateNameRegexp.replace("", curName)
   }
+
+  onKbdWrapDown = @() setFocusToNextObj(scene, tabFocusArray, 1)
 }

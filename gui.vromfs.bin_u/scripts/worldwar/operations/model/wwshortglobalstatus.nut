@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local { secondsToMilliseconds } = require("scripts/time.nut")
 
 local refreshMinTimeSec = 600

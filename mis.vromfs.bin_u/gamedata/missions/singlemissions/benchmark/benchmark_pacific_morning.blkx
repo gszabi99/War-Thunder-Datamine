@@ -3,10 +3,6 @@
   "bin_dump_file": "",
   "mission_settings": {
     "proximity": "airplane",
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 0.0
-    },
     "player": {
       "army": 1,
       "wing": "armada_01"
@@ -19,7 +15,7 @@
       "type": "benchmark",
       "restoreType": "attempts",
       "optionalTakeOff": false,
-      "environment": "Morning",
+      "environment": "4",
       "weather": "poor",
       "windDirection": [1.0,0.0,0.0],
       "forceSkiesInitialRandomSeed": true,
@@ -30,27 +26,86 @@
         "year": 1941,
         "month": 5,
         "day": 15,
-        "localTime": 7.0
+        "localTime": 5.628
       },
       "customWeather": {
-        "clouds_gen": {
-          "humidity": 0.39,
-          "persistence": 0.67,
-          "asymmetry": 0.38
+        "windDir": [0.6,0.8],
+        "wind_scale": 1.0,
+        "max_wind_strength": 6.0,
+        "sky": {
+          "mie2_thickness": 598.0,
+          "mie2_altitude": 410.0,
+          "mie2_scale": 7.31,
+          "mie_height": 4.8,
+          "mie_scale": 2.3,
+          "mie_absorption_scale": 1.0,
+          "mie_scattering_color": [1.0,1.0,1.0],
+          "mie_absorption_color": [1.0,1.0,1.0],
+          "mie_assymetry": 0.8,
+          "mie_back_assymetry": 0.15,
+          "mie_forward_weight": 0.5,
+          "planet_scale": 1.0,
+          "atmosphere_scale": 1.0,
+          "rayleigh_scale": 1.0,
+          "rayleigh_alt_scale": 1.0,
+          "rayleigh_color": [1.0,1.0,1.0],
+          "multiple_scattering_factor": 1.0,
+          "ozone_alt_dist": 1.0,
+          "ozone_max_alt": 1.0,
+          "ozone_scale": 1.0,
+          "sun_brightness": 1.0,
+          "moon_brightness": 1.0,
+          "moon_color": [1.0,1.0,1.0]
         },
-        "clouds_position": {
-          "start_altitude": 1.0,
-          "thickness": 4.0,
-          "light_extinction": 0.2,
-          "amb_extinction_mul": 0.2
+        "strata_clouds": {
+          "amount": 0.64,
+          "altitude": 11.9
         },
-        "clouds_render": {
-          "silver_lining": 0.3,
-          "sun_light": 0.5,
-          "ambient": 1.5,
-          "silver_lining_eccentricity": 0.6
+        "clouds_weather_gen": {
+          "layers[0].coverage": 0.83,
+          "layers[0].freq": 3.91,
+          "layers[0].seed": 21.0,
+          "layers[1].coverage": 0.53,
+          "layers[1].freq": 3.86,
+          "layers[1].seed": 78.87,
+          "epicness": 0.14,
+          "cumulonimbusCoverage": 0.34,
+          "cumulonimbusSeed": 9.03,
+          "worldSize": 65536.0
+        },
+        "clouds_form": {
+          "layers[0].startAt": 0.9,
+          "layers[0].thickness": 2.03,
+          "layers[0].density": 1.12,
+          "layers[0].clouds_type": 0.5,
+          "layers[0].clouds_type_variance": 0.37,
+          "layers[1].startAt": 5.92,
+          "layers[1].thickness": 1.89,
+          "layers[1].density": 1.09,
+          "layers[1].clouds_type": 0.53,
+          "layers[1].clouds_type_variance": 0.26,
+          "extinction": 0.49,
+          "turbulenceStrength": 0.98,
+          "shapeNoiseScale": 15,
+          "cumulonimbusShapeScale": 3,
+          "turbulenceFreq": 3
+        },
+        "clouds_rendering": {
+          "forward_eccentricity": 0.76,
+          "back_eccentricity": 0.45,
+          "forward_eccentricity_weight": 0.75,
+          "erosion_noise_size": 33.4,
+          "ambient_desaturation": 0.4,
+          "ms_contribution": 0.68,
+          "ms_attenuation": 0.34,
+          "ms_ecc_attenuation": 0.31,
+          "erosionWindSpeed": 13.9
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 28.0
     },
     "spectator_points": []
   },

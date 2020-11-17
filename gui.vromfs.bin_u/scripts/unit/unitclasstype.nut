@@ -1,5 +1,5 @@
 local { getUnitRoleIcon } = require("scripts/unit/unitInfoTexts.nut")
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 
 local unitClassType = {
   types = []
@@ -107,28 +107,28 @@ enums.addTypes(unitClassType, {
   TORPEDO_BOAT = {
     code = ::EUCT_TORPEDO_BOAT
     name = "torpedo_boat"
-    unitTypeCode = ::ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   GUN_BOAT = {
     code = ::EUCT_GUN_BOAT
     name = "gun_boat"
-    unitTypeCode = ::ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   TORPEDO_GUN_BOAT = {
     code = ::EUCT_TORPEDO_GUN_BOAT
     name = "torpedo_gun_boat"
-    unitTypeCode = ::ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
   SUBMARINE_CHASER = {
     code = ::EUCT_SUBMARINE_CHASER
     name = "submarine_chaser"
-    unitTypeCode = ::ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
@@ -142,7 +142,7 @@ enums.addTypes(unitClassType, {
   NAVAL_FERRY_BARGE = {
     code = ::EUCT_NAVAL_FERRY_BARGE
     name = "naval_ferry_barge"
-    unitTypeCode = ::ES_UNIT_TYPE_SHIP
+    unitTypeCode = ::ES_UNIT_TYPE_BOAT
     checkOrder = checkOrder++
   }
 
@@ -189,9 +189,35 @@ local function getTypesByEsUnitType(esUnitType = null) { //null if all unit type
     || t.unitTypeCode == esUnitType)
 }
 
+local function processUnitTypeArray(unitTypeArray) {
+  local processedArray = clone unitTypeArray
+  local boatIdx = processedArray.indexof("boat")
+  local shipIdx = processedArray.indexof("ship")
+
+  if (boatIdx == null && shipIdx == null)
+    return processedArray
+
+  if (boatIdx != null && shipIdx != null) {
+    processedArray.remove(boatIdx)
+    processedArray.remove(shipIdx)
+    processedArray.append("ship_and_boat")
+  }
+  else if (boatIdx == null && shipIdx != null) {
+    processedArray.remove(shipIdx)
+    processedArray.append("ship_only")
+  }
+  else if (boatIdx != null && shipIdx == null) {
+    processedArray.remove(boatIdx)
+    processedArray.append("boat_only")
+  }
+
+  return processedArray
+}
+
 return {
   getUnitClassTypesFromCodeMask = getTypesFromCodeMask
   getUnitClassTypeByExpClass = getTypeByExpClass
   getUnitClassTypesByEsUnitType = getTypesByEsUnitType
   unitClassType = unitClassType
+  processUnitTypeArray
 }

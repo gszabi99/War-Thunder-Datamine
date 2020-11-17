@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local time = require("scripts/time.nut")
 
 ::g_battle_task_difficulty <- {
@@ -48,6 +48,7 @@ g_battle_task_difficulty._getTimeLeftText <- function _getTimeLeftText(task)
   showSeasonIcon = false
   canIncreaseShopLevel = true
   hasTimer = true
+  userstatUnlockId = ""
 
   expireProcessed = null
   notifyTimeExpired = function(task) {
@@ -71,6 +72,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     executeOrder = 0
     timeLimit = function() { return time.daysToSeconds(1) }
     getTimeLeft = _getTimeLeft
+    userstatUnlockId = "easy_tasks_streak"
   }
 
   MEDIUM = {
@@ -79,6 +81,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     executeOrder = 1
     timeLimit = function() { return time.daysToSeconds(1) }
     getTimeLeft = _getTimeLeft
+    userstatUnlockId = "medium_tasks_streak"
   }
 
   HARD = {
@@ -89,6 +92,7 @@ enums.addTypesByGlobalName("g_battle_task_difficulty", {
     timeLimit = function() { return time.daysToSeconds(1) }
     getTimeLeft = _getTimeLeft
     hasTimer = false
+    userstatUnlockId = "hard_tasks_streak"
   }
 
   UNKNOWN = {

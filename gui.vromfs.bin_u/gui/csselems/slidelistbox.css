@@ -3,11 +3,10 @@
 SlideListBox,SlideListBoxOptions
 {
   behaviour:listbox+slide;
-    re-type:SlideListBox;
+  re-type:SlideListBox;
   font:normal;
   border:no;
   border-color:@transparent;
-  
   tabStop:yes;
   slide-time:100;
   flow:horizontal;
@@ -147,8 +146,7 @@ groupBox, groupList {
   snd_select:choose;
   snd_set_focus:focus;
   snd_dbl_click:click;
-  navigatorShortcuts:full;
-  mouse-focusable:yes;
+  navigatorShortcuts:cancel;
   total-input-transparent:yes;
 }
 
@@ -168,6 +166,7 @@ groupBox > group {
   margin:0, 1@slideGroupMargin;
   flow:vertical;
   css-hier-invalidate:yes;
+  interactive:no;
 }
 
 groupBox > group:current {
@@ -192,6 +191,10 @@ groupHeader {
 
 groupHeader[canBeClosed=yes] {
   padding:@blockInterval, 0, @blockInterval+1@smallButtonCloseHeight, 0;
+}
+
+group > groupHeader {
+  interactive:yes;
 }
 
 group:hover > groupHeader {
@@ -243,15 +246,9 @@ groupList > text:current {
   color:@activeTextColor;
   background-color:@contactSelColor;
 }
-[show_console_buttons=yes] :focus > group:current > groupHeader,
-[show_console_buttons=yes] groupList:focus > text:current {
-  re-type:9rect;
-  foreground-color: @gamepadFocusFrameColor;
-  foreground-image: #ui/gameuiskin#item_selection;
-  foreground-position: 6;
-  foreground-repeat: expand;
-  behavior:focusFrameTarget;
-  focusImageSource:foreground;
+[show_console_buttons=yes] groupHeader:hover,
+[show_console_buttons=yes] groupList > contactItem:hover {
+  needFocusBorder:yes;
 }
 
 groupList > text > img,
@@ -292,7 +289,6 @@ group:current > groupIns {
 }
 groupIns > EditBox {
   width:fw;
-  mouse-focusable:yes;
 }
 group > groupIns > EditBox {
   enable:no;

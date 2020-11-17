@@ -4,7 +4,7 @@
   list = []
 }
 
-::configs_init_tbl <- {
+local configs_init_tbl = {
   PRICE = {
     getImpl = ::get_price_blk
     isActual = ::is_price_actual
@@ -22,24 +22,40 @@
   }
 
   GUI = {
-    getImpl = function() { return ::DataBlock("config/gui.blk") || ::DataBlock() }
+    getImpl = function() {
+      local blk = ::DataBlock()
+      try {
+        blk.load("config/gui.blk")
+      }
+      catch (e) {
+      }
+      return blk
+    }
     needScriptedCache = true
   }
 
   AVATARS = {
-    getImpl = function() { return ::DataBlock("config/avatars.blk") || ::DataBlock() }
+    getImpl = function() {
+      local blk = ::DataBlock()
+      try {
+        blk.load("config/avatars.blk")
+      }
+      catch (e) {
+      }
+      return blk
+    }
     needScriptedCache = true
   }
 }
 
-foreach(id, cData in ::configs_init_tbl)
+foreach(id, cData in configs_init_tbl)
 {
   cData.id <- id
   local cfg = ::ConfigBase(cData)
   ::configs[id] <- cfg
   ::configs.list.append(cfg)
 }
-delete configs_init_tbl
+
 
 
 configs.onEventAuthorizeComplete <- function onEventAuthorizeComplete(p)

@@ -1,4 +1,4 @@
-local squadronUnitAction = ::require("scripts/unit/squadronUnitAction.nut")
+local squadronUnitAction = require("scripts/unit/squadronUnitAction.nut")
 
 local function repairRequest(unit, price, onSuccessCb = null)
 {

@@ -1,4 +1,4 @@
-local hudTankStates = require_native("hudTankStates")
+local hudTankStates = ::require_native("hudTankStates")
 local { hudTankMovementStatesVisible } = require("scripts/hud/hudConfigByGame.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
@@ -25,6 +25,14 @@ local tankStatesByObjId = {
       watch = hudTankStates.getLwsObservable()
       isVisible = @(value) value != -1
       updateObj = @(obj, value) obj.findObject("lws").state = value == 0 ? "off" : "on"
+    }]
+  }
+  ircm = {
+    objName = "ircm"
+    updateConfigs = [{
+      watch = hudTankStates.getIrcmObservable()
+      isVisible = @(value) value != -1
+      updateObj = @(obj, value) obj.findObject("ircm").state = value == 3 ? "off" : value == 2 ? "dmg" : "on"
     }]
   }
   gear = {

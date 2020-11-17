@@ -114,6 +114,18 @@
     "depthTraceCriticalDepth": 2.0
   },
   {
+    "haveAnchor": true
+  },
+  {
+    "anchorPos": [47.18,4.22,-1.66]
+  },
+  {
+    "spawn_count": {
+      "numSpawnsPerBattleArcade": 3,
+      "numSpawnsPerBattleHistorical": 3
+    }
+  },
+  {
     "hideNodesInDmg": {
       "node": "flag"
     }
@@ -123,6 +135,12 @@
       {
         "replace_tex": {
           "from": "flag_ussr_01_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_ussr_03_c*",
           "to": "flag_ussr_01_c_tomoe*"
         }
       },
@@ -195,6 +213,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2664,8 +2688,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -4282,6 +4306,10 @@
       "120mm_jp_type3_naval_he": [],
       "120mm_jp_type0_distant_fuse_naval_he": [],
       "120mm_jp_type0_distant_fuse_naval_he_ammo_pack": [],
+      "120mm_jp_type1_base_fuse_naval_he": [],
+      "120mm_jp_type1_base_fuse_naval_he_ammo_pack": {
+        "prevModification": "120mm_jp_type0_distant_fuse_naval_he_ammo_pack"
+      },
       "7_7mm_vickers_navy_universal": [],
       "7_7mm_lewis_navy_ap": [],
       "7_7mm_lewis_navy_ap_ammo_pack": [],
@@ -4294,9 +4322,11 @@
       "new_main_caliber_turrets": {
         "reqModification": "new_aux_caliber_turrets"
       },
-      "ship_rangefinder": [],
-      "ship_bomb_mortar": {
+      "ship_rangefinder": {
         "prevModification": "7_7mm_lewis_navy_incendiary_ammo_pack"
+      },
+      "ship_bomb_mortar": {
+        "prevModification": "ship_rangefinder"
       },
       "torpedoes_movement_mode": {
         "prevModification": "new_main_caliber_turrets",
@@ -4306,7 +4336,7 @@
         }
       },
       "ship_mines": {
-        "prevModification": "ship_rangefinder"
+        "prevModification": "120mm_jp_type1_base_fuse_naval_he_ammo_pack"
       }
     }
   },

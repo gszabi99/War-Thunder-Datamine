@@ -1692,6 +1692,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1913,6 +1922,17 @@
       "replace_tex": {
         "from": "jp_camo_sdf_green*",
         "to": "jp_camo_prototype_green*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "jp_camo_post_green",
+      "nameLocId": "skin/jp_camo_post_green",
+      "descLocId": "skin/jp_camo_post_green/desc",
+      "replace_tex": {
+        "from": "jp_camo_sdf_green*",
+        "to": "jp_camo_post_green*"
       }
     }
   },
@@ -2533,8 +2553,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2556,8 +2578,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2733,7 +2756,7 @@
     "cockpit": {
       "zoomOutFov": 9.2,
       "zoomInFov": 4.6,
-      "sightFov": 6.5,
+      "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,4.2,-8.5],
       "headPosOnShooting": [0.3,3.3,0.47],

@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 class ::Warbond
 {
   id = ""
@@ -32,7 +33,7 @@ class ::Warbond
     awardsList = []
 
     local pBlk = ::get_price_blk()
-    local listBlk = ::get_blk_value_by_path(pBlk, blkListPath)
+    local listBlk = get_blk_value_by_path(pBlk, blkListPath)
     if (!::u.isDataBlock(listBlk))
       return
 
@@ -76,7 +77,7 @@ class ::Warbond
     visibleSeenIds = null
 
     local pBlk = ::get_price_blk()
-    local config = ::get_blk_value_by_path(pBlk, blkListPath + "/shop")
+    local config = get_blk_value_by_path(pBlk, blkListPath + "/shop")
     if (!::u.isDataBlock(config))
       return
 
@@ -101,6 +102,9 @@ class ::Warbond
   {
     return ::u.search(getAwardsList(), @(award) award.id == awardId )
   }
+
+  getAwardByType = @(awardType)
+    getAwardsList().findvalue(@(award) award.awardType == awardType)
 
   function getPriceText(amount, needShowZero = false, needColorByBalance = true)
   {

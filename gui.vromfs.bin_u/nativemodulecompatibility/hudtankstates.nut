@@ -7,4 +7,5 @@ return{
   getDrivingDirectionMode = @() null
   getCruiseControl = @() null
   getLwsObservable = @() null
+  getIrcmObservable = @() null
 }

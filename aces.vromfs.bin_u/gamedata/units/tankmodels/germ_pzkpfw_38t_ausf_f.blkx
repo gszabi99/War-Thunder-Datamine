@@ -1898,6 +1898,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -1919,52 +1928,11 @@
     "cockpit": {
       "zoomOutFov": 40.0,
       "zoomInFov": 21.0,
-      "sightFov": 25.0,
+      "sightFov": 20.0,
       "sightName": "default_tank_spg",
       "headPos": [0.0,3.3,-6.0],
       "headPosOnShooting": [0.0,2.8,-0.2],
       "detectionHeight": 2.13
-    }
-  },
-  {
-    "user_skin": {
-      "name": "pzkpfw_38t_ausf_A",
-      "replace_tex": {
-        "from": "ger_camo_grey*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_grey*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_dunkelgelb_africa",
-      "nameLocId": "skin/ger_camo_dunkelgelb_africa",
-      "descLocId": "skin/ger_camo_dunkelgelb_africa/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_dunkelgelb_africa*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_winter_lines",
-      "nameLocId": "skin/ger_camo_winter_lines",
-      "descLocId": "skin/ger_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ger_camo_winter_lines*"
-      }
     }
   },
   {
@@ -2443,8 +2411,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2466,8 +2436,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2732,6 +2703,47 @@
       "37mm_ger_kwk38_t_APCBC": [],
       "37mm_kwk_38_t_APCBC_ammo_pack": [],
       "37mm_kwk_36_APCR_ammo_pack": []
+    }
+  },
+  {
+    "user_skin": {
+      "name": "pzkpfw_38t_ausf_f",
+      "replace_tex": {
+        "from": "ger_camo_grey*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_grey*",
+        "to": "ger_camo_winter_grey*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_africa",
+      "nameLocId": "skin/ger_camo_dunkelgelb_africa",
+      "descLocId": "skin/ger_camo_dunkelgelb_africa/desc",
+      "replace_tex": {
+        "from": "ger_camo_grey*",
+        "to": "ger_camo_dunkelgelb_africa*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_winter_lines",
+      "nameLocId": "skin/ger_camo_winter_lines",
+      "descLocId": "skin/ger_camo_winter_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_grey*",
+        "to": "ger_camo_winter_lines*"
+      }
     }
   }
 ]

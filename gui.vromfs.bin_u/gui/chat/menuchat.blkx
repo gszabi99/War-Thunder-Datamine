@@ -31,6 +31,18 @@
       "flow": "vertical"
     },
     {
+      "not-input-transparent": "yes"
+    },
+    {
+      "window-panel": "yes"
+    },
+    {
+      "on_mouse_enter": "onChatWindowMouseOver"
+    },
+    {
+      "on_mouse_leave": "onChatWindowMouseOver"
+    },
+    {
       "moveElem": []
     },
     {
@@ -40,7 +52,7 @@
         "input-transparent": "yes",
         "min-height": "1@buttonHeight",
         "position": "relative",
-        "padding": "-1@framePadding-1@dp",
+        "padding": "-1@framePadding",
         "total-input-transparent": "yes",
         "frame_header": {
           "scaleable": "yes",
@@ -56,14 +68,11 @@
             "navigatorShortcuts": "full",
             "activateBy": "Y",
             "isTransparentBg": "yes",
+            "itemsWithCloseButtons": "yes",
             "on_select": "onRoomChanged",
             "on_r_click": "onRoomRClick",
             "on_dbl_click": "onRemoveRoom",
-            "on_cancel_edit": "goBack",
-            "on_wrap_up": "onWrapUp",
-            "on_wrap_down": "onWrapDown",
-            "on_wrap_right": "onSwitchHeaderObj",
-            "on_set_focus": "onChatFocus"
+            "on_cancel_edit": "goBack"
           },
           "Button_close": {
             "id": "close_chat",
@@ -75,31 +84,7 @@
               "id": "header_buttons"
             },
             {
-              "behaviour": "wrapNavigator"
-            },
-            {
               "smallIcon": "yes"
-            },
-            {
-              "navigatorShortcuts": "cancel"
-            },
-            {
-              "childsActivate": "yes"
-            },
-            {
-              "on_wrap_up": "onWrapUp"
-            },
-            {
-              "on_wrap_down": "onWrapDown"
-            },
-            {
-              "on_wrap_left": "onSwitchHeaderObj"
-            },
-            {
-              "_on_cancel_edit": "goBack"
-            },
-            {
-              "on_set_focus": "onChatFocus"
             },
             {
               "Button_text": {
@@ -176,10 +161,8 @@
                 "imgType": "none",
                 "on_dbl_click": "onUsersListActivate",
                 "on_cancel_edit": "goBack",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_right": "onWrapToEditbox",
-                "on_set_focus": "onChatListFocus"
+                "on_hover": "onChatListHover",
+                "on_unhover": "onChatListHover"
               },
               "tdiv": {
                 "id": "buttons_list",
@@ -187,14 +170,6 @@
                 "pos": "0, ph-h",
                 "position": "absolute",
                 "flow": "vertical",
-                "behaviour": "wrapNavigator",
-                "navigatorShortcuts": "cancel",
-                "childsActivate": "yes",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_right": "onWrapToEditbox",
-                "on_cancel_edit": "goBack",
-                "on_set_focus": "onChatFocus",
                 "textareaNoTab": {
                   "id": "battle_rating",
                   "max-width": "pw",
@@ -253,6 +228,7 @@
               "chatBlock": {
                 "id": "menu_chat_text_block",
                 "size": "pw, fh",
+                "total-input-transparent": "yes",
                 "chatScrollContainer": {
                   "position": "relative",
                   "width": "pw",
@@ -260,6 +236,7 @@
                   "pos": "0, ph-h",
                   "overflow-y": "auto",
                   "auto-scroll": "yes",
+                  "scrollbarShortcuts": "yes",
                   "chatMessagesContainer": {
                     "id": "menu_chat_messages_container",
                     "max-width": "0.7@sf",
@@ -285,13 +262,10 @@
                   "position": "relative",
                   "max-len": "250",
                   "selected": "yes",
-                  "mouse-focusable": "yes",
                   "on_change_value": "onChatEdit",
                   "on_activate": "onChatEntered",
                   "on_cancel_edit": "onChatCancel",
-                  "on_wrap_up": "onWrapUp",
-                  "on_wrap_down": "onWrapDown",
-                  "on_set_focus": "onChatFocus",
+                  "on_set_focus": "onChatEditboxFocus",
                   "font": "@fontSmall",
                   "text": "",
                   "noMargin": "yes"
@@ -360,13 +334,10 @@
                   "EditBox": {
                     "id": "search_edit",
                     "text": "",
-                    "mouse-focusable": "yes",
                     "noMargin": "yes",
                     "on_activate": "onSearchStart",
                     "on_cancel_edit": "onCancelSearchEdit",
-                    "on_wrap_up": "onWrapUp",
-                    "on_wrap_down": "onWrapDown",
-                    "on_set_focus": "onChatFocus"
+                    "on_set_focus": "onChatEditboxFocus"
                   },
                   "Button_text": {
                     "pos": "@blockInterval, 0.5ph-0.5h",
@@ -387,10 +358,8 @@
                 "imgType": "none",
                 "on_dbl_click": "onSearchRoomJoin",
                 "on_cancel_edit": "onCancelSearchRooms",
-                "on_wrap_up": "onWrapUp",
-                "on_wrap_down": "onWrapDown",
-                "on_wrap_left": "onWrapToEditbox",
-                "on_set_focus": "onChatListFocus"
+                "on_hover": "onChatListHover",
+                "on_unhover": "onChatListHover"
               },
               "Button_text": {
                 "id": "btn_join_room",

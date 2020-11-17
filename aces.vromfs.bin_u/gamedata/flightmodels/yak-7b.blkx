@@ -37,7 +37,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 21.8
+        "hp": 30.5
       }
     },
     "c_dural3": {
@@ -49,20 +49,13 @@
         "genericDamageMult": 0.3,
         "hp": 20.6
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 26.4
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.4
+        "hp": 14.5
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.4
-      },
-      "fin_dm": {
-        "hp": 25.5
+        "hp": 14.5
       },
       "flap_l_dm": {
         "hp": 21.6
@@ -73,9 +66,6 @@
       "rudder_dm": {
         "genericDamageMult": 0.3,
         "hp": 22.1
-      },
-      "stab_dm": {
-        "hp": 19.8
       }
     },
     "c_dural7": {
@@ -90,23 +80,17 @@
         "hp": 90.4
       }
     },
+    "c_wood10": {
+      "stab_dm": {
+        "hp": 24.5
+      }
+    },
+    "c_wood30": {
+      "fin_dm": {
+        "hp": 25.5
+      }
+    },
     "c_wood40": {
-      "wing1_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 50.7
-      },
-      "wing1_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 50.7
-      },
-      "wing2_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 42.8
-      },
-      "wing2_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 42.8
-      },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 80.5
@@ -114,6 +98,24 @@
       "wing_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 80.5
+      }
+    },
+    "c_wood50": {
+      "wing1_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing1_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing2_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
+      },
+      "wing2_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 60.5
       }
     },
     "dural": {
@@ -128,31 +130,6 @@
       },
       "cover4_dm": {
         "hp": 19.5
-      }
-    },
-    "dural40": {
-      "spar1_l_dm": {
-        "hp": 46.6
-      },
-      "spar1_r_dm": {
-        "hp": 46.6
-      },
-      "spar2_l_dm": {
-        "hp": 29.7
-      },
-      "spar2_r_dm": {
-        "hp": 29.7
-      },
-      "spar_l_dm": {
-        "hp": 60.5
-      },
-      "spar_r_dm": {
-        "hp": 60.5
-      }
-    },
-    "glass64": {
-      "armor2_dm": {
-        "hp": 100.0
       }
     },
     "protected_controls": {
@@ -203,6 +180,26 @@
       },
       "tank3_dm": {
         "hp": 51.8
+      }
+    },
+    "wood120": {
+      "spar1_l_dm": {
+        "hp": 41.2
+      },
+      "spar1_r_dm": {
+        "hp": 41.2
+      },
+      "spar2_l_dm": {
+        "hp": 39.5
+      },
+      "spar2_r_dm": {
+        "hp": 39.5
+      },
+      "spar_l_dm": {
+        "hp": 56.5
+      },
+      "spar_r_dm": {
+        "hp": 55.7
       }
     }
   },
@@ -328,11 +325,6 @@
     },
     {
       "part": {
-        "name": "armor2_dm"
-      }
-    },
-    {
-      "part": {
         "name": "cannon1_dm"
       }
     },
@@ -355,63 +347,6 @@
       "part": {
         "name": "cover4_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [
@@ -1132,8 +1067,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1141,8 +1076,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1150,8 +1085,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1159,8 +1094,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2058,6 +1993,11 @@
         "part": "engine4"
       }
     ]
+  },
+  "flexWing": {
+    "wingStrainCoeff": 0.4,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
   },
   "commonWeapons": [
     {

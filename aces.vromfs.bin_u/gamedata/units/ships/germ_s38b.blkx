@@ -116,6 +116,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_ussr_03_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_usa_01_c*",
           "to": "flag_usa_01_c_tomoe*"
         }
@@ -183,6 +189,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2054,6 +2066,7 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 1.0,
           "errExplTime": 0.0,
+          "numWeaponsInSlot": 1,
           "turret": {
             "head": "main_caliber_turret_01",
             "gun": "main_caliber_gun_01",
@@ -2125,6 +2138,7 @@
           "errMeasureVelDir": 3.0,
           "errTargetting": 1.0,
           "errExplTime": 0.0,
+          "numWeaponsInSlot": 1,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
             "gun": "auxiliary_caliber_gun_01",
@@ -3143,7 +3157,14 @@
         "prevModification": "20mm_ger_c38_navy_ap_ammo_pack"
       },
       "ship_main_caliber_support": {
-        "prevModification": "new_main_caliber_turrets"
+        "prevModification": "ship_depth_charge"
+      },
+      "torpedoes_movement_mode": {
+        "prevModification": "new_main_caliber_turrets",
+        "effects": {
+          "distToLive": 8000.0,
+          "maxSpeedInWater": -7.2
+        }
       }
     }
   },

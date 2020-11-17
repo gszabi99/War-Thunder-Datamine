@@ -27,13 +27,7 @@
   "fightAiBehaviour": "fighter",
   "DamageParts": {
     "armor10": {
-      "armor2_dm": {
-        "hp": 40.0
-      },
       "cannon1_dm": {
-        "hp": 15.0
-      },
-      "radar_dm": {
         "hp": 15.0
       }
     },
@@ -103,11 +97,11 @@
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 54.4
+        "hp": 60.5
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 54.4
+        "hp": 60.5
       }
     },
     "dural": {
@@ -144,20 +138,23 @@
         "hp": 19.5
       },
       "spar_l_dm": {
-        "hp": 41.5
+        "hp": 40.9
       },
       "spar_r_dm": {
-        "hp": 41.5
+        "hp": 40.9
       }
     },
-    "glass60": {
-      "armor1_dm": {
-        "hp": 100.0
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
       }
     },
     "protected_controls": {
       "tailcontrol_dm": {
         "hp": 60.5
+      },
+      "wingcontrol_dm": {
+        "hp": 40.5
       },
       "wingcontrol_l_dm": {
         "hp": 60.5
@@ -338,16 +335,6 @@
     {
       "part": {
         "name": "airbrake_r_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor1_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor2_dm"
       }
     },
     {
@@ -1052,8 +1039,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1061,8 +1048,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1070,8 +1057,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1079,8 +1066,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -2019,6 +2006,11 @@
     },
     {
       "part": {
+        "name": "wingcontrol_dm"
+      }
+    },
+    {
+      "part": {
         "name": "wingcontrol_l_dm"
       }
     },
@@ -2074,7 +2066,7 @@
         "midNode": "Bip01 L Calf",
         "upNode": "Bip01 L Thigh",
         "targetNode": "pedal_lfoot_1",
-        "flexionDir": [0.0,1.0,0.3]
+        "flexionDir": [0.3,1.0,0.0]
       }
     },
     {
@@ -2083,7 +2075,7 @@
         "midNode": "Bip01 R Calf",
         "upNode": "Bip01 R Thigh",
         "targetNode": "pedal_rfoot_1",
-        "flexionDir": [0.0,1.0,-0.3]
+        "flexionDir": [-0.3,1.0,0.0]
       }
     }
   ],
@@ -2098,26 +2090,26 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "headPos": [3.62,0.76,0.0],
-    "headPosOnShooting": [3.62,0.76,0.0],
+    "headPos": [3.55,0.78,0.0],
+    "headPosOnShooting": [3.55,0.78,0.0],
     "mirror": true,
     "mirrorPos": [-3.855,0.98,0.0],
-    "mirrorNorm": [-0.93,-0.366,0.0],
+    "mirrorNorm": [-0.934,-0.358,0.0],
     "mirrorNode": "blister3",
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
-    "lightPos": [4.122984,0.33512,0.00737],
-    "lightColor": [0.0,0.6,0.05],
-    "lightRadius": 0.33,
-    "lightPos1": [4.204053,0.57531,0.208905],
-    "lightColor1": [0.0,0.4,0.3],
-    "lightRadius1": 0.037,
-    "lightPos2": [4.012445,0.608354,0.002459],
-    "lightColor2": [0.0,0.6,0.05],
-    "lightRadius2": 0.05,
-    "lightPos3": [4.129112,0.25741,0.207303],
-    "lightColor3": [0.5,0.2,0.2],
-    "lightRadius3": 0.25,
+    "lightPos": [4.17794,0.472425,0.056878],
+    "lightColor": [0.7,0.01,0.0],
+    "lightRadius": 0.25,
+    "lightPos1": [4.176007,0.513591,-0.104423],
+    "lightColor1": [0.7,0.01,0.0],
+    "lightRadius1": 0.2,
+    "lightPos2": [4.17109,0.237477,0.170099],
+    "lightColor2": [0.7,0.01,0.0],
+    "lightRadius2": 0.3,
+    "lightPos3": [4.17109,0.237477,-0.170099],
+    "lightColor3": [0.7,0.01,0.0],
+    "lightRadius3": 0.3,
     "devices": {
       "stick_ailerons": [-1.0,1.0],
       "stick_elevator": [-1.0,1.0],
@@ -2125,30 +2117,29 @@
       "pedals1": [-1.0,1.0],
       "pedals2": [-1.0,1.0],
       "pedals3": [-1.0,1.0],
-      "pedals4": [-1.0,1.0],
-      "pedals5": [-1.0,1.0],
       "throttle": [0.0,1.0],
       "trimmer": [-1.0,1.0],
       "weapon2": [0.0,1.0],
-      "weapon3": [0.0,1.0],
+      "weapon4": [0.0,1.0],
       "speed": [0.0,694.444],
       "mach": [0.4,2.5],
       "compass": [0.0,360.0],
-      "compass1": [0.0,360.0],
-      "vario": [-300.0,300.0],
+      "vario": [-200.0,200.0],
       "g_meter": [-5.0,10.0],
       "g_meter_min": [-5.0,10.0],
       "g_meter_max": [-5.0,10.0],
-      "altitude_hour": [0.0,30000.0],
+      "altitude_hour": [0.0,20000.0],
       "altitude_min": [0.0,1000.0],
       "altitude1_hour": [0.0,20000.0],
       "altitude2_hour": [0.0,20000.0],
+      "radio_altitude": [0.0,600.0],
       "altitude_koef": 1.0,
       "bank": [-8.0,8.0],
       "bank1": [-8.0,8.0],
       "turn": [-0.23562,0.23562],
       "aviahorizon_pitch": [-80.0,80.0],
       "aviahorizon_roll": [-180.0,180.0],
+      "aoa": [-10.0,35.0],
       "clock_hour": [0.0,12.0],
       "clock_min": [0.0,60.0],
       "clock_sec": [0.0,60.0],
@@ -2156,9 +2147,19 @@
       "oil_pressure": [0.0,120.0],
       "oil_pressure1": [0.0,120.0],
       "oil_temperature": [0.0,150.0],
-      "water_temperature": [0.0,900.0],
+      "water_temperature": [0.0,1000.0],
       "fuel_pressure": [0.0,15.0],
-      "fuel": [0.0,4000.0]
+      "fuel": [0.0,4500.0]
+    },
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [0.0,0.5,0.5,1.0],
+        "page": {
+          "type": "radar",
+          "radarScale": 1.0,
+          "radarColor": "#ff731bff"
+        }
+      }
     },
     "parts_holes_dmg": {
       "part": "fuse"

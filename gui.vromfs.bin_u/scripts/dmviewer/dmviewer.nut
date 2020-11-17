@@ -1,3 +1,4 @@
+local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { getParametersByCrewId } = require("scripts/crew/crewSkillParameters.nut")
 local { getWeaponXrayDescText } = require("scripts/weaponry/weaponryVisual.nut")
 local { KGF_TO_NEWTON,
@@ -19,7 +20,7 @@ local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
                           and modal windows.
 */
 
-local countMeasure = ::require("scripts/options/optionsMeasureUnits.nut").countMeasure
+local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
 
 const AFTERBURNER_CHAMBER = 3
 
@@ -223,7 +224,7 @@ const AFTERBURNER_CHAMBER = 3
     {
       if( ! ("blk" in preset))
         continue
-      local presetBlk = ::DataBlock(preset["blk"])
+      local presetBlk = blkFromPath(preset["blk"])
       foreach (weapon in (presetBlk % "Weapon"))  // preset can have many weapons in it or no one
         if (weapon?.blk && !weapon?.dummy)
           ::u.appendOnce(::u.copy(weapon), unitWeaponBlkList, false, ::u.isEqual)
@@ -304,7 +305,7 @@ const AFTERBURNER_CHAMBER = 3
     // Outer parts visibility toggle in Armor and Xray modes
     if (::has_feature("DmViewerExternalArmorHiding"))
     {
-      local isTankOrShip = unit != null && (unit.isTank() || unit.isShip())
+      local isTankOrShip = unit != null && (unit.isTank() || unit.isShipOrBoat())
       obj = handler.scene.findObject("dmviewer_show_external_dm")
       if (::check_obj(obj))
       {
@@ -885,16 +886,16 @@ const AFTERBURNER_CHAMBER = 3
       case "ammunition_storage_shells":
       case "ammunition_storage_charges":
       case "ammunition_storage_aux":
-        local isShip = unit.isShip()
-        if (isShip)
+        local isShipOrBoat = unit.isShipOrBoat()
+        if (isShipOrBoat)
         {
           local ammoQuantity = getAmmoQuantityByPartName(partName)
           if (ammoQuantity > 1)
             desc.append(::loc("shop/ammo") + ::loc("ui/colon") + ammoQuantity)
         }
-        local stowageInfo = getAmmoStowageInfo(null, partName, isShip)
+        local stowageInfo = getAmmoStowageInfo(null, partName, isShipOrBoat)
         if (stowageInfo.isCharges)
-          params.partLocId <- isShip ? "ship_charges_storage" : "ammo_charges"
+          params.partLocId <- isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
         if (stowageInfo.firstStageCount)
         {
           local txt = ::loc("xray/ammo/first_stage")
@@ -990,7 +991,7 @@ const AFTERBURNER_CHAMBER = 3
         else {
           local status = getWeaponStatus(weaponPartName, weaponInfoBlk)
           desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status))
-          desc.append(getMassInfo(::DataBlock(weaponBlkLink)))
+          desc.append(getMassInfo(blkFromPath(weaponBlkLink)))
           if (status?.isPrimary || status?.isSecondary)
           {
             if (weaponInfoBlk?.autoLoader)
@@ -1213,7 +1214,7 @@ const AFTERBURNER_CHAMBER = 3
   function getWeaponStatus(weaponPartName, weaponInfoBlk)
   {
     local blkPath = weaponInfoBlk?.blk ?? ""
-    local blk = ::DataBlock(blkPath)
+    local blk = blkFromPath(blkPath)
     switch (unit.esUnitType)
     {
       case ::ES_UNIT_TYPE_TANK:
@@ -1233,6 +1234,7 @@ const AFTERBURNER_CHAMBER = 3
         }
         local isSecondary = !isPrimary && !isMachinegun
         return { isPrimary = isPrimary, isSecondary = isSecondary, isMachinegun = isMachinegun }
+      case ::ES_UNIT_TYPE_BOAT:
       case ::ES_UNIT_TYPE_SHIP:
         local isPrimaryName       = ::g_string.startsWith(weaponPartName, "main")
         local isSecondaryName     = ::g_string.startsWith(weaponPartName, "auxiliary")
@@ -1274,7 +1276,7 @@ const AFTERBURNER_CHAMBER = 3
       desc.append(::loc(g.label) + " " + anglesText)
     }
 
-    if (needSingleAxis || status.isPrimary || (unit?.isShip() && status.isSecondary))
+    if (needSingleAxis || status.isPrimary || (unit?.isShipOrBoat() && status.isSecondary))
     {
       local unitModificators = unit?.modificators?[difficulty.crewSkillName]
       foreach (a in [
@@ -1296,6 +1298,7 @@ const AFTERBURNER_CHAMBER = 3
             local mainTurretValue = weapons?[0]?[a.blkName] ?? 0
             speed = mainTurretValue ? (mainTurretSpeed * value / mainTurretValue) : mainTurretSpeed
             break
+          case ::ES_UNIT_TYPE_BOAT:
           case ::ES_UNIT_TYPE_SHIP:
             local modId   = status.isPrimary    ? "new_main_caliber_turrets"
                           : status.isSecondary  ? "new_aux_caliber_turrets"
@@ -1343,7 +1346,7 @@ const AFTERBURNER_CHAMBER = 3
     local reloadTimeS = 0 // sec
     local firstStageShotFreq = 0.0
 
-    local weaponBlk = ::DataBlock(weaponInfoBlk?.blk ?? "")
+    local weaponBlk = blkOptFromPath(weaponInfoBlk?.blk)
     local isCartridge = weaponBlk?.reloadTime != null
     local cyclicShotFreqS  = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
 
@@ -1368,13 +1371,14 @@ const AFTERBURNER_CHAMBER = 3
         else
           mainGunReloadTime = unit?.modificators?[difficulty.crewSkillName]?.reloadTime ?? 0.0
 
-        local mainGunShotFreq = ::DataBlock(getUnitWeaponList()?[0]?.blk ?? "")?.shotFreq ?? 0.0
+        local mainGunShotFreq = blkOptFromPath(getUnitWeaponList()?[0]?.blk)?.shotFreq ?? 0.0
         local mainGunReloadCfgVal = mainGunShotFreq ? (1.0 / mainGunShotFreq) : 0.0
         local thisGunReloadCfgVal = cyclicShotFreqS ? (1.0 / cyclicShotFreqS) : 0.0
         local valueMult = mainGunReloadCfgVal ? (mainGunReloadTime / mainGunReloadCfgVal) : 1.0
         reloadTimeS = cyclicShotFreqS ? (thisGunReloadCfgVal * valueMult) : 0.0
         break
 
+      case ::ES_UNIT_TYPE_BOAT:
       case ::ES_UNIT_TYPE_SHIP:
         if (isCartridge)
           if (crew)
@@ -1570,6 +1574,7 @@ const AFTERBURNER_CHAMBER = 3
             : "weapon/secondary"
         }
         break
+      case ::ES_UNIT_TYPE_BOAT:
       case ::ES_UNIT_TYPE_SHIP:
         if (::g_string.startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
           params.partLocId <- ::stringReplace(partId, "main", "auxiliary")

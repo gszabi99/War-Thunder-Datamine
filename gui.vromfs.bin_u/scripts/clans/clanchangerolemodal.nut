@@ -87,7 +87,7 @@ class ::gui_handlers.clanChangeRoleModal extends ::gui_handlers.BaseGuiHandlerWT
       option.tooltip = (role.current? (::loc("clan/currentRole")+"\n\n") : "") + g_lb_data_type.ROLE.getPrimaryTooltipText(role.id)
     }
     roleListObj.setValue(curIdx)
-    roleListObj.select()
+    ::move_mouse_on_child(roleListObj, curIdx)
   }
 
   function sortRoles(role1, role2)

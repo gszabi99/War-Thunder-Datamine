@@ -1,0 +1,34 @@
+@const blurBgrColor: #66080A0D;
+@const blurSlotbarForegroundColor: #b2141a21;
+@const fullScreenBgrColor: #BF090F16;
+
+
+blur {
+  position: root;
+  size: sw, sh;
+  background-blur: yes;
+  input-transparent: yes;
+}
+
+blur_foreground{
+  position: absolute;
+  size: pw, ph;
+  background-color: @blurBgrColor;
+  input-transparent: yes;
+}
+
+SlotbarBackground blur_foreground {
+  background-color: @blurSlotbarForegroundColor;
+}
+
+[bgrStyle=fullScreenWnd] > blur_foreground {
+  background-color: @fullScreenBgrColor;
+}
+
+[bgrStyle=fullScreenWnd] > blur {
+  background-saturate: 0.7;
+}
+
+[bgrStyle=transparent] > blur_foreground {
+  background-color: @transparent;
+}

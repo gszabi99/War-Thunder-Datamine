@@ -1,8 +1,8 @@
 local emptySceneWithDarg = require("scripts/wndLib/emptySceneWithDarg.nut")
 local baseVersionsList = require("scripts/changelog/versions.nut")
 local { mkVersionFromString, versionToInt } = require("std/version.nut")
-local { targetPlatform, is_pc } = require("scripts/clientState/platform.nut")
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local { targetPlatform, isPlatformPC } = require("scripts/clientState/platform.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 
 const SAVE_ID = "changelog/lastSeenVersionInfoNum"
 const maxPatchnotesNum = 10
@@ -22,7 +22,7 @@ local function updateVersions() {
     .slice(0, maxPatchnotesNum)
     .filter(function(object){
       return object?.platform == null || object.platform.indexof(targetPlatform)!=null
-        || (is_pc && object.platform.indexof("pc")!=null)
+        || (isPlatformPC && object.platform.indexof("pc")!=null)
     })
     .map(function(v) {
       local version = mkVersionFromString(v.version)

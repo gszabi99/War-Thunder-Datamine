@@ -1,12 +1,14 @@
 @const progressHeight: 8@sf/@pf;
 @const progressHeightSlot: 5@sf/@pf;
 @const progressHeightSmall: 3@sf/@pf;
+@const progressHeightBig: 16@sf/@pf \ 1;
 @const referenceProgressHeight:3@dp;
 @const referenceProgressOffset:0@dp;
 
 @const skillProgressBgIncSize: 0;
 @const skillProgressHeightMul: 0.5;
-@const skillProgressWidthMul: 2; 
+@const skillProgressWidthMul: 2; @const referenceMarkerWidth: 9/22*0.02@sf;
+
 skillProgress {
   behaviour:progress;
   re-type:progress;
@@ -73,6 +75,10 @@ expProgress[needMax=yes] {
 expProgress[small=yes] {
   height:1@progressHeightSmall;
 }
+expProgress[big=yes] {
+  height:1@progressHeightBig;
+}
+
 expProgress[type=old], crewSpecProgressBar[type=old] {
   background-color:@transparent;
 }
@@ -207,12 +213,12 @@ referenceProgress{
 
 referenceMarker{
   height: 0.02@sf;
-  width: 9/22*h;
+  width: 1@referenceMarkerWidth;
   top: 0.5ph - 0.5h;
   background-repeat:expand;
   background-color:@white;
   background-image: #ui/gameuiskin#slider_thumb.svg;
-  background-svg-size: 9/22*0.02@sf, 0.02@sf;
+  background-svg-size: 1@referenceMarkerWidth, 0.02@sf;
   position: absolute;
 }
 

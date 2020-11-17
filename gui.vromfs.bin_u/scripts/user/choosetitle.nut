@@ -1,6 +1,6 @@
-local daguiFonts = ::require("scripts/viewUtils/daguiFonts.nut")
-local seenTitles = ::require("scripts/seen/seenList.nut").get(SEEN.TITLES)
-local bhvUnseen = ::require("scripts/seen/bhvUnseen.nut")
+local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
+local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
+local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local stdMath = require("std/math.nut")
 
 class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
@@ -79,7 +79,7 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"),
       { margin = [0, ::to_pixels("@popupOffset")] })
     if (titlesList.len())
-      scene.findObject("titles_list").select()
+      ::move_mouse_on_child_by_value(scene.findObject("titles_list"))
   }
 
   function onTitleSelect(obj)

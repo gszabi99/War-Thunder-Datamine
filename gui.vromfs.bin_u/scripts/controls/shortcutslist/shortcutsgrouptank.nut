@@ -7,7 +7,7 @@ return [
   {
     id = "ID_TANK_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
-    unitType = unitTypes.TANK
+    unitTypes = [ unitTypes.TANK ]
     showFunc = @() ::has_feature("Tanks")
     needShowInHelp = true
   }
@@ -160,6 +160,12 @@ return [
     id = "ID_SELECT_GM_GUN_MACHINEGUN"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
+  }
+  {
+    id = "ID_IRCM_SWITCH_TANK"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+    needShowInHelp = true
   }
   {
     id = "ID_SMOKE_SCREEN"
@@ -505,7 +511,6 @@ return [
   {
     id = "gm_sight_distance"
     type = CONTROL_TYPE.AXIS
-    def_relative = true
     isAbsOnlyWhenRealAxis = true
     checkGroup = ctrlGroups.TANK
     checkAssign = false

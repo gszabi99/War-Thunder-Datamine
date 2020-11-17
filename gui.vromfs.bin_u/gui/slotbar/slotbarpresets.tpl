@@ -8,15 +8,11 @@ gcButtonsHolder {
   behavior:t='ActivateSelect'
   navigatorShortcuts:t='yes'
   on_select:t='onPresetChange'
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
-  on_wrap_left:t='onBottomGCPanelLeft'
-  on_wrap_right:t='onBottomGCPanelRight'
 
   <<#presets>>
   activateTab {
     position:t='relative'
-    pos:t='-1@dp, 0'
+    margin-right:t='1@dp'
     enable:t='no'
     display:t='hide'
     css-hier-invalidate:t='yes'
@@ -28,6 +24,7 @@ gcButtonsHolder {
       max-width:t='@maxPresetNameTextWidth'
       pare-text:t='yes'
     }
+    blockSeparator {}
   }
   <</presets>>
 

@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 
 local template = {
   //id - add in generation

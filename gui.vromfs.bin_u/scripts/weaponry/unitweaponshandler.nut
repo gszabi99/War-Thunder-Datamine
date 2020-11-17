@@ -12,7 +12,6 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   wndType = handlerType.CUSTOM
 
   unit = null
-  parentHandlerWeak = null
   canShowPrice = false
   canChangeWeaponry = true
   canChangeBulletsAmount = true
@@ -27,13 +26,9 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   showItemParams = null
   isForcedAvailable = false
-  isPrimaryFocus = false
 
   function initScreen()
   {
-    if (parentHandlerWeak)
-      parentHandlerWeak = parentHandlerWeak.weakref() //we are miss weakref on assigning from params table
-
     bulletsManager = ::UnitBulletsManager(unit)
     updateShowItemParams()
     setUnit(unit, true)
@@ -76,7 +71,7 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local unitType = ::get_es_unit_type(unit)
     if (::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER]))
       columnsConfig = getColumnsAircraft()
-    else if (unitType == ::ES_UNIT_TYPE_TANK || unitType == ::ES_UNIT_TYPE_SHIP)
+    else if (unitType == ::ES_UNIT_TYPE_TANK || unitType == ::ES_UNIT_TYPE_SHIP || unitType == ::ES_UNIT_TYPE_BOAT)
       columnsConfig = getColumnsTank()
 
     if (!columnsConfig)
@@ -577,31 +572,6 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!bulletsManager.changeBulletsCount(bulGroup, obj.getValue()))
       updateBulletCountSlider(bulGroup, groupIndex) //move back current slider when value not changed
-  }
-
-  function wrapNextSelect(obj = null, dir = 0)
-  {
-    if (::handlersManager.isHandlerValid(parentHandlerWeak))
-      parentHandlerWeak.wrapNextSelect(obj, dir)
-  }
-
-  function onWrapLeft(obj)
-  {
-    if (::handlersManager.isHandlerValid(parentHandlerWeak)
-        && ::u.isFunction(parentHandlerWeak.onWrapLeft))
-      parentHandlerWeak.onWrapLeft(obj)
-  }
-
-  function onWrapRight(obj)
-  {
-    if (::handlersManager.isHandlerValid(parentHandlerWeak)
-        && ::u.isFunction(parentHandlerWeak.onWrapRight))
-      parentHandlerWeak.onWrapRight(obj)
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("weaponry_list")
   }
 
   function onChangeBullets(diff = 1) //gamepad shortcut - search selected

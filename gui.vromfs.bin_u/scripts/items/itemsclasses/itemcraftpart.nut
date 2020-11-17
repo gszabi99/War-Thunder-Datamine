@@ -1,4 +1,4 @@
-local ItemExternal = ::require("scripts/items/itemsClasses/itemExternal.nut")
+local ItemExternal = require("scripts/items/itemsClasses/itemExternal.nut")
 
 class ::items_classes.CraftPart extends ItemExternal {
   static iType = itemType.CRAFT_PART

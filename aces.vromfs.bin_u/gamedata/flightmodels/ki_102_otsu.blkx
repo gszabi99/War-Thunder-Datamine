@@ -69,6 +69,13 @@
     "fightAiBehaviour": "fighter"
   },
   {
+    "flexWing": {
+      "wingStrainCoeff": 0.02,
+      "wingOverloadCoeff": 1.0,
+      "wingStrainLimitDown": 1.0
+    }
+  },
+  {
     "DamageParts": {
       "armor10": {
         "cannon1_dm": {
@@ -118,11 +125,11 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 49.5
+          "hp": 60.5
         },
         "engine2_dm": {
           "genericDamageMult": 1.6,
-          "hp": 49.5
+          "hp": 60.5
         }
       },
       "c_dural3": {
@@ -185,6 +192,14 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 78.2
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 80.5
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 80.5
         }
       },
       "dural": {
@@ -314,14 +329,6 @@
         },
         "tank7_dm": {
           "hp": 70.5
-        }
-      },
-      "wood": {
-        "wing_l_dm": {
-          "hp": 142.1
-        },
-        "wing_r_dm": {
-          "hp": 142.1
         }
       }
     }
@@ -1345,8 +1352,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1354,8 +1361,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1363,8 +1370,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1372,8 +1379,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },

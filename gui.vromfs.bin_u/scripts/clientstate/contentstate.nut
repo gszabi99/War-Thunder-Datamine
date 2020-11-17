@@ -1,4 +1,4 @@
-local platformModule = ::require("scripts/clientState/platform.nut")
+local platformModule = require("scripts/clientState/platform.nut")
 
 local PS4_CHUNK_FULL_CLIENT_DOWNLOADED = 19
 local PS4_CHUNK_HISTORICAL_CAMPAIGN = 11

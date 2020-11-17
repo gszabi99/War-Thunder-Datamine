@@ -1,3 +1,4 @@
+local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 //------------------------------------------------------------------------------
 local mSettings = {}
 local mShared = {}
@@ -12,21 +13,31 @@ local mCfgCurrent = {}
 local mScriptValid = true
 local mValidationError = ""
 local mMaintainDone = false
-local mRowHeightScale = 1.0
+const mRowHeightScale = 1.0
+const mMaxSliderSteps = 50
 //-------------------------------------------------------------------------------
+local mQualityPresets = ::DataBlock()
+mQualityPresets.load("config/graphicsPresets.blk")
+
 /*
-  compMode=true - option is enabled in GUI in Compatibility Mode. Otherwise from graphicsPresets it will be disabled.
-  fullMode=false - option is disabled in GUI in not Compatibility Mode. Otherwise from graphicsPresets it will be enabled.
+compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
+           Defaults to FALSE for qualityPresetsOptions, and TRUE for standaloneOptions.
+fullMode - When TRUE, Оption is enabled in GUI when Compatibility Mode is OFF.
+           Defaults to TRUE for both qualityPresetsOptions and standaloneOptions.
 */
-local mQualityPresets = ::DataBlock("config/graphicsPresets.blk")
 local compModeGraphicsOptions = {
-  texQuality        = { compMode=true }
-  anisotropy        = { compMode=true }
-  dirtSubDiv        = { compMode=true }
-  tireTracksQuality = { compMode=true }
-  msaa              = { compMode=true, fullMode=false }
-  lastClipSize      = { compMode=true }
-  compatibilityMode = { compMode=true }
+  qualityPresetsOptions = {
+    texQuality        = { compMode = true }
+    anisotropy        = { compMode = true }
+    dirtSubDiv        = { compMode = true }
+    tireTracksQuality = { compMode = true }
+    msaa              = { compMode = true, fullMode = false }
+    lastClipSize      = { compMode = true }
+    compatibilityMode = { compMode = true }
+  }
+  standaloneOptions = {
+    dlss              = { compMode = false }
+  }
 }
 //------------------------------------------------------------------------------
 local mUiStruct = [
@@ -55,6 +66,7 @@ local mUiStruct = [
   {
     container = "sysopt_bottom_left"
     items = [
+      "dlss"
       "anisotropy"
       "msaa"
       "antialiasing"
@@ -310,6 +322,41 @@ local function localize(optionId, valueId) {
   }
   return ::loc(format("options/%s_%s", optionId, valueId), valueId)
 }
+
+local function parseResolution(resolution) {
+  local sides = resolution == "auto"
+    ? [ 0, 0 ] // To be sorted first.
+    : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
+  return {
+    resolution = resolution
+    w = sides?[0] ?? 0
+    h = sides?[1] ?? 0
+  }
+}
+
+local function getAvailableDlssModes()
+{
+  local values = ["off"]
+  local selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
+  if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
+    values.append("performance")
+  if (::is_dlss_quality_available_at_resolution(1, selectedResolution.w, selectedResolution.h))
+    values.append("balanced")
+  if (::is_dlss_quality_available_at_resolution(2, selectedResolution.w, selectedResolution.h))
+    values.append("quality")
+
+  return values;
+}
+
+local function getListOption(id, desc, cb, needCreateList = true) {
+  local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
+  local customItems = ("items" in desc) ? desc.items : null
+  local items = []
+  foreach (index, valueId in desc.values)
+    items.append(customItems ? customItems[index] : localize(id, valueId))
+  return ::create_option_combobox(desc.widgetId, items, raw, cb, needCreateList)
+}
+
 //------------------------------------------------------------------------------
 mShared = {
   setQualityPreset = function(preset) {
@@ -342,14 +389,19 @@ mShared = {
     if (getGuiValue("compatibilityMode")) {
       setGuiValue("backgroundScale",2)
       foreach (k, v in mQualityPresets) {
-        local enabled = compModeGraphicsOptions?[k].compMode ?? false
+        local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
         mShared.enableByCompMode(k, enabled)
       }
-    } else {
+      foreach (id, v in compModeGraphicsOptions.standaloneOptions)
+        mShared.enableByCompMode(id, v?.compMode ?? true)
+    }
+    else {
       foreach (k, v in mQualityPresets) {
-        local enabled = compModeGraphicsOptions?[k].fullMode ?? true
+        local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].fullMode ?? true
         mShared.enableByCompMode(k, enabled)
       }
+      foreach (id, v in compModeGraphicsOptions.standaloneOptions)
+        mShared.enableByCompMode(id, v?.fullMode ?? true)
       setGuiValue("compatibilityMode", false)
     }
   }
@@ -392,6 +444,27 @@ mShared = {
   presetCheck = function() {
     local preset = pickQualityPreset()
     setGuiValue("graphicsQuality", preset)
+  }
+
+  resolutionClick = function() {
+    local id = "dlss"
+    local desc = getOptionDesc(id)
+    if (!desc)
+      return
+
+    desc.init(null, desc) //list of dlss values depends only on resolution
+    setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
+    local obj = getGuiWidget(id)
+    if (!::check_obj(obj))
+      return
+
+    local markup = getListOption(id, desc, "onSystemOptionChanged", false)
+    mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
+  }
+
+  dlssClick = function() {
+    foreach (id in [ "antialiasing", "ssaa" ])
+      enableGuiOption(id, getOptionDesc(id)?.enabled() ?? true)
   }
 
   cloudsQualityClick = function() {
@@ -473,17 +546,6 @@ mShared = {
     if (curResolution != null && list.indexof(curResolution) == null)
       list.append(curResolution)
 
-    local function parseResolution(resolution) {
-      local sides = resolution == "auto"
-        ? [ 0, 0 ] // To be sorted first.
-        : resolution.split("x").apply(@(v) ::to_integer_safe(::strip(v), 0, false))
-      return {
-        resolution = resolution
-        w = sides?[0] ?? 0
-        h = sides?[1] ?? 0
-      }
-    }
-
     local data = list.map(parseResolution).filter(@(r)
       (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
 
@@ -493,7 +555,7 @@ mShared = {
     // Debug: Fixing the truncated list when working via Remote Desktop.
     if (isListTruncated && ::is_dev_version && ::is_platform_pc) {
       local debugResolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
-        "1920 x 1080", "2520 x 1080", "3840 x 1080", "3840 x 2160" ]
+        "1920 x 1080", "2520 x 1080", "3840 x 1080", "2560 x 1440", "3840 x 2160" ]
       local maxW = data?[data.len() - 1].w ?? 0
       local maxH = data?[data.len() - 1].h ?? 0
       local bonus = debugResolutions.map(parseResolution).filter(@(r)
@@ -507,7 +569,7 @@ mShared = {
 
   getCurResolution = function(blk, desc) {
     local modes = mShared.getVideoModes(null)
-    local value = ::get_blk_value_by_path(blk, desc.blk, "")
+    local value = get_blk_value_by_path(blk, desc.blk, "")
 
     local isListed = modes.indexof(value) != null
     if (isListed) // Supported system.
@@ -567,6 +629,7 @@ mSettings = {
       desc.def <- curResolution
       desc.restart <- !::is_platform_windows
     }
+    onChanged = "resolutionClick"
   }
   mode = { widgetType="list" def="fullscreen" blk="video/mode" restart=true
     init = function(blk, desc) {
@@ -579,19 +642,19 @@ mSettings = {
       desc.restart <- !::is_platform_windows
     }
     setToBlk = function(blk, desc, val) {
-      ::set_blk_value_by_path(blk, desc.blk, val)
-      ::set_blk_value_by_path(blk, "video/windowed", val == "windowed")
+      set_blk_value_by_path(blk, desc.blk, val)
+      set_blk_value_by_path(blk, "video/windowed", val == "windowed")
     }
   }
   vsync = { widgetType="list" def="vsync_off" blk="video/vsync" restart=true
     getFromBlk = function(blk, desc) {
-      local vsync = ::get_blk_value_by_path(blk, "video/vsync", false)
-      local adaptive = ::is_gpu_nvidia() && ::get_blk_value_by_path(blk, "video/adaptive_vsync", true)
+      local vsync = get_blk_value_by_path(blk, "video/vsync", false)
+      local adaptive = ::is_gpu_nvidia() && get_blk_value_by_path(blk, "video/adaptive_vsync", true)
       return (vsync && adaptive)? "vsync_adaptive" : (vsync)? "vsync_on" : "vsync_off"
     }
     setToBlk = function(blk, desc, val) {
-      ::set_blk_value_by_path(blk, "video/vsync", val!="vsync_off")
-      ::set_blk_value_by_path(blk, "video/adaptive_vsync", val=="vsync_adaptive")
+      set_blk_value_by_path(blk, "video/vsync", val!="vsync_off")
+      set_blk_value_by_path(blk, "video/adaptive_vsync", val=="vsync_adaptive")
     }
     init = function(blk, desc) {
       desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
@@ -601,41 +664,57 @@ mSettings = {
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
     onChanged = "graphicsQualityClick"
   }
+  dlss = { widgetType="list" def="off" blk="video/dlssQuality" restart=false
+    init = function(blk, desc) {
+      desc.values <- getAvailableDlssModes()
+    }
+    onChanged = "dlssClick"
+    getFromBlk = function(blk, desc) {
+      local quality = get_blk_value_by_path(blk, desc.blk, -1)
+      return (quality == 0) ? "performance" : (quality == 1) ? "balanced" : (quality == 2) ? "quality" : "off"
+    }
+    setToBlk = function(blk, desc, val) {
+      local quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
+      set_blk_value_by_path(blk, desc.blk, quality)
+    }
+  }
   anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
     values = [ "off", "2X", "4X", "8X", "16X" ]
     getFromBlk = function(blk, desc) {
-      local anis = ::get_blk_value_by_path(blk, desc.blk, 2)
+      local anis = get_blk_value_by_path(blk, desc.blk, 2)
       return (anis==16)? "16X" : (anis==8)? "8X" : (anis==4)? "4X" : (anis==2)? "2X" : "off"
     }
     setToBlk = function(blk, desc, val) {
       local anis = (val=="16X")? 16 : (val=="8X")? 8 : (val=="4X")? 4 : (val=="2X")? 2 : 1
-      ::set_blk_value_by_path(blk, desc.blk, anis)
+      set_blk_value_by_path(blk, desc.blk, anis)
     }
   }
   msaa = { widgetType="list" def="off" blk="directx/maxaa" restart=true
     values = [ "off", "on"]
     getFromBlk = function(blk, desc) {
-      local msaa = ::get_blk_value_by_path(blk, desc.blk, 0)
+      local msaa = get_blk_value_by_path(blk, desc.blk, 0)
       return (msaa>0)? "on" :"off"
     }
     setToBlk = function(blk, desc, val) {
       local msaa = (val=="on")? 2 : 0
-      ::set_blk_value_by_path(blk, desc.blk, msaa)
+      set_blk_value_by_path(blk, desc.blk, msaa)
     }
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
     values = ::is_opengl_driver() ? [ "none", "fxaa", "high_fxaa"] : [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
-      local val = ::get_blk_value_by_path(blk, desc.blk, 1.0)
+      local val = get_blk_value_by_path(blk, desc.blk, 1.0)
       return (val == 4.0) ? "4X" : "none"
     }
     setToBlk = function(blk, desc, val) {
       local res = (val == "4X") ? 4.0 : 1.0
-      ::set_blk_value_by_path(blk, desc.blk, res)
+      set_blk_value_by_path(blk, desc.blk, res)
     }
   }
   texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
@@ -667,7 +746,7 @@ mSettings = {
   backgroundScale = { widgetType="slider" def=2 min=0 max=2 blk="graphics/backgroundScale" restart=false
     blkValues = [ 0.7, 0.85, 1.0 ]
     getFromBlk = function(blk, desc) {
-      local val = ::get_blk_value_by_path(blk, desc.blk, 1.0)
+      local val = get_blk_value_by_path(blk, desc.blk, 1.0)
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         val = 2.0
       return ::find_nearest(val, desc.blkValues)
@@ -676,43 +755,43 @@ mSettings = {
       local res = ::getTblValue(val, desc.blkValues, desc.def)
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         res = 2.0
-      ::set_blk_value_by_path(blk, desc.blk, res)
+      set_blk_value_by_path(blk, desc.blk, res)
     }
   }
   landquality = { widgetType="slider" def=0 min=0 max=4 blk="graphics/landquality" restart=false
     onChanged = "landqualityClick"
   }
   clipmapScale = { widgetType="slider" def=100 min=30 max=150 blk="graphics/clipmapScale" restart=false
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, val/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
   }
   rendinstDistMul = { widgetType="slider" def=100 min=50 max=220 blk="graphics/rendinstDistMul" restart=false
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, val/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
   }
   skyQuality = { widgetType="slider" def=1 min=0 max=2 blk="graphics/skyQuality" restart=false
-    getFromBlk = function(blk, desc) { return (2 - ::get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, 2-val) }
+    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2-val) }
   }
   cloudsQuality = { widgetType="slider" def=1 min=0 max=2 blk="graphics/cloudsQuality" restart=false
     onChanged = "cloudsQualityClick"
-    getFromBlk = function(blk, desc) { return (2 - ::get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, 2-val) }
+    getFromBlk = function(blk, desc) { return (2 - get_blk_value_by_path(blk, desc.blk, 2-desc.def)).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, 2-val) }
   }
   panoramaResolution = { widgetType="slider" def=8 min=4 max=16 blk="graphics/panoramaResolution" restart=false
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, desc.def*256) / 256).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, val*256) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def*256) / 256).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val*256) }
   }
   fxDensityMul = { widgetType="slider" def=100 min=20 max=100 blk="graphics/fxDensityMul" restart=false
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, val/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
   }
   physicsQuality = { widgetType="slider" def=3 min=0 max=5 blk="graphics/physicsQuality" restart=false
   }
   grassRadiusMul = { widgetType="slider" def=80 min=1 max=180 blk="graphics/grassRadiusMul" restart=false
     onChanged = "grassClick"
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, val/100.0) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0) * 100).tointeger() }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val/100.0) }
   }
   grass = { widgetType="checkbox" def=true blk="render/grass" restart=false
   }
@@ -723,12 +802,12 @@ mSettings = {
   tireTracksQuality = { widgetType="list" def="none" blk="graphics/tireTracksQuality" restart=false
     values = [ "none", "medium", "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
-      local val = ::get_blk_value_by_path(blk, desc.blk, 0)
+      local val = get_blk_value_by_path(blk, desc.blk, 0)
       return ::getTblValue(val, desc.values, desc.def)
     }
     setToBlk = function(blk, desc, val) {
       local res = desc.values.indexof(val) ?? 0
-      ::set_blk_value_by_path(blk, desc.blk, res)
+      set_blk_value_by_path(blk, desc.blk, res)
     }
   }
   waterQuality = { widgetType="list" def="high" blk="graphics/waterQuality" restart=false
@@ -740,12 +819,12 @@ mSettings = {
   dirtSubDiv = { widgetType="list" def="high" blk="graphics/dirtSubDiv" restart=false
     values = [ "high", "ultrahigh" ]
     getFromBlk = function(blk, desc) {
-      local val = ::get_blk_value_by_path(blk, desc.blk, 1)
+      local val = get_blk_value_by_path(blk, desc.blk, 1)
       return (val==2)? "ultrahigh" : "high"
     }
     setToBlk = function(blk, desc, val) {
       local res = (val=="ultrahigh")? 2 : 1
-      ::set_blk_value_by_path(blk, desc.blk, res)
+      set_blk_value_by_path(blk, desc.blk, res)
     }
   }
   ssaoQuality = { widgetType="slider" def=0 min=0 max=2 blk="render/ssaoQuality" restart=false
@@ -765,8 +844,8 @@ mSettings = {
   softFx = { widgetType="checkbox" def=true blk="render/softFx" restart=false
   }
   lastClipSize = { widgetType="checkbox" def=false blk="graphics/lastClipSize" restart=false
-    getFromBlk = function(blk, desc) { return (::get_blk_value_by_path(blk, desc.blk, 4096) == 8192) }
-    setToBlk = function(blk, desc, val) { ::set_blk_value_by_path(blk, desc.blk, (val ? 8192 : 4096)) }
+    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, 4096) == 8192) }
+    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, (val ? 8192 : 4096)) }
   }
   lenseFlares = { widgetType="checkbox" def=false blk="graphics/lenseFlares" restart=false
   }
@@ -896,12 +975,13 @@ local function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
   mBlk = ::DataBlock()
-  mBlk.load(::get_config_name())
+  if (!mBlk.tryLoad(::get_config_name()))
+    ::dagor.debug(::get_config_name()+" not read")
 
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(mBlk, desc)
-    local value = ("getFromBlk" in desc) ? desc.getFromBlk(mBlk, desc) : ::get_blk_value_by_path(mBlk, desc.blk, desc.def)
+    local value = ("getFromBlk" in desc) ? desc.getFromBlk(mBlk, desc) : get_blk_value_by_path(mBlk, desc.blk, desc.def)
     mCfgInitial[id] <- value
     mCfgCurrent[id] <- validateGuiValue(id, value)
   }
@@ -917,7 +997,8 @@ local function configRead() {
 
 local function init() {
   local blk = ::DataBlock()
-  blk.load(::get_config_name())
+  if (!blk.tryLoad(::get_config_name()))
+    ::dagor.debug(::get_config_name()+" not read")
 
   foreach (id, desc in mSettings) {
     if ("init" in desc)
@@ -947,7 +1028,7 @@ local function configWrite() {
     if ("setToBlk" in desc)
       desc.setToBlk(mBlk, desc, value)
     else
-      ::set_blk_value_by_path(mBlk, desc.blk, value)
+      set_blk_value_by_path(mBlk, desc.blk, value)
   }
   mBlk.saveToTextFile(::get_config_name())
   ::dagor.debug("[sysopt] Config saved.")
@@ -1031,7 +1112,7 @@ local function applyRestartEngine(reloadScene = false) {
   if (!reloadScene)
     return
 
-  ::handlersManager.markfullReloadOnSwitchScene()
+  ::handlersManager.doDelayed(::handlersManager.markfullReloadOnSwitchScene)
   ::call_darg("updateExtWatched", {
       resolution = mCfgCurrent.resolution
       screenMode = mCfgCurrent.mode
@@ -1215,15 +1296,11 @@ local function fillGuiOptions(containerObj, handler) {
           option = ::create_option_switchbox(config)
           break
         case "slider":
+          desc.step <- desc?.step ?? ::max(1, ::round((desc.max - desc.min) / mMaxSliderSteps).tointeger())
           option = ::create_option_slider(desc.widgetId, mCfgCurrent[id], cb, true, "slider", desc)
           break
         case "list":
-          local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-          local customItems = ("items" in desc) ? desc.items : null
-          local items = []
-          foreach (index, valueId in desc.values)
-            items.append(customItems ? customItems[index] : localize(id, valueId))
-          option = ::create_option_combobox(desc.widgetId, items, raw, cb, true)
+          option = getListOption(id, desc, cb)
           break
         case "tabs":
           local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -1238,7 +1315,7 @@ local function fillGuiOptions(containerObj, handler) {
               tooltip = ::loc(format("guiHints/%s_%s", id, valueId)) + warn
             })
           }
-        option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
+          option = ::create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
           break
         case "editbox":
           local raw = mCfgCurrent[id].tostring()

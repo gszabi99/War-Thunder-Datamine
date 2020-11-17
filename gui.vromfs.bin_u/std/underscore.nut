@@ -79,13 +79,18 @@ local function partition(list, predicate){
   if entry doesnt have property it skipped in return value
  */
 local function pluck(list, propertyName){
-//  return list.map(@(v) v?[propertyName]).filter(@(v) v!=null) - incorrect when property has null value and slow
-  local res = []
+  return list.map(function(v){
+    if (propertyName not in v)
+      throw null
+    return v[propertyName]
+  })
+/*  local res = []
   foreach (v in list) {
     if (propertyName in v)
       res.append(v.propertyName)
   }
   return res
+*/
 }
 
 /**
@@ -122,21 +127,26 @@ local function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams =
 local function isEqual(val1, val2, customIsEqual={}){
   if (val1 == val2)
     return true
-  if (::type(val1) != ::type(val2))
+  local valType = ::type(val1)
+  if (valType != ::type(val2))
     return false
-  if (::type(val1)=="array" || ::type(val1)=="table") {
+
+  if (valType in customIsEqual)
+    return customIsEqual[valType](val1, val2)
+
+  if (valType == "array" || valType=="table") {
     if (val1.len() != val2.len())
       return false
     foreach(key, val in val1) {
       if (!(key in val2))
         return false
-      if (!isEqual(val, val2[key]))
+      if (!isEqual(val, val2[key], customIsEqual))
         return false
     }
     return true
   }
 
-  if (::type(val1)=="instance") {
+  if (valType == "instance") {
     foreach(classRef, func in customIsEqual)
       if (val1 instanceof classRef && val2 instanceof classRef)
         return func(val1, val2)
@@ -145,12 +155,75 @@ local function isEqual(val1, val2, customIsEqual={}){
 
   return false
 }
+/*
+foreach (k, v in range(-1, -5, -1))
+  print($"{v}  ")
+print("\n")
+// -1  -2  -3  -4
+*/
+local function range(m, n=null, step=1) {
+  local start = n==null ? 0 : m
+  local end = n==null ? m : n
+  for (local i=start; (end>start) ? i<end : i>end; i+=step)
+    yield i
+}
+
+local function enumerate(obj) {
+  foreach (k, v in obj)
+    yield [k, v]
+}
+
+/*
+print(breakable_reduce(array(10).map(@(_,i) i), function(a,b) {
+  if (b<5) return a+b
+  throw null
+}, 1000))
+*/
+/*
+**reversed_enumerate**
+
+the most common usecase is to delete some indecies in array
+Example:
+local arr = ["a", "b", "c", "d"]
+foreach (pair in reversed_enumerate(arr)) { // unfortunatel we have no destructuring in foreach and functions. And no tuples only
+  local [idx, val] = pair
+  print($"[{idx}]: {val}\n")
+}
+// [3]: d
+// [2]: c
+// [1]: b
+// [0]: a
+*/
+local function reversed_enumerate(obj) {
+  assert(::type(obj)=="array", "reversed supported only for arrays")
+  local l = obj.len()
+  for (local i=l-1; i>=0; --i)
+    yield [i, obj[i]]
+}
+
+//not recursive isEqual, for simple lists or tables
+local function isEqualSimple(list1, list2, compareFunc=null) {
+  compareFunc = compareFunc ?? @(a,b) a!=b
+  if (list1 == list2)
+    return true
+  if (::type(list1) != ::type(list2) || list1.len() != list2.len())
+    return false
+  foreach (val, key in list1) {
+    if (key not in list2 || compareFunc(val, list2[key]))
+      return false
+  }
+  return true
+}
 
 return {
-  invert = invert
-  tablesCombine = tablesCombine
-  isEqual = isEqual
-  funcCheckArgsNum = funcCheckArgsNum
-  partition = partition
-  pluck = pluck
+  invert
+  tablesCombine
+  isEqual
+  isEqualSimple
+  funcCheckArgsNum
+  partition
+  pluck
+  range
+  enumerate
+  reversed_enumerate
 }

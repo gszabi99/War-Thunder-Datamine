@@ -105,17 +105,13 @@
         "genericDamageMult": 0.3,
         "hp": 43.6
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 50.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 50.5
+        "hp": 29.5
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 50.5
+        "hp": 29.5
       },
       "fin_dm": {
         "hp": 50.5
@@ -229,6 +225,9 @@
         "hp": 60.8
       },
       "tank3_dm": {
+        "hp": 41.6
+      },
+      "tank4_dm": {
         "hp": 63.1
       }
     }
@@ -367,38 +366,6 @@
       "part": {
         "name": "cover3_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 70.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [
@@ -1137,8 +1104,8 @@
       "part": {
         "name": "spar1_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1146,8 +1113,8 @@
       "part": {
         "name": "spar1_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1155,8 +1122,8 @@
       "part": {
         "name": "spar2_l_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1164,8 +1131,8 @@
       "part": {
         "name": "spar2_r_dm",
         "onKill": {
-          "nothing": 0.0,
-          "cut": 1.0
+          "nothing": 2.0,
+          "cut": 4.0
         }
       }
     },
@@ -1401,6 +1368,60 @@
       "part": [
         {
           "name": "tank3_dm"
+        },
+        {
+          "onHit": {
+            "fire": 0.0001,
+            "leak": 0.3
+          }
+        },
+        {
+          "onHit": {
+            "damage": 3.0,
+            "fire": 0.001,
+            "leak": 0.5
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "fire": 0.005,
+            "leak": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 70.0,
+            "fire": 0.01,
+            "leak": 0.9
+          }
+        },
+        {
+          "onKill": {
+            "fire": 0.01,
+            "leak": 9.99
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 70.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "tank4_dm"
         },
         {
           "onHit": {
@@ -2065,6 +2086,11 @@
       }
     ]
   },
+  "flexWing": {
+    "wingStrainCoeff": 0.05,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
   "commonWeapons": [
     {
       "Weapon": {
@@ -2134,14 +2160,80 @@
       "preset": {
         "name": "meteor_fmk8_4x1000lb_gp_bombs",
         "blk": "gameData/FlightModels/weaponPresets/meteor_fmk8_4x1000lb_gp_bombs.blk",
-        "reqModification": "gloster_lbc"
+        "reqModification": "gloster_lbc",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "bombs_middle"
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
       }
     },
     {
       "preset": {
         "name": "meteor_fmk8_4x1000lb_mc_bombs",
         "blk": "gameData/FlightModels/weaponPresets/meteor_fmk8_4x1000lb_mc_bombs.blk",
-        "reqModification": "gloster_lbc"
+        "reqModification": "gloster_lbc",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk"
+            },
+            {
+              "amountPerTier": 1.0
+            },
+            {
+              "iconType": "bombs_large"
+            },
+            {
+              "tier": {
+                "idx": 4
+              }
+            },
+            {
+              "tier": {
+                "idx": 5
+              }
+            },
+            {
+              "tier": {
+                "idx": 7
+              }
+            },
+            {
+              "tier": {
+                "idx": 8
+              }
+            }
+          ]
+        }
       }
     },
     {
@@ -2159,21 +2251,21 @@
                 "amountPerTier": 4.0
               },
               {
+                "iconType": "rockets_he_small_group"
+              },
+              {
                 "tier": {
-                  "idx": 3,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 3
                 }
               },
               {
                 "tier": {
-                  "idx": 4,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 4
                 }
               },
               {
                 "tier": {
-                  "idx": 5,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 5
                 }
               }
             ]
@@ -2187,21 +2279,21 @@
                 "amountPerTier": 4.0
               },
               {
+                "iconType": "rockets_he_small_group"
+              },
+              {
                 "tier": {
-                  "idx": 7,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 7
                 }
               },
               {
                 "tier": {
-                  "idx": 8,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 8
                 }
               },
               {
                 "tier": {
-                  "idx": 9,
-                  "iconType": "rockets_he_small_group"
+                  "idx": 9
                 }
               }
             ]
@@ -2238,6 +2330,79 @@
         },
         {
           "reqModification": "gloster_lbc"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "rockets_he_small_group"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "rockets_he_small_group"
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -2254,6 +2419,79 @@
         },
         {
           "reqModification": "gloster_lbc"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_mc_mk1.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "rockets_he_small_group"
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_4a.blk"
+                },
+                {
+                  "amountPerTier": 4.0
+                },
+                {
+                  "iconType": "rockets_he_small_group"
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
         }
       ]
     }

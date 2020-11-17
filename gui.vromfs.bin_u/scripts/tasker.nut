@@ -1,4 +1,4 @@
-local subscriptions = require_optional("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require_optional("sqStdLibs/helpers/subscriptions.nut")
 
 if ("g_script_reloader" in ::getroottable())
   ::g_script_reloader.loadIfExist("scripts/framework/msgBox.nut")

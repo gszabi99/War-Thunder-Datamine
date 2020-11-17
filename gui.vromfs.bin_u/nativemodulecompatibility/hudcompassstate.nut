@@ -1,3 +1,0 @@
-return{
-  getHasCompassObservable = @() ::Watched(true)
-}

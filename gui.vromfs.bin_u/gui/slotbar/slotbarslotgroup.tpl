@@ -2,6 +2,11 @@
 id:t='<<fullGroupBlockId>>'
 group:t='yes'
 
+<<#position>>
+position:t='<<position>>'
+pos:t='<<posX>>w, <<posY>>h'
+<</position>>
+
 <<#isGroupInactive>>
 inactive:t='yes'
 <</isGroupInactive>>
@@ -14,13 +19,25 @@ shopItem {
   timer_interval_msec:t='1000'
   group:t='yes'
   primaryUnitId:t='<<primaryUnitId>>'
-  shopStat:t='<<groupStatus>>'
 
-  <<#isBroken>>
-  isBroken:t='yes'
-  <</isBroken>>
+  <<#showInService>>
+  shopInServiceImg {
+    <<#isMounted>>
+    mounted:t='yes'
+    <</isMounted>>
+    shopInServiceImgBg {}
+    icon {}
+  }
+  <</showInService>>
 
-  bgPlate {}
+  slotPlate {
+    middleBg {
+      pattern {}
+      groupFrame {}
+    }
+    topLine {}
+    bottomShade {}
+  }
 
   itemWinkBlock {
     buttonWink {
@@ -30,14 +47,19 @@ shopItem {
 
   hoverHighlight {}
 
-  pattern {
-    type:t='bright_texture'
-  }
+  shopStat:t='<<groupStatus>>'
+  unitRarity:t='<<unitRarity>>'
 
-  focus_border {}
+  <<#isBroken>>
+  isBroken:t='yes'
+  <</isBroken>>
+
+  <<^isBroken>>
+  isBroken:t='no'
+  <</isBroken>>
 
   <<#isPkgDev>>
-  shopAirImg { foreground-image:t='#ui/gameuiskin#unit_under_construction' }
+  isPkgDev:t='yes'
   <</isPkgDev>>
 
   shopAirImg {
@@ -63,7 +85,6 @@ shopItem {
   discount_notification {
     id:t='<<discountId>>'
     type:t='box_down'
-    place:t='unitGroup'
     text:t=''
     showDiscount:t='yes'
   }
@@ -117,21 +138,7 @@ shopItem {
     }
   }
 
-  groupUnfoldMark {
-    pattern {
-      type:t='bright_texture'
-    }
-    img {}
-  }
-
-  <<#showInService>>
-  shopInServiceImg {
-    <<#isMounted>>
-    mounted:t='yes'
-    <</isMounted>>
-    icon {}
-  }
-  <</showInService>>
+  groupUnfoldMark {}
 
   <<@itemButtons>>
 
@@ -149,8 +156,10 @@ shopItem {
     display:t='hide'
   }
 
-  tooltip-float:t='horisontal'
+  tooltip-float:t='horizontal'
   title:t='$tooltipObj'
+
+  focus_border {}
 
   <<@bottomButton>>
 

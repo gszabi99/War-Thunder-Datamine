@@ -26,6 +26,7 @@
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
+local { processUnitTypeArray } = require("scripts/unit/unitClassType.nut")
 
 local missionModesList = [
   "missionsWon",
@@ -191,6 +192,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
   formatParamsDefault = {
     rangeStr = "%s"
     itemStr = "%s"
+    valueStr = "%.1f"
     maxOnlyStr = "%s"
     minOnlyStr = "%s"
     bothStr = "%s"+ ::loc("ui/mdash") + "%s"
@@ -204,24 +206,25 @@ local function getOverrideCondType(condBlk, unlockMode) {
       return ""
 
     formatParams = formatParamsDefault.__merge(formatParams)
-    local a = val.x.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.x) : ::format("%.1f", val.x) : ""
-    local b = val.y.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.y) : ::format("%.1f", val.y) : ""
+    local { rangeStr, itemStr, valueStr, maxOnlyStr, minOnlyStr, bothStr } = formatParams
+    local a = val.x.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.x) : ::format(valueStr, val.x) : ""
+    local b = val.y.tointeger() > 0 ? romanNumerals ? ::get_roman_numeral(val.y) : ::format(valueStr, val.y) : ""
     if (a == "" && b == "")
       return ""
 
     local range = ""
     if (a != "" && b != "")
       range = a == b
-        ? ::format(formatParams.itemStr, a)
-        : ::format(formatParams.bothStr,
-          ::format(formatParams.itemStr, a),
-          ::format(formatParams.itemStr, b))
+        ? ::format(itemStr, a)
+        : ::format(bothStr,
+          ::format(itemStr, a),
+          ::format(itemStr, b))
     else if (a == "")
-      range = ::format(formatParams.maxOnlyStr, ::format(formatParams.itemStr, b))
+      range = ::format(maxOnlyStr, ::format(itemStr, b))
     else
-      range = ::format(formatParams.minOnlyStr, ::format(formatParams.itemStr, a))
+      range = ::format(minOnlyStr, ::format(itemStr, a))
 
-    return ::format(formatParams.rangeStr, range)
+    return ::format(rangeStr, range)
   }
 
   function getRangeString(val1, val2, formatStr = "%s")
@@ -382,19 +385,17 @@ UnlockConditions.loadMainProgressCondition <- function loadMainProgressCondition
     res.unlockType <- blk?.unlockType ?? ""
   else if (modeType == "unlockOpenCount" || modeType == "unlockStageCount")
   {
-    local unlock = ::g_unlocks.getUnlockById(blk?.unlock)
-    if (unlock == null)
-    {
-      res.values = []
-      local debugUnlockData = blk?.unlock ?? ::toString(blk) // warning disable: -declared-never-used
-      ::dagor.assertf(false, "ERROR: Unlock does not exist")
-    }
-    else if (!res.hasCustomUnlockableList)
-    {
-      res.values = ("mode" in unlock) ? unlock.mode % "unlock" : []
-      if( ! res.values.len())
+    res.values = res.values ?? []
+    if (!res.hasCustomUnlockableList)
+      foreach (unlockId in (blk % "unlock")) {
+        local unlock = ::g_unlocks.getUnlockById(unlockId)
+        if (unlock == null) {
+          local debugUnlockData = blk?.unlock ?? ::toString(blk) // warning disable: -declared-never-used
+          ::dagor.assertf(false, "ERROR: Unlock does not exist")
+          continue
+        }
         res.values.append(unlock.id)
-    }
+      }
   }
   else if (modeType == "landings")
     res.carrierOnly <- blk?.carrierOnly ?? false
@@ -425,8 +426,18 @@ UnlockConditions.loadParamsConditions <- function loadParamsConditions(blk)
   if ((blk?.country ?? "") != "")
     res.append(_createCondition("country", blk.country))
 
-  if (blk?.unitClass != null)
-    res.append(_createCondition("unitClass", blk.unitClass))
+  if (blk?.unitClass != null) {
+    local cond = blk % "unitClass"
+    if (blk?.type == "char_crew_level_float" || blk?.type == "char_crew_level_count_float") {
+      local shipCondIdx = cond.indexof("ship")
+      if (shipCondIdx != null) {
+        cond.remove(shipCondIdx)
+        cond.append("ship_and_boat")
+      }
+    }
+
+    res.append(_createCondition("unitClass", cond))
+  }
 
   if (blk?.type == "maxUnitsRankOnStartMission") //2 params conditions instead of 1 base
   {
@@ -470,16 +481,13 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   }
   else if (t == "gameModeInfoString")
   {
-    res.values = [blk?.value]
     res.name <- blk?.name
-    if ("locParamName" in blk)
-    {
+    res.values = (blk % "value")
+
+    if (blk?.locParamName)
       res.locParamName <- blk.locParamName
-    }
-    if ("locParamValue" in blk)
-    {
-      res.locParamValue <- blk.locParamValue
-    }
+    if (blk?.locValuePrefix)
+      res.locValuePrefix <- blk.locValuePrefix
   }
   else if (t == "eventMode")
   {
@@ -729,9 +737,8 @@ UnlockConditions.getConditionsText <- function getConditionsText(conditions, cur
         continue
 
       foreach (condCustomData in customData)
-      {
-        addTextToCondTextList(condTextsList, group, getTblValue("descText", condCustomData), getTblValue("groupText", condCustomData))
-      }
+        foreach (descText in condCustomData.descText)
+          addTextToCondTextList(condTextsList, group, descText, condCustomData.groupText)
     }
   }
 
@@ -930,6 +937,9 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
 
   if (typeof values != "array")
     values = [values]
+
+  values = processUnitTypeArray(values)
+
   foreach (v in values)
   {
     if (cType == "playerUnit" || cType=="targetUnit" || cType == "crewsUnit" || cType=="unitExists" ||
@@ -977,7 +987,7 @@ UnlockConditions._addCustomConditionsTextData <- function _addCustomConditionsTe
 {
   local cType = condition.type
   local group = ""
-  local desc = ""
+  local desc = []
 
   local res = {
     groupText = ""
@@ -992,27 +1002,13 @@ UnlockConditions._addCustomConditionsTextData <- function _addCustomConditionsTe
   if (typeof values != "array")
     values = [values]
 
-  foreach (v in values)
-  {
-    if (cType == "gameModeInfoString")
-    {
-      if ("locParamName" in condition)
-      {
-        group = ::loc(condition.locParamName)
-      }
-      else
-      {
-        group = ::loc("conditions/gameModeInfoString/" + condition.name)
-      }
+  foreach (v in values) {
+    if (cType == "gameModeInfoString") {
+      group = condition?.locParamName ? ::loc(condition.locParamName)
+                                      : ::loc($"conditions/gameModeInfoString/{condition.name}")
 
-      if ("locParamValue" in condition)
-      {
-        desc += ::loc(condition.locParamValue)
-      }
-      else
-      {
-        desc += ::loc("conditions/gameModeInfoString/" + v)
-      }
+      local locValuePrefix = condition?.locValuePrefix ?? "conditions/gameModeInfoString/"
+      desc.append(::loc($"{locValuePrefix}{v}"))
     }
   }
 

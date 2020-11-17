@@ -1,4 +1,4 @@
-local workshop = ::require("scripts/items/workshop/workshop.nut")
+local workshop = require("scripts/items/workshop/workshop.nut")
 
 local ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 

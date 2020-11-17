@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_player_state <- {
   types = []
   cache = {
@@ -11,7 +11,7 @@ local enums = ::require("sqStdlibs/helpers/enums.nut")
     state = -1
     constantColor = "white"
     getIconColor = @() ::get_main_gui_scene().getConstantValue(constantColor) || ""
-    getIcon = @(playerInfo) "#ui/gameuiskin#" + (isSpectator(playerInfo)? spectatorIcon : stateText)
+    getIcon = @(playerInfo) $"#ui/gameuiskin#{isSpectator(playerInfo) ? spectatorIcon : stateText}.svg"
 
     isSpectator = @(playerInfo) ::getTblValue("spectator", playerInfo, false)
     getText = function(playerInfo = {})

@@ -6,7 +6,7 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
 
   function setValue(obj, value)
   {
-    if (chooseItem(obj, value, false))
+    if (chooseItemImpl(obj, value, false, false))
       setSelectedValue(obj, value)
   }
 
@@ -24,7 +24,7 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
   {
   }
 
-  function chooseItem(obj, idx, needSound = true)
+  function chooseItemImpl(obj, idx, needSound = true, needActivateChoosenItem = true)
   {
     local idxObj = getChildObj(obj, idx)
     if (!idxObj)
@@ -47,17 +47,23 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
       obj.getScene().playSound("choose")
     if (needNotify)
       obj.sendNotify("select")
+    else if (needActivateChoosenItem)
+      obj.sendNotify("activate")
     return true
   }
+
+  chooseItem = @(obj, idx, needSound = true) chooseItemImpl(obj, idx, needSound)
 
   function onShortcutSelect(obj, is_down)
   {
     if (is_down)
       return ::RETCODE_NOTHING
 
-    local selected = getSelectedValue(obj)
+    local selected = isShortcutsByHover(obj) ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
     if (selected >= 0)
       chooseItem(obj, selected)
     return ::RETCODE_HALT
   }
+
+  isOnlyHover = @(obj) false
 }

@@ -5,6 +5,9 @@ local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { tryOpenTutorialRewardHandler } = require("scripts/tutorials/tutorialRewardHandler.nut")
+local { getCrewUnlockTime } = require("scripts/crew/crewInfo.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 
 class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 {
@@ -29,7 +32,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
     if (::g_login.isAuthorized())
       base.initScreen()
 
-    ::check_tutorial_reward()
+    tryOpenTutorialRewardHandler()
 
     forceUpdateSelUnitInfo()
 
@@ -46,7 +49,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
       ::SessionLobby.leaveRoom()
     }
     ::stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
-    restoreFocus()
   }
 
   function onEventOnlineInfoUpdate(params)
@@ -95,7 +97,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
   }
 
   function onProfileChange() {}  //changed country
-  function activateSelectedBlock(obj) {}
 
   function onLoadModels()
   {
@@ -151,11 +152,7 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
     visibleUnitInfoName = unitName
 
     local unit = ::getAircraftByName(unitName)
-    local lockObj = scene.findObject("crew-notready-topmenu")
-    lockObj.tooltip = ::format(::loc("msgbox/no_available_aircrafts"),
-      time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
-    ::setCrewUnlockTime(lockObj, unit)
-
+    updateUnitCrewLocked(unit)
     updateUnitRentInfo(unit)
     updateLowQualityModelWarning()
   }
@@ -177,6 +174,45 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
         obj.setValue(::format(messageTemplate, timeStr))
       }
       return !isVisible
+    })
+  }
+
+  function updateUnitCrewLocked(unit) {
+    local lockObj = scene.findObject("crew-notready-topmenu")
+    lockObj.tooltip = ::format(::loc("msgbox/no_available_aircrafts"),
+      time.secondsToString(::get_warpoints_blk()?.lockTimeMaxLimitSec ?? 0))
+
+    local wasShown = false
+    SecondsUpdater(lockObj, function(obj, params) {
+      local crew = unit != null ? ::getCrewByAir(unit) : null
+      local unlockTime = crew != null ? getCrewUnlockTime(crew) : 0
+      obj.show(unlockTime > 0)
+      if (unlockTime <= 0) {
+        if (wasShown) {
+          ::g_crews_list.invalidate()
+          obj.getScene().performDelayed(this, function() { ::reinitAllSlotbars() })
+        }
+        return true
+      }
+
+      wasShown = true
+      local timeStr = time.secondsToString(unlockTime)
+      obj.findObject("time").setValue(timeStr)
+
+      local showButtons = ::has_feature("EarlyExitCrewUnlock")
+      local crewCost = ::shop_get_unlock_crew_cost(crew.id)
+      local crewCostGold = ::shop_get_unlock_crew_cost_gold(crew.id)
+      if (showButtons)
+      {
+        placePriceTextToButton(obj, "btn_unlock_crew", ::loc("mainmenu/btn_crew_unlock"), crewCost, 0)
+        placePriceTextToButton(obj, "btn_unlock_crew_gold", ::loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
+      }
+      ::showBtnTable(obj, {
+        btn_unlock_crew = showButtons && crewCost > 0
+        btn_unlock_crew_gold = showButtons && crewCostGold > 0
+        crew_unlock_buttons = showButtons && (crewCost > 0 || crewCostGold > 0)
+      })
+      return false
     })
   }
 }

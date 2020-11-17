@@ -213,9 +213,9 @@ local function checkFuncArgumentsNum(func, numMinMandatoryParams){
   return false
 }
 
-local function memoize(func, hashfunc=null){
-  local cacheDefault = {}
-  local cacheForNull = {}
+local function memoize(func, hashfunc=null, cacheExternal=null, nullCache=null){
+  local cacheDefault = cacheExternal ?? {}
+  local cacheForNull = nullCache ?? {}
   ::assert(checkFuncArgumentsNum(func, 1))
   hashfunc = hashfunc ?? function(...) {
     return vargv[0]
@@ -282,6 +282,47 @@ local function after(count, func){
   }
 }
 
+//generic breakable reduce. By breakable reduce most of other main functional can be implemented
+// like (reduce, each, findindex, findvalue, filter, map).Each and reduce can be faster
+// it can be done other way, with special type
+
+local BreakValue = class{
+  result = null
+  constructor(val){
+    result = val
+  }
+}
+
+local MemoNotInited = class{}
+local function breakable_reduce(obj, func, memo=MemoNotInited()) {
+  local firstInited = !(memo instanceof MemoNotInited)
+  local argsnum = func.getfuncinfos().parameters.len()-1
+  local nfunc
+  if (argsnum==2)
+    nfunc = @(prevval, curval, idx, obj_ref) func(prevval, curval)
+  else if (argsnum==3)
+    nfunc = @(prevval, curval, idx, obj_ref) func(prevval, curval, idx)
+  else if (argsnum==4)
+    nfunc = func
+  else
+    assert(false, "function in breakable reduce should have arguments func(prevval, curval, [idx, [obj_ref]])")
+  foreach (idx, curval in obj) {
+    if (!firstInited){
+      memo = curval
+      firstInited = true
+      continue
+    }
+    local res = nfunc(memo, curval, idx, obj)
+    if (res instanceof BreakValue)
+      return res.result
+    if (res == BreakValue)
+      return memo
+    else
+      memo = res
+  }
+  return !firstInited ? null : memo
+}
+
 return {
   partial = partial
   pipe = pipe
@@ -294,4 +335,6 @@ return {
   once = once
   before = before
   after = after
+  reduce = breakable_reduce
+  BreakValue = BreakValue
 }

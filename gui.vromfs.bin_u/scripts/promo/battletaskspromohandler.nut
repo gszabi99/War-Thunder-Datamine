@@ -1,3 +1,10 @@
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
+local { seasonLvlWatchObj, easyDailyTaskProgressWatchObj,
+  mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
+} = require("scripts/battlePass/watchObjInfoConfig.nut")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
 
@@ -105,13 +112,67 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
       view.refreshTimer <- true
     }
 
+    if (!(view.needShowProgressBar ?? false) && view.needShowProgressValue)
+    {
+      local progressValueText = ::loc("ui/parentheses/space",
+        {text = "".concat(view.progressValue, "/", view.progressMaxValue)})
+      view.collapsedText = $"{view.collapsedText}{progressValueText}"
+    }
+    local maxTextWidth = ::to_pixels("".concat("1@arrowButtonWidth-1@mIco-2@blockInterval",
+      view.taskStatus != null ? "-1@modStatusHeight" : "",
+      view.newIconWidget != null ? "-1@arrowButtonHeight" : ""))
+    view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
+    local iconSize = getStringWidthPx(view.collapsedIcon, "fontNormal", guiScene) + ::to_pixels("1@blockInterval")
+    if (getStringWidthPx(view.collapsedText, "fontNormal", guiScene) > maxTextWidth - iconSize)
+      view.shortInfoBlockWidth <- ::to_pixels("1@arrowButtonWidth-1@blockInterval")
+    view.hasMarginCollapsedIcon <- view.collapsedText != "" && view.taskDifficultyImage != ""
+    view.hasCollapsedText <- view.collapsedText != ""
+    local taskRankValue = view?.taskRankValue ?? ""
+    if(taskRankValue != "")
+      view.title = $"{view.title} {taskRankValue}"
+    if (getStringWidthPx(view.title, "fontNormal", guiScene) > maxTextWidth)
+      view.headerWidth <- maxTextWidth
     view.performActionId <- ::g_promo.getActionParamsKey(id)
     view.taskId <- ::getTblValue("id", reqTask)
     view.action <- ::g_promo.PERFORM_ACTON_NAME
-    view.collapsedIcon <- ::g_promo.getCollapsedIcon(view, id)
+
 
     view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
+    view.isShowNameInHeader <- true
+    view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
+    if (::has_feature("BattlePass")) {
+      scene.isBattlePass = "yes"
+      view.headerAction <- "showBattlePassWnd"
+      view.seasonLvlValue <- stashBhvValueConfig([{
+        watch = seasonLvlWatchObj.watch
+        updateFunc = seasonLvlWatchObj.updateFunc
+      }])
+      view.isShowNameInHeader = false
+      local isEmptyTask = view.taskId == null
+      if (isEmptyTask) {
+        view.title = ""
+        view.action <- "showBattlePassWnd"
+        view.otherTasksNumText = "#season/information"
+        view.isEmptyTask <- isEmptyTask
+        view.showAsUsualPromoButton = false
+        view.easyDailyTaskProgressValue <- stashBhvValueConfig([{
+          watch = easyDailyTaskProgressWatchObj.watch
+          updateFunc = easyDailyTaskProgressWatchObj.updateFunc
+        }])
+        view.mediumDailyTaskProgressValue <- stashBhvValueConfig([{
+          watch = mediumDailyTaskProgressWatchObj.watch
+          updateFunc = mediumDailyTaskProgressWatchObj.updateFunc
+        }])
+        if (::g_battle_tasks.canActivateHardTasks()) {
+          view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig([{
+            watch = leftSpecialTasksBoughtCountWatchObj.watch
+            updateFunc = leftSpecialTasksBoughtCountWatchObj.updateFunc
+          }])
+          view.newItemsAvailable <- leftSpecialTasksBoughtCountWatchObj.watch.value > 0
+        }
+      }
+    }
 
     local data = ::handyman.renderCached("gui/promo/promoBattleTasks",
       { items = [view], collapsedAction = ::g_promo.PERFORM_ACTON_NAME})
@@ -185,4 +246,11 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
   onEventCurrentGameModeIdChanged             = @(p) updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
+
+  function showBattlePassWnd() {
+    if (!::has_feature("BattlePass"))
+      return
+
+    openBattlePassWnd()
+  }
 }

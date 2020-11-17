@@ -1,4 +1,5 @@
 ::g_script_reloader.loadOnce("scripts/controls/controlsPresets.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
@@ -8,7 +9,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
 
 
 
-class ControlsPreset {
+::ControlsPreset <- class {
   basePresetPaths = null
   hotkeys         = null
   axes            = null
@@ -281,7 +282,7 @@ class ControlsPreset {
     }
 
     presetChain.append(presetPath)
-    local blk = ::DataBlock(presetPath)
+    local blk = blkFromPath(presetPath)
     loadFromBlk(blk, presetChain)
     presetChain.pop()
   }
@@ -1029,7 +1030,7 @@ class ControlsPreset {
       "elevator"
       "throttle"
       "gm_zoom"
-      "ship_sight_distance"
+      "ship_zoom"
       "submarine_zoom"
       "helicopter_collective"
     ]

@@ -11,23 +11,30 @@ itemDiv {
   enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
 
   <<#today>>
-    today:t='yes'
+  today:t='yes'
   <</today>>
 
   <<#bigPicture>>
-    trophyRewardSize:t='yes'
+  trophyRewardSize:t='yes'
   <</bigPicture>>
 
   <<#ticketBuyWindow>>
-    ticketBuyWindow:t='yes'
+  ticketBuyWindow:t='yes'
   <</ticketBuyWindow>>
 
   <<#isItemLocked>>
-    item_locked:t='yes'
+  item_locked:t='yes'
   <</isItemLocked>>
   <<#openedPicture>>
-    previousDay:t='yes'
+  previousDay:t='yes'
   <</openedPicture>>
+  <<#itemIndex>>
+  holderId:t='<<itemIndex>>'
+  <</itemIndex>>
+  <<#onHover>>
+  on_hover:t='<<onHover>>'
+  on_unhover:t='<<onHover>>'
+  <</onHover>>
 
   <<#active>>
     wink { pattern { type:t='bright_texture'; position:t='absolute' } }
@@ -47,9 +54,6 @@ itemDiv {
   <<#onClick>>
   behavior:t='button'
   on_click:t='<<onClick>>'
-  <<#itemIndex>>
-  holderId:t='<<itemIndex>>'
-  <</itemIndex>>
 
   pushedBorder {
     size:t='pw-4@dp, ph-4@dp'
@@ -89,6 +93,14 @@ itemDiv {
     }
   }
   <</onClick>>
+
+  <<#interactive>>
+  interactive:t='yes'
+  <</interactive>>
+
+  <<#skipNavigation>>
+  skip-navigation:t='yes'
+  <</skipNavigation>>
 
   tdiv {
     size:t='pw, ph'
@@ -265,7 +277,9 @@ itemDiv {
   }
   <</arrowNext>>
 
+  <<#hasFocusBorder>>
   focus_border {}
+  <</hasFocusBorder>>
 
   <<#hasButton>>
   <<#modActionName>>
@@ -273,6 +287,7 @@ itemDiv {
   showButtonAlways:t='yes'
   <</needShowActionButtonAlways>>
 
+  hasButton:t='yes'
   Button_text {
     id:t='actionBtn'
     pos:t='50%pw-50%w, ph-h/2' //empty zone in button texture
@@ -290,7 +305,7 @@ itemDiv {
     <</isInactive>>
     ButtonImg {
       btnName:t='A'
-      showOnSelect:t='focus'
+      showOnSelect:t='hover'
     }
   }
   <</modActionName>>
@@ -307,6 +322,7 @@ itemDiv {
     display:t='hide'
   }
   title:t='$tooltipObj';
+  tooltip-float:t='<<^tooltipFloat>>horizontal<</tooltipFloat>><<tooltipFloat>>'
   <</tooltipId>>
 }
 <</items>>

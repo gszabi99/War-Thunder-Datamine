@@ -77,6 +77,9 @@
         "cannon4_dm": {
           "hp": 15.0
         },
+        "cannon5_dm": {
+          "hp": 15.0
+        },
         "cannon6_dm": {
           "hp": 15.0
         },
@@ -90,9 +93,6 @@
           "hp": 15.0
         },
         "gun1_dm": {
-          "hp": 15.0
-        },
-        "radar_dm": {
           "hp": 15.0
         }
       },
@@ -157,11 +157,11 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 49.5
+          "hp": 34.6
         },
         "engine2_dm": {
           "genericDamageMult": 1.6,
-          "hp": 49.5
+          "hp": 34.6
         }
       },
       "c_dural10": {
@@ -184,6 +184,14 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.35,
           "hp": 75.5
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 91.5
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 91.5
         }
       },
       "c_dural15": {
@@ -259,6 +267,11 @@
         },
         "cover9_dm": {
           "hp": 19.5
+        }
+      },
+      "dural5": {
+        "radar_dm": {
+          "hp": 35.0
         }
       },
       "dural70": {
@@ -358,14 +371,6 @@
         },
         "tank4_dm": {
           "hp": 59.3
-        }
-      },
-      "wood": {
-        "wing_l_dm": {
-          "hp": 112.4
-        },
-        "wing_r_dm": {
-          "hp": 112.4
         }
       }
     }
@@ -593,6 +598,11 @@
       },
       {
         "part": {
+          "name": "cannon5_dm"
+        }
+      },
+      {
+        "part": {
           "name": "cannon6_dm"
         }
       },
@@ -777,9 +787,10 @@
           },
           {
             "onHit": {
-              "damage": 2.7,
+              "damage": 2.0,
               "fire": 0.01,
               "leak_oil": 0.5,
+              "leak_water": 0.45,
               "cut": 0.0
             }
           },
@@ -787,7 +798,8 @@
             "onHit": {
               "damage": 30.0,
               "fire": 0.1,
-              "leak_oil": 1.0,
+              "leak_oil": 0.8,
+              "leak_water": 1.0,
               "cut": 0.0
             }
           },
@@ -795,14 +807,16 @@
             "onKill": {
               "fire": 30.0,
               "leak_oil": 10.0,
+              "leak_water": 10.0,
               "cut": 0.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "fire": 44.0,
+              "fire": 45.0,
               "leak_oil": 10.0,
+              "leak_water": 10.0,
               "cut": 0.0
             }
           }
@@ -820,9 +834,10 @@
           },
           {
             "onHit": {
-              "damage": 2.7,
+              "damage": 2.0,
               "fire": 0.01,
               "leak_oil": 0.5,
+              "leak_water": 0.45,
               "cut": 0.0
             }
           },
@@ -830,7 +845,8 @@
             "onHit": {
               "damage": 30.0,
               "fire": 0.1,
-              "leak_oil": 1.0,
+              "leak_oil": 0.8,
+              "leak_water": 1.0,
               "cut": 0.0
             }
           },
@@ -838,14 +854,16 @@
             "onKill": {
               "fire": 30.0,
               "leak_oil": 10.0,
+              "leak_water": 10.0,
               "cut": 0.0
             }
           },
           {
             "onKill": {
               "damage": 30.0,
-              "fire": 44.0,
+              "fire": 45.0,
               "leak_oil": 10.0,
+              "leak_water": 10.0,
               "cut": 0.0
             }
           }
@@ -1281,6 +1299,11 @@
       },
       {
         "part": {
+          "name": "gunner3_dm"
+        }
+      },
+      {
+        "part": {
           "name": "oil1_dm",
           "onHit": {
             "leak_oil": 0.95
@@ -1321,11 +1344,6 @@
           "onKill": {
             "leak_oil": 1.0
           }
-        }
-      },
-      {
-        "part": {
-          "name": "pilot1_dm"
         }
       },
       {
@@ -1456,8 +1474,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1465,8 +1483,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1474,8 +1492,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1483,8 +1501,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },

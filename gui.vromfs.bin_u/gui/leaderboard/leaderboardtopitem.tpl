@@ -11,11 +11,6 @@ activeText {
 tdiv {
   id:t='top_checkboxes'
   pos:t='0, 50%ph-50%h'; position:t='relative'
-  behaviour:t='wrapNavigator'
-  navigatorShortcuts:t='active'
-  childsActivate:t='yes'
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
   <<#filter>>
   CheckBox {
     id:t='<<id>>'

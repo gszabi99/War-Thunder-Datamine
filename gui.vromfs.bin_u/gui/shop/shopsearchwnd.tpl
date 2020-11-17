@@ -1,5 +1,6 @@
 root {
-  background-color:t = '@modalShadeColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     id:t='wnd_frame'
@@ -43,7 +44,7 @@ root {
       tdiv {
         size:t='pw, fh'
         overflow-y:t='auto'
-        scrollbarShortcuts:t='left'
+        scrollbarShortcuts:t='yes'
 
         tdiv {
           id:t='contentBlock'
@@ -124,22 +125,17 @@ root {
                 <</units>>
 
                 <<#unitPlates>>
-                table{
+                slotbarPresetsTable {
                   id:t='btn_<<id>>'
-                  class:t='slotbarPresetsTable'
                   total-input-transparent:t='yes'
+                  flow:t='horizontal'
 
-                  behavior:t='columnNavigator'
-                  cur_col:t='0'
-                  cur_row:t='0'
-                  fixed_row:t='0'
+                  behavior:t='posNavigator'
+                  navigatorShortcuts:t='active'
+                  on_select:t='onUnitClick'
+                  move-only-hover:t='yes'
 
-                  on_click:t='onUnitClick'
-                  on_dbl_click:t = 'onUnitClick'
-
-                  tr {
-                    <<@plateMarkup>>
-                  }
+                  <<@plateMarkup>>
                 }
                 <</unitPlates>>
               }

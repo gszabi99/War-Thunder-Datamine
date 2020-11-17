@@ -26,8 +26,6 @@ tdiv {
       baseRow:t = 'yes';
       selfFocusBorder:t="yes"
 
-      cur_col:t='0'; cur_row:t='0'; num_rows:t='-1';
-
       include "gui/options/verticalOptions"
     }
 

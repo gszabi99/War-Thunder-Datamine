@@ -4,9 +4,10 @@
     "id": "slotb-aircraft-choose-root",
     "size": "sw, sh",
     "position": "root",
-    "background-color": "@shadeBackgroundColor",
     "btnName": "B",
-    "on_click": "goBack"
+    "on_click": "goBack",
+    "blur": [],
+    "blur_foreground": []
   },
   "tdiv": {
     "id": "tablePlace",
@@ -28,23 +29,18 @@
         "pos": "0.5*pw - 0.5*w, 2@lines_pad",
         "size": "@shop_width, ph"
       },
-      "table": {
+      "slotbarTable": {
         "id": "airs_table",
         "left": "50%pw-50%w",
         "position": "relative",
         "margin": "0,1",
-        "class": "slotbarTable",
         "slotDiscountsPos": "rightInside",
-        "behavior": "columnNavigator",
+        "flow": "vertical",
+        "behavior": "posNavigator",
         "navigatorShortcuts": "active",
-        "cur_col": "0",
-        "cur_row": "0",
-        "fixed_row": "0",
         "on_click": "onDoneSlotChoose",
         "on_select": "onSlotSelect",
-        "on_dbl_click": "onDoneSlotChoose",
-        "on_wrap_left": "onSlotChooseLeft",
-        "on_wrap_right": "onSlotChooseRight"
+        "on_dbl_click": "onDoneSlotChoose"
       }
     },
     "frame": [
@@ -65,15 +61,8 @@
         }
       },
       {
-        "optionsList": {
+        "div": {
           "id": "choose_options_nest",
-          "class": "optionsTable",
-          "baseRow": "yes",
-          "behavior": "OptionsNavigator",
-          "selectOnAttach": "yes",
-          "cur_col": "0",
-          "cur_row": "0",
-          "num_rows": "-1",
           "flow": "vertical",
           "margin-bottom": "0.5@slotBtnIco"
         }
@@ -99,23 +88,6 @@
         }
       },
       {
-        "text": {
-          "id": "filter_options_hint",
-          "position": "relative",
-          "pos": "pw-w, 0",
-          "margin": "0, 0.5@slotBtnIco",
-          "padding-left": "@slotBtnIco",
-          "smallFont": "yes",
-          "text": "#filter_option/change_filter_options",
-          "btnName": "X",
-          "ButtonImg": {
-            "size": "@slotBtnIco, @slotBtnIco",
-            "position": "absolute",
-            "pos": "0, 50%ph-50%h"
-          }
-        }
-      },
-      {
         "tdiv": {
           "id": "legend_nest",
           "margin": "0, 0.5@slotBtnIco",
@@ -136,10 +108,5 @@
         }
       }
     ]
-  },
-  "dummy": {
-    "behaviour": "accesskey",
-    "on_click": "onToggleChooseOptions",
-    "accesskey": "J:X | Tab"
   }
 }

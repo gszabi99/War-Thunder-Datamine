@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 25.0
-    },
     "player": {
       "army": 1,
       "wing": "player"
@@ -16,15 +12,15 @@
     "mission": {
       "level": "levels/honolulu.bin",
       "type": "campaign",
+      "environment": "Morning",
+      "weather": "cloudy",
+      "windDirection": [1.0,0.0,0.0],
       "restoreType": "tactical control",
       "optionalTakeOff": false,
-      "environment": "Morning",
-      "weather": "good",
-      "windDirection": [1.0,0.0,0.0],
-      "windSpeed": [10.0,10.0],
-      "windDirectionDeg": [140.0,140.0],
       "forceSkiesInitialRandomSeed": true,
       "skiesInitialRandomSeed": 2,
+      "windSpeed": [10.0,10.0],
+      "windDirectionDeg": [140.0,140.0],
       "stars": {
         "latitude": 21.3,
         "longitude": 157.8,
@@ -34,43 +30,23 @@
         "localTime": 8.3
       },
       "customWeather": {
-        "scatteringEffect": 0.0,
-        "cloud_shadow_intensity": 0.7,
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
         "max_wind_strength": 6.0,
+        "wind_strength": 5.0,
+        "waterWindStrength": 5.0,
         "sky": {
-          "mie_height": 1.5,
-          "mieG": 0.5,
-          "betaMScale": 0.5,
-          "clouds_overcast": 0.1
-        },
-        "clouds_gen": {
-          "humidity": 0.07,
-          "persistence": 0.2,
-          "asymmetry": 0.2
-        },
-        "clouds_position": {
-          "start_altitude": 1.5,
-          "thickness": 4.5,
-          "light_extinction": 1.2,
-          "amb_extinction_mul": 1.0
-        },
-        "clouds_render": {
-          "silver_lining": 0.5,
-          "sun_light": 0.7,
-          "ambient": 0.5,
-          "silver_lining_eccentricity": 0.6
+          "mie_height": 1.5
         },
         "strata_clouds": {
           "amount": 0.4,
           "altitude": 9.0
-        },
-        "rain": {
-          "rainFromInvisibleClouds": false,
-          "probability": 0.0
         }
       }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 25.0
     },
     "briefing": [
       {
@@ -92,7 +68,8 @@
           "slide": {
             "map": false,
             "minTime": 4,
-            "picture": "honolulu/hon_jpn_second_wave_part1"
+            "picture": "honolulu/hon_jpn_second_wave_part1",
+            "showAirMap": false
           }
         }
       },
@@ -103,7 +80,8 @@
           "slide": {
             "map": false,
             "minTime": 4,
-            "picture": "honolulu/hon_jpn_second_wave_part2"
+            "picture": "honolulu/hon_jpn_second_wave_part2",
+            "showAirMap": false
           }
         }
       },
@@ -119,7 +97,8 @@
             "slide": {
               "map": false,
               "minTime": 4,
-              "picture": "honolulu/hon_jpn_second_wave_part3"
+              "picture": "honolulu/hon_jpn_second_wave_part3",
+              "showAirMap": false
             }
           },
           {
@@ -132,6 +111,9 @@
               },
               {
                 "picture": ""
+              },
+              {
+                "showAirMap": false
               },
               {
                 "arrow": [
@@ -246,6 +228,10 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pby_dock_all",
             "army": 1,
             "accuracy": 0.5,
@@ -262,6 +248,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "squad_ph_ships",
             "army": 1,
             "accuracy": 0.25,
@@ -270,24 +260,36 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pby_dock_all",
             "army": 1
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ph_attack_armada",
             "effShootingRate": 0.01
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pby_sq",
             "attack_type": "hold_fire",
             "targetAir": false,
             "targetGnd": false,
-            "aiEnabled": false,
-            "ignoresEnemy": true
+            "ignoresEnemy": true,
+            "aiEnabled": false
           }
         },
         {
@@ -355,7 +357,8 @@
             }
           ]
         }
-      ]
+      ],
+      "else_actions": []
     },
     "intro_cut": {
       "is_enabled": false,
@@ -427,6 +430,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -477,6 +486,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -496,7 +511,8 @@
             "target": "after_intro"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "intro_cut_skip": {
       "is_enabled": false,
@@ -526,7 +542,13 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "after_intro"
@@ -535,7 +557,8 @@
           "time": 0.95
         },
         "missionStopCutscene": []
-      }
+      },
+      "else_actions": []
     },
     "after_intro": {
       "is_enabled": false,
@@ -586,6 +609,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_b5n",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -601,6 +633,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_d3a",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -616,6 +657,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_zero",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -631,6 +681,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -659,7 +718,8 @@
             "target": "near_ph_cut"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "near_ph_cut": {
       "is_enabled": false,
@@ -721,6 +781,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -808,6 +874,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -827,7 +899,8 @@
             "target": "ph_start"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "near_ph_dialog": {
       "is_enabled": false,
@@ -848,7 +921,8 @@
           "dialog": "hon_jpn_second_wave_d02",
           "subtitles": false
         }
-      }
+      },
+      "else_actions": []
     },
     "near_ph_cut_skip": {
       "is_enabled": false,
@@ -878,7 +952,13 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "ph_start"
@@ -887,7 +967,8 @@
           "time": 0.95
         },
         "missionStopCutscene": []
-      }
+      },
+      "else_actions": []
     },
     "ph_start": {
       "is_enabled": false,
@@ -925,6 +1006,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_b5n",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -940,6 +1030,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_d3a",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -955,6 +1054,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_zero",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -977,6 +1085,13 @@
         },
         {
           "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
             "area": "ph_battle_area"
           }
         },
@@ -1004,7 +1119,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "hon_jpn_second_wave_m02_ships"
+            "target": "hon_jpn_second_wave_m02_ships",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1012,7 +1129,8 @@
             "target": "near_ph"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "near_ph": {
       "is_enabled": false,
@@ -1062,6 +1180,10 @@
         },
         "unitSetIndication": {
           "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "uss_bb_squad"
         },
         "triggerEnable": [
@@ -1075,7 +1197,8 @@
             "target": "bomb_miss_hint"
           }
         ]
-      }
+      },
+      "else_actions": []
     },
     "ph_ships_counter": {
       "is_enabled": false,
@@ -1099,10 +1222,14 @@
           "icon": "ship",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "uss_bb_squad",
           "var": "ships_count"
         }
-      }
+      },
+      "else_actions": []
     },
     "ph_done": {
       "is_enabled": false,
@@ -1122,6 +1249,11 @@
           "object_type": "isDamagedByPlayerBombOrTorp",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "uss_bb_squad"
         },
         "unitWhenCountMatches": {
@@ -1129,6 +1261,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "uss_bb_squad"
         }
       },
@@ -1140,8 +1274,8 @@
         },
         {
           "varSetInt": {
-            "var": "ships_count",
-            "value": 0
+            "value": 0,
+            "var": "ships_count"
           }
         },
         {
@@ -1152,12 +1286,18 @@
         {
           "moSetObjectiveStatus": {
             "target": "hon_jpn_second_wave_m02_ships",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
           "unitSetIndication": {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "uss_bb_squad"
           }
         },
@@ -1168,6 +1308,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -1193,6 +1339,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "ressurect_sq"
           }
         },
@@ -1215,9 +1362,6 @@
             },
             {
               "effect_type": "specify"
-            },
-            {
-              "radiusOffset": [0.0,0.0]
             },
             {
               "attach": false
@@ -1251,6 +1395,9 @@
             },
             {
               "target": "ph_shps_eff09"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -1315,7 +1462,8 @@
             "target": "ph_done_cut"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "ph_done_cut": {
       "is_enabled": false,
@@ -1394,6 +1542,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1457,6 +1611,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -1476,7 +1636,8 @@
             "target": "after_ph"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "ph_done_dialog": {
       "is_enabled": false,
@@ -1497,7 +1658,8 @@
           "dialog": "b5n_evac_cut_dialog_part2",
           "subtitles": false
         }
-      }
+      },
+      "else_actions": []
     },
     "ph_done_cut_skip": {
       "is_enabled": false,
@@ -1527,7 +1689,13 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "after_ph"
@@ -1536,7 +1704,8 @@
           "time": 0.95
         },
         "missionStopCutscene": []
-      }
+      },
+      "else_actions": []
     },
     "after_ph": {
       "is_enabled": false,
@@ -1574,6 +1743,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "player"
           }
         },
@@ -1594,6 +1764,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pby06",
             "engineFire": true
           }
@@ -1622,7 +1796,8 @@
             "target": "zero_start_cut"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "zero_start_cut": {
       "is_enabled": false,
@@ -1705,6 +1880,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "zero_cut",
             "move_type": "teleport",
             "lookat": "zero_cut_point",
@@ -1748,7 +1932,8 @@
             "target": "zero_start"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "zero_start": {
       "is_enabled": false,
@@ -1791,6 +1976,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "zero_cut_point",
@@ -1842,6 +2036,13 @@
         },
         {
           "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
             "area": "zero_battle_area"
           }
         },
@@ -1863,17 +2064,22 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "pby_sq"
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "pby_sq",
             "attack_type": "hold_fire",
             "targetAir": false,
             "targetGnd": false,
-            "aiEnabled": false,
-            "ignoresEnemy": true
+            "ignoresEnemy": true,
+            "aiEnabled": false
           }
         },
         {
@@ -1897,12 +2103,18 @@
         {
           "unitSetIndication": {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "pby_sq"
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "hon_jpn_second_wave_m03_zero"
+            "target": "hon_jpn_second_wave_m03_zero",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1924,7 +2136,8 @@
             }
           ]
         }
-      ]
+      ],
+      "else_actions": []
     },
     "pby_dmg_byPlayer": {
       "is_enabled": false,
@@ -1944,6 +2157,11 @@
           "object_type": "isDamagedByPlayer",
           "object_marking": 0,
           "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
           "object": "pby_sq"
         }
       },
@@ -1976,7 +2194,8 @@
             "delayForObjects": [1.0,3.0]
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "pby_indicator": {
       "is_enabled": false,
@@ -2000,10 +2219,14 @@
           "icon": "bomber",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "pby_sq",
           "var": "pby_count"
         }
-      }
+      },
+      "else_actions": []
     },
     "pby_count": {
       "is_enabled": false,
@@ -2024,6 +2247,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "pby_sq",
           "var": "pby_kill"
         }
@@ -2031,19 +2256,20 @@
       "actions": [
         {
           "varModify": {
-            "var": "pby_kill",
             "operator": "add",
-            "value": 1.0
+            "value": 1.0,
+            "var": "pby_kill"
           }
         },
         {
           "varModify": {
-            "var": "pby_count",
             "operator": "subAB",
-            "value": 1.0
+            "value": 1.0,
+            "var": "pby_count"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "pby_count_max": {
       "is_enabled": false,
@@ -2064,17 +2290,20 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "pby_sq",
           "var": "pby_count"
         }
       },
       "actions": {
         "varModify": {
-          "var": "pby_count",
           "operator": "subAB",
-          "value": 1.0
+          "value": 1.0,
+          "var": "pby_count"
         }
-      }
+      },
+      "else_actions": []
     },
     "zero_done": {
       "is_enabled": false,
@@ -2095,6 +2324,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "pby_sq"
         },
         "varCompareInt": {
@@ -2133,13 +2364,19 @@
         {
           "unitSetIndication": {
             "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "pby_sq"
           }
         },
         {
           "moSetObjectiveStatus": {
             "target": "hon_jpn_second_wave_m03_zero",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2162,6 +2399,9 @@
             "icon": "bomber",
             "icon army": 2,
             "set": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "pby_sq"
           }
         },
@@ -2182,7 +2422,8 @@
             "target": "zero_done_cut"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "zero_done_cut": {
       "is_enabled": false,
@@ -2221,6 +2462,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "zero_d_cut01",
             "isImmortal": true,
             "plane": {
@@ -2283,6 +2528,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2306,6 +2557,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "zero_d_cut01",
             "move_type": "teleport",
             "lookat": "zero_d_lookat",
@@ -2348,6 +2608,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "zero_d_cut01",
             "lookat": "zero_d_lookat",
             "velocity": 300.0
@@ -2378,11 +2647,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "pby02_cut"
+            "target": "pby02_cut",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -2397,6 +2666,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2416,7 +2691,8 @@
             "target": "evac_start"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "zero_done_cut_skip": {
       "is_enabled": false,
@@ -2446,7 +2722,13 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "triggerEnable": {
           "target": "evac_start"
@@ -2455,7 +2737,8 @@
           "time": 0.95
         },
         "missionStopCutscene": []
-      }
+      },
+      "else_actions": []
     },
     "evac_start": {
       "is_enabled": false,
@@ -2498,6 +2781,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 300.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "player",
             "move_type": "teleport",
             "lookat": "fly_away_wp",
@@ -2513,6 +2805,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "dock_zero",
             "lookat": "fly_away_wp",
             "velocity": 300.0
@@ -2552,7 +2853,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "hon_jpn_second_wave_m04_fly away"
+            "target": "hon_jpn_second_wave_m04_fly away",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2560,7 +2863,8 @@
             "target": "evac_done"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "evac_done": {
       "is_enabled": false,
@@ -2605,7 +2909,9 @@
         {
           "moSetObjectiveStatus": {
             "target": "hon_jpn_second_wave_m04_fly away",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -2650,7 +2956,8 @@
             "target": "miss_complete"
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "miss_complete": {
       "is_enabled": false,
@@ -2670,7 +2977,8 @@
         "triggerEnable": {
           "target": "debriefing_cut"
         }
-      }
+      },
+      "else_actions": []
     },
     "debriefing_cut": {
       "is_enabled": false,
@@ -2728,6 +3036,9 @@
               "fullRestore": true
             },
             {
+              "target_marking": 0
+            },
+            {
               "target": "ph_attack_armada"
             },
             {
@@ -2747,6 +3058,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_b5n",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -2762,6 +3082,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_d3a",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -2777,6 +3106,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_zero",
             "move_type": "teleport",
             "lookat": "uss_bb_nevada",
@@ -2840,6 +3178,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -2919,6 +3263,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "b5n_deb_cut",
             "isImmortal": true
           }
@@ -2967,6 +3315,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "d3a_deb_cut",
             "isImmortal": true,
             "aiEnabled": false
@@ -3208,6 +3560,7 @@
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "ph_attack_armada",
             "ammoRestore": true
           }
@@ -3221,6 +3574,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_b5n",
             "move_type": "teleport",
             "lookat": "deb_lookat",
@@ -3236,6 +3598,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_d3a",
             "move_type": "teleport",
             "lookat": "deb_lookat",
@@ -3251,6 +3622,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_zero",
             "move_type": "teleport",
             "lookat": "deb_lookat",
@@ -3291,6 +3671,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_b5n",
             "lookat": "deb_lookat",
             "velocity": 250.0
@@ -3305,6 +3694,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_d3a",
             "lookat": "deb_lookat",
             "velocity": 250.0
@@ -3319,6 +3717,15 @@
             "shouldKeepFormation": true,
             "teleportHeightValue": 0.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "ph_zero",
             "lookat": "deb_lookat",
             "velocity": 250.0
@@ -3365,6 +3772,12 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
           }
@@ -3385,7 +3798,8 @@
             "debriefingTimer": 1
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "debriefing_dialog": {
       "is_enabled": false,
@@ -3413,7 +3827,8 @@
           "timer": false,
           "debriefingTimer": 1
         }
-      }
+      },
+      "else_actions": []
     },
     "debriefing_cut_skip": {
       "is_enabled": false,
@@ -3443,13 +3858,20 @@
           "name": "hints/cutsc_skip",
           "action": "hide",
           "shouldFadeOut": false,
-          "time": -1.0
+          "time": -1.0,
+          "isOverFade": false,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "missionCompleted": {
           "timer": false,
           "debriefingTimer": 1
         }
-      }
+      },
+      "else_actions": []
     },
     "only_player_target": {
       "is_enabled": true,
@@ -3468,17 +3890,26 @@
       "actions": [
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "player",
             "targetableByAi": false
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "player_sq",
             "targetableByAi": true
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "ph_effects": {
       "is_enabled": false,
@@ -3516,9 +3947,6 @@
               "effect_type": "specify"
             },
             {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
               "attach": false
             },
             {
@@ -3538,6 +3966,9 @@
             },
             {
               "target": "ph_eff13"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -3562,9 +3993,6 @@
               "effect_type": "specify"
             },
             {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
               "attach": false
             },
             {
@@ -3578,6 +4006,9 @@
             },
             {
               "target": "ph_eff07"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -3602,9 +4033,6 @@
               "effect_type": "specify"
             },
             {
-              "radiusOffset": [0.0,0.0]
-            },
-            {
               "attach": false
             },
             {
@@ -3624,6 +4052,9 @@
             },
             {
               "target": "ph_eff14"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
             }
           ]
         },
@@ -3685,11 +4116,11 @@
             "loop": true,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wheel_eff01"
+            "target": "wheel_eff01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3700,11 +4131,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wheel_eff02"
+            "target": "wheel_eff02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3715,11 +4146,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wheel_eff03"
+            "target": "wheel_eff03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3730,11 +4161,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wheel_eff04"
+            "target": "wheel_eff04",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3745,11 +4176,11 @@
             "loop": true,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wheel_eff05"
+            "target": "wheel_eff05",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3760,11 +4191,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "pby_dock_eff01"
+            "target": "pby_dock_eff01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3775,11 +4206,11 @@
             "loop": true,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "pby_dock_eff02"
+            "target": "pby_dock_eff02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3790,11 +4221,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "pby_dock_eff03"
+            "target": "pby_dock_eff03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3918,7 +4349,8 @@
             }
           ]
         }
-      ]
+      ],
+      "else_actions": []
     },
     "bomb_cut_eff": {
       "is_enabled": false,
@@ -3956,11 +4388,11 @@
             "loop": false,
             "scale": 2.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff09"
+            "target": "expl_eff09",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3976,11 +4408,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff06"
+            "target": "wbomb_eff06",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -3996,11 +4428,11 @@
             "loop": false,
             "scale": 2.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff08"
+            "target": "expl_eff08",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4024,11 +4456,11 @@
             "loop": false,
             "scale": 2.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff08"
+            "target": "expl_eff08",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4044,11 +4476,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff08"
+            "target": "wbomb_eff08",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4064,11 +4496,11 @@
             "loop": false,
             "scale": 1.5,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff09"
+            "target": "wbomb_eff09",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4084,11 +4516,11 @@
             "loop": false,
             "scale": 1.5,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff05"
+            "target": "wbomb_eff05",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4104,11 +4536,11 @@
             "loop": false,
             "scale": 1.2,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff07"
+            "target": "expl_eff07",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4142,11 +4574,11 @@
             "loop": false,
             "scale": 0.85,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff01"
+            "target": "wbomb_eff01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4162,11 +4594,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff01"
+            "target": "expl_eff01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4195,11 +4627,11 @@
             "loop": false,
             "scale": 0.75,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff02"
+            "target": "wbomb_eff02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4215,11 +4647,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff02"
+            "target": "expl_eff02",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4235,11 +4667,11 @@
             "loop": false,
             "scale": 2.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff03"
+            "target": "expl_eff03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4268,11 +4700,11 @@
             "loop": false,
             "scale": 1.5,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff03"
+            "target": "expl_eff03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4283,11 +4715,11 @@
             "loop": false,
             "scale": 1.3,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff03"
+            "target": "wbomb_eff03",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4303,11 +4735,11 @@
             "loop": false,
             "scale": 0.75,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff04"
+            "target": "wbomb_eff04",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4323,11 +4755,11 @@
             "loop": false,
             "scale": 1.0,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff04"
+            "target": "expl_eff04",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4343,11 +4775,11 @@
             "loop": false,
             "scale": 1.8,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff05"
+            "target": "expl_eff05",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4376,11 +4808,11 @@
             "loop": false,
             "scale": 1.5,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff05"
+            "target": "expl_eff05",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4391,11 +4823,11 @@
             "loop": false,
             "scale": 1.2,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "expl_eff06"
+            "target": "expl_eff06",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -4411,14 +4843,15 @@
             "loop": false,
             "scale": 1.5,
             "effect_type": "specify",
-            "radiusOffset": [0.0,0.0],
             "attach": false,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "target": "wbomb_eff07"
+            "target": "wbomb_eff07",
+            "radiusOffset": [0.0,0.0]
           }
         }
-      ]
+      ],
+      "else_actions": []
     },
     "bomb_miss_hint": {
       "is_enabled": false,
@@ -4460,6 +4893,12 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
@@ -4476,11 +4915,18 @@
             "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
           }
         }
-      ]
+      ],
+      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -4666,9 +5112,20 @@
           [0.608761,0.0,-0.793353],
           [436.0,25.95,-9911.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4691,9 +5148,20 @@
           [0.573576,0.0,-0.819152],
           [271.551,25.95,-10036.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4716,9 +5184,20 @@
           [0.382684,0.0,-0.923879],
           [316.559,25.95,-10053.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4741,9 +5220,20 @@
           [0.608761,0.0,-0.793353],
           [87.1964,25.95,-10167.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4766,9 +5256,20 @@
           [0.608761,0.0,-0.793353],
           [133.762,25.95,-10206.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4791,9 +5292,20 @@
           [0.608761,0.0,-0.793353],
           [-97.1,19.35,-10309.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4816,9 +5328,20 @@
           [0.642787,0.0,-0.766045],
           [-51.0752,19.35,-10355.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4841,9 +5364,20 @@
           [0.737277,0.0,-0.67559],
           [-336.106,19.3503,-10479.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4866,10 +5400,10 @@
           [0.0,0.0,1.0],
           [-33.9,610.55,-12186.3]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_bb_nevada"
           },
@@ -4894,8 +5428,7 @@
           {
             "squad_members": "uss_bb_california"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -4907,9 +5440,20 @@
           [0.843391,0.0,-0.5373],
           [64.45,-0.85,-10542.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4932,9 +5476,20 @@
           [0.843391,0.0,-0.5373],
           [113.15,-0.85,-10570.8]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4957,9 +5512,20 @@
           [0.866026,0.0,-0.5],
           [279.1,-8.05,-10627.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -4982,9 +5548,20 @@
           [0.422618,0.0,0.906308],
           [760.05,9.05,-10739.8]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5007,9 +5584,20 @@
           [0.843391,0.0,-0.5373],
           [-172.0,41.3,-10708.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_bb_arizona",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5032,10 +5620,10 @@
           [0.0,0.0,1.0],
           [342.237,610.55,-12201.5]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_ca_san_francisco"
           },
@@ -5060,8 +5648,7 @@
           {
             "squad_members": "uss_ss_pelias"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -5073,9 +5660,20 @@
           [0.422618,0.0,0.906308],
           [695.557,29.1469,-10860.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5098,9 +5696,20 @@
           [0.382683,0.0,0.92388],
           [729.197,20.0755,-10792.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5123,9 +5732,20 @@
           [-0.707107,0.0,0.707107],
           [795.838,9.0502,-10455.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5148,9 +5768,20 @@
           [-0.461749,0.0,0.887011],
           [114.5,-17.15,-9206.9]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5173,9 +5804,20 @@
           [-0.461749,0.0,0.887011],
           [155.054,-17.15,-9221.65]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5198,9 +5840,20 @@
           [-0.461749,0.0,0.887011],
           [181.903,-17.15,-9245.53]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5223,9 +5876,20 @@
           [-0.461749,0.0,0.887011],
           [204.165,-17.15,-9271.31]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5248,9 +5912,20 @@
           [-0.461749,0.0,0.887011],
           [227.079,-17.15,-9295.82]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5273,9 +5948,20 @@
           [-0.461749,0.0,0.887011],
           [224.52,-17.15,-9340.53]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5298,9 +5984,20 @@
           [-0.461749,0.0,0.887011],
           [414.789,-17.15,-9421.89]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5323,9 +6020,20 @@
           [-0.461749,0.0,0.887011],
           [479.911,-17.15,-9511.77]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5348,9 +6056,20 @@
           [-0.461749,0.0,0.887011],
           [501.442,-17.15,-9547.62]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5373,10 +6092,10 @@
           [0.0,0.0,1.0],
           [160.943,519.256,-12254.5]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_dd_phelps"
           },
@@ -5404,8 +6123,7 @@
           {
             "squad_members": "uss_dd_chew"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -5417,9 +6135,20 @@
           [-0.608761,0.0,0.793353],
           [478.55,27.7,-8608.1]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5442,9 +6171,20 @@
           [-0.608761,0.0,0.793353],
           [540.695,27.7,-8679.08]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5467,9 +6207,20 @@
           [-0.608761,0.0,0.793353],
           [1362.84,123.35,-9154.28]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5492,9 +6243,20 @@
           [-0.887011,0.0,0.461749],
           [1329.58,123.35,-9030.63]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5517,9 +6279,20 @@
           [-0.843391,0.0,0.5373],
           [1183.11,123.35,-9058.93]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5542,9 +6315,20 @@
           [-0.843391,0.0,0.5373],
           [1114.81,123.35,-8972.95]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5567,9 +6351,20 @@
           [-0.843391,0.0,0.5373],
           [1043.33,123.35,-8906.47]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5592,9 +6387,20 @@
           [-0.953717,0.0,0.300706],
           [64.3449,27.7,-8240.86]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5617,10 +6423,10 @@
           [0.0,0.0,1.0],
           [295.243,610.55,-12485.0]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_cl_phoenix"
           },
@@ -5645,8 +6451,7 @@
           {
             "squad_members": "uss_dd_henley"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -5658,9 +6463,20 @@
           [-0.608761,0.0,0.793354],
           [-359.2,-1.45,-9384.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5683,9 +6499,20 @@
           [-0.608761,0.0,0.793353],
           [-520.117,-1.45,-9498.15]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5708,9 +6535,20 @@
           [-0.608761,0.0,0.793353],
           [-674.649,-1.45,-9629.36]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5733,9 +6571,20 @@
           [-0.608761,0.0,0.793353],
           [-776.4,-1.45,-9733.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5758,9 +6607,20 @@
           [-0.843391,0.0,0.5373],
           [-1189.7,2.65,-9492.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5783,9 +6643,20 @@
           [-0.766044,0.0,0.642787],
           [-1248.45,2.65,-9460.75]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5808,9 +6679,20 @@
           [-0.737277,0.0,0.67559],
           [-1301.9,2.65,-9429.95]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5833,9 +6715,20 @@
           [-0.737277,0.0,0.67559],
           [-1359.63,2.65,-9407.51]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims_noguns",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5858,9 +6751,20 @@
           [-0.999048,0.0,-0.0436195],
           [-1517.25,2.65,-9191.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -5883,10 +6787,10 @@
           [0.0,0.0,1.0],
           [76.8276,469.022,-12504.0]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_cl_detroit"
           },
@@ -5914,8 +6818,7 @@
           {
             "squad_members": "uss_dm_ramsay"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -5927,10 +6830,10 @@
           [0.0,0.0,1.0],
           [1129.24,518.652,-12431.8]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_bb_squad"
           },
@@ -5946,8 +6849,7 @@
           {
             "squad_members": "uss_docks_squad"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -5959,9 +6861,20 @@
           [0.866026,0.0,0.499999],
           [-25299.6,20.0,79040.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -5995,7 +6908,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -6010,9 +6925,20 @@
           [0.642788,0.0,0.766044],
           [-25105.2,0.8,79078.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_cv_akagi",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6035,9 +6961,20 @@
           [0.0,0.0,1.0],
           [1795.85,1000.0,17496.8]
         ],
-        "closed_waypoints": false,
         "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "b5n2_mark2_bombs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -6071,9 +7008,20 @@
           [0.999049,0.0,0.0436188],
           [-25529.4,1434.35,78306.1]
         ],
-        "closed_waypoints": false,
         "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "b5n2_mark2_bombs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -6107,9 +7055,20 @@
           [-0.300706,0.0,0.953717],
           [-27072.6,-40.65,79162.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6132,9 +7091,20 @@
           [-0.707107,0.0,0.707107],
           [-26578.9,-40.5516,79894.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6157,9 +7127,20 @@
           [-0.266729,0.461749,0.845957],
           [-25620.6,-40.622,79900.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6182,9 +7163,20 @@
           [-0.300706,0.0,0.953717],
           [-24557.3,-40.85,79629.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6207,9 +7199,20 @@
           [0.0871557,0.0,0.996195],
           [-25011.2,-40.95,78606.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_bb_nagato",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6232,9 +7235,20 @@
           [-0.130526,0.0,0.991445],
           [-25630.1,-40.9,78576.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6257,9 +7271,20 @@
           [-0.793353,0.0,0.608762],
           [-25231.2,0.0,78063.0]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6282,9 +7307,20 @@
           [-0.0871554,0.0,0.996195],
           [-26689.9,-40.8902,77607.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6307,9 +7343,20 @@
           [-0.707107,0.0,0.707107],
           [-27347.4,-40.8902,78444.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6332,9 +7379,20 @@
           [0.382684,0.0,0.923879],
           [-24569.3,217.6,78797.4]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6357,9 +7415,20 @@
           [-0.0436195,0.0,0.999048],
           [-25999.9,-40.8883,77455.8]
         ],
-        "closed_waypoints": false,
         "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -6382,9 +7451,20 @@
           [0.0,0.0,1.0],
           [7596.6,800.0,-16473.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "d3a1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "d3a1_mod25mark2",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -6418,7 +7498,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -6433,9 +7515,20 @@
           [0.0,0.0,1.0],
           [7419.6,600.0,-16728.7]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -6469,7 +7562,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -6484,10 +7579,10 @@
           [0.0,0.0,1.0],
           [7422.65,194.4,-13557.3]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "ph_b5n"
           },
@@ -6497,8 +7592,7 @@
           {
             "squad_members": "ph_zero"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -6510,9 +7604,20 @@
           [0.130526,0.0,0.991446],
           [15991.0,400.0,259.727]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -6547,7 +7652,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -6562,9 +7669,20 @@
           [0.300706,0.0,-0.953716],
           [21480.6,30.0,-1279.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m3_halftrack",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6587,9 +7705,20 @@
           [1.0,0.0,7.54979e-08],
           [19852.4,41.9,-416.498]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m3_halftrack",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6612,9 +7741,20 @@
           [-0.939693,0.0,0.34202],
           [19836.7,11.2185,-805.1]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m3_halftrack",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6637,14 +7777,11 @@
           [0.216439,0.0,-0.976296],
           [21650.8,29.5,-1350.6]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6656,14 +7793,11 @@
           [0.216439,0.0,-0.976296],
           [21615.3,29.5,-1361.96]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6675,14 +7809,11 @@
           [0.216439,0.0,-0.976296],
           [21572.5,29.5,-1377.13]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6694,14 +7825,11 @@
           [0.216439,0.0,-0.976296],
           [21621.6,29.5,-1281.16]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6713,14 +7841,11 @@
           [0.216439,0.0,-0.976296],
           [21586.0,29.5,-1292.52]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6732,14 +7857,11 @@
           [0.216439,0.0,-0.976296],
           [21543.2,29.5,-1307.61]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6751,14 +7873,11 @@
           [0.216439,0.0,-0.976296],
           [21590.2,29.5,-1206.84]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6770,14 +7889,11 @@
           [0.216439,0.0,-0.976296],
           [21554.7,29.5,-1218.21]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6789,14 +7905,11 @@
           [0.216439,0.0,-0.976296],
           [21511.8,29.5,-1233.37]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6808,14 +7921,11 @@
           [0.216439,0.0,-0.976296],
           [21558.2,29.5,-1125.21]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6827,14 +7937,11 @@
           [0.216439,0.0,-0.976296],
           [21522.7,29.5,-1136.58]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6846,14 +7953,11 @@
           [0.216439,0.0,-0.976296],
           [21479.8,29.5,-1151.75]
         ],
-        "closed_waypoints": false,
         "unit_class": "p_40e",
-        "weapons": "",
         "props": {
           "army": 2,
           "active": true
-        },
-        "way": []
+        }
       }
     },
     {
@@ -6865,9 +7969,20 @@
           [0.0,0.0,1.0],
           [21623.0,29.9918,-1519.75]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6891,9 +8006,20 @@
           [0.906308,0.0,-0.422618],
           [19565.9,-3.85,-842.1]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6928,9 +8054,20 @@
           [0.906308,0.0,-0.422618],
           [19616.9,-9.45,-862.3]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -6965,9 +8102,20 @@
           [0.866026,0.0,-0.5],
           [19644.9,-5.3,-878.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7002,9 +8150,20 @@
           [0.887011,0.0,-0.461749],
           [19698.6,-9.9,-904.45]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7039,9 +8198,20 @@
           [0.887011,0.0,-0.461749],
           [19722.5,-10.5,-951.45]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7076,9 +8246,20 @@
           [0.887011,0.0,-0.461749],
           [19765.0,-9.9,-936.735]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7113,9 +8294,20 @@
           [0.887011,0.0,-0.461749],
           [19813.6,-9.9,-970.95]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7150,10 +8342,10 @@
           [0.0,0.0,1.0],
           [19799.3,0.999997,-935.05]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "pby01"
           },
@@ -7175,8 +8367,7 @@
           {
             "squad_members": "pby07"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -7188,9 +8379,20 @@
           [-0.939693,0.0,0.34202],
           [20002.6,24.4,-824.848]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_m3_halftrack",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7213,9 +8415,20 @@
           [0.0,0.0,1.0],
           [21975.2,29.9969,-1250.55]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7239,9 +8452,20 @@
           [0.0,0.0,1.0],
           [19655.5,49.4,-345.048]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7265,9 +8489,20 @@
           [0.0,0.0,1.0],
           [19789.1,0.0,-824.05]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7291,9 +8526,20 @@
           [0.0,0.0,1.0],
           [19664.0,11.55,-726.25]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7317,9 +8563,20 @@
           [0.866025,0.0,-0.5],
           [19540.3,3.94672,-842.6]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7343,9 +8600,20 @@
           [0.707107,0.0,-0.707107],
           [19804.8,11.3819,-915.35]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2_noground",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7369,9 +8637,20 @@
           [0.707107,0.0,-0.707107],
           [19885.7,11.6104,-741.05]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7395,9 +8674,20 @@
           [0.707107,0.0,-0.707107],
           [19649.1,12.8,-551.25]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7421,9 +8711,20 @@
           [0.707107,0.0,-0.707107],
           [19876.7,12.0,-1205.15]
         ],
-        "closed_waypoints": false,
         "unit_class": "us_12mm_m2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7447,9 +8748,20 @@
           [-0.5373,0.0,-0.843391],
           [19936.0,56.85,-584.35]
         ],
-        "closed_waypoints": true,
         "unit_class": "us_willys_mb_7mm",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7472,7 +8784,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_02": {
@@ -7486,7 +8800,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_03": {
@@ -7500,7 +8816,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_04": {
@@ -7514,7 +8832,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_05": {
@@ -7528,7 +8848,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_06": {
@@ -7542,7 +8864,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_07": {
@@ -7556,7 +8880,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_08": {
@@ -7570,7 +8896,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_09": {
@@ -7584,7 +8912,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_10": {
@@ -7598,7 +8928,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_11": {
@@ -7612,7 +8944,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_12": {
@@ -7626,7 +8960,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_13": {
@@ -7640,7 +8976,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_14": {
@@ -7654,7 +8992,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_15": {
@@ -7668,7 +9008,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_16": {
@@ -7682,7 +9024,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_04_wp_17": {
@@ -7696,7 +9040,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -7711,9 +9057,20 @@
           [0.642788,0.0,0.766045],
           [20084.2,24.4,-680.4]
         ],
-        "closed_waypoints": true,
         "unit_class": "us_willys_mb_7mm",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -7736,7 +9093,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_02": {
@@ -7750,7 +9109,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_03": {
@@ -7764,7 +9125,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_04": {
@@ -7778,7 +9141,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_05": {
@@ -7792,7 +9157,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_06": {
@@ -7806,7 +9173,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_07": {
@@ -7820,7 +9189,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_08": {
@@ -7834,7 +9205,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_09": {
@@ -7848,7 +9221,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_10": {
@@ -7862,7 +9237,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_11": {
@@ -7876,7 +9253,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_12": {
@@ -7890,7 +9269,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_13": {
@@ -7904,7 +9285,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_14": {
@@ -7918,7 +9301,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_15": {
@@ -7932,7 +9317,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_16": {
@@ -7946,7 +9333,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_17": {
@@ -7960,7 +9349,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_18": {
@@ -7974,7 +9365,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_19": {
@@ -7988,7 +9381,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_20": {
@@ -8002,7 +9397,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_21": {
@@ -8016,7 +9413,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_22": {
@@ -8030,7 +9429,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_23": {
@@ -8044,7 +9445,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_24": {
@@ -8058,7 +9461,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_25": {
@@ -8072,7 +9477,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_26": {
@@ -8086,7 +9493,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_27": {
@@ -8100,7 +9509,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_28": {
@@ -8114,7 +9525,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_29": {
@@ -8128,7 +9541,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_30": {
@@ -8142,7 +9557,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_31": {
@@ -8156,7 +9573,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_32": {
@@ -8170,7 +9589,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_33": {
@@ -8184,7 +9605,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_34": {
@@ -8198,7 +9621,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_35": {
@@ -8212,7 +9637,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_05_wp_36": {
@@ -8226,7 +9653,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8241,9 +9670,20 @@
           [0.382683,0.0,0.92388],
           [19701.8,24.4,-712.15]
         ],
-        "closed_waypoints": true,
         "unit_class": "us_willys_mb_7mm",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8266,7 +9706,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_02": {
@@ -8280,7 +9722,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_03": {
@@ -8294,7 +9738,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_05": {
@@ -8308,7 +9754,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_06": {
@@ -8322,7 +9770,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_07": {
@@ -8336,7 +9786,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_08": {
@@ -8350,7 +9802,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_09": {
@@ -8364,7 +9818,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "pby_dock_truck_06_wp_10": {
@@ -8378,7 +9834,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8393,10 +9851,10 @@
           [0.0,0.0,1.0],
           [19206.0,50.85,-580.748]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "pby_dock_aa01"
           },
@@ -8427,8 +9885,7 @@
           {
             "squad_members": "pby_dock_aa10"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -8440,10 +9897,10 @@
           [0.0,0.0,1.0],
           [19533.4,-48.15,-1174.95]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "pby_dock_truck_01"
           },
@@ -8465,8 +9922,7 @@
           {
             "squad_members": "pby_dock_truck_07"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -8478,10 +9934,10 @@
           [0.0,0.0,1.0],
           [19623.3,-53.65,-1236.6]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "pby_sq"
           },
@@ -8491,8 +9947,7 @@
           {
             "squad_members": "pby_dock_truck_sq"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -8504,10 +9959,10 @@
           [0.0,0.0,1.0],
           [-20491.0,0.0,79693.5]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "ijn_cv_akagi"
           },
@@ -8544,8 +9999,7 @@
           {
             "squad_members": "ijn_dd_tanikaze"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -8557,9 +10011,20 @@
           [0.0,0.0,1.0],
           [7706.6,1000.0,-16276.2]
         ],
-        "closed_waypoints": false,
         "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "b5n2_type98_bombs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "free_distance": 70.0,
@@ -8593,7 +10058,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8608,10 +10075,10 @@
           [0.0,0.0,1.0],
           [-1728.0,60.65,-10823.8]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "uss_bb_california"
           },
@@ -8630,8 +10097,7 @@
           {
             "squad_members": "uss_bb_nevada"
           }
-        ],
-        "way": []
+        ]
       }
     },
     {
@@ -8643,9 +10109,20 @@
           [-0.461749,0.0,0.887011],
           [14654.4,100.0,-247.286]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -8673,15 +10150,17 @@
           "zero_cut_wp_02": {
             "type": "normal",
             "tm": [
-              [0.737277,0.0,0.67559],
+              [1.0,0.0,0.0],
               [0.0,1.0,0.0],
-              [-0.67559,0.0,0.737277],
+              [0.0,0.0,1.0],
               [15824.2,100.0,41.3689]
             ],
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "zero_cut_wp_03": {
@@ -8695,7 +10174,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8710,9 +10191,20 @@
           [0.999048,0.0,-0.0436195],
           [19590.0,600.0,-197.298]
         ],
-        "closed_waypoints": false,
         "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8746,9 +10238,20 @@
           [0.67559,0.0,-0.737277],
           [1200.05,100.0,-9251.55]
         ],
-        "closed_waypoints": false,
         "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "b5n2_type91mod2_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8782,7 +10285,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8797,9 +10302,20 @@
           [-0.573577,-1.72883e-07,-0.819152],
           [553.9,600.0,-10500.5]
         ],
-        "closed_waypoints": false,
         "unit_class": "d3a1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "d3a1_mod25mark2",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -8833,7 +10349,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -8848,14 +10366,11 @@
           [0.0,0.0,1.0],
           [5330.55,56.65,-10615.3]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
+          "object_marking": 0,
           "squad_members": "player",
           "object_type": "isPlayer"
-        },
-        "way": []
+        }
       }
     },
     {
@@ -8867,9 +10382,20 @@
           [0.906308,0.0,-0.422618],
           [19615.6,-9.45,-864.673]
         ],
-        "closed_waypoints": false,
         "unit_class": "pby-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -8905,14 +10431,11 @@
           [0.0,0.0,1.0],
           [3228.65,533.9,-5047.8]
         ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
         "props": {
+          "object_marking": 0,
           "squad_members": "ph_b5n",
           "object_type": "isFormationLeader"
-        },
-        "way": []
+        }
       }
     }
   ],
@@ -8926,8 +10449,8 @@
         [-24599.2,600.0,74835.4]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "ph_wp": {
@@ -8939,8 +10462,8 @@
         [396.55,1100.0,-10723.7]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "player_tele": {
@@ -8952,8 +10475,8 @@
         [9385.7,1200.0,-16414.4]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "fly_away_wp": {
@@ -8965,8 +10488,8 @@
         [15543.0,800.0,83.25]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "pby_dock_destr01": {
@@ -9062,8 +10585,8 @@
         [9245.1,1250.0,-16302.2]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "b5n_tele": {
@@ -9075,8 +10598,8 @@
         [9243.0,1200.0,-16279.1]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "zero_tele": {
@@ -9088,8 +10611,8 @@
         [9242.2,1300.0,-16319.4]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "ph_done_cut_area": {
@@ -9221,8 +10744,8 @@
         [-17670.2,1250.0,13567.6]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "b5n_deb_tele": {
@@ -9414,8 +10937,8 @@
         [-65636.2,1250.0,100632.0]
       ],
       "props": {
-        "forceReplication": true,
-        "visible": true
+        "visible": true,
+        "forceReplication": true
       }
     },
     "b5n_deb_move": {
@@ -10114,5 +11637,28 @@
         "forceReplication": true
       }
     }
-  }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
 }

@@ -1,5 +1,5 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
-local elemEvents = ::require("sqDagui/elemUpdater/elemUpdaterEvents.nut")
+local enums = require("sqStdlibs/helpers/enums.nut")
+local elemEvents = require("sqDagui/elemUpdater/elemUpdaterEvents.nut")
 
 local modelType = {
   types = []

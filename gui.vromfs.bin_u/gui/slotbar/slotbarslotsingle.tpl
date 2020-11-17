@@ -1,3 +1,8 @@
+<<#position>>
+position:t='<<position>>'
+pos:t='<<posX>>w, <<posY>>h'
+<</position>>
+
 <<#isInTable>>
 id:t='<<slotId>>'
 
@@ -7,6 +12,7 @@ inactive:t='yes'
 
 <<#isSlotbarItem>>
 slotbarCurAir {}
+chosen:t='no'
 <</isSlotbarItem>>
 <</isInTable>>
 
@@ -21,10 +27,25 @@ shopItem {
   isInTable:t='no'
   <</isInTable>>
 
-  <<^hasHoverMenu>>refuseOpenHoverMenu:t='yes'<</hasHoverMenu>>
-  <<#hasHoverMenu>>on_hover:t='onUnitHover'<</hasHoverMenu>>
+  <<#refuseOpenHoverMenu>>refuseOpenHoverMenu:t='yes'<</refuseOpenHoverMenu>>
 
-  bgPlate {}
+  <<@extraInfoBlock>>
+
+  <<#showInService>>
+  shopInServiceImg {
+    <<#isMounted>>
+    mounted:t='yes'
+    <</isMounted>>
+    shopInServiceImgBg {}
+    icon {}
+  }
+  <</showInService>>
+
+  slotPlate {
+    middleBg { pattern {} }
+    topLine {}
+    bottomShade {}
+  }
 
   itemWinkBlock {
     buttonWink {
@@ -33,16 +54,6 @@ shopItem {
   }
 
   hoverHighlight {}
-
-  pattern {
-    <<#premiumPatternType>>
-    type:t='premium'
-    <</premiumPatternType>>
-
-    <<^premiumPatternType>>
-    type:t='bright_texture'
-    <</premiumPatternType>>
-  }
 
   shopStat:t='<<shopStatus>>'
   unitRarity:t='<<unitRarity>>'
@@ -56,7 +67,7 @@ shopItem {
   <</isBroken>>
 
   <<#isPkgDev>>
-  shopAirImg { foreground-image:t='#ui/gameuiskin#unit_under_construction' }
+  isPkgDev:t='yes'
   <</isPkgDev>>
 
   shopAirImg {
@@ -78,7 +89,6 @@ shopItem {
   discount_notification {
     id:t='<<discountId>>'
     type:t='box_down'
-    place:t='unit'
     text:t=''
 
     <<#showDiscount>>
@@ -168,16 +178,14 @@ shopItem {
     }
   }
 
-  <<#showInService>>
-  shopInServiceImg {
-    <<#isMounted>>
-    mounted:t='yes'
-    <</isMounted>>
-    icon {}
-  }
-  <</showInService>>
-
   <<@itemButtons>>
+
+  <<#bonusId>>
+  bonus {
+    id:t='<<bonusId>>-bonus'
+    text:t=''
+  }
+  <</bonusId>>
 
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
@@ -186,7 +194,7 @@ shopItem {
     display:t='hide'
   }
 
-  tooltip-float:t='horisontal'
+  tooltip-float:t='horizontal'
   title:t='$tooltipObj'
 
   focus_border {}

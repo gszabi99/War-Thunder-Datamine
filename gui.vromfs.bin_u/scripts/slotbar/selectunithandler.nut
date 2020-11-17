@@ -65,7 +65,6 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   unitsList = null
   totalUsableUnits = 0
-  isFocusOnUnitsList = true
 
   wasReinited = false
 
@@ -127,7 +126,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillLegend()
     fillUnitsList()
     updateUnitsList()
-    setFocus(true)
+    ::move_mouse_on_child_by_value(scene.findObject("airs_table"))
     updateOptionShowUnsupportedForCustomList()
     showSceneBtn("choose_popup_menu", !isEmptyOptionsList || needEmptyCrewButton || hasGroupText())
   }
@@ -274,11 +273,11 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitsList()
   {
-    local data = ""
+    local markupArr = []
     totalUsableUnits = 0
     foreach(idx, unit in unitsList)
     {
-      local rowData = "td {}"
+      local rowData = "unitCell {}"
       if (!::u.isInteger(unit))
         totalUsableUnits++
       else if (unit == SEL_UNIT_BUTTON.SHOP)
@@ -287,12 +286,13 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
         rowData = getTextSlotMarkup("empty_air", "#shop/emptyCrew")
       else if (unit == SEL_UNIT_BUTTON.SHOW_MORE)
         rowData = getTextSlotMarkup("show_more", "#mainmenu/showMore")
-      data += "tr { " +rowData+ " }\n"
+      markupArr.append(rowData)
     }
 
+    local markup = "\n".join(markupArr)
     local tblObj = scene.findObject("airs_table")
     tblObj.alwaysShowBorder = "yes"
-    guiScene.replaceContentFromText(tblObj, data, data.len(), this)
+    guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
 
     showMoreObj = tblObj.findObject("td_show_more")
   }
@@ -304,7 +304,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDoneSlotChoose(obj)
   {
-    local row = ::to_integer_safe(obj?.cur_row, -1)
+    local row = obj.getValue()
     if (row < 0)
       return
 
@@ -605,7 +605,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     for (local i = 0; i < total; i++)
     {
-      local objSlot = tblObj.getChild(i).getChild(0)
+      local objSlot = tblObj.getChild(i)
       if (!objSlot)
         continue
       local slot = unitsList?[i]
@@ -658,49 +658,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     guiScene.setUpdatesEnabled(true, true)
     if (selected != 0)
-      ::gui_bhv.columnNavigator.selectCell(tblObj, selected, 0, false, false, false)
-  }
-
-  function canFocusOptions()
-  {
-    return !isEmptyOptionsList
-  }
-
-  function setFocus(needFocusUnitsList)
-  {
-    isFocusOnUnitsList = !canFocusOptions() || needFocusUnitsList
-    local objId = isFocusOnUnitsList ? "airs_table" : "choose_options_nest"
-    scene.findObject(objId).select()
-    updateOptionsHint()
-  }
-
-  function onToggleChooseOptions()
-  {
-    if (canFocusOptions())
-      setFocus(!isFocusOnUnitsList)
-  }
-
-  function updateOptionsHint()
-  {
-    local show = canFocusOptions() && ::show_console_buttons
-    local obj = showSceneBtn("filter_options_hint", show)
-    if (show)
-    {
-      local hintId = isFocusOnUnitsList ? "filter_option/change_filter_options" : "filter_option/return_to_units_list"
-      obj.setValue(::loc(hintId))
-    }
-  }
-
-  function onSlotChooseLeft(obj)  { onSlotChooseSideAir(-1) }
-  function onSlotChooseRight(obj) { onSlotChooseSideAir(1) }
-
-  function onSlotChooseSideAir(dir)
-  {
-    wasReinited = false
-    if (slotbarWeak)
-      slotbarWeak.nextSlot(dir)
-    if (!wasReinited)
-      goBack()
+      tblObj.setValue(selected)
   }
 
   function onEventSetInQueue(params)
@@ -752,27 +710,25 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onSlotSelect(obj)
   {
-    local row = ::to_integer_safe(obj?.cur_row, -1)
+    local row = obj.getValue()
     if (row < 0)
       return
 
     local unit = unitsList[row]
     updateUnitsGroupText(unit)
   }
-
-  //function getBestUnitFromGroup
 }
 
 ::gui_handlers.SelectUnitHandler <- SelectUnitHandler
 
 return {
-  open = function(crew, slotbar) {
-    local params = getParamsFromSlotbarConfig(crew, slotbar)
-    if (params == null)
-      return
-
-    ::handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
-  }
+  open = @(crew, slotbar) ::get_cur_gui_scene().performDelayed({},
+    function() {
+      local params = getParamsFromSlotbarConfig(crew, slotbar)
+      if (params == null)
+        return
+      ::handlersManager.destroyPrevHandlerAndLoadNew(SelectUnitHandler, params)
+    })
   getParamsFromSlotbarConfig = getParamsFromSlotbarConfig
 }
 

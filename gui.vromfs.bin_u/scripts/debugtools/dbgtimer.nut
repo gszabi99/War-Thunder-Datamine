@@ -1,3 +1,5 @@
+local { DBGLEVEL } = require("dagor.system")
+
 // warning disable: -file:forbidden-function
 
 // Profiler usage:
@@ -12,6 +14,8 @@
 //                                     but it will decrease performance
 //::dbg_timer.show(msg)              - in function middle to show top timer diff in console (ms)
 //::dbg_timer.stop(msg)              - at function end. to show top timer diff in console and remove it
+
+local printText = DBGLEVEL > 0 ? ::dlog : ::dagor.console_print
 
 ::dbg_timer <- {
   timers = []
@@ -33,21 +37,26 @@
   function show(msg = "show")
   {
     if (timers.len())
-      ::clog($"dbg_timer: {msg}: {::dagor.getCurTime() - timers.top()}")
+      printText($"dbg_timer: {msg}: {::dagor.getCurTime() - timers.top()}")
     else
-      ::clog($"dbg_timer: not found timer for {msg}")
+      printText($"dbg_timer: not found timer for {msg}")
   }
 
-  function stop(msg = "stop")
+  function stop(msg = "stop", profilerFileName = null)
   {
     if (profileIdx >= timers.len())
     {
       if (sqProfiler)
-        sqProfiler.stop();
+        if (profilerFileName == null)
+          sqProfiler.stop()
+        else
+          sqProfiler.stop_and_save_to_file(profilerFileName)
       profileIdx = -1
     }
     show(msg)
     if (timers.len())
       timers.pop()
   }
+
+  stopToFile = @(msg = "stop") stop(msg, "profile.csv")
 }

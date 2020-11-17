@@ -63,10 +63,10 @@
     "tacticalMapBorderSize": [7.0,7.0]
   },
   {
-    "debugFontName": "very_tiny_text_set_medium"
+    "debugFontName": "debug_font"
   },
   {
-    "smallTextHudFontName": "very_tiny_text_set_compact"
+    "smallTextHudFontName": "small_text_hud_font"
   },
   {
     "helicopterHudColor": "#47e827ff"
@@ -348,7 +348,7 @@
       "outOfMapArrowBorder": 5.0,
       "pattern": "ui/map_pattern_a",
       "playerIconTexUpscale": 2.0,
-      "tankHull": "map_player_tank_hull",
+      "tankHull": "map_player_tank_hull.svg:17:17:K",
       "mapCamera": "map_camera",
       "deadUnitIcon": "objective_kill",
       "deadUnitIconScale": 0.5,
@@ -629,46 +629,37 @@
   {
     "crosshair": [
       {
-        "pictureTpsView": "sight"
+        "pictureTpsView": "sight.svg:29:29:K"
       },
       {
-        "pictureTpsView": "gun_direction"
+        "pictureTpsView": "gun_direction.svg:23:23:K"
       },
       {
-        "pictureTpsView": "gunner_sight"
+        "pictureTpsView": "gunner_sight.svg:23:23:K"
       },
       {
-        "pictureTpsView": "shell_projection"
+        "pictureTpsView": "shell_projection.svg:23:23:K"
       },
       {
-        "pictureTpsView": "gunner_sight_lines"
+        "pictureTpsView": "gunner_sight_lines.svg:27:27:K"
       },
       {
-        "pictureGunnerView": "gunner_sight"
+        "pictureGunnerView": "gunner_sight.svg:23:23:K"
       },
       {
-        "pictureGunnerViewLines": "gunner_sight_lines"
+        "pictureGunnerViewLines": "gunner_sight_lines.svg:27:27:K"
       },
       {
-        "pictureGunnerDeadzone": "gunner_sight_disabled"
+        "pictureGunnerDeadzone": "gunner_sight_disabled.svg:23:23:K"
       },
       {
-        "pictureGunnerDeadzoneLines": "gunner_sight_lines_disabled"
+        "pictureGunnerDeadzoneLines": "gunner_sight_lines_disabled.svg:27:27:K"
       },
       {
-        "pictureGunDirection": "gun_direction"
+        "pictureGunDirection": "gun_direction.svg:23:23:K"
       },
       {
-        "pictureGunEndDirection": "gun_direction"
-      },
-      {
-        "pictureShellProjection": "shell_projection"
-      },
-      {
-        "pictureShellProjectionExternal": "gunner_sight_lines"
-      },
-      {
-        "pictureGunReady": "gun_ready"
+        "pictureGunEndDirection": "gun_direction.svg:23:23:K"
       },
       {
         "drawGunDirectionWithBallistics": false
@@ -716,6 +707,9 @@
         "mouseAimArrowInVR": false
       },
       {
+        "mousePointer": "mouse_pointer.svg:45:45:K"
+      },
+      {
         "mousePointerAfterCockpitOpacity": 0.3
       },
       {
@@ -746,22 +740,13 @@
         "mouseAimOpacityInSign": [0.3,1.0]
       },
       {
-        "crosshairDisabled": "sight_blocked"
+        "forestall": "forestall.svg:23:23:K"
       },
       {
-        "forestall": "forestall"
+        "forestallInactive": "forestall_inactive.svg:23:23:K"
       },
       {
-        "forestallInactive": "forestall_inactive"
-      },
-      {
-        "forestallLine": "bomb_ready"
-      },
-      {
-        "forestallLineScale": 0.5
-      },
-      {
-        "forestallLineOpacity": 0.333
+        "forestallLine": "forestall_line.svg:6:6:K"
       },
       {
         "forestallLineNumber": 3
@@ -812,40 +797,16 @@
         "bombSight": "bomb_sight"
       },
       {
-        "bombSightItem": "bomb_ready"
+        "rocketSight": "rocket_sight.svg:60:90:K"
       },
       {
-        "bombSightCell": "bomb_released"
+        "ccipRocketSight": "ccip_rocket_sight.svg:42:42:K"
       },
       {
-        "cellOffsets": [0.28,0.72]
+        "ccipGunIndication": "ccip_gun_indication.svg:24:24:K"
       },
       {
-        "cellSpace": 24.0
-      },
-      {
-        "cellRadius": 9.0
-      },
-      {
-        "bombSightFull": "bomb_sight_full"
-      },
-      {
-        "sightOverheat": "sight_overheat"
-      },
-      {
-        "rocketSight": "rocket_sight"
-      },
-      {
-        "ccipRocketSight": "ccip_rocket_sight"
-      },
-      {
-        "ccipGunIndication": "ccip_gun_idication"
-      },
-      {
-        "groundTarget": "ground_target"
-      },
-      {
-        "missileSeekerTrackerPos": "gun_direction"
+        "groundTarget": "ground_target.svg:30:30:K"
       },
       {
         "bombSightRadius": 100.0
@@ -881,7 +842,7 @@
         "colorMissileSightLock": "#fe5037ff"
       },
       {
-        "artillerySightLock": "sight_blocked"
+        "artillerySightLock": "sight_blocked.svg:11:11:K"
       },
       {
         "artillerySightViewAngleOnKm": 15.0
@@ -974,7 +935,10 @@
         "colorHitBlink": "#ff0000ff"
       },
       {
-        "overheatSight": "sight_overheat_sectors"
+        "sightHit": "sight_hit.svg:41:41:K"
+      },
+      {
+        "overheatSight": "sight_overheat_sectors.svg:29:29:K"
       },
       {
         "overheatThreshold": 0.3
@@ -1335,56 +1299,46 @@
       {
         "ship_crosshairs": {
           "primary": {
-            "size": 1.0,
-            "icon": "ship_main_caliber_sight",
-            "iconInProgress": "ship_main_caliber_sight_aiming",
-            "iconAimDistanceDetection": "ship_main_caliber_sight_aiming"
+            "icon": "ship_main_caliber_sight.svg:43:43:K",
+            "iconInProgress": "ship_main_caliber_sight_aiming.svg:43:43:K",
+            "iconAimDistanceDetection": "ship_main_caliber_sight_aiming.svg:43:43:K"
           },
           "secondary": {
-            "size": 1.0,
-            "icon": "ship_secondary_caliber_sight",
-            "iconInProgress": "ship_secondary_caliber_sight_aiming",
-            "iconAimDistanceDetection": "ship_secondary_caliber_sight_aiming"
+            "icon": "ship_secondary_caliber_sight.svg:33:33:K",
+            "iconInProgress": "ship_secondary_caliber_sight_aiming.svg:33:33:K",
+            "iconAimDistanceDetection": "ship_secondary_caliber_sight_aiming.svg:33:33:K"
           },
           "coaxial": {
-            "size": 1.0,
-            "icon": "gun_direction",
-            "iconInProgress": "gun_direction"
+            "icon": "gun_direction.svg:23:23:K",
+            "iconInProgress": "gun_direction.svg:23:23:K"
           },
           "machinegun": {
-            "size": 1.0,
-            "icon": "ship_aa_caliber_sight",
-            "iconInProgress": "ship_aa_caliber_sight_aiming",
-            "iconAimDistanceDetection": "ship_aa_caliber_sight_aiming"
+            "icon": "ship_aa_caliber_sight.svg:25:25:K",
+            "iconInProgress": "ship_aa_caliber_sight_aiming.svg:25:25:K",
+            "iconAimDistanceDetection": "ship_aa_caliber_sight_aiming.svg:25:25:K"
           },
           "special": {
-            "size": 1.0,
-            "icon": "gun_direction",
-            "iconInProgress": "gun_direction"
+            "icon": "gun_direction.svg:23:23:K",
+            "iconInProgress": "gun_direction.svg:23:23:K"
           }
         }
       },
       {
         "airplane_crosshairs": {
           "primary": {
-            "size": 1.0,
-            "icon": "gun_direction"
+            "icon": "gun_direction.svg:23:23:K"
           },
           "secondary": {
-            "size": 0.8,
-            "icon": "gun_direction"
+            "icon": "gun_direction.svg:19:19:K"
           },
           "coaxial": {
-            "size": 1.0,
-            "icon": "gun_direction"
+            "icon": "gun_direction.svg:23:23:K"
           },
           "machinegun": {
-            "size": 0.6,
-            "icon": "gun_direction"
+            "icon": "gun_direction.svg:13:13:K"
           },
           "special": {
-            "size": 1.0,
-            "icon": "gun_direction"
+            "icon": "gun_direction.svg:23:23:K"
           }
         }
       }
@@ -1697,6 +1651,9 @@
         "colorWaypointEnemy": "#e6001eff"
       },
       {
+        "colorPremiumVehicle": "#ffd700ff"
+      },
+      {
         "alphaRange": [3000.0,5000.0]
       },
       {
@@ -1725,6 +1682,9 @@
       },
       {
         "colorSquadTargetIndicator": "#fafa08e6"
+      },
+      {
+        "colorSquadTargetIndicatorText": "#fafa08e6"
       },
       {
         "iconOuterCaptureZone": "capturezone_big_ring.svg:132:168:K"
@@ -1802,7 +1762,7 @@
         "iconResque": "radar_circle"
       },
       {
-        "iconTarget": "target_selected"
+        "iconTarget": "target_selected.svg:23:23:K"
       },
       {
         "iconWinch": "winch_icon.svg:50:50:K"
@@ -1832,13 +1792,13 @@
         "iconLeakage": "leaking_icon"
       },
       {
-        "iconShipAiGunnersTarget0": "ship_main_caliber_sight"
+        "iconShipAiGunnersTarget0": "ship_main_caliber_sight.svg:43:43:K"
       },
       {
-        "iconShipAiGunnersTarget1": "ship_secondary_caliber_sight"
+        "iconShipAiGunnersTarget1": "ship_secondary_caliber_sight.svg:33:33:K"
       },
       {
-        "iconShipAiGunnersTarget3": "ship_aa_caliber_sight"
+        "iconShipAiGunnersTarget3": "ship_aa_caliber_sight.svg:25:25:K"
       },
       {
         "iconModulesOfAirfieldAirfield": "basezone_landing_strip.svg:60:60:K"
@@ -2103,6 +2063,21 @@
       },
       {
         "airfieldIndicatorHeight": 50.0
+      },
+      {
+        "minCZIconHeightAboveGround": 35.0
+      },
+      {
+        "czHudIconHeightAboveGround": 5.0
+      },
+      {
+        "scaleCaptureZoneHud": 1.0
+      },
+      {
+        "fontScaleCaptureZoneHud": 0.85
+      },
+      {
+        "fontOffsetCaptureZoneHud": 5.0
       },
       {
         "indicatorsCommon": {
@@ -2491,8 +2466,8 @@
       "width": 420.0,
       "position": [0.0,20.0],
       "mask": "mask",
-      "mark": "compass_arrow",
-      "verticalLine": "left_line",
+      "mark": "compass_arrow.svg:19:20:K",
+      "verticalLine": "compass_line.svg:4:20:K",
       "markSize": [2.0,10.0],
       "font": "very_tiny_text_hud",
       "fontColor": "#ffffffff"
@@ -3077,6 +3052,11 @@
         {
           "medicalkit_activate": {
             "shortcutIdx": 11
+          }
+        },
+        {
+          "ship_ai_gunners": {
+            "shortcutIdx": -1
           }
         }
       ],

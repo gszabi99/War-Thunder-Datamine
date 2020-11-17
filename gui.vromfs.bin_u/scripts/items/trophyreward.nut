@@ -5,7 +5,7 @@
   rewardTypes = [ "multiAwardsOnWorthGold", "modsForBoughtUnit",
                   "unit", "rentedUnit",
                   "trophy", "item", "unlock", "unlockType", "resource", "resourceType",
-                  "entitlement", "gold", "warpoints", "exp", "warbonds"]
+                  "entitlement", "gold", "warpoints", "exp", "warbonds", "unlockAddProgress" ]
   iconsRequired = [ "trophy", "item", "unlock", "entitlement", "resource" ]
   specialPrizeParams = {
     rentedUnit = function(config, prize) {
@@ -159,7 +159,7 @@ trophyReward.getImageByConfig <- function getImageByConfig(config = null, onlyIm
   else if (rewardType == "warpoints")
     image = getFullWPIcon(rewardValue)
   else if (rewardType == "warbonds")
-    image = getFullWarbondsIcon(rewardValue)
+    image = getFullWarbondsIcon()
 
   if (image == "")
     image = ::LayersIcon.getIconData(style)
@@ -226,18 +226,12 @@ trophyReward.getWPIcon <- function getWPIcon(wp)
 
 trophyReward.getFullWPIcon <- function getFullWPIcon(wp)
 {
-  local layer = ::LayersIcon.findLayerCfg("item_warpoints")
-  local wpLayer = ::LayersIcon.findLayerCfg(getWPIcon(wp))
-  if (layer && wpLayer)
-    layer.img <- ::getTblValue("img", wpLayer, "")
-  return ::LayersIcon.genDataFromLayer(layer)
+  return ::LayersIcon.getIconData(getWPIcon(wp), null, null, "reward_warpoints")
 }
 
-trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon(wbId)
+trophyReward.getFullWarbondsIcon <- function getFullWarbondsIcon()
 {
-  local layer = ::LayersIcon.findLayerCfg("item_warpoints")
-  layer.img <- "#ui/gameuiskin#item_warbonds"
-  return ::LayersIcon.genDataFromLayer(layer)
+  return ::LayersIcon.genDataFromLayer(::LayersIcon.findLayerCfg("item_warbonds"))
 }
 
 trophyReward.getRestRewardsNumLayer <- function getRestRewardsNumLayer(configsArray, maxNum)

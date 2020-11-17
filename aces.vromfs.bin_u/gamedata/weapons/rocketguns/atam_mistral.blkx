@@ -6,6 +6,7 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "atam_mistral_rocket",
+  "mesh_deployed": "atam_mistral_rocket_deployed",
   "tags": [],
   "rocket": [
     {
@@ -123,7 +124,16 @@
       "explosionPatchRadius": 5.0
     },
     {
-      "smokeEffect": "hydra_smoke_modern"
+      "fireEffect": "rocket_fire_light_huge"
+    },
+    {
+      "smokeEffect": ""
+    },
+    {
+      "hazeEffect": "haze_missile"
+    },
+    {
+      "endSmokeViscosity": 0.5
     },
     {
       "maxDistance": 10000.0
@@ -141,7 +151,7 @@
       "fuseDelayDist": 1.0
     },
     {
-      "explodeTreshold": 10.0
+      "explodeTreshold": 0.1
     },
     {
       "guidanceType": "ir"
@@ -178,9 +188,6 @@
     },
     {
       "explodeRadius": [1.0,3.5]
-    },
-    {
-      "explosionPatchRadius": 5.0
     },
     {
       "rendinstDamageRadius": 15.0

@@ -14,5 +14,7 @@
 
 ::debug_get_clan_blk <- function debug_get_clan_blk()
 {
-  return ::DataBlock("../prog/scripts/debugData/debugClan.blk")
+  local blk = ::DataBlock()
+  blk.load("../prog/scripts/debugData/debugClan.blk")
+  return blk
 }

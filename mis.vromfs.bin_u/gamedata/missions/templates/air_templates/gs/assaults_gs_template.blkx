@@ -434,9 +434,17 @@
           ]
         },
         {
-          "triggerEnable": {
-            "target": "at_rearm"
-          }
+          "triggerEnable": [
+            {
+              "target": "at_rearm"
+            },
+            {
+              "target": "at_t1_kill_counter"
+            },
+            {
+              "target": "at_t2_kill_counter"
+            }
+          ]
         }
       ],
       "else_actions": []
@@ -464,6 +472,9 @@
             "fullRestore": false
           },
           {
+            "target_marking": 0
+          },
+          {
             "target": "at_t1_assault"
           },
           {
@@ -487,6 +498,84 @@
             "objects": "at_t2_assault"
           }
         ]
+      },
+      "else_actions": []
+    },
+    "at_t1_kill_counter": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "at_t1_assault",
+          "var": "at_t1_kill_count"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "at_t1_kill_count"
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "team": "A"
+        }
+      },
+      "else_actions": []
+    },
+    "at_t2_kill_counter": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "func": "more",
+          "value": 0,
+          "object": "at_t2_assault",
+          "var": "at_t1_kill_count"
+        }
+      },
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "at_t2_kill_count"
+        },
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "team": "B"
+        }
       },
       "else_actions": []
     }
@@ -514,7 +603,9 @@
     "at_t1_spawn_name": "",
     "at_t2_spawn_name": "",
     "at_spawn_set_idx": 0,
-    "at_game_mode": "gs"
+    "at_game_mode": "gs",
+    "at_t1_kill_count": 0,
+    "at_t2_kill_count": 0
   },
   "dialogs": [],
   "airfields": [],

@@ -2,13 +2,14 @@ local onMainMenuReturnActions = require("scripts/mainmenu/onMainMenuReturnAction
 
 local time = require("scripts/time.nut")
 local penalties = require("scripts/penitentiary/penalties.nut")
-local itemNotifications = ::require("scripts/items/itemNotifications.nut")
+local itemNotifications = require("scripts/items/itemNotifications.nut")
+local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
-local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+local { checkNewClientVersionEvent } = require("scripts/matching/serviceNotifications/newClientVersionNotify.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -41,6 +42,8 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
 
   if (isAllowPopups)
   {
+    handler.doWhenActive(@() checkNewClientVersionEvent())
+
     handler.doWhenActive(::gui_handlers.FontChoiceWnd.openIfRequired)
 
     handler.doWhenActive(@() checkInvitesAfterFlight() )

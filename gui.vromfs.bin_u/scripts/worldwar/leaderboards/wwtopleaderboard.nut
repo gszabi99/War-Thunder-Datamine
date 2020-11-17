@@ -31,7 +31,7 @@ local function generateTableRow(row, rowIdx, lbCategory)
     {
       id = "name"
       width = "0.7pw"
-      tdAlign = "left"
+      tdalign = "left"
       text = needAddClanTag
         ? ::g_contacts.getPlayerFullName(playerName, clanTag)
         : playerName
@@ -42,7 +42,7 @@ local function generateTableRow(row, rowIdx, lbCategory)
   if (lbCategory)
   {
     local td = lbCategory.getItemCell(::getTblValue(lbCategory.field, row, -1))
-    td.tdAlign <- "right"
+    td.tdalign <- "right"
     rowData.append(td)
   }
 

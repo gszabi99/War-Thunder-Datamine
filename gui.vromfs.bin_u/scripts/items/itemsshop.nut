@@ -3,10 +3,10 @@ local workshop = require("scripts/items/workshop/workshop.nut")
 local seenList = require("scripts/seen/seenList.nut")
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local workshopCraftTreeWnd = require("scripts/items/workshop/workshopCraftTreeWnd.nut")
-local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -38,6 +38,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   visibleTabs = null //[]
   curSheet = null
   curItem = null //last selected item to restore selection after change list
+  hoverHoldAction = null
 
   isSheetsInUpdate = false
   isItemTypeChangeUpdate = false
@@ -46,22 +47,30 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   itemsList = null
   curPage = 0
   shouldSetPageByItem = false
-  currentFocusItem = 3
+  needHoverSelect = false
 
   slotbarActions = [ "preview", "testflightforced", "sec_weapons", "weapons", "info" ]
   displayItemTypes = null
   sheetsArray = null
+  navItems = null
 
   subsetList = null
   curSubsetId = null
   initSubsetId = null
+
+  navigationHandlerWeak = null
+  headerOffsetX = null
+  isNavCollapsed = false
 
   // Used to avoid expensive get...List and further sort.
   itemsListValid = false
 
   function initScreen()
   {
+    needHoverSelect = ::show_console_buttons
+    initNavigation()
     sheets.updateWorkshopSheets()
+    initSheetsOnce()
 
     local sheetData = curTab < 0 && curItem ? sheets.getSheetDataByItem(curItem) : null
     if (sheetData)
@@ -73,17 +82,13 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
     curSheet = sheetData ? sheetData.sheet
       : curSheet ? sheets.findSheet(curSheet, sheets.ALL) //it can be simple table, need to find real sheeet by it
-      : sheets.ALL
+      : sheetsArray.findvalue((@(s) s.isEnabled(curTab)).bindenv(this))
     initSubsetId = sheetData ? sheetData.subsetId : initSubsetId
 
     fillTabs()
 
-    initFocusArray()
-    local itemsListObj = getItemsListObj()
-    if (itemsListObj.childrenCount() > 0)
-      itemsListObj.select()
-
     scene.findObject("update_timer").setUserData(this)
+    hoverHoldAction = mkHoverHoldAction(scene.findObject("hover_hold_timer"))
 
     // If items shop was opened not in menu - player should not
     // be able to navigate through sheets and tabs.
@@ -97,6 +102,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("sorting_block", false)
 
     updateWarbondsBalance()
+    moveMouseToMainList()
   }
 
   function reinitScreen(params = {})
@@ -105,27 +111,62 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     initScreen()
   }
 
-  function getMainFocusObj()
+  focusSheetsList = @() ::move_mouse_on_child_by_value(getSheetsListObj())
+
+  function initNavigation()
   {
-    return null
+    local handler = ::handlersManager.loadHandler(
+      ::gui_handlers.navigationPanel,
+      { scene                  = scene.findObject("control_navigation")
+        onSelectCb             = ::Callback(doNavigateToSection, this)
+        onClickCb              = ::Callback(onNavItemClickCb, this)
+        onCollapseCb           = ::Callback(onNavCollapseCb, this)
+        needShowCollapseButton = true
+        headerHeight           = "1@buttonHeight"
+      })
+    registerSubHandler(navigationHandlerWeak)
+    navigationHandlerWeak = handler.weakref()
+    headerOffsetX = handler.headerOffsetX
   }
 
-  function getMainFocusObj2()
-  {
-    return getSheetsListObj()
+  function doNavigateToSection(obj) {
+    if (obj?.isCollapsable)
+      return
+
+    markCurrentPageSeen()
+
+    local newSheet = sheetsArray?[obj.shIdx]
+    if (!newSheet)
+      return
+
+    isItemTypeChangeUpdate = true  //No need update item when fill subset if changed item type
+    curSheet = newSheet
+    itemsListValid = false
+
+    if (obj?.subsetId)
+    {
+      subsetList = curSheet.getSubsetsListParameters().subsetList
+      curSubsetId = initSubsetId ?? obj.subsetId
+      initSubsetId = null
+      curSheet.setSubset(curSubsetId)
+    }
+
+    isItemTypeChangeUpdate = false
+    if (!isSheetsInUpdate)
+      applyFilters()
   }
 
-  function getMainFocusObj3()
+  function onNavItemClickCb(obj)
   {
-    local obj = getItemsListObj()
-    return obj.childrenCount() ? obj : null
-  }
+    if (!obj?.isCollapsable || !navigationHandlerWeak)
+      return
 
-  function focusSheetsList()
-  {
-    local obj = getSheetsListObj()
-    obj.select()
-    checkCurrentFocusItem(obj)
+    local collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
+    local subsetId = curSubsetId
+    navigationHandlerWeak.onCollapse(collapseBtnObj)
+    if (collapseBtnObj.getParent().collapsed == "no")
+      getSheetsListObj().setValue(//set selection on chapter item if not found item with subsetId just in case to avoid crash
+        ::u.search(navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
   function getTabName(tabIdx)
@@ -208,17 +249,32 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
           }.bindenv(this) )
       : sheets.types
 
-    local view = {
-      items = sheetsArray.map(@(sh) {
-        text = ::loc(sh.locId)
-        autoScrollText = true
-        unseenIcon = SEEN.ITEMS_SHOP //intial to create unseen block.real value will be set on update.
+    local count = 0
+    navItems = []
+    foreach(idx, sh in sheetsArray)
+    {
+      local isCollapsable = sh.hasSubLists()
+      local item = {
+        shIdx = idx
+        unseenIcon = SEEN.ITEMS_SHOP
         unseenIconId = "unseen_icon"
-      })
+      }
+      navItems.append(item.__merge({
+        idx = count++
+        text = ::loc(sh.locId)
+        isCollapsable = isCollapsable
+        }))
+      if (isCollapsable)
+        foreach(param in sh.getSubsetsListParameters().subsetList)
+          navItems.append(item.__merge({
+            idx = count++
+            text = ::loc(param.locId)
+            subsetId = param.id
+         }))
     }
 
-    local data = ::handyman.renderCached("gui/items/shopFilters", view)
-    guiScene.replaceContentFromText(scene.findObject("filter_tabs"), data, data.len(), this)
+    if (navigationHandlerWeak)
+      navigationHandlerWeak.setNavItems(navItems)
   }
 
   function updateSheets()
@@ -230,10 +286,10 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local typesObj = getSheetsListObj()
     local seenListId = getTabSeenId(curTab)
     local curValue = -1
-    local hasSubLists = false
-    local visibleSheetsArray = []
-    foreach(idx, sh in sheetsArray)
+
+    foreach(idx, item in navItems)
     {
+      local sh = sheetsArray[item.shIdx]
       local isEnabled = sh.isEnabled(curTab)
       local child = typesObj.getChild(idx)
       child.show(isEnabled)
@@ -242,19 +298,15 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       if (!isEnabled)
         continue
 
-      if (curValue < 0 || curSheet == sh)
+      if ((curValue < 0 || curSheet == sh) && !item?.isCollapsable)
         curValue = idx
 
-      visibleSheetsArray.append({idx = idx, text = ::loc(sh.locId)})
-      hasSubLists = hasSubLists || sh.hasSubLists()
-      child.findObject("unseen_icon").setValue(bhvUnseen.makeConfigStr(seenListId, sh.getSeenId()))
+      child.findObject("unseen_icon").setValue(bhvUnseen.makeConfigStr(seenListId,
+        item?.subsetId ? sh.getSubsetSeenListId(item.subsetId) : sh.getSeenId()))
     }
+
     if (curValue >= 0)
       typesObj.setValue(curValue)
-
-    if (hasSubLists)
-      setSheetsInOneLineWithSubset(visibleSheetsArray)
-    showSceneBtn("subset_list_nest", hasSubLists)
 
     guiScene.setUpdatesEnabled(true, true)
     isSheetsInUpdate = false
@@ -262,62 +314,38 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     applyFilters()
   }
 
-  function setSheetsInOneLineWithSubset(visibleSheetsArray)
+  function onNavCollapseCb (isCollapsed)
   {
-    initItemsListSizeOnce()
-
-    local typesObj = getSheetsListObj()
-    local visibleSheetsCount = visibleSheetsArray.len()
-    local minSheetWidth = ::to_pixels("1@minShopFilterWidthWithUnseen")
-    local subsetListWidthWithPadding = ::to_pixels("2@framePadding + 1@subsetComboBoxWidth + 1@listboxPad")
-    local sheetIntervalWidth = ::to_pixels("(1 + {0})@listboxItemsInterval".subst(visibleSheetsCount))
-    local maxSheetsListTextWidth = windowSize[0] - minSheetWidth * visibleSheetsCount
-      - subsetListWidthWithPadding - sheetIntervalWidth
-
-    foreach (idx, sh in visibleSheetsArray)
-    {
-      local maxTextWidth = maxSheetsListTextWidth / (visibleSheetsCount - idx)
-      local textWidth = ::min(daguiFonts.getStringWidthPx(sh.text, "fontSmall", guiScene), maxTextWidth)
-      maxSheetsListTextWidth = maxSheetsListTextWidth - textWidth
-      if (textWidth < maxTextWidth)
-        continue
-
-      local sheetObj = typesObj.getChild(sh.idx)
-      sheetObj["width"] = minSheetWidth + textWidth
-      sheetObj.tooltip = sh.text
-    }
-  }
-
-  function onItemTypeChange(obj)
-  {
-    markCurrentPageSeen()
-
-    local newSheet = sheetsArray?[obj.getValue()]
-    if (!newSheet)
-      return
-
-    isItemTypeChangeUpdate = true  //No need update item when fill subset if changed item type
-    curSheet = newSheet
-    itemsListValid = false
-
-    fillSubset()
-    isItemTypeChangeUpdate = false
-    if (!isSheetsInUpdate)
-      applyFilters()
+    isNavCollapsed = isCollapsed
+    applyFilters()
   }
 
   function initItemsListSizeOnce()
   {
-    if (itemsPerPage >= 1)
-      return
-
-    local wndItemsShopObj = scene.findObject("wnd_items_shop")
-    local sizes = ::g_dagui_utils.adjustWindowSize(wndItemsShopObj, getItemsListObj(),
-      "@itemWidth", "@itemHeight", "@itemSpacing", "@itemSpacing", { windowSizeY = 0 })
-    scene.findObject("main_block").height = sizes.sizeY * sizes.itemsCountY //need const height of items list after resize
-      + (sizes.itemsCountY + 1) * sizes.spaceY
-    itemsPerPage = sizes.itemsCountX * sizes.itemsCountY
-    windowSize = sizes.windowSize
+    local listObj = getItemsListObj()
+    local emptyListObj = scene.findObject("empty_items_list")
+    local infoObj = scene.findObject("item_info_nest")
+    local collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
+    local leftPos = isNavCollapsed ? collapseBtnWidth : "0"
+    local nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
+    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    local itemsCountX = ::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+      / ::to_pixels(itemWidthWithSpace)
+    local itemsCountY = ::to_pixels(
+      "sh-@bottomMenuPanelHeight-1@frameHeaderHeight-1@frameFooterHeight-3@itemSpacing-1@blockInterval")
+        / ::to_pixels(itemHeightWithSpace)
+    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    scene.findObject("main_block").height = $"{itemsCountY}*({itemHeightWithSpace})"
+    scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
+    showSceneBtn("nav_separator", !isNavCollapsed)
+    listObj.width = contentWidth
+    listObj.left = leftPos
+    emptyListObj.width = contentWidth
+    emptyListObj.left = leftPos
+    infoObj.left = leftPos
+    infoObj.width = "fw"
+    itemsPerPage = (itemsCountX * itemsCountY ).tointeger()
   }
 
   function applyFilters(resetPage = true)
@@ -373,6 +401,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
             needShowActionButtonAlways = false
           }
           : null
+        showTooltip = !needHoverSelect
+        onHover = "onItemHover"
       }))
     }
     ::g_item_limits.requestLimits()
@@ -498,10 +528,12 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     updateItemInfo()
   }
 
+  moveMouseToMainList = @() ::move_mouse_on_child_by_value(getItemsListObj())
+
   function getCurItem()
   {
     local obj = getItemsListObj()
-    if (!::check_obj(obj) || !obj.isFocused())
+    if (!::check_obj(obj))
       return null
 
     return itemsList?[obj.getValue() + curPage * itemsPerPage]
@@ -526,8 +558,12 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateItemInfo()
   {
-    markItemSeen(getCurItem())
-    ::ItemsManager.fillItemDescr(getCurItem(), scene.findObject("item_info"), this, true, true)
+    local item = getCurItem()
+    markItemSeen(item)
+    local infoObj = scene.findObject("item_info")
+    infoObj.scrollToView(true)
+    ::ItemsManager.fillItemDescr(item, infoObj, this, true, true)
+    showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     updateButtons()
   }
 
@@ -550,8 +586,18 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     getTabSeenList(curTab).markSeen(list)
   }
 
+  function updateButtonsBar() {
+    local obj = getItemsListObj()
+    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    showSceneBtn("item_actions_bar", isButtonsVisible)
+    return isButtonsVisible
+  }
+
   function updateButtons()
   {
+    if (!updateButtonsBar())
+      return
+
     local item = getCurItem()
     local mainActionData = item ? item.getMainActionData() : null
     local limitsCheckData = item ? item.getLimitsCheckData() : null
@@ -664,9 +710,15 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       item.doAltAction({ obj = obj, align = "top" })
   }
 
-  function onUnitHover(obj)
+  function onJumpToDescPanelAccessKey(obj)
   {
-    openUnitActionsList(obj, true, true)
+    if (!::show_console_buttons)
+      return
+    local containerObj = scene.findObject("item_info")
+    if (::check_obj(containerObj) && containerObj.isHovered())
+      ::move_mouse_on_obj(getCurItemObj())
+    else
+      ::move_mouse_on_obj(containerObj)
   }
 
   function onTimer(obj, dt)
@@ -723,7 +775,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSheetsListObj()
   {
-    return scene.findObject("sheets_list")
+    return scene.findObject("nav_list")
   }
 
   /**
@@ -813,6 +865,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   //dependence by blk
   onChangeSortOrder = @(obj) null
   onChangeSortParam = @(obj) null
+  onShowBattlePass = @(obj) null
 
   function onEventBeforeStartCustomMission(params)
   {
@@ -831,7 +884,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   function onItemsListFocusChange()
   {
     if (isValid())
-      updateItemInfo()
+      updateButtons()
   }
 
   function onOpenCraftTree()
@@ -851,58 +904,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     })
   }
 
-  function getSubsetListView()
-  {
-    local view = {
-      id       = "subset_list"
-      btnName  = "RB"
-      funcName = "onSubsetChange"
-      values   = subsetList.map((@(subset) {
-        valueId    = subset.id
-        text       = ::loc(subset.locId)
-        unseenIcon = bhvUnseen.makeConfigStr(getTabSeenId(curTab), curSheet.getSubsetSeenListId(subset.id))
-      }).bindenv(this))
-    }
-
-    return ::handyman.renderCached("gui/commonParts/comboBox", view)
-  }
-
-  function fillSubset()
-  {
-    local hasSubLists = curSheet.hasSubLists()
-    local subsetNestObj = showSceneBtn("subset_list_bg", hasSubLists)
-    if (!hasSubLists)
-    {
-      subsetList = null
-      curSubsetId = null
-      return
-    }
-
-    local subsetListParameters = curSheet.getSubsetsListParameters()
-    subsetList = subsetListParameters.subsetList
-    curSubsetId = initSubsetId != null ? initSubsetId : subsetListParameters.curSubsetId
-    initSubsetId = null
-    local curIdx = subsetList.findindex((@(subset) subset.id == curSubsetId).bindenv(this)) ?? 0
-    local data = getSubsetListView()
-    guiScene.replaceContentFromText(subsetNestObj, data, data.len(), this)
-    scene.findObject("subset_list").setValue(curIdx)
-  }
-
-  function onSubsetChange(obj)
-  {
-    if (isItemTypeChangeUpdate || !curSheet.hasSubLists())
-      return
-
-    markCurrentPageSeen()
-
-    local curSubsetIdx = obj.getValue()
-    curSubsetId = subsetList[curSubsetIdx].id
-    curSheet.setSubset(curSubsetId)
-
-    itemsListValid = false
-    applyFilters()
-  }
-
   onShowSpecialTasks = @(obj) null
 
   function showAccentToCraftTreeBtn(curSet, craftTreeBtnObj) {
@@ -917,5 +918,17 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       cb = openCraftTree
     }]
     ::gui_modal_tutor(steps, this, true)
+  }
+
+  function onItemHover(obj) {
+    if (!needHoverSelect)
+      return
+    hoverHoldAction(obj, function(focusObj) {
+      local idx = focusObj.holderId.tointeger()
+      local value = idx - curPage * itemsPerPage
+      local listObj = getItemsListObj()
+      if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
+        listObj.setValue(value)
+    }.bindenv(this))
   }
 }

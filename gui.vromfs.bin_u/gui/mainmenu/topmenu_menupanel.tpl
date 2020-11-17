@@ -1,12 +1,5 @@
 tdiv {
   id:t='top_menu_panel_place'
-  behaviour:t='wrapNavigator'
-  navigatorShortcuts:t='yes'
-  childsActivate:t='yes'
-  on_wrap_up:t='onWrapUp'
-  on_wrap_down:t='onWrapDown'
-  on_wrap_left:t='onWrapLeft'
-  on_wrap_right:t='onWrapRight'
 
   <<#section>>
   emptyButton {
@@ -29,6 +22,8 @@ tdiv {
       pos:t='<<tmHoverMenuPos>> - 1@topMenuHoverMenuIndent, ph'; position:t='absolute'
       overflow:t='hidden'
       tooltip:t='' // Overrides underlying widgets tooltips.
+      on_anim_finish:t='onDropdownAnimFinish'
+      on_hover:t='onDropdownHover'
 
       height-base:t='0'; height-end:t='100'
       _size-timer:t='0'
@@ -49,15 +44,15 @@ tdiv {
         moveY:t='linear';
         showSelect:t='yes'
         disableFocusParent:t='yes'
-        on_wrap_up:t='unstickLastDropDown'
+        on_wrap_up:t='onBackDropdownMenu'
         on_wrap_left:t='stickLeftDropDown'
         on_wrap_right:t='stickRightDropDown'
 
         on_activate:t='topmenuMenuActivate'
-        on_cancel_edit:t='unstickGCDropdownMenu'
+        on_cancel_edit:t='onBackDropdownMenu'
 
         line {
-          inactive:t='yes'
+          enable:t='no'
         }
 
         <<#columns>>

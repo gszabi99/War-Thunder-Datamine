@@ -1,4 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local unitActions = require("scripts/unit/unitActions.nut")
 
 enum windowState
 {
@@ -38,7 +39,6 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   country         = ""
   countries       = null
 
-  unitListDisplay = false
   unitList        = null
   listType        = 0
   unitTypesList   = null
@@ -50,6 +50,9 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!scene)
       return goBack()
+
+    unitList = []
+    unitTypesList = []
 
     initUnitTypes()
     initCountriesList()
@@ -67,23 +70,6 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     listType = ::get_es_unit_type(unit)
     updateWindow()
-
-    initFocusArray()
-  }
-
-  function getMainFocusObj()
-  {
-    return getObj("countries_list")
-  }
-
-  function getMainFocusObj2()
-  {
-    return getObj("unit_types_list")
-  }
-
-  function getMainFocusObj3()
-  {
-    return getObj("convert_slider")
   }
 
   function updateData()
@@ -115,8 +101,11 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     foreach (unitForList in ::all_units)
       if (unitForList.shopCountry == country
           && ::canResearchUnit(unitForList)
+          && !unitForList.isSquadronVehicle()
           && ::get_es_unit_type(unitForList) == unitType)
         unitList.append(unitForList)
+    local ediff = ::get_current_ediff()
+    unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))
   }
 
   function getCurExpValue()
@@ -165,13 +154,15 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillUnitList()
   {
-    if (!unitListDisplay)
-      return
-    local unitListBlk = ""
+    local isShow = unitList.len() > 1
     local nestObj = scene.findObject("choose_unit_list")
+    nestObj.show(isShow)
+    local unitListBlk = []
     foreach(unitForResearch in unitList)
-      unitListBlk += ::build_aircraft_item(unitForResearch.name, unitForResearch)
+      unitListBlk.append(::build_aircraft_item(unitForResearch.name, unitForResearch))
+    unitListBlk = "".join(unitListBlk)
     guiScene.replaceContentFromText(nestObj, unitListBlk, unitListBlk.len(), this)
+    nestObj.setValue(unitList.indexof(unit) ?? -1)
     foreach(unitForResearch in unitList)
       ::fill_unit_item_timers(nestObj.findObject(unitForResearch.name), unitForResearch)
   }
@@ -425,15 +416,6 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillCostGold()
     updateButtons()
   }
-
-  function toggleUnitList()
-  {
-    local unitListObj = scene.findObject("choose_unit_list")
-    unitListDisplay = !unitListDisplay
-    unitListObj.moveOut = unitListDisplay
-                          ? "yes"
-                          : "no"
-  }
   //----END_VIEW----//
 
   //----CONTROLLER----//
@@ -451,11 +433,8 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateWindow()
 
     //TODO: do this in updateWindow
-    if (unitListDisplay)
-    {
-      loadUnitList(::get_es_unit_type(unit))
-      fillUnitList()
-    }
+    loadUnitList(::get_es_unit_type(unit))
+    fillUnitList()
 
     ::showDiscount(scene.findObject("convert-discount"), "exp_to_gold_rate", country, null, true)
   }
@@ -469,27 +448,31 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     local selObj = obj.getChild(value)
 
     local unitType = unitTypes.getByArmyId(selObj?.id)
-    if (unitType != unitTypes.INVALID)
-      handleSwitchUnitList(unitType.esUnitType)
+    updateUnitList(unitType.esUnitType)
   }
 
-  function handleSwitchUnitList(unitType)
+  function updateUnitList(unitType)
   {
-    if (listType == unitType && unitListDisplay)
+    listType = unitType
+    unit = getCountryResearchUnit(country, unitType)
+    loadUnitList(unitType)
+    fillUnitList()
+    updateWindow()
+  }
+
+  function onUnitSelect(obj)
+  {
+    local newUnit = unitList[obj.getValue()]
+    if (!::checkForResearch(newUnit))
     {
-      toggleUnitList()
-      updateWindow()
+      obj.setValue(unitList.indexof(unit))
       return
     }
 
-    if (!unitListDisplay)
-      toggleUnitList()
-
-    listType = unitType
-    loadUnitList(unitType)
-    fillUnitList()
-    unit = getCountryResearchUnit(country, unitType)
-    updateWindow()
+    unitActions.research(newUnit, true, ::Callback(function() {
+      unit = newUnit
+      updateWindow()
+    }, this))
   }
 
   function getAvailableUnitForConversion()
@@ -598,6 +581,18 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     isRefreshingAfterConvert = false
   }
 
+  function onEventUnitResearch(p)
+  {
+    local newUnit = ::getAircraftByName(p?.unitName ?? null)
+    if (newUnit == unit)
+      return
+    if (!newUnit || newUnit.shopCountry != country || ::get_es_unit_type(newUnit) != listType)
+      return
+
+    unit = newUnit
+    updateWindow()
+  }
+
   function onEventUnitBought(params)
   {
     local unitName = ::getTblValue("unitName", params)
@@ -612,11 +607,10 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
       isNewUnit = true
       afterCloseFunc = (@(handler, unit) function() {
           if (::handlersManager.isHandlerValid(handler))
-            handler.handleSwitchUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
+            handler.updateUnitList(::get_es_unit_type(handler.getAvailableUnitForConversion() || unit))
         })(handler, unit)
     }
 
-    unitListDisplay = false
     ::gui_start_selecting_crew(config)
   }
 

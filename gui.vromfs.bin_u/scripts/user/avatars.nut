@@ -1,6 +1,6 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
-local bhvAvatar = ::require("scripts/user/bhvAvatar.nut")
-local seenAvatars = ::require("scripts/seen/seenList.nut").get(SEEN.AVATARS)
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
+local bhvAvatar = require("scripts/user/bhvAvatar.nut")
+local seenAvatars = require("scripts/seen/seenList.nut").get(SEEN.AVATARS)
 
 local DEFAULT_PILOT_ICON = "cardicon_default"
 

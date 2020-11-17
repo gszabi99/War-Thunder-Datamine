@@ -737,8 +737,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2055,6 +2056,7 @@
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": false,
+            "forceEnabled": true,
             "hasHorizontal": true,
             "horizontalOmegaMult": 1.0,
             "horizontalSpeedLimitKPH": 75.0,
@@ -2115,7 +2117,7 @@
           "errExplTime": 0.0,
           "turret": [
             {
-              "head": "bone_gun"
+              "head": "bone_turret"
             },
             {
               "gun": "bone_gun"
@@ -2151,8 +2153,8 @@
             }
           ],
           "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-6.0,60.0]
+            "yaw": [0.0,0.0],
+            "pitch": [0.0,0.0]
           },
           "limitsTable": {
             "lim1": [-180.0,-145.0,-2.0,60.0],
@@ -3034,6 +3036,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3411,6 +3422,7 @@
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
+                  "forceEnabled": true,
                   "hasHorizontal": true,
                   "horizontalOmegaMult": 1.0,
                   "horizontalSpeedLimitKPH": 75.0,
@@ -3471,7 +3483,7 @@
                 "errExplTime": 0.0,
                 "turret": [
                   {
-                    "head": "bone_gun"
+                    "head": "bone_turret"
                   },
                   {
                     "gun": "bone_gun"
@@ -3507,8 +3519,8 @@
                   }
                 ],
                 "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-6.0,60.0]
+                  "yaw": [0.0,0.0],
+                  "pitch": [0.0,0.0]
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-145.0,-2.0,60.0],

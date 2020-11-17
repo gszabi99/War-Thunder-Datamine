@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local systemMsg = ::require("scripts/utils/systemMsg.nut")
+local systemMsg = require("scripts/utils/systemMsg.nut")
 local wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwOperationUnitsGroups = require("scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")

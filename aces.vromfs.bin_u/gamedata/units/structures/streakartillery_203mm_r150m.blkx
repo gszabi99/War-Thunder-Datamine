@@ -1,124 +1,210 @@
-{
-  "model": "122mm_m30_a",
-  "hasExpl": true,
-  "hasDmg2": true,
-  "collisionSphere0": [0.0,-1.5,0.0,5.0],
-  "collisionSphere1": [5.0,2.0,0.0,1.0],
-  "timeToFire": 5.0,
-  "maxFwdSpeed": 0.0,
-  "maxRevSpeed": 0.0,
-  "maxAngSpeed": 0.0,
-  "maxAccel": 0.0,
-  "maxDecel": 0.0,
-  "maxAngAccel0": 0.0,
-  "maxAngAccelV": 0.0,
-  "maxAngAccel": 0.0,
-  "groundNormSmoothViscosity": 0.1,
-  "subclass": "fortification",
-  "onRadarAs": "aam",
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "ground_model_expl",
-  "fireFx": "ground_model_fire",
-  "toGround": true,
-  "expClass": "exp_fortification",
-  "artilleryDispersion": 15.0,
-  "artilleryAdjustmentDispersion": 30.0,
-  "artilleryNumBullets": 4,
-  "artilleryNumBulletsForAdjustment": 4,
-  "artilleryNumAdjustmentsStrikes": 3,
-  "artilleryTimeToFirstShot": 30.0,
-  "artilleryTimeBetweenShots": 0.5,
-  "artilleryTimeBetweenAdjustmentsShots": 0.5,
-  "artilleryTimeBetweenAdjustmentsStrikes": 2.0,
-  "artilleryTimeBetweenStrikes": 2.0,
-  "artilleryAngleOfDecline": 40.0,
-  "artilleryBulletStartSpeed": 400.0,
-  "artilleryStrikeRadius": 150.0,
-  "attach": {
-    "inc_soldier": "sov_middle_soldier",
-    "inc_gunner00": "sov_middle_gun_soldier",
-    "inc_gunner01": "sov_middle_gun_soldier2",
-    "inc_gunner02": "sov_middle_gun_soldier"
+[
+  {
+    "model": "122mm_m30_a"
   },
-  "DamageParts": {
-    "steel": {
-      "body_dm": {
-        "hp": 240.0
-      }
-    },
-    "armor50_tanks": {
-      "armor1_dm": {
-        "hp": 99999.0
-      }
+  {
+    "hasExpl": true
+  },
+  {
+    "hasDmg2": true
+  },
+  {
+    "collisionSphere0": [0.0,-1.5,0.0,5.0]
+  },
+  {
+    "collisionSphere1": [5.0,2.0,0.0,1.0]
+  },
+  {
+    "timeToFire": 5.0
+  },
+  {
+    "maxFwdSpeed": 0.0
+  },
+  {
+    "maxRevSpeed": 0.0
+  },
+  {
+    "maxAngSpeed": 0.0
+  },
+  {
+    "maxAccel": 0.0
+  },
+  {
+    "maxDecel": 0.0
+  },
+  {
+    "maxAngAccel0": 0.0
+  },
+  {
+    "maxAngAccelV": 0.0
+  },
+  {
+    "maxAngAccel": 0.0
+  },
+  {
+    "groundNormSmoothViscosity": 0.1
+  },
+  {
+    "fireFx": "fire_ground_black_fx"
+  },
+  {
+    "subclass": "fortification"
+  },
+  {
+    "onRadarAs": "aam"
+  },
+  {
+    "bulletHitFx": "ground_model_hit"
+  },
+  {
+    "partDamageFx": "part_damage"
+  },
+  {
+    "explosionFx": "ground_model_expl"
+  },
+  {
+    "fireFx": "ground_model_fire"
+  },
+  {
+    "toGround": true
+  },
+  {
+    "expClass": "exp_fortification"
+  },
+  {
+    "artilleryDispersion": 15.0
+  },
+  {
+    "artilleryAdjustmentDispersion": 30.0
+  },
+  {
+    "artilleryNumBullets": 4
+  },
+  {
+    "artilleryNumBulletsForAdjustment": 4
+  },
+  {
+    "artilleryNumAdjustmentsStrikes": 3
+  },
+  {
+    "artilleryTimeToFirstShot": 30.0
+  },
+  {
+    "artilleryTimeBetweenShots": 0.5
+  },
+  {
+    "artilleryTimeBetweenAdjustmentsShots": 0.5
+  },
+  {
+    "artilleryTimeBetweenAdjustmentsStrikes": 2.0
+  },
+  {
+    "artilleryTimeBetweenStrikes": 2.0
+  },
+  {
+    "artilleryAngleOfDecline": 40.0
+  },
+  {
+    "artilleryBulletStartSpeed": 400.0
+  },
+  {
+    "artilleryStrikeRadius": 150.0
+  },
+  {
+    "attach": {
+      "inc_soldier": "sov_middle_soldier",
+      "inc_gunner00": "sov_middle_gun_soldier",
+      "inc_gunner01": "sov_middle_gun_soldier2",
+      "inc_gunner02": "sov_middle_gun_soldier"
     }
   },
-  "DamageEffects": {
-    "part": {
-      "name": "body_dm",
-      "onHit": {
-        "smoke": 0.01
+  {
+    "DamageParts": {
+      "steel": {
+        "body_dm": {
+          "hp": 240.0
+        }
       },
-      "onKill": {
-        "expl": 1.0
+      "armor50_tanks": {
+        "armor1_dm": {
+          "hp": 99999.0
+        }
       }
     }
   },
-  "explosion": {
-    "expl": {
-      "node": "body",
-      "partNo": 0,
-      "timeToExplode": 1.0,
-      "preEffectName": "ground_model_fire",
-      "postEffectName": "ground_model_gray_smoke",
-      "explosionEffectName": "ground_model_expl",
-      "timeForPostEffect": 450.0,
-      "preScale": 1.0,
-      "postScale": 4.0
+  {
+    "DamageEffects": {
+      "part": {
+        "name": "body_dm",
+        "onHit": {
+          "smoke": 0.01
+        },
+        "onKill": {
+          "expl": 1.0
+        }
+      }
     }
   },
-  "class_tags": {
-    "easternfront": true,
-    "westernfront": true,
-    "country_ussr": true,
-    "anti_tank": true,
-    "year1941": true,
-    "year1942": true,
-    "year1943": true,
-    "year1944": true,
-    "year1945": true
+  {
+    "explosion": {
+      "expl": {
+        "node": "body",
+        "partNo": 0,
+        "timeToExplode": 0.5,
+        "postEffectName": "smoke_ground_black_fx",
+        "explosionEffectName": "explosion_midair_medium",
+        "timeForPostEffect": 60.0,
+        "preScale": 1.0,
+        "postScale": 1.0
+      }
+    }
   },
-  "weapon": {
-    "trigger": "gunner0",
-    "blk": "gameData/Weapons/groundModels_weapons/203mm_b4_support_user_cannon.blk",
-    "emitter": "gun1",
-    "flash": "flame1",
-    "defaultYaw": 0.0,
-    "defaultPitch": 10.0,
-    "speedYaw": 24.0,
-    "speedPitch": 24.0,
-    "fireConeAngle": 1.0,
-    "salvoAmount": 100.0,
-    "ChainfireTime": 0.0,
-    "DelayAfterShoot": 0.0,
-    "AttackMaxDistance": 1500.0,
-    "AttackMaxRadius": 1500.0,
-    "AttackMaxHeight": 1500.0,
-    "accuracyAir": 0.0,
-    "accuracyGnd": 0.6,
-    "errMeasureVel": 0.0,
-    "errMeasureVelFast": 20.0,
-    "errMeasureVelFwdShift": 0.7,
-    "errMeasureVelDir": 3.0,
-    "errTargettingOn100kmph": 0.0,
-    "errTargetting": 60.0,
-    "turret": {
-      "head": "turret1",
-      "gun": "gun1"
-    },
-    "limits": {
-      "yaw": [-180.0,180.0],
-      "pitch": [-3.0,63.0]
+  {
+    "class_tags": {
+      "easternfront": true,
+      "westernfront": true,
+      "country_ussr": true,
+      "anti_tank": true,
+      "year1941": true,
+      "year1942": true,
+      "year1943": true,
+      "year1944": true,
+      "year1945": true
+    }
+  },
+  {
+    "weapon": {
+      "trigger": "gunner0",
+      "blk": "gameData/Weapons/groundModels_weapons/203mm_b4_support_user_cannon.blk",
+      "emitter": "gun1",
+      "flash": "flame1",
+      "defaultYaw": 0.0,
+      "defaultPitch": 10.0,
+      "speedYaw": 24.0,
+      "speedPitch": 24.0,
+      "fireConeAngle": 1.0,
+      "salvoAmount": 100.0,
+      "ChainfireTime": 0.0,
+      "DelayAfterShoot": 0.0,
+      "AttackMaxDistance": 1500.0,
+      "AttackMaxRadius": 1500.0,
+      "AttackMaxHeight": 1500.0,
+      "accuracyAir": 0.0,
+      "accuracyGnd": 0.6,
+      "errMeasureVel": 0.0,
+      "errMeasureVelFast": 20.0,
+      "errMeasureVelFwdShift": 0.7,
+      "errMeasureVelDir": 3.0,
+      "errTargettingOn100kmph": 0.0,
+      "errTargetting": 60.0,
+      "turret": {
+        "head": "turret1",
+        "gun": "gun1"
+      },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-3.0,63.0]
+      }
     }
   }
-}
+]

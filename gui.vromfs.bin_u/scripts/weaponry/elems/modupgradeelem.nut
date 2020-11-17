@@ -1,5 +1,5 @@
-local elemModelType = ::require("sqDagui/elemUpdater/elemModelType.nut")
-local elemViewType = ::require("sqDagui/elemUpdater/elemViewType.nut")
+local elemModelType = require("sqDagui/elemUpdater/elemModelType.nut")
+local elemViewType = require("sqDagui/elemUpdater/elemViewType.nut")
 local { isModUpgradeable, hasActiveOverdrive } = require("scripts/weaponry/modificationInfo.nut")
 
 elemModelType.addTypes({

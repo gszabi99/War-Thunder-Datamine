@@ -1,0 +1,171 @@
+[class=optionsTable] > tr:disabled optiontext,
+[class=optionsTable] > tr:disabled activeText,
+[class=optionsTable] > tr[inactiveColor=yes] activeText,
+[class=optionsTable] > tr:disabled EditBox {
+  color:@fadedTextColor;
+}
+
+textarea[wrapRight=yes] {
+  wrap-indent:2;
+  paragraph-indent:0;
+}
+
+[mislist=yes] textarea[chapterTextAreaStyle=yes] {
+  paragraph-indent:0;
+  wrap-indent:0;
+  color:@chapterTextColor;
+}
+
+textarea.textHeader {
+  color:@activeTextColor;
+  hideEmptyText:yes;
+  paragraph-indent:0;
+  wrap-indent:0;
+}
+
+textarea.textDescription {
+  hideEmptyText:yes;
+  paragraph-indent:3;
+  wrap-indent:3;
+}
+
+[allAlignLeft=yes] textareaNoTab,
+[allAlignLeft=yes] text
+{
+  text-align:left;
+}
+
+text[overlayTextColor=active], textareaNoTab[overlayTextColor=active], textarea[overlayTextColor=active],
+textAreaCentered[overlayTextColor=active], optiontext[overlayTextColor=active],
+animText[overlayTextColor=active] {
+  color:@activeTextColor;
+}
+text[overlayTextColor=minor], textareaNoTab[overlayTextColor=minor] {
+  color:@minorTextColor;
+}
+text[overlayTextColor=mainPlayer], textareaNoTab[overlayTextColor=mainPlayer] {
+  color:@mainPlayerColor;
+}
+text[overlayTextColor=faded], textarea[overlayTextColor=faded], textareaNoTab[overlayTextColor=faded] {
+  color:@fadedTextColor;
+}
+text[overlayTextColor=silver], textareaNoTab[overlayTextColor=silver] {
+  color:@silver;
+}
+text[overlayTextColor=disabled], textarea[overlayTextColor=disabled],
+textareaNoTab[overlayTextColor=disabled], tdiv[includeTextColor=disabled] > textareaNoTab {
+  color:@disabledTextColor;
+}
+text[overlayTextColor=locked], textarea[overlayTextColor=locked],
+textareaNoTab[overlayTextColor=locked], tdiv[includeTextColor=locked] > textareaNoTab {
+  color:@itemLockedColor;
+}
+activeText[overlayTextColor=good], textarea[overlayTextColor=good], textareaNoTab[overlayTextColor=good] {
+  color:@goodTextColor;
+}
+activeText[overlayTextColor=bad], textarea[overlayTextColor=bad], textareaNoTab[overlayTextColor=bad] {
+  color:@badTextColor;
+}
+activeText[overlayTextColor=warning], textarea[overlayTextColor=warning], textareaNoTab[overlayTextColor=warning],
+text[overlayTextColor=warning] {
+  color:@warningTextColor;
+}
+text[overlayTextColor=shopStats] {
+  color:@shopStatsColor;
+}
+text[overlayTextColor=userlog], activeText[overlayTextColor=userlog],
+textareaNoTab[overlayTextColor=userlog], textarea[overlayTextColor=userlog] {
+  color:@userlogColoredText;
+}
+activeText[overlayTextColor=unlockHeader], textAreaSmall[overlayTextColor=unlockHeader],
+textareaNoTab[overlayTextColor=unlockHeader] {
+  color:@unlockHeaderColor;
+}
+text[overlayTextColor=gold] {
+  color:@yellow;
+}
+text[overlayTextColor=weaponWarning] {
+  color:@weaponWarning;
+}
+text[overlayTextColor=usageRating0] {
+  color:@usageRatingColor0;
+}
+text[overlayTextColor=usageRating1] {
+  color:@usageRatingColor1;
+}
+text[overlayTextColor=usageRating2] {
+  color:@usageRatingColor2;
+}
+text[overlayTextColor=usageRating3] {
+  color:@usageRatingColor3;
+}
+text[overlayTextColor=usageRating4] {
+  color:@usageRatingColor4;
+}
+
+text[overlayTextColor=bad] {
+  color:@badTextColorDark;
+}
+
+[overlayTextColor=premium] activeText,
+activeText[overlayTextColor=premium] {
+  color:@userlogColoredText;
+}
+[overlayTextColor=premiumNotEarned] activeText,
+activeText[overlayTextColor=premiumNotEarned] {
+  color:@commonTextColor;
+}
+
+textareaNoTab[overlayTextColor=hotkey] {
+  color:@hotkeyColor;
+}
+
+textarea[overlayTextColor=psplus] {
+  color:@psplusTextColor;
+}
+
+text.decalsTitle {
+  size:pw, @decalIconHeight-2*@sf/@pf_outdated;
+}
+
+activeText[airBought=yes] {
+  color:@activeTextColor;
+}
+
+activeText[airCanBuy=yes] {
+  color:@hotkeyColor;
+}
+
+activeText[airCanBuy=no] {
+  color:@weaponWarning;
+}
+
+crewUnitSpecUpgradeTooltip textarea,
+skillParametersTooltip textarea {
+  font:@fontSmall;
+  paragraph-indent:0;
+  padding-left:0; padding-right:0;
+}
+
+crewUnitSpecUpgradeTooltip textareaNoTab[exp_upgrade_text_area=yes] {
+  font:@fontSmall;
+}
+
+mapNest[selected=yes] textareaNoTab{
+  color:@hoverMenuButtonColor;
+}
+
+optiontext[auto-scroll=yes] {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:50*@scrn_tgt/100.0;
+  move-sleep-time:1000;
+  move-delay-time:2000;
+}
+
+moveObjSizeDiv activeText[animateFontSize=yes] {
+  font-ht:ph;
+}
+
+activeText[text-align=center] {
+  padding:0;
+}

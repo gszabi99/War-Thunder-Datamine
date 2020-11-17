@@ -16,7 +16,7 @@ tr {
     <<#width>> width:t='<<width>>' <</width>>
     overflow:t='hidden';
     <<#tooltip>> tooltip:t='<<tooltip>>' <</tooltip>>
-    <<#tdAlign>> tdalign:t='<<tdAlign>>' <</tdAlign>>
+    <<#tdalign>> tdalign:t='<<tdalign>>' <</tdalign>>
     <<#active>> active:t='yes' <</active>>
     <<@rawParam>>
 

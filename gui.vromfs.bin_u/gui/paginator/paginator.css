@@ -2,7 +2,6 @@ paginator{
   id:paginator_container;
   min-width: 0.27*@sf;
   min-height: 1@buttonHeight;
-  padding:0,7, 0, 3;
   height:ph;
 }
 
@@ -19,18 +18,18 @@ paginator > pages > button {
   pos: 0, 0;
   position: relative;
   padding: 0;
-  margin:3@sf/@pf, 0;
+  margin:2@blockInterval, 0;
   min-width: 0;
   text-align: center;
-  font:@fontSmall;
+  font:@fontNormalBold;
 }
 
 paginator > pages > button > underline {
-  size: pw + 1, (@sf/@pf_outdated*0.75) $max 1;
+  size: pw + 1@dp, (@sf/@pf_outdated*0.75) $max 1;
 }
 
 paginator > pages > activeText{
-  font:@fontSmall;
+  font:@fontNormalBold;
 }
 
 paginator > pages > button[mainPlayer = yes],

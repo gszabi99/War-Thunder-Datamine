@@ -44,13 +44,24 @@ tdiv {
       size:t='pw, ph'
       total-input-transparent:t='yes'
       css-hier-invalidate:t='yes'
+      equipped:t='<<optEquipped>>'
+      status:t= '<<optStatus>>'
 
       weaponBody{
         id:t='centralBlock'
         size:t='1@modItemHeight, 1@modItemHeight'
         position:t='relative'
 
+        topLine {}
+        wallpaper {
+          size:t='pw, ph'
+          position:t='absolute'
+          css-hier-invalidate:t='yes'
+          pattern {}
+        }
+
         include "gui/weaponry/weaponIcon"
+        itemWinkBlock { buttonWink { _transp-timer:t='0' } }
 
       }
 
@@ -129,6 +140,8 @@ tdiv {
         on_tooltip_close:t='onTooltipObjClose'
         display:t='hide'
       }
+
+      hoverHighlight {}
     }
     <</hasModItem>>
 

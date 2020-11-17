@@ -1677,6 +1677,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -2168,9 +2177,6 @@
         "ex_decor_r_10_dm": [],
         "ex_decor_r_11_dm": [],
         "ex_decor_l_11_dm": [],
-        "ex_decor_06_dm": [],
-        "ex_decor_07_dm": [],
-        "ex_decor_08_dm": [],
         "ex_decor_09_dm": []
       },
       "body_side_screens": {
@@ -2218,6 +2224,8 @@
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
           "hp": 200.0,
+          "ex_armor_r_01_dm": [],
+          "ex_armor_l_01_dm": [],
           "ex_armor_body_r_01_dm": {
             "hp": 200.0
           },
@@ -2582,6 +2590,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],

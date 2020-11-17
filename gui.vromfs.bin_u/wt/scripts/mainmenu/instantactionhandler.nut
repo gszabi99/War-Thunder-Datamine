@@ -1,7 +1,7 @@
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
-local battleRating = require("scripts/battleRating.nut")
+local { recentBR } = require("scripts/battleRating.nut")
 local clanVehiclesModal = require("scripts/clans/clanVehiclesModal.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local changeStartMission = require("scripts/missions/changeStartMission.nut")
@@ -11,7 +11,9 @@ local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { needShowChangelog, openChangelog } = require("scripts/changelog/openChangelog.nut")
+local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkNewClientVersionEvent } = require("scripts/matching/serviceNotifications/newClientVersionNotify.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -26,8 +28,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   inited = false
   wndGameMode = ::GM_DOMINATION
   clusters = null
-  needBattleMenuShow = false
-  isBattleMenuShow = false
   curCluster = 0
   startEnabled = false
   waitTime = 0
@@ -98,8 +98,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     setCurQueue(::queues.findQueue({}, queueMask))
 
     updateStartButton()
-
-    setCurrentFocusObj(getSlotbar()?.getCurFocusObj())
 
     inited = true
     ::dmViewer.update()
@@ -211,7 +209,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local gameMode = ::game_mode_manager.getCurrentGameMode()
-    local br = battleRating.getBR()
+    local br = recentBR.value
     local name = gameMode && gameMode?.text != ""
       ? gameMode.text + (br > 0 ? ::loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
 
@@ -251,11 +249,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     updateUnseenGameModesCounter()
   }
 
-  function onEventEventsDataUpdated(params)
-  {
-    battleRating.updateBattleRating()
-  }
-
   function onEventMyStatsUpdated(params)
   {
     setCurrentGameModeName()
@@ -287,7 +280,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function onEventCrewChanged(params)
   {
     doWhenActiveOnce("checkCountries")
-    battleRating.updateBattleRating()
   }
 
   function onEventCheckClientUpdate(params)
@@ -300,6 +292,10 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     obj.show(::getTblValue("update_avail", params, false))
+  }
+
+  function onEventNewClientVersion(params) {
+    doWhenActive(@() checkNewClientVersionEvent(params))
   }
 
   function checkCountries()
@@ -321,7 +317,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function onEventCurrentGameModeIdChanged(params)
   {
     setGameMode(::game_mode_manager.getCurrentGameModeId())
-    battleRating.updateBattleRating()
     updateNoticeGMChanged()
   }
 
@@ -389,18 +384,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       topMenuHandler.value.leftSectionHandlerWeak.switchMenuFocus()
       return
     }
-  }
-
-  function canRestoreFocus()
-  {
-    local drawer = getGamercardDrawerHandler()
-    return !drawer || !drawer.isBlockOtherRestoreFocus || !drawer.isActive()
-  }
-
-  function onEventGamercardDrawerAnimationStart(params)
-  {
-    if (!params.isOpening)
-      restoreFocus()
   }
 
   _isToBattleAccessKeyActive = true
@@ -861,21 +844,10 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function goBack()
   {
-    if (isBattleMenuShow)
-    {
-      local blocksObj = scene.findObject("ia_active_blocks")
-      local selObj = getIaBlockSelObj(blocksObj)
-      if (selObj && selObj.isFocused())
-        return blocksObj.select()
-    }
-
     if (leaveCurQueue({ isLeaderCanJoin = true
       msgId = "squad/only_leader_can_cancel"
       isCanceledByPlayer = true }))
       return
-
-    if (needBattleMenuShow)
-      return onInstantActionMenu()
 
     onTopMenuGoBack()
   }
@@ -975,16 +947,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     return gameMode ? ::events.checkRequiredUnits(::game_mode_manager.getGameModeEvent(gameMode), null, country) : true
   }
 
-  function onInstantActionMenu()
-  {
-    //showBattleMenu(!isBattleMenuShow)
-  }
-
-  function onCloseBattleMenu()
-  {
-    //showBattleMenu(false)
-  }
-
   function getIaBlockSelObj(obj)
   {
     local value = obj.getValue() || 0
@@ -1006,41 +968,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     selObj.select()
-  }
-
-  function getMainFocusObj()
-  {
-    if (::handlersManager.isHandlerValid(queueTableHandler))
-      return queueTableHandler.getCurFocusObj()
-    return null
-  }
-
-  function getMainFocusObj2()
-  {
-    if (!isBattleMenuShow)
-      return null
-
-    local blocksObj = scene.findObject("ia_active_blocks")
-    local selObj = getIaBlockSelObj(blocksObj)
-    if (selObj && selObj.isFocused())
-      return selObj
-    return blocksObj
-  }
-
-  function getMainFocusObj3()
-  {
-    local obj = scene.findObject("promo_mainmenu_place_top")
-    return ::g_dagui_utils.getFirstActiveChild(obj) != null
-      ? obj
-      : null
-  }
-
-  function getMainFocusObj4()
-  {
-    local obj = scene.findObject("promo_mainmenu_place_bottom")
-    return ::g_dagui_utils.getFirstActiveChild(obj) != null
-      ? obj
-      : null
   }
 
   function onUnlockCrew(obj)
@@ -1127,7 +1054,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
         actionType = tutorAction.OBJ_CLICK
         shortcut = ::GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() openUnitActionsList(curCrewSlot, false, true)
+        cb = @() openUnitActionsList(curCrewSlot, true, true)
       },
       {
         actionType = tutorAction.WAIT_ONLY
@@ -1200,8 +1127,10 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
   function checkShowChangelog()
   {
-    if (needShowChangelog())
-      openChangelog()
+    guiScene.performDelayed({}, function() {
+      if (needShowChangelog())
+        ::handlersManager.animatedSwitchScene(openChangelog())
+    })
   }
 
   function checkNewUnitTypeToBattleTutor()
@@ -1331,11 +1260,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function onEventBattleRatingChanged(params)
   {
     setCurrentGameModeName()
-  }
-
-  function onEventProfileUpdated (params)
-  {
-    battleRating.updateBattleRating()
   }
 
   function checkNonApprovedSquadronResearches()

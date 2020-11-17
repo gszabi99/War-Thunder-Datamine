@@ -5,7 +5,9 @@ warbondShopLevel {
   tooltip:t='<<tooltip>>'
   status = <<status>>
   background-image:t='<<levelIcon>>'
+  hasOverlayIcon:t='<<#hasOverlayIcon>>yes<</hasOverlayIcon>><<^hasOverlayIcon>>no<</hasOverlayIcon>>'
   foreground-image:t='<<levelIcon>>_overlay'
+  total-input-transparent:t='yes'
 
   textareaNoTab {
     id:t='<<id>>_text'

@@ -9,7 +9,7 @@ local Root = function() {
   local children = planeMFD()
 
   return {
-    watch = radarComponent.state.MfdRadarEnabled
+    watch = [radarComponent.state.MfdRadarEnabled, radarComponent.state.MfdRadarColor]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]

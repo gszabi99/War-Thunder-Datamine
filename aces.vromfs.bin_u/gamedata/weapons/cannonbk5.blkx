@@ -45,6 +45,12 @@
     "bulletsCluster": 1
   },
   {
+    "fxType": "muzzle_air_50mm"
+  },
+  {
+    "fxMultipleSpawn": true
+  },
+  {
     "bullet": {
       "bulletCount": 40,
       "mass": 2.05,
@@ -61,9 +67,10 @@
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
+      "stucking": 0.3,
+      "stuckingAngle": 40.0,
       "bulletType": "ap_t",
       "slopeEffectPreset": "apc",
-      "modelName": "tank_bullet_apc",
       "fresnel": [0.23,0.1,2.0],
       "bulletName": "50mm_pzgr_39",
       "relativeVelHitShift": [300.0,1000.0],
@@ -234,7 +241,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_i_t_mine",
       "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
       "nearHitPower": [1.0,50.0],
@@ -410,9 +416,10 @@
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
+        "stucking": 0.3,
+        "stuckingAngle": 40.0,
         "bulletType": "ap_t",
         "slopeEffectPreset": "apc",
-        "modelName": "tank_bullet_apc",
         "fresnel": [0.23,0.1,2.0],
         "bulletName": "50mm_pzgr_39",
         "relativeVelHitShift": [300.0,1000.0],
@@ -586,7 +593,6 @@
         "stabilityReductionAfterPenetration": 0.3,
         "bulletType": "apcr_t",
         "slopeEffectPreset": "apcr",
-        "modelName": "tank_bullet_apcr",
         "fresnel": [0.23,0.1,2.0],
         "bulletName": "50mm_pzgr_40",
         "relativeVelHitShift": [300.0,1000.0],
@@ -763,7 +769,6 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "he_i_t_mine",
         "slopeEffectPreset": "ap",
-        "modelName": "tank_bullet_he",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
         "nearHitPower": [1.0,50.0],

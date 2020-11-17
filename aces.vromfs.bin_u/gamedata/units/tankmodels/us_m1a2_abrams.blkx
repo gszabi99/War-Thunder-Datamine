@@ -987,6 +987,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -3155,6 +3156,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3204,15 +3214,19 @@
       "tank_medical_kit_expendable": {
         "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
-      "modern_tank_laser_rangefinder": [],
-      "120mm_NATO_APDS_FS": [],
-      "120mm_NATO_APDS_FS_ammo_pack": {
+      "modern_tank_laser_rangefinder": {
         "tier": 3
       },
       "120mm_DM_HEAT_FS": [],
       "120mm_DM_HEAT_FS_ammo_pack": {
-        "tier": 2
+        "tier": 1
       },
+      "120mm_NATO_APDS_FS": [],
+      "120mm_NATO_APDS_FS_ammo_pack": {
+        "tier": 1
+      },
+      "120mm_M829A_APDS_FS": [],
+      "120mm_M829A_APDS_FS_ammo_pack": [],
       "tank_smoke_screen_system_mod": {
         "tier": 2,
         "effects": {

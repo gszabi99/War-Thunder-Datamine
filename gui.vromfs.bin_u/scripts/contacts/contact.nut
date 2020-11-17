@@ -12,7 +12,7 @@ local psnSocial = require("sony.social")
 
 local contactsByName = {}
 
-class Contact
+::Contact <- class
 {
   name = ""
   uid = ""

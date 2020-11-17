@@ -1,4 +1,5 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
 local { WEAPON_TYPE,
         getLinkedGunIdx,
@@ -25,6 +26,8 @@ local options = {
 local targetTypeToThreatTypes = {
   [::ES_UNIT_TYPE_AIRCRAFT]   = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
   [::ES_UNIT_TYPE_HELICOPTER] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
+  [::ES_UNIT_TYPE_SHIP] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
+  [::ES_UNIT_TYPE_BOAT] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
 }
 
 local function getThreatEsUnitTypes()
@@ -326,7 +329,7 @@ options.addTypes({
         foreach (block in (unitBlk.weapon_presets % "preset"))
         {
           local presetName = block.name
-          local presetBlk = ::DataBlock(block.blk)
+          local presetBlk = blkFromPath(block.blk)
           foreach (weap in (presetBlk % "Weapon"))
           {
             if (!weap?.blk || weap?.dummy || ::isInArray(weap.blk, knownWeapBlkArray))
@@ -334,7 +337,7 @@ options.addTypes({
             knownWeapBlkArray.append(weap.blk)
 
             local weaponBlkPath = weap.blk
-            local weaponBlk = ::DataBlock(weaponBlkPath)
+            local weaponBlk = blkFromPath(weaponBlkPath)
             local bulletBlk = null
             foreach (t in specialBulletTypes)
               bulletBlk = bulletBlk ?? weaponBlk?[t]
@@ -428,10 +431,10 @@ options.addTypes({
 
     reinit = function(handler, scene) {
       minValue = 0
-      maxValue = options.UNIT.value?.isShip() ? 15000 : 5000
+      maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 5000
       step     = 100
       local preferredDistance = value >= 0 ? value
-        : (options.UNIT.value?.isShip() ? 2000 : 500)
+        : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
       value = ::clamp(preferredDistance, minValue, maxValue)
       update(handler, scene)
     }

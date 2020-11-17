@@ -1,8 +1,9 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getByCurBundle } = require("scripts/weaponry/itemInfo.nut")
 local { canBuyMod } = require("scripts/weaponry/modificationInfo.nut")
+local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::g_weaponry_types <- {
   types = []
@@ -76,11 +77,11 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 
     getScoreCostText = function(unit, item)
     {
-      local fullCost = ::shop_get_spawn_score(unit.name, item.name)
+      local fullCost = ::shop_get_spawn_score(unit.name, item.name, [])
       if (!fullCost)
         return ""
 
-      local emptyCost = ::shop_get_spawn_score(unit.name, "")
+      local emptyCost = ::shop_get_spawn_score(unit.name, "", [])
       local weapCost = fullCost - emptyCost
       if (!weapCost)
         return ""
@@ -114,6 +115,22 @@ enums.addTypesByGlobalName("g_weaponry_types", {
       : ::g_weaponry_types._getAmount(unit, item)
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
     canBuy = function(unit, item) { return ::isUnitUsable(unit) && canBuyMod(unit, item) }
+
+    getScoreCostText = function(unit, item)
+    {
+      local fullCost = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [ item.name ] )
+      if (!fullCost)
+        return ""
+
+      local emptyCost = ::shop_get_spawn_score(unit.name, getLastWeapon(unit.name), [])
+      local bulletCost = fullCost - emptyCost
+      if (!bulletCost)
+        return ""
+
+      if (::g_mis_custom_state.getCurMissionRules().getCurSpawnScore() < fullCost)
+        bulletCost = ::colorize("badTextColor", bulletCost)
+      return ::loc("shop/spawnScore", { cost = bulletCost })
+    }
   }
 
 //********************* EXPENDABLES *******************************************

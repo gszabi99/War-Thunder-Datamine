@@ -1,6 +1,9 @@
 <<#checkbox>>
 CheckBox {
   id:t='<<id>>'
+  <<#textWidth>>
+  width:t='<<textWidth>>+1@cIco+1@checkboxSize+4@blockInterval'
+  <</textWidth>>
   pos:t='0, 0'
   position:t='relative'
   value:t='<<#value>>yes<</value>><<^value>>no<</value>>'

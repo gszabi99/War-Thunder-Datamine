@@ -1,5 +1,6 @@
 root {
-  background-color:t='@shadeBackgroundColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     pos:t='50%pw-50%w, 50%ph-50%h'

@@ -1,18 +1,11 @@
 css-hier-invalidate:t="yes"
 modIcon{
   id:t='icon'
-  size:t='1@modIcoSize,1@modIcoSize'
-  pos:t='0,0'
+  size:t='1@modItemHeight, 1@modItemHeight'
   position:t='relative'
   input-transparent:t="yes"
   css-hier-invalidate:t="yes"
-  equipped:t='<<optEquipped>>'
-  status:t= '<<optStatus>>'
 
-  wallpaper{
-    css-hier-invalidate:t='yes'
-    pattern{type:t='bright_texture'}
-  }
   img{
     id:t='image'
     size:t='pw-2@weaponIconPadding,ph-2@weaponIconPadding'
@@ -27,7 +20,6 @@ modIcon{
     }
   }
 
-  itemWinkBlock { buttonWink { _transp-timer:t='0' } }
   tdiv{
     id:t='bullets'
     size:t='pw-2@weaponIconPadding,ph-2@weaponIconPadding'

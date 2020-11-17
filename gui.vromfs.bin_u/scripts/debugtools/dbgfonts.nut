@@ -1,7 +1,7 @@
 // warning disable: -file:forbidden-function
 
-local fonts = require_native("fonts")
-local { reloadDargUiScript } = require_native("reactiveGuiCommand")
+local fonts = ::require_native("fonts")
+local { reloadDargUiScript } = require("reactiveGuiCommand")
 
 ::debug_change_font_size <- function debug_change_font_size(shouldIncrease = true)
 {

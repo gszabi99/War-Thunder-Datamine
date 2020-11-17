@@ -268,6 +268,9 @@
         "turret_01_side_dm": {
           "armorThickness": 168.0
         },
+        "turret_03_side_dm": {
+          "armorThickness": 45.0
+        },
         "turret_01_back_dm": {
           "armorThickness": 65.0
         },
@@ -374,6 +377,7 @@
           "armorThickness": 6.0
         },
         "ex_armor_r_01_dm": [],
+        "turret_07_side_dm": [],
         "timber": {
           "armorClass": "ship_wood",
           "armorThickness": 100.0,
@@ -404,6 +408,10 @@
           "hp": 20.0
         },
         "optic_turret_04_dm": {
+          "armorThickness": 3.0,
+          "hp": 20.0
+        },
+        "optic_turret_05_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
         },
@@ -813,6 +821,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -2703,6 +2712,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

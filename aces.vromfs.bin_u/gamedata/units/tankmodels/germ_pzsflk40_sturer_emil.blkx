@@ -601,6 +601,15 @@
         },
         "turret_01_side_dm": {
           "armorThickness": 30.0
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 10.0
         }
       },
       "body_shields": {
@@ -640,9 +649,6 @@
         "gun_mask_dm": {
           "armorThickness": 50.0,
           "hp": 2000.0
-        },
-        "turret_01_front_dm": {
-          "armorThickness": 10.0
         },
         "gun_barrel_armor_dm": {
           "variableThickness": true,
@@ -1056,8 +1062,10 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -1079,8 +1087,9 @@
         "armorClass": "tank_structural_steel",
         "hp": 250.0,
         "armorThickness": 2.0,
-        "armorThrough": 12.0,
-        "fireProtectionHp": 15.0,
+        "armorThrough": 10.0,
+        "fireProtectionHp": 10.0,
+        "createSecondaryShatters": false,
         "fireParamsPreset": "fuel_exterior",
         "fuel_tank_exterior_r_01_dm": [],
         "fuel_tank_exterior_r_02_dm": [],
@@ -2918,6 +2927,15 @@
       },
       {
         "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
           "name": "big_bang",
           "fx": {
             "name": "tank_explosion",
@@ -3069,7 +3087,6 @@
   },
   {
     "default_skin": {
-      "name": "default",
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_grey*"

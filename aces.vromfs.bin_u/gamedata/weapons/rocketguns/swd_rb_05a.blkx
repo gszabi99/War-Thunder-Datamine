@@ -1,0 +1,116 @@
+{
+  "rocketGun": true,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "rb_05a",
+  "tags": [],
+  "rocket": {
+    "operated": true,
+    "operatedDist": 8000.0,
+    "autoAiming": false,
+    "autoAimingFirstPerson": false,
+    "autoAimingInArcade": false,
+    "autoLeveling": false,
+    "rollStabilization": true,
+    "controlSensitivity": 0.2,
+    "aimSensitivity": 22.1,
+    "maxAxisValues": 1.0,
+    "operationTimer": 0.01,
+    "caliber": 0.3,
+    "mass": 305.0,
+    "explosiveType": "rdx",
+    "explosiveMass": 48.0,
+    "massEnd": 180.0,
+    "maxDeltaAngle": 2.55,
+    "dragCx": 0.02,
+    "length": 3.636,
+    "distFromCmToStab": 0.8,
+    "CxK": 0.25,
+    "CyMaxAoA": 15.0,
+    "CyK": 18.0,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "WdK": [0.1,1.1,1.1],
+    "force": 53000.0,
+    "timeFire": 5.5,
+    "fireDelay": 0.1,
+    "spawnExplosionFx": false,
+    "spawnExplosionWreckage": false,
+    "explosionEffect": "explosion_midair_big",
+    "groundCollisionEffect": "bomb_expl_100kg",
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [1.5,1.7],
+    "explosionPatchRadius": 5.0,
+    "maxDistance": 9000.0,
+    "minDistance": 30.0,
+    "hasTracerTrail": true,
+    "tracerTrailEmitter": [0.5,0.1,0.0],
+    "fireEffect": "rocket_fire_short",
+    "smokeEffect": "",
+    "hazeEffect": "haze_missile",
+    "endSmokeViscosity": 0.05,
+    "distanceFuse": false,
+    "hasProximityFuse": true,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.1,
+    "rendinstDamageRadius": 15.0,
+    "statType": "hydra",
+    "advancedMissiles": false,
+    "useStartSpeed": true,
+    "startSpeed": 40.0,
+    "endSpeed": 600.0,
+    "maxSpeed": 350.0,
+    "speedViscosity": 0.2,
+    "timeToLive": 20.0,
+    "price": 3000.0,
+    "amountPerTier": 1.0,
+    "iconType": "missile_air_to_uni",
+    "collisions": {
+      "steel": {
+        "fx": "explosion_midair_small"
+      },
+      "armor": {
+        "fx": "explosion_midair_small"
+      },
+      "buildings": {
+        "fx": "explosion_midair_small"
+      },
+      "wood": {
+        "fx": "explosion_midair_small"
+      }
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 5.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "tracerTrail": {
+      "smokeEffect": "",
+      "visual": {
+        "traceFreq": 1,
+        "tracer": "100mmWhite",
+        "trail": "noTrail"
+      }
+    },
+    "proximityFuse": {
+      "timeOut": 0.5,
+      "radius": 6.0,
+      "detectShells": false
+    }
+  }
+}

@@ -1,4 +1,4 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 global enum HUD_VIS_PART //bit enum
 {
   DMG_PANEL           = 0x0001
@@ -75,3 +75,8 @@ g_hud_vis_mode.getCurMode <- function getCurMode()
 {
   return getModeByHudGm(::get_hud_game_mode(), ::g_hud_vis_mode.FULL)
 }
+
+::cross_call_api.isChatPlaceVisible <-
+  @() ::is_in_flight() ? ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.CHAT) : false
+::cross_call_api.isOrderStatusVisible <-
+  @() ::is_in_flight() ? ::g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.ORDERS) : false

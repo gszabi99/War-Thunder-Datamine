@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local time = require("scripts/time.nut")
 local operationPreloader = require("scripts/worldWar/externalServices/wwOperationPreloader.nut")
 local seenWWMapsObjective = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
@@ -840,7 +841,7 @@ g_world_war.onEventWWLoadOperation <- function onEventWWLoadOperation(params = {
 
 g_world_war.getWWConfigurableValue <- function getWWConfigurableValue(paramPath, defaultValue)
 {
-  return ::get_blk_value_by_path(configurableValues, paramPath, defaultValue)
+  return get_blk_value_by_path(configurableValues, paramPath, defaultValue)
 }
 
 g_world_war.getOperationObjectives <- function getOperationObjectives()

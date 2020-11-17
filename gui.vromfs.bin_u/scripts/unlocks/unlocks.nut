@@ -752,7 +752,7 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
     for(local i = 0; i < unlocksList.len(); i++)
       addUnlock(i, unlocksList[i], listObj)
     guiScene.setUpdatesEnabled(true, true)
-    listObj.select()
+    ::move_mouse_on_child_by_value(listObj)
   }
 
   function getUnlock(id)
@@ -960,6 +960,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
     case ::UNLOCKABLE_DECAL:
       return ::loc("decals/" + id)
+
+    case ::UNLOCKABLE_ATTACHABLE:
+      return ::loc("attachables/" + id)
 
     case ::UNLOCKABLE_WEAPON:
       return ""
@@ -1420,17 +1423,6 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   return res
 }
 
-::get_fake_unlock_data <- function get_fake_unlock_data(config)
-{
-  local res = {}
-  foreach(key, value in ::default_unlock_data)
-    res[key] <- (key in config)? config[key] : value
-  foreach(key, value in config)
-    if (!(key in res))
-      res[key] <- value
-  return res
-}
-
 ::get_locId_name <- function get_locId_name(config, key = "locId")
 {
   return "".join(::g_localization.getLocIdsArray(config, key).map(@(locId) locId.len() == 1? locId : ::loc(locId)))
@@ -1531,7 +1523,6 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
 ::combineSimilarAwards <- function combineSimilarAwards(awardsList)
 {
-  local amount = 1
   local res = []
 
   foreach(award in awardsList)

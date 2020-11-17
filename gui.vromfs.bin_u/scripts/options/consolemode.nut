@@ -29,6 +29,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
   ::show_console_buttons = showCB
   ::call_darg("updateExtWatched", { showConsoleButtons = showCB })
+
   if (!::g_login.isProfileReceived())
     return true
 

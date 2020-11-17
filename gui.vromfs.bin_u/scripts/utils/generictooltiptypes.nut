@@ -1,4 +1,4 @@
-local enums = require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getSkillCategoryByName } = require("scripts/crew/crewSkills.nut")
@@ -11,6 +11,7 @@ local { updateModType,
         updateSpareType,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
+local { curSeasonChallengesByStage, getChallengeView } = require("scripts/battlePass/challenges.nut")
 
 ::g_tooltip_type <- {
   types = []
@@ -225,32 +226,23 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       local unit = getAircraftByName(id)
       if (!unit)
         return false
-
-      obj.getScene().replaceContent(obj, "gui/airTooltip.blk", handler)
+      local guiScene = obj.getScene()
+      guiScene.setUpdatesEnabled(false, false)
+      guiScene.replaceContent(obj, "gui/airTooltip.blk", handler)
       local contentObj = obj.findObject("air_info_tooltip")
       ::showAirInfo(unit, true, contentObj, handler, params)
+      guiScene.setUpdatesEnabled(true, true)
 
-      // double performDelayed needs because scene don't recalculate
-      // object size (X and Y equals -1) in first performDelayed
-      obj.getScene().performDelayed(handler, function() {
-        if (obj.isValid())
-          obj.getScene().performDelayed(handler, function() {
-            if (!obj.isValid())
-              return
+      if (obj.getSize()[1] < ::g_dagui_utils.toPixels(obj.getScene(), "1@rh"))
+        return true
+      local tooltipObj = obj.findObject("air_info_tooltip")
+      if (!tooltipObj?.isValid())
+        return true
 
-            if (obj.getSize()[1] > ::g_dagui_utils.toPixels(obj.getScene(), "1@rh"))
-            {
-              local tooltipObj = obj.findObject("air_info_tooltip")
-              if (!::check_obj(tooltipObj))
-                return
-
-              tooltipObj.height = "1@rh - 2@framePadding"
-              local unitImgObj = tooltipObj.findObject("aircraft-image")
-              if (::check_obj(unitImgObj))
-                unitImgObj.height = "fh"
-            }
-          })
-      })
+      tooltipObj.height = "1@rh - 2@framePadding"
+      local unitImgObj = tooltipObj.findObject("aircraft-image")
+      if (unitImgObj?.isValid())
+        unitImgObj.height = "fh"
       return true
     }
     onEventUnitModsRecount = function(eventParams, obj, handler, id, params) {
@@ -534,6 +526,18 @@ enums.addTypesByGlobalName("g_tooltip_type", {
       local config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
       local view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true})
       return ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view]})
+    }
+  }
+
+  BATTLE_PASS_CALLENGE = {
+    getTooltipContent = function(stage, params)
+    {
+      local challenge = curSeasonChallengesByStage.value?[stage]
+      if (challenge == null)
+        return ""
+
+      return ::handyman.renderCached("gui/unlocks/battleTasksItem",
+        { items = [getChallengeView(challenge, { isOnlyInfo = true })]})
     }
   }
 

@@ -1,6 +1,6 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local stdMath = require("std/math.nut")
-local optionsMeasureUnits = ::require("scripts/options/optionsMeasureUnits.nut")
+local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 
 /**
  * Measure type is a useful abstraction above
@@ -14,10 +14,10 @@ local time = require("scripts/time.nut")
   types = []
 }
 
-g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false)
+g_measure_type._getMeasureUnitsText <- function _getMeasureUnitsText(value, addMeasureUnits = true, forceMaxPrecise = false, isPresize = true)
 {
   if (userOptCode != -1)
-    return optionsMeasureUnits.countMeasure(orderCode, value, " - ", addMeasureUnits, forceMaxPrecise)
+    return optionsMeasureUnits.countMeasure(orderCode, value, " - ", addMeasureUnits, forceMaxPrecise, isPresize)
   local result = stdMath.round_by_value(value, presize).tostring()
   if (addMeasureUnits)
     result += " " + getMeasureUnitsName()

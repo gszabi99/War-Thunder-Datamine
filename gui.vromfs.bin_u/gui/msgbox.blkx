@@ -2,7 +2,8 @@
   "id": "msg_box_root",
   "position": "absolute",
   "size": "sw, sh",
-  "background-color": "@shadeBackgroundColor2",
+  "blur": [],
+  "blur_foreground": [],
   "menutitle": {
     "id": "msgbox-title"
   },
@@ -15,8 +16,7 @@
     "max-height": "0.9@scrn_tgt",
     "optionlist_container": {
       "width": "pw",
-      "style": "height:ph + 0.02@scrn_tgt;",
-      "position": "absolute",
+      "type": "msg_box",
       "text": {
         "id": "msg_debug_string",
         "pos": "0.5(pw-w), ph +0.01@scrn_tgt",
@@ -85,7 +85,9 @@
           "id": "buttons_holder",
           "pos": "0.5(pw-w), 0.03@scrn_tgt",
           "position": "relative",
-          "childsActivate": "yes"
+          "behavior": "PosNavigator",
+          "navigatorShortcuts": "noSelect",
+          "total-input-transparent": "yes"
         }
       },
       {

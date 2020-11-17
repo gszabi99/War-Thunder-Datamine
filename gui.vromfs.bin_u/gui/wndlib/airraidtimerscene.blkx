@@ -1,0 +1,107 @@
+{
+  "root": {
+    "frame": [
+      {
+        "id": "window"
+      },
+      {
+        "min-width": "0.5@scrn_tgt"
+      },
+      {
+        "pos": "50%pw-50%w, 45%ph-40%h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "class": "wnd"
+      },
+      {
+        "padByLine": "yes"
+      },
+      {
+        "frame_header": {
+          "activeText": {
+            "id": "header",
+            "caption": "yes",
+            "text": ""
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "width": "pw",
+          "tdiv": [
+            {
+              "width": "pw"
+            },
+            {
+              "background-color": "#ffb0351c"
+            },
+            {
+              "tdiv": {
+                "position": "absolute",
+                "type": "dark_diag_lines",
+                "size": "pw, ph",
+                "background-color": "#60FFFFFF",
+                "background-repeat": "repeat",
+                "background-position": "1,2;",
+                "background-image": "#ui/gameuiskin#pattern_dark_diag_lines"
+              }
+            },
+            {
+              "tdiv": [
+                {
+                  "width": "pw"
+                },
+                {
+                  "margin": "2@blockInterval"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "activeText": {
+                    "position": "relative",
+                    "left": "0.5pw-0.5w",
+                    "text": "#video/bad_dll_hdr ",
+                    "bigBoldFont": "yes",
+                    "font-ht": "2@fontHeightBigBold"
+                  }
+                },
+                {
+                  "activeText": {
+                    "position": "relative",
+                    "left": "0.5pw-0.5w",
+                    "text": "#NEW_CLIENT/AIR_RAID",
+                    "mediumFont": "yes",
+                    "font-ht": "2@fontHeightMedium"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "tdiv": {
+          "width": "pw",
+          "padding": "2@blockInterval",
+          "activeText": {
+            "id": "nuclear_explosion_timer_text",
+            "left": "0.5pw-0.5w",
+            "position": "relative",
+            "text": "",
+            "bigBoldFont": "yes",
+            "font-ht": "2@fontHeightBigBold"
+          }
+        }
+      }
+    ],
+    "timer": {
+      "id": "nuclear_explosion_timer",
+      "timer_handler_func": "onNuclearExplosionTimer",
+      "timer_interval_msec": "1000"
+    }
+  }
+}

@@ -2684,6 +2684,90 @@
       }
     },
     {
+      "1x_e_wing_fuse_wood": {
+        "hpMin": 60.5,
+        "hpMax": 80.5,
+        "hpPerSq": 10.51,
+        "armor_type": "c_wood40",
+        "genericDamageMult": 0.3,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "1x_e_wing_fuse_a": {
+        "hpMin": 55.5,
+        "hpMax": 85.5,
+        "hpPerSq": 6.1,
+        "armor_type": "c_dural8_5",
+        "genericDamageMult": 0.3,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "1x_e_wing_fuse_dural_f": {
+        "hpMin": 60.5,
+        "hpMax": 80.5,
+        "hpPerSq": 10.51,
+        "armor_type": "c_dural7",
+        "genericDamageMult": 0.3,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "2x_e_wing_fuse_dural_f": {
+        "hpMin": 75.5,
+        "hpMax": 125.5,
+        "hpPerSq": 8.14,
+        "armor_type": "c_dural10",
+        "genericDamageMult": 0.35,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "2x_e_wing_fuse_dural_a": {
+        "hpMin": 80.5,
+        "hpMax": 140.5,
+        "hpPerSq": 8.4,
+        "armor_type": "c_dural15",
+        "genericDamageMult": 0.35,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "2x_e_wing_fuse_dural_b": {
+        "hpMin": 84.5,
+        "hpMax": 145.5,
+        "hpPerSq": 6.1,
+        "armor_type": "c_dural20",
+        "genericDamageMult": 0.35,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
+      "4x_e_wing_fuse_dural_b": {
+        "hpMin": 108.5,
+        "hpMax": 160.5,
+        "hpPerSq": 3.1,
+        "armor_type": "c_dural30",
+        "genericDamageMult": 0.4,
+        "effects": {
+          "inclink": "../dm_effects/wing/_1x_e_fuse_wing.blk"
+        }
+      }
+    },
+    {
       "1x_e_wing_wood_l_f": {
         "hpMin": 19.5,
         "hpMax": 60.5,
@@ -3226,7 +3310,7 @@
         "hpMin": 14.4,
         "hpMax": 30.5,
         "hpPerSq": 11.51,
-        "armor_type": "c_wood10",
+        "armor_type": "c_wood30",
         "genericDamageMult": 0.3,
         "effects": {
           "inclink": "../dm_effects/planes/_1x_e_wood_planes_f.blk"
@@ -3422,7 +3506,7 @@
     {
       "1x_e_controls_l_f": {
         "hpMin": 39.5,
-        "hpMax": 20.5,
+        "hpMax": 60.5,
         "hpPerSq": 75.0,
         "armor_type": "protected_controls",
         "effects": {
@@ -3879,7 +3963,7 @@
     {
       "liquidcooling_engine_light": {
         "hpMin": 19.5,
-        "hpMax": 40.5,
+        "hpMax": 35.5,
         "hpPerSq": 5.7,
         "armor_type": "armor_engine_light",
         "genericDamageMult": 1.6,
@@ -3890,8 +3974,8 @@
     },
     {
       "aircooling_engine": {
-        "hpMin": 49.5,
-        "hpMax": 70.5,
+        "hpMin": 60.5,
+        "hpMax": 71.5,
         "hpPerSq": 8.1,
         "armor_type": "armor_engine",
         "genericDamageMult": 1.6,
@@ -3902,8 +3986,32 @@
     },
     {
       "liquidcooling_engine": {
-        "hpMin": 19.5,
-        "hpMax": 40.5,
+        "hpMin": 30.5,
+        "hpMax": 39.5,
+        "hpPerSq": 5.7,
+        "armor_type": "armor_engine",
+        "genericDamageMult": 1.6,
+        "effects": {
+          "inclink": "../dm_effects/engine/_liquidcooling_engine.blk"
+        }
+      }
+    },
+    {
+      "aircooling_engine_heavy": {
+        "hpMin": 75.5,
+        "hpMax": 85.5,
+        "hpPerSq": 8.1,
+        "armor_type": "armor_engine",
+        "genericDamageMult": 1.6,
+        "effects": {
+          "inclink": "../dm_effects/engine/_aircooling_engine.blk"
+        }
+      }
+    },
+    {
+      "liquidcooling_engine_heavy": {
+        "hpMin": 40.5,
+        "hpMax": 55.5,
         "hpPerSq": 5.7,
         "armor_type": "armor_engine",
         "genericDamageMult": 1.6,
@@ -4014,9 +4122,9 @@
         "hpMin": 14.4,
         "hpMax": 30.5,
         "hpPerSq": 5.1,
-        "armor_type": "c_wood10",
+        "armor_type": "c_wood50",
         "effects": {
-          "inclink": "../dm_effects/fin_stab/_1x_e_wood_stab_f.blk"
+          "inclink": "../dm_effects/fin_stab/_1x_e_stab_f.blk"
         }
       }
     },
@@ -4397,12 +4505,12 @@
     },
     {
       "1x_e_fin_wood_f": {
-        "hpMin": 14.4,
+        "hpMin": 14.5,
         "hpMax": 30.5,
         "hpPerSq": 12.5,
-        "armor_type": "c_wood10",
+        "armor_type": "c_wood30",
         "effects": {
-          "inclink": "../dm_effects/fin_stab/_1x_e_wood_fin_f.blk"
+          "inclink": "../dm_effects/fin_stab/_1x_e_fin_f.blk"
         }
       }
     },

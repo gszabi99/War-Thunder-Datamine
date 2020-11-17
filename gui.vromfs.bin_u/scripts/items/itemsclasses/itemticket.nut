@@ -1,3 +1,4 @@
+local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 class ::items_classes.Ticket extends ::BaseItem
@@ -41,9 +42,9 @@ class ::items_classes.Ticket extends ::BaseItem
     else
     {
       local tournamentBlk = ::get_tournaments_blk()
-      clanTournament = clanTournament || ::get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/clanTournament", false)
+      clanTournament = clanTournament || get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/clanTournament", false)
       //handling closed sales
-      canBuy = canBuy && !::get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
+      canBuy = canBuy && !get_blk_value_by_path(tournamentBlk, eventEconomicNamesArray[0] + "/saleClosed", false)
 
       if (isInventoryItem && !isActiveTicket)
       {

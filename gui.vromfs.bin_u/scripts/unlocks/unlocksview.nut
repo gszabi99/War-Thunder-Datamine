@@ -225,6 +225,10 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   guiScene.replaceContentFromText(hiddenObj, "", 0, context)
   for(local i = 0; i < names.len(); i++)
   {
+    local unlock = ::g_unlocks.getUnlockById(unlockConfig.names[i])
+    if(!::is_unlock_visible(unlock) || unlockConfig.type == "char_resources")
+      continue
+
     local isUnlocked = unlockConfig.curVal & (1 << i)
     hiddenContent += "unlockCondition {"
     hiddenContent += ::format("textarea {text:t='%s' } \n %s \n",
@@ -238,11 +242,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
         hiddenContent += ::g_tooltip_type.DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
     }
     else
-    {
-      local unlock = ::g_unlocks.getUnlockById(unlockConfig.names[i])
-      if(unlock)
-        hiddenContent += ::g_tooltip_type.UNLOCK.getMarkup(unlock.id, {showProgress=true})
-    }
+      hiddenContent += ::g_tooltip_type.UNLOCK.getMarkup(unlock.id, {showProgress=true})
 
     hiddenContent += "}"
   }
@@ -311,32 +311,28 @@ g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
 
 g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context)
 {
-  if( ! ::checkObj(unlockObj))
+  if (!unlockObj?.isValid())
     return
-  local guiScene = unlockObj.getScene()
-  local currentStage = 0
-  local stageLokedIcon = "#ui/gameuiskin#stage_locked_"
-  local stageUnlokedIcon = "#ui/gameuiskin#stage_unlocked_"
-  local unlocedStageText = "unlocked { substrateImg {} img { background-image:t='" + stageUnlokedIcon
-  local locedStageText = "unlocked { substrateImg {} img { background-image:t='" + stageLokedIcon
-  local textStages = ""
   local stagesObj = unlockObj.findObject("stages")
-  if( ! ::checkObj(stagesObj))
+  if (!stagesObj?.isValid())
     return
-  guiScene.replaceContentFromText(stagesObj, "", 0, context)
+
+  local currentStage = 0
+  local textStages = ""
   for(local i = 0; i < unlockConfig.stages.len(); i++)
   {
     local stage = unlockConfig.stages[i]
     local curValStage = (unlockConfig.curVal > stage.val)? stage.val : unlockConfig.curVal
     local isUnlockedStage = curValStage >= stage.val
-    local stageClass = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
     currentStage = isUnlockedStage ? i + 1 : currentStage
-    textStages += (isUnlockedStage ? unlocedStageText  : locedStageText ) + (i + 1) + "';}" +
-                   stageClass +
-                   ::g_tooltip_type.UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i}) +"}"
+    textStages += "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
+      .subst({
+        image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
+        parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
+        tooltip = ::g_tooltip_type.UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
+      })
   }
-  if(textStages != "")
-    guiScene.appendWithBlk(stagesObj, textStages, context)
+  unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)
   if (currentStage != 0)
     unlockConfig.curStage = currentStage
 }

@@ -6,7 +6,7 @@
         "_on_click": "onFacebookPostLink",
         "display": "hide",
         "cardImg": {
-          "background-image": "#ui/gameuiskin#facebook_logo",
+          "background-image": "#ui/gameuiskin#facebook_logo.svg",
           "input-transparent": "yes"
         },
         "text": {
@@ -26,7 +26,7 @@
         "on_click": "onFacebookLoginAndPostScrnshot",
         "tooltip": "",
         "cardImg": {
-          "background-image": "#ui/gameuiskin#facebook_logo",
+          "background-image": "#ui/gameuiskin#facebook_logo.svg",
           "input-transparent": "yes"
         },
         "text": {
@@ -45,10 +45,8 @@
         "pressAction": "share",
         "on_click": "onFacebookLoginAndPostMessage",
         "tooltip": "",
-        "btnName": "X",
-        "ButtonImg": [],
         "cardImg": {
-          "background-image": "#ui/gameuiskin#facebook_logo",
+          "background-image": "#ui/gameuiskin#facebook_logo.svg",
           "input-transparent": "yes"
         },
         "text": {
@@ -63,15 +61,17 @@
     {
       "Button_text": {
         "id": "btn_sendEmail",
+        "btnName": "LT",
         "display": "hide",
         "text": "#mainmenu/btnSendEmail",
-        "on_click": "sendInvitation"
+        "on_click": "sendInvitation",
+        "ButtonImg": []
       }
     },
     {
       "Button_text": {
         "id": "btn_link_to_site",
-        "btnName": "Y",
+        "btnName": "LB",
         "display": "hide",
         "enable": "no",
         "text": "#msgbox/btn_browse",
@@ -93,7 +93,7 @@
       "Button_text": {
         "id": "btn_action",
         "text": "#mainmenu/btnAirAction",
-        "btnName": "X",
+        "btnName": "RT",
         "_on_click": "onAction",
         "display": "hide",
         "enable": "no",
@@ -106,7 +106,7 @@
       "Button_text": {
         "id": "btn_post_ps4_activity_feed",
         "text": "#mainmenu/btnPostPs4ActivityFeed",
-        "btnName": "X",
+        "btnName": "RB",
         "_on_click": "onPostPs4ActivityFeed",
         "ButtonImg": []
       }
@@ -117,7 +117,7 @@
         "navButtonFont": "yes",
         "_on_click": "buyUnit",
         "display": "hide",
-        "btnName": "X",
+        "btnName": "Y",
         "visualStyle": "purchase",
         "tdiv": {
           "id": "btn_buy_unit_text_block"
@@ -146,7 +146,7 @@
       "Button_text": {
         "id": "btn_ok",
         "text": "#mainmenu/btnClose",
-        "btnName": "A",
+        "btnName": "X",
         "_on_click": "onOk",
         "ButtonImg": []
       }

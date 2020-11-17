@@ -1,5 +1,6 @@
 local { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("scripts/weaponry/weaponryInfo.nut")
+local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
 
 ::g_tutorials_manager <- {
   actions = []
@@ -46,16 +47,18 @@ local { WEAPON_TAG,
       return false
 
     if (unit.isTank())
-      return ::gui_start_checkTutorial("lightTank")
+      return tryOpenNextTutorialHandler("lightTank")
+    else if (unit.isBoat())
+      return tryOpenNextTutorialHandler("boat")
     else if (unit.isShip())
-      return ::gui_start_checkTutorial("boat")
-    else if (::gui_start_checkTutorial("fighter"))
+      return tryOpenNextTutorialHandler("ship")
+    else if (tryOpenNextTutorialHandler("fighter"))
       return true
 
     if (::check_aircraft_tags(unit.tags, ["bomberview"]))
-      return ::gui_start_checkTutorial("bomber")
+      return tryOpenNextTutorialHandler("bomber")
     else if (isUnitHaveAnyWeaponsTags(unit, [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET]))
-      return ::gui_start_checkTutorial("assaulter")
+      return tryOpenNextTutorialHandler("assaulter")
 
     return false
   }

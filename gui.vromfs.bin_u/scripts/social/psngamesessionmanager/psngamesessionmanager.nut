@@ -1,7 +1,7 @@
 local psnsm = require("scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 local psnNotify = require("sonyLib/notifications.nut")
 
-local { addListenersWithoutEnv } = require("sqStdlibs/helpers/subscriptions.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")
 
 local getSessionData = @(pushContextId) {

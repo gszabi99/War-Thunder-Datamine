@@ -1,8 +1,7 @@
 {
   "root": {
-    "size": "sw, sh",
-    "position": "root",
-    "background-color": "@shadeBackgroundColor",
+    "blur": [],
+    "blur_foreground": [],
     "frame": [
       {
         "id": "create_room"
@@ -11,7 +10,7 @@
         "size": "0.62@scrn_tgt, 0.35@scrn_tgt"
       },
       {
-        "pos": "50%pw-50%w, 50%ph-50%h"
+        "pos": "50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)"
       },
       {
         "position": "absolute"
@@ -68,13 +67,11 @@
               "position": "relative",
               "width": "pw",
               "max-len": "15",
-              "mouse-focusable": "yes",
               "tooltip": "#chat/roomName",
               "text": "",
               "_on_cancel_edit": "goBack",
               "on_change_value": "onChangeRoomName",
-              "_on_activate": "onCreateRoom",
-              "on_wrap_down": "onWrapDown"
+              "_on_activate": "onCreateRoom"
             }
           },
           {
@@ -90,11 +87,9 @@
               "position": "relative",
               "width": "pw",
               "max-len": "16",
-              "mouse-focusable": "yes",
               "text": "",
               "_on_cancel_edit": "goBack",
-              "_on_activate": "onCreateRoom",
-              "on_wrap_up": "onWrapUp"
+              "_on_activate": "onCreateRoom"
             }
           },
           {
@@ -102,10 +97,9 @@
               "id": "room_invitation",
               "pos": "0, 7",
               "position": "relative",
-              "width": "fw",
+              "width": "pw",
               "text": "#chat/invitationsOnly",
               "value": "no",
-              "btnName": "X",
               "CheckBoxImg": [],
               "ButtonImg": []
             }
@@ -144,8 +138,7 @@
             "ComboBox": {
               "id": "categories_list",
               "position": "relative",
-              "width": "pw",
-              "btnName": "X"
+              "width": "pw"
             }
           },
           {
@@ -160,7 +153,6 @@
               "id": "thread_title",
               "size": "pw, fh",
               "multiline": "yes",
-              "mouse-focusable": "yes",
               "_on_cancel_edit": "goBack",
               "on_change_value": "onChangeThreadTitle"
             }
@@ -175,7 +167,7 @@
               "text": "#chat/create",
               "tooltip": "#chat/noRoomCreating",
               "enable": "no",
-              "btnName": "A",
+              "btnName": "X",
               "_on_click": "onCreateRoom",
               "ButtonImg": []
             }

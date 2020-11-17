@@ -8,23 +8,22 @@ local voiceChatElements = function() {
     local voiceChatMember = member
 
     voiceChatMember.needShow.subscribe(function(newVal) {
+      local animKey = $"voiceChatShow{voiceChatMember.id}"
       ::gui_scene.clearTimer(callee())
-      if (newVal)
-      {
-        anim_start("voiceChatShow" + voiceChatMember.id)
+      if (newVal) {
+        anim_start(animKey)
         return
       }
 
-      anim_start("voiceChatHide" + voiceChatMember.id)
+      anim_start(animKey)
     })
 
     local prevVisIdx = voiceChatMember.visibleIdx
     local curVisIdx = idx
     voiceChatMember.visibleIdx = curVisIdx
-    if (prevVisIdx != curVisIdx)
-    {
+    if (prevVisIdx != curVisIdx) {
       local prefix = curVisIdx < prevVisIdx ? "voiceChatMoveBottom" : "voiceChatMoveTop"
-      anim_start(prefix + voiceChatMember.id)
+      anim_start($"{prefix}{voiceChatMember.id}")
     }
 
     children.insert(0, {
@@ -36,8 +35,7 @@ local voiceChatElements = function() {
         {
           rendObj = ROBJ_IMAGE
           size = [::fpx(18), ::fpx(26)]
-          image = ::Picture("!ui/gameuiskin#voip_status.svg:"
-            + (::fpx(18)) + ":" + ::fpx(26) + ":K")
+          image = ::Picture($"!ui/gameuiskin#voip_status.svg:{::fpx(18)}:{::fpx(26)}:K")
           color = colors.menu.voiceChatIconActiveColor
         }
         @(){
@@ -49,17 +47,17 @@ local voiceChatElements = function() {
           color = colors.menu.activeTextColor
         }
       ]
-      key = "voice_chat_" + voiceChatMember.id
+      key = $"voice_chat_{voiceChatMember.id}"
       transform = {}
       animations = [
         { prop=AnimProp.opacity, from=0.0, to=1.0, duration=voiceChatMember.animTime,
-          easing=OutCubic, trigger = "voiceChatShow" + voiceChatMember.id }
+          easing=OutCubic, trigger = $"voiceChatShow{voiceChatMember.id}" }
         { prop=AnimProp.opacity, from=1.0, to=0.0, duration=voiceChatMember.animTime,
-          easing=OutCubic, trigger = "voiceChatHide" + voiceChatMember.id }
+          easing=OutCubic, trigger = $"voiceChatHide{voiceChatMember.id}" }
         { prop=AnimProp.translate, from=[0, 28], to=[0, 0], duration=0.2,
-          trigger = "voiceChatMoveTop" + voiceChatMember.id }
+          trigger = $"voiceChatMoveTop{voiceChatMember.id}" }
         { prop=AnimProp.translate, from=[0, -28], to=[0, 0], duration=0.2,
-          trigger = "voiceChatMoveBottom" + voiceChatMember.id }
+          trigger = $"voiceChatMoveBottom{voiceChatMember.id}" }
       ]
     })
   }

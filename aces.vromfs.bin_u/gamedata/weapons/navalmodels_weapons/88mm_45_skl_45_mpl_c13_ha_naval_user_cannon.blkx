@@ -1,0 +1,177 @@
+{
+  "cannon": true,
+  "weaponType": 1,
+  "aimMinDist": 0.05,
+  "aimMaxDist": 10000.0,
+  "maxDeltaAngle": 0.065,
+  "maxDeltaAngleVertical": 0.065,
+  "attackMaxDist": 10000.0,
+  "shotFreq": 0.25,
+  "bullets": 1,
+  "recoilOffset": 0.24,
+  "recoilTimes": [0.1,0.35],
+  "shouldCollideWithRendinsts": true,
+  "fxType": "big_gun_flame",
+  "fxGroundDust": "water_shock_wave",
+  "sound_path": "ships/weapon_ships/cannons",
+  "sound_pathStudio": "naval/weapon/cannons",
+  "sound": "85mm_zis_s_53",
+  "sfxReloadBullet": "naval_cannon_reload_manual",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "notUseDefaultBulletInGui": true,
+  "bullet": {
+    "bulletCount": 40,
+    "mass": 9.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 1.4,
+    "caliber": 0.088,
+    "speed": 890.0,
+    "maxDistance": 40000.0,
+    "speedDispersion": 0.0092,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.4,
+    "stabilityCaliberToArmorThreshold": 10.0,
+    "stabilityReductionAfterRicochet": 0.45,
+    "stabilityReductionAfterPenetration": 1.0,
+    "bulletType": "he_frag_dist_fuse",
+    "slopeEffectPreset": "ap",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "bulletName": "88mm_sprgr_skl45_ztz",
+    "timeFuseDistanceError": 50.0,
+    "explosionInAir": true,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,300.0],
+    "farHitPower": [0.1,700.0],
+    "endHitPower": [0.008,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "dynamicKv": true,
+    "hitPowerMult": 50.0,
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.1,
+    "fuseDelayDist": 0.0,
+    "ricochetEffect": "cannon_ricochet",
+    "waterCollisionEffect": "120-203_he_water_splash",
+    "waterFxScale": [0.6,0.7],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
+    },
+    "damage": {
+      "kinetic": {
+        "damageType": "generic"
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.7
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 0.8,
+            "angles": [0.0,179.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 0.8,
+            "angles": [180.0,359.0],
+            "countPortion": 0.5
+          }
+        }
+      ]
+    },
+    "hitpower": {
+      "HitPower0m": [1.0,500.0],
+      "HitPower4500m": [0.5,4500.0],
+      "HitPower9000m": [0.1,9000.0]
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "76mmOrange",
+      "trail": "noTrail"
+    },
+    "collisions": {
+      "default": {
+        "fx": "art_ground_splash",
+        "fxScale": [0.6,0.7]
+      },
+      "steel": {
+        "fx": "ps_hit_150mm_cumulative",
+        "fxScale": [3.2,3.2]
+      },
+      "armor": {
+        "fx": "ps_hit_150mm_cumulative",
+        "fxScale": [3.2,3.2]
+      },
+      "metal": {
+        "fx": "ps_hit_150mm_cumulative",
+        "fxScale": [3.2,3.2]
+      },
+      "horLandMesh": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "soil": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "dirt": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "road": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "roadSoil": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "sand": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "duneSand": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "roadSand": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "quickSand": {
+        "fx": "75_122_ap_hit_ground",
+        "fxScale": [1.0,1.0]
+      },
+      "snow": {
+        "fx": "75_122_ap_hit_snow",
+        "fxScale": [1.0,1.0]
+      },
+      "wood": {
+        "fx": "cannon_hit_ship_cumulative",
+        "fxScale": [2.1,2.1]
+      },
+      "buildings": {
+        "fx": "50_75_he_hit_stone",
+        "fxScale": [1.0,1.0]
+      },
+      "beton": {
+        "fx": "50_75_he_hit_stone",
+        "fxScale": [1.0,1.0]
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-local focusFrame = ::require("sqDagui/focusFrame/focusFrame.nut")
+local focusFrame = require("sqDagui/focusFrame/focusFrame.nut")
 local stdMath = require("std/math.nut")
 
 local sizeProps = [

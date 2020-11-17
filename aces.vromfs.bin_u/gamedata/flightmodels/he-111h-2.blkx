@@ -180,17 +180,13 @@
           "genericDamageMult": 0.3,
           "hp": 60.5
         },
-        "elevator_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 60.5
-        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 60.5
+          "hp": 59.4
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 60.5
+          "hp": 59.4
         },
         "fin_dm": {
           "hp": 60.5
@@ -537,63 +533,6 @@
         "part": {
           "name": "cover9_dm"
         }
-      },
-      {
-        "part": [
-          {
-            "name": "elevator_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 4.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          }
-        ]
       },
       {
         "part": [
@@ -1522,8 +1461,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1531,8 +1470,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1540,8 +1479,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1549,8 +1488,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -2861,11 +2800,57 @@
           "name": "he-111h-2_32_50kg",
           "blk": "gameData/FlightModels/weaponPresets/he-111h-2_32_50kg.blk",
           "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/de_sc50.blk",
-              "amountPerTier": 8.0,
-              "iconType": "bombs_small_group"
-            }
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/de_sc50.blk"
+              },
+              {
+                "amountPerTier": 4.0
+              },
+              {
+                "iconType": "bombs_small_group_x4"
+              },
+              {
+                "tier": {
+                  "idx": 2
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10
+                }
+              }
+            ]
           }
         }
       },

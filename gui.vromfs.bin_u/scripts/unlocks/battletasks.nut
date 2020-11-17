@@ -2,11 +2,11 @@ local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local statsd = require("statsd")
-
+local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlocksState.nut")
 
 ::g_battle_tasks <- null
 
-class BattleTasks
+::BattleTasks <- class
 {
   PLAYER_CONFIG_PATH = "seen/battletasks"
   specialTasksId = "specialTasksPersonalUnlocks"
@@ -30,12 +30,19 @@ class BattleTasks
 
   currentPlayback = null
 
+  isCompleteMediumTask = null
+  isCompleteEasyTask = null
+  hasInCompleteHardTask = null
 
   constructor()
   {
     currentTasksArray = []
     activeTasksArray = []
     proposedTasksArray = []
+
+    isCompleteMediumTask = ::Watched(false)
+    isCompleteEasyTask = ::Watched(false)
+    hasInCompleteHardTask = ::Watched(false)
 
     seenTasks = {}
     newIconWidgetByTaskId = {}
@@ -87,6 +94,7 @@ class BattleTasks
 
     if (::isInMenu())
       checkNewSpecialTasks()
+    updateCompleteTaskWatched()
     ::broadcastEvent("BattleTasksFinishedUpdate")
   }
 
@@ -707,6 +715,14 @@ class BattleTasks
     }
 
     local reward = ::get_unlock_rewards_text(config)
+    if (::has_feature("BattlePass")) {
+      local difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
+      local unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
+
+      reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
+      rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
+    }
+
     if (reward == "" && !rewardMarkUp.len())
       return rewardMarkUp
 
@@ -998,6 +1014,36 @@ class BattleTasks
   {
     local diff = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     return ::g_battle_task_difficulty.canPlayerInteractWithDifficulty(diff, currentTasksArray, showAllTasksValue)
+  }
+
+  function updateCompleteTaskWatched() {
+    local isCompleteMedium = false
+    local isCompleteEasy = false
+    local hasInCompleteHard = false
+    foreach (task in currentTasksArray) {
+      if (isCompleteMedium && isCompleteEasy && hasInCompleteHard)
+        break
+
+      if (!isTaskDone(task)) {
+        if (::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
+          hasInCompleteHard = true
+        continue
+      }
+
+      if (::g_battle_task_difficulty.EASY == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+        isCompleteEasy = true
+        continue
+      }
+
+      if (::g_battle_task_difficulty.MEDIUM == ::g_battle_task_difficulty.getDifficultyTypeByTask(task)) {
+        isCompleteMedium = true
+        continue
+      }
+    }
+
+    isCompleteMediumTask(isCompleteMedium)
+    isCompleteEasyTask(isCompleteEasy)
+    hasInCompleteHardTask(hasInCompleteHard)
   }
 }
 

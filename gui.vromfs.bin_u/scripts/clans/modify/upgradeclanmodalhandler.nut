@@ -17,7 +17,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
   function initScreen()
   {
     newClanType = clanData.type.getNextType()
-    lastShownReq = scene.findObject("req_newclan_tag")
+    lastShownHintObj = scene.findObject("req_newclan_tag")
     base.initScreen()
     updateSubmitButtonText()
     resetTagDecorationObj(clanData.tag)
@@ -26,7 +26,7 @@ class ::gui_handlers.UpgradeClanModalHandler extends ::gui_handlers.ModifyClanMo
     scene.findObject("newclan_description").setValue(clanData.desc)
     local newClanTagObj = scene.findObject("newclan_tag")
     newClanTagObj.setValue(::g_clans.stripClanTagDecorators(clanData.tag))
-    newClanTagObj.select()
+    ::select_editbox(newClanTagObj)
     onFocus(newClanTagObj)
 
     // Helps to avoid redundant name length check.

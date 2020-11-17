@@ -63,6 +63,7 @@
     id:t='btn_<<id>>'
     css-hier-invalidate:t='yes'
     square:t='yes'
+    on_click:t='onCollapse'
     activeText{}
   }
   <</isCollapsable>>

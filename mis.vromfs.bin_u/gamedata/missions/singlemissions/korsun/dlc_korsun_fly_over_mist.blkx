@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -3.0
-    },
     "stars": {
       "latitude": 48.0,
       "longitude": 44.0,
@@ -24,14 +20,14 @@
     "mission": {
       "level": "levels/korsun.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "poor",
-      "forceSkiesInitialRandomSeed": true,
-      "skiesInitialRandomSeed": 0,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 0,
       "customWeather": {
         "windDir": [0.6,0.8],
         "wind_scale": 1.0,
@@ -49,7 +45,7 @@
         },
         "clouds_position": {
           "start_altitude": 0.7,
-          "thickness": 4.0,
+          "thickness": 5.0,
           "light_extinction": 1.0,
           "amb_extinction_mul": 1.0
         },
@@ -69,6 +65,10 @@
         }
       }
     },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -3.0
+    },
     "spectator_points": [],
     "briefing": {
       "place_loc": "",
@@ -87,6 +87,9 @@
           },
           {
             "picture": ""
+          },
+          {
+            "showAirMap": false
           },
           {
             "arrow": [
@@ -109,7 +112,7 @@
                 "point": "point_08"
               },
               {
-                "point": "airfield_01_start"
+                "point": "airfield_01"
               }
             ]
           },
@@ -125,7 +128,7 @@
             "icon": {
               "icontype": "airfield",
               "side": "player",
-              "target": "airfield_01_start"
+              "target": "airfield_01"
             }
           }
         ]
@@ -150,7 +153,25 @@
       "conditions": [],
       "actions": [
         {
+          "airfieldSetVisibility": {
+            "target": "airfield_01",
+            "team": "None"
+          }
+        },
+        {
           "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
             {
               "object": "germ_air_def_squad"
             },
@@ -167,15 +188,19 @@
               "object": "ussr_tanks"
             },
             {
-              "attack_type": "hold_fire"
+              "stealthRadius": 500.0
             },
             {
-              "stealthRadius": 500.0
+              "attack_type": "hold_fire"
             }
           ]
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_109_01",
             "effShootingRate": 0.2,
             "plane": {
@@ -189,6 +214,10 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_109_02",
             "effShootingRate": 0.6,
             "plane": {
@@ -226,6 +255,15 @@
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "bf_109_01"
           }
         },
@@ -246,7 +284,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_korsun_fly_over_mist_main"
+            "target": "dlc_korsun_fly_over_mist_main",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         }
       ],
@@ -347,37 +387,57 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "germ_air_def_squad",
-            "attack_type": "fire_at_will",
             "stealthRadius": 1500.0,
+            "attack_type": "fire_at_will",
+            "accuracy": 0.1,
+            "airAccuracy": 0.1,
             "effShootingRate": 0.1
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "germ_cannon_01",
-            "attack_type": "fire_at_will",
             "stealthRadius": 1500.0,
+            "attack_type": "fire_at_will",
             "effShootingRate": 0.0
           }
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_tanks",
-            "attack_type": "fire_at_will",
             "stealthRadius": 1750.0,
+            "attack_type": "fire_at_will",
             "effShootingRate": 0.0
           }
         },
         {
           "unitSetIndication": {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "germ_cannon_01"
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_korsun_fly_over_mist_air_def"
+            "target": "dlc_korsun_fly_over_mist_air_def",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -387,7 +447,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_korsun_fly_over_mist_air_def_add"
+            "target": "dlc_korsun_fly_over_mist_air_def_add",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -425,13 +487,17 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "germ_cannon_01"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "dlc_korsun_fly_over_mist_air_def",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
@@ -448,6 +514,10 @@
           "target": "point_03_check"
         },
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "ussr_tanks",
           "effShootingRate": 0.0
         }
@@ -482,6 +552,12 @@
             "value": 1
           },
           {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
             "object": "germ_cannon_01"
           },
           {
@@ -492,7 +568,9 @@
       "actions": {
         "moSetObjectiveStatus": {
           "target": "dlc_korsun_fly_over_mist_air_def_add",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         }
       },
       "else_actions": []
@@ -517,6 +595,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "germ_cannon_01"
           }
         },
@@ -526,6 +606,8 @@
             "object_marking": 0,
             "func": "less",
             "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "ussr_tanks"
           }
         }
@@ -541,7 +623,9 @@
         ],
         "moSetObjectiveStatus": {
           "target": "dlc_korsun_fly_over_mist_air_def_add",
-          "status": 3
+          "status": 3,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "missionSetTargetsIndicator": {
           "target_type": "isAlive",
@@ -550,6 +634,9 @@
           "icon": "aa",
           "icon army": 2,
           "set": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "germ_cannon_01"
         }
       },
@@ -577,6 +664,9 @@
           "icon": "cannon",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "germ_cannon_01"
         }
       },
@@ -793,9 +883,13 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_109_01",
-            "attack_type": "fire_at_will",
             "stealthRadius": 3500.0,
+            "attack_type": "fire_at_will",
             "plane": {
               "ai_skill": "ACE",
               "targetDeviation": {
@@ -847,7 +941,9 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_korsun_fly_over_mist_fighters"
+            "target": "dlc_korsun_fly_over_mist_fighters",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -858,6 +954,10 @@
         {
           "unitSetIndication": {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "bf_109_01"
           }
         },
@@ -904,6 +1004,9 @@
           "icon": "air",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_01"
         }
       },
@@ -1011,6 +1114,9 @@
           "icon": "air",
           "icon army": 2,
           "set": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_01"
         },
         "unitMoveTo": {
@@ -1021,18 +1127,37 @@
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
           "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "bf_109_01",
           "speed": 650.0
         },
         "moSetObjectiveStatus": {
           "target": "dlc_korsun_fly_over_mist_fighters",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "unitSetIndication": {
           "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_01"
         },
         "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "bf_109_01",
           "stealthRadius": 250.0
         },
@@ -1148,16 +1273,22 @@
         },
         {
           "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "ussr_air_def_squad",
-            "attack_type": "fire_at_will",
             "stealthRadius": 3500.0,
+            "attack_type": "fire_at_will",
             "effShootingRate": 0.1
           }
         },
         {
           "moSetObjectiveStatus": {
             "target": "dlc_korsun_fly_over_mist_main",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1191,12 +1322,18 @@
         },
         {
           "moAddMissionObjective": {
-            "target": "dlc_korsun_fly_over_mist_fighters_add"
+            "target": "dlc_korsun_fly_over_mist_fighters_add",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
           "unitSetIndication": {
             "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "target": "bf_109_02"
           }
         },
@@ -1235,33 +1372,36 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "bf_109_02"
         }
       },
       "actions": {
         "moSetObjectiveStatus": {
           "target": "dlc_korsun_fly_over_mist_fighters_add",
-          "status": 2
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "wait": {
           "time": 3.0
         },
         "moAddMissionObjective": {
-          "target": "dlc_korsun_fly_over_mist_land"
+          "target": "dlc_korsun_fly_over_mist_land",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
         "triggerEnable": {
           "target": "mission_success"
         },
-        "addAirfield": {
-          "runwayStart": "airfield_01_start",
-          "runwayEnd": "airfield_01_end",
-          "runwayWidth": 10.0,
-          "army": 1,
-          "visibleOnHud": true
+        "airfieldSetVisibility": {
+          "target": "airfield_01",
+          "team": "Both"
         },
         "airfieldSetIndication": {
           "set": true,
-          "target": "airfield_01_start"
+          "target": "airfield_01"
         }
       },
       "else_actions": []
@@ -1383,6 +1523,9 @@
           "icon": "air",
           "icon army": 2,
           "set": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "target": "bf_109_02"
         }
       },
@@ -1407,15 +1550,20 @@
           "object_marking": 0,
           "check_objects": "any",
           "afterRepaired": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "object": "player_wing",
-          "target": "airfield_01_start"
+          "target": "airfield_01"
         }
       },
       "actions": [
         {
           "moSetObjectiveStatus": {
             "target": "dlc_korsun_fly_over_mist_land",
-            "status": 2
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -1540,6 +1688,8 @@
         ],
         "unit_class": "la-5fn",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "LA5_FN_default",
         "bullets0": "",
         "bullets1": "",
@@ -1549,6 +1699,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1583,6 +1734,8 @@
         ],
         "unit_class": "germ_20mm_flak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1592,6 +1745,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1617,6 +1771,8 @@
         ],
         "unit_class": "germ_20mm_flak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1626,6 +1782,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1651,6 +1808,8 @@
         ],
         "unit_class": "bf-109g-6",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109G-6_default",
         "bullets0": "",
         "bullets1": "",
@@ -1660,6 +1819,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -1696,6 +1856,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "germ_air_def_01"
           },
           {
@@ -1724,6 +1887,8 @@
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1733,6 +1898,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1758,6 +1924,8 @@
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1767,6 +1935,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1792,6 +1961,8 @@
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1801,6 +1972,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1826,6 +1998,8 @@
         ],
         "unit_class": "ussr_37mm_61k_noground",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1835,6 +2009,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1859,6 +2034,9 @@
           [-23792.1,150.0,878.2]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "ussr_air_def_01"
           },
@@ -1885,6 +2063,8 @@
         ],
         "unit_class": "germ_20mm_flak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1894,6 +2074,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1919,6 +2100,8 @@
         ],
         "unit_class": "germ_20mm_flak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1928,6 +2111,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1953,6 +2137,8 @@
         ],
         "unit_class": "germ_20mm_flak38",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1962,6 +2148,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 1,
@@ -1987,6 +2174,8 @@
         ],
         "unit_class": "germ_opelBlitz_tent",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1996,6 +2185,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 6,
@@ -2018,7 +2208,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "wheeled_vehicles_01_wp_02": {
@@ -2032,7 +2224,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "wheeled_vehicles_01_wp_03": {
@@ -2046,7 +2240,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "wheeled_vehicles_01_wp_04": {
@@ -2060,7 +2256,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "germ_truck_wp_01": {
@@ -2074,7 +2272,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "germ_truck_wp_02": {
@@ -2088,7 +2288,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "germ_truck_wp_03": {
@@ -2102,7 +2304,9 @@
             "props": {
               "speed": 300.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -2119,6 +2323,8 @@
         ],
         "unit_class": "germ_88mm_pak43_noground",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2128,6 +2334,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 5,
@@ -2152,6 +2359,8 @@
         ],
         "unit_class": "ussr_bt7",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -2161,6 +2370,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 8,
@@ -2183,7 +2393,9 @@
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ussr_tanks_wp_02": {
@@ -2197,7 +2409,9 @@
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           },
           "ussr_tanks_wp_03": {
@@ -2211,7 +2425,9 @@
             "props": {
               "speed": 5.0,
               "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
             }
           }
         }
@@ -2228,6 +2444,8 @@
         ],
         "unit_class": "la-5fn",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "LA5_FN_default",
         "bullets0": "",
         "bullets1": "",
@@ -2237,6 +2455,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 2,
@@ -2272,6 +2491,8 @@
         ],
         "unit_class": "bf-109g-6",
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "Bf-109G-6_default",
         "bullets0": "",
         "bullets1": "",
@@ -2281,6 +2502,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 4,
@@ -2304,6 +2526,23 @@
           }
         },
         "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_01",
+        "tm": [
+          [0.991445,0.0,0.130526],
+          [0.0,1.0,0.0],
+          [-0.130526,0.0,0.991445],
+          [-24210.7,53.1,1362.5]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak_small",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
       }
     }
   ],
@@ -2348,33 +2587,13 @@
       ],
       "props": []
     },
-    "airfield_01_start": {
-      "type": "Sphere",
-      "tm": [
-        [98.9,0.0,0.0],
-        [0.0,98.9,0.0],
-        [0.0,0.0,98.9],
-        [-23421.7,56.05,1366.2]
-      ],
-      "props": []
-    },
-    "airfield_01_end": {
-      "type": "Sphere",
-      "tm": [
-        [98.9,0.0,0.0],
-        [0.0,98.9,0.0],
-        [0.0,0.0,98.9],
-        [-25135.7,56.05,1112.2]
-      ],
-      "props": []
-    },
     "airfield_01_base": {
       "type": "Box",
       "tm": [
         [-2025.77,0.0,-266.698],
-        [0.0,49.575,0.0],
+        [0.0,75.0,0.0],
         [45.8053,0.0,-347.926],
-        [-24203.5,41.75,1238.35]
+        [-24144.2,44.55,1250.8]
       ],
       "props": []
     },

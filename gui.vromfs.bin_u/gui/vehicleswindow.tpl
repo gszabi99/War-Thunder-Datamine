@@ -1,5 +1,6 @@
 root {
-  background-color:t='@shadeBackgroundColor'
+  blur {}
+  blur_foreground {}
 
   frame {
     pos:t='50%pw-50%w, 50%ph-50%h'
@@ -7,7 +8,7 @@ root {
     width:t='80%sh'
     height:t='60%sh'
     max-width:t='800*@sf/@pf_outdated + 2@framePadding'
-    max-height:t='sh'
+    max-height:t='@rh'
     class:t='wndNav'
 
     frame_header {

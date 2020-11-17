@@ -109,8 +109,6 @@
     "mission": {
       "level": "levels/stalingrad.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_air_PvE;stalingrad/name",
@@ -121,10 +119,13 @@
       "allowEmptyTeams": true,
       "country_axis": "germany",
       "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
-        "isShipsAllowed": false
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
       }
     },
     "spectator_points": [],
@@ -145,6 +146,9 @@
           },
           {
             "picture": ""
+          },
+          {
+            "showAirMap": false
           },
           {
             "icon": {
@@ -382,6 +386,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -420,6 +425,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -458,6 +464,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -496,6 +503,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -534,6 +542,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -572,6 +581,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -610,6 +620,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -648,6 +659,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -686,6 +698,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -724,6 +737,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -762,6 +776,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -800,6 +815,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -825,6 +841,9 @@
           [5354.5,50.501,7408.15]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "t1_dummy_01"
           },
@@ -902,6 +921,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
           "count": 64,
@@ -940,6 +960,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -978,6 +999,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1016,6 +1038,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1054,6 +1077,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1092,6 +1116,7 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 1,
           "count": 1,
@@ -1117,6 +1142,9 @@
           [1020.12,468.05,-2453.11]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "bomber_rank_01_wave_01"
           },
@@ -1566,244 +1594,6 @@
           },
           {
             "squad_members": "assault_rank_05_wave_15"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_ai_fighters_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [810.077,468.05,-2839.24]
-        ],
-        "props": [
-          {
-            "squad_members": "fighter_rank_01_wave_01"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_02"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_03"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_04"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_05"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_06"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_07"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_08"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_09"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_10"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_11"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_12"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_13"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_14"
-          },
-          {
-            "squad_members": "fighter_rank_01_wave_15"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_01"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_02"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_03"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_04"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_05"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_06"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_07"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_08"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_09"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_10"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_11"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_12"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_13"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_14"
-          },
-          {
-            "squad_members": "fighter_rank_02_wave_15"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_01"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_02"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_03"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_04"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_05"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_06"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_07"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_08"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_09"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_10"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_11"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_12"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_13"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_14"
-          },
-          {
-            "squad_members": "fighter_rank_03_wave_15"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_01"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_02"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_03"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_04"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_05"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_06"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_07"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_08"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_09"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_10"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_11"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_12"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_13"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_14"
-          },
-          {
-            "squad_members": "fighter_rank_04_wave_15"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_01"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_02"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_03"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_04"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_05"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_06"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_07"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_08"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_09"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_10"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_11"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_12"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_13"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_14"
-          },
-          {
-            "squad_members": "fighter_rank_05_wave_15"
           }
         ]
       }

@@ -14,129 +14,250 @@
     "antiTankRocket": true,
     "antiShipRocket": true
   },
-  "rocket": {
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "rocket_tank",
-    "slopeEffectPreset": "ap",
-    "modelName": "tank_bullet_he",
-    "fresnel": [0.23,0.1,2.0],
-    "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
-    "bulletName": "375mm_erika",
-    "caliber": 0.375,
-    "mass": 250.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 107.0,
-    "massEnd": 220.0,
-    "maxDeltaAngle": 0.5,
-    "dragCx": 0.007,
-    "length": 1.35,
-    "distFromCmToStab": 0.01,
-    "CxK": 0.1,
-    "WdK": [0.1,0.1,0.1],
-    "force": 8000.0,
-    "timeFire": 3.0,
-    "thrustDeviation": 0.003,
-    "explosionEffect": "atgm_hit",
-    "defFxScale": [2.2,2.5],
-    "groundCollisionEffect": "art_ground_splash",
-    "groundFxScale": [1.5,1.7],
-    "ricochetEffect": "cannon_hit_apds",
-    "waterCollisionEffect": "120-203_he_water_splash",
-    "waterFxScale": [0.4,0.5],
-    "explosionPatchRadius": 5.0,
-    "smokeEffect": "hydra_smoke",
-    "maxDistance": 2800.0,
-    "minDistance": 655.0,
-    "armDistance": 655.0,
-    "distanceFuse": false,
-    "spawnExplosionWreckage": false,
-    "spawnExplosionFx": false,
-    "explosionOffset": 0.05,
-    "explodeTreshold": 0.1,
-    "relativeVelArmorShift": [200.0,1000.0],
-    "relativeVelHitShift": [300.0,1000.0],
-    "statType": "hydra",
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 200.0,
-    "endSpeed": 260.0,
-    "speedViscosity": 0.02,
-    "timeToLive": 20.0,
-    "price": 3000.0,
-    "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+  "rocket": [
+    {
+      "normalizationPreset": "heat"
     },
-    "collisions": {
-      "steel": {
-        "fx": "cannon_hit_armor_cumulative",
-        "fxScale": [4.0,5.0]
-      },
-      "buildings": {
-        "fx": "atgm_hit",
-        "fxScale": [2.2,2.5]
-      },
-      "wood": {
-        "fx": "atgm_hit",
-        "fxScale": [2.2,2.5]
+    {
+      "ricochetPreset": "he"
+    },
+    {
+      "secondaryShattersPreset": "ap_rocket"
+    },
+    {
+      "stabilityThreshold": 0.05
+    },
+    {
+      "stabilityCaliberToArmorThreshold": 5.0
+    },
+    {
+      "stabilityReductionAfterRicochet": 0.5
+    },
+    {
+      "stabilityReductionAfterPenetration": 0.15
+    },
+    {
+      "bulletType": "rocket_tank"
+    },
+    {
+      "slopeEffectPreset": "ap"
+    },
+    {
+      "fresnel": [0.23,0.1,2.0]
+    },
+    {
+      "explodeOnRendinst": true
+    },
+    {
+      "useEffectiveArmorThicknessForShatter": true
+    },
+    {
+      "bulletName": "375mm_erika"
+    },
+    {
+      "caliber": 0.375
+    },
+    {
+      "mass": 250.0
+    },
+    {
+      "explosiveType": "tnt"
+    },
+    {
+      "explosiveMass": 107.0
+    },
+    {
+      "massEnd": 220.0
+    },
+    {
+      "maxDeltaAngle": 0.5
+    },
+    {
+      "dragCx": 0.007
+    },
+    {
+      "length": 1.35
+    },
+    {
+      "distFromCmToStab": 0.01
+    },
+    {
+      "CxK": 0.1
+    },
+    {
+      "WdK": [0.1,0.1,0.1]
+    },
+    {
+      "force": 8000.0
+    },
+    {
+      "timeFire": 3.0
+    },
+    {
+      "thrustDeviation": 0.003
+    },
+    {
+      "explosionEffect": "atgm_hit"
+    },
+    {
+      "defFxScale": [2.2,2.5]
+    },
+    {
+      "groundCollisionEffect": "art_ground_splash"
+    },
+    {
+      "groundFxScale": [1.5,1.7]
+    },
+    {
+      "ricochetEffect": "cannon_hit_apds"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [0.4,0.5]
+    },
+    {
+      "explosionPatchRadius": 5.0
+    },
+    {
+      "smokeEffect": "hydra_smoke"
+    },
+    {
+      "maxDistance": 2800.0
+    },
+    {
+      "minDistance": 655.0
+    },
+    {
+      "armDistance": 655.0
+    },
+    {
+      "distanceFuse": false
+    },
+    {
+      "spawnExplosionWreckage": false
+    },
+    {
+      "spawnExplosionFx": false
+    },
+    {
+      "explosionOffset": 0.05
+    },
+    {
+      "explodeTreshold": 0.1
+    },
+    {
+      "explosionFx": "bomb_expl_100kg"
+    },
+    {
+      "explosionPatchRadius": 5.0
+    },
+    {
+      "relativeVelArmorShift": [200.0,1000.0]
+    },
+    {
+      "relativeVelHitShift": [300.0,1000.0]
+    },
+    {
+      "statType": "hydra"
+    },
+    {
+      "advancedMissiles": false
+    },
+    {
+      "useStartSpeed": true
+    },
+    {
+      "startSpeed": 200.0
+    },
+    {
+      "endSpeed": 260.0
+    },
+    {
+      "speedViscosity": 0.02
+    },
+    {
+      "timeToLive": 20.0
+    },
+    {
+      "price": 3000.0
+    },
+    {
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
       }
     },
-    "DamageParts": {
-      "body": {
-        "hp": 35.0,
-        "armorClass": "tank_structural_steel",
-        "armorThickness": 5.0,
-        "explosionArmorQuality": 45.0,
-        "shatterArmorQuality": 45.0
-      }
-    },
-    "damage": {
-      "kinetic": {
-        "damageType": "generic"
-      },
-      "shatter": [
-        {
-          "useRealShatters": true
+    {
+      "collisions": {
+        "steel": {
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [4.0,5.0]
         },
-        {
-          "countPortion": 0.2
+        "buildings": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 2.0,
-            "angles": [0.0,100.0],
-            "countPortion": 0.3
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [101.0,259.0],
-            "countPortion": 0.4
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 2.0,
-            "angles": [260.0,359.0],
-            "countPortion": 0.3
-          }
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         }
-      ]
+      }
+    },
+    {
+      "DamageParts": {
+        "body": {
+          "hp": 35.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 5.0,
+          "explosionArmorQuality": 45.0,
+          "shatterArmorQuality": 45.0
+        }
+      }
+    },
+    {
+      "damage": {
+        "kinetic": {
+          "damageType": "generic"
+        },
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.2
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 2.0,
+              "angles": [0.0,100.0],
+              "countPortion": 0.3
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [101.0,259.0],
+              "countPortion": 0.4
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 2.0,
+              "angles": [260.0,359.0],
+              "countPortion": 0.3
+            }
+          }
+        ]
+      }
     }
-  }
+  ]
 }

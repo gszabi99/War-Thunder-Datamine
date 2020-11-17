@@ -50,14 +50,14 @@
 @const mainMenuButtonWidth: 0.26@sf;
 @const mainMenuButtonWideWidth: 0.34@sf;
 
-@const modIcoSize: 56*@sf/@pf_outdated;
-@const modArrowWidth: (20*@sf/@pf) \ 1;
-@const modLineWidth: (20*@sf/@pf) \ 1;
-@const modAngleWidth: (20*@sf/@pf) \ 1;
-@const modStatusHeight: 22*@sf/@pf_outdated;
-@const modStatusCheckboxHeight: 18@sf/@pf;
-@const modArrowLen: 15*@sf/@pf_outdated;
-@const modPadSize: (8@sf/@pf) \ 1;
+@const modIcoSize: (76@sf/@pf)\1;
+@const modArrowWidth: 19@dp;
+@const modLineWidth:  19@dp;
+@const modAngleWidth: 19@dp;
+@const modStatusHeight: (30@sf/@pf)\1;
+@const modStatusCheckboxHeight: (18@sf/@pf)\1;
+@const modArrowLen: (20@sf/@pf)\1;
+@const modPadSize: (8@sf/@pf)\1;
 
 @const modBundlePopupBgPadW: 6@dp -1@modPadSize;
 @const modBundlePopupBgPadH: 4@dp +1@modPadSize;
@@ -103,7 +103,7 @@
 @const gcButtonsInterval:      ((((1@topGcPanelWidth - 0.6@sf) / 10 - 1@gcSeparatorSize) \ 2 * 2) $max 0) + 1@gcSeparatorSize;
 
 @const frameHeaderHeight:      (0.045@sf)/1 + 1@frameHeaderPad;
-@const frameHeaderPad:         2@dp;
+@const frameHeaderPad:         1@dp;
 @const frameTopPadding:        1@frameHeaderHeight + 1@blockInterval;
 @const navBarTopPadding:       1@blockInterval;
 @const unlocksListboxItemInterval: 2@sf/@pf;
@@ -178,7 +178,7 @@
 
 @const slot_button_fullWidth: (140 + 5@isWide)*@sf/@pf_outdated;
 @const slot_width: 1@slot_button_fullWidth + 2@slot_interval;
-@const slot_interval: 3*@sf/@pf_outdated;
+@const slot_interval: (4*@sf/@pf)\1;
 @const slot_vert_pad: 0.005*@scrn_tgt\1;
 @const slot_height:   @shopAirHeight + 10*@sf/@pf_outdated;
 @const slot_hdr_width:@cIco +12@sf/@pf\1;
@@ -187,8 +187,8 @@
 @const shop_hor_arrow_height: 15*@sf/@pf_outdated;
 @const slotScrollButtonWidth: (0.025@sf)\1;
 
-@const slotbar_top_shade: 2@dp;
-@const slotbar_pad_top: 15@sf/@pf;
+@const slotbar_top_shade: 4@dp;
+@const slotbar_pad_top: (15@sf/@pf) \ 1;
 @const slotbar_pad_bottom: 36@sf/@pf;
 
 @const groupHeight:   0.03*@scrn_tgt\1;
@@ -203,12 +203,12 @@
 @const slotbarWidthFullExt: (1@slotbarWidthExt + 1) \2*2;
 
 @const slotbarHeight:    1@slotbar_top_shade + 1@slotbar_pad_top + 1@slot_height + 1@slotbar_pad_bottom;
-@const slotbarInvisPad:  18*@sf/@pf;
+@const slotbarInvisPad:  (18*@sf/@pf) \ 1;
 @const offsetBetweenScreenAndAirinfo: (1@bw + 1@mIco + 2@listboxPad + 2@airInfoPadding) $min  0.5 * (sw - 1@slotbarWidthFull);
 @const airInfoPanelRightSide: 1@bw + 1@mIco + 2@listboxPad + 2@airInfoPadding;
-@const airInfoPanelWidth: 0.4@sf;
-@const airInfoPanelShadowWidth: 0.07@sf;
-@const airInfoPanelDmSwitcherWidth: ((@airInfoPanelWidth - 2@listboxPad - 2@listboxItemsInterval) \ 3) * 3 + 2@listboxPad + 2@listboxItemsInterval; 
+@const airInfoPanelWidth: 0.43@sf;
+@const airInfoPannelContentPadding: 1@scrn_tgt/100.0;
+@const airInfoPanelDmSwitcherWidth: ((@airInfoPanelWidth - 2@listboxPad) \ 3) * 3 + 4@listboxPad + 2@airInfoPannelContentPadding; 
 @const slotbarOffset:    1@bottomBarHeight;
 @const slotbarTop:       36@sf/@pf;
 @const slotbarShopBtnOffset: 1@offsetFromEdge + 1@shopWidthMax + 13@sf/@pf;
@@ -232,13 +232,13 @@
 @const actionBarBottomPos: sh - 1@bhHud;
 @const hintAboveActionBarPos: 1@actionBarBottomPos - 0.1@shHud - 1@bhHud;
 
-@const framePadding: 1@blockInterval + 1@dp;
+@const framePadding: 1@blockInterval;
 @const unlockBlockWidth: 0.55@sf\1;
 
 @const modWindowWidth: 6@modCellWidth + 1.5@modBlockTierNumHeight $min 1@rw;
-@const modItemHeight: 1@modIcoSize-2*@sf/@pf_outdated;
-@const modBlockTierNumHeight: (0.33@modCellHeight) \ 1;
-@const modBundleWidth: 1@modItemWidth + 16*@sf/@pf_outdated;
+@const modItemHeight: (1@modIcoSize-3@sf/@pf)\1;
+@const modBlockTierNumHeight: (0.33@modCellHeight)\1;
+@const modBundleWidth: 1@modItemWidth + (21@sf/@pf)\1;
 @const modCellWidth:  1@modItemWidth +2@modPadSize;
 @const modCellHeight: 1@modItemHeight +2@modPadSize;
 
@@ -254,8 +254,6 @@
 
 @const minXposWindow: 1@bw;
 @const minYposWindow: 1@bh + 1@titleLogoSafeareaOffsetTop + 1@titleLogoFullHeight;
-
-@const chapterSeparatorSize: 2 * (2@sf/@pf_outdated \ 1);
 
 @const paymentIconWidth: 270@sf/@pf;
 @const paymentIconHeight: 90@sf/@pf;
@@ -279,12 +277,14 @@
 @const helpInterval:     0.01@sf;
 @const helpLineInterval: 0.5@helpInterval;
 @const helpLineWidth:    1@dp;
+@const helpLineShadowOffset: 1@dp;
+@const helpLineShadowColor: #80000000;
 @const itemsInterval:    0.015@scrn_tgt;
 @const itemsIntervalBig: 0.03@scrn_tgt;
 
 @const modItemWidth: (1@modIcoSize + 116@sf/@pf) \ 1;
 
-@const tutorArrowSize: 25*@sf/@pf_outdated;
+@const tutorArrowSize: (32@sf/@pf) \ 1;
 
 @const newWidgetIconHeight: 33@sf/@pf;
 @const newWidgetIconImgOffsetX: -0.5@newWidgetIconHeight;
@@ -294,7 +294,7 @@
 
 @const framedMessageMaxWidth: 0.5@sf;
 
-@const infoPanelVertPosition: 1@titleLogoPlateHeight + 1@bh + 0.04@sf;
+@const infoPanelVertPosition: 1@titleLogoPlateHeight + 1@bh + 0.02@sf+1@checkboxSize+1@blockInterval;
 @const maxInfoPanelContentHeightWithSlotbar: sh - 1@infoPanelVertPosition - 1@airInfoToggleButtonSize - 2@framePadding - 1@wndWithSlotbarBottomOffset - 0.04@sf;
 
 
@@ -353,14 +353,16 @@
 @const tierIconSize: 60@sf/@pf;
 @const modPresetTextMaxWidth: 350@sf/@pf;
 
-@const wwMainMenuBackgroundShadowDeltaHeight: 1@navBarBattleButtonHeight + 12@sf/@pf;
 @const twoStepLoginBgrImgWidth: 1012@sf/@pf;
 @const twoStepLoginBgrImgHeight: 626@sf/@pf;
 @const twoStepLoginImgWidth: 295@sf/@pf;
 @const twoStepLoginImgHeight: 506@sf/@pf;
 @const twoStepLoginLogoSIze: 70@sf/@pf;
+@const wwMainMenuBackgroundShadowDeltaHeight: 1@navBarBattleButtonHeight + 12@sf/@pf;
 @const collectionItemSizeWithIndent:1.5@profileMedalSizeList + 1@blockInterval;
-@const collectionPrizeWidth: 1.8@profileMedalSize;
-@const collectionWidth: 5@collectionItemSizeWithIndent + 1@collectionPrizeWidth;
-@const collectionHeight: 1@buttonHeight + 2@collectionItemSizeWithIndent - 1@blockInterval;
+@const collectionPrizeWidth: 1.8@collectionItemSizeWithIndent;
 @const decorationInfoMaxWidth: 6@decalIconHeight;
+@const collectionInfoWidth: 1@decorationInfoMaxWidth - 0.02@scrn_tgt -1@scrollBarSize;
+@const collectionWidth: @srw-1@collectionInfoWidth - 2@blockInterval;
+@const defaultNavPanelWidth: 0.3@sf;
+@const shopInfoMinWidth: 1@itemInfoWidth+2@itemSpacing+1@scrollBarSize;

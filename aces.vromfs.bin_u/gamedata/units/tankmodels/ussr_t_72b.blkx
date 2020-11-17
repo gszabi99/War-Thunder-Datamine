@@ -232,7 +232,7 @@
           "armorThickness": 30.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 20.0
+          "armorThickness": 5.0
         },
         "turret_02_top_dm": {
           "armorThickness": 30.0
@@ -247,7 +247,7 @@
           "armorThickness": 20.0
         },
         "turret_04_back_dm": {
-          "armorThickness": 80.0
+          "armorThickness": 45.0
         },
         "turret_01_top_dm": {
           "armorThickness": 45.0
@@ -416,7 +416,25 @@
         "ex_era_hull_24_dm": [],
         "ex_era_hull_25_dm": [],
         "ex_era_hull_26_dm": [],
-        "ex_era_hull_27_dm": []
+        "ex_era_hull_27_dm": [],
+        "ex_era_hull_28_dm": [],
+        "ex_era_hull_29_dm": [],
+        "ex_era_hull_30_dm": [],
+        "ex_era_hull_31_dm": [],
+        "ex_era_hull_32_dm": [],
+        "ex_era_hull_33_dm": [],
+        "ex_era_hull_34_dm": [],
+        "ex_era_hull_35_dm": [],
+        "ex_era_hull_36_dm": [],
+        "ex_era_hull_37_dm": [],
+        "ex_era_hull_38_dm": [],
+        "ex_era_hull_39_dm": [],
+        "ex_era_hull_40_dm": [],
+        "ex_era_hull_41_dm": [],
+        "ex_era_hull_42_dm": [],
+        "ex_era_hull_43_dm": [],
+        "ex_era_hull_44_dm": [],
+        "ex_era_hull_45_dm": []
       },
       "era_turret": {
         "armorClass": "ERA_K_I",
@@ -449,7 +467,11 @@
         "ex_era_turret_16_dm": [],
         "ex_era_turret_17_dm": [],
         "ex_era_turret_18_dm": [],
-        "ex_era_turret_19_dm": []
+        "ex_era_turret_19_dm": [],
+        "ex_era_turret_20_dm": [],
+        "ex_era_turret_21_dm": [],
+        "ex_era_turret_22_dm": [],
+        "ex_era_turret_23_dm": []
       },
       "body_side_screens": {
         "armorClass": "t_90_rubber_fabric_screens",
@@ -499,6 +521,7 @@
         "ex_decor_05_dm": [],
         "ex_decor_03_dm": [],
         "ex_decor_07_dm": [],
+        "ex_armor_06_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
         "ex_decor_l_04_dm": [],
@@ -1005,6 +1028,7 @@
         "armorThrough": 12.0,
         "fireProtectionHp": 15.0,
         "createSecondaryShatters": false,
+        "fireParamsPreset": "fuel_internal",
         "fuel_tank_dm": [],
         "fuel_tank_01_dm": [],
         "fuel_tank_02_dm": [],
@@ -3009,6 +3033,15 @@
           "name": "fuel_exterior",
           "fx": {
             "name": "tank_ex_fuel_explosion",
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "fuel_internal",
+          "fx": {
+            "name": "tank_engine_fire",
             "centerDmgPart": true
           }
         }

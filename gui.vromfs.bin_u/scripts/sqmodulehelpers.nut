@@ -9,8 +9,6 @@
  */
 
 
-local require_optional = this.require_optional
-
 ::require_native <- function require_native(moduleName) {
   local module = require_optional(moduleName) || {}
   local fallBack = require_optional("nativeModuleCompatibility/" + moduleName + ".nut") ?? {}

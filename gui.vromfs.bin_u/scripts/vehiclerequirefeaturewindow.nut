@@ -26,6 +26,10 @@ class ::gui_handlers.VehicleRequireFeatureWindow extends ::gui_handlers.BaseGuiH
 
     local timerObj = getObj("vehicle_require_feature_timer")
     if (::checkObj(timerObj)) timerObj.setUserData(this)
+
+    local tblObj = getObj("items_list")
+    tblObj.setValue(purchases.len() > 0 ? 0 : -1)
+    ::move_mouse_on_child_by_value(tblObj)
   }
 
   function getPurchaseAvailable()
@@ -161,5 +165,11 @@ class ::gui_handlers.VehicleRequireFeatureWindow extends ::gui_handlers.BaseGuiH
   function getDiscountValue(entitlementItem)
   {
     return ::getTblValue("goldDiscount", entitlementItem, 0)
+  }
+
+  function onEventModalWndDestroy(params)
+  {
+    if (isSceneActiveNoModals())
+      ::move_mouse_on_child_by_value(getObj("items_list"))
   }
 }

@@ -10,7 +10,6 @@
      onPlayerSelectCb(player) - callback on player select
      onPlayerDblClickCb(player) - callback on player double click
      onPlayerRClickCb(player) = callback on player RClick
-     onWrapUpCb(obj), onWrapDownCb(obj) - callbacks for wrapUp and down.
 */
 
 
@@ -27,8 +26,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   onPlayerSelectCb = null
   onPlayerDblClickCb = null
   onPlayerRClickCb = null
-  onWrapUpCb = null
-  onWrapDownCb = null
+  onTablesHoverChange = null
 
   playersInTeamTables = null
   focusedTeam = ::g_team.ANY
@@ -85,11 +83,6 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   /*************************************PUBLIC FUNCTIONS *******************************************/
   /*************************************************************************************************/
 
-  function getFocusObj()
-  {
-    return getFocusedTeamTableObj()
-  }
-
   function getSelectedPlayer()
   {
     local objTbl = getFocusedTeamTableObj()
@@ -127,15 +120,6 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
     foreach(team in teams)
       updateTeamPlayersTbl(team, playersList)
     isTablesInUpdate = false
-
-    if (!playersInTeamTables?[focusedTeam]?.len())
-      foreach(team, list in playersInTeamTables)
-        if (list.len())
-        {
-          setFocusedTeam(team)
-          return
-        }
-
     onPlayerSelect()
   }
 
@@ -175,29 +159,6 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
     focusedTeam = ::getTblValue(::getObjIdByPrefix(obj, TEAM_TBL_PREFIX), ::g_team, focusedTeam)
   }
 
-  function onWrapRight(obj) { wrapFocusedTeam(1) }
-  function onWrapLeft(obj)  { wrapFocusedTeam(-1) }
-
-  function wrapFocusedTeam(dir)
-  {
-    local newFocusedTeamIdx = ::find_in_array(teams, focusedTeam, 0) + dir
-    local newFocusedTeam = ::getTblValue(newFocusedTeamIdx, teams, focusedTeam)
-    if (newFocusedTeam == focusedTeam)
-      return
-    local newTeamObj = getObj(getTeamTableId(newFocusedTeam))
-    if (!newTeamObj)
-      return
-
-    setFocusedTeam(newFocusedTeam)
-  }
-
-  function setFocusedTeam(newFocusedTeam)
-  {
-    focusedTeam = newFocusedTeam
-    getFocusedTeamTableObj().select()
-    onPlayerSelect()
-  }
-
   function onTableClick(obj)
   {
     updateFocusedTeamByObj(obj)
@@ -220,8 +181,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
 
   function onTableDblClick()    { if (onPlayerDblClickCb) onPlayerDblClickCb(getSelectedPlayer()) }
   function onTableRClick()      { if (onPlayerRClickCb)   onPlayerRClickCb(getSelectedPlayer()) }
-  function onWrapUp(obj)        { if (onWrapUpCb)         onWrapUpCb(obj) }
-  function onWrapDown(obj)      { if (onWrapDownCb)       onWrapDownCb(obj) }
+  function onTableHover(obj)    { if (onTablesHoverChange) onTablesHoverChange(obj.id, obj.isHovered()) }
 
   function onEventLobbyMembersChanged(p)
   {
@@ -254,5 +214,10 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
       setFullRoomInfo()
       updatePlayersTbl()
     }
+  }
+
+  function moveMouse() {
+    if (scene.childrenCount() > 0)
+      ::move_mouse_on_child(scene.getChild(0), 0)
   }
 }

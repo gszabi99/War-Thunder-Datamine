@@ -15,15 +15,16 @@ local function isDevoiced() {
 
 
 local function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) {
-  local txt = ""
+  local txts = []
   if (currentPenaltyDesc.value.duration >= penalty.BAN_USER_INFINITE_PENALTY) {
-    txt += ::loc("charServer/mute/permanent") + "\n"
-  } else {
+    txts.append(::loc("charServer/mute/permanent"),"\n")
+  }
+  else {
     local durationTime = time.roundTime(time.secondsToTime(currentPenaltyDesc.value.duration))
     durationTime.seconds = 0
     durationTime = time.secondsToTimeFormatString(durationTime).subst(timeLocTable)
     local timeText = stdStr.format("<color=%d>%s</color>", highlightColor, durationTime)
-    txt += stdStr.format(::loc("charServer/mute/timed"), timeText)
+    txts.append(stdStr.format(::loc("charServer/mute/timed"), timeText))
 
     if ((currentPenaltyDesc.value?.seconds_left ?? 0) > 0) {
       local leftTime = time.roundTime(currentPenaltyDesc.value.seconds_left)
@@ -31,19 +32,17 @@ local function getDevoiceDescriptionText(highlightColor = Color(255, 255, 255)) 
         highlightColor, time.secondsToTimeFormatString(leftTime).subst(timeLocTable)
       )
       if (timeText != "") {
-        txt += " " + stdStr.format(::loc("charServer/ban/timeLeft"), timeText)
+        txts.append(" ", stdStr.format(::loc("charServer/ban/timeLeft"), timeText))
       }
     }
-
-    if (txt != "") {
-      txt += "\n"
-    }
+    txts.append("\n")
   }
 
-  txt += ::loc("charServer/ban/reason") + ::loc("ui/colon") + " " +
-    ::loc("charServer/ban/reason/"+currentPenaltyDesc.value.category) + "\n" +
-    ::loc("charServer/ban/comment") + "\n" + currentPenaltyDesc.value.comment
-  return txt
+  txts.append(::loc("charServer/ban/reason"), ::loc("ui/colon"), " ",
+    ::loc($"charServer/ban/reason/{currentPenaltyDesc.value.category}"), "\n",
+    ::loc("charServer/ban/comment"), "\n", currentPenaltyDesc.value.comment)
+
+  return "".join(txts)
 }
 
 

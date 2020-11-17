@@ -38,12 +38,12 @@ class ::gui_handlers.BenchmarkResultModal extends ::gui_handlers.BaseGuiHandlerW
     local rowData = [
                       {
                         text = ::loc(statType),
-                        tdAlign = "right",
+                        tdalign = "right",
                         width = "46%pw"
                       }
                       {
                         text = statCount.tostring(),
-                        tdAlign = "left",
+                        tdalign = "left",
                         width = "46%pw",
                         rawParam = "padding-left:t='8%@p.pw';"
                       }

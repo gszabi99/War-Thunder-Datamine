@@ -1,5 +1,6 @@
 root {
-  background-color:t = '@modalShadeColor'
+  blur {}
+  blur_foreground {}
   on_click:t='goBack'
 
   frame {
@@ -26,14 +27,6 @@ root {
         width:t='fw'
         flow:t='vertical'
         overflow-y:t='auto'
-
-        behaviour:t='posNavigator'
-        showSelect:t='always'
-        navigatorShortcuts:t='yes'
-        scrollbarShortcuts:t='yes'
-        css-hier-invalidate:t='yes'
-        total-input-transparent:t='yes'
-        on_select:t='onItemSelect'
 
         include "gui/weaponry/weaponryPreset"
       }
@@ -78,9 +71,6 @@ root {
           tooltip:t='<<altBtnTooltip>>'
           btnName:t='X'
           on_click:t='onAltModAction'
-          visualStyle:t='purchase'
-          buttonWink {}
-          buttonGlance{}
           ButtonImg {}
         }
         Button_text{

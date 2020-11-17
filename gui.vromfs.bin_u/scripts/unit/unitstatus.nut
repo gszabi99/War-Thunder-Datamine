@@ -1,3 +1,4 @@
+local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText} = require("scripts/weaponry/weaponryVisual.nut")
 
@@ -21,7 +22,7 @@ local function isUnitHaveSecondaryWeapons(unit)
 
 local function isShipWithoutPurshasedTorpedoes(unit)
 {
-  if (!unit?.isShip())
+  if (!unit?.isShipOrBoat())
     return false
 
   local torpedoes = null
@@ -120,7 +121,7 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
         if (!weap?.blk || weap?.dummy)
           continue
 
-        local weapBlk = ::DataBlock(weap.blk)
+        local weapBlk = blkFromPath(weap.blk)
         if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
           availableWeapons.flares = modName
       }

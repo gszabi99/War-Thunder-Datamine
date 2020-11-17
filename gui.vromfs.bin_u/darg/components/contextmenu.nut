@@ -40,6 +40,6 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
 
 
 return {
-  contextMenu = contextMenu
+  contextMenu
   remove = modalWindows.remove
 }

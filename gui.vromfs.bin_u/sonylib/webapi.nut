@@ -139,10 +139,9 @@ local sessionManager = {
       null, false, {["X-PSN-SESSION-MANAGER-SESSION-IDS"] = ",".join(sessionIds)})
   }
 
-
-  function changeLeader(sessionId, leaderAccountId, leaderPlatformString) {
+  function changeLeader(sessionId, accountId, platform) {
     return createRequest(sessionManagerApi, webApiMethodPut, $"{sessionId}/leader",
-                         { accountId = leaderAccountId, platform = leaderPlatformString })
+      {}, { accountId = accountId, platform = platform })
   }
   function invite(sessionId, accountIds) {
     local params = { invitations = accountIds.map(@(id) { to = { accountId = id }})}
@@ -254,7 +253,7 @@ local commerce = {
 
 local inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 local inGameCatalog = {
-  // Service label is now mandatory
+  // Service label is now mandatory due to the way PS5 can be setup (with two stores)
   function get(ids, serviceLabel, params={}) {
     params["serviceLabel"] <- serviceLabel
     params["containerIds"] <- ":".join(ids)

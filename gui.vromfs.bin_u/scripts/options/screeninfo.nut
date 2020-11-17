@@ -1,8 +1,5 @@
 local function isTripleHead(sw = null, sh = null)
 {
-  if ("is_triple_head" in ::getroottable()) // Temporary compatibility with 1.89.1.X and older.
-    return false
-
   sw = sw ?? ::screen_width()
   sh = sh ?? ::screen_height()
   return sw >= sh * 3 * 5 / 4
@@ -13,10 +10,6 @@ local function isUltraWide(sw = null, sh = null)
   sw = sw ?? ::screen_width()
   sh = sh ?? ::screen_height()
   local ratio = 1.0 * sw / sh
-
-  if ("is_triple_head" in ::getroottable()) // Temporary compatibility with 1.89.1.X and older.
-    return !::is_triple_head(sw, sh) && ratio >= 2.5
-
   return !isTripleHead(sw, sh) && ratio >= 2.5
 }
 

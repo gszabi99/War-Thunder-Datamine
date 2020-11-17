@@ -430,13 +430,25 @@
       "login_layer_mirage_3c": 1.0
     },
     {
-      "login_layer_t72b": 4.0
+      "login_layer_t72b": 1.0
     },
     {
-      "login_layer_g5_e": 4.0
+      "login_layer_g5_e": 2.0
     },
     {
-      "login_layer_northampton": 4.0
+      "login_layer_northampton": 1.0
+    },
+    {
+      "login_layer_jaguar": 4.0
+    },
+    {
+      "login_layer_t90": 4.0
+    },
+    {
+      "login_layer_forrestal": 4.0
+    },
+    {
+      "login_layer_battleship_dreadnought": 4.0
     },
     {
       "beforeLogin": {
@@ -451,18 +463,20 @@
         },
         "beforeLogin": {
           "default_chance": 0.0,
-          "login_layer_dyn_1_81_ussr": 3.0,
-          "login_layer_mig19pt": 2.0,
+          "login_layer_dyn_1_81_ussr": 1.0,
+          "login_layer_mig19pt": 1.0,
           "login_layer_t1": 1.0,
           "login_layer_n1": 1.0,
-          "login_layer_mig21": 2.0,
+          "login_layer_mig21": 1.0,
           "login_layer_bmp3": 1.0,
           "login_layer_ka_52": 2.0,
           "login_layer_object_279": 1.0,
           "login_layer_khrizantema": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_t72b": 1.0,
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0,
+          "login_layer_jaguar": 4.0
         }
       }
     },
@@ -488,9 +502,11 @@
           "login_layer_p51_1_71": 1.0,
           "login_layer_rooikat76": 1.0,
           "login_layer_ah_64d": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_northampton": 1.0,
+          "login_layer_jaguar": 4.0,
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0
         }
       }
     },
@@ -506,9 +522,10 @@
           "login_layer_it_gg": 1.0,
           "login_layer_leopard_2a4": 1.0,
           "login_layer_bo_105": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0,
+          "login_layer_jaguar": 4.0
         }
       }
     },
@@ -524,9 +541,10 @@
           "login_layer_yugumo": 1.0,
           "login_layer_ah1": 1.0,
           "login_layer_jp_1_65": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0,
+          "login_layer_jaguar": 4.0
         }
       }
     },
@@ -542,9 +560,10 @@
           "login_layer_1_93_mangusta": 1.0,
           "login_layer_it_g91": 1.0,
           "login_layer_trento": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0,
+          "login_layer_jaguar": 4.0
         }
       }
     },
@@ -561,9 +580,10 @@
           "login_layer_fr_1_73": 1.0,
           "login_layer_173_narv": 1.0,
           "login_layer_mirage_3c": 1.0,
-          "login_layer_t72b": 3.0,
-          "login_layer_g5_e": 3.0,
-          "login_layer_northampton": 3.0
+          "login_layer_t90": 4.0,
+          "login_layer_forrestal": 4.0,
+          "login_layer_battleship_dreadnought": 4.0,
+          "login_layer_jaguar": 4.0
         }
       }
     },
@@ -971,6 +991,7 @@
       "streak_killStreak_attacker_survived": "streaks_survivance_bg;streaks_survivance_attacker",
       "streak_killStreak_bomber_survived": "streaks_survivance_bg;streaks_survivance_bomber",
       "streak_killStreak_helicopter_survived": "streaks_survivance_bg;streaks_survivance_helicopter",
+      "streak_killStreak_bomber_nuclear_success": "streaks_event_bg;streaks_bomber_nuclear_success",
       "streak_tank_best_antiAircraft": "streaks_tank_bg;streaks_heroic_target;streaks_heroic_fighter",
       "streak_battle_royale_first_place_lost": "streaks_event_bg;streaks_last_man_standing",
       "streak_battle_royale_second_place": "streaks_survivance_bg;streaks_last_man_standing",
@@ -1685,6 +1706,11 @@
         "w": 0.44,
         "h": 0.44,
         "img": "#ui/gameuiskin#streaks_survivance_helicopter"
+      },
+      "streaks_bomber_nuclear_success": {
+        "w": 0.46,
+        "h": 0.46,
+        "img": "#ui/gameuiskin#streaks_bomber_nuclear"
       },
       "streaks_battle_royale_first_place_lost": {
         "w": 0.66,
@@ -4037,6 +4063,10 @@
       "country_egypt": "#ui/gameuiskin#country_egypt.svg",
       "country_turkey": "#ui/gameuiskin#country_turkey.svg",
       "country_bangladesh": "#ui/gameuiskin#country_bangladesh.svg",
+      "country_syria": "#ui/gameuiskin#country_syria.svg",
+      "country_germany_empire_navy": "#ui/gameuiskin#country_germany_empire_navy.svg",
+      "country_russia_empire_navy": "#ui/gameuiskin#country_russia_empire_navy.svg",
+      "country_britain_empire_navy": "#ui/gameuiskin#country_britain_empire_navy.svg",
       "first_choice_country_usa_aviation": "#ui/first_choice/usa_aviation.png",
       "first_choice_country_germany_aviation": "#ui/first_choice/germany_aviation.png",
       "first_choice_country_ussr_aviation": "#ui/first_choice/ussr_aviation.png",
@@ -4055,14 +4085,22 @@
       "first_choice_country_france_army": "#ui/first_choice/france_army.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army.png",
       "first_choice_country_sweden_army": "#ui/first_choice/sweden_army.png",
-      "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet.png",
-      "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet.png",
-      "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet.png",
-      "first_choice_country_britain_fleet": "#ui/first_choice/britain_fleet.png",
-      "first_choice_country_japan_fleet": "#ui/first_choice/japan_fleet.png",
-      "first_choice_country_italy_fleet": "#ui/first_choice/italy_fleet.png",
-      "first_choice_country_france_fleet": "#ui/first_choice/france_aviation.png",
-      "first_choice_country_china_fleet": "#ui/first_choice/china_aviation.png",
+      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet.png",
+      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet.png",
+      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet.png",
+      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet.png",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet.png",
+      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet.png",
+      "first_choice_country_france_ships": "#ui/first_choice/france_aviation.png",
+      "first_choice_country_china_ships": "#ui/first_choice/china_aviation.png",
+      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat.png",
+      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat.png",
+      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat.png",
+      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat.png",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat.png",
+      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat.png",
+      "first_choice_country_france_boats": "#ui/first_choice/france_aviation.png",
+      "first_choice_country_china_boats": "#ui/first_choice/china_aviation.png",
       "bgflag_country_usa": "#ui/images/flag_usa",
       "bgflag_country_germany": "#ui/images/flag_germany",
       "bgflag_country_ussr": "#ui/images/flag_ussr",
@@ -4082,28 +4120,34 @@
       "decal_locked_country_sweden": "#ui/gameuiskin#decal_country_sweden_locked.png",
       "country_germany_aircraft_unit": "#ui/images/researches/ger_finishedresearch.jpg?P1",
       "country_germany_tank_unit": "#ui/images/researches/ger_ground_finishedresearch.jpg?P1",
-      "country_germany_ship_unit": "#ui/images/researches/ger_ship_finishedresearch.jpg?P1",
+      "country_germany_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_germany_boat_unit": "#ui/images/researches/ger_boat_finishedresearch.jpg?P1",
       "country_germany_helicopter_unit": "#ui/images/researches/ger_heli_finishedresearch.jpg?P1",
       "country_usa_aircraft_unit": "#ui/images/researches/usa_finishedresearch.jpg?P1",
       "country_usa_tank_unit": "#ui/images/researches/usa_ground_finishedresearch.jpg?P1",
       "country_usa_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_usa_boat_unit": "#ui/images/researches/usa_boat_finishedresearch.jpg?P1",
       "country_usa_helicopter_unit": "#ui/images/researches/usa_heli_finishedresearch.jpg?P1",
       "country_ussr_aircraft_unit": "#ui/images/researches/ussr_finishedresearch.jpg?P1",
       "country_ussr_tank_unit": "#ui/images/researches/ussr_ground_finishedresearch.jpg?P1",
-      "country_ussr_ship_unit": "#ui/images/researches/ussr_ship_finishedresearch.jpg?P1",
+      "country_ussr_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_ussr_boat_unit": "#ui/images/researches/ussr_boat_finishedresearch.jpg?P1",
       "country_ussr_helicopter_unit": "#ui/images/researches/ussr_heli_finishedresearch.jpg?P1",
       "country_japan_aircraft_unit": "#ui/images/researches/japan_finishedresearch.jpg?P1",
       "country_japan_tank_unit": "#ui/images/researches/japan_ground_finishedResearch.jpg?P1",
-      "country_japan_ship_unit": "#ui/images/researches/japan_ship_finishedResearch.jpg?P1",
+      "country_japan_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_japan_boat_unit": "#ui/images/researches/japan_boat_finishedResearch.jpg?P1",
       "country_britain_aircraft_unit": "#ui/images/researches/uk_finishedresearch.jpg?P1",
       "country_britain_tank_unit": "#ui/images/researches/uk_ground_finishedresearch.jpg?P1",
-      "country_britain_ship_unit": "#ui/images/researches/uk_ship_finishedresearch.jpg?P1",
+      "country_britain_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_britain_boat_unit": "#ui/images/researches/uk_boat_finishedresearch.jpg?P1",
       "country_britain_helicopter_unit": "#ui/images/researches/uk_heli_finishedresearch.jpg?P1",
       "country_china_aircraft_unit": "#ui/images/researches/china_finishedresearch.jpg?P1",
       "country_china_tank_unit": "#ui/images/researches/china_ground_finishedresearch.jpg?P1",
       "country_italy_aircraft_unit": "#ui/images/researches/italy_finishedresearch.jpg?P1",
       "country_italy_tank_unit": "#ui/images/researches/italy_ground_finishedresearch.jpg?P1",
-      "country_italy_ship_unit": "#ui/images/researches/italy_ship_finishedresearch.jpg?P1",
+      "country_italy_ship_unit": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
+      "country_italy_boat_unit": "#ui/images/researches/italy_boat_finishedresearch.jpg?P1",
       "country_france_aircraft_unit": "#ui/images/researches/france_finishedresearch.jpg?P1",
       "country_france_tank_unit": "#ui/images/researches/france_ground_finishedresearch.jpg?P1",
       "country_france_helicopter_unit": "#ui/images/researches/france_heli_finishedresearch.jpg?P1",
@@ -4111,28 +4155,34 @@
       "country_sweden_tank_unit": "#ui/images/researches/sweden_ground_finishedresearch.jpg?P1",
       "country_germany_aircraft_modification": "#ui/images/researches/ger_newmodificationresearch.jpg?P1",
       "country_germany_tank_modification": "#ui/images/researches/ger_ground_newmodificationresearch.jpg?P1",
-      "country_germany_ship_modification": "#ui/images/researches/ger_ship_newmodificationresearch.jpg?P1",
+      "country_germany_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_germany_boat_modification": "#ui/images/researches/ger_boat_newmodificationresearch.jpg?P1",
       "country_germany_helicopter_modification": "#ui/images/researches/ger_heli_newmodificationresearch.jpg?P1",
       "country_usa_aircraft_modification": "#ui/images/researches/usa_newmodificationresearch.jpg?P1",
       "country_usa_tank_modification": "#ui/images/researches/usa_ground_newmodificationresearch.jpg?P1",
-      "country_usa_ship_modification": "#ui/images/researches/usa_ship_newmodificationresearch.jpg?P1",
+      "country_usa_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_usa_boat_modification": "#ui/images/researches/usa_boat_newmodificationresearch.jpg?P1",
       "country_usa_helicopter_modification": "#ui/images/researches/usa_heli_newmodificationresearch.jpg?P1",
       "country_ussr_aircraft_modification": "#ui/images/researches/ussr_newmodificationresearch.jpg?P1",
       "country_ussr_tank_modification": "#ui/images/researches/ussr_ground_newmodificationresearch.jpg?P1",
-      "country_ussr_ship_modification": "#ui/images/researches/ussr_ship_newmodificationresearch.jpg?P1",
+      "country_ussr_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_ussr_boat_modification": "#ui/images/researches/ussr_boat_newmodificationresearch.jpg?P1",
       "country_ussr_helicopter_modification": "#ui/images/researches/ussr_heli_newmodificationresearch.jpg?P1",
       "country_japan_aircraft_modification": "#ui/images/researches/japan_newmodificationresearch.jpg?P1",
       "country_japan_tank_modification": "#ui/images/researches/japan_ground_newmodificationResearch.jpg?P1",
-      "country_japan_ship_modification": "#ui/images/researches/japan_ship_newmodificationResearch.jpg?P1",
+      "country_japan_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_japan_boat_modification": "#ui/images/researches/japan_boat_newmodificationResearch.jpg?P1",
       "country_britain_aircraft_modification": "#ui/images/researches/uk_newmodificationresearch.jpg?P1",
       "country_britain_tank_modification": "#ui/images/researches/uk_ground_newmodificationresearch.jpg?P1",
       "country_britain_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_britain_boat_modification": "#ui/images/researches/uk_boat_newmodificationresearch.jpg?P1",
       "country_britain_helicopter_modification": "#ui/images/researches/uk_heli_newmodificationresearch.jpg?P1",
       "country_china_aircraft_modification": "#ui/images/researches/china_newmodificationresearch.jpg?P1",
       "country_china_tank_modification": "#ui/images/researches/china_ground_newmodificationresearch.jpg?P1",
       "country_italy_aircraft_modification": "#ui/images/researches/italy_newmodificationresearch.jpg?P1",
       "country_italy_tank_modification": "#ui/images/researches/italy_ground_newmodificationresearch.jpg?P1",
-      "country_italy_ship_modification": "#ui/images/researches/italy_ship_newmodificationresearch.jpg?P1",
+      "country_italy_ship_modification": "#ui/images/researches/uk_ship_newmodificationresearch.jpg?P1",
+      "country_italy_boat_modification": "#ui/images/researches/italy_boat_newmodificationresearch.jpg?P1",
       "country_france_aircraft_modification": "#ui/images/researches/france_newmodificationresearch.jpg?P1",
       "country_france_tank_modification": "#ui/images/researches/france_ground_newmodificationresearch.jpg?P1",
       "country_france_helicopter_modification": "#ui/images/researches/france_heli_newmodificationresearch.jpg?P1",
@@ -4150,6 +4200,8 @@
       "tutorial_lightTank_part2_win": "#ui/images/tutorial_lighttank_win.jpg?P1",
       "tutorial_boat": "#ui/images/tutorial_naval.jpg?P1",
       "tutorial_boat_win": "#ui/images/tutorial_naval_win.jpg?P1",
+      "tutorial_ship": "#ui/images/tutorial_naval.jpg?P1",
+      "tutorial_ship_win": "#ui/images/researches/usa_ship_finishedresearch.jpg?P1",
       "help_bg_air_domination": "ui/images/missions_tutorial/tutorial_slide_air_domination.jpg?P1",
       "help_bg_airfield_capture": "ui/images/missions_tutorial/tutorial_slide_airfield_capture.jpg?P1",
       "help_bg_ground_capture": "ui/images/missions_tutorial/tutorial_slide_ground_capture.jpg?P1",
@@ -4238,14 +4290,22 @@
       "first_choice_country_france_army": "#ui/first_choice/france_army_alt.png",
       "first_choice_country_china_army": "#ui/first_choice/china_army_alt.png",
       "first_choice_country_sweden_army": "#ui/first_choice/sweden_army_alt.png",
-      "first_choice_country_usa_fleet": "#ui/first_choice/usa_fleet_alt.png",
-      "first_choice_country_germany_fleet": "#ui/first_choice/germany_fleet_alt.png",
-      "first_choice_country_ussr_fleet": "#ui/first_choice/ussr_fleet_alt.png",
-      "first_choice_country_britain_fleet": "#ui/first_choice/britain_fleet_alt.png",
-      "first_choice_country_japan_fleet": "#ui/first_choice/japan_fleet_alt.png",
-      "first_choice_country_italy_fleet": "#ui/first_choice/italy_fleet_alt.png",
-      "first_choice_country_france_fleet": "#ui/first_choice/france_aviation_alt.png",
-      "first_choice_country_china_fleet": "#ui/first_choice/china_aviation_alt.png",
+      "first_choice_country_usa_ships": "#ui/first_choice/usa_fleet_alt.png",
+      "first_choice_country_germany_ships": "#ui/first_choice/germany_fleet_alt.png",
+      "first_choice_country_ussr_ships": "#ui/first_choice/ussr_fleet_alt.png",
+      "first_choice_country_britain_ships": "#ui/first_choice/britain_fleet_alt.png",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_alt.png",
+      "first_choice_country_italy_ships": "#ui/first_choice/italy_fleet_alt.png",
+      "first_choice_country_france_ships": "#ui/first_choice/france_aviation_alt.png",
+      "first_choice_country_china_ships": "#ui/first_choice/china_aviation_alt.png",
+      "first_choice_country_usa_boats": "#ui/first_choice/usa_boat_alt.png",
+      "first_choice_country_germany_boats": "#ui/first_choice/germany_boat_alt.png",
+      "first_choice_country_ussr_boats": "#ui/first_choice/ussr_boat_alt.png",
+      "first_choice_country_britain_boats": "#ui/first_choice/britain_boat_alt.png",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_alt.png",
+      "first_choice_country_italy_boats": "#ui/first_choice/italy_boat_alt.png",
+      "first_choice_country_france_boats": "#ui/first_choice/france_aviation_alt.png",
+      "first_choice_country_china_boats": "#ui/first_choice/china_aviation_alt.png",
       "bgflag_country_usa": "#ui/images/flag_usa_alt",
       "bgflag_country_germany": "#ui/images/flag_germany_alt",
       "bgflag_country_ussr": "#ui/images/flag_ussr_alt",
@@ -4281,7 +4341,8 @@
       "country_japan_big_locked": "#ui/gameuiskin#country_japan_modern_big_locked",
       "first_choice_country_japan_aviation": "#ui/first_choice/japan_aviation_modern.png",
       "first_choice_country_japan_army": "#ui/first_choice/japan_army_modern.png",
-      "first_choice_country_japan_fleet": "#ui/first_choice/japan_fleet_modern.png",
+      "first_choice_country_japan_ships": "#ui/first_choice/japan_fleet_modern.png",
+      "first_choice_country_japan_boats": "#ui/first_choice/japan_boat_modern.png",
       "bgflag_country_japan": "#ui/images/flag_japan_modern",
       "decal_locked_country_japan": "#ui/gameuiskin#decal_country_japan_modern_locked.png"
     }
@@ -5121,7 +5182,10 @@
     "BXGS7NSVB212": "d2cacb08-2b0c-40fa-b8af-7662b1a1d291",
     "BXHH8KNX9CDF": "4aed4de6-0af7-4e26-bd75-75fde95c2e08",
     "C240LGF36MVD": "37deab3a-b5bb-4d7d-b578-25d2f0279289",
-    "BNNG683HJN13": "473e1c81-2bfe-405e-8fe0-837da0b1f7b9"
+    "BNNG683HJN13": "473e1c81-2bfe-405e-8fe0-837da0b1f7b9",
+    "9PKLRDM2PT6M": "4c4b5039-4452-304d-c032-5054364d5c00",
+    "9N1CZ2212XWV": "43314e39-325a-3032-c031-325857562100",
+    "9P09QKLH1BHF": "39305039-4b51-304c-c048-314248462300"
   },
   "xbox_ingame_shop": {
     "mainPart": "https://wt-console-static.cdn.gaijin.net/xbox_icons_png/",
@@ -5444,6 +5508,15 @@
       },
       {
         "32355039-424b-304a-c058-4d46375a4300": []
+      },
+      {
+        "4c4b5039-4452-304d-c032-5054364d5c00": []
+      },
+      {
+        "43314e39-325a-3032-c031-325857562100": []
+      },
+      {
+        "39305039-4b51-304c-c048-314248462300": []
       }
     ],
     "itemsHide": {
@@ -6039,7 +6112,10 @@
       "ijn_mikuma_psn": "31F85017-7FC2-4C69-B84E-0CD104B97656",
       "mi_24p_hfs_80_psn": "1F81E6B9-AA7D-48CC-B711-58F1117FDC44",
       "fr_somua_sm_pack": "5443810A-3AF1-46D5-8698-E712A09BFBC8",
-      "usa_pacific_campaign_yp38": "F599C716-66BE-440F-9809-EE0A5AA9FA58"
+      "usa_pacific_campaign_yp38": "F599C716-66BE-440F-9809-EE0A5AA9FA58",
+      "ussr_t_72av_turms": "AC2B3755-8F5A-48C0-9128-D0C9CD748EEA",
+      "ussr_yak_38": "67DBB8CE-3C26-4F5A-A38F-C6AC86F85196",
+      "us_av_8a": "538780C3-6831-4C25-A7A0-F631DE75E993"
     },
     "xbox": {
       "centurion_pack": "1bfe87f0-54f1-47c1-84ec-ddd59a05ba3f",
@@ -6111,7 +6187,10 @@
       "wt_british_starter_pack": "355a4e39-4739-304c-c030-50584e474f00",
       "fr_somua_sm_pack": "48474e39-4c30-3047-c037-50353334fc00",
       "wt_french_starter_pack": "38564e39-444d-3033-c04b-47364b5a4600",
-      "tanks_starter_pack_m4a2": "32355039-424b-304a-c058-4d46375a4300"
+      "tanks_starter_pack_m4a2": "32355039-424b-304a-c058-4d46375a4300",
+      "ussr_t_72av_turms": "4c4b5039-4452-304d-c032-5054364d5c00",
+      "ussr_yak_38": "43314e39-325a-3032-c031-325857562100",
+      "us_av_8a": "39305039-4b51-304c-c048-314248462300"
     },
     "scee": {
       "eagles150": "EE01500000000000",
@@ -6245,7 +6324,10 @@
       "type_69_2g_ps_prem": "ER00630000000000",
       "fr_somua_sm_ps_prem": "EE00710000000000",
       "usa_pacific_campaign_yp38_ps_prem": "EE00720000000000",
-      "tanks_starter_pack_m4a2": "EP00120000000000"
+      "tanks_starter_pack_m4a2": "EP00120000000000",
+      "ussr_t_72av_turms_ps_prem": "EE00740000000000",
+      "ussr_yak_38_ps_prem": "EE00760000000000",
+      "us_av_8a_ps_prem": "UU00750000000000"
     },
     "scea": {
       "eagles150": "UE01500000000000",
@@ -6379,7 +6461,10 @@
       "type_69_2g_ps_prem": "UR00630000000000",
       "fr_somua_sm_ps_prem": "UU00710000000000",
       "usa_pacific_campaign_yp38_ps_prem": "UU00720000000000",
-      "tanks_starter_pack_m4a2": "UP00140000000000"
+      "tanks_starter_pack_m4a2": "UP00140000000000",
+      "ussr_t_72av_turms_ps_prem": "UU00740000000000",
+      "ussr_yak_38_ps_prem": "UU00760000000000",
+      "us_av_8a_ps_prem": "UU00750000000000"
     },
     "scej": {
       "eagles150": "JE00010000000000",
@@ -6512,7 +6597,10 @@
       "p_420_sparviero_ps_prem": "JR00200000000000",
       "type_69_2g_ps_prem": "JR00210000000000",
       "fr_somua_sm_ps_prem": "JJ00710000000000",
-      "usa_pacific_campaign_yp38_ps_prem": "JJ00720000000000"
+      "usa_pacific_campaign_yp38_ps_prem": "JJ00720000000000",
+      "ussr_t_72av_turms_ps_prem": "JJ10140000000000",
+      "ussr_yak_38_ps_prem": "JJ10160000000000",
+      "us_av_8a_ps_prem": "JJ10150000000000"
     }
   }
 }

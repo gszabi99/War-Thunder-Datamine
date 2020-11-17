@@ -324,7 +324,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -355,7 +355,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -468,7 +468,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -505,7 +505,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [
@@ -590,7 +590,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -671,7 +671,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -740,24 +740,11 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [],
         "actions": [
-          {
-            "__varSetString": {
-              "value": "bdt_t1_bomb_object_",
-              "var": "bdt_spawn_t1_bombing_zone_object_name"
-            }
-          },
-          {
-            "__varAddString": {
-              "value": "@bdt_t1_cur_spawn_random_idx",
-              "digits": 2,
-              "var": "bdt_spawn_t1_bombing_zone_object_name"
-            }
-          },
           {
             "comment": {
               "value": "проявляем объект"
@@ -1189,7 +1176,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1220,7 +1207,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1333,7 +1320,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1370,7 +1357,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [
@@ -1448,7 +1435,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1529,7 +1516,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -1598,7 +1585,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [],
@@ -3327,7 +3314,7 @@
             "value": "индекс вышел за диапазон. рестартим"
           },
           "triggerEnable": {
-            "target": "bdt_t1_clear_start"
+            "target": "bdt_destroy_t1_start"
           }
         }
       },
@@ -3341,7 +3328,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3351,17 +3338,6 @@
           }
         },
         "actions": [
-          {
-            "comment": {
-              "value": "получаем объекта таргета бомбовой зоны"
-            }
-          },
-          {
-            "__varGetStringValue": {
-              "from_var_name": "bdt_destroy_t1_bombing_zone_name",
-              "var": "bdt_destroy_t1_bombing_zone_target_name"
-            }
-          },
           {
             "comment": {
               "value": "заполняем имя зенитки"
@@ -3392,14 +3368,36 @@
             }
           }
         ],
-        "else_actions": {
-          "comment": {
-            "value": "нет такой зоны идем дальше"
+        "else_actions": [
+          {
+            "comment": {
+              "value": "нет такой зоны идем дальше"
+            }
           },
-          "triggerEnable": {
-            "target": "bdt_destroy_t1_rotator"
+          {
+            "triggerEnable": {
+              "target": "bdt_destroy_t1_rotator"
+            }
+          },
+          {
+            "__systemLog": {
+              "value": "wrong name is:",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "__systemLog": {
+              "value": "@bdt_destroy_t1_bombing_zone_name",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "__systemLog": {
+              "value": "",
+              "logtype": "screen_and_log"
+            }
           }
-        }
+        ]
       },
       "bdt_destroy_t1_check_status": {
         "is_enabled": false,
@@ -3411,7 +3409,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3686,7 +3684,7 @@
             "value": "индекс вышел за диапазон. рестартим"
           },
           "triggerEnable": {
-            "target": "bdt_t2_clear_start"
+            "target": "bdt_destroy_t2_start"
           }
         }
       },
@@ -3700,7 +3698,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -3770,7 +3768,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -5110,8 +5108,8 @@
     "bdt_t2_clear_idx": 0,
     "bdt_t1_clear_name": "",
     "bdt_t2_clear_name": "",
-    "bdt_t1_active_bases_max_count": 3,
-    "bdt_t2_active_bases_max_count": 3,
+    "bdt_t1_active_bases_max_count": 2,
+    "bdt_t2_active_bases_max_count": 2,
     "bdt_t1_zone_01_timer": 0,
     "bdt_t1_zone_02_timer": 0,
     "bdt_t1_zone_03_timer": 0,

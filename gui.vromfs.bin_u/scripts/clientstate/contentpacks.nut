@@ -1,4 +1,4 @@
-local contentStateModule = ::require("scripts/clientState/contentState.nut")
+local contentStateModule = require("scripts/clientState/contentState.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local exitGame = require("scripts/utils/exitGame.nut")

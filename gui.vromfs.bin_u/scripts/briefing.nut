@@ -264,6 +264,8 @@ local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
       ::is_mission_for_unittype(missionBlk, ::ES_UNIT_TYPE_SHIP))
       optionItems.append([::USEROPT_USE_SHIP_BOTS, "spinner"])
 
+    optionItems.append([::USEROPT_KEEP_DEAD, "spinner"])
+
     if (!::SessionLobby.isInRoom())
       optionItems.append([::USEROPT_MAX_PLAYERS, "spinner"])
 
@@ -440,7 +442,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
     optionsContainers = []
 
     local optionItems = get_briefing_options(gm, gt, missionBlk)
-    local container = create_options_container("briefing_options", optionItems, true, true)
+    local container = create_options_container("briefing_options", optionItems, true)
     guiScene.replaceContentFromText("optionslist", container.tbl, container.tbl.len(), this)
     if (optionItems.len()>0)
     {
@@ -626,6 +628,7 @@ class ::gui_handlers.Briefing extends ::gui_handlers.GenericOptions
     if (isBotsAllowed)
       misBlk.useShipBots = ::has_feature("Ships") && getOptValue(::USEROPT_USE_SHIP_BOTS, false)
 
+    misBlk.keepDead = getOptValue(::USEROPT_KEEP_DEAD, true)
     if (isBotsAllowed)
     {
       value = getOptValue(::USEROPT_BOTS_RANKS, false)

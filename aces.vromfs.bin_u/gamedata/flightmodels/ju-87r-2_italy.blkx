@@ -85,7 +85,7 @@
       "armor_engine": {
         "engine1_dm": {
           "genericDamageMult": 1.6,
-          "hp": 23.8
+          "hp": 30.5
         }
       },
       "c_dural10": {
@@ -114,14 +114,6 @@
         "wing2_r_dm": {
           "genericDamageMult": 0.3,
           "hp": 60.5
-        },
-        "wing_l_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 60.5
-        },
-        "wing_r_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 60.5
         }
       },
       "c_dural5": {
@@ -133,17 +125,13 @@
           "genericDamageMult": 0.3,
           "hp": 24.5
         },
-        "elevator_dm": {
-          "genericDamageMult": 0.3,
-          "hp": 39.8
-        },
         "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 39.8
+          "hp": 24.5
         },
         "elevator1_dm": {
           "genericDamageMult": 0.3,
-          "hp": 39.8
+          "hp": 24.5
         },
         "fin_dm": {
           "hp": 34.9
@@ -168,7 +156,23 @@
           "hp": 31.7
         }
       },
+      "c_dural7": {
+        "wing_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 67.8
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 67.8
+        }
+      },
       "dural": {
+        "airbrake_l_dm": {
+          "hp": 19.5
+        },
+        "airbrake_r_dm": {
+          "hp": 19.5
+        },
         "cover1_dm": {
           "hp": 21.3
         },
@@ -196,10 +200,10 @@
           "hp": 71.1
         },
         "spar_l_dm": {
-          "hp": 67.8
+          "hp": 67.7
         },
         "spar_r_dm": {
-          "hp": 67.8
+          "hp": 67.7
         }
       },
       "protected_controls": {
@@ -210,10 +214,10 @@
           "hp": 39.5
         },
         "wingcontrol_l_dm": {
-          "hp": 45.8
+          "hp": 46.6
         },
         "wingcontrol_r_dm": {
-          "hp": 46.0
+          "hp": 46.6
         }
       },
       "steel": {
@@ -256,14 +260,6 @@
         },
         "tank2_dm": {
           "hp": 49.0
-        }
-      },
-      "wood": {
-        "airbrake_l_dm": {
-          "hp": 7.2
-        },
-        "airbrake_r_dm": {
-          "hp": 7.2
         }
       }
     }
@@ -423,63 +419,6 @@
         "part": {
           "name": "cover4_dm"
         }
-      },
-      {
-        "part": [
-          {
-            "name": "elevator_dm"
-          },
-          {
-            "onHit": {
-              "damage": 10.0,
-              "cut": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damage": 20.0,
-              "cut": 0.4
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.7
-            }
-          },
-          {
-            "onHit": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "cut": 1.0,
-              "nothing": 4.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 20.0,
-              "cut": 1.0,
-              "nothing": 2.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 1.0,
-              "nothing": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0
-            }
-          }
-        ]
       },
       {
         "part": [
@@ -1323,8 +1262,8 @@
         "part": {
           "name": "spar1_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1332,8 +1271,8 @@
         "part": {
           "name": "spar1_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1341,8 +1280,8 @@
         "part": {
           "name": "spar2_l_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -1350,8 +1289,8 @@
         "part": {
           "name": "spar2_r_dm",
           "onKill": {
-            "nothing": 0.0,
-            "cut": 1.0
+            "nothing": 2.0,
+            "cut": 4.0
           }
         }
       },
@@ -2567,7 +2506,7 @@
       {
         "dp": [
           {
-            "dm": "wing_l_dm"
+            "dm": "spar_l_dm"
           },
           {
             "separateDm": true
@@ -2666,6 +2605,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -2727,6 +2669,9 @@
           },
           {
             "dp": "gear_3c_dm"
+          },
+          {
+            "dm1": "wing_l_dm"
           },
           {
             "axis1": [0.0,0.0,1.0]
@@ -2775,7 +2720,7 @@
       {
         "dp": [
           {
-            "dm": "wing1_l_dm"
+            "dm": "spar1_l_dm"
           },
           {
             "separateDm": true
@@ -2877,6 +2822,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -2938,6 +2886,9 @@
           },
           {
             "dp": "gear_3c_dm"
+          },
+          {
+            "dm1": "wing1_l_dm"
           },
           {
             "axis1": [0.0,0.0,1.0]
@@ -2974,7 +2925,7 @@
       {
         "dp": [
           {
-            "dm": "wing2_l_dm"
+            "dm": "spar2_l_dm"
           },
           {
             "separateDm": true
@@ -3076,6 +3027,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -3139,6 +3093,9 @@
             "dp": "gear_3c_dm"
           },
           {
+            "dm1": "wing2_l_dm"
+          },
+          {
             "axis1": [0.0,0.0,1.0]
           },
           {
@@ -3173,7 +3130,7 @@
       {
         "dp": [
           {
-            "dm": "wing_r_dm"
+            "dm": "spar_r_dm"
           },
           {
             "separateDm": true
@@ -3272,6 +3229,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -3333,6 +3293,9 @@
           },
           {
             "dp": "gear_3c_dm"
+          },
+          {
+            "dm1": "wing_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]
@@ -3381,7 +3344,7 @@
       {
         "dp": [
           {
-            "dm": "wing1_r_dm"
+            "dm": "spar1_r_dm"
           },
           {
             "separateDm": true
@@ -3483,6 +3446,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -3544,6 +3510,9 @@
           },
           {
             "dp": "gear_3c_dm"
+          },
+          {
+            "dm1": "wing1_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]
@@ -3580,7 +3549,7 @@
       {
         "dp": [
           {
-            "dm": "wing2_r_dm"
+            "dm": "spar2_r_dm"
           },
           {
             "separateDm": true
@@ -3682,6 +3651,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -3743,6 +3715,9 @@
           },
           {
             "dp": "gear_3c_dm"
+          },
+          {
+            "dm1": "wing2_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]
@@ -3876,6 +3851,9 @@
           },
           {
             "dp": "tailcontrol_dm"
+          },
+          {
+            "dp": "engine%d_dm"
           },
           {
             "dp": "oil%d_dm"
@@ -4069,6 +4047,9 @@
           },
           {
             "dp": "tailcontrol_dm"
+          },
+          {
+            "dp": "engine%d_dm"
           },
           {
             "dp": "oil%d_dm"
@@ -4267,6 +4248,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -4461,6 +4445,9 @@
           },
           {
             "dp": "tailcontrol_dm"
+          },
+          {
+            "dp": "engine%d_dm"
           },
           {
             "dp": "oil%d_dm"
@@ -4659,6 +4646,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -4855,6 +4845,9 @@
             "dp": "tailcontrol_dm"
           },
           {
+            "dp": "engine%d_dm"
+          },
+          {
             "dp": "oil%d_dm"
           },
           {
@@ -4952,7 +4945,7 @@
       {
         "dp": [
           {
-            "dm": "wing_l_dm"
+            "dm": "spar_l_dm"
           },
           {
             "separateDm": true
@@ -4974,6 +4967,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing_l_dm"
           },
           {
             "axis1": [0.0,0.0,1.0]
@@ -5037,7 +5033,7 @@
       {
         "dp": [
           {
-            "dm": "wing1_l_dm"
+            "dm": "spar1_l_dm"
           },
           {
             "separateDm": true
@@ -5059,6 +5055,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing1_l_dm"
           },
           {
             "axis1": [0.0,0.0,1.0]
@@ -5110,7 +5109,7 @@
       {
         "dp": [
           {
-            "dm": "wing2_l_dm"
+            "dm": "spar2_l_dm"
           },
           {
             "separateDm": true
@@ -5132,6 +5131,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing2_l_dm"
           },
           {
             "axis1": [0.0,0.0,1.0]
@@ -5183,7 +5185,7 @@
       {
         "dp": [
           {
-            "dm": "wing_r_dm"
+            "dm": "spar_r_dm"
           },
           {
             "separateDm": true
@@ -5205,6 +5207,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]
@@ -5268,7 +5273,7 @@
       {
         "dp": [
           {
-            "dm": "wing1_r_dm"
+            "dm": "spar1_r_dm"
           },
           {
             "separateDm": true
@@ -5290,6 +5295,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing1_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]
@@ -5341,7 +5349,7 @@
       {
         "dp": [
           {
-            "dm": "wing2_r_dm"
+            "dm": "spar2_r_dm"
           },
           {
             "separateDm": true
@@ -5363,6 +5371,9 @@
           },
           {
             "dp": "engine%d_dm"
+          },
+          {
+            "dm1": "wing2_r_dm"
           },
           {
             "axis1": [0.0,0.0,-1.0]

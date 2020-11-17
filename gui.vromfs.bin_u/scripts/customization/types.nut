@@ -1,10 +1,10 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local enums = require("sqStdLibs/helpers/enums.nut")
 local guidParser = require("scripts/guidParser.nut")
 local time = require("scripts/time.nut")
-local skinLocations = ::require("scripts/customization/skinLocations.nut")
+local skinLocations = require("scripts/customization/skinLocations.nut")
 local memoizeByEvents = require("scripts/utils/memoizeByEvents.nut")
-local { updateDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { updateDownloadableSkins } = require("scripts/customization/downloadableDecorators.nut")
 
 local function memoizeByProfile(func, hashFunc = null) {
   // When player buys any decarator, profile always updates.

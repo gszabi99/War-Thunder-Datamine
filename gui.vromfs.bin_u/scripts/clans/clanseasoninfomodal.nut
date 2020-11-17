@@ -28,9 +28,6 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
 
     fillRewardsList()
     selectListItem()
-
-    initFocusArray()
-    restoreFocus()
   }
 
   function fillRewardsList()
@@ -183,8 +180,7 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
       selectedIndex = rewardsListObj.childrenCount() - 1
 
     rewardsListObj.setValue(selectedIndex)
-    rewardsListObj.select()
-    rewardsListObj.getChild(selectedIndex).scrollToView()
+    ::move_mouse_on_child(rewardsListObj, selectedIndex)
   }
 
   function onItemSelect(obj)
@@ -192,11 +188,6 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
     local listChildrenCount = rewardsListObj.childrenCount()
     local index = obj.getValue()
     selectedIndex = (index >= 0 && index < listChildrenCount) ? index : 0
-  }
-
-  function getMainFocusObj()
-  {
-    return rewardsListObj
   }
 
   function onBtnMoreInfo(obj)

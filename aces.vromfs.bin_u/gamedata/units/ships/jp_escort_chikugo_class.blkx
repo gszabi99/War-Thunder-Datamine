@@ -128,6 +128,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_ussr_03_c*",
+          "to": "flag_ussr_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_usa_01_c*",
           "to": "flag_usa_01_c_tomoe*"
         }
@@ -195,6 +201,12 @@
       {
         "replace_tex": {
           "from": "flag_germany_04_c*",
+          "to": "flag_germany_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
         }
       },
@@ -2018,8 +2030,8 @@
           },
           {
             "onKill": {
-              "nothing": 0.85,
-              "fire": 0.15
+              "nothing": 0.75,
+              "fire": 0.25
             }
           }
         ]
@@ -3733,10 +3745,10 @@
       "waterMassVel": -500000.0,
       "waterMassMult": 200.0,
       "sizeToRepair": [0.01,4.0,15.0,600.0],
-      "additionalWaterDeathThreshold": 23500000.0,
+      "additionalWaterDeathThreshold": 8000000.0,
       "additionalWaterShouldDiePercent": 0.3,
       "fatalBreachDrownTime": 45.0,
-      "maxHeelingAngle": 37.0,
+      "maxHeelingAngle": 34.0,
       "maxHeelingTime": 40.0,
       "criticalHeelingAnglePercent": 0.5,
       "maxCriticalHeelingTime": 1.0,
@@ -3749,7 +3761,7 @@
       {
         "cover": {
           "part": "compartment_01_dm",
-          "weight": 0.81,
+          "weight": 0.1,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3762,7 +3774,7 @@
       {
         "cover": {
           "part": "compartment_02_dm",
-          "weight": 0.72,
+          "weight": 0.5,
           "maxWaterAlive": 1.0
         }
       },
@@ -3795,7 +3807,7 @@
       {
         "cover": {
           "part": "compartment_05_dm",
-          "weight": 0.49,
+          "weight": 0.35,
           "maxWaterAlive": 1.0,
           "innerParts": {
             "part": {
@@ -3808,7 +3820,7 @@
       {
         "cover": {
           "part": "compartment_06_dm",
-          "weight": 0.38,
+          "weight": 0.25,
           "maxWaterAlive": 1.0
         }
       }

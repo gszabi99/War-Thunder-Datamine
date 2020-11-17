@@ -230,16 +230,17 @@
       "land_bump_scale": -3.0,
       "translucency_detection_hardness": 1.0,
       "water_aces_params": [5.0,0.4,3.0,0.0],
-      "water_aces_color_and_density": [0.5,0.5,0.5,0.5]
+      "water_aces_color_and_density": [0.5,0.5,0.5,0.5],
+      "autodetect_land_selfillum_color": [0.4,0.0,0.0,0.3]
     }
   },
   {
     "randomGrass": [
       {
-        "density": 0.8
+        "density": 2.0
       },
       {
-        "maxRadius": 250.0
+        "maxRadius": 150.0
       },
       {
         "sowPerlinFreq": 0.1
@@ -315,7 +316,7 @@
       },
       {
         "layer": {
-          "maskChannel": [1.0,1.0,1.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_fill_a",
           "density": 2.0,
           "horScale": 1.2,
@@ -335,11 +336,11 @@
         "layer": {
           "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_reed_a",
-          "density": 0.2,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 1.2,
-          "verMinScale": 0.9,
+          "density": 0.5,
+          "horScale": 0.8,
+          "horMinScale": 0.5,
+          "verScale": 0.8,
+          "verMinScale": 0.5,
           "windMul": 0.05,
           "radiusMul": 0.5,
           "color_mask_r_from": "#e6d087ff",
@@ -352,13 +353,13 @@
       },
       {
         "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_daisies_a",
           "density": 0.5,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 1.2,
-          "verMinScale": 0.9,
+          "horScale": 0.5,
+          "horMinScale": 0.3,
+          "verScale": 0.5,
+          "verMinScale": 0.3,
           "windMul": 0.05,
           "radiusMul": 0.4,
           "color_mask_r_from": "#d8ecf2ff",
@@ -371,12 +372,12 @@
       },
       {
         "layer": {
-          "maskChannel": [0.0,0.0,1.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_heather_a",
-          "density": 1.0,
-          "horScale": 1.2,
+          "density": 2.0,
+          "horScale": 0.8,
           "horMinScale": 0.5,
-          "verScale": 1.2,
+          "verScale": 0.8,
           "verMinScale": 0.5,
           "windMul": 0.05,
           "radiusMul": 0.4,
@@ -390,12 +391,12 @@
       },
       {
         "layer": {
-          "maskChannel": [0.0,1.0,0.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_tulip_a",
           "density": 2.0,
-          "horScale": 1.2,
+          "horScale": 0.8,
           "horMinScale": 0.5,
-          "verScale": 1.2,
+          "verScale": 0.8,
           "verMinScale": 0.5,
           "windMul": 0.05,
           "radiusMul": 0.4,
@@ -409,7 +410,7 @@
       },
       {
         "layer": {
-          "maskChannel": [1.0,1.0,1.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_sedge_a",
           "density": 4.0,
           "horScale": 1.2,
@@ -428,12 +429,12 @@
       },
       {
         "layer": {
-          "maskChannel": [1.0,1.0,0.0,0.0],
+          "maskChannel": [1.0,0.0,0.0,0.0],
           "res": "grass_simple_a",
-          "density": 1.0,
-          "horScale": 1.2,
-          "horMinScale": 0.9,
-          "verScale": 1.0,
+          "density": 2.0,
+          "horScale": 0.9,
+          "horMinScale": 0.6,
+          "verScale": 0.9,
           "verMinScale": 0.5,
           "windMul": 0.05,
           "radiusMul": 0.7,

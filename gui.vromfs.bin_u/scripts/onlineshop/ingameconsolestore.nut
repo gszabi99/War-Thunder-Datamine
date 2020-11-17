@@ -1,5 +1,6 @@
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 
 class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -26,6 +27,11 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   itemsList = null
   curPage = 0
 
+  navItems  = null
+  navigationHandlerWeak = null
+  headerOffsetX = null
+  isNavCollapsed = false
+
   // Used to avoid expensive get...List and further sort.
   itemsListValid = false
 
@@ -34,20 +40,19 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
   needWaitIcon = false
   isLoadingInProgress = false
+  hoverHoldAction = null
 
   function initScreen()
   {
-    currentFocusItem = isLoadingInProgress? 4 : 5 //4 = sheets list, 5 = items list
-
     local titleObj = scene.findObject("wnd_title")
     titleObj.setValue(::loc(titleLocId))
 
     ::show_obj(getTabsListObj(), false)
     ::show_obj(getSheetsListObj(), false)
+    hoverHoldAction = mkHoverHoldAction(scene.findObject("hover_hold_timer"))
 
     fillItemsList()
-
-    initFocusArray()
+    moveMouseToMainList()
   }
 
   function reinitScreen(params)
@@ -59,6 +64,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillItemsList()
   {
+    initNavigation()
     markCurrentPageSeen()
     initSheets()
   }
@@ -71,8 +77,8 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local view = { items = [] }
-    foreach (idx, sh in sheetsArray)
+    navItems = []
+    foreach(idx, sh in sheetsArray)
     {
       if (curSheetId && curSheetId == sh.categoryId)
         curSheet = sh
@@ -80,16 +86,16 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
       if (!curSheet && ::isInArray(chapter, sh.contentTypes))
         curSheet = sh
 
-      view.items.append({
-        id = sh.id
+      navItems.append({
+        idx = idx
         text = sh?.locText ?? ::loc(sh.locId)
+        unseenIconId = "unseen_icon"
         unseenIcon = bhvUnseen.makeConfigStr(seenEnumId, sh.getSeenId())
       })
     }
 
-    local data = ::handyman.renderCached("gui/items/shopFilters", view)
-    guiScene.replaceContentFromText(scene.findObject("filter_tabs"), data, data.len(), this)
-    initItemsListSizeOnce()
+    if (navigationHandlerWeak)
+      navigationHandlerWeak.setNavItems(navItems)
 
     local sheetIdx = sheetsArray.indexof(curSheet) ?? 0
     getSheetsListObj().setValue(sheetIdx)
@@ -99,24 +105,66 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     local warningTextObj = scene.findObject("warning_text")
     if (::checkObj(warningTextObj))
       warningTextObj.setValue(::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax")))
+
+    applyFilters()
   }
 
-  function onItemTypeChange(obj)
+  function initNavigation()
   {
+    local handler = ::handlersManager.loadHandler(
+      ::gui_handlers.navigationPanel,
+      { scene                  = scene.findObject("control_navigation")
+        onSelectCb             = ::Callback(doNavigateToSection, this)
+        onClickCb              = ::Callback(onItemClickCb, this)
+        onCollapseCb           = ::Callback(onNavCollapseCb, this)
+        needShowCollapseButton = true
+        headerHeight           = "1@buttonHeight"
+      })
+    registerSubHandler(navigationHandlerWeak)
+    navigationHandlerWeak = handler.weakref()
+    headerOffsetX = handler.headerOffsetX
+  }
+
+  function doNavigateToSection(obj) {
+    if (obj?.isCollapsable)
+      return
+
     markCurrentPageSeen()
 
-    local newSheet = sheetsArray?[obj.getValue()]
+    local newSheet = sheetsArray?[obj.idx]
     if (!newSheet)
       return
 
     curSheet = newSheet
     itemsListValid = false
 
+    if (obj?.subsetId)
+    {
+      subsetList = curSheet.getSubsetsListParameters().subsetList
+      curSubsetId = initSubsetId ?? obj.subsetId
+      initSubsetId = null
+      curSheet.setSubset(curSubsetId)
+    }
+
     applyFilters()
+  }
+
+  function onItemClickCb(obj)
+  {
+    if (!obj?.isCollapsable || !navigationHandlerWeak)
+      return
+
+    local collapseBtnObj = scene.findObject($"btn_nav_{obj.idx}")
+    local subsetId = curSubsetId
+    navigationHandlerWeak.onCollapse(collapseBtnObj)
+    if (collapseBtnObj.getParent().collapsed == "no")
+      getSheetsListObj().setValue(//set selection on chapter item if not found item with subsetId just in case to avoid crash
+        ::u.search(navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
   function applyFilters()
   {
+    initItemsListSizeOnce()
     if (!itemsListValid)
     {
       itemsListValid = true
@@ -138,7 +186,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillPage()
   {
-    local view = { items = [] }
+    local view = { items = [], hasFocusBorder = true, onHover = "onItemHover" }
 
     if (!isLoadingInProgress)
     {
@@ -193,12 +241,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function focusSheetsList()
-  {
-    local obj = getSheetsListObj()
-    obj.select()
-    checkCurrentFocusItem(obj)
-  }
+  focusSheetsList = @() ::move_mouse_on_child_by_value(getSheetsListObj())
 
   function findLastValue(prevValue)
   {
@@ -258,14 +301,38 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     item.showDetails()
   }
 
+  function onNavCollapseCb (isCollapsed)
+  {
+    isNavCollapsed = isCollapsed
+    applyFilters()
+  }
+
   function initItemsListSizeOnce()
   {
-    if (itemsPerPage >= 1)
-      return
-
-    local sizes = ::g_dagui_utils.adjustWindowSize(scene.findObject("wnd_items_shop"), getItemsListObj(),
-                                                   "@itemWidth", "@itemHeight", "@itemSpacing", "@itemSpacing")
-    itemsPerPage = sizes.itemsCountX * sizes.itemsCountY
+    local listObj = getItemsListObj()
+    local emptyListObj = scene.findObject("empty_items_list")
+    local infoObj = scene.findObject("item_info_nest")
+    local collapseBtnWidth = $"1@cIco+2*({headerOffsetX})"
+    local leftPos = isNavCollapsed ? collapseBtnWidth : "0"
+    local nawWidth = isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
+    local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    local itemsCountX = ::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
+      / ::to_pixels(itemWidthWithSpace)
+    local itemsCountY = ::to_pixels(
+      "sh-@bottomMenuPanelHeight-1@frameHeaderHeight-1@frameFooterHeight-3@itemSpacing-1@blockInterval")
+        / ::to_pixels(itemHeightWithSpace)
+    local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    scene.findObject("main_block").height = $"{itemsCountY}*({itemHeightWithSpace})"
+    scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
+    showSceneBtn("nav_separator", !isNavCollapsed)
+    listObj.width = contentWidth
+    listObj.left = leftPos
+    emptyListObj.width = contentWidth
+    emptyListObj.left = leftPos
+    infoObj.left = leftPos
+    infoObj.width = "fw"
+    itemsPerPage = (itemsCountX * itemsCountY ).tointeger()
   }
 
   function onChangeSortParam(obj)
@@ -340,6 +407,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   {
     local item = getCurItem()
     fillItemInfo(item)
+    showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     updateButtons()
 
     if (!item && !isLoadingInProgress)
@@ -381,8 +449,18 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     return handyman.renderCached("gui/commonParts/discount", item)
   }
 
+  function updateButtonsBar() {
+    local obj = getItemsListObj()
+    local isButtonsVisible = !::show_console_buttons || (::check_obj(obj) && obj.isHovered())
+    showSceneBtn("item_actions_bar", isButtonsVisible)
+    return isButtonsVisible
+  }
+
   function updateButtons()
   {
+    if (!updateButtonsBar())
+      return
+
     local item = getCurItem()
     local showMainAction = item != null && !item.isBought
     local buttonObj = showSceneBtn("btn_main_action", showMainAction)
@@ -418,6 +496,16 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
     return itemsList?[obj.getValue() + curPage * itemsPerPage]
   }
 
+  function getCurItemObj()
+  {
+    local itemListObj = getItemsListObj()
+    local value = ::get_obj_valid_index(itemListObj)
+    if (value < 0)
+      return null
+
+    return itemListObj.getChild(value)
+  }
+
   onTabChange = @() null
   onToShopButton = @(obj) null
   onToMarketplaceButton = @(obj) null
@@ -425,18 +513,13 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   onItemPreview = @(obj) null
   onOpenCraftTree = @(obj) null
   onShowSpecialTasks = @(obj) null
+  onShowBattlePass = @(obj) null
 
   getTabsListObj = @() scene.findObject("tabs_list")
-  getSheetsListObj = @() scene.findObject("sheets_list")
+  getSheetsListObj = @() scene.findObject("nav_list")
   getSortListObj = @() scene.findObject(sortBoxId)
   getItemsListObj = @() scene.findObject("items_list")
-
-  function getMainFocusObj() { return getSheetsListObj() }
-  function getMainFocusObj2()
-  {
-    local obj = getItemsListObj()
-    return obj.childrenCount() ? obj : null
-  }
+  moveMouseToMainList = @() ::move_mouse_on_child_by_value(getItemsListObj())
 
   function goBack()
   {
@@ -454,5 +537,26 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (isValid())
       updateItemInfo()
+  }
+
+  function onJumpToDescPanelAccessKey(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local containerObj = scene.findObject("item_info")
+    if (::check_obj(containerObj) && containerObj.isHovered())
+      ::move_mouse_on_obj(getCurItemObj())
+    else
+      ::move_mouse_on_obj(containerObj)
+  }
+
+  function onItemHover(obj) {
+    hoverHoldAction(obj, function(focusObj) {
+      local idx = focusObj.holderId.tointeger()
+      local value = idx - curPage * itemsPerPage
+      local listObj = getItemsListObj()
+      if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
+        listObj.setValue(value)
+    }.bindenv(this))
   }
 }

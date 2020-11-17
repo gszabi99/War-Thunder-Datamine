@@ -6,6 +6,7 @@ everyDayRewardProgress {
     value:t='<<value>>'
   <</value>>
   tooltip:t='<<tooltip>>'
+  total-input-transparent:t='yes'
   css-hier-invalidate:t='yes'
 
   <<#additionalProgress>>

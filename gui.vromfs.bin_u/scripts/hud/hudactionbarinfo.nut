@@ -7,8 +7,8 @@ local cacheActionDescs = function(unitId) {
   local ediff = ::get_mission_difficulty_int()
   cachedUnitId = unitId
   cache.clear()
-  if (unit.esUnitType == ::ES_UNIT_TYPE_SHIP)
-    foreach (triggerGroup in [ "torpedoes", "bombs", "rockets" ])
+  if (unit.esUnitType == ::ES_UNIT_TYPE_SHIP || unit.esUnitType == ::ES_UNIT_TYPE_BOAT)
+    foreach (triggerGroup in [ "torpedoes", "bombs", "rockets", "mines" ])
       cache[triggerGroup] <- getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
 }
 

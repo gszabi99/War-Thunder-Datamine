@@ -1,3 +1,4 @@
+local { get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
@@ -116,18 +117,15 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   if (url != null)
     fullMissionBlk = ::getTblValue("fullMissionBlk", ::g_url_missions.findMissionByUrl(url))
   else
-    fullMissionBlk = ::DataBlock(misBlk?.mis_file ?? "")
-  if (fullMissionBlk)
-    return has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
-
-  return false
+    fullMissionBlk = blkOptFromPath(misBlk?.mis_file)
+  return has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
 }
 
 ::has_unittype_in_full_mission_blk <- function has_unittype_in_full_mission_blk(fullMissionBlk, esUnitType)
 {
   // Searching by units of Single missions
   local unitsBlk = fullMissionBlk?.units
-  local playerBlk = fullMissionBlk && ::get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
+  local playerBlk = fullMissionBlk && get_blk_value_by_path(fullMissionBlk, "mission_settings/player")
   local wings = playerBlk ? (playerBlk % "wing") : []
   local unitsCache = {}
   if (unitsBlk && wings.len())

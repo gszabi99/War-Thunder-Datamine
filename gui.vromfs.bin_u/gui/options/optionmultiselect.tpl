@@ -35,12 +35,6 @@ MultiSelect {
     <<#image>>
       multiOptionImg { background-image:t='<<image>>' }
     <</image>>
-    <<#activateShortcutIconName>>
-      ButtonImg { showOn:t='selectedOnConsole'; btnName:t='<<activateShortcutIconName>>' }
-    <</activateShortcutIconName>>
-    <<^activateShortcutIconName>>
-      ButtonImg { showOn:t='selectedOnConsole'; btnName:t='X' }
-    <</activateShortcutIconName>>
     <<#text>>
       multiOptionText { text:t='<<text>>' }
     <</text>>

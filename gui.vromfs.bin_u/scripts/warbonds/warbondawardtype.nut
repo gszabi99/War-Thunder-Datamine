@@ -1,4 +1,6 @@
-local enums = ::require("sqStdlibs/helpers/enums.nut")
+local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
+
+local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
   types = []
 }
@@ -143,7 +145,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       if (!unit)
         return ""
 
-      local blockFormat = "tdiv { class:t='rankUpList'; halign:t='center'; %s }"
+      local blockFormat = "rankUpList { halign:t='center'; interactiveChildren:t='yes'; %s }"
       return ::format(blockFormat, ::build_aircraft_item(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
@@ -292,9 +294,15 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getLayeredImage = @(blk, warbond) ::LayersIcon.getIconData("reward_battle_task_" + warbond.medalIcon)
     getNameText = @(blk) ::loc("item/" + blk.name)
     getDescText = @(blk) ::loc("item/" + blk.name + "/desc")
-    canBuy = @(blk) ::warbonds_can_buy_battle_task(blk.name)
+    needCheckLimit = @() ::has_feature("BattlePass")
+    canBuy = @(blk) ::warbonds_can_buy_battle_task(blk.name) && (!needCheckLimit() || leftSpecialTasksBoughtCount.value > 0)
+    getBoughtCount = @(warbond, blk) needCheckLimit() ? 0 : getBoughtCountByName(warbond, blk)
+    getMaxBoughtCount = @(blk) needCheckLimit() ? leftSpecialTasksBoughtCount.value : blk?.maxBoughtCount ?? 0
     isReqSpecialTasks = true
     isAvailableForCurrentShop = @(warbond) warbond.isCurrent()
+    canBuyReasonLocId = @() ::g_battle_tasks.hasInCompleteHardTask.value ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
+      : needCheckLimit() && leftSpecialTasksBoughtCount.value == 0 ? "item/specialTasksPersonalUnlocks/limitRestriction"
+      : ""
     getTooltipId = @(blk, warbond) ::g_tooltip_type.SPECIAL_TASK.getTooltipId(blk.name,
                                                                               {
                                                                                 wbId = warbond.id,

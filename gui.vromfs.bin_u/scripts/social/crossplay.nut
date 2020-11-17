@@ -1,4 +1,4 @@
-local subscriptions = require("sqStdlibs/helpers/subscriptions.nut")
+local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("scripts/clientState/platform.nut")
 
 local PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"

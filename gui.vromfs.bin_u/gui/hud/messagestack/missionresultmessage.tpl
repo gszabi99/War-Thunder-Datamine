@@ -1,5 +1,5 @@
 message {
-  height:t='0.0666@sf'
+  height:t='1@missionResultNestHeight'
   width:t='10h'
   pos:t='50%pw-50%w, 50%ph-50%h';
   position:t='absolute'

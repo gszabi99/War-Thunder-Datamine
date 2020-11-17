@@ -47,27 +47,14 @@ local buildTabularDateTimeStr = function(t, showSeconds = false)
 
 local buildDateStr = function(t) {
   local timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
-  local date_str = ""
-
-  local year = ::getTblValue("year", timeTable, -1)
-  local month = ::getTblValue("month", timeTable, -1)
-  local day = ::getTblValue("day", timeTable, -1)
-
-  local monthLoc = ::loc("sm_month_" + (month+1))
-
-  if (year > 0)
-    date_str = ::format(::loc("date_format", {year = year, day = day, month = monthLoc}))
-  else
-    date_str = ::format(::loc("date_format_short", {day = day, month = monthLoc}))
-
-  return date_str
+  timeTable.month = ::loc($"sm_month_{timeTable.month + 1}")
+  return ::loc(timeTable.year > 0 ? "date_format" : "date_format_short", timeTable)
 }
 
 
 local buildTimeStr = function(t, showZeroSeconds = false, showSeconds = true) {
   local timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
-  local sec = timeTable?.sec ?? -1
-  if (showSeconds && (sec > 0 || (showZeroSeconds && sec == 0)))
+  if (showSeconds && (showZeroSeconds || timeTable.sec > 0))
     return ::format("%d:%02d:%02d", timeTable.hour, timeTable.min, timeTable.sec)
   else
     return ::format("%d:%02d", timeTable.hour, timeTable.min)
@@ -75,19 +62,20 @@ local buildTimeStr = function(t, showZeroSeconds = false, showSeconds = true) {
 
 
 local buildDateTimeStr = function (t, showZeroSeconds = false, showSeconds = true) {
-  local timeTable = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
-  local time_str = buildTimeStr(t, showZeroSeconds, showSeconds)
-  local localTime = unixtime_to_local_timetbl(get_local_unixtime())
-  local year = ::getTblValue("year", timeTable, -1)
-  local month = ::getTblValue("month", timeTable, -1)
-  local day = ::getTblValue("day", timeTable, -1)
-
-  if ((localTime.year == year && localTime.month == month && localTime.day == day)
-      || (day <= 0 && month < 0))
-    return time_str
-
-  return buildDateStr(t) + " " + time_str
+  local timeTbl = unixtime_to_local_timetbl(t + charToLocalUtcDiff())
+  local localTbl = unixtime_to_local_timetbl(get_local_unixtime())
+  local timeStr = buildTimeStr(t, showZeroSeconds, showSeconds)
+  return (localTbl.year == timeTbl.year && localTbl.month == timeTbl.month && localTbl.day == timeTbl.day)
+    ? timeStr
+    : " ".concat(buildDateStr(t), timeStr)
 }
+
+local getCurTimeMillisecStr = function() {
+  local tMs = ::get_charserver_time_millisec()
+  local timeTbl = unixtime_to_local_timetbl(tMs / 1000 + charToLocalUtcDiff())
+  return ::format("%02d:%02d:%02d.%03d", timeTbl.hour, timeTbl.min, timeTbl.sec, tMs % 1000)
+}
+
 
 local getUtcMidnight = function() {
   return ::get_charserver_time_sec() / timeBase.TIME_DAY_IN_SECONDS * timeBase.TIME_DAY_IN_SECONDS
@@ -109,7 +97,7 @@ local reDateYmdAtStart = regexp2(@"^\d+-\d+-\d+")
 local reTimeHmsAtEnd = regexp2(@"\d+:\d+:\d+$")
 local reNotNumeric = regexp2(@"\D+")
 
-local getTimeFromString = function(str, fillMissedByTimeTable = null) {
+local function getTimeTblFromStringImpl(str) {
   local timeOrderLen = timeOrder.len()
   local timeArray = ::split(str, ":- ").filter(@(v) v != "")
   if (timeArray.len() < timeOrderLen)
@@ -135,29 +123,41 @@ local getTimeFromString = function(str, fillMissedByTimeTable = null) {
     }
   }
 
-  if ("month" in res) {
+  if ("month" in res)
     res.month -= 1
-  }
+ return res
+}
 
-  local timeTbl = getFullTimeTable(res, fillMissedByTimeTable)
+local strToTimeCache = {}
+local function getTimeTblFromString(str) {
+  if (str not in strToTimeCache)
+    strToTimeCache[str] <- getTimeTblFromStringImpl(str)
+  return strToTimeCache[str]
+}
+
+local function getTimeFromString(str, fillMissedByTimeTable = null) {
+  local timeTbl = getTimeTblFromString(str)
+  if (timeTbl == null)
+    return null
+
+  timeTbl = getFullTimeTable(timeTbl, fillMissedByTimeTable)
   if (fillMissedByTimeTable) {
     validateTime(timeTbl)
   }
   return timeTbl
 }
 
-
-local getTimestampFromStringUtc = function(str) {
+local function getTimestampFromStringUtc(str) {
   return utc_timetbl_to_unixtime(getTimeFromString(str, unixtime_to_utc_timetbl(::get_charserver_time_sec())))
 }
 
-local getTimestampFromStringLocal = function(str, fillMissedByTimestamp) {
+local function getTimestampFromStringLocal(str, fillMissedByTimestamp) {
   local fillMissedTimeTbl = unixtime_to_local_timetbl(fillMissedByTimestamp + charToLocalUtcDiff())
   return local_timetbl_to_unixtime(getTimeFromString(str, fillMissedTimeTbl)) - charToLocalUtcDiff()
 }
 
 
-local isInTimerangeByUtcStrings = function(beginDateStr, endDateStr) {
+local function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
   if (!::u.isEmpty(beginDateStr) &&
     getTimestampFromStringUtc(beginDateStr) > ::get_charserver_time_sec())
     return false
@@ -168,7 +168,7 @@ local isInTimerangeByUtcStrings = function(beginDateStr, endDateStr) {
 }
 
 
-local processTimeStamps = function(text) {
+local function processTimeStamps(text) {
   foreach (idx, time in ["{time=", "{time_countdown="]) {
     local startPos = 0
     local startTime = time
@@ -253,6 +253,7 @@ return timeBase.__merge({
   buildDateTimeStr = buildDateTimeStr
   buildDateStr = buildDateStr
   buildTimeStr = buildTimeStr
+  getCurTimeMillisecStr = getCurTimeMillisecStr
   buildTabularDateTimeStr = buildTabularDateTimeStr
   getUtcMidnight = getUtcMidnight
   getTimestampFromStringUtc = getTimestampFromStringUtc

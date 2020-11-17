@@ -1,0 +1,84 @@
+{
+  "torpedoGun": true,
+  "preset_cost": 15,
+  "bullets": 1,
+  "shotFreq": 1.5,
+  "external": true,
+  "reloadTime": 60.0,
+  "allowHumanReload": true,
+  "mesh": "su_45_36an_1939_torpedo",
+  "tags": {
+    "antiShipBomb": true
+  },
+  "torpedo": {
+    "armDistance": 50.0,
+    "dropSpeedRange": [-10.0,69.0],
+    "dropHeightRange": [-10.0,105.0],
+    "dropAngleRange": [-20.0,20.0],
+    "bulletType": "torpedo",
+    "distToLive": 3000.0,
+    "maxSpeedInWater": 20.06,
+    "diveDepth": 1.0,
+    "detonationRadius": 0.1,
+    "detonationDepth": 1.0,
+    "caliber": 0.45,
+    "mass": 810.0,
+    "dragCx": 0.24,
+    "startPropulsionDelay": 0.1,
+    "explosiveType": "tnt",
+    "explosiveMass": 112.0,
+    "explosionFx": "bomb_expl_100kg",
+    "autoaimEnabled": false,
+    "aaMaxAimAngle": 0.0,
+    "aaSpeedPrediction": 0.0,
+    "aaAccelPrediction": 0.0,
+    "aaAngleCorrection": 0.0,
+    "relativeVelArmorShift": [200.0,1000.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "explodeTreshold": 0.0,
+    "arcadeProp": {
+      "dropSpeedRange": [-10.0,140.0],
+      "dropHeightRange": [-10.0,150.0],
+      "dropAngleRange": [-40.0,40.0]
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.0,
+        "offset": 0.0
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.005
+        },
+        {
+          "segment": {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [0.0,90.0],
+            "countPortion": 0.5
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [270.0,359.0],
+            "countPortion": 0.5
+          }
+        }
+      ]
+    }
+  }
+}

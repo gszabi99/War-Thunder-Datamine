@@ -2,7 +2,7 @@ local mapPreferencesModal = require("scripts/missions/mapPreferencesModal.nut")
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 local clustersModule = require("scripts/clusterSelect.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
-local u = ::require("sqStdLibs/helpers/u.nut")
+local u = require("sqStdLibs/helpers/u.nut")
 local Callback = require("sqStdLibs/helpers/callback.nut").Callback
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 
@@ -11,7 +11,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneTplName = "gui/gameModeSelect/gameModeSelect"
-  shouldBlurSceneBg = true
   backSceneFunc = @() ::gui_start_mainmenu()
   needAnimatedSwitchScene = false
 
@@ -120,7 +119,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
     local index = filledGameModes.findindex(@(gm) gm.isMode && gm?.hasContent && gm.modeId == curGM.id) ?? -1
     curGameModeObj.setValue(index)
-    curGameModeObj.select()
+    ::move_mouse_on_child(curGameModeObj, index)
   }
 
   function registerNewIconWidgets()

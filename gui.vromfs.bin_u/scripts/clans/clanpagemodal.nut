@@ -4,10 +4,10 @@ local { getPlayerName,
         isPlayerFromXboxOne,
         isPlatformSony,
         isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local playerContextMenu = ::require("scripts/user/playerContextMenu.nut")
+local playerContextMenu = require("scripts/user/playerContextMenu.nut")
 local vehiclesModal = require("scripts/unit/vehiclesModal.nut")
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-local clanMembershipAcceptance = ::require("scripts/clans/clanMembershipAcceptance.nut")
+local clanMembershipAcceptance = require("scripts/clans/clanMembershipAcceptance.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
 local clanInfoView = require("scripts/clans/clanInfoView.nut")
 local { getSeparateLeaderboardPlatformValue } = require("scripts/social/crossplay.nut")
@@ -84,17 +84,23 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
   statsSortReverse = false
   statsSortBy      = ""
   clanData         = null
-  curPlayer        = null
   curMode          = 0
-  currentFocusItem = 5
 
   lbTableWeak = null
   isWorldWarMode = false
   curWwCategory = null
   curWwMembers = null
 
+  playerByRow      = null
+  playerByRowLb    = null
+  curPlayer        = null
+  lastHoveredDataIdx = -1
+
   function initScreen()
   {
+    playerByRow   = []
+    playerByRowLb = []
+
     if (clanIdStrReq == "" && clanNameReq == "" && clanTagReq == "")
     {
       goBack()
@@ -104,7 +110,6 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     initLbTable()
     curMode = getCurDMode()
     reinitClanWindow()
-    initFocusArray()
   }
 
   function setDefaultSort()
@@ -167,11 +172,10 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     lbTableWeak = ::gui_handlers.LeaderboardTable.create({
       scene = scene.findObject("lb_table_nest")
       onCategoryCb = ::Callback(onCategory, this)
-      onRowSelectCb = ::Callback(onSelect, this)
+      onRowSelectCb = ::Callback(onSelectedPlayerIdxLb, this)
+      onRowHoverCb = ::show_console_buttons ? ::Callback(onSelectedPlayerIdxLb, this) : null
       onRowDblClickCb = ::Callback(onUserCard, this)
       onRowRClickCb = ::Callback(onUserRClick, this)
-      onWrapUpCb = ::Callback(onWrapUp, this)
-      onWrapDownCb = ::Callback(onWrapDown, this)
     })
   }
 
@@ -405,13 +409,10 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateUserOptionButton()
   {
-    local show = false
-    if (::show_console_buttons)
-    {
-      local obj = scene.findObject("clan_members_list")
-      show = ::checkObj(obj) && obj.isFocused()
-    }
-    showSceneBtn("btn_user_options", show)
+    ::showBtnTable(scene, {
+      btn_usercard      = curPlayer != null && ::has_feature("UserCards")
+      btn_user_options  = curPlayer != null && ::show_console_buttons
+    })
   }
 
   function fillClanElo()
@@ -475,6 +476,8 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     showSceneBtn("clan_members_list", !isWorldWarMode)
     showSceneBtn("lb_table_nest", isWorldWarMode)
     showSceneBtn("season_over_notice", isWorldWarMode && !::g_world_war.isWWSeasonActiveShort())
+
+    curPlayer = null
 
     if (isWorldWarMode)
     {
@@ -544,7 +547,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       return
     ::clan_set_admin_editor_mode(enable)
     fillClanManagment()
-    onSelect()
+    onSelectUser()
   }
 
   function onShowRequests()
@@ -613,12 +616,14 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     {
       rowHeader.append({
                        image = "#ui/gameuiskin#lb_" + item.id + ".svg"
+                       imageRawParams = "input-transparent:t='yes';"
                        tooltip = "#multiplayer/" + item.id
-                       tdAlign="center"
+                       tdalign="center"
                        active = false
                     })
     }
-    rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowHeader, null, "class:t='smallIconsStyle'")
+    rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowHeader, null,
+      "class:t='smallIconsStyle'; background-color:t='@separatorBlockColor'")
     rowIdx++
 
     /*body*/
@@ -631,7 +636,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       rowParams.append({
                          text = diff.getLocName(),
                          active = false,
-                         tdAlign="left"
+                         tdalign="left"
                       })
 
       foreach(item in clan_data_list)
@@ -643,7 +648,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
         rowParams.append({
                           text = textCell,
                           active = false,
-                          tdAlign="center"
+                          tdalign="center"
                         })
       }
       rowBlock += ::buildTableRowNoPad("row_" + rowIdx, rowParams, null, "")
@@ -663,9 +668,12 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       {lbMode = "ww_users_clan"})
 
     sortWwMembers()
-
+    playerByRowLb = curWwMembers.map(@(member) member.name)
+    curPlayer = null
     local myPos = curWwMembers.findindex(@(member) member.name == ::my_user_name) ?? -1
     lbTableWeak.fillTable(curWwMembers, null, myPos, true, true)
+
+    updateUserOptionButton()
   }
 
   function sortWwMembers()
@@ -691,7 +699,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       local rowData = {
         id       = column.id,
         text     = ::getTblValue("needHeader", column, true) ? "#clan/" + ::getTblValue("loc", column, column.id) : "",
-        tdAlign  = ::getTblValue("align", column, "center"),
+        tdalign  = ::getTblValue("align", column, "center"),
         callback = "onStatsCategory",
         active   = isSortByColumn(column.id)
         tooltip  = column?.getTooltipText(clanData?.historyDepth.tostring()) ?? column.tooltip
@@ -703,10 +711,10 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
         rowData.width <- "0.01@sf"
       headerRow.append(rowData)
     }
-    local markUp = ::buildTableRowNoPad("row_header", headerRow, true,
-      "inactive:t='yes'; commonTextColor:t='yes'; bigIcons:t='yes'; style:t='height:0.05sh;'; insetHeader = 'yes';")
 
-    local rowIdx = 0
+    playerByRow = []
+    curPlayer = null
+    local markup = []
     local isConsoleOnlyPlayers = getSeparateLeaderboardPlatformValue()
     local consoleConst = isPlatformSony
       ? [::TP_PS4, ::TP_PS5]
@@ -727,29 +735,30 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
         }
       }
 
-      local rowName = "row_" + rowIdx
-      local nick = ::g_string.stripTags(member.nick)
+      local rowIdx = playerByRow.len()
       local rowData = [{ text = (rowIdx + 1).tostring() }]
+      local isMe = member.nick == ::my_user_name
       foreach(column in clan_member_list)
       {
         if (!needShowColumn(column))
           continue
-
         rowData.append(getClanMembersCell(member, column))
       }
-      local isMe = member.nick == ::my_user_name
-      markUp += ::buildTableRowNoPad(rowName, rowData, rowIdx % 2 != 0, (isMe ? "mainPlayer:t='yes';" : "") + "player_nick:t='" + nick + "';")
-      rowIdx++
+
+      markup.append(::buildTableRowNoPad($"row_{rowIdx}", rowData, rowIdx % 2 != 0, isMe ? "mainPlayer:t='yes';" : ""))
+      playerByRow.append(member.nick)
     }
 
-    local tblObj = scene.findObject("clan_members_list")
-    guiScene.setUpdatesEnabled(false, false)
-    guiScene.replaceContentFromText(tblObj, markUp, markUp.len(), this)
+    markup.insert(0, ::buildTableRowNoPad("row_header", headerRow, null,"isLeaderBoardHeader:t='yes'"))
+    markup = "".join(markup)
 
+    guiScene.setUpdatesEnabled(false, false)
+    local tblObj = scene.findObject("clan_members_list")
+    guiScene.replaceContentFromText(tblObj, markup, markup.len(), this)
     guiScene.setUpdatesEnabled(true, true)
-    onSelect()
+
+    onSelectUser()
     updateMembersStatus()
-    restoreFocus()
   }
 
   function needShowColumn(column)
@@ -787,7 +796,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     local id = getFieldId(column)
     local res = {
       text = column.type.getShortTextByValue(member[id])
-      tdAlign = ::getTblValue("align", column, "center")
+      tdalign = ::getTblValue("align", column, "center")
     }
 
     if ("getCellTooltipText" in column)
@@ -936,20 +945,44 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.performDelayed(this, function() { fillClanMemberList(clanData.members) })
   }
 
-  function onSelect()
+  function onSelectUser(obj = null)
   {
-    curPlayer = null
-    local tblObj = scene.findObject(isWorldWarMode ? "lb_table" : "clan_members_list")
-    if (!::check_obj(tblObj) || !clanData)
+    if (::show_console_buttons)
+      return
+    obj = obj ?? scene.findObject("clan_members_list")
+    if (!::check_obj(obj))
       return
 
-    local index = tblObj.getValue()
-    if (index <= 0 || index >= tblObj.childrenCount())
-      return //0 - header selected
+    local dataIdx = obj.getValue() - 1 // skiping header row
+    onSelectedPlayerIdx(dataIdx)
+  }
 
-    local row = tblObj.getChild(index)
-    if (::check_obj(row))
-      curPlayer = row.player_nick
+  function onRowHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    if (!::check_obj(obj))
+      return
+
+    local isHover = obj.isHovered()
+    local dataIdx = ::to_integer_safe(::g_string.cutPrefix(obj.id, "row_", ""), -1, false)
+    if (isHover == (dataIdx == lastHoveredDataIdx))
+     return
+
+    lastHoveredDataIdx = isHover ? dataIdx : -1
+    onSelectedPlayerIdx(lastHoveredDataIdx)
+  }
+
+  function onSelectedPlayerIdx(dataIdx)
+  {
+    curPlayer = playerByRow?[dataIdx]
+    updateUserOptionButton()
+  }
+
+  function onSelectedPlayerIdxLb(dataIdx)
+  {
+    curPlayer = playerByRowLb?[dataIdx]
+    updateUserOptionButton()
   }
 
   function onChangeMembershipRequirementsWnd()
@@ -981,7 +1014,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     openUserRClickMenu()
   }
 
-  function openUserRClickMenu(position = null)
+  function openUserRClickMenu()
   {
     if (!curPlayer)
       return
@@ -993,7 +1026,6 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     playerContextMenu.showMenu(null, this, {
       uid = curMember.uid
       playerName = curMember.nick
-      position = position
       clanData = clanData
     })
   }
@@ -1073,27 +1105,16 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     base.goBack()
   }
 
-  function getSelectedRowPos()
-  {
-    local objTbl = scene.findObject("clan_members_list")
-    local rowNum = objTbl.getValue()
-    if(rowNum >= objTbl.childrenCount())
-      return null
-    local rowObj = objTbl.getChild(rowNum)
-    local topLeftCorner = rowObj.getPosRC()
-    return [topLeftCorner[0], topLeftCorner[1] + rowObj.getSize()[1]]
-  }
-
   function onUserOption()
   {
-    openUserRClickMenu(getSelectedRowPos())
+    openUserRClickMenu()
   }
 
   function onMembersListFocus(obj)
   {
     guiScene.performDelayed(this, function() {
-      if (::checkObj(scene))
-        updateUserOptionButton()
+      if (::check_obj(scene))
+        onSelectUser()
     })
   }
 
@@ -1117,26 +1138,6 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCategory(obj)
   {
-  }
-
-  function getMainFocusObj()
-  {
-    return scene.findObject("btn_lock_clan_req")
-  }
-
-  function getMainFocusObj2()
-  {
-    return "modes_list"
-  }
-
-  function getMainFocusObj3()
-  {
-    return scene.findObject("clan_members_list")
-  }
-
-  function getMainFocusObj4()
-  {
-    return scene.findObject("clan_actions")
   }
 
   function getWndHelpConfig()
