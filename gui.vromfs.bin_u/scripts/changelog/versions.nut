@@ -10,16 +10,8 @@
 */
 
 return [
-  {version="1.101.0.00", type="major", title={
-    english="Update 'Raining Fire'"
-    russian="Обновление 'Огненный дождь'"
-  }}
-  {version="1.99.1.00", type="major", title={
-    english="Update 'Regia Marina'"
-    russian="Обновление 'Regia Marina'"
-  }}
-  {version="1.99.0.00", type="major", title={
-    english="Update 'Starfighters'"
-    russian="Обновление 'Starfighters'"
+  {version="2.1.0.00", type="major", title={
+    english="Update “New Power”"
+    russian="Обновление “Новая сила”"
   }}
 ]
