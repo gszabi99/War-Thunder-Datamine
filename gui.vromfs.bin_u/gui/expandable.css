@@ -1,3 +1,4 @@
+@const expandableFocusBorderColor: #54656e;
 @const selImgLeftPadding: 14*@sf/@pf;
 @const selImgRightPadding: 11*@sf/@pf;
 @const selImgBottomPadding: 8*@sf/@pf;
@@ -9,9 +10,7 @@ expandable {
   width:pw-10*@sf/@pf_outdated;
   pos:50%pw-50%w, 0;
   position:relative;
-  background-color:@frameDarkBackgroundColor;
-  border-color:@frameDarkBorderColor;
-  border:yes;
+  background-color:@bottomBarBackgroundColor;
   border-offset:@dp;
   flow:vertical;
   margin-top:0.5*@scrn_tgt/100.0+2*@sf/@pf_outdated;
@@ -33,7 +32,6 @@ expandable.simple {
   padding: 0;
   margin-top: 1@blockInterval;
   width:pw;
-  border:no;
 }
 
 expandable.unlock {
@@ -90,7 +88,7 @@ expandable statusImg[background-image] {
 }
 
 expandable:hover {
-  background-color:@frameDarkHoverBgColor;
+  background-color:@buttonColor;
 }
 expandable:hover statusImg[background-image] {
   background-color:@hoverTextColor;
@@ -99,9 +97,9 @@ expandable:hover statusImg[background-image] {
 expandable:focus,
 expandable.simple[active=yes],
 expandable[selected=yes] {
-  background-color:@frameDarkActiveBgColor;
+  background-color:@listboxSelOptionColor;
   border:yes;
-  border-color:@frameDarkSelectedBorderColor;
+  border-color:@expandableFocusBorderColor;
 }
 
 expandable[selected=yes] statusImg[background-image] {
@@ -133,6 +131,7 @@ expandable[status=owned][selected=yes] {
 expandable[status=owned]:hover {
   background-color:@frameDarkHoverBgColor;
   border-color:@frameDarkSelectedBorderColor;
+  border:yes;
 }
 
 expandable[status=locked], expandable[status=locked] statusImg[background-image] {
@@ -188,6 +187,7 @@ shortInfoBlock statusImg {
 
 expandable[type=battleTask][selected=yes] {
   border-color:@frameDarkLineColor;
+  border:yes;
 }
 
 tooltipObj > expandable[type=battleTask] {

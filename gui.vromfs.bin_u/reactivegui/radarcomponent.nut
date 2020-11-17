@@ -1855,7 +1855,7 @@ local function C_ScopeSquareAzimuthComponent(width, height, azimuthWatched, elev
   }
 }
 
-local function createTargetOnRadarCScopeSquare(index, radius, radarWidth, radarHeight) {
+local function createTargetOnRadarCScopeSquare(index, radius, radarWidth, radarHeight, is_mfd) {
   local target = targets[index]
   local opacity = (1.0 - target.ageRel) * target.signalRel
 

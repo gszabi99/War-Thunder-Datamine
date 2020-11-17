@@ -14,13 +14,13 @@ local commonButtonStyle = {
   textMargin = 0
 
   style = {
-    BgNormal     = Color(45, 56, 65)
+    BgNormal     = Color(58,71,79)
     BgHover      = Color(224, 224, 224)
     BgActive     = Color(2, 5, 9, 153)
     BgFocused    = Color(140, 140, 140, 140)
     BgDisabled   = Color(11, 14, 16, 127)
 
-    BdNormal     = Color(45, 56, 65)
+    BdNormal     = Color(58,71,79)
     BdHover      = Color(224, 224, 224)
     BdActive     = Color(7, 9, 11, 153)
     BdFocused    = Color(204, 204, 204, 204)

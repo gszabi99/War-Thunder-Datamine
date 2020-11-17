@@ -32,16 +32,17 @@ colors.menu <- {
 
   voiceChatIconActiveColor = Color(134, 216, 8)
 
-  modalShadeColor = Color(2, 6, 11, 178)
-  frameBackgroundColor = Color(17, 20, 26, 242)
+  modalShadeColor = Color(8, 10, 13, 102)
+  frameBackgroundColor = Color(17, 24, 33, 204)
   frameBorderColor = Color(32, 38, 44, 178)
-  frameHeaderColor = Color(42, 48, 55, 204)
+  frameHeaderColor = Color(45, 52, 60)
   higlightFrameBgColor = Color(8, 8, 8, 17) //evenTrColor
 
   buttonCloseColorHover = Color(178, 57, 29)
   buttonCloseColorPushed = Color(106, 34, 17, 153)
   menuButtonColorHover = Color(45, 56, 65)
   menuButtonTextColorHover = Color(224, 224, 224)
+  separatorBlockColor = Color(34,34,34, 34)
 }
 
 colors.hud <- {

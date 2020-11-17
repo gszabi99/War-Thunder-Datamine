@@ -27,7 +27,6 @@ local tabStyle = {
 
 local blockInterval = ::fpx(6)
 local borderWidth = ::dp(1)
-local minTabCount = 5
 
 local scrollHandler = ::ScrollHandler()
 local scrollStep = ::fpx(75)
@@ -44,16 +43,17 @@ local function patchnote(v) {
   local isCurrent = @() curPatchnote.value.iVersion == v.iVersion
   return @() {
     watch = [stateFlags, curPatchnote]
+    rendObj = ROBJ_BOX
+    fillColor = isCurrent() ? Color(58, 71, 79)
+      : Color(0, 0, 0)
+    borderColor = Color(178, 57, 29)
+    borderWidth = isCurrent()
+      ? [0, 0, 2*borderWidth, 0]
+      : 0
     size = [flex(1), ::ph(100)]
     maxWidth = ::fpx(300)
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
-    rendObj = ROBJ_BOX
-    fillColor = getTabColorCtor(stateFlags.value, tabStyle.fillColor, isCurrent())
-    borderColor = colors.menu.frameBorderColor
-    borderWidth = isCurrent()
-      ? [0, borderWidth, borderWidth, borderWidth]
-      : borderWidth
     onClick = @() choosePatchnote(v)
     onElemState = @(sf) stateFlags(sf)
     skipDirPadNav = false
@@ -76,10 +76,6 @@ local function patchnote(v) {
 local topBorder = @(params = {}) {
   size = [::dp(1), flex()]
   valign = ALIGN_CENTER
-  rendObj = ROBJ_BOX
-  fillColor = colors.transparent
-  borderColor = colors.menu.frameBorderColor
-  borderWidth = [borderWidth, 0 , 0 , 0]
 }.__merge(params)
 
 local patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
@@ -92,18 +88,16 @@ local patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
 
 local function getPatchoteSelectorChildren() {
   local tabCount = versions.value.len()
-  local borderEmptySpace = topBorder({size = flex(::max(0, minTabCount - tabCount))})
   if (tabCount == 0)
-    return borderEmptySpace
+    return null
 
   local children = versions.value.map(patchnote)
   if (!showConsoleButtons.value)
-    return children.append(borderEmptySpace)
+    return children
 
   return [patchnoteSelectorGamepadButton("J:LB", nextPatchNote)]
     .extend(children)
     .append(patchnoteSelectorGamepadButton("J:RB", prevPatchNote))
-    .append(borderEmptySpace)
 }
 
 local patchnoteSelector = @() {
@@ -111,6 +105,7 @@ local patchnoteSelector = @() {
   size = [flex(), ::ph(100)]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
+  padding = [blockInterval, 0, 0, 0]
   children = getPatchoteSelectorChildren()
 }
 
@@ -186,10 +181,6 @@ local btnClose = commonTextButton(::loc("mainmenu/btnClose"), onCloseAction, {ho
 local nextButton = @() {
   watch = [curPatchnoteIdx]
   size = SIZE_TO_CONTENT
-  rendObj = ROBJ_BOX
-  fillColor = colors.transparent
-  borderColor = colors.menu.frameBorderColor
-  borderWidth = [borderWidth, 0 , 0 , 0]
   hplace = ALIGN_RIGHT
   vplace = ALIGN_BOTTOM
   padding = [blockInterval, 0, 0, blockInterval]
@@ -208,6 +199,7 @@ local clicksHandler = {
 }
 
 local changelogRoot = {
+  rendObj = ROBJ_WORLD_BLUR_PANEL
   size = flex()
   children = [
     clicksHandler
@@ -220,11 +212,10 @@ local changelogRoot = {
           {
             rendObj = ROBJ_BOX
             size = flex()
-            fillColor = colors.menu.higlightFrameBgColor
-            borderColor = colors.menu.frameBorderColor
-            borderWidth = [borderWidth, borderWidth, 0, borderWidth]
-            padding = blockInterval
             flow = FLOW_VERTICAL
+            borderColor = colors.menu.separatorBlockColor
+            borderWidth = [0, 0, borderWidth, 0]
+            padding = [0, 0, blockInterval, 0]
             children = selPatchnote
           }
           {
