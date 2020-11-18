@@ -1232,8 +1232,8 @@
               "canCaptureInAir": false,
               "canCaptureByGM": true,
               "onlyPlayersCanCapture": false,
-              "captureNoPenalty": true,
               "useHUDMarkers": true,
+              "captureNoPenalty": true,
               "zoneDefenders": {
                 "defender": "@pt_generate_defenders_name"
               },
@@ -1268,6 +1268,11 @@
             "triggerEnable": {
               "target": "pt_generate_spawns_place_check_air"
             }
+          },
+          {
+            "missionMakeTorpedoNet": {
+              "object": "@pt_generate_capture_area_name"
+            }
           }
         ],
         "else_actions": [
@@ -1291,8 +1296,8 @@
               "canCaptureInAir": false,
               "canCaptureByGM": true,
               "onlyPlayersCanCapture": false,
-              "captureNoPenalty": true,
               "useHUDMarkers": true,
+              "captureNoPenalty": true,
               "zoneDefenders": {
                 "defender": "@pt_generate_defenders_name"
               },
@@ -1326,6 +1331,11 @@
           {
             "triggerEnable": {
               "target": "pt_generate_spawns_place_check_air"
+            }
+          },
+          {
+            "missionMakeTorpedoNet": {
+              "object": "@pt_generate_capture_area_name"
             }
           }
         ]
@@ -2067,16 +2077,6 @@
             "triggerEnable": {
               "target": "pt_port_turning_t1_enemy_leave_zone_air_spawn"
             }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "__triggerEnable": {
-              "target": "pt_port_turning_restore_timer_check"
-            }
           }
         ],
         "else_actions": {
@@ -2466,6 +2466,24 @@
                 "boat": false
               }
             }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_turning_spawns_cruisers_squad_name",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "is off by pt_port_turning_t1_cruisers_and_destroyers_spawns_off",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": " ",
+              "logtype": "screen_and_log"
+            }
           }
         ],
         "else_actions": {
@@ -2617,6 +2635,24 @@
                 "ship": false,
                 "boat": false
               }
+            }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_turning_spawns_cruisers_squad_name",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "is off by pt_port_turning_t2_cruisers_and_destroyers_spawns_off",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": " ",
+              "logtype": "screen_and_log"
             }
           }
         ],
@@ -2778,6 +2814,24 @@
                 "type_battleship": false
               }
             }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_turning_spawns_cruisers_squad_name",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "is on by pt_port_turning_t1_cruisers_and_destroyers_spawns_on",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": " ",
+              "logtype": "screen_and_log"
+            }
           }
         ],
         "else_actions": {
@@ -2937,6 +2991,24 @@
                 "type_battlecruiser": false,
                 "type_battleship": false
               }
+            }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_turning_spawns_cruisers_squad_name",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "is on by pt_port_turning_t2_cruisers_and_destroyers_spawns_on",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": " ",
+              "logtype": "screen_and_log"
             }
           }
         ],
@@ -3269,37 +3341,70 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamA"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ]
-        },
+        "conditions": [
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isTeamA"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
+          },
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isActive"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
+          }
+        ],
         "actions": {
           "getUnitsCount": [
             {
@@ -3351,37 +3456,70 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamB"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ]
-        },
+        "conditions": [
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isTeamB"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
+          },
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isActive"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
+          }
+        ],
         "actions": {
           "getUnitsCount": [
             {
@@ -3433,62 +3571,113 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamA"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ]
-        },
-        "actions": {
-          "getUnitsCount": [
-            {
-              "target": "all_ships_squad"
-            },
-            {
-              "target": "all_players_squad"
-            },
-            {
-              "target_type": "isOnGround"
-            },
-            {
-              "useForTriggerFiltered": true
-            },
-            {
-              "var": "pt_t2_port_units_t1_count"
-            }
-          ],
-          "comment": {
-            "value": ""
+        "conditions": [
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isTeamA"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
           },
-          "triggerEnable": {
-            "target": "pt_port_turning_t2_players_t2_count"
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isActive"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
           }
-        },
+        ],
+        "actions": [
+          {
+            "getUnitsCount": [
+              {
+                "target": "all_ships_squad"
+              },
+              {
+                "target": "all_players_squad"
+              },
+              {
+                "target_type": "isOnGround"
+              },
+              {
+                "useForTriggerFiltered": true
+              },
+              {
+                "var": "pt_t2_port_units_t1_count"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t2_players_t2_count"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "t1 units count is ",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_t2_port_units_t1_count",
+              "logtype": "screen_and_log"
+            }
+          }
+        ],
         "else_actions": {
           "varSetInt": {
             "value": 0,
@@ -3515,62 +3704,113 @@
             "time": 0.0
           }
         },
-        "conditions": {
-          "unitWhenInArea": [
-            {
-              "math": "3D"
-            },
-            {
-              "object_type": "isTeamB"
-            },
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "check_objects": "any"
-            },
-            {
-              "object": "all_ships_squad"
-            },
-            {
-              "object": "all_players_squad"
-            },
-            {
-              "target": "@pt_turning_capture_area_name"
-            }
-          ]
-        },
-        "actions": {
-          "getUnitsCount": [
-            {
-              "target": "all_ships_squad"
-            },
-            {
-              "target": "all_players_squad"
-            },
-            {
-              "target_type": "isOnGround"
-            },
-            {
-              "useForTriggerFiltered": true
-            },
-            {
-              "var": "pt_t2_port_units_t2_count"
-            }
-          ],
-          "comment": {
-            "value": ""
+        "conditions": [
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isTeamB"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
           },
-          "triggerEnable": {
-            "target": "pt_port_turning_t2_enemy_final_check"
+          {
+            "unitWhenInArea": [
+              {
+                "math": "3D"
+              },
+              {
+                "object_type": "isActive"
+              },
+              {
+                "object_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "check_objects": "any"
+              },
+              {
+                "object": "all_ships_squad"
+              },
+              {
+                "object": "all_players_squad"
+              },
+              {
+                "target": "@pt_turning_capture_area_name"
+              }
+            ]
           }
-        },
+        ],
+        "actions": [
+          {
+            "getUnitsCount": [
+              {
+                "target": "all_ships_squad"
+              },
+              {
+                "target": "all_players_squad"
+              },
+              {
+                "target_type": "isOnGround"
+              },
+              {
+                "useForTriggerFiltered": true
+              },
+              {
+                "var": "pt_t2_port_units_t2_count"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "pt_port_turning_t2_enemy_final_check"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "t2 units count is ",
+              "logtype": "screen_and_log"
+            }
+          },
+          {
+            "systemLog": {
+              "value": "@pt_t2_port_units_t2_count",
+              "logtype": "screen_and_log"
+            }
+          }
+        ],
         "else_actions": {
           "varSetInt": {
             "value": 0,
@@ -3616,37 +3856,6 @@
             }
           },
           {
-            "__missionMarkAsRespawnPoint": {
-              "loc_name": "@pt_turning_spawns_loc_string",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "resetStrictSpawnIndex": false,
-              "isAirfield": false,
-              "isUnit": false,
-              "useExisting": true,
-              "isIndividual": true,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "removeAreas": false,
-              "replaceAreas": true,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "target": "@pt_turning_spawns_squad_name",
-              "team": "A",
-              "tags": {
-                "type_bomber": false,
-                "type_fighter": false,
-                "type_assault": false,
-                "none_can_spawn": true,
-                "helicopter": false,
-                "tank": false,
-                "ship": false,
-                "boat": false
-              }
-            }
-          },
-          {
             "triggerEnable": {
               "target": "pt_port_turning_t1_cruisers_and_destroyers_spawns_off"
             }
@@ -3664,6 +3873,11 @@
           {
             "comment": {
               "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -3713,37 +3927,6 @@
             }
           },
           {
-            "__missionMarkAsRespawnPoint": {
-              "loc_name": "@pt_turning_spawns_loc_string",
-              "spawnEffect": false,
-              "isStrictSpawn": false,
-              "resetStrictSpawnIndex": false,
-              "isAirfield": false,
-              "isUnit": false,
-              "useExisting": true,
-              "isIndividual": true,
-              "onlyOnePlayerPerSpawnPoint": false,
-              "removeAreas": false,
-              "replaceAreas": true,
-              "canSpawnOnNeutral": false,
-              "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "target": "@pt_turning_spawns_squad_name",
-              "team": "B",
-              "tags": {
-                "type_bomber": false,
-                "type_fighter": false,
-                "type_assault": false,
-                "none_can_spawn": true,
-                "helicopter": false,
-                "tank": false,
-                "ship": false,
-                "boat": false
-              }
-            }
-          },
-          {
             "triggerEnable": {
               "target": "pt_port_turning_t2_cruisers_and_destroyers_spawns_off"
             }
@@ -3761,6 +3944,11 @@
           {
             "comment": {
               "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -3936,7 +4124,7 @@
             "varSetRandomInt": {
               "var": "pt_generate_size_t1_dimension",
               "from": 4,
-              "to_not_including": 11
+              "to_not_including": 9
             }
           },
           {
@@ -13211,31 +13399,6 @@
           },
           {
             "comment": {
-              "value": "имя переменной с таймером восстановления защитников"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "pt_port_",
-              "var": "pt_capture_port_restore_timer_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@pt_capture_port_cur_idx",
-              "digits": 2,
-              "var": "pt_capture_port_restore_timer_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_restore_timer",
-              "digits": 0,
-              "var": "pt_capture_port_restore_timer_var_name"
-            }
-          },
-          {
-            "comment": {
               "value": "проверяем армию"
             }
           },
@@ -13790,6 +13953,31 @@
               "value": 0,
               "var": "@pt_capture_port_restore_timer_var_name",
               "input_var": "pt_port_default_restore_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя переменной с таймером восстановления защитников"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "pt_port_",
+              "var": "pt_capture_port_restore_timer_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@pt_capture_port_cur_idx",
+              "digits": 2,
+              "var": "pt_capture_port_restore_timer_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_restore_timer",
+              "digits": 0,
+              "var": "pt_capture_port_restore_timer_var_name"
             }
           }
         ],
@@ -14708,6 +14896,31 @@
               "value": 0,
               "var": "@pt_capture_port_restore_timer_var_name",
               "input_var": "pt_port_default_restore_time"
+            }
+          },
+          {
+            "comment": {
+              "value": "имя переменной с таймером восстановления защитников"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "pt_port_",
+              "var": "pt_capture_port_restore_timer_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@pt_capture_port_cur_idx",
+              "digits": 2,
+              "var": "pt_capture_port_restore_timer_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_restore_timer",
+              "digits": 0,
+              "var": "pt_capture_port_restore_timer_var_name"
             }
           }
         ],

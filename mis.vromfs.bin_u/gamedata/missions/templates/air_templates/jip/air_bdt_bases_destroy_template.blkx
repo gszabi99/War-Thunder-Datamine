@@ -1833,7 +1833,12 @@
               "time": 0.0
             }
           },
-          "conditions": [],
+          "conditions": {
+            "objectExists": {
+              "target": "@bdt_t1_aaa_spawn_name",
+              "type": "area"
+            }
+          },
           "actions": {
             "unitRespawn": {
               "delay": 1.0,
@@ -1847,7 +1852,14 @@
               "target": "bdt_t1_aaa_spawn_rotator"
             }
           },
-          "else_actions": []
+          "else_actions": {
+            "comment": {
+              "value": "нет зоны для спавна"
+            },
+            "triggerEnable": {
+              "target": "bdt_t1_aaa_spawn_rotator"
+            }
+          }
         },
         "bdt_t2_aaa_spawn_start": {
           "is_enabled": false,
@@ -1942,7 +1954,12 @@
               "time": 0.0
             }
           },
-          "conditions": [],
+          "conditions": {
+            "objectExists": {
+              "target": "@bdt_t2_aaa_spawn_name",
+              "type": "area"
+            }
+          },
           "actions": {
             "unitRespawn": {
               "delay": 1.0,
@@ -1956,7 +1973,14 @@
               "target": "bdt_t2_aaa_spawn_rotator"
             }
           },
-          "else_actions": []
+          "else_actions": {
+            "comment": {
+              "value": "нет зоны для спавна"
+            },
+            "triggerEnable": {
+              "target": "bdt_t2_aaa_spawn_rotator"
+            }
+          }
         }
       }
     },
@@ -3344,20 +3368,6 @@
             }
           },
           {
-            "varSetString": {
-              "value": "",
-              "var": "bdt_destroy_t1_aaa_name",
-              "input_var": "bdt_destroy_t1_bombing_zone_target_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_aaa_point_",
-              "digits": 0,
-              "var": "bdt_destroy_t1_aaa_name"
-            }
-          },
-          {
             "comment": {
               "value": "зона есть - проверяем статус"
             }
@@ -3717,25 +3727,6 @@
             "__varGetStringValue": {
               "from_var_name": "bdt_destroy_t2_bombing_zone_name",
               "var": "bdt_destroy_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зенитки"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "bdt_destroy_t2_aaa_name",
-              "input_var": "bdt_destroy_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_aaa_point_",
-              "digits": 0,
-              "var": "bdt_destroy_t2_aaa_name"
             }
           },
           {
@@ -5098,8 +5089,6 @@
     "bdt_destroy_t2_bombing_zone_name": "",
     "bdt_destroy_t1_bombing_zone_target_name": "",
     "bdt_destroy_t2_bombing_zone_target_name": "",
-    "bdt_destroy_t1_aaa_name": "",
-    "bdt_destroy_t2_aaa_name": "",
     "bdt_t1_spawn_objective_name": "",
     "bdt_t2_spawn_objective_name": "",
     "bdt_t1_destroy_objective_name": "",
