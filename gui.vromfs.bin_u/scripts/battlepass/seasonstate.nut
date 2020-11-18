@@ -67,9 +67,9 @@ local getExpRewardStage = @(stageState) stageState?.updStats
   .findvalue(@(stat) stat?.name == expStatId).value.tointeger() ?? 0
 
 local todayLoginExp = ::Computed(@() getExpRewardStage(
-  getStageByIndex(loginUnlock.value, loginUnlock.value?.stage ?? 0)))
+  getStageByIndex(loginUnlock.value, loginUnlock.value?.stage ?? -1)))
 local tomorowLoginExp = ::Computed(@() getExpRewardStage(
-  getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? 0) + 1)))
+  getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? -1) + 1)))
 
 local function getExpRangeTextOfLoginStreak() {
   local stages = loginUnlock.value?.stages

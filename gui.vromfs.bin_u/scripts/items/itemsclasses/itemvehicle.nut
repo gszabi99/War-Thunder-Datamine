@@ -13,7 +13,7 @@ class ::items_classes.ItemVehicle extends ItemCouponBase {
   }
 
   getContentIconData = @() { contentIcon = ::image_for_air(unit?.name ?? ""), contentType = "unit" }
-  canConsume = @() isInventoryItem ? (unit && !::shop_is_aircraft_purchased(unit.name)) : false
+  canConsume = @() isInventoryItem && (unit?.isBought() ?? false)
   canPreview = @() unit ? unit.canPreview() : false
   doPreview  = @() unit && unit.doPreview()
 }

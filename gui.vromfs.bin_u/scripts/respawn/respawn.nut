@@ -9,7 +9,8 @@ local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
-        isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
+        isWeaponVisible,
+        getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationName,
         getUnitLastBullets } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO,
@@ -802,15 +803,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     slotbarInited=true
     onAircraftUpdate()
-  }
-
-  function getOverrideBullets(unit)
-  {
-    if (!unit)
-      return null
-    local editSlotbarBlk = ::g_crews_list.getMissionEditSlotbarBlk(::get_current_mission_name())
-    local editSlotbarUnitBlk = editSlotbarBlk?[unit.shopCountry]?[unit.name]
-    return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
   }
 
   function updateWeaponsSelector(isUnitChanged)
@@ -1775,43 +1767,14 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       doSelectAircraft()
   }
 
-  function checkChosenBulletsCount(applyFunc, bulletsManager)
-  {
-    if (getOverrideBullets(getCurSlotUnit()))
-      return true
-    local readyCounts = bulletsManager.checkBulletsCountReady()
-    if (readyCounts.status == bulletsAmountState.READY
-        || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED && ::get_gui_option(::USEROPT_SKIP_LEFT_BULLETS_WARNING)))
-      return true
-
-    local msg = ""
-    if (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
-      msg = ::format(::loc("multiplayer/someBulletsLeft"), ::colorize("activeTextColor", readyCounts.unallocated.tostring()))
-    else //status == bulletsAmountState.LOW_AMOUNT
-      msg = ::format(::loc("multiplayer/notEnoughBullets"), ::colorize("activeTextColor", readyCounts.required.tostring()))
-
-    ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
-      {
-        parentHandler = this
-        message = msg
-        list = ""
-        showCheckBoxBullets = false
-        ableToStartAndSkip = readyCounts.status != bulletsAmountState.LOW_AMOUNT
-        skipOption = ::USEROPT_SKIP_LEFT_BULLETS_WARNING
-        onStartPressed = applyFunc
-      })
-
-    return false
-  }
-
   function checkCurAirAmmo(applyFunc)
   {
-    local bulletsManager = weaponsSelectorWeak && weaponsSelectorWeak.bulletsManager
+    local bulletsManager = weaponsSelectorWeak?.bulletsManager
     if (!bulletsManager)
       return true
 
     if (bulletsManager.canChangeBulletsCount())
-      return checkChosenBulletsCount(applyFunc, bulletsManager)
+      return bulletsManager.checkChosenBulletsCount(true, ::Callback(@() applyFunc(), this))
 
     local air = getCurSlotUnit()
     if (!air)

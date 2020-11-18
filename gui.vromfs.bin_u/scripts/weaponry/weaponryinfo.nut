@@ -753,6 +753,15 @@ local function checkBadWeapons()
   }
 }
 
+local function getOverrideBullets(unit)
+{
+  if (!unit)
+    return null
+  local editSlotbarBlk = ::g_crews_list.getMissionEditSlotbarBlk(::get_current_mission_name())
+  local editSlotbarUnitBlk = editSlotbarBlk?[unit.shopCountry]?[unit.name]
+  return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
+}
+
 return {
   KGF_TO_NEWTON            = KGF_TO_NEWTON
   TRIGGER_TYPE             = TRIGGER_TYPE
@@ -782,4 +791,5 @@ return {
   isWeaponEnabled          = isWeaponEnabled
   isWeaponVisible          = isWeaponVisible
   checkBadWeapons          = checkBadWeapons
+  getOverrideBullets       = getOverrideBullets
 }

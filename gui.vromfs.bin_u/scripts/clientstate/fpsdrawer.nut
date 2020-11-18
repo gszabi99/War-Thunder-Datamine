@@ -1,4 +1,5 @@
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { hasFeature } = require("scripts/user/features.nut")
 
 ::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId)
 {
@@ -68,7 +69,9 @@ fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId)
 {
   fps = (fps + 0.5).tointeger();
   local fpsText = ""
-  if ((::is_dev_version || (!isPlatformSony && !isPlatformXboxOne && !::is_platform_android)) && fps < 10000 && fps > 0)
+  local isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !::is_platform_android
+  local isAllowedForUser = hasFeature("FpsCounterOverride")
+  if ((::is_dev_version || isAllowedForPlatform || isAllowedForUser) && fps < 10000 && fps > 0)
     fpsText = ::colorize(getFpsColor(fps), ::format("FPS: %d", fps))
   objects.fps.setValue(fpsText)
 

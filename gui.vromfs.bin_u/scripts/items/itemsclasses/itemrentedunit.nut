@@ -6,8 +6,12 @@ class ::items_classes.RentedUnit extends ItemCouponBase {
 
   getRentedUnitId      = @() metaBlk?.rentedUnit
   function canConsume() {
+    if (!isInventoryItem)
+      return false
+
     local unitId = getRentedUnitId()
-    return unitId != null
-      && (::getAircraftByName(unitId)?.isVisibleInShop() ?? false)
+    local unit = ::getAircraftByName(unitId)
+    return unit != null && !unit.isBought()
+      && (unit.isVisibleInShop() || unit.showOnlyWhenBought)
   }
 }

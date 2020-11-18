@@ -283,6 +283,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function onApply(obj)
   {
+    local bulletsManager = weaponsSelectorWeak?.bulletsManager
+    if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
+      return
+
     ::broadcastEvent("BeforeStartTestFlight")
 
     if (::g_squad_manager.isNotAloneOnline())

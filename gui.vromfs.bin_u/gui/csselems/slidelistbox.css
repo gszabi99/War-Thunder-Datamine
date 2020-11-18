@@ -1,6 +1,6 @@
 @const slideGroupMargin: 1@dp;
 
-SlideListBox,SlideListBoxOptions
+SlideListBox
 {
   behaviour:listbox+slide;
   re-type:SlideListBox;
@@ -11,11 +11,6 @@ SlideListBox,SlideListBoxOptions
   slide-time:100;
   flow:horizontal;
   font:@fontNormal;
-}
-
-SlideListBoxOptions {
-  width:0.3sw;
-  height:50*@sf/@pf_outdated;
 }
 
 SlideListBoxButton {
@@ -53,29 +48,6 @@ SlideListBoxButton#down {
   rotation:180;
 }
 
-HangarSliderListBox {
-  behaviour:listbox+slide;
-  re-type:SlideListBox;
-  disable_wheel:yes;
-  border:no;
-  font:@fontMedium;
-  re-type:9rect;
-  background-position:0,6;
-  background-repeat:expand;
-  background-image:#ui/gameuiskin#option_select;
-  background-color:@white;
-  slide-time:400;
-  snd_select:choose;
-}
-
-HangarSliderListBox SlideListBoxButton#left {
-  margin-left:2.5*@scrn_tgt/100.0;
-}
-
-HangarSliderListBox SlideListBoxButton#right {
-  margin-right:2.5*@scrn_tgt/100.0;
-}
-
 [activeAccesskeys=RLB] SlideListBoxButton[pc_style=no] {
   size:0.05@scrn_tgt, 0.05@scrn_tgt;
   background-svg-size: 0.05@scrn_tgt, 0.05@scrn_tgt;
@@ -95,31 +67,6 @@ HangarSliderListBox SlideListBoxButton#right {
 
 SlideListBoxButton:disabled {
   background-color:@transparent;
-}
-
-
-HangarSliderListBox option {
-  re-type:9rect;
-  font:@fontMedium;
-  min-width: (p.p.w)/5;
-  padding:3*@scrn_tgt/100.0,0;
-  color:@commonTextColor;
-  css-hier-invalidate:yes;
-}
-
-HangarSliderListBox option[narrow] {
-  min-width: (p.p.w)/5;
-}
-
-HangarSliderListBox option:hover {
-  color:@hoverTextColor;
-}
-
-HangarSliderListBox option:current {
-  color:@activeTextColor;
-  re-type:9rect;
-  font:@fontMedium;
-  background-repeat:expand;
 }
 
 HangarDecalImg {

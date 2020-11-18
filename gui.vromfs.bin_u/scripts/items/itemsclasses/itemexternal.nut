@@ -935,7 +935,7 @@ local ItemExternal = class extends ::BaseItem
     return true
   }
 
-  isHiddenItem = @() !isEnabled() || isCraftResult() || itemDef?.tags?.devItem == true
+  isHiddenItem = @() !isEnabled() || isCraftResult() || itemDef?.tags?.devItem == true || shouldAutoConsume
   isEnabled = @() requirement == null || ::has_feature(requirement)
   function getAdditionalConfirmMessage(actionName, delimiter = "\n")
   {

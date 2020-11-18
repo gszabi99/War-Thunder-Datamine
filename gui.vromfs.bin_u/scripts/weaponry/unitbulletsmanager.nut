@@ -1,6 +1,6 @@
 local stdMath = require("std/math.nut")
 local { AMMO, getAmmoWarningMinimum } = require("scripts/weaponry/ammoInfo.nut")
-local { getLinkedGunIdx } = require("scripts/weaponry/weaponryInfo.nut")
+local { getLinkedGunIdx, getOverrideBullets } = require("scripts/weaponry/weaponryInfo.nut")
 local { getBulletsGroupCount,
         getActiveBulletsGroupInt,
         getBulletsInfoForPrimaryGuns } = require("scripts/weaponry/bulletsInfo.nut")
@@ -180,6 +180,36 @@ global enum bulletsAmountState {
         res.required = ::min(minBullets, totalBullets) * gInfo.guns
     }
     return res
+  }
+
+  function checkChosenBulletsCount(needWarnUnallocated = false, applyFunc = null)
+  {
+    if (getOverrideBullets(unit))
+      return true
+    local readyCounts = checkBulletsCountReady()
+    if (readyCounts.status == bulletsAmountState.READY
+        || (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED
+          && (!needWarnUnallocated || ::get_gui_option(::USEROPT_SKIP_LEFT_BULLETS_WARNING))))
+      return true
+
+    local msg = ""
+    if (readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
+      msg = ::format(::loc("multiplayer/someBulletsLeft"), ::colorize("activeTextColor", readyCounts.unallocated.tostring()))
+    else
+      msg = ::format(::loc("multiplayer/notEnoughBullets"), ::colorize("activeTextColor", readyCounts.required.tostring()))
+
+    ::gui_start_modal_wnd(::gui_handlers.WeaponWarningHandler,
+      {
+        parentHandler = this
+        message = msg
+        list = ""
+        showCheckBoxBullets = false
+        ableToStartAndSkip = readyCounts.status != bulletsAmountState.LOW_AMOUNT
+        skipOption = ::USEROPT_SKIP_LEFT_BULLETS_WARNING
+        onStartPressed = applyFunc
+      })
+
+    return false
   }
 
   function canChangeBulletsCount()

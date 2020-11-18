@@ -283,12 +283,21 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(false, false)
     initSheetsOnce()
 
-    local typesObj = getSheetsListObj()
+    local typesObj = getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
     local seenListId = getTabSeenId(curTab)
     local curValue = -1
+    local childsTotal = typesObj.childrenCount()
 
-    foreach(idx, item in navItems)
-    {
+    if (childsTotal < navItems.len()) {
+      local navItemsTotal = navItems.len() // warning disable: -declared-never-used
+      ::script_net_assert_once("Bad count on update unseen tabs",
+        "ItemsShop: Not all sheets exist on update sheets list unseen icon")
+    }
+
+    foreach(idx, item in navItems) {
+      if (idx >= childsTotal)
+        break
+
       local sh = sheetsArray[item.shIdx]
       local isEnabled = sh.isEnabled(curTab)
       local child = typesObj.getChild(idx)

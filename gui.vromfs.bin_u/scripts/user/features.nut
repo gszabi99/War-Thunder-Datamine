@@ -270,6 +270,8 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ConsoleSeparateWWLeaderboards = false
   WWOperationsList = false
   ShowDropChanceInTrophy = false
+
+  FpsCounterOverride = false
 })
 
 local override = ::Watched({})

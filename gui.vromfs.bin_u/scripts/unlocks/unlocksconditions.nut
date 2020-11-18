@@ -386,6 +386,7 @@ UnlockConditions.loadMainProgressCondition <- function loadMainProgressCondition
   else if (modeType == "unlockOpenCount" || modeType == "unlockStageCount")
   {
     res.values = res.values ?? []
+    local isUnlockStageCount = modeType == "unlockStageCount"
     if (!res.hasCustomUnlockableList)
       foreach (unlockId in (blk % "unlock")) {
         local unlock = ::g_unlocks.getUnlockById(unlockId)
@@ -394,7 +395,16 @@ UnlockConditions.loadMainProgressCondition <- function loadMainProgressCondition
           ::dagor.assertf(false, "ERROR: Unlock does not exist")
           continue
         }
-        res.values.append(unlock.id)
+        if (isUnlockStageCount) {
+          res.values.append(unlock.id)
+          continue
+        }
+
+        local values = ("mode" in unlock) ? unlock.mode % "unlock" : []
+        if(values.len() == 0)
+          res.values.append(unlock.id)
+        else
+          res.values.extend(values)
       }
   }
   else if (modeType == "landings")
