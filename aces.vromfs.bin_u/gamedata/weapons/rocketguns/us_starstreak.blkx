@@ -113,9 +113,9 @@
       "operatedDist": 9800.0,
       "autoLeveling": true,
       "autoAiming": true,
-      "maxAxisValues": 1.0,
+      "maxAxisValues": 2.8,
       "aimSensitivity": 15.0,
-      "autoAimTrackingSensitivity": 0.4,
+      "autoAimTrackingSensitivity": 0.35,
       "explosionEffect": "atgm_hit",
       "defFxScale": [2.2,2.5],
       "groundCollisionEffect": "art_ground_splash",
@@ -147,6 +147,8 @@
       "speedViscosity": 0.1,
       "timeToLive": 30.4,
       "price": 3000.0,
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [-0.5,0.0,0.0],
       "collisions": {
         "steel": {
           "fx": "cannon_hit_armor_cumulative",
@@ -175,6 +177,14 @@
       "hitpower": {
         "HitPower0m": [1.0,500.0],
         "HitPower7000m": [0.9,7000.0]
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "black"
+        }
       }
     },
     "stabilityRicochetModifier": [
