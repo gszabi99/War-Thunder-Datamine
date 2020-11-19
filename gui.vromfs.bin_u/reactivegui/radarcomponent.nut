@@ -424,14 +424,13 @@ local targetsComponent = function(radarWidth, radarHeight, createTargetFunc, is_
 local function B_ScopeSquareBackground(width, height, is_mfd) {
   local scanAzimuthMinRelW = Computed(@() ScanAzimuthMin.value * AzimuthRangeInv.value)
   local scanAzimuthMaxRelW = Computed(@() ScanAzimuthMax.value * AzimuthRangeInv.value)
-  local emptyGridSecondaryCommands = []
 
   local gridSecondaryCommandsW = Computed(function(){
     local scanAzimuthMinRel = scanAzimuthMinRelW.value
     local scanAzimuthMaxRel = scanAzimuthMaxRelW.value
     local azimuthRangeInv = AzimuthRangeInv.value
 
-    local gridSecondaryCommands = emptyGridSecondaryCommands
+    local gridSecondaryCommands = []
 
     if (HasDistanceScale.value)
       gridSecondaryCommands = [

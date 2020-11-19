@@ -446,14 +446,18 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    goBack()
+    guiScene.performDelayed(this, function() {
+      if (!isValid())
+        return
+      goBack()
 
-    if ("startFunction" in gameMode)
-      gameMode.startFunction()
-    else if (gameMode?.displayType?.showInEventsWindow)
-      ::gui_start_modal_events({ event = event?.name })
-    else
-      ::game_mode_manager.setCurrentGameModeById(gameMode.modeId, true)
+      if ("startFunction" in gameMode)
+        gameMode.startFunction()
+      else if (gameMode?.displayType?.showInEventsWindow)
+        ::gui_start_modal_events({ event = event?.name })
+      else
+        ::game_mode_manager.setCurrentGameModeById(gameMode.modeId, true)
+    })
   }
 
   function markGameModeSeen(obj)

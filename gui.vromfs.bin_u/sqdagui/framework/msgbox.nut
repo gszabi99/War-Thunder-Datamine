@@ -144,14 +144,18 @@ local g_string =  require("std/string.nut")
         local btnObj = ::check_obj(boxObj) ? boxObj.findObject("buttons_holder") : null
         if (!::check_obj(btnObj) || !btnObj.isVisible())
           return
-        local button = btnObj.getChild(btnObj.getValue())
-        for (local i = 0; i < btnObj.childrenCount(); i++)
+        local total = btnObj.childrenCount()
+        local value = btnObj.getValue()
+        if (value < 0 || value >= total)
+          return
+        local button = btnObj.getChild(value)
+        for (local i = 0; i < total; i++)
         {
           local bObj = btnObj.getChild(i)
-          if (bObj.isHovered())
+          if (bObj?.isValid() && bObj.isHovered())
             button = bObj
         }
-        if (::check_obj(button) && button.isEnabled())
+        if (button?.isValid() && button.isEnabled())
           return onButtonId(button.id)
       }
 

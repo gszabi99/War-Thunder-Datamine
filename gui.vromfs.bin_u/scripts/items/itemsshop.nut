@@ -115,6 +115,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function initNavigation()
   {
+    if (navigationHandlerWeak)
+      return
+
     local handler = ::handlersManager.loadHandler(
       ::gui_handlers.navigationPanel,
       { scene                  = scene.findObject("control_navigation")
