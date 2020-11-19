@@ -249,35 +249,31 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     fillUnitsList()
   }
 
+  function getCurSlotObj() {
+    local listObj = scene.findObject("units_list")
+    local idx = ::get_obj_valid_index(listObj)
+    if (idx < 0)
+      return null
+
+    return listObj.getChild(idx).getChild(0)
+  }
+
   function onUnitSelect(obj)
   {
-    if (!::check_obj(obj))
-      return
-
     lastSelectedUnit = null
+    local slotObj = getCurSlotObj()
+    if (::check_obj(slotObj)) {
+      if (!::show_console_buttons)
+        openUnitActionsList(slotObj, true)
 
-    local idx = obj.getValue()
-    if (idx >= 0 && idx < obj.childrenCount())
-    {
-      local slot = obj.getChild(idx)?.getChild(0) ?? null
-      if (::check_obj(slot))
-      {
-        if (!::show_console_buttons)
-          openUnitActionsList(slot, true)
-
-        lastSelectedUnit = ::getAircraftByName(slot.id)
-      }
+      lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
     }
 
     updateButtons()
   }
 
-  function onOpenActionsList(obj)
-  {
-    if (!::check_obj(obj))
-      return
-
-    openUnitActionsList(obj.getParent().getParent(), true)
+  function onUnitAction(obj) {
+    openUnitActionsList(getCurSlotObj())
   }
 
   function onEventUnitResearch(p)

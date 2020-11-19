@@ -48,12 +48,15 @@ root {
       position:t='relative'
       overflow-y:t='auto'
       flow:t='h-flow'
+      shortcut-on-hover:t='yes'
       behaviour:t='posNavigator'
       total-input-transparent:t='yes'
       clearOnFocusLost:t='no'
       alwaysShowBorder:t='yes'
       navigatorShortcuts:t='yes'
       on_select:t='onUnitSelect'
+      on_click:t='onUnitAction'
+      on_activate:t='onUnitAction'
       <<@unitsList>>
     }
 
