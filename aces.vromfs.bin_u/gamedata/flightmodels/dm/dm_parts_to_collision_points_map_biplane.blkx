@@ -1020,13 +1020,13 @@
       "fm": "wing_middle_l",
       "elementType": "common",
       "dm": "wing1_l_dm",
-      "impulseVelLimits": [3.0,10.0],
+      "impulseVelLimits": [3.0,8.0],
       "dmCut": "spar1_l_dm"
     }
   },
   {
     "object": {
-      "fm": "wing_middle_l",
+      "fm": "wing_end_l",
       "elementType": "common",
       "dm": "wing2_l_dm",
       "impulseVelLimits": [3.0,8.0],
@@ -1047,7 +1047,7 @@
       "fm": "wing_middle_r",
       "elementType": "common",
       "dm": "wing1_r_dm",
-      "impulseVelLimits": [3.0,10.0],
+      "impulseVelLimits": [3.0,8.0],
       "dmCut": "spar1_r_dm"
     }
   },
@@ -1141,10 +1141,13 @@
   {
     "object": [
       {
-        "dm": "fin2_dm"
+        "fm": "ver_stab"
       },
       {
         "elementType": "common"
+      },
+      {
+        "dm": "fin2_dm"
       },
       {
         "dm": "rudder1_dm"
