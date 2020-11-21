@@ -32,7 +32,13 @@ weaponBody {
   border-color:@modBorderColor;
   border:yes;
   border-offset:1@slotBorderSize;
+  mouse-pointer-centering:50, 75;
 }
+
+weaponry_item[wideItemWithSlider=yes], weaponry_item[wideItemWithSlider=yes] > weaponBody {
+  mouse-pointer-centering:13, 75;
+}
+
 weaponBody > topLine {
   size:pw, 1@slotTopLineHeight;
   position:absolute;

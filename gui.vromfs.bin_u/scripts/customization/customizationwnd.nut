@@ -12,6 +12,8 @@ local { canBuyNotResearched,
 local { isPlatformPC } = require("scripts/clientState/platform.nut")
 local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
 
+::dagui_propid.add_name_id("gamercardSkipNavigation")
+
 enum decoratorEditState
 {
   NONE     = 0x0001
@@ -832,6 +834,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     })
 
     updateDecoratorActions(isInEditMode, decoratorType)
+    scene.findObject("gamercard_div")["gamercardSkipNavigation"] = isInEditMode ? "yes" : "no"
+    update_gamercards()
   }
 
   function isNavigationAllowed()

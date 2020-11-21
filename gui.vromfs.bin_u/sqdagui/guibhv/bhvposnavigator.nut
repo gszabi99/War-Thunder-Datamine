@@ -1,4 +1,12 @@
 local { markChildrenInteractive, markInteractive, markObjShortcutOnHover } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+local { memoize } = require("std/functools.nut")
+
+local centeringStrToArray = memoize(function(str) {
+  local list = str.split(",")
+  if (list.len() != 2)
+    return [0.5, 0.5]
+  return list.map(@(v) v.tofloat() * 0.01)
+})
 
 //blk params:
 //  value
@@ -106,18 +114,6 @@ class gui_bhv.posNavigator
     return [::clamp(point[0], pos[0], pos[0] + (size[0] < 0 ? 0 : size[0]))
             ::clamp(point[1], pos[1], pos[1] + (size[1] < 0 ? 0 : size[1]))
            ]
-  }
-
-  function getClosestCoordsByAxis(obj, point, axis)
-  {
-    local pos = obj.getPos()
-    local size = obj.getSize()
-    local res = []
-    for(local a= 0; a < 2; a++)
-      res.append(a == axis
-        ? ::clamp(point[a], pos[a], pos[a] + (size[a] < 0 ? 0 : size[a]))
-        : pos[a] + 0.5*size[a])
-    return res
   }
 
   function selectCurItem(obj)
@@ -468,6 +464,16 @@ class gui_bhv.posNavigator
       }
     })
     return { foundObj = foundObj, foundIdx = foundIdx }
+  }
+
+  function getClosestCoordsByAxis(obj, point, axis)
+  {
+    local pos = obj.getPos()
+    local size = obj.getSize().map(@(v) ::max(0, v))
+    return centeringStrToArray(obj.getFinalProp("mouse-pointer-centering") ?? "")
+      .map(@(pointerMul, a) a == axis
+        ? ::clamp(point[a], pos[a], pos[a] + ::min(1.0, 0.5 + pointerMul) * size[a])
+        : pos[a] + pointerMul*size[a])
   }
 
   function moveSelectLinear(obj, valueObj, axis, dir, isFromOutside = false)

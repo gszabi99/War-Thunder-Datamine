@@ -200,7 +200,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
   local canHaveFriends = ::has_feature("Friends")
   local canChat = ::has_feature("Chat")
   local is_in_menu = ::isInMenu()
-  local skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] == "yes"
+  local skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] ?? "no"
 
   local hasPremiumAccount = ::entitlement_expires_in(premAccName) > 0
 
@@ -231,8 +231,8 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
       bObj.show(status)
       bObj.enable(status)
       bObj.inactive = status? "no" : "yes"
-      if (status && skipNavigation)
-        bObj["skip-navigation"] = "yes"
+      if (status)
+        bObj["skip-navigation"] = skipNavigation
     }
   }
 
@@ -255,6 +255,9 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
       pObj.inactive = status? "no" : "yes"
     }
   }
+  local squadWidgetObj = getObj("gamercard_squad_widget")
+  if (squadWidgetObj?.isValid())
+    squadWidgetObj["gamercardSkipNavigation"] = skipNavigation
 
   ::g_discount.updateDiscountNotifications(scene)
   setVersionText(scene)

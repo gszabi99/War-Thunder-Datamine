@@ -1,5 +1,5 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
-local { ps4RegionName, isPlatformPS4, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local cache = persist("cache", @() {})
 local function clearCache() {
@@ -73,11 +73,11 @@ local getPsnEntitlement  = @(name) getCachedEntitlementId(ps4RegionName(), name)
 local getGuidEntitlement = @(name) getCachedEntitlementId("guid", name)
 
 return {
-  getBundleId = isPlatformPS4 ? getPsnBundle
+  getBundleId = isPlatformSony ? getPsnBundle
     : isPlatformXboxOne ? getXboxBundle
     : getGuidBundle
 
-  getEntitlementId = isPlatformPS4 ? getPsnEntitlement
+  getEntitlementId = isPlatformSony ? getPsnEntitlement
     : isPlatformXboxOne ? getXboxEntitlement
     : getGuidEntitlement
 }

@@ -141,9 +141,13 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function onFilterEditBoxCancel(obj = null)
   {
-    if ((obj?.getValue() ?? "") == "")
-      return goBack()
-    resetSearch()
+    if ((obj?.getValue() ?? "") != "")
+      resetSearch()
+    else
+      guiScene.performDelayed(this, function() {
+        if (isValid())
+          goBack()
+      })
   }
 
   function applySearchFilter()

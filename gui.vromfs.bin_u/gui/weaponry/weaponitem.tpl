@@ -12,6 +12,7 @@ weaponry_item {
   css-hier-invalidate:t='yes'
   equipped:t='<<optEquipped>>'
   status:t= '<<optStatus>>'
+  <<#wideItemWithSlider>>wideItemWithSlider:t='yes'<</wideItemWithSlider>>
 
   tdiv {
     id:t='modItem_discount'
@@ -36,6 +37,13 @@ weaponry_item {
     behaviour:t='button'
     on_click:t='onModItemClick'
     on_dbl_click:t = 'onModItemDblClick'
+
+    <<#wideItemWithSlider>>
+    behaviour:t='wrapBroadcast'
+    horizontalByShifts:t='yes'
+    on_wrap_right:t='onModIncreaseBullets'
+    on_wrap_left:t='onModDecreaseBullets'
+    <</wideItemWithSlider>>
 
     topLine {}
     wallpaper {
@@ -140,6 +148,7 @@ weaponry_item {
             class:t='sliderValueButton'
             type:t='weaponryAmount'
             text:t='-'
+            skip-navigation:t='yes'
             tooltip:t='#unit/bulletsDecrease'
             btnName:t='LB'
             bulletsLimit:t='<<decBulletsLimit>>'
@@ -160,6 +169,8 @@ weaponry_item {
             max:t='<<invSliderMax>>'
             on_change_value:t='onModChangeBulletsSlider'
             groupIdx:t = '<<sliderGroupIdx>>'
+            horizontalByShifts:t='yes'
+            skip-navigation:t='yes'
 
             expProgress {
               id:t='bulletsSlider'
@@ -188,6 +199,7 @@ weaponry_item {
             text:t='+'
             tooltip:t='#unit/bulletsIncrease'
             btnName:t='RB'
+            skip-navigation:t='yes'
             bulletsLimit:t='<<incBulletsLimit>>'
             on_click:t='onModIncreaseBullets'
 

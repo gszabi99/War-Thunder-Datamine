@@ -216,11 +216,20 @@ topMenuButtons > Button_text {
   visualStyle:noFrame;
 }
 
-gcButtonsHolder > Button_text {
+gcButtonsHolder > Button_text,
+gcButtonsSquadHolder > Button_text {
   noMargin:yes;
   imgSize:big;
   visualStyle:noFrame;
   showConsoleImage:no;
+}
+
+gcButtonsSquadHolder > Button_text {
+  skip-navigation:no;
+}
+
+gcButtonsSquadHolder[gamercardSkipNavigation=yes] > Button_text {
+  skip-navigation:yes;
 }
 
 [show_console_buttons=yes] [btnName] > ButtonImg,
@@ -2111,7 +2120,7 @@ Button_text[type=weaponryAmount] {
   display:hide;
 }
 
-[show_console_buttons=yes] :focus weaponry_item[selected=yes] Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
+[show_console_buttons=yes] weaponry_item:hover Button_text.sliderValueButton[type=weaponryAmount] > ButtonImg {
   display:show;
 }
 
@@ -2260,7 +2269,8 @@ Button_text[visualStyle=noFrame][isLink=yes][isFeatured=yes]:pushed > btnText > 
   bgcolor:@linkTextHoverColor;
 }
 
-gcButtonsHolder {
+gcButtonsHolder,
+gcButtonsSquadHolder {
   height:1@gamercardHeight;
 }
 
