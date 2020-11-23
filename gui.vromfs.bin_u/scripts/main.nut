@@ -332,6 +332,7 @@ local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
   USER_PRESENCE_UPDATE = 2
   CONFIG_VALIDATION = 2
   LOGIN_PROCESS = 3
+  MEMOIZE_VALIDATION = 4
 }
 subscriptions.setDefaultPriority(::g_listener_priority.DEFAULT)
 ::broadcastEvent <- subscriptions.broadcast

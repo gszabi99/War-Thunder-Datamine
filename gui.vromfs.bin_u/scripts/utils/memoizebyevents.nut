@@ -34,7 +34,7 @@ local function memoizeByEvents(func, hashFunc = null, clearOnEvents = [])
   foreach (event in alwaysClearOnEvents)
     ::u.appendOnce(event, clearOnEvents)
   foreach (event in clearOnEvents)
-    ::add_event_listener(event, onEventCb, this)
+    ::add_event_listener(event, onEventCb, this, ::g_listener_priority.MEMOIZE_VALIDATION)
 
   local function memoizedFunc(...) {
     local args = [null].extend(vargv)

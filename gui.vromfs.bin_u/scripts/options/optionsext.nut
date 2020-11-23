@@ -4825,6 +4825,8 @@ local isWaitMeasureEvent = false
     case ::USEROPT_IS_BOTS_ALLOWED:
     case ::USEROPT_USE_TANK_BOTS:
     case ::USEROPT_USE_SHIP_BOTS:
+    case ::USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS:
+    case ::USEROPT_DISABLE_AIRFIELDS:
     case ::USEROPT_KEEP_DEAD:
     case ::USEROPT_DEDICATED_REPLAY:
     case ::USEROPT_AUTOBALANCE:
