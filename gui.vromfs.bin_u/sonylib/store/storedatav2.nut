@@ -11,6 +11,7 @@ local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useFree = "true"
   sort = "release_date"
   keepHtmlTag = "true"
+  limit = 100 //TODO: rework on lazy load through, e.g. watched
 }
 
 local categoriesData = datablock()

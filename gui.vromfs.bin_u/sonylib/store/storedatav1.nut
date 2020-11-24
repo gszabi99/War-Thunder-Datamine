@@ -11,6 +11,7 @@ local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useFree = "true"
   sort = "release_date"
   keepHtmlTag = "true"
+  size = 100 //TODO: rework on lazy load through, e.g. watched
 }
 
 local categoriesData = datablock()
@@ -130,7 +131,7 @@ requestLinksFullInfo = function(category) {
 // On receiving final items, checked by total_result and size params,
 // send another request for next category.
 local requestCategoryFullLinksList = @(category) null
-requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(category),
+requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(category, STORE_REQUEST_ADDITIONAL_FLAGS),
   function(response, err) {
     if (err) {
       statsd.send_counter("sq.ingame_store.request", 1,

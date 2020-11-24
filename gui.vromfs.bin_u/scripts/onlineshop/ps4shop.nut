@@ -102,7 +102,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   {
     if (canDisplayStoreContents())
     {
-      psnStore.show_icon(psnStore.IconPosition.CENTER)
+      psnStore.show_icon(psnStore.IconPosition.LEFT)
       base.initScreen()
       statsd.send_counter("sq.ingame_store.contents", 1, {callsite = "init_screen", status = "ok"})
       return
