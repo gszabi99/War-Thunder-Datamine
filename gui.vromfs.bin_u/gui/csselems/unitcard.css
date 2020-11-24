@@ -1138,12 +1138,12 @@ shopItem Button_text.battle {
 }
 
 unitCell > shopItem:hover Button_text.bottomAirItem,
-unitItemContainer[selected=yes] > shopItem:hover Button_text.bottomAirItem,
+[showButtonsForSelectedChild=yes] unitItemContainer[selected=yes] > shopItem:hover Button_text.bottomAirItem,
 [show_console_buttons=yes] unitItemContainer[chosen=yes] > shopItem:hover Button_text.bottomAirItem,
 [show_console_buttons=no] unitItemContainer[chosen=yes] > shopItem Button_text.bottomAirItem,
 weapon_item_unit:hover Button_text.bottomAirItem,
 shopItem Button_text.bottomAirItem:hover,
-[selected=yes] > shopItem Button_text.battle {
+[chosen=yes] > shopItem Button_text.battle {
   display:show;
   enable:yes;
 }

@@ -170,6 +170,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!isHandlerValid(handler))
       return
+    if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+      ::script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui::ObjScene::act")
+      return
+    }
 
     handler.onDestroy()
     foreach(sh in handler.subHandlers)
@@ -179,6 +183,12 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function loadBaseHandler(handlerClass, params = {})
   {
+    local guiScene = ::get_gui_scene()
+    if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+      ::script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui::ObjScene::act")
+      return null
+    }
+
     local reloadScene = updatePostLoadCss() || needReloadScene()
     local reload = !handlerClass.keepLoaded || reloadScene
     if (!reload)
@@ -195,7 +205,6 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     if (reloadScene)
       clearScene()
 
-    local guiScene = ::get_gui_scene()
     local handler = createHandler(handlerClass, guiScene, params)
     local newLoadedRootHandler = loadHandlerScene(handler)
     switchBaseHandler(handler)
@@ -419,6 +428,11 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!guiScene)
       guiScene = ::get_cur_gui_scene()
+    if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+      ::script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui::ObjScene::act")
+      return
+    }
+
     sendEventToHandlers("onDestroy", guiScene)
 
     beforeClearScene(guiScene)
@@ -595,6 +609,11 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
 
   function closeAllModals(guiScene = null)
   {
+    if ((guiScene ?? ::get_cur_gui_scene())?.isInAct()) { //isInAct appear at 18.11.2020
+      ::script_net_assert_once("closeAllModals", "Try to close all modals while in dagui::ObjScene::act")
+      return
+    }
+
     ::destroy_all_msg_boxes(guiScene)
 
     local group = handlers[handlerType.MODAL]
@@ -613,6 +632,10 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
   {
     if (!isHandlerValid(handler, true))
       return
+    if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+      ::script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui::ObjScene::act")
+      return
+    }
 
     foreach(idx, h in handlers[handlerType.MODAL])
       if (isHandlerValid(h, true) && h.scene.isEqual(handler.scene))

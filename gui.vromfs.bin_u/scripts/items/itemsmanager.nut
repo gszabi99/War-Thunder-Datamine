@@ -193,6 +193,10 @@ foreach (fn in [
       || b.discountMin <=> a.discountMin)
     return res[0].item
   }
+
+  function onEventPriceUpdated(p) {
+    markItemsListUpdate()
+  }
 }
 
 ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
@@ -273,6 +277,7 @@ ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
   if (!_reqUpdateList)
     return false
   _reqUpdateList = false
+  ::configs.PRICE.checkUpdate()
   itemsListInternal.clear()
   dbgTrophiesListInternal.clear()
   dbgUpdateInternalItemsCount++

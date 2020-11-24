@@ -54,6 +54,7 @@ root {
       clearOnFocusLost:t='no'
       alwaysShowBorder:t='yes'
       navigatorShortcuts:t='yes'
+      showButtonsForSelectedChild:t='yes'
       on_select:t='onUnitSelect'
       on_click:t='onUnitClick'
       on_r_click:t='onUnitRightClick'
