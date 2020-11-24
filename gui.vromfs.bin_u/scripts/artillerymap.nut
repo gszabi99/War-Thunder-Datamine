@@ -20,7 +20,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
   artilleryReady = true
   artilleryEnabled = true
-  artilleryEnabledCheckCooldown = 0.0
+  artilleryEnabledCheckCooldown = 0.3
 
   mapSizeMeters = -1
   invalidTargetDispersionRadiusMeters = 60
@@ -346,20 +346,24 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
   function checkArtilleryEnabledByTimer(dt = 0.0)
   {
     artilleryEnabledCheckCooldown -= dt
-    if (artilleryEnabledCheckCooldown <= 0)
-    {
-      artilleryEnabledCheckCooldown = 0.3
-      artilleryEnabled = checkArtilleryEnabled(false)
-      artilleryReady = checkArtilleryEnabled(true)
-    }
+    if (artilleryEnabledCheckCooldown > 0)
+      return
+
+    local { ready, enabled } = getArtilleryStatus()
+    artilleryEnabledCheckCooldown = 0.3
+    artilleryEnabled = enabled
+    artilleryReady = ready
+    if (!enabled)
+      doQuitDelayed()
   }
 
-  function checkArtilleryEnabled(checkReady)
+  function getArtilleryStatus()
   {
-    local items = ::get_action_bar_items()
-    foreach (item in items)
-      if (item.type == ::EII_ARTILLERY_TARGET)
-        return item.cooldown != 1 && (checkReady ? item.cooldown == 0 : true)
+    local { cooldown = 1 } = ::get_action_bar_items().findvalue(@(i) i.type == ::EII_ARTILLERY_TARGET)
+    return {
+      enabled = cooldown != 1
+      ready = cooldown == 0
+    }
   }
 
   function getMouseCursorMapCoords()
@@ -401,7 +405,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
 
   function onApply()
   {
-    if (checkArtilleryEnabled(true) && mapCoords && ::artillery_dispersion(mapCoords[0], mapCoords[1]) >= 0)
+    if (getArtilleryStatus().ready && mapCoords && ::artillery_dispersion(mapCoords[0], mapCoords[1]) >= 0)
     {
       ::call_artillery(mapCoords[0], mapCoords[1])
       doQuit()
@@ -422,6 +426,12 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     base.goBack()
   }
 
+  doQuitDelayed = @() guiScene.performDelayed(this, function() {
+    if (isValid())
+      doQuit()
+  })
+  onEventCloseArtilleryRequest = @(p) doQuitDelayed()
+
   function onEventHudTypeSwitched(params)
   {
     ::close_artillery_map()
@@ -440,12 +450,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
   })
 }
 
-::close_artillery_map <- function close_artillery_map() // called from client
-{
-  local handler = ::handlersManager.getActiveBaseHandler()
-  if (handler && (handler instanceof ::gui_handlers.ArtilleryMap))
-    handler.doQuit()
-}
+::close_artillery_map <- @() ::broadcastEvent("CloseArtilleryRequest") // called from client
 
 ::on_artillery_targeting <- function on_artillery_targeting(params = {}) // called from client
 {

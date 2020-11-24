@@ -30,6 +30,7 @@ local defaultAvailableWeapons = {
   hasDepthCharges = false
   hasMines = false
   hasFlares = false
+  hasTorpedoes = false
 }
 
 local Unit = class
@@ -605,6 +606,8 @@ local Unit = class
               availableWeapons.hasDepthCharges = true
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
+            if (weapBlk?.torpedo != null)
+              availableWeapons.hasTorpedoes = true
 
             if (!weapBlk?.bomb)
               weaponsBlkArray.append(weap.blk)

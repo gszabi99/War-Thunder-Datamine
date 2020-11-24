@@ -151,6 +151,8 @@ class ::gui_handlers.CreateRoomWnd extends ::gui_handlers.BaseGuiHandlerWT
     checkValues()
   }
 
+  onFocusPassword = @() ::select_editbox(scene.findObject("room_password"))
+
   function onCreateRoom()
   {
     if (!isValuesValid)

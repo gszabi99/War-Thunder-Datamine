@@ -11,6 +11,10 @@ local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus
 local lastUnitType = null
 
 const COUNT_REQ_FOR_FAKE_UNIT = 2
+
+const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
+                                                    // then menu vehilce opened and close
+
 /*
 shopData = [
   { name = "country_japan"
@@ -81,6 +85,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   unitActionsListTimer = null
   hasSpendExpProcess = false
+  actionsListOpenTime = 0
 
   function initScreen()
   {
@@ -1418,6 +1423,18 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   function onUnitDblClick(obj) {
     if (!::show_console_buttons) //to use for not console buttons need to divide events activate and dbl_click
       onUnitMainFunc(obj)
+  }
+
+  function onUnitClick(obj) {
+    actionsListOpenTime = ::dagor.getCurTime()
+    onAircraftClick(obj)
+  }
+
+  function onUnitRightClick(obj) {
+    if (::dagor.getCurTime() - actionsListOpenTime
+        < OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME)
+      return
+    onAircraftClick(obj)
   }
 
   function checkSelectAirGroup(item, selectUnitName = "")

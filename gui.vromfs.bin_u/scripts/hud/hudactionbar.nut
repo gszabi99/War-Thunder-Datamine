@@ -29,6 +29,8 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       return
     scene     = _nestObj
     guiScene  = _nestObj.getScene()
+    killStreaksActions = []
+    weaponActions = []
 
     canControl = !::isPlayerDedicatedSpectator() && !::is_replay_playing()
 

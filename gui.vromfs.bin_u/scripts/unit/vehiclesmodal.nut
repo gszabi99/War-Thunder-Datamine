@@ -1,6 +1,9 @@
 local MAX_SLOT_COUNT_X = 4
 local MAX_SLOT_COUNT_Y = 6
 
+const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
+                                                    // then menu vehilce opened and close
+
 local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType              = handlerType.MODAL
@@ -15,6 +18,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   sceneCheckBoxListTpl = "gui/commonParts/checkbox"
   wndTitleLocId         = "itemTypes/vehicles"
   slotbarActions        = [ "research", "buy", "take", "sec_weapons", "weapons", "showroom", "testflight", "info", "repair" ]
+
+  actionsListOpenTime = 0
 
   function getSceneTplView()
   {
@@ -262,18 +267,26 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   {
     lastSelectedUnit = null
     local slotObj = getCurSlotObj()
-    if (::check_obj(slotObj)) {
-      if (!::show_console_buttons)
-        openUnitActionsList(slotObj, true)
-
+    if (::check_obj(slotObj))
       lastSelectedUnit = ::getAircraftByName(slotObj.unit_name)
-    }
 
     updateButtons()
   }
 
   function onUnitAction(obj) {
     openUnitActionsList(getCurSlotObj())
+  }
+
+  function onUnitClick(obj) {
+    actionsListOpenTime = ::dagor.getCurTime()
+    onUnitAction(obj)
+  }
+
+  function onUnitRightClick(obj) {
+    if (::dagor.getCurTime() - actionsListOpenTime
+        < OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME)
+      return
+    onUnitAction(obj)
   }
 
   function onEventUnitResearch(p)

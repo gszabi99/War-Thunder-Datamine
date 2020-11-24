@@ -2836,6 +2836,11 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     onEventInviteReceived(params)
   }
 
+  function onChatInputWrapRight() {
+    if (checkScene())
+      ::move_mouse_on_obj(scene.findObject("btn_send"))
+  }
+
   scene = null
   sceneChanged = true
   roomsInited = false

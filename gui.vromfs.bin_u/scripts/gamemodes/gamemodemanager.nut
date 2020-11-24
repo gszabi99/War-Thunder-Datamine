@@ -691,20 +691,18 @@ local { isCrossPlayEnabled,
             _createCustomGameMode(dm)
     }
 
-    foreach (eventId in ::events.getEventsForGcDrawer())
-    {
+    foreach (eventId in ::events.getEventsForGcDrawer()) {
       local event = ::events.getEvent(eventId)
       local skip = false
-      foreach (unitType, newbieGm in newbieGmByUnitType)
-        if (::events.isUnitTypeAvailable(event, unitType)
-            && ::events.isUnitTypeRequired(event, unitType, true))
-        {
-          if (::events.getEventDiffCode(event) == newbieGm.diffCode
-            && !::events.isPveEvent(event) && !::events.isEventForClan(event))
+      foreach (unitType, newbieGm in newbieGmByUnitType) {
+        if (::events.isUnitTypeAvailable(event, unitType) && ::events.isUnitTypeRequired(event, unitType, true)) {
+          if (::events.getEventDiffCode(event) == newbieGm.diffCode && ::events.isEventForNewbies(event)) {
             newbieGm.eventForSquad = event
+          }
           skip = true
           break
         }
+      }
       if (!skip)
         _createEventGameMode(event)
     }

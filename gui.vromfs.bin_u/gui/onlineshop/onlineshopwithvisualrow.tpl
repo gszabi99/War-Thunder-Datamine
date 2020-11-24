@@ -23,8 +23,7 @@ table {
   class:t='crewTable'
   pos:t='0.5(pw-w), 0'
   position:t='relative'
-  behavior:t = 'PosNavigator'
-  on_click:t='onItemSelect'
+  behavior:t = 'HoverNavigator'
   selfFocusBorder:t='yes'
   margin-bottom:t='1@blockInterval'
   <<#rows>>

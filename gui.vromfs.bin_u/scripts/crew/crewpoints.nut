@@ -21,7 +21,7 @@ g_crew_points.getSkillPointsPacks <- function getSkillPointsPacks(country)
 }
 
 //pack can be a single pack or packs array
-g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null)
+g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onCancel = @() null)
 {
   if (!::u.isArray(packsList))
     packsList = [packsList]
@@ -44,7 +44,7 @@ g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null)
         if (::check_balance_msgBox(cost))
           buyPackImpl(crew, packsList, onSuccess)
       }, this)
-    ], ["no", function(){}]], "yes", { cancel_fn = function(){}})
+    ], ["no", onCancel]], "yes", { cancel_fn = onCancel })
 }
 
 g_crew_points.buyPackImpl <- function buyPackImpl(crew, packsList, onSuccess)

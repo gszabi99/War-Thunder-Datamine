@@ -6,7 +6,7 @@ table {
 
   class:t='crewTable'
   selfFocusBorder:t='yes'
-  behavior:t = 'PosNavigator'
+  behavior:t = 'HoverNavigator'
 
   <<#rows>>
   tr {
@@ -63,7 +63,7 @@ table {
         ButtonImg {
           id:t='ButtonImg'
           btnName:t='A'
-          showOn:t='selectedAndEnabled'
+          showOn:t='hoverOrPcSelect'
         }
       }
 

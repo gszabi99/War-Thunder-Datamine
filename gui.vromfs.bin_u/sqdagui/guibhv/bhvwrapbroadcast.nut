@@ -1,6 +1,6 @@
 local mkWrap = @(notifyId) function(obj, is_down) {
-  if(is_down)
-    obj.sendNotify(notifyId)
+  if (is_down && !obj.sendSceneEvent(notifyId))
+    ::set_dirpad_event_processed(false)
   return ::RETCODE_HALT
 }
 

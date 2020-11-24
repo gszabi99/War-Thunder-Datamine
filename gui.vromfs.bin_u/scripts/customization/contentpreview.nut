@@ -280,34 +280,35 @@ local function onEventItemsShopUpdate(params)
     item.doPreview()
 }
 
+local doDelayed = @(action) get_gui_scene().performDelayed({}, action)
 
 globalCallbacks.addTypes({
   ITEM_PREVIEW = {
     onCb = function(obj, params) {
       local item = ::ItemsManager.findItemById(params?.itemId)
       if (item && item.canPreview() && canStartPreviewScene(true, true))
-        item.doPreview()
+        doDelayed(@() item.doPreview())
     }
   }
   ITEM_LINK = {
     onCb = function(obj, params) {
       local item = ::ItemsManager.findItemById(params?.itemId)
       if (item && item.hasLink())
-        item.openLink()
+        doDelayed(@() item.openLink())
     }
   }
   UNIT_PREVIEW = {
     onCb = function(obj, params) {
       local unit = ::getAircraftByName(params?.unitId)
       if (unit && unit.canPreview() && canStartPreviewScene(true, true))
-        unit.doPreview()
+        doDelayed(@() unit.doPreview())
     }
   }
   DECORATOR_PREVIEW = {
     onCb = function(obj, params) {
       local decorator = ::g_decorator.getDecoratorByResource(params?.resource, params?.resourceType)
       if (decorator && decorator.canPreview() && canStartPreviewScene(true, true))
-        decorator.doPreview()
+        doDelayed(@() decorator.doPreview())
     }
   }
 })

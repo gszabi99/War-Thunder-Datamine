@@ -228,7 +228,7 @@ g_warbonds_view.getShopProgressBarText <- function getShopProgressBarText(curTas
   })
 }
 
-g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler, addCanBuySpecialTasks = false)
+g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler)
 {
   if (!::check_obj(placeObj))
     return
@@ -245,7 +245,7 @@ g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgr
   nest.tooltip = getSpecialMedalsTooltip(wbClass)
   local data = getSpecialMedalsMarkUp(wbClass, getWarbondMedalsCount(wbClass), true, true, true)
 
-  if (addCanBuySpecialTasks)
+  if (::has_feature("BattlePass"))
     data += getSpecialMedalCanBuyMarkUp(wbClass)
 
   nest.getScene().replaceContentFromText(nest, data, data.len(), handler)

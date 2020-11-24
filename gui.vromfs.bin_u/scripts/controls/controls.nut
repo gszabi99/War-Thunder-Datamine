@@ -401,10 +401,13 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
   function onFilterEditBoxCancel(obj)
   {
-    if (obj.getValue() == "")
-      goBack()
-    else
+    if (obj.getValue() != "")
       resetSearch()
+    else
+      guiScene.performDelayed(this, function() {
+        if (isValid())
+          goBack()
+      })
   }
 
   function resetSearch()
@@ -1555,6 +1558,8 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
       return
 
     changeControlsMode = value
+    backSceneFunc = changeControlsMode ? ::gui_start_controls_console
+      : backToMainScene
     ::switchControlsMode(value)
   }
 
@@ -1771,12 +1776,6 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
         msgBox("errorLoadingPreset", ::loc("msgbox/errorLoadingPreset"),
                [["ok", function() {} ]], "ok", { cancel_fn = function() {}})
     }
-  }
-
-  function afterModalDestroy()
-  {
-    if (changeControlsMode && applyApproved)
-      ::gui_start_controls_console()
   }
 
   function onOptionsListboxDblClick(obj) {}
@@ -2405,7 +2404,7 @@ local function getWeaponFeatures(weaponsBlkList)
 
     controls = [ "throttle" ]
 
-    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode && !::CONTROLS_ALLOW_ENGINE_AUTOSTART)
+    if (::get_mission_difficulty_int() == ::g_difficulty.SIMULATOR.diffCode && !::CONTROLS_ALLOW_ENGINE_AUTOSTART) // warning disable: -const-in-bool-expr
       controls.append("ID_TOGGLE_ENGINE")
 
     if (isMouseAimMode)

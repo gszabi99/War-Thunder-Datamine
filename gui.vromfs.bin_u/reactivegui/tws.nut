@@ -410,13 +410,13 @@ local function displayAircraftIcon(colorStyle) {
   return null
 }
 
-local function scope(colorStyle, relativCircleRadius) {
+local function scope(colorStyle, relativCircleRadius, needDrawCentralIcon) {
   return @() {
     size = flex()
     children = [
       twsBackground(colorStyle),
       rwrBackground(colorStyle),
-      displayAircraftIcon(colorStyle),
+      needDrawCentralIcon ? displayAircraftIcon(colorStyle) : null,
       {
         size = [pw(relativCircleRadius), ph(relativCircleRadius)]
         vplace = ALIGN_CENTER
@@ -431,13 +431,13 @@ local function scope(colorStyle, relativCircleRadius) {
   }
 }
 
-local tws = ::kwarg(function(colorStyle, pos = [rw(75), sh(70)], size = flex(), relativCircleSize = 0) {
+local tws = ::kwarg(function(colorStyle, pos = [rw(75), sh(70)], size = flex(), relativCircleSize = 0, needDrawCentralIcon = true) {
   return {
     size = size
     pos = pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorStyle, relativCircleSize)
+    children = scope(colorStyle, relativCircleSize, needDrawCentralIcon)
   }
 })
 

@@ -107,7 +107,7 @@ local getMainOptions = function()
       [::USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !::is_platform_android],
       // show option by code != -1 need for compatibility with 1_93_0_X
       // TODO: remove after 1_93_0_X
-      [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner", OPTION_SHOW_COMPASS_IN_TANK_HUD != -1],
+      [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
 

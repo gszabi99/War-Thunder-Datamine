@@ -90,7 +90,9 @@ class ::gui_handlers.CrewBuyPointsHandler extends ::gui_handlers.BaseGuiHandlerW
     if (!(row in buyPointsPacks))
       return
 
-    ::g_crew_points.buyPack(crew, buyPointsPacks[row], ::Callback(goBack, this))
+    ::g_crew_points.buyPack(crew, buyPointsPacks[row],
+      ::Callback(goBack, this),
+      ::Callback(@() ::move_mouse_on_child(scene.findObject("buy_table"), row), this))
   }
 
   function onEventModalWndDestroy(params)

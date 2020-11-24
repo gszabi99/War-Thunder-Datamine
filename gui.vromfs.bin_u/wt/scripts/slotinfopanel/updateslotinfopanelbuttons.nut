@@ -1,11 +1,12 @@
 local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
 
-slotInfoPanelButtons.update(@(value) value.append(
+slotInfoPanelButtons([
   {
     id = "dmviewer_protection_analysis_btn"
     onClick = "onProtectionAnalysis"
     text = "#mainmenu/btnProtectionAnalysis"
     actionParamsMarkup = "margin-bottom:t='1@blockInterval'; showConsoleImage:t='no'; width:t='@airInfoPanelDmSwitcherWidth'"
+    delayed = true
   }
   {
     id = "btnAirInfoWeaponry"
@@ -16,4 +17,4 @@ slotInfoPanelButtons.update(@(value) value.append(
     needDiscountIcon = true
     discountType = "lineText"
   }
-))
+])

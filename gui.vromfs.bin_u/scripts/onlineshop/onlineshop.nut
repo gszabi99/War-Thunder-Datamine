@@ -182,10 +182,9 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       })
       guiScene.replaceContentFromText(contentObj, data, data.len(), this)
       local tblObj = scene.findObject("items_list")
-      tblObj.setValue(goods.len() > 0 ? 0 : -1)
 
       guiScene.setUpdatesEnabled(true, true)
-      guiScene.performDelayed(this, @() ::move_mouse_on_child_by_value(tblObj))
+      guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, 0))
     }
     else
     {// Buy Campaigns & Bonuses.
@@ -475,29 +474,29 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onStart()  //onBuy
   {
-    if (task in goods)
-    {
-      if (isBought(goods[task]))
-        return
-      if (("onlinePurchase" in goods[task]) && goods[task].onlinePurchase)
-        return onOnlinePurchase(task)
+    local product = goods?[task]
+    if (product == null || isBought(product))
+      return
+    if (product?.onlinePurchase ?? false)
+      return onOnlinePurchase(task)
 
-      local costGold = "goldCost" in goods[task]? ::get_entitlement_cost_gold(goods[task].name) : 0
-      local price = ::Cost(0, costGold)
-      local msgText = ::warningIfGold(
-        ::loc("onlineShop/needMoneyQuestion",
-          {purchase = ent.getEntitlementName(goods[task]), cost = price.getTextAccordingToBalance()}),
-        price)
-      msgBox("purchase_ask", msgText,
-        [
-          ["yes", function() {
-            if (::check_balance_msgBox(price))
-              goForwardIfPurchase()
-          }],
-          ["no", @() null ]
-        ], "yes", { cancel_fn = @() null }
-      )
-    }
+    local costGold = "goldCost" in product? ::get_entitlement_cost_gold(product.name) : 0
+    local price = ::Cost(0, costGold)
+    local msgText = ::warningIfGold(
+      ::loc("onlineShop/needMoneyQuestion",
+        {purchase = ent.getEntitlementName(product), cost = price.getTextAccordingToBalance()}),
+      price)
+    local curIdx = scene.findObject("items_list").getValue()
+    local onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curIdx)
+    msgBox("purchase_ask", msgText,
+      [
+        ["yes", function() {
+          if (::check_balance_msgBox(price))
+            goForwardIfPurchase()
+        }],
+        ["no", onCancel ]
+      ], "yes", { cancel_fn = onCancel }
+    )
   }
 
   function onOnlinePurchase(purchaseTask)

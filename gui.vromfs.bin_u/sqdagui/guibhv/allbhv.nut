@@ -14,6 +14,7 @@ foreach (fn in [
                  "bhvMultiSelect.nut" //depend on PosNavigator
                  "bhvActivateSelect.nut" //depend on PosNavigator
                  "bhvPosOptionsNavigator.nut" //depend on PosNavigator
+                 "bhvHoverNavigator.nut" //depend on PosNavigator
                  "bhvWrapBroadcast.nut"
                  "bhvTimer.nut"
                  "bhvBasic.nut"

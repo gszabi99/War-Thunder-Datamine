@@ -621,7 +621,7 @@ local isWaitMeasureEvent = false
       break
 
 
-   case ::USEROPT_FLARES_PERIODS:
+    case ::USEROPT_FLARES_PERIODS:
        descr.id = "flares_periods"
        descr.values = [0.1,0.2,0.5,1.0]
        descr.items = []
@@ -638,7 +638,7 @@ local isWaitMeasureEvent = false
        defaultValue = 0.1
        break
 
-   case ::USEROPT_FLARES_SERIES:
+    case ::USEROPT_FLARES_SERIES:
        descr.id = "flares_series"
        descr.items = []
        descr.values = [1,2,3,4]
@@ -655,7 +655,7 @@ local isWaitMeasureEvent = false
        defaultValue = 5
        break
 
-   case ::USEROPT_FLARES_SERIES_PERIODS:
+    case ::USEROPT_FLARES_SERIES_PERIODS:
        descr.id = "flares_series_periods"
        descr.items = []
        descr.values = [1,2,5,10]
@@ -672,7 +672,7 @@ local isWaitMeasureEvent = false
        defaultValue = 1
        break
 
-   case ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME:
+    case ::USEROPT_DEPTHCHARGE_ACTIVATION_TIME:
       descr.id = "depthcharge_activation_time"
       descr.items = []
       descr.values = []
@@ -684,7 +684,7 @@ local isWaitMeasureEvent = false
       descr.value = ::find_in_array(descr.values, ::get_option_depthcharge_activation_time())
       break
 
-   case ::USEROPT_USE_PERFECT_RANGEFINDER:
+    case ::USEROPT_USE_PERFECT_RANGEFINDER:
       descr.id = "use_perfect_rangefinder"
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
@@ -3895,7 +3895,8 @@ local isWaitMeasureEvent = false
       break
 
     default:
-      ::dagor.logerr($"[ERROR] Options: Get: Unsupported type {optionId}")
+      local optionName = ::user_option_name_by_idx?[optionId] ?? ""
+      ::dagor.assertf(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
       ::debugTableData(::aircraft_for_weapons)
       ::callstack()
   }
@@ -4482,7 +4483,7 @@ local isWaitMeasureEvent = false
       else
         ::set_option_indicators_mode(::get_option_indicators_mode() & ~::HUD_INDICATORS_TEXT_DIST);
       break
-     case ::USEROPT_SAVE_ZOOM_CAMERA:
+    case ::USEROPT_SAVE_ZOOM_CAMERA:
       ::set_option_save_zoom_camera(value)
       break;
 
@@ -4951,7 +4952,7 @@ local isWaitMeasureEvent = false
       ::ps4_headtrack_set_enable(value)
       break
 
-      case ::USEROPT_HEADTRACK_SCALE_X:
+    case ::USEROPT_HEADTRACK_SCALE_X:
       ::ps4_headtrack_set_xscale(value)
       break
     case ::USEROPT_HEADTRACK_SCALE_Y:
@@ -5054,7 +5055,8 @@ local isWaitMeasureEvent = false
       break
 
     default:
-      ::dagor.logerr($"[ERROR] Options: Set: Unsupported type {optionId} - {value}")
+      local optionName = ::user_option_name_by_idx?[optionId] ?? ""
+      ::dagor.assertf(false, $"[ERROR] Options: Set: Unsupported type {optionId} ({optionName}) - {value}")
   }
   return true
 }

@@ -33,6 +33,7 @@ massTransp {
         activateChoosenItemByShortcut:t='yes'
         on_select:t = 'onSlotbarSelect'
         _on_activate:t='onSlotbarActivate'
+        _on_r_click:t='onSlotbarActivate'
         _on_dbl_click:t = 'onSlotbarDblClick'
         alwaysShowBorder:t='<<alwaysShowBorder>>'
       }

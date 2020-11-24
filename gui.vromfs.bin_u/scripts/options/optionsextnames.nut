@@ -420,7 +420,6 @@ local user_option_names = [
     "USEROPT_TORPEDO_DIVE_DEPTH"
 ]
 
-::options_mode_name_by_idx <- {}
 ::user_option_name_by_idx <- {}
 
 foreach(idx, modeName in options_mode_names)
@@ -428,8 +427,8 @@ foreach(idx, modeName in options_mode_names)
   local res = ::add_option_mode(modeName)
   local realIdx = (res != null) ? res : idx
   getroottable()[modeName] <- realIdx
-  options_mode_name_by_idx[realIdx] <- modeName
 }
+options_mode_names = null // warning disable: -assigned-never-used
 
 foreach(idx, useropt in user_option_names)
 {
@@ -438,6 +437,7 @@ foreach(idx, useropt in user_option_names)
   getroottable()[useropt] <- realIdx
   user_option_name_by_idx[realIdx] <- useropt
 }
+user_option_names = null // warning disable: -assigned-never-used
 
 
 ::get_option_in_mode <- function get_option_in_mode(optionId, mode)

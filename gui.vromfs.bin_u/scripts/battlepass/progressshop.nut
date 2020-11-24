@@ -6,7 +6,6 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "gui/emptyFrame.blk"
 
   goods = null
-  curGoodIdx = null
 
   function initScreen() {
     if (battlePassShopConfig.value == null)
@@ -58,14 +57,10 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       rows = rowsView
     })
     guiScene.replaceContentFromText(contentObj, data, data.len(), this)
-    local tblObj = scene.findObject("items_list")
-    tblObj.setValue(rowsView.findindex(@(r) !r.isDisabled) ?? -1)
-
     guiScene.setUpdatesEnabled(true, true)
-    guiScene.performDelayed(this, @() ::move_mouse_on_child_by_value(tblObj))
 
-    ::move_mouse_on_child_by_value(scene.findObject("items_list"))
-    onItemSelect()
+    local valueToSelect = rowsView.findindex(@(r) !r.isDisabled) ?? -1
+    guiScene.performDelayed(this, @() ::move_mouse_on_child(scene.findObject("items_list"), valueToSelect))
   }
 
   hasBattlePassItem = @(goodsConfig) goodsConfig.battlePassItem != null
@@ -96,8 +91,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         hasBattlePassItem(goodsConfig) ? "no" : "yes"
   }
 
-  function onBuy() {
-    local goodsConfig = goods?[curGoodIdx]
+  function onBuy(curGoodsIdx) {
+    local goodsConfig = goods?[curGoodsIdx]
     if (goodsConfig == null || isBought(goodsConfig))
       return
 
@@ -106,6 +101,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
           purchase = $"{goodsConfig.name} {goodsConfig.valueText}",
           cost = goodsConfig.cost.getTextAccordingToBalance()}),
       goodsConfig.cost)
+    local onCancel = @() ::move_mouse_on_child(scene.findObject("items_list"), curGoodsIdx)
     msgBox("purchase_ask", msgText,
       [
         ["yes", function() {
@@ -115,32 +111,15 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
               disableBattlePassRows()
           }
         }],
-        ["no", @() null ]
-      ], "yes", { cancel_fn = @() null }
+        ["no", onCancel ]
+      ], "yes", { cancel_fn = onCancel }
     )
   }
 
-  function onItemSelect() {
-    local listObj = scene.findObject("items_list")
-    local value = ::get_obj_valid_index(listObj)
-    if (value < 0)
-      return
-
-    curGoodIdx = value
-  }
-
   function onRowBuy(obj) {
-    local pObj = obj.getParent()
-    if (!::check_obj(pObj))
-      return
-
-    local idx = pObj?.id.tointeger()
-    if (!(idx in goods))
-      return
-
-    scene.findObject("items_list").setValue(idx)
-    onItemSelect()
-    onBuy()
+    local value = scene.findObject("items_list").getValue()
+    if (value in goods)
+      onBuy(value)
   }
 
   function onEventModalWndDestroy(params) {

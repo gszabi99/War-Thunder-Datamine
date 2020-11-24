@@ -1,3 +1,5 @@
+local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
+
 ::gui_start_controls_console <- function gui_start_controls_console()
 {
   ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
@@ -5,7 +7,7 @@
 
 class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
 {
-  wndType = handlerType.MODAL
+  wndType = handlerType.BASE
   sceneBlkName = "gui/controlsConsole.blk"
   sceneNavBlkName = null
 
@@ -15,6 +17,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
 
   function initScreen()
   {
+    backSceneFunc = backToMainScene
     options = [
       [::USEROPT_INVERTY, "spinner"],
       [::USEROPT_INVERTY_TANK, "spinner", ::has_feature("Tanks")],
@@ -74,6 +77,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
   function onSwitchModeButton()
   {
     changeControlsMode = true
+    backSceneFunc = ::gui_start_advanced_controls
     ::switchControlsMode(false)
     goBack()
   }
@@ -111,11 +115,5 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
     msgBox("calibrate", ::loc("msg/headtrack_calibrate"),
       [["ok", function() { ::ps4_headtrack_calibrate() } ]],
       "ok", { cancel_fn = function() {}})
-  }
-
-  function afterModalDestroy()
-  {
-    if (changeControlsMode)
-      ::gui_start_advanced_controls()
   }
 }

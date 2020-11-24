@@ -1768,6 +1768,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
     return isEventMatchesType(event, EVENT_TYPE.CLAN)
   }
 
+  function isEventForNewbies(event)
+  {
+    return isEventMatchesType(event, EVENT_TYPE.NEWBIE_BATTLES)
+  }
+
   function isEventRandomBattles(event)
   {
     if (getEventType(event) & EVENT_TYPE.NEWBIE_BATTLES)

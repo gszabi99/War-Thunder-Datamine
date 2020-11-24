@@ -1135,20 +1135,18 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     showOptionRow(depthChargeDescr.id, air.isDepthChargeAvailable()
       && air.getAvailableSecondaryWeapons().hasDepthCharges)
 
-    local torpedoDepthObj = scene.findObject("torpedo_dive_depth")
-    if (::checkObj(torpedoDepthObj))
-    {
-      local ship = air.isShipOrBoat()
-      torpedoDepthObj.show(ship)
-      if (ship)
-      {
-        local torpedoDepthDescr = ::get_option(::USEROPT_TORPEDO_DIVE_DEPTH)
-        local data = ""
-        foreach (idx, item in torpedoDepthDescr.items)
-          data += build_option_blk(item, "", idx == torpedoDepthDescr.value)
-        guiScene.replaceContentFromText(torpedoDepthObj, data, data.len(), this)
-      }
+    local torpedoDepthDescr = ::get_option(::USEROPT_TORPEDO_DIVE_DEPTH)
+    local isShipOrBoat = air.isShipOrBoat()
+    local torpedoDepthObj = scene.findObject(torpedoDepthDescr.id)
+    if (isShipOrBoat && needUpdateOptionItems && ::check_obj(torpedoDepthObj)) {
+      local data = []
+      foreach (idx, item in torpedoDepthDescr.items)
+        data.append(build_option_blk(item, "", idx == torpedoDepthDescr.value))
+      data = "".join(data)
+      guiScene.replaceContentFromText(torpedoDepthObj, data, data.len(), this)
     }
+    showOptionRow(torpedoDepthDescr.id, isShipOrBoat
+      && air.getAvailableSecondaryWeapons().hasTorpedoes)
   }
 
   function updateAircraftWeaponsOptions(unit, needUpdateOptionItems = true)

@@ -98,6 +98,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     checkBombActivationTimeRow()
     checkBombSeriesRow()
     checkDepthChargeActivationTimeRow()
+    updateTorpedoDiveDepth()
     updateFlaresOptions()
   }
 
@@ -181,12 +182,9 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     {
       options.append(
         [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner"],
-        [::USEROPT_ROCKET_FUSE_DIST, "spinner"]
+        [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
+        [::USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
       )
-      if (!get_option_torpedo_dive_depth_auto())
-        options.append(
-          [::USEROPT_TORPEDO_DIVE_DEPTH, "spinner"]
-        )
     }
 
     options.append(
@@ -666,6 +664,16 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     showOptionRow(option, unit?.isDepthChargeAvailable?()
       && unit.getAvailableSecondaryWeapons().hasDepthCharges)
+  }
+
+  function updateTorpedoDiveDepth() {
+    local option = findOptionInContainers(::USEROPT_TORPEDO_DIVE_DEPTH)
+    if (!option)
+      return
+
+    showOptionRow(option, !get_option_torpedo_dive_depth_auto()
+      && unit.isShipOrBoat()
+      && unit.getAvailableSecondaryWeapons().hasTorpedoes)
   }
 
   function updateVerticalTargetingOption()

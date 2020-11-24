@@ -226,7 +226,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   for(local i = 0; i < names.len(); i++)
   {
     local unlock = ::g_unlocks.getUnlockById(unlockConfig.names[i])
-    if(!::is_unlock_visible(unlock) || unlockConfig.type == "char_resources")
+    if(unlock && !::is_unlock_visible(unlock))
       continue
 
     local isUnlocked = unlockConfig.curVal & (1 << i)
@@ -241,7 +241,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
       if (decorator)
         hiddenContent += ::g_tooltip_type.DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
     }
-    else
+    else if(unlock)
       hiddenContent += ::g_tooltip_type.UNLOCK.getMarkup(unlock.id, {showProgress=true})
 
     hiddenContent += "}"
