@@ -18,7 +18,7 @@ class ::gui_bhv.CreditsScroll
       curOffs = -(0.9*parentSize[1]).tointeger()
       if (obj?.inited == "yes")
       {
-        ::on_credits_finish()
+        obj.getScene().performDelayed({}, ::on_credits_finish)
         return
       }
       else
