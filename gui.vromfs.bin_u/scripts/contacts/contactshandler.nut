@@ -4,6 +4,7 @@ local platformModule = require("scripts/clientState/platform.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { topMenuBorders } = require("scripts/mainmenu/topMenuStates.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
+local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -1156,7 +1157,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onInviteFriend()
   {
-    ::show_viral_acquisition_wnd()
+    showViralAcquisitionWnd()
   }
 
   function onEventContactsUpdated(params)

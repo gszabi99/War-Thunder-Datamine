@@ -25,6 +25,7 @@ local { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 local template = {
   id = ""
@@ -175,7 +176,7 @@ local list = {
   }
   VIRAL_AQUISITION = {
     text = @() "#mainmenu/btnGetLink"
-    onClickFunc = @(...) ::show_viral_acquisition_wnd()
+    onClickFunc = @(...) showViralAcquisitionWnd()
     isHidden = @(...) !::has_feature("Invites")
   }
   CHANGE_LOG = {

@@ -10,6 +10,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
+local { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -157,6 +158,10 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       local medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
       unlockFilters.Medal = ::u.filter(::shopCountriesList, @(c) ::isInArray(c, medalCountries))
     }
+
+    local bntGetLinkObj = scene.findObject("btn_getLink")
+    if (::check_obj(bntGetLinkObj))
+      bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
     initLeaderboardModes()
 
@@ -1485,7 +1490,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
   function openViralAcquisitionWnd()
   {
-    ::show_viral_acquisition_wnd()
+    showViralAcquisitionWnd()
   }
 
   function onIconChoosen(option)

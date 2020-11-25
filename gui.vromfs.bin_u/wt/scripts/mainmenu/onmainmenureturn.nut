@@ -7,6 +7,7 @@ local { checkGaijinPassReminder } = require("scripts/mainmenu/reminderGaijinPass
 local { systemOptionsMaintain } = require("scripts/options/systemOptions.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 local { checkNewClientVersionEvent } = require("scripts/matching/serviceNotifications/newClientVersionNotify.nut")
@@ -81,7 +82,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
       if ((lastLoginDay - lastShowTime) > reminderPeriod)
       {
         ::save_local_account_settings("viralAcquisition/lastShowTime", today)
-        ::show_viral_acquisition_wnd()
+        showViralAcquisitionWnd()
       }
     }
   }
