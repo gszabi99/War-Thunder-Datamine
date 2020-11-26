@@ -439,7 +439,23 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitWeaponChanged(params)
   {
-    updateAllItems()
+    if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWindow(air)) {
+      updateAllItems()
+      return
+    }
+
+    lastWeapon = getLastWeapon(airName)
+    local secondaryWeapons = getSecondaryWeaponsList(air)
+    local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
+    if (selWeapon == null)
+      return
+
+    foreach(idx, item in items)
+      if (item.type == weaponsItem.weapon) {
+        items[idx] = selWeapon
+        updateItem(idx)
+        return
+      }
   }
 
   function onEventUnitBulletsChanged(params)
