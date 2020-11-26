@@ -1,15 +1,15 @@
 menu_button {
-  shortcutActivate:"J:A | Enter | NumEnter | Space";
+  shortcutActivate:"J:A | J:RT | Enter | NumEnter | Space";
 }
 [swap_ab=yes] menu_button {
-  shortcutActivate:"J:B | Enter | NumEnter | Space";
+  shortcutActivate:"J:B | J:RT | Enter | NumEnter | Space";
 }
 
 Button_text, emptyButton, CheckBox, promoButton, gameModeChangeButton, button, fillBlock,
 Button_close, hoverBgButton, SwitchBox, promoButton[type=battleTask] > expandable, imgButton,
 td[on_click], itemDiv[on_click], fullSizeCollapseBtn[on_click], toggleButton, clanBattleSeasonFrame,
 battlePassStage[on_click], contactItem[on_click] {
-  shortcutActivate:"J:A | Space";
+  shortcutActivate:"J:A | J:RT | Space";
 }
 
 [swap_ab=yes] Button_text, [swap_ab=yes] emptyButton, [swap_ab=yes] CheckBox,
@@ -19,15 +19,15 @@ battlePassStage[on_click], contactItem[on_click] {
 [swap_ab] td[on_click], [swap_ab] itemDiv[on_click], [swap_ab] fullSizeCollapseBtn[on_click],
 [swap_ab] toggleButton, [swap_ab] clanBattleSeasonFrame, [swap_ab] battlePassStage[on_click],
 [swap_ab] contactItem[on_click] {
-  shortcutActivate:"J:B | Space";
+  shortcutActivate:"J:B | J:RT | Space";
 }
 
 MultiSelect {
-  shortcutSelect: "J:A | Space";
+  shortcutSelect: "J:A | J:RT | Space";
 }
 
 [swap_ab=yes] MultiSelect {
-  shortcutSelect: "J:B | Space";
+  shortcutSelect: "J:B | J:RT | Space";
 }
 
 MultiSelect[optionsShortcuts] {
@@ -36,24 +36,24 @@ MultiSelect[optionsShortcuts] {
 }
 
 options_list > * > MultiSelect {
-  shortcutSelect: "J:A | Space";
+  shortcutSelect: "J:A | J:RT | Space";
 }
 
 [swap_ab=yes] options_list > * > MultiSelect {
-  shortcutSelect: "J:B | Space";
+  shortcutSelect: "J:B | J:RT | Space";
 }
 
 dropright {
   shortcutActivate:"Right | @shortcutRightGamepad";
 }
 dropright > fadePlane > area > button#accept {
-  accesskey:'@shortcutLeftGamepad | Left | Right | @shortcutRightGamepad | J:A | Space | Enter | NumEnter';
+  accesskey:'@shortcutLeftGamepad | Left | Right | @shortcutRightGamepad | J:A | J:RT | Space | Enter | NumEnter';
 }
 dropright > fadePlane > area > button#cancel {
   accesskey:'Esc | J:B | Backspace';
 }
 [swap_ab=yes] dropright > fadePlane > area > button#accept {
-  accesskey:'@shortcutLeftGamepad | Left | Right | @shortcutRightGamepad | J:B | Space | Enter | NumEnter';
+  accesskey:'@shortcutLeftGamepad | Left | Right | @shortcutRightGamepad | J:B | J:RT | Space | Enter | NumEnter';
 }
 [swap_ab=yes] dropright > fadePlane > area > button#cancel {
   accesskey:'Esc | J:A  | Backspace';
@@ -77,7 +77,7 @@ slider, sliderProgress, invisSlider {
   shortcutUp:"";
   shortcutDown:"";
   shortcutCancel:"";
-  shortcutSetValueByCursor:"Space | J:A";
+  shortcutSetValueByCursor:"Space | J:A | J:RT";
 }
 
 invisSlider[horizontalByShifts=yes], weaponBody[horizontalByShifts=yes] {
@@ -86,7 +86,7 @@ invisSlider[horizontalByShifts=yes], weaponBody[horizontalByShifts=yes] {
 }
 
 [swap_ab=yes] slider, [swap_ab=yes] sliderProgress, [swap_ab=yes] invisSlider {
-  shortcutSetValueByCursor:"Space | J:B";
+  shortcutSetValueByCursor:"Space | J:B | J:RT";
 }
 
 slider[canWrap=yes], invisSlider[canWrap=yes] {
@@ -118,11 +118,11 @@ spinnerListBox {
 PosOptionsNavigator > * > * > SwitchBox {
   shortcutUnset:"";
   shortcutSet:"";
-  shortcutActivate:"J:A | Space";
+  shortcutActivate:"J:A | J:RT | Space";
 }
 
 [swap_ab=yes] PosOptionsNavigator > * > * > SwitchBox {
-  shortcutActivate:"J:B | Space";
+  shortcutActivate:"J:B | J:RT | Space";
 }
 
 ScrollBar {
@@ -157,11 +157,11 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
   shortcutDown: '@shortcutDownGamepad | Down';
   shortcutLeft: '@shortcutLeftGamepad | Left';
   shortcutRight: '@shortcutRightGamepad | Right';
-  shortcutSelect: "Space | J:A";   shortcutActivate:"";
+  shortcutSelect: "Space | J:A | J:RT";   shortcutActivate:"";
 }
 
 [swap_ab=yes] [navigatorShortcuts] {
-  shortcutSelect: "Space | J:B";
+  shortcutSelect: "Space | J:B | J:RT";
 }
 
 [navigatorShortcuts=noSelect], [navigatorShortcuts=cancelNoSelect] {
@@ -169,26 +169,26 @@ textareaNoTab[scrollbarShortcutsOnSelect] {
 }
 
 [navigatorShortcuts=SpaceA] {
-  shortcutActivate:"Space | J:A";
+  shortcutActivate:"Space | J:A | J:RT";
 }
 
 [swap_ab=yes] [navigatorShortcuts=SpaceA] {
-  shortcutActivate:"Space | J:B";
+  shortcutActivate:"Space | J:B | J:RT";
 }
 
 [navigatorShortcuts=EnterA] {
-  shortcutActivate:"Enter | J:A";
+  shortcutActivate:"Enter | J:A | J:RT";
 }
 
 [swap_ab=yes] [navigatorShortcuts=EnterA] {
-  shortcutActivate:"Enter | J:B";
+  shortcutActivate:"Enter | J:B | J:RT";
 }
 
 [navigatorShortcuts=active], [navigatorShortcuts=full], [navigatorShortcuts=onlyActivate] {
-  shortcutActivate:'J:A | Enter | NumEnter | Space';
+  shortcutActivate:'J:A | J:RT | Enter | NumEnter | Space';
 }
 [swap_ab=yes] [navigatorShortcuts=active], [swap_ab=yes] [navigatorShortcuts=full], [swap_ab=yes] [navigatorShortcuts=onlyActivate] {
-  shortcutActivate:'J:B | Enter | NumEnter | Space';
+  shortcutActivate:'J:B | J:RT | Enter | NumEnter | Space';
 }
 [navigatorShortcuts=onlyActivate],
 [navigatorShortcuts=onlySelect] {
@@ -242,11 +242,11 @@ RadioButtonList[activeAccesskeys=RSLeftRight] {
 }
 
 EditBox {
-  shortcutShowIME:"J:A";
+  shortcutShowIME:"J:A | J:RT";
 }
 
 [swap_ab=yes] EditBox {
-  shortcutShowIME:"J:B";
+  shortcutShowIME:"J:B | J:RT";
 }
 
 EditBox[multiShortcuts=no] {
@@ -294,12 +294,12 @@ activateSelect[activateBy=Y] {
 }
 
 ComboBox {
-  shortcutOpen:"J:A | Space";
+  shortcutOpen:"J:A | J:RT | Space";
   shortcutClose:'Esc | J:B | Backspace';
 }
 
 [swap_ab=yes] ComboBox {
-  shortcutOpen:"J:B | Space";
+  shortcutOpen:"J:B | J:RT | Space";
   shortcutClose:'Esc | J:A | Backspace';
 }
 
@@ -308,11 +308,11 @@ ComboBox {
 }
 
 spectatorFrame {
-  shortcutActivate:"J:A | Enter";
+  shortcutActivate:"J:A | J:RT | Enter";
 }
 
 [swap_ab=yes] spectatorFrame {
-  shortcutActivate:"J:B | Enter";
+  shortcutActivate:"J:B | J:RT | Enter";
 }
 
 rootUnderPopupMenu {

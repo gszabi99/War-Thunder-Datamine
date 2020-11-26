@@ -272,7 +272,8 @@ class gui_bhv.posNavigator
     if (!is_up && (bits&::BITS_MOUSE_DBL_CLICK) && (bits&::BITS_MOUSE_BTN_L)) {
       if (getValue(obj) == -1)
         selectItemByClick(obj, mx, my)
-      activateAction(obj)
+      if (findClickedObj(obj, mx, my))
+        activateAction(obj)
       return ::RETCODE_HALT;
     }
 

@@ -160,9 +160,9 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
   {
     local unit = null
     foreach (newUnit in ::all_units)
-      if (unitCountry == ::getUnitCountry(newUnit))
-        if (unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
-          unit = (::getTblValue("rank", newUnit, 0) > ::getTblValue("rank", unit, 0))? newUnit : unit
+      if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+          unit = newUnit.rank > (unit?.rank ?? 0) ? newUnit : unit
     return unit
   }
 
@@ -226,23 +226,23 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
     local visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
     local unitsObj = []
     foreach (newUnit in ::all_units)
-      if (unitCountry == ::getUnitCountry(newUnit))
-        if (unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
-        {
-          local newUnitName = ""
-          if (::isGroupPart(newUnit))
-            newUnitName = newUnit.group
-          else
-            newUnitName = newUnit.name
+      if (unitCountry == ::getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
+        && unitType == ::get_es_unit_type(newUnit) && ::canResearchUnit(newUnit))
+      {
+        local newUnitName = ""
+        if (::isGroupPart(newUnit))
+          newUnitName = newUnit.group
+        else
+          newUnitName = newUnit.name
 
-          local unitObj = scene.findObject(newUnitName)
-          if (unitObj)
-          {
-            local unitBox = ::GuiBox().setFromDaguiObj(unitObj)
-            if (unitBox.isInside(visibleBox))
-              unitsObj.append(unitObj)
-          }
+        local unitObj = scene.findObject(newUnitName)
+        if (unitObj)
+        {
+          local unitBox = ::GuiBox().setFromDaguiObj(unitObj)
+          if (unitBox.isInside(visibleBox))
+            unitsObj.append(unitObj)
         }
+      }
     unitsObj.append("btn_spend_exp")
 
     local steps = [

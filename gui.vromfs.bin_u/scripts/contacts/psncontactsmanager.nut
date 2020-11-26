@@ -1,3 +1,7 @@
+local stdLog = require("std/log.nut")()
+local log = stdLog.with_prefix("[PSN: Contacts] ")
+local logerr = stdLog.logerr
+
 local psn = require("sonyLib/webApi.nut")
 local { isPlatformSony, isPS4PlayerName } = require("scripts/clientState/platform.nut")
 local { requestUnknownPSNIds } = require("scripts/contacts/externalContactsService.nut")
@@ -27,7 +31,7 @@ local tryUpdateContacts = function(contactsBlk)
 
   if (!haveAnyUpdate)
   {
-    ::dagor.debug("PSN: CONTACTS: Update: No changes. No need to server call")
+    log("Update: No changes. No need to server call")
     return
   }
 
@@ -170,9 +174,9 @@ local function onReceviedUsersList(groupName, responseInfoName, response, err) {
         pendingContactsChanges[groupName].users.append(convertPsnContact(playerData))
   }
   else {
-    ::dagor.debug($"PSN: Contacts: Update {groupName}: received error: {::toString(err)}")
+    log($"Update {groupName}: received error: {::toString(err)}")
     if (::u.isString(err.code) || err.code < 500 || err.code >= 600)
-      ::script_net_assert_once("psn_contacts_error", $"PSN: Contacts: Update {groupName}: received error: {::toString(err)}")
+      logerr($"[PSN: Contacts] Update {groupName}: received error: {::toString(err)}")
   }
 
   pendingContactsChanges[groupName].isFinished = err || size >= total

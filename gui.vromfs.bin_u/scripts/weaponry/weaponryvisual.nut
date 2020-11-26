@@ -441,7 +441,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     itemWidth                 = params?.itemWidth ?? 1
     posX                      = params?.posX ?? 0
     posY                      = params?.posY ?? 0
-    hideStatus                = item?.hideStatus ?? false
+    hideStatus                = item?.hideStatus ?? params?.hideStatus ?? false
     useGenericTooltip         = params?.useGenericTooltip ?? false
     needSliderButtons         = params?.needSliderButtons ?? false
     wideItemWithSlider        = params?.wideItemWithSlider ?? false
@@ -878,7 +878,6 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
   local maxItemsInColumn = params?.maxItemsInColumn ?? 5
   local createItemFunc = params?.createItemFunc ?? createModItem
-  local needDropDown = params?.needDropDown
   local bundleItem = {
       name = id
       type = weaponsItem.bundle
@@ -892,18 +891,16 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
 
   if (itemsList.len()==1)
   {
-    itemsList[0].hideStatus <- true
+    itemsList[0].hideStatus <- true //!!FIX ME: Remove modify data
     createItemFunc.call(handler, id, unit, itemsList[0], itemsType, holderObj, handler, params)
     return itemsList[0]
   }
 
   local bundleObj = createItemFunc.call(handler, id, unit, bundleItem, bundleItem.type, holderObj, handler, params)
-  if(needDropDown)
-    bundleObj["class"] = "dropDown"
+  bundleObj["class"] = "dropDown"
 
   local guiScene = holderObj.getScene()
-  local hoverObj = guiScene.createElementByObject(bundleObj, "gui/weaponry/weaponBundleTop.blk",
-    needDropDown ? "hoverSize" : "weaponBundle", handler)
+  local hoverObj = guiScene.createElementByObject(bundleObj, "gui/weaponry/weaponBundleTop.blk", "hoverSize", handler)
 
   local cols = ((itemsList.len()-1)/maxItemsInColumn + 1).tointeger()
   local rows = ((itemsList.len()-1)/cols + 1).tointeger()

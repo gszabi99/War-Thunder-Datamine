@@ -2,6 +2,7 @@ local { is_seen_nuclear_event,
         is_seen_main_nuclear_event,
         need_show_after_streak } = ::require_native("hangarEventCommand")
 local airRaidWndScene = require("scripts/wndLib/airRaidWnd.nut")
+local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 local newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -38,6 +39,21 @@ local function checkNuclearEvent(params = {}) {
 
   airRaidWndScene({hasVisibleNuclearTimer = params?.showTimer ?? !isNewClient})
 }
+
+local function bigQuerryForNuclearEvent() {
+  local needSendStatistic = ::load_local_account_settings("sendNuclearStatistic", true)
+  if (needSendStatistic && ::g_login.isProfileReceived()) {
+    ::add_big_query_record("nuclear_event", ::save_to_json({
+      user = ::my_user_id_str,
+      seenInOldClient = is_seen_nuclear_event(),
+      seenInNewClient = is_seen_main_nuclear_event()}))
+    ::save_local_account_settings("sendNuclearStatistic", false)
+  }
+}
+
+addListenersWithoutEnv({
+  LoginComplete = @(p) bigQuerryForNuclearEvent()
+})
 
 ::web_rpc.register_handler("new_client_version", onNewClientVersion)
 

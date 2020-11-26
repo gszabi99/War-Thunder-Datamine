@@ -999,15 +999,14 @@ DummyButton[btnName=RB], emptyButton[btnName=RB], ComboBox[btnName=RB]
 Button_text[btnName=LB], CheckBox[btnName=LB], playbackCheckbox[btnName=LB],
 DummyButton[btnName=LB], emptyButton[btnName=LB]
                                        { accessKey:'J:LB'; }
-Button_text[btnName=RT], DummyButton[btnName=RT]
-                                       { accessKey:'J:RT'; }
-Button_text[btnName=LT], CheckBox[btnName=LT], ComboBox[btnName=LT]
+Button_text[btnName=LT], CheckBox[btnName=LT], ComboBox[btnName=LT],
+DummyButton[btnName=LT]
                                        { accessKey:'J:LT'; }
 Button_text[btnName=RLB]               { accessKey:'J:RB | J:LB'; }
 Button_text[btnName=DpadUp]            { accessKey:'J:Dpad.Up'; }
 Button_text[btnName=DpadDown]          { accessKey:'J:Dpad.Down'; }
 
-Button_text[btnName=R3], ComboBox[btnName=R3]
+Button_text[btnName=R3], ComboBox[btnName=R3], DummyButton[btnName=R3]
                                        { accessKey:'J:R.Thumb'; }
 Button_text[btnName=L3], ComboBox[btnName=L3]
                                        { accessKey:'J:L.Thumb'; }
@@ -1016,33 +1015,28 @@ Button_text[btnName=RSLeft], DummyButton[btnName=RSLeft]
                                        { accessKey:"J:R.Thumb.Left"; }
 Button_text[btnName=RSRight], DummyButton[btnName=RSRight]
                                        { accessKey:"J:R.Thumb.Right"; }
-DummyButton[btnName=RSUp]              { accessKey:"J:R.Thumb.Up"; }
-DummyButton[btnName=RSDown]            { accessKey:"J:R.Thumb.Down"; }
 
 DummyButton[btnName=LSLeft]            { accessKey:"J:L.Thumb.Left"; }
 DummyButton[btnName=LSRight]           { accessKey:"J:L.Thumb.Right"; }
 DummyButton[btnName=LSUp]              { accessKey:"J:L.Thumb.Up"; }
 DummyButton[btnName=LSDown]            { accessKey:"J:L.Thumb.Down"; }
 
-Button_text[btnName=DpadLeft]          { accessKey:'J:Dpad.Left | Left'; }
-Button_text[btnName=DpadRight]         { accessKey:'J:Dpad.Right | Right'; }
-
-Button_text[btnName=AB]                { accessKey:'J:A | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
+Button_text[btnName=AB]                { accessKey:'J:A | J:RT | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
 
 Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A]
-                                        { accessKey:'J:A | Space | Enter | NumEnter'; }
+                                        { accessKey:'J:A | J:RT | Space | Enter | NumEnter'; }
 [swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A], [swap_ab=yes] mapStateBox[btnName=A]
-                                        { accessKey:'J:B | Space | Enter | NumEnter'; }
+                                        { accessKey:'J:B | J:RT | Space | Enter | NumEnter'; }
 
-Button_text[btnName=SpaceA]            { accessKey:'J:A | Space'; }
-[swap_ab=yes] Button_text[btnName=SpaceA] { accessKey:'J:B | Space'; }
+Button_text[btnName=SpaceA]            { accessKey:'J:A | J:RT | Space'; }
+[swap_ab=yes] Button_text[btnName=SpaceA] { accessKey:'J:B | J:RT | Space'; }
 
 Button_text, button, emptyButton, baseToggleButton, hoverButton, paymentItem {
   focusBtnName:A;
 }
 
-[focusBtnName=A]            { shortcutActivate:'J:A | Space'; }
-[swap_ab=yes] [focusBtnName=A] { shortcutActivate:'J:B | Space'; }
+[focusBtnName=A]               { shortcutActivate:'J:A | J:RT | Space'; }
+[swap_ab=yes] [focusBtnName=A] { shortcutActivate:'J:B | J:RT | Space'; }
 
 Button_text[btnName=B],
 Button_close[btnName=B],
@@ -1061,11 +1055,14 @@ DummyButton[btnName=B] {
 Button_text[btnName=BNotEsc], DummyButton[btnName=BNotEsc] { accessKey:'J:B'; }
 [swap_ab=yes] Button_text[btnName=BNotEsc], [swap_ab=yes] DummyButton[btnName=BNotEsc] { accessKey:'J:A'; }
 
-Button_text[btnName=A][menuShortcuts]  { accessKey:'J:A | J:Start | Space | Enter | NumEnter'; }
-[swap_ab=yes] Button_text[btnName=A][menuShortcuts] { accessKey:'J:B | J:Start | Space | Enter | NumEnter'; }
+Button_text[btnName=A][menuShortcuts]  { accessKey:'J:A | J:RT | J:Start | Space | Enter | NumEnter'; }
+[swap_ab=yes] Button_text[btnName=A][menuShortcuts] { accessKey:'J:B | J:RT | J:Start | Space | Enter | NumEnter'; }
 
 Button_text[btnName=B][menuShortcuts]  { accessKey:'J:B | J:Back | Esc | Backspace'; }
 [swap_ab=yes] Button_text[btnName=B][menuShortcuts] { accessKey:'J:A | J:Back | Esc | Backspace'; }
+
+dummy[btnName=EnterA] { accessKey:'J:A | J:RT | Enter | NumEnter'; }
+[swap_ab=yes] dummy[btnName=EnterA] { accessKey:'J:B | J:RT | Enter | NumEnter'; }
 
 
 

@@ -197,8 +197,9 @@ class ::ChatHandler
       transparency += dt / CHAT_WINDOW_APPEAR_TIME
     transparency = ::clamp(transparency, 0.0, 1.0)
 
-    local transValue = (isHudVisible && isMouseCursorVisible) ? 100 :
+    local transValue = (isHudVisible && isVisibleWithCursor(sceneData)) ? 100 :
       (100.0 * (3.0 - 2.0 * transparency) * transparency * transparency).tointeger()
+
     local obj = sceneData.scene.findObject("chat_log_tdiv")
     if (::checkObj(obj))
     {
@@ -438,7 +439,7 @@ class ::ChatHandler
   {
     if (getCurView(sceneData) != mpChatView.BATTLE)
       return
-    local limit = (isMouseCursorVisible || !sceneData.selfHideLog) ? 0 : maxLogSize
+    local limit = (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? 0 : maxLogSize
     local chat_log = sceneData.scene.findObject("chat_log")
     if (::checkObj(chat_log))
       chat_log.setValue(::HudBattleLog.getText(0, limit))
@@ -710,12 +711,19 @@ class ::ChatHandler
 
   function getCurView(sceneData)
   {
-    return (isMouseCursorVisible || !sceneData.selfHideLog) ? sceneData.curTab : mpChatView.CHAT
+    return (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? sceneData.curTab : mpChatView.CHAT
+  }
+
+  function isVisibleWithCursor(sceneData) {
+    if (!isMouseCursorVisible)
+      return false
+    local parentObj = sceneData.handler?.scene
+    return (parentObj?.isValid() ?? false) && parentObj.isVisible()
   }
 
   function updateTabs(sceneData)
   {
-    local visible = isMouseCursorVisible || !sceneData.selfHideLog
+    local visible = !sceneData.selfHideLog || isVisibleWithCursor(sceneData)
 
     local obj = sceneData.scene.findObject("chat_tabs")
     if (::checkObj(obj))

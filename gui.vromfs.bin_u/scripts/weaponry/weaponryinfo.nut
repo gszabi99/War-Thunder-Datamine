@@ -654,7 +654,7 @@ local function getSecondaryWeaponsList(unit)
 
     weaponsList.append(weapon)
     if(lastWeapon=="" && ::shop_is_weapon_purchased(unitName, weapon.name))
-      setLastWeapon(unitName, weapon.name)
+      setLastWeapon(unitName, weapon.name)  //!!FIX ME: remove side effect from getter
   }
 
   return weaponsList

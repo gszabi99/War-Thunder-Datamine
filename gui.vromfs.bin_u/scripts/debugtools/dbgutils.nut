@@ -579,3 +579,9 @@ local dbgFocusData = persist("dbgFocusData", @() { debugFocusTask = -1, prevSelO
   dlog(text)
   return text
 }
+
+if (dbgFocusData.debugFocusTask != -1) {
+  dbgFocusData.debugFocusTask = -1
+  dbgFocusData.prevSelObj = null
+  debug_focus()
+}

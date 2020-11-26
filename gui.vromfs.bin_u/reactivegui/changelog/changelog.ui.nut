@@ -68,7 +68,7 @@ local function patchnote(v) {
         font = fontsState.get("small")
         text = v?.title ?? v.tVersion
       },
-      stateFlags.value & S_HOVER ? { hotkeys = [["{0}".subst(JB.A), @() choosePatchnote(v)]] } : null
+      stateFlags.value & S_HOVER ? { hotkeys = [[$"{JB.A} | J:RT", @() choosePatchnote(v)]] } : null
     ]
   }
 }

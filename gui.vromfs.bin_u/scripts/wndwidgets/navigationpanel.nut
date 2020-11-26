@@ -20,7 +20,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
   collapseShortcut  = null
   needShowCollapseButton = null
   expandShortcut    = null  // default: collapseShortcut
-  focusShortcut     = "LB"
+  focusShortcut     = "LT"
 
   // ==== Privates ====
 

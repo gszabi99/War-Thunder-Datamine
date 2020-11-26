@@ -11,6 +11,10 @@ local function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
 
 ::g_shortcut_type <- {
   types = []
+
+  function addType(typesTable) {
+    enums.addTypes(this, typesTable, null, "typeName")
+  }
 }
 
 g_shortcut_type.getShortcutTypeByShortcutId <- function getShortcutTypeByShortcutId(shortcutId)
@@ -560,25 +564,6 @@ enums.addTypesByGlobalName("g_shortcut_type", {
       local result = []
       axes.map(@(axis) result.extend(::g_shortcut_type.AXIS.getBaseAxesShortcuts(axis)))
       return result
-    }
-  }
-
-  PSEUDO_AXIS = {
-    isMe = function (shortcutId)
-    {
-      return ::g_pseudo_axes_list.isPseudoAxis(shortcutId)
-    }
-
-    isAssigned = function (shortcutId, preset = null)
-    {
-      local pseudoAxis = ::g_pseudo_axes_list.getPseudoAxisById(shortcutId)
-      return pseudoAxis.isAssigned()
-    }
-
-    expand = function (shortcutId, showKeyBoardShortcutsForMouseAim)
-    {
-      local pseudoAxis = ::g_pseudo_axes_list.getPseudoAxisById(shortcutId)
-      return pseudoAxis.translate()
     }
   }
 

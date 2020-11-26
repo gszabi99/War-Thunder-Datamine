@@ -2,11 +2,21 @@ local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { getSafearea } = require("scripts/options/safeAreaMenu.nut")
 
 ::gui_start_selecting_crew <- function gui_start_selecting_crew(config)
 {
   if (::CrewTakeUnitProcess.safeInterrupt())
     ::handlersManager.destroyPrevHandlerAndLoadNew(::gui_handlers.SelectCrew, config)
+}
+
+local function getObjPosInSafeArea(obj) {
+  local pos = obj.getPosRC()
+  local size = obj.getSize()
+  local safeArea = getSafearea()
+  local screen = [::screen_width(), ::screen_height()]
+  local border = safeArea.map(@(value, idx) (screen[idx] * (1.0 - value) / 2).tointeger())
+  return pos.map(@(val, idx) ::clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
 class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
@@ -47,7 +57,7 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.setUpdatesEnabled(false, false)
 
     local tdObj = unitObj.getParent()
-    local tdPos = tdObj.getPosRC()
+    local tdPos = getObjPosInSafeArea(tdObj)
 
     ::gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
 

@@ -48,7 +48,7 @@ gameModeBlock {
   <</isCurrentGameMode>>
 
   behavior:t='button';
-  shortcutActivate:t='J:A | Space';
+  focusBtnName:t='A'
   background-color:t='@white';
   background-repeat:t='expand';
   background-image:t='#ui/gameuiskin#item';

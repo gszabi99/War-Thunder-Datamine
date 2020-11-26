@@ -286,7 +286,7 @@ root {
           text:t = '#mainmenu/btnReset'
           display:t='hide'
           on_click:t = 'onResetPreferencess'
-          btnName:t='RT'
+          btnName:t='R3'
           ButtonImg {}
         }
       }

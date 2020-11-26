@@ -99,13 +99,14 @@
 
   function onPopupButtonClick(obj)
   {
-    foreach(button in buttons)
-      if (button.id == obj?.id)
-      {
-        performPopupAction(button?.func)
-        break
-      }
-    requestDestroy()
+    local id = obj?.id
+    local button = buttons.findvalue(@(b) b.id == id)
+    obj.getScene().performDelayed(this, function() {
+      if (!isValidView())
+        return
+      performPopupAction(button?.func)
+      requestDestroy()
+    })
   }
 
   function onTimerUpdate(obj, dt)

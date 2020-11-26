@@ -629,7 +629,6 @@ local isFullScriptsLoaded = false
     "controls/input/doubleAxis.nut"
     "controls/input/image.nut"
     "controls/input/keyboardAxis.nut"
-    "controls/controlsPseudoAxes.nut"
     "controls/controlsWizard.nut"
     "controls/controlsType.nut"
     "controls/AxisControls.nut"
@@ -903,6 +902,7 @@ local isFullScriptsLoaded = false
   require("scripts/unit/unitContextMenu.nut")
   require("sqDagui/guiBhv/bhvUpdateByWatched.nut")
   require("scripts/social/activityFeed/activityFeedModule.nut")
+  require("scripts/controls/controlsPseudoAxes.nut")
 
   if (platform.isPlatformXboxOne)
     require("scripts/global/xboxCallbacks.nut")

@@ -197,7 +197,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local index = obj.index.tointeger()
-    trySelectItem(index)
+    sendAvailableAnswerDelayed(index)
   }
 
   function onWheelmenuAxisInputTimer(obj=null, dt=null)
@@ -242,7 +242,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local bObj = scene.findObject("wheelmenuItem" + joystickSelection)
     local index = bObj && bObj.index.tointeger()
-    trySelectItem(index)
+    sendAvailableAnswerDelayed(index)
   }
 
   function onWheelmenuAccesskeyCancel(obj)
@@ -259,7 +259,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     isKbdShortcutDown = isDown
     highlightItemByIndex(isDown ? index : -1)
     if (!isDown)
-      trySelectItem(index)
+      sendAvailableAnswerDelayed(index)
     return true // processed
   }
 
@@ -268,10 +268,13 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     return (menu?[index].name ?? "") != "" && (menu?[index].wheelmenuEnabled ?? true)
   }
 
-  function trySelectItem(index)
+  function sendAvailableAnswerDelayed(index)
   {
-    if (isItemAvailable(index))
-      sendAnswerAndClose(index)
+    if (!isItemAvailable(index))
+      guiScene.perforDelayed(this, function() {
+        if (isValid())
+          sendAnswerAndClose(index)
+      })
   }
 
   function sendAnswerAndClose(index)

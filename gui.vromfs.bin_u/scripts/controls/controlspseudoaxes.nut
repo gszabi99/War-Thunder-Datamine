@@ -1,15 +1,15 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
-::g_pseudo_axes_list <- {
+
+local pseudoAxesList = {
+  template = {
+    id = ""
+    translate = function () { return [] }
+    isAssigned = function () { return false }
+  }
   types = []
 }
 
-::g_pseudo_axes_list.template <- {
-  id = ""
-  translate = function () { return [] }
-  isAssigned = function () { return false }
-}
-
-enums.addTypesByGlobalName("g_pseudo_axes_list", {
+enums.addTypes(pseudoAxesList, {
   TOGGLE_VIEW = {
     id = "pseudo_toggle_view"
     translate = function ()
@@ -58,18 +58,31 @@ enums.addTypesByGlobalName("g_pseudo_axes_list", {
   }
 })
 
-g_pseudo_axes_list.isPseudoAxis <- function isPseudoAxis(shortcutId)
-{
-  foreach (pseudoAxis in types)
+local function isPseudoAxis(shortcutId) {
+  foreach (pseudoAxis in pseudoAxesList.types)
     if (shortcutId == pseudoAxis.id)
       return true
   return false
 }
 
-g_pseudo_axes_list.getPseudoAxisById <- function getPseudoAxisById(shortcutId)
-{
-  return ::u.search(types, (@(shortcutId) function (item) {
-      return item.id == shortcutId
-    })(shortcutId)
-  )
+local function getPseudoAxisById(shortcutId) {
+  return ::u.search(pseudoAxesList.types, (@(item) item.id == shortcutId))
 }
+
+::g_shortcut_type.addType({
+  PSEUDO_AXIS = {
+    isMe = @(shortcutId) isPseudoAxis(shortcutId)
+
+    isAssigned = function (shortcutId, preset = null)
+    {
+      local pseudoAxis = getPseudoAxisById(shortcutId)
+      return pseudoAxis.isAssigned()
+    }
+
+    expand = function (shortcutId, showKeyBoardShortcutsForMouseAim)
+    {
+      local pseudoAxis = getPseudoAxisById(shortcutId)
+      return pseudoAxis.translate()
+    }
+  }
+})

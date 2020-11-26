@@ -24,7 +24,7 @@ popup_menu {
         id:t='<<id>>';
         behavior:t='textarea';
         value:t='<<value>>';
-        shortcutActivate:t='J:A | Space';
+        focusBtnName:t='A'
         text:t='<<text>>';
         cluster_option:t='yes';
 
@@ -38,6 +38,6 @@ popup_menu {
 dummy {
   on_click:t = 'goBack'
   behavior:t='accesskey'
-  accessKey:t = 'Esc | J:B'
+  btnName:t='B'
 }
 

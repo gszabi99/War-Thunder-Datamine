@@ -602,7 +602,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       beforeSlotbarSelect = beforeSlotbarSelect
       afterSlotbarSelect = onChangeUnit
       onSlotDblClick = ::Callback(@(crew) onApply(), this)
-      onSlotActivate = ::Callback(@(crew) onApply(), this)
       beforeFullUpdate = beforeRefreshSlotbar
       afterFullUpdate = afterRefreshSlotbar
       onSlotBattleBtn = onApply
