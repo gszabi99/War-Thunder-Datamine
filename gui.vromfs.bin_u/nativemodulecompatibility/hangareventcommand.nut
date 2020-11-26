@@ -6,4 +6,5 @@ return {
   set_nuclear_explosion_sound_active = @() null
   point_camera_to_event = @() null
   play_background_nuclear_explosion = @() null
+  need_show_after_streak = @() false
 }

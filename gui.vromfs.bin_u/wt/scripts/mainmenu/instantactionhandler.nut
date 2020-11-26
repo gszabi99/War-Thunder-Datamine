@@ -13,7 +13,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { needShowChangelog, openChangelog } = require("scripts/changelog/openChangelog.nut")
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkNewClientVersionEvent } = require("scripts/matching/serviceNotifications/newClientVersionNotify.nut")
+local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -295,7 +295,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onEventNewClientVersion(params) {
-    doWhenActive(@() checkNewClientVersionEvent(params))
+    doWhenActive(@() checkNuclearEvent(params))
   }
 
   function checkCountries()

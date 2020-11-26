@@ -1,4 +1,6 @@
-local { is_seen_nuclear_event, is_seen_main_nuclear_event } = ::require_native("hangarEventCommand")
+local { is_seen_nuclear_event,
+        is_seen_main_nuclear_event,
+        need_show_after_streak } = ::require_native("hangarEventCommand")
 local airRaidWndScene = require("scripts/wndLib/airRaidWnd.nut")
 
 local newClientVersionEvent = persist("newClientVersionEvent ", @() {
@@ -13,7 +15,13 @@ local function onNewClientVersion(params) {
   return { result = "ok" }
 }
 
-local function checkNewClientVersionEvent(params = {}) {
+local function checkNuclearEvent(params = {}) {
+  local needShowNuclearEventAfterStreak = need_show_after_streak()
+  if (needShowNuclearEventAfterStreak) {
+    airRaidWndScene({hasVisibleNuclearTimer = false})
+    return
+  }
+
   local isSeenMainNuclearEvent = is_seen_main_nuclear_event()
   if (isSeenMainNuclearEvent)
     return
@@ -34,5 +42,5 @@ local function checkNewClientVersionEvent(params = {}) {
 ::web_rpc.register_handler("new_client_version", onNewClientVersion)
 
 return {
-  checkNewClientVersionEvent
+  checkNuclearEvent
 }
