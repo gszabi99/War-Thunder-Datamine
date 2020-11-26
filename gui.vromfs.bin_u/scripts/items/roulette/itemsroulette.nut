@@ -328,7 +328,7 @@ ItemsRoulette.fillDropChances <- function fillDropChances(trophyBlock)
     if ("reward" in block)
     {
       // Simple item block, last iteration of looped call
-      local dropChance = 1.0
+      local dropChance = itemsArray[idx].reward?.dropChance.tofloat() ?? 1.0
       ::ItemsRoulette.debugData.beginChances.append({[::ItemsRoulette.getUniqueTableKey(itemsArray[idx].reward)] = dropChance})
       itemsArray[idx].dropChance = dropChance
       itemsArray[idx].multDiff = 1 - ::ItemsRoulette.getChanceMultiplier(false, dropChance)

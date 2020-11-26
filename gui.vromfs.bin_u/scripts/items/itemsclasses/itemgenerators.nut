@@ -159,6 +159,8 @@ local ItemGenerator = class {
           local b = ::DataBlock()
           b.item =  item.id
           b.rank = rank
+          if (tags?.showFreq)
+            b.dropChance = tags.showFreq.tointeger() / 100.0
           if (trophyWeightsBlk != null && trophyWeightsBlockCount > 0
             && rank <= trophyWeightsBlockCount)
           {

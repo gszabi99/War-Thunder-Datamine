@@ -270,8 +270,8 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function sendAvailableAnswerDelayed(index)
   {
-    if (!isItemAvailable(index))
-      guiScene.perforDelayed(this, function() {
+    if (isItemAvailable(index))
+      guiScene.performDelayed(this, function() {
         if (isValid())
           sendAnswerAndClose(index)
       })

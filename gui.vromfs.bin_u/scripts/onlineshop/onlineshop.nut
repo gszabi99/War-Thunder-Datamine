@@ -14,6 +14,8 @@ local payMethodsCfg = [
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
+local bonusPercentText = @(v) "+{0}".subst(::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(v - 1.0))
+
 class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -306,6 +308,119 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     return null
   }
 
+  function getDescription(product, productId) {
+    if (product == null)
+      return ""
+
+    local resArr = []
+    local paramTbl = {
+      bonusRpPercent           = bonusPercentText(premiumRpMult)
+      bonusWpPercent           = bonusPercentText(premiumWpMult)
+      bonusBattleTimeWpPercent = bonusPercentText(premiumBattleTimeWpMult)
+      bonusOtherModesWpPercent = bonusPercentText(premiumOtherModesWpMult)
+    }
+    if (product?.useGroupAmount && ("group" in product))
+      paramTbl.amount <- ent.getEntitlementAmount(product).tointeger()
+
+    local locId = "charServer/entitlement/{0}/desc".subst(ent.getEntitlementLocId(product))
+    resArr.append(::loc(locId, paramTbl))
+
+    foreach(giftName in product.entitlementGift)
+    {
+      local config = ent.getEntitlementConfig(giftName)
+      resArr.append(format(::loc("charServer/gift/entitlement"), ent.getEntitlementName(config)))
+    }
+    foreach(airName in product.aircraftGift)
+      resArr.append(format(::loc("charServer/gift/aircraft"), ::getUnitName(airName)))
+
+    if (product?.goldIncome && product?.chapter!="eagles")
+      resArr.append(format(::loc("charServer/gift"), "".concat(product.goldIncome, ::loc("gold/short/colored"))))
+
+    if ("afterGiftsDesc" in product)
+      resArr.append("\n{0}".subst(::loc(product.afterGiftsDesc)))
+
+    if (("ttl" in product) || ("httl" in product))
+    {
+      local renewText = ent.getEntitlementTimeText(product)
+      if (renewText!="")
+      {
+        local realname = ("alias" in product) ? product.alias : productId
+        local expire = entitlement_expires_in(realname == "PremiumAccount"
+          ? ::shop_get_premium_account_ent_name()
+          : realname)
+        if (expire>0)
+          resArr.append(::colorize("chapterUnlockedColor",
+            "".concat(::loc("subscription/activeTime"), ::loc("ui/colon"), time.getExpireText(expire), "\n")))
+        if (!useRowVisual)
+          resArr.append("".concat(::loc("subscription/renew"), ::loc("ui/colon"), renewText, "\n"))
+      }
+    }
+
+    local priceText = ent.getEntitlementPrice(product)
+    if (!useRowVisual && priceText!="")
+    {
+      local priceInfo = ""
+      if (("group" in product) && (product.group in groupCost))
+      {
+        local itemPrice = getPricePerItem(product)
+        local defItemPrice = groupCost[product.group]
+        if (itemPrice && defItemPrice)
+        {
+          local discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
+          if (discount != 0)
+            priceInfo = format(::loc("charServer/entitlement/discount"), discount)
+        }
+      } else
+        if (productId in bundles)
+        {
+          local itemPrice = getPrice(product)
+          local bundlePrice = 0
+          foreach(name in bundles[productId])
+            if (name in goods)
+              bundlePrice += getPrice(goods[name])
+          if (bundlePrice>0)
+          {
+            local discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
+            priceInfo = format(::loc("charServer/entitlement/discount"), discount)
+          }
+        }
+      resArr.append("".concat("<B>", ::loc("ugm/price"), ::loc("ui/colon"), priceText, priceInfo, "</B>"))
+    }
+
+    if (product?.onlinePurchase && !isBought(product) && ::steam_is_running())
+      resArr.append(::loc("charServer/web_purchase"))
+
+    if (product?.chapter == "warpoints")
+    {
+      local days = exchangedWarpointsExpireDays?[::g_language.getLanguageName()] ?? 0
+      if (days > 0)
+        resArr.append(::colorize("warningTextColor",
+          ::loc("charServer/chapter/warpoints/expireWarning", { days = days })))
+    }
+    return "\n".join(resArr)
+  }
+
+  function updateProductInfo(product, productId) {
+    scene.findObject("item_desc_text").setValue(getDescription(product, productId))
+
+    local image = ""
+    if (product != null)
+      image = ("image" in product)? "#ui/onlineShop/"+product.image : ""
+    else
+      image = (productId in chImages)? "#ui/onlineShop/"+chImages[productId] : ""
+    scene.findObject("item_desc_header_img")["background-image"] = image
+
+    priceText = getItemPriceText(productId)
+    showSceneBtn("btn_buy_online", product != null && !isBought(product))
+    scene.findObject("btn_buy_online").setValue(::loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
+
+    local discountText = ""
+    local discount = ::g_discount.getEntitlementDiscount(product.name)
+    if (product != null && discount > 0)
+      discountText = "-" + discount + "%"
+    scene.findObject("buy_online-discount").setValue(discountText)
+  }
+
   function onItemSelect()
   {
     local listObj = scene.findObject("items_list")
@@ -315,122 +430,8 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local obj = listObj.getChild(value)
     task = obj.id
-
-    local isGoods = task in goods
-    local desc = ""
-    local paramTbl = {
-      bonusRpPercent           = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(premiumRpMult - 1.0)
-      bonusWpPercent           = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(premiumWpMult - 1.0)
-      bonusBattleTimeWpPercent = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(premiumBattleTimeWpMult - 1.0)
-      bonusOtherModesWpPercent = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText(premiumOtherModesWpMult - 1.0)
-    }
-    if (isGoods && ("useGroupAmount" in goods[task]) && goods[task].useGroupAmount && ("group" in goods[task]))
-      paramTbl.amount <- ent.getEntitlementAmount(goods[task]).tointeger()
-
-    local locId = isGoods? ent.getEntitlementLocId(goods[task]) : task
-    locId = format(isGoods? "charServer/entitlement/%s/desc":"charServer/chapter/%s/desc", locId)
-    desc = ::loc(locId, paramTbl)
-
-    if (isGoods)  //show gifts
-    {
-      local item = goods[task]
-      foreach(giftName in item.entitlementGift)
-      {
-        local config = ent.getEntitlementConfig(giftName)
-        desc+= "\n" + format(::loc("charServer/gift/entitlement"), ent.getEntitlementName(config))
-      }
-      foreach(airName in item.aircraftGift)
-        desc+= "\n" + format(::loc("charServer/gift/aircraft"), ::getUnitName(airName))
-
-      if (("goldIncome" in item) && item.goldIncome && (!("chapter" in item) || item.chapter!="eagles"))
-        desc+= "\n" + format(::loc("charServer/gift"), item.goldIncome + ::loc("gold/short/colored"))
-
-      if ("afterGiftsDesc" in item)
-        desc+= "\n\n" + ::loc(item.afterGiftsDesc)
-    }
-
-    if (isGoods && (("ttl" in goods[task]) || ("httl" in goods[task])))
-    {
-      local renewText = ent.getEntitlementTimeText(goods[task])
-      if (renewText!="")
-      {
-        local realname = ("alias" in goods[task]) ? goods[task].alias : task
-        local expire = entitlement_expires_in(realname == "PremiumAccount"
-          ? ::shop_get_premium_account_ent_name()
-          : realname)
-        if (expire>0)
-          desc+= format("\n<color=@chapterUnlockedColor>%s</color>",
-                   ::loc("subscription/activeTime") + ::loc("ui/colon") + time.getExpireText(expire)) + "\n"
-        if (!useRowVisual)
-          desc += "\n"+::loc("subscription/renew") + ::loc("ui/colon") + renewText + "\n"
-      }
-    }
-
-    local priceText = getItemPriceText(task)
-    if (!useRowVisual && priceText!="")
-    {
-      desc += "\n<B>" + ::loc("ugm/price") + ::loc("ui/colon") + priceText
-      if (("group" in goods[task]) && (goods[task].group in groupCost))
-      {
-        local itemPrice = getPricePerItem(goods[task])
-        local defItemPrice = groupCost[goods[task].group]
-        if (itemPrice && defItemPrice)
-        {
-          local discount = ::floor(100.5 - 100.0 * itemPrice / defItemPrice)
-          if (discount != 0)
-            desc += format(::loc("charServer/entitlement/discount"), discount)
-        }
-      } else
-        if (task in bundles)
-        {
-          local itemPrice = getPrice(goods[task])
-          local bundlePrice = 0
-          foreach(name in bundles[task])
-            if (name in goods)
-              bundlePrice += getPrice(goods[name])
-          if (bundlePrice>0)
-          {
-            local discount = ::floor(100.5 - 100.0 * itemPrice / bundlePrice)
-            desc += format(::loc("charServer/entitlement/discount"), discount)
-          }
-        }
-      desc += "</B>"
-    }
-
-    if (isGoods && ("onlinePurchase" in goods[task]) && goods[task].onlinePurchase && !isBought(goods[task]))
-      desc += (useRowVisual? "\n" : "\n\n") + (::steam_is_running() ? "" : ::loc("charServer/web_purchase"))
-
-    if (isGoods && ::getTblValue("chapter", goods[task]) == "warpoints")
-    {
-      local days = ::getTblValue(::g_language.getLanguageName(), exchangedWarpointsExpireDays, 0)
-      if (days)
-      {
-        local expireWarning = ::loc("charServer/chapter/warpoints/expireWarning", { days = days })
-        desc += (useRowVisual? "\n" : "\n\n") + ::colorize("warningTextColor", expireWarning)
-      }
-    }
-
-    scene.findObject("item_desc_text").setValue(desc)
-
-    if (!useRowVisual)
-    {
-      local image = ""
-      if (isGoods)
-        image = ("image" in goods[task])? "#ui/onlineShop/"+goods[task].image : ""
-      else
-        image = (task in chImages)? "#ui/onlineShop/"+chImages[task] : ""
-      scene.findObject("item_desc_header_img")["background-image"] = image
-
-      priceText = getItemPriceText(task)
-      showSceneBtn("btn_buy_online", isGoods && !isBought(goods[task]))
-      scene.findObject("btn_buy_online").setValue(::loc("mainmenu/btnBuy") + ((priceText=="")? "" : format(" (%s)", priceText)))
-
-      local discountText = ""
-      local discount = ::g_discount.getEntitlementDiscount(goods[task].name)
-      if (isGoods && discount > 0)
-        discountText = "-" + discount + "%"
-      scene.findObject("buy_online-discount").setValue(discountText)
-    }
+    local product = goods?[task]
+    updateProductInfo(product, task)
   }
 
   function onUpdate(obj, dt)
@@ -680,7 +681,6 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
       discount = discount > 0 ? $"-{discount}%": null
     }
   }
-
 }
 
 class ::gui_handlers.OnlineShopRowHandler extends ::gui_handlers.OnlineShopHandler
@@ -689,4 +689,15 @@ class ::gui_handlers.OnlineShopRowHandler extends ::gui_handlers.OnlineShopHandl
   sceneBlkName = "gui/emptyFrame.blk"
   sceneNavBlkName = null
   useRowVisual = true
+
+  updateProductInfo = @(product, productId)
+    scene.findObject("item_desc_text").setValue(getDescription(product, productId))
+
+  function reinitScreen(params = {}) {
+    base.reinitScreen(params)
+    foreach(productId, product in goods) {
+      updateProductInfo(product, productId) //for rows visual the same description for all items
+      break
+    }
+  }
 }
