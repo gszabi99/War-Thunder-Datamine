@@ -795,6 +795,9 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     basePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename(presetName)
   }
 
+  getBasePresetInfo = @(groupName = "default")
+    ::g_controls_presets.parsePresetFileName(basePresetPaths?[groupName] ?? "")
+
   function getNumButtons()
   {
     local count = 0

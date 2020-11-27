@@ -1430,7 +1430,7 @@ local isWaitMeasureEvent = false
       if (!isPlatformSony && !isPlatformXboxOne)
         descr.values.insert(0, "") //custom preset
 
-      local p = ::g_controls_presets.getCurrentPreset()
+      local p = ::g_controls_manager.getCurPreset()?.getBasePresetInfo() ?? ::g_controls_presets.getCurrentPreset()
       for(local k = 0; k < descr.values.len(); k++)
       {
         local name = descr.values[k]
