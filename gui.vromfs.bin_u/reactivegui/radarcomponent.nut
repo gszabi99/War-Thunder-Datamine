@@ -155,9 +155,10 @@ local AamLaunchZoneDistMax = Watched(0.0)
 
 local IndicationForCollapsedRadar = Watched(false)
 
-local AzimuthRange = Computed(@() AzimuthMax.value - AzimuthMin.value)
-local AzimuthRangeInv = Computed(@() AzimuthRange.value != 0.0 ? 1.0 / AzimuthRange.value : 1.0)
-local ElevationRange = Computed(@() ElevationMax.value - ElevationMin.value)
+local AzimuthRange = Computed(@() ::max(0.0, AzimuthMax.value - AzimuthMin.value))
+local AzimuthRangeInv = Computed(@() AzimuthRange.value != 0 ? 1.0 / AzimuthRange.value : 1.0)
+local ElevationRange = Computed(@() ::max(0.0, ElevationMax.value - ElevationMin.value))
+local ElevationRangeInv = Computed(@() ElevationRange.value != 0 ? 1.0 / ElevationRange.value : 1.0)
 local getBlinkOpacity = @() round(radarState.currentTime * 3) % 2 == 0 ? 1.0 : 0.2
 
 radarState.__update({
@@ -1720,7 +1721,7 @@ local function C_ScopeSquareBackground(width, height) {
     ]
   }
 
-  local offsetW = Computed(@() 100 * (0.5 - (0.0 - ElevationMin.value) * (1.0 / ElevationRange.value)))
+  local offsetW = Computed(@() 100 * (0.5 - (0.0 - ElevationMin.value) * ElevationRangeInv.value))
   local function crosshair(){
     return {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -1738,7 +1739,7 @@ local function C_ScopeSquareBackground(width, height) {
 
   return function() {
     local azimuthRangeInv   = AzimuthRangeInv.value
-    local elevationRangeInv = 1.0 / ElevationRange.value
+    local elevationRangeInv = ElevationRangeInv.value
 
     local scanAzimuthMinRel = ScanAzimuthMin.value * azimuthRangeInv
     local scanAzimuthMaxRel = ScanAzimuthMax.value * azimuthRangeInv
@@ -1825,7 +1826,7 @@ local function C_ScopeSquareAzimuthComponent(width, height, azimuthWatched, elev
   return function() {
     local azimuthRange = AzimuthRange.value
     local halfAzimuthWidth   = 100.0 * (azimuthRange > 0 ? halfAzimuthWidthWatched.value / azimuthRange : 0)
-    local halfElevationWidth = 100.0 * (azimuthRange > 0 ? halfElevationWidthWatched.value / ElevationRange.value : 0)
+    local halfElevationWidth = 100.0 * (azimuthRange > 0 ? halfElevationWidthWatched.value * ElevationRangeInv.value : 0)
 
     local children = {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -1891,7 +1892,7 @@ local function createTargetOnRadarCScopeSquare(index, radius, radarWidth, radarH
     local azimuthGateLeftRel = azimuthRel - 0.5 * azimuthGateWidthRel
     local azimuthGateRightRel = azimuthRel + 0.5 * azimuthGateWidthRel
 
-    local elevationGateWidthRel = angularGateWidthMult * 2.0 * max(ElevationHalfWidth.value, angularGateBeamWidthMin) / ElevationRange.value
+    local elevationGateWidthRel = angularGateWidthMult * 2.0 * max(ElevationHalfWidth.value, angularGateBeamWidthMin) * ElevationRangeInv.value
     local elevationGateLowerRel = elevationRel - 0.5 * elevationGateWidthRel
     local elevationGateUpperRel = elevationRel + 0.5 * elevationGateWidthRel
 
@@ -1982,7 +1983,7 @@ local function createTargetOnRadarCScopeSquare(index, radius, radarWidth, radarH
 
 local C_ScopeSquareMarkers = function(radarWidth, radarHeight) {
   local offsetScaleFactor = 1.3
-  local elevationZeroHeightRel = (0.0 - ElevationMin.value) / ElevationRange.value
+  local elevationZeroHeightRel = (0.0 - ElevationMin.value) * ElevationRangeInv.value
   return {
     size = [offsetScaleFactor * radarWidth, offsetScaleFactor * radarHeight]
     children = [
