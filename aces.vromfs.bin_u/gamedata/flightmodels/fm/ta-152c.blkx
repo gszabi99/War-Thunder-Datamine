@@ -39,16 +39,17 @@
   "WingAngle": 2.7,
   "StabAngle": 1.3,
   "KeelAngle": 0.0,
+  "clockWiseStabAOA0": true,
   "AileronAngles": [17.0,17.0],
   "ElevatorAngles": [30.0,25.0],
   "InvertElevator": false,
   "FlapsRadiator": 0.0,
   "RudderAngles": [30.0,30.0],
-  "InterceptorType": 0,
-  "Elevon": false,
   "ElevonPitchAngleSens": 0.0,
   "VSlats": [150.0,200.0],
   "FlapsToSlats": [0.0,0.0,0.0,0.0],
+  "WingWaveMassRel": 0.25,
+  "WingSpringDampJointMult": [0.5,0.005],
   "Vne": 912.0,
   "VneControl": 912.0,
   "VneMach": 0.83,
@@ -60,8 +61,11 @@
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [1.1,4.0,0.8],
-  "ArcadePitchModificators": [0.0,1.0,1.0],
+  "ArcadeYawModificators": [1.1,4.0],
+  "ArcadePitchModificators": [0.0,1.0],
+  "ArcadeRudderSensMultiplier": 0.8,
+  "ArcadeElevatorSensMultiplier": 1.0,
+  "ArcadeAileronSensMultiplier": 1.0,
   "AileronMaxDv": 20.0,
   "ElevatorMaxDv": 20.0,
   "RudderMaxDv": 20.0,
@@ -89,7 +93,8 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": true,
     "bHasBoosterSwitcher": false,
-    "hasChutes": false
+    "hasChutes": false,
+    "hasParkingBrake": true
   },
   "FlyByWire": [],
   "MouseAim": {
@@ -113,11 +118,11 @@
     "FocusOffset": -0.16,
     "WingVertPos": 0.3,
     "AlphaShift": 0.0,
-    "FlapsShift": [0.12,0.0],
+    "FlapsShift": [0.11,0.0],
     "AirbrakesShift": [0.0,0.0],
-    "GearFocusShift": [0.05,0.0],
+    "GearFocusShift": [0.03,0.0],
     "ElevonFocusShift": [0.0,0.0],
-    "GearShift": -0.4,
+    "GearShift": 0.0,
     "WingInFocus": 0.6,
     "WingMidFocus": 1.833,
     "WingOutFocus": 5.0,
@@ -155,12 +160,12 @@
     "CxAfterCoeff": 0.01,
     "ClAfterCrit": 0.9,
     "MachFactor": 3,
-    "MachCrit1": 0.68,
+    "MachCrit1": 0.7,
     "MachMax1": 0.85,
     "MultMachMax1": 8.0,
     "MultLineCoeff1": -5.2,
     "MultLimit1": 7.0,
-    "MachCrit2": 0.68,
+    "MachCrit2": 0.7,
     "MachMax2": 1.0,
     "MultMachMax2": 0.97,
     "MultLineCoeff2": -1.0,
@@ -231,14 +236,14 @@
       "Flaps": 0.2,
       "FlapsPolarBlending": 0.35,
       "FlapsAnimation": 0.35,
-      "Stab": -1.0,
+      "Stab": 0.0,
       "Slats": 0.0
     },
     "Flaps3": {
       "Flaps": 0.58,
       "FlapsPolarBlending": 1.0,
       "FlapsAnimation": 1.0,
-      "Stab": -2.0,
+      "Stab": -3.0,
       "Slats": 0.0
     },
     "NoFlaps": {
@@ -255,7 +260,7 @@
       "alphaCritLow": -12.0,
       "ClCritHigh": 1.55,
       "ClCritLow": -0.05,
-      "CdMin": 0.05
+      "CdMin": 0.08
     },
     "Fuselage": {
       "OswaldsEfficiencyNumber": 0.6,
@@ -418,7 +423,6 @@
     "External": false,
     "Booster": false,
     "Main": {
-      "ExtinguisherNum": 0,
       "Type": "Inline",
       "Cylinders": 12,
       "Mass": 1040.0,
@@ -479,7 +483,11 @@
       "hasMagnetoControl": true,
       "hasRadiatorControl": true,
       "hasOilRadiatorControl": false,
-      "hasCommonRadiator": true
+      "hasCommonRadiator": true,
+      "hasVtolControl": false,
+      "dvVtol": 0.2,
+      "vtolToThrottleLim": [0.0,1.1,1.0,1.1],
+      "iasToVtolLim": [0.0,1.0,0.0,1.0]
     },
     "Temperature": {
       "OilRadiatorAuto": true,
@@ -689,14 +697,33 @@
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       }
+    },
+    "FireExtinguisher": {
+      "Num": 0,
+      "UseTime": 0.0,
+      "Power": 0.0,
+      "Automatic": false
     }
   },
   "Engine0": {
     "Type": 0,
-    "Position": [2.0,-0.2,0.0],
-    "Direction": [-0.0,0.0],
     "Main": {
       "FuelSystemNum": 0
+    },
+    "Nozzle0": {
+      "Position": [2.0,-0.2,0.0],
+      "Direction": [-0.0,0.0],
+      "Direction2": [-90.0,-0.0],
+      "ThrustRatio": 1.0,
+      "ThrustMax": 2147440000.0,
+      "AileronsToThrustDeflection": [0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [0.0,0.0,0.0],
+      "RudderToThrustDeflection": [0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,0.0],
+      "AileronsToThrust": [0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,0.0]
     }
   },
   "PropellerType0": {
@@ -737,7 +764,7 @@
     "Mass": {
       "Mass": 220.0,
       "Diameter": 3.6,
-      "InertiaMomentCoeff": 0.05
+      "InertiaMomentCoeff": 1.0
     },
     "Governor": {
       "PitchMin": 22.0,
@@ -835,7 +862,7 @@
     "PropellerReductor0": 0.48,
     "PropellerPitchSource0": "pitch",
     "MidAxisPitch0": 0.5,
-    "UseAutoPropInertia": false,
+    "UseAutoPropInertia": true,
     "EngineAcceleration": 1.0,
     "CorrectPropellerToTransmissionLink": true
   },
@@ -849,15 +876,16 @@
     "MaxNitro": 127.0,
     "OilMass": 55.0,
     "AdvancedMass": true,
+    "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
     "Takeoff": 5942.0,
     "CenterOfGravity": [0.52,-0.15,0.0],
     "WingCritOverload": [-132435.0,264870.0],
     "GearDestructionIndSpeed": 310.0,
     "AirbrakeDestructionIndSpeed": -1.0,
-    "FlapsDestructionIndSpeedP1": [0.1,700.0],
-    "FlapsDestructionIndSpeedP2": [0.33,450.0],
-    "FlapsDestructionIndSpeedP3": [1.0,310.0],
+    "FlapsDestructionIndSpeedP0": [0.1,700.0],
+    "FlapsDestructionIndSpeedP1": [0.33,450.0],
+    "FlapsDestructionIndSpeedP2": [1.0,310.0],
     "Parts": {
       "tank1_capacity": 182.0,
       "tank1_system": 0,
@@ -917,6 +945,7 @@
       "armor7_dm": 10.0,
       "armor8_dm": 30.0,
       "armor9_dm": 10.0,
+      "armor10_dm": 1.0,
       "gear_l_dm": 115.0,
       "gear_r_dm": 115.0,
       "gear_c_dm": 15.0,
@@ -966,16 +995,18 @@
     "WaterFrictionDefault": 2.5,
     "UseCenterOfGravity": true,
     "RetractableCentralGear": true,
-    "CenterGearType": "SelfSteering",
+    "CenterGearType0": "SelfSteering",
+    "CenterGearType1": "SelfSteering",
+    "CenterGearType2": "SelfSteering",
     "CenterGearBrakes": false,
-    "FullBrakeSlidingFrictionMult": 0.6,
+    "FullBrakeSlidingFrictionMult": 0.55,
     "FrontalSpringsHeight": 0.5,
     "TailSpringsHeight": 0.1,
     "FrontalSpringsCoeff": 340000.0,
     "TailSpringsCoeff": 350000.0,
     "HasWheels": true,
-    "LeftWheelRadius": 1.37,
-    "RightWheelRadius": 1.37,
+    "LeftWheelRadius": 0.37,
+    "RightWheelRadius": 0.37,
     "CenterWheelRadius": 0.19,
     "Height": 1.8,
     "Pitch": 13.0,

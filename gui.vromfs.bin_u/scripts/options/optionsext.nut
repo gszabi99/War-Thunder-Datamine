@@ -2047,6 +2047,13 @@ local isWaitMeasureEvent = false
       descr.value = ::get_option_use_rectangular_radar_indicator()
       break
 
+    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
+      descr.id = "activate_airborne_weapon_selection_on_spawn"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_gui_option(optionId)
+      break
+
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
       descr.id = "use_radar_hud_in_cockpit"
       descr.controlType = optionControlType.CHECKBOX
@@ -4448,6 +4455,9 @@ local isWaitMeasureEvent = false
       break;
     case ::USEROPT_DEFAULT_AI_TARGET_TYPE:
       ::set_option_default_ai_target_type(value)
+      break;
+    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
+      ::set_gui_option(optionId, value)
       break;
     case ::USEROPT_SHOW_INDICATORS_TYPE:
       local val = ::get_option_indicators_mode() & ~(::HUD_INDICATORS_SELECT|::HUD_INDICATORS_CENTER|::HUD_INDICATORS_ALL);

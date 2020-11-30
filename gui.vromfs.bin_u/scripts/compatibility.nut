@@ -76,3 +76,8 @@
   get_activate_ground_active_counter_measures_on_spawn = @() false
   GO_WAITING_FOR_RESULT = 4
 })
+
+//----------------------------wop_2_1_0_X---------------------------------//
+::apply_compatibilities({
+  USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN = -1
+})
