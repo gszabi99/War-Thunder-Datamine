@@ -24,14 +24,16 @@ local function getPrizeStatus(unlock, stageIdx) {
 local function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
   local curStage = unlock?.stages[stageIdx] ?? {}
   local unlockId = unlock?.name
-  if (((curStage?.rewards.len() ?? 0) > 0) || stageChallenge != null) {
+  local isChallengeStage = stageChallenge != null
+  if (((curStage?.rewards.len() ?? 0) > 0) || isChallengeStage) {
     local stage = stageIdx + 1
     stagesArray.append(curStage.__merge({
       unlockId = unlockId
       stage = stage
       isFree = unlockId == basicUnlockId.value
       stageStatus = getStageStatus(stageIdx)
-      prizeStatus = getPrizeStatus(unlock, stageIdx)
+      prizeStatus = isChallengeStage && stage <= seasonLevel.value ? "received"
+        : getPrizeStatus(unlock, stageIdx)
       warbondsShopLevel = warbondsShopLevelByStages.value?[stage.tostring()]
       stageChallenge =stageChallenge
     }))

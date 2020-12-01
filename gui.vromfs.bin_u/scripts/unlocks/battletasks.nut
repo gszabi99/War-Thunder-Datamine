@@ -454,6 +454,16 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     return data
   }
 
+  function getDifficultyByProposals(proposals) {
+    if (proposals.findindex(function(v, id) {
+      local battleTask = ::g_battle_tasks.getTaskById(id)
+      return ::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask)
+    }))
+      return ::g_battle_task_difficulty.HARD
+
+    return ::g_battle_task_difficulty.EASY
+  }
+
   function generateStringForUserlog(table, taskId)
   {
     local text = getBattleTaskLocIdFromUserlog(table, taskId)

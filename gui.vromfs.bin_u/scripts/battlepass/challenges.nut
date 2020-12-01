@@ -1,6 +1,6 @@
 local { getTimestampFromStringUtc, buildDateStr} = require("scripts/time.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { season, openedSeasonLevel } = require("scripts/battlePass/seasonState.nut")
+local { season, seasonLevel } = require("scripts/battlePass/seasonState.nut")
 local { activeUnlocks, getUnlockRewardMarkUp } = require("scripts/unlocks/userstatUnlocksState.nut")
 local { refreshUserstatUnlocks } = require("scripts/userstat/userstat.nut")
 
@@ -70,7 +70,7 @@ local function getConditionInTitleConfig(unlockBlk) {
 
   local condition = mode % "condition"
   local levelCond = condition.findvalue(@(cond) cond.type == "battlepassLevel")
-  if (levelCond != null && levelCond.level > openedSeasonLevel.value)
+  if (levelCond != null && levelCond.level > seasonLevel.value)
     return {
       addTitle = ::loc("ui/parentheses/space", {
         text = ::loc("condition/unlockByLevel", { level = levelCond.level })

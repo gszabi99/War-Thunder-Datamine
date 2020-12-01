@@ -54,7 +54,6 @@ local levelExp = ::Computed(function() {
 })
 
 local seasonLevel = ::Computed(@() levelExp.value.level)
-local openedSeasonLevel = ::Computed(@() ::max(basicProgress.value?.stage ?? 0, premiumProgress.value?.stage ?? 0))
 
 local maxSeasonLvl = ::Computed(@() ::max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
   premiumUnlock.value?.meta.mainPrizeStage ?? 1))
@@ -67,9 +66,9 @@ local getExpRewardStage = @(stageState) stageState?.updStats
   .findvalue(@(stat) stat?.name == expStatId).value.tointeger() ?? 0
 
 local todayLoginExp = ::Computed(@() getExpRewardStage(
-  getStageByIndex(loginUnlock.value, loginUnlock.value?.stage ?? -1)))
+  getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? 0) - 1)))
 local tomorowLoginExp = ::Computed(@() getExpRewardStage(
-  getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? -1) + 1)))
+  getStageByIndex(loginUnlock.value, (loginUnlock.value?.stage ?? 0))))
 
 local function getExpRangeTextOfLoginStreak() {
   local stages = loginUnlock.value?.stages
@@ -141,7 +140,6 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
 
 return {
   seasonLevel
-  openedSeasonLevel
   maxSeasonLvl
   todayLoginExp
   loginStreak

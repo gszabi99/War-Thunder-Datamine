@@ -792,11 +792,18 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
       checkNewMessages()
       updateRoomsList()
       updateSquadInfo()
-      guiScene.performDelayed(this, restoreFocus)
-      ::update_objects_under_windows_state(guiScene)
+      guiScene.performDelayed(this, function() {
+        if (!isValid())
+          return
+        ::update_objects_under_windows_state(guiScene)
+        restoreFocus()
+      })
     }
     else
-      ::clear_objects_under_windows(guiScene)
+      guiScene.performDelayed(this, function() {
+        if (isValid())
+          ::update_objects_under_windows_state(guiScene)
+      })
 
     onChatWindowMouseOver(scene)
   }

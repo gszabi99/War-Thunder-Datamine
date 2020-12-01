@@ -11,6 +11,7 @@ local { canBuyNotResearched,
 
 local { isPlatformPC } = require("scripts/clientState/platform.nut")
 local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
+local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -792,8 +793,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_info       = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && !access_WikiOnline
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
-            (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu") &&
-              isUnitHaveSecondaryWeapons(unit)
+            needSecondaryWeaponsWnd && isUnitHaveSecondaryWeapons(unit)
           btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked

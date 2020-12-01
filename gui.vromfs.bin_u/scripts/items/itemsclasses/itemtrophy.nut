@@ -135,6 +135,7 @@ class ::items_classes.Trophy extends ::BaseItem
     }
 
     _recursionUsedIds.append(id)
+    local topPrizeBlk = null
     foreach(prize in contentRaw)
     {
       if (prize?.ignoreForTrophyType)
@@ -143,13 +144,18 @@ class ::items_classes.Trophy extends ::BaseItem
       if (prize?.trophy)
       {
         local subTrophy = ::ItemsManager.findItemById(prize.trophy)
-        topPrize = subTrophy ? subTrophy.getTopPrize(_recursionUsedIds) : null
+        topPrizeBlk = subTrophy ? subTrophy.getTopPrize(_recursionUsedIds) : null
       }
-      else
-        topPrize = prize
+      else {
+        topPrizeBlk = prize
+      }
 
-      if (topPrize)
+      if (topPrizeBlk != null) {
+        topPrize = ::DataBlock()
+        topPrize.setFrom(topPrizeBlk)
+        topPrize.count = (prize?.count ?? 1) * (topPrize?.count ?? 1)
         break
+      }
     }
     _recursionUsedIds.pop()
   }
@@ -161,9 +167,9 @@ class ::items_classes.Trophy extends ::BaseItem
     return topPrize
   }
 
-  function getCost()
+  function getCost(ignoreCanBuy = false)
   {
-    if (isCanBuy())
+    if (isCanBuy() || ignoreCanBuy)
       return ::Cost(::wp_get_trophy_cost(id), ::wp_get_trophy_cost_gold(id))
     return ::Cost()
   }
@@ -347,4 +353,5 @@ class ::items_classes.Trophy extends ::BaseItem
     return ::PrizesView.getTrophyOpenCountTillPrize(getContent(), ::get_trophy_info(id))
   }
 
+  canBuyTrophyByLimit = @() numTotal == 0 || numTotal > (::get_trophy_info(id)?.openCount ?? 0)
 }

@@ -213,6 +213,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
                              gc_eagles = canSpendGold
                              gc_warpoints = ::has_feature("WarpointsInMenu")
                              gc_PremiumAccount = ::has_feature("showPremiumAccount") && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
+                             gc_BattlePassProgress = ::has_feature("BattlePass") && ::g_battle_tasks.isAvailableForUser()
                              gc_dropdown_premium_button = featureEnablePremiumPurchase
                              gc_dropdown_shop_eagles_button = canSpendGold
                              gc_free_exp = ::has_feature("SpendGold") && ::has_feature("SpendFreeRP")
@@ -244,6 +245,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
                                 gc_warpoints = canSpendGold && is_in_menu
                                 gc_eagles = canSpendGold && is_in_menu
                                 gc_PremiumAccount = canSpendGold && featureEnablePremiumPurchase && is_in_menu
+                                gc_BattlePassProgress = canSpendGold && is_in_menu
                               }
 
   foreach(id, status in buttonsEnableTable)

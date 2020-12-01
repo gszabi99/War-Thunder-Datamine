@@ -152,6 +152,27 @@ local { getSeparateLeaderboardPlatformName } = require("scripts/social/crossplay
     blk.version = 1
     blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
+    if (blk.start == null || blk.start < 0)
+    {
+      local event = blk.event  // warning disable: -declared-never-used
+      local start = blk.start  // warning disable: -declared-never-used
+      local count = blk.count  // warning disable: -declared-never-used
+      ::script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
+      ::dagor.debug($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
+
+      blk.start = 0
+    }
+    if (blk.count == null || blk.count <= 0)
+    {
+      local event = blk.event  // warning disable: -declared-never-used
+      local count = blk.count  // warning disable: -declared-never-used
+      local start = blk.start  // warning disable: -declared-never-used
+      ::script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
+      ::dagor.debug($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
+
+      blk.count = 49  // unusual value indicate problem
+    }
+
     local event = ::events.getEvent(requestData.economicName)
     if (requestData.tournament || ::events.isRaceEvent(event))
       blk.tournamentMode = requestData.tournament_mode

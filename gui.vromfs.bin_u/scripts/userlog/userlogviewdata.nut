@@ -666,6 +666,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     res.logImg = config.image
     if ("country" in log && ::checkCountry(log.country, "EULT_NEW_UNLOCK"))
       res.logImg2 = ::get_country_icon(log.country)
+    else if (config?.image2 != null)
+      res.logImg2 = config?.image2
 
     local desc = ""
     if ("desc" in config)
@@ -1355,37 +1357,45 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
                                   ::EULT_PUNLOCK_NEW_PROPOSAL,
                                   ::EULT_PUNLOCK_ACCEPT_MULTI]))
   {
-    local locNameId = "userlog/"+logName
-    local descr = ""
+    local locNameId = $"userlog/{logName}"
+    res.logImg = ::g_battle_task_difficulty.EASY.image
+
     if ((log.type == ::EULT_PUNLOCK_ACCEPT_MULTI || log.type == ::EULT_PUNLOCK_NEW_PROPOSAL) && "new_proposals" in log)
     {
-      descr = ::g_battle_tasks.generateUpdateDescription(log.new_proposals)
-      local singleProposal = log.new_proposals.len() == 1
-      if (singleProposal)
-        locNameId = "userlog/battle_tasks_accept"
-      else
-      {
-        res.description <- descr
-        descr = ""
+      if (log.new_proposals.len() > 1) {
+        if (::g_battle_tasks.getDifficultyByProposals(log.new_proposals) == ::g_battle_task_difficulty.HARD) {
+          res.logImg = ::g_battle_task_difficulty.HARD.image
+          locNameId = "userlog/battle_tasks_new_proposal/special"
+        }
+        res.description <- ::g_battle_tasks.generateUpdateDescription(log.new_proposals)
       }
+      else
+        locNameId = "userlog/battle_tasks_accept"
     }
 
-    local taskName = descr
-    local logId = ::getTblValue("id", log, "")
-    if (logId != "")
-      taskName = ::g_battle_tasks.getBattleTaskLocIdFromUserlog(log, logId)
+    local taskName = ""
+
+    if (log?.id) {
+      local battleTask = ::g_battle_tasks.getTaskById(log.id)
+      if (battleTask)
+        res.logImg = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
+      else
+        res.logImg = ::g_battle_task_difficulty.getDifficultyTypeById(log.id).image
+
+      taskName = ::g_battle_tasks.generateStringForUserlog(log, log.id)
+    }
 
     res.name = ::loc(locNameId, {taskName = taskName})
-    res.logImg = "#ui/gameuiskin#battle_tasks_easy"
   }
   else if (log.type == ::EULT_PUNLOCK_REROLL_PROPOSAL && "new_proposals" in log)
   {
     local text = ::g_battle_tasks.generateUpdateDescription(log.new_proposals)
-    if (log.new_proposals.len() == 1)
-      res.name = ::loc("userlog/"+logName, {taskName = text})
-    else
+    if (log.new_proposals.len() > 1)
       res.description <- text
-    res.logImg = "#ui/gameuiskin#battle_tasks_easy"
+    else
+      res.name = ::loc($"userlog/{logName}", {taskName = text})
+
+    res.logImg = ::g_battle_tasks.getDifficultyByProposals(log.new_proposals).image
   }
   else if (log.type == ::EULT_CONVERT_BLUEPRINTS)
   {

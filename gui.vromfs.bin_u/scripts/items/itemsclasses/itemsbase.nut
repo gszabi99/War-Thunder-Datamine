@@ -114,7 +114,7 @@ class ::BaseItem
     isInventoryItem = invBlk != null
     purchaseFeature = blk?.purchase_feature ?? ""
     isDevItem = !isInventoryItem && purchaseFeature == "devItemShop"
-    canBuy = canBuy && !isInventoryItem && getCost() > ::zero_money && checkPurchaseFeature()
+    canBuy = canBuy && !isInventoryItem && getCost(true) > ::zero_money
     isHideInShop = blk?.hideInShop ?? false
     iconStyle = blk?.iconStyle ?? id
     link = blk?.link ?? ""
@@ -193,7 +193,7 @@ class ::BaseItem
 
   function isCanBuy()
   {
-    return canBuy
+    return canBuy && checkPurchaseFeature()
   }
 
   function getCost(ignoreCanBuy = false)

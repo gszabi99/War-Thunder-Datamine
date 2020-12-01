@@ -762,6 +762,8 @@ local function getOverrideBullets(unit)
   return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
 }
 
+local needSecondaryWeaponsWnd = @(unit) (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
+
 return {
   KGF_TO_NEWTON            = KGF_TO_NEWTON
   TRIGGER_TYPE             = TRIGGER_TYPE
@@ -792,4 +794,5 @@ return {
   isWeaponVisible          = isWeaponVisible
   checkBadWeapons          = checkBadWeapons
   getOverrideBullets       = getOverrideBullets
+  needSecondaryWeaponsWnd  = needSecondaryWeaponsWnd
 }

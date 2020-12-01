@@ -1106,11 +1106,18 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   res.rewardText = ""
   res.amount = ::getTblValue("amount", config, res.amount)
 
-  if (::g_battle_tasks.isBattleTask(realId))
+  local battleTask = ::g_battle_tasks.getTaskById(realId)
+  local isBattleTask = ::g_battle_tasks.isBattleTask(battleTask)
+  if (isBattleTask)
   {
     if (needTitle)
       res.title = ::loc("unlocks/battletask")
-    res.name = ::g_battle_tasks.getLocalizedTaskNameById(realId)
+    res.name = ::g_battle_tasks.getLocalizedTaskNameById(battleTask)
+    res.image = ::g_battle_task_difficulty.getDifficultyTypeByTask(battleTask).image
+    if (::g_battle_tasks.isTaskDone(battleTask))
+      res.image2 <- "#ui/gameuiskin#icon_primary_ok"
+    else if (::g_battle_tasks.isTaskTimeExpired(task))
+      res.image2 <- "#ui/gameuiskin#icon_primary_fail.svg"
   } else
   {
     res.name = ::get_unlock_name_text(uType, id)
@@ -1234,6 +1241,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       break
 
     case ::UNLOCKABLE_AWARD:
+      if (isBattleTask)
+        break
+
       res.desc = ::loc("award/"+id+"/desc", "")
       if (id == "money_back")
       {

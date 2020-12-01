@@ -26,7 +26,8 @@ local { updateModItem, createModItemLayout } = require("scripts/weaponry/weaponr
 local { getLastWeapon,
         setLastWeapon,
         isWeaponVisible,
-        isWeaponEnabled } = require("scripts/weaponry/weaponryInfo.nut")
+        isWeaponEnabled,
+        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 
 ::gui_start_weaponry_select_modal <- function gui_start_weaponry_select_modal(config)
 {
@@ -71,7 +72,7 @@ local CHOOSE_WEAPON_PARAMS = {
     })
   }
 
-  if ((unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu"))
+  if (needSecondaryWeaponsWnd)
     weaponryPresetsModal.open({ //open modal menu for air and helicopter only
         unit = unit
         chooseMenuList   = list

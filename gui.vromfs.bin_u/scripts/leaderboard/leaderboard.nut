@@ -479,6 +479,9 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
       pos = 0
       return
     }
+    if (rowsInPage == 0)
+      return  // do not divide by zero
+
     local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
     pos = selfPagePos / rowsInPage < maxRows ? selfPagePos : 0
   }
@@ -672,12 +675,15 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
     if (curLbCategory.id == obj.id)
     {
-      local selfPos = getSelfPos()
-      local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
-      if (pos != selfPagePos)
-        requestSelfPage(selfPos)
-      else
-        pos = 0
+      if (rowsInPage != 0)  // do not divide by zero
+      {
+        local selfPos = getSelfPos()
+        local selfPagePos = rowsInPage * ::floor(selfPos / rowsInPage)
+        if (pos != selfPagePos)
+          requestSelfPage(selfPos)
+        else
+          pos = 0
+      }
     }
     else
     {
@@ -826,6 +832,9 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillPagintator()
   {
+    if (rowsInPage == 0)
+      return  // do not divide by zero
+
     local nestObj = scene.findObject("paginator_place")
     local curPage = (pos / rowsInPage).tointeger()
     if (tableWeak.isLastPage && (curPage == 0))
@@ -867,6 +876,7 @@ class ::gui_handlers.EventsLeaderboardWindow extends ::gui_handlers.LeaderboardW
       ? ::g_lb_category.getTypeByField(sortLeaderboard)
       : ::events.getTableConfigShortRowByEvent(eventData)
 
+    setRowsInPage()
     initTable()
     initTopItems()
     fetchLbData()

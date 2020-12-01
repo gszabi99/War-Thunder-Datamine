@@ -311,6 +311,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
   getViewDataUnlockProgress = @(prize, showCount, params = null) {
     title = getPrizeText(prize)
+    icon = getPrizeTypeIcon(prize)
   }
 }
 
@@ -520,7 +521,8 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
     if (_typeName)
       name = ::loc(typeName)
     else
-      name = ::loc("progress/amount", { amount = value})
+      name = ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
+    showCount = false
   }
   else
   {
@@ -594,6 +596,8 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
     return "#ui/gameuiskin#item_type_Free_RP"
   if (prize?.warbonds)
     return "#ui/gameuiskin#item_type_warbonds"
+  if (prize?.unlockAddProgress)
+    return "#ui/gameuiskin#item_type_bp.svg"
   return "#ui/gameuiskin#item_type_placeholder"
 }
 

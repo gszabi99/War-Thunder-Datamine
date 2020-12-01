@@ -343,10 +343,10 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
     local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     local itemsCountX = ::to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
-      / ::to_pixels(itemWidthWithSpace)
+      / ::max(1, ::to_pixels(itemWidthWithSpace))
     local itemsCountY = ::to_pixels(
       "sh-@bottomMenuPanelHeight-1@frameHeaderHeight-1@frameFooterHeight-3@itemSpacing-1@blockInterval")
-        / ::to_pixels(itemHeightWithSpace)
+        / ::max(1, ::to_pixels(itemHeightWithSpace))
     local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = $"{itemsCountY}*({itemHeightWithSpace})"
     scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
@@ -420,6 +420,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     ::g_item_limits.requestLimits()
 
     local listObj = getItemsListObj()
+    local prevValue = listObj.getValue()
     local data = ::handyman.renderCached(("gui/items/item"), view)
     if (::checkObj(listObj))
     {
@@ -457,7 +458,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
       }
     }
 
-    local prevValue = listObj.getValue()
     local value = findLastValue(prevValue)
     if (value >= 0)
       listObj.setValue(value)

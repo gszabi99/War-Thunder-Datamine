@@ -6,7 +6,7 @@
                   "unit", "rentedUnit",
                   "trophy", "item", "unlock", "unlockType", "resource", "resourceType",
                   "entitlement", "gold", "warpoints", "exp", "warbonds", "unlockAddProgress" ]
-  iconsRequired = [ "trophy", "item", "unlock", "entitlement", "resource" ]
+  iconsRequired = [ "trophy", "item", "unlock", "entitlement", "resource", "unlockAddProgress" ]
   specialPrizeParams = {
     rentedUnit = function(config, prize) {
       prize.timeHours <- ::getTblValue("timeHours", config)

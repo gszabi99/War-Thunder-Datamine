@@ -45,7 +45,8 @@ local { WEAPON_TAG,
         getLastPrimaryWeapon,
         getPrimaryWeaponsList,
         getSecondaryWeaponsList,
-        isUnitHaveAnyWeaponsTags } = require("scripts/weaponry/weaponryInfo.nut")
+        isUnitHaveAnyWeaponsTags,
+        needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
@@ -85,8 +86,6 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   ::aircraft_for_weapons = unit.name
   ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
 }
-
-local needSecondaryWeaponsWindow = @(unit) (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
 
 class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -439,7 +438,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitWeaponChanged(params)
   {
-    if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWindow(air)) {
+    if (!isUnitHaveSecondaryWeapons(air) || !needSecondaryWeaponsWnd(air)) {
       updateAllItems()
       return
     }
@@ -550,7 +549,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isBullets(visualItem))
       isVisualDisabled = !isBulletsGroupActiveByMod(air, visualItem)
 
-    local hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWindow(air))
+    local hasMenu = item.type == weaponsItem.bundle || (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air))
     updateModItem(air, item, itemObj, true, this, {
       canShowResearch = availableFlushExp == 0 && setResearchManually
       flushExp = availableFlushExp
@@ -949,7 +948,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       local secondaryWeapons = getSecondaryWeaponsList(air)
       lastWeapon = getLastWeapon(airName) //real weapon or ..._default
       dagor.debug("initial set lastWeapon " + lastWeapon )
-      if (needSecondaryWeaponsWindow(air)) {
+      if (needSecondaryWeaponsWnd(air)) {
         local selWeapon = secondaryWeapons.findvalue((@(w) w.name == lastWeapon).bindenv(this))
           ?? secondaryWeapons?[0]
         if (selWeapon)
@@ -1233,15 +1232,14 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     if (checkResearchOperation(item))
       return
+    if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(air)) {
+      weaponryPresetsModal.open({ unit = air }) //open modal menu for air and helicopter only
+      return
+    }
     if(!canPerformAction(item, amount))
       return
 
     if (item.type == weaponsItem.weapon) {
-      if (needSecondaryWeaponsWindow(air)) {
-        weaponryPresetsModal.open({ unit = air }) //open modal menu for air and helicopter only
-        return
-      }
-
       if(getLastWeapon(airName) == item.name || !amount) {
         if (item.cost <= 0)
           return

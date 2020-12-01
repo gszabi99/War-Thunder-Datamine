@@ -708,7 +708,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onGroupSelect(obj)
   {
     onGroupSelectImpl(obj)
-    if (::show_console_buttons && prevGroup != obj.getValue()) {
+    if (!::is_mouse_last_time_used() && prevGroup != obj.getValue()) {
       guiScene.applyPendingChanges(false)
       selectCurContactGroup()
     }
@@ -739,7 +739,7 @@ class ::ContactsHandler extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
   }
 
-  onPlayerCancel = @(obj) selectCurContactGroup()
+  onPlayerCancel = @(obj) ::is_mouse_last_time_used() ? goBack() : selectCurContactGroup()
 
   function onSearchButtonClick(obj)
   {

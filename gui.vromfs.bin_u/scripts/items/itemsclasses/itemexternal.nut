@@ -119,8 +119,7 @@ local ItemExternal = class extends ::BaseItem
       }
     }
 
-    local purchaseForGoldFeatureName = itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold"
-    canBuy = !isInventoryItem && checkPurchaseFeature() && ::has_feature(purchaseForGoldFeatureName)
+    canBuy = !isInventoryItem
 
     addResources()
 
@@ -247,7 +246,9 @@ local ItemExternal = class extends ::BaseItem
     return true
   }
 
-  isCanBuy = @() canBuy && !inventoryClient.getItemCost(id).isZero()
+  isCanBuy = @() canBuy && checkPurchaseFeature()
+    && ::has_feature(itemDef?.tags.purchaseForGoldFeature ?? "PurchaseMarketItemsForGold")
+    && !inventoryClient.getItemCost(id).isZero()
 
   function getCost(ignoreCanBuy = false)
   {

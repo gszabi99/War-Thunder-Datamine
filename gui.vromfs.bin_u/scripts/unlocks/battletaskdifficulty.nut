@@ -7,6 +7,7 @@ local time = require("scripts/time.nut")
   cache = {
     byName = {}
     byExecOrder = {}
+    byId = {}
   }
 }
 
@@ -127,6 +128,22 @@ g_battle_task_difficulty.getDifficultyFromTask <- function getDifficultyFromTask
 g_battle_task_difficulty.getDifficultyTypeByTask <- function getDifficultyTypeByTask(task)
 {
   return getDifficultyTypeByName(getDifficultyFromTask(task))
+}
+
+//Not recomended to use. Only for deleted tasks in which we cannot identify difficulty
+g_battle_task_difficulty.getDifficultyTypeById <- function getDifficultyTypeById(taskId)
+{
+  if (taskId in cache.byId)
+    return getDifficultyTypeByName(cache.byId[taskId])
+
+  local res = types.findvalue(function(v) {
+    local n = v.name.tolower()
+    local m = taskId.slice(0, n.len()).tolower()
+    return n == m
+  })
+
+  cache.byId[taskId] <- res != null? res.name : UNKNOWN.name
+  return res
 }
 
 g_battle_task_difficulty.getRequiredDifficultyTypeDone <- function getRequiredDifficultyTypeDone(diff)
