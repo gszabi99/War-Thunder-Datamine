@@ -39,6 +39,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       local goodsConfig = getGoodsConfig({
         additionalTrophyItems = getSortedAdditionalTrophyItems(additionalTrophyItems)
         battlePassUnlock = passUnlock
+        hasBattlePassUnlock = battlePassUnlock != ""
+        rowIdx = idx
       })
 
       goods.append(goodsConfig)
@@ -50,9 +52,10 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateRowsView() {
-    local rowsView = goods.filter(@(g) !g.cost.isZero())
+    local rowsView = goods
+      .filter(@(g) !g.cost.isZero() && (!g.hasBattlePassUnlock || g.battlePassUnlock != null))
       .map(@(g, idx) {
-        rowName = idx
+        rowName = g.rowIdx
         rowEven = (idx%2 == 0) ? "yes" :"no"
         amount = g.name
         savingText = g.valueText
@@ -71,16 +74,16 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     guiScene.setUpdatesEnabled(true, true)
 
     local valueToSelect = rowsView.findindex(@(r) !r.isDisabled) ?? -1
-    guiScene.performDelayed(this, @() ::move_mouse_on_child(scene.findObject("items_list"), valueToSelect))
+    local tblObj = scene.findObject("items_list")
+    guiScene.performDelayed(this, @() ::move_mouse_on_child(tblObj, valueToSelect))
   }
 
-  hasBattlePassGoods = @(goodsConfig) goodsConfig.battlePassUnlock != null
-
-  isGoodsBought = @(goodsConfig) hasBattlePassGoods(goodsConfig)
+  isGoodsBought = @(goodsConfig) goodsConfig.hasBattlePassUnlock
     && (hasBattlePass.value || ::is_unlocked_scripted(-1, goodsConfig.battlePassUnlock?.id))
 
   function buyGood(goodsConfig) {
-    local { additionalTrophyItem, battlePassUnlock } = goodsConfig
+    local { additionalTrophyItem, battlePassUnlock, rowIdx } = goodsConfig
+    ::dagor.debug($"Buy Battle Pass goods. goodsIdx: {rowIdx}")
     if (battlePassUnlock != null)
       g_unlocks.buyUnlock(battlePassUnlock, function() {
         refreshUserstatUnlocks()
@@ -99,7 +102,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     foreach (idx, goodsConfig in goods) {
       local obj = listObj.findObject(idx.tostring())
       if (obj?.isValid())
-        obj.enable = hasBattlePassGoods(goodsConfig) ? "no" : "yes"
+        obj.enable = goodsConfig.hasBattlePassUnlock ? "no" : "yes"
     }
   }
 
@@ -119,7 +122,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         ["yes", function() {
           if (::check_balance_msgBox(goodsConfig.cost)) {
             buyGood(goodsConfig)
-            if (hasBattlePassGoods(goodsConfig))
+            if (goodsConfig.hasBattlePassUnlock)
               disableBattlePassRows()
           }
         }],

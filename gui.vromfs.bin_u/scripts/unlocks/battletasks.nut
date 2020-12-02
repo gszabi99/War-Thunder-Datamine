@@ -1034,6 +1034,9 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       if (isCompleteMedium && isCompleteEasy && hasInCompleteHard)
         break
 
+      if (!isTaskActive(task))
+        continue
+
       if (!isTaskDone(task)) {
         if (::g_battle_task_difficulty.HARD == ::g_battle_task_difficulty.getDifficultyTypeByTask(task))
           hasInCompleteHard = true

@@ -22,6 +22,8 @@ local function getPrizeStatus(unlock, stageIdx) {
 }
 
 local function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
+  if (unlock == null)
+    return
   local curStage = unlock?.stages[stageIdx] ?? {}
   local unlockId = unlock?.name
   local isChallengeStage = stageChallenge != null
