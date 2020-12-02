@@ -14,6 +14,14 @@ local season = ::Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
 
 local totalProgressExp = ::Computed(@() basicUnlock.value?.current ?? 0)
 
+local function getLevelByExp(exp) {
+  local stages = basicUnlock.value?.stages ?? []
+  if (stages.len() == 0)
+    return 0
+
+  return stages.findindex(@(s) exp < s.progress) ?? 0
+}
+
 local levelExp = ::Computed(function() {
   local res = {
     level = 1
@@ -152,4 +160,5 @@ return {
   getExpRangeTextOfLoginStreak
   levelExp
   warbondsShopLevelByStages
+  getLevelByExp
 }

@@ -172971,6 +172971,210 @@
   },
   {
     "unlockable": {
+      "id": "logins_count",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_login_count"
+        },
+        {
+          "num": 100500000
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePass"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_login",
+            "in_days": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlpass_progress_150",
+      "type": "award",
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 100500000
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlpass_progress_10",
+      "type": "award",
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 100500000
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "easy_tasks_count",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_personal_unlocks_reward_count_mode",
+        "puType": "Easy",
+        "num": 100500000,
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "medium_tasks_count",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_personal_unlocks_reward_count_mode",
+        "puType": "Medium",
+        "num": 100500000,
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "hard_tasks_count",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_personal_unlocks_reward_count_mode",
+        "puType": "Hard",
+        "num": 100500000,
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "force_update_battlepass",
+      "type": "achievement",
+      "amount_exp": 0,
+      "amount_warpoints": 0,
+      "forUserstat": true,
+      "hidden": true,
+      "mode": {
+        "type": "char_login_count",
+        "num": 100500000,
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season1_purchased_main",
+      "type": "achievement",
+      "costGold": 2000,
+      "hidden": true
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season1_purchased_entitlement",
+      "userLogId": "battlepass_season1_purchased",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season1_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season1_purchased_item",
+      "type": "inventory",
+      "userLogId": "750133",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "battlepass_season1_purchased_main",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "BattlePass"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_season1_allow_skip_all_stages_entitlement",
+      "userLogId": "battlepass_season1_allow_skip_all_stages",
+      "type": "entitlement",
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_always_progress"
+        },
+        {
+          "condition": {
+            "type": "char_player_has_entitlement",
+            "entitlement": "battlepass_season1_allow_skip_all_stages",
+            "invertResult": true
+          }
+        },
+        {
+          "condition": {
+            "type": "char_player_has_feature",
+            "feature": "BattlePassPurchased"
+          }
+        },
+        {
+          "condition": {
+            "type": "char_time_range",
+            "beginDate": "2020-12-30 12:00:00",
+            "endDate": "2021-02-15 12:00:00"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
       "id": "end_of_file",
       "type": "achievement",
       "hidden": true,

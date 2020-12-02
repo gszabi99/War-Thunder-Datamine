@@ -91,9 +91,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local middleIdx = ::ceil(stagesPerPage.tofloat()/2) - 1
     stageIndexOffset = curStageIdx <= middleIdx ? 0
       : ((curStageIdx % stagesPerPage) - middleIdx)
-    local pageOffset = curStageIdx <= middleIdx || stageIndexOffset > 0 ? 0
-      : -1
-    curPage = ::ceil((curStageIdx.tofloat() - stageIndexOffset)/ stagesPerPage).tointeger() + pageOffset
+    local pageOffset = stageIndexOffset > 0 ? 0 : -1
+    curPage = curStageIdx <= middleIdx ? 0
+      : ::ceil((curStageIdx.tofloat() - stageIndexOffset)/ stagesPerPage).tointeger() + pageOffset
   }
 
   function goToPage(obj) {

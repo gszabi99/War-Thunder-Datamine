@@ -56,8 +56,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         rowEven = (idx%2 == 0) ? "yes" :"no"
         amount = g.name
         savingText = g.valueText
-        cost = g.cost.tostring()
-        isDisabled = g.isDisabled
+        cost = $"{g.isBought ? ::loc("check_mark/green") : ""} {g.cost.tostring()}"
+        isDisabled = g.isBought
       })
     guiScene.setUpdatesEnabled(false, false)
 
@@ -76,7 +76,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   hasBattlePassGoods = @(goodsConfig) goodsConfig.battlePassUnlock != null
 
-  isBought = @(goodsConfig) hasBattlePassGoods(goodsConfig)
+  isGoodsBought = @(goodsConfig) hasBattlePassGoods(goodsConfig)
     && (hasBattlePass.value || ::is_unlocked_scripted(-1, goodsConfig.battlePassUnlock?.id))
 
   function buyGood(goodsConfig) {
@@ -105,7 +105,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onBuy(curGoodsIdx) {
     local goodsConfig = goods?[curGoodsIdx]
-    if (goodsConfig == null || isBought(goodsConfig))
+    if (goodsConfig == null || isGoodsBought(goodsConfig))
       return
 
     local msgText = ::warningIfGold(
@@ -142,7 +142,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function getGoodsConfig(goodsConfig) {
     local name = ""
     local valueText = ""
-    local isDisabled = false
+    local isBought = false
     local cost = ::Cost()
     local { additionalTrophyItems, battlePassUnlock } = goodsConfig
     local additionalTrophyItem = getAdditionalTrophyItemForBuy(additionalTrophyItems)
@@ -154,14 +154,14 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }
     if (battlePassUnlock != null) {
       name = ::loc("battlePass")
-      isDisabled = isBought(goodsConfig)
+      isBought = isGoodsBought(goodsConfig)
       cost = cost + ::get_unlock_cost(battlePassUnlock.id)
     }
 
     return goodsConfig.__update({
       name = name
       valueText = valueText
-      isDisabled = isDisabled
+      isBought = isBought
       cost = cost
       additionalTrophyItem = additionalTrophyItem
     })

@@ -1,6 +1,6 @@
 local { getTimestampFromStringUtc, buildDateStr} = require("scripts/time.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
-local { season, seasonLevel } = require("scripts/battlePass/seasonState.nut")
+local { season, seasonLevel, getLevelByExp } = require("scripts/battlePass/seasonState.nut")
 local { activeUnlocks, getUnlockRewardMarkUp } = require("scripts/unlocks/userstatUnlocksState.nut")
 local { refreshUserstatUnlocks } = require("scripts/userstat/userstat.nut")
 
@@ -25,9 +25,12 @@ local curSeasonChallengesByStage = ::Computed(function() {
     if (mode == null)
       continue
 
-    local battlepassLevel = (mode % "condition").findvalue(@(cond) cond?.type == "battlepassLevel")
-    if (battlepassLevel != null)
-      res[battlepassLevel.level] <- challenge
+    local battlepassProgress = (mode % "condition").findvalue(@(cond) cond?.type == "battlepassProgress")
+    if (battlepassProgress == null)
+      continue
+
+    local level = getLevelByExp(battlepassProgress.progress)
+    res[level] <- challenge
   }
   return res
 })
@@ -69,14 +72,17 @@ local function getConditionInTitleConfig(unlockBlk) {
     return res
 
   local condition = mode % "condition"
-  local levelCond = condition.findvalue(@(cond) cond.type == "battlepassLevel")
-  if (levelCond != null && levelCond.level > seasonLevel.value)
-    return {
-      addTitle = ::loc("ui/parentheses/space", {
-        text = ::loc("condition/unlockByLevel", { level = levelCond.level })
-      })
-      titleIcon = "#ui/gameuiskin#calendar_event.svg"
-    }
+  local battlepassProgress = condition.findvalue(@(cond) cond.type == "battlepassProgress")
+  if (battlepassProgress != null) {
+    local level = getLevelByExp(battlepassProgress.progress)
+    if (level > seasonLevel.value)
+      return {
+        addTitle = ::loc("ui/parentheses/space", {
+          text = ::loc("condition/unlockByLevel", { level = level })
+        })
+        titleIcon = "#ui/gameuiskin#calendar_event.svg"
+      }
+  }
 
   local timeCond = condition.findvalue(@(cond) ::unlock_time_range_conditions.contains(cond.type))
   if (timeCond != null) {
