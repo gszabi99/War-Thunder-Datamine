@@ -152,8 +152,6 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
       local isEmptyTask = view.taskId == null
       if (isEmptyTask) {
         view.title = ""
-        view.action <- "showBattlePassWnd"
-        view.otherTasksNumText = "#season/information"
         view.isEmptyTask <- isEmptyTask
         view.showAsUsualPromoButton = false
         view.easyDailyTaskProgressValue <- stashBhvValueConfig([{

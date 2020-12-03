@@ -66,9 +66,6 @@ promoButton[type=recentItems][collapsed=no] {
 promoButton[type=recentItems] fillBlock {
   height: 1@promoButtonMinHeight;
 }
-promoButton[type=recentItems] shortHeaderIcon {
-  padding-right: 1@contentRightPadding;
-}
 
 promoButton[inactiveColor=yes] {
   btnHover:no;
@@ -354,8 +351,7 @@ promoButton > baseToggleButton {
   margin-left: 1@blockInterval;
 }
 
-promoButton[type=battleTask] > baseToggleButton,
-promoButton[type=recentItems] > baseToggleButton {
+promoButton[type=battleTask] > baseToggleButton {
   left: pw - w - 1@promoButtonPadding - 1@blockInterval;
   position:absolute;
 }

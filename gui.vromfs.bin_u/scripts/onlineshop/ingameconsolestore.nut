@@ -23,6 +23,8 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   curSheetId = null
   curItem = null
 
+  needHoverSelect = null
+
   itemsPerPage = -1
   itemsList = null
   curPage = 0
@@ -44,6 +46,8 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
   function initScreen()
   {
+    needHoverSelect = ::show_console_buttons
+
     local titleObj = scene.findObject("wnd_title")
     titleObj.setValue(::loc(titleLocId))
 
@@ -551,6 +555,9 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onItemHover(obj) {
+    if (!needHoverSelect)
+      return
+
     hoverHoldAction(obj, function(focusObj) {
       local idx = focusObj.holderId.tointeger()
       local value = idx - curPage * itemsPerPage

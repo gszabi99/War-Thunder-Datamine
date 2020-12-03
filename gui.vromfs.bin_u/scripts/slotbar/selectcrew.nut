@@ -406,6 +406,7 @@ class ::gui_handlers.SelectCrew extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onUnitMainFunc(obj) {}
+  function onUnitMainFuncBtnUnHover() {}
 
   function isUnitInSlotbar()
   {

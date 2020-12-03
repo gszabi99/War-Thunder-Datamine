@@ -46,7 +46,6 @@ collapsedContainer {
 }
 baseToggleButton {
   id:t='<<id>>_toggle'
-  pos:t='pw-w-1@blockInterval'
   on_click:t='onToggleItem'
   type:t='right'
   directionImg {}

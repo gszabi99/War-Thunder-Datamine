@@ -1,5 +1,6 @@
 local stdMath = require("std/math.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { doesLocTextExist = @(k) true } = require("dagor.localize")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -124,7 +125,8 @@ g_tips.loadTipsKeysByUnitType <- function loadTipsKeysByUnitType(unitType, isNee
     {
       isShow = cfg.isShow
       key = ::format(cfg.keyFormat, idx)
-      tip = ::loc(TIP_LOC_KEY_PREFIX + key, "")
+      local locId = $"{TIP_LOC_KEY_PREFIX}{key}"
+      tip = doesLocTextExist(locId) ? ::loc(locId, "") : "" // Using doesLocTextExist() to avoid warnings spam in log.
       if (tip != "")
         break
     }

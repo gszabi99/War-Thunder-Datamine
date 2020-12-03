@@ -21,8 +21,7 @@ addListenersWithoutEnv({
   PriceUpdated = @(p) updateLeftSpecialTasksBoughtCount()
   LoginComplete = @(p) updateLeftSpecialTasksBoughtCount()
   ScriptsReloaded = @(p) updateLeftSpecialTasksBoughtCount()
-  BattleTasksRewardReceived = @(p) updateLeftSpecialTasksBoughtCount()
-  WarbondAwardBought = @(p) updateLeftSpecialTasksBoughtCount()
+  ProfileUpdated = @(p) updateLeftSpecialTasksBoughtCount()
 })
 
 return {

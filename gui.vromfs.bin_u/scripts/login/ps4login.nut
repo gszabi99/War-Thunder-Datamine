@@ -10,6 +10,7 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
   sceneBlkName = "gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
+  isAutologin = false
 
   function initScreen()
   {
@@ -19,21 +20,20 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
     showTitleLogo(scene, 128)
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
-    local isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
+    isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
 
-    local data = isAutologin
-      ? ""
-      : ::handyman.renderCached("gui/commonParts/button", {
-          id = "authorization_button"
-          text = "#HUD_PRESS_A_CNT"
-          shortcut = "A"
-          funcName = "onOk"
-          delayed = true
-          isToBattle = true
-          titleButtonFont = true
-        })
+    local data = ::handyman.renderCached("gui/commonParts/button", {
+      id = "authorization_button"
+      text = "#HUD_PRESS_A_CNT"
+      shortcut = "A"
+      funcName = "onOk"
+      delayed = true
+      isToBattle = true
+      titleButtonFont = true
+      isHidden = isAutologin
+    })
     guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
-    scene.findObject("user_notify_text").setValue(::loc("ps4/reqInstantConnection"))
+    updateButtons(false)
 
     guiScene.performDelayed(this, function() {
       ::ps4_initial_check_settings()
@@ -43,9 +43,20 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       ::on_ps4_autologin()
   }
 
+  function updateButtons(isUpdateAvailable = false) {
+    showSceneBtn("authorization_button", !isAutologin)
+    local text = "\n".join([isUpdateAvailable? ::colorize("warningTextColor", ::loc("ps4/updateAvailable")) : null,
+      ::loc("ps4/reqInstantConnection")
+    ], true)
+    scene.findObject("user_notify_text").setValue(text)
+  }
+
   function onPackageUpdateCheckResult(isUpdateAvailable) {
     isPendingPackageCheck = false
+
     if (isUpdateAvailable) {
+      isAutologin = false
+      updateButtons(isUpdateAvailable)
       msgBox("new_package_available", ::loc("ps4/updateAvailable"), [["ok", function() {}]], "ok")
       return
     }
@@ -69,6 +80,8 @@ class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
       else
       {
         isLoggingIn = false
+        isAutologin = false
+        updateButtons(isUpdateAvailable)
         if (ret == -1)
           msgBox("no_internet_connection", ::loc("ps4/noInternetConnection"), [["ok", function() {} ]], "ok")
       }

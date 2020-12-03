@@ -7,6 +7,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
 } = require("shopUnitCellFill.nut")
+local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 
 local lastUnitType = null
 
@@ -1392,7 +1393,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       searchBoxWeak.searchCancel()
   }
 
-  function openMenuForUnit(unit)
+  function openMenuForUnit(unit, ignoreMenuHover = false)
   {
     if ("name" not in unit)
       return
@@ -1400,10 +1401,10 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     if (curAirObj == null && groupChooseObj?.isValid())
       curAirObj = groupChooseObj.findObject(unit.name)
     if (curAirObj?.isValid())
-      openUnitActionsList(curAirObj)
+      openUnitActionsList(curAirObj, false, ignoreMenuHover)
   }
 
-  function onAircraftClick(obj)
+  function onAircraftClick(obj, ignoreMenuHover = false)
   {
     local holderId = obj?.holderId
     if (holderId != null) {
@@ -1417,7 +1418,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     }
     local unit = getCurAircraft()
     checkSelectAirGroup(unit)
-    openMenuForUnit(unit)
+    openMenuForUnit(unit, ignoreMenuHover)
   }
 
   function onUnitDblClick(obj) {
@@ -1877,6 +1878,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onUnitMainFunc(obj)
   {
+    if (::show_console_buttons) { // open vehicle menu on slot button click
+      onAircraftClick(obj, true)
+      return
+    }
+
     local unit = ::getAircraftByName(obj?.holderId) ?? getCurAircraft()
     if (!unit)
       return
@@ -1893,6 +1899,19 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       setResearchManually = setResearchManually
       availableFlushExp = availableFlushExp
     })
+  }
+
+  function onUnitMainFuncBtnUnHover(obj) {
+    if (!::show_console_buttons)
+      return
+
+    local unitObj = unitContextMenuState.value?.unitObj
+    if (!unitObj?.isValid())
+      return
+
+    local actionListObj = unitObj.findObject("actions_list")
+    if (actionListObj?.isValid())
+      actionListObj.closeOnUnhover = "yes"
   }
 
   function onModifications(obj)
