@@ -182,7 +182,7 @@ class ::WarbondAward
 
     local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
     return !awardType.hasIncreasingLimit() && maxBoughtCount > 0
-      && getLeftBoughtCount() <= 0
+      && getLeftBoughtCount() == 0
   }
 
   function getAvailableAmountText()
@@ -195,7 +195,7 @@ class ::WarbondAward
     if (!hasIncreasingLimit && maxBoughtCount <= 0)
       return ""
     local leftAmount = getLeftBoughtCount()
-    if (!hasIncreasingLimit && leftAmount <= 0)
+    if (!hasIncreasingLimit && leftAmount == 0)
       return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
       return ""
@@ -203,7 +203,7 @@ class ::WarbondAward
   }
 
   getLeftBoughtCount = @() isValid()
-    ? awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk)
+    ? ::max(awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk), 0)
     : 0
 
   function addAmountTextToDesc(desc)

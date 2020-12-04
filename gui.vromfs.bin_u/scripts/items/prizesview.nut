@@ -105,14 +105,14 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
   }
 
   function getPrizesViewArrayByWeightCategory(prizes, category, title, params) {
-    local { isOnlyTitle = false, categoryId } = params
+    local { showOnlyCategoriesOfPrizes = false, categoryId } = params
     local isFirstHighlightedLine = categoryId % 2 == 0
     local prizeTitleView = getPrizeChanceConfig(category).__merge({
       title = title
       isHighlightedLine = isFirstHighlightedLine
     })
 
-    if (isOnlyTitle)
+    if (showOnlyCategoriesOfPrizes)
       return [prizeTitleView]
 
     local arrayForView = getPrizesStacksArrayForView([], params.__merge({
@@ -143,7 +143,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     $"trophy/unlockables_names/{itemBlkType == "unit" ? "aircraft" : itemBlkType}")
 
   function getPrizesStacksViewByWeight(content, fixedAmountHeaderFunc = null, params = null) {
-    local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, isOnlyTitle = false } = params
+    local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, showOnlyCategoriesOfPrizes = false } = params
     local view = params ? clone params : {}
     local stacksList = _stackContent(content, stackLevel, shopDesc)
     local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
@@ -159,7 +159,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     }
     local isFitByRarity = @(prize, rarity) rarity == prize?.item.getQuality()
 
-    view.isCollapsable <- !isOnlyTitle
+    view.isCollapsable <- !showOnlyCategoriesOfPrizes
     if (fixedAmountHeaderFunc)
       view.header <- fixedAmountHeaderFunc(fixedAmount)
 

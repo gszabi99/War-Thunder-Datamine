@@ -853,9 +853,10 @@ ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = 
       if (itemLimitsDesc.len() > 0)
         desc += (desc.len() ? "\n" : "") + itemLimitsDesc
     }
-    local descModifyFunc = ::getTblValue("descModifyFunc", params)
-    if (descModifyFunc)
-      desc = descModifyFunc(desc)
+    if ("descModifyFunc" in params) {
+      desc = params.descModifyFunc(desc)
+      params.rawdelete("descModifyFunc")
+    }
 
     local warbondId = ::getTblValue("wbId", params)
     if (warbondId)

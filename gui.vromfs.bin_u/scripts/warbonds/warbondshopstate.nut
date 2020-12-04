@@ -14,7 +14,7 @@ local updateLeftSpecialTasksBoughtCount = function() {
     return
   }
 
-  leftSpecialTasksBoughtCount(::max(specialTaskAward.getLeftBoughtCount(), 0))
+  leftSpecialTasksBoughtCount(specialTaskAward.getLeftBoughtCount())
 }
 
 addListenersWithoutEnv({

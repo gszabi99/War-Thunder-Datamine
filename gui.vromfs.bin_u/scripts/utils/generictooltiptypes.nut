@@ -167,7 +167,8 @@ enums.addTypesByGlobalName("g_tooltip_type", {
 
       local preferMarkup = item.isPreferMarkupDescInTooltip
       obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
-      ::ItemsManager.fillItemDescr(item, obj, handler, false, preferMarkup, params)
+      ::ItemsManager.fillItemDescr(item, obj, handler, false, preferMarkup,
+        params.__update({ showOnlyCategoriesOfPrizes = true}))
       return true
     }
     onEventItemsShopUpdate = function(eventParams, obj, handler, id, params) {
@@ -188,7 +189,8 @@ enums.addTypesByGlobalName("g_tooltip_type", {
 
       local preferMarkup = item.isPreferMarkupDescInTooltip
       obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
-      ::ItemsManager.fillItemDescr(item, obj, handler, false, preferMarkup, { isOnlyTitle = true })
+      ::ItemsManager.fillItemDescr(item, obj, handler, false, preferMarkup,
+        { showOnlyCategoriesOfPrizes = true })
       return true
     }
     onEventItemsShopUpdate = function(eventParams, obj, handler, id, params) {
