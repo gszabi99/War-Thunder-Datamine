@@ -7,7 +7,6 @@ class ::WarbondAward
   awardType = ::g_wb_award_type[::EWBAT_INVALID]
   warbondWeak = null
   blk = null
-  maxBoughtCount = 0
   ordinaryTasks = 0
   specialTasks = 0
   reqMaxUnitRank = -1
@@ -24,7 +23,6 @@ class ::WarbondAward
     blk = ::DataBlock()
     blk.setFrom(awardBlk)
     awardType = ::g_wb_award_type.getTypeByBlk(blk)
-    maxBoughtCount = awardType.getMaxBoughtCount(blk)
     ordinaryTasks = blk?.Ordinary ?? 0
     specialTasks = blk?.Special ?? 0
     reqMaxUnitRank = blk?.reqMaxUnitRank ?? -1
@@ -67,7 +65,7 @@ class ::WarbondAward
 
   function canBuy()
   {
-    return !isItemLocked() && awardType.canBuy(blk)
+    return !isItemLocked() && awardType.canBuy(warbondWeak, blk)
   }
 
   function isItemLocked()
@@ -128,7 +126,7 @@ class ::WarbondAward
       local reason = ::loc("warbond/msg/alreadyBoughtMax", { purchase = ::colorize("userlogColoredText", getNameText()) })
       if (!isAvailableForCurrentWarbondShop())
         reason = getNotAvailableForCurrentShopText(false)
-      else if (!awardType.canBuy(blk))
+      else if (!awardType.canBuy(warbondWeak, blk))
         reason = getAwardTypeCannotBuyReason(false)
       else if (!isAvailableByShopLevel())
         reason = getRequiredShopLevelText(false)
@@ -179,23 +177,34 @@ class ::WarbondAward
 
   function isAllBought()
   {
-    return maxBoughtCount > 0 && awardType.getBoughtCount(warbondWeak, blk) >= maxBoughtCount
+    if (!isValid())
+      return false
+
+    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    return !awardType.hasIncreasingLimit() && maxBoughtCount > 0
+      && getLeftBoughtCount() <= 0
   }
 
   function getAvailableAmountText()
   {
-    if (maxBoughtCount <= 0 || !isValid())
+    if (!isValid())
       return ""
 
+    local maxBoughtCount = awardType.getMaxBoughtCount(warbondWeak, blk)
+    local hasIncreasingLimit = awardType.hasIncreasingLimit()
+    if (!hasIncreasingLimit && maxBoughtCount <= 0)
+      return ""
     local leftAmount = getLeftBoughtCount()
-    if (leftAmount <= 0)
+    if (!hasIncreasingLimit && leftAmount <= 0)
       return ::colorize("warningTextColor", ::loc("warbond/alreadyBoughtMax"))
     if (!awardType.showAvailableAmount)
       return ""
     return ::loc("warbond/availableForPurchase") + ::loc("ui/colon") + leftAmount
   }
 
-  getLeftBoughtCount = @() maxBoughtCount - awardType.getBoughtCount(warbondWeak, blk)
+  getLeftBoughtCount = @() isValid()
+    ? awardType.getMaxBoughtCount(warbondWeak, blk) -  awardType.getBoughtCount(warbondWeak, blk)
+    : 0
 
   function addAmountTextToDesc(desc)
   {
@@ -290,16 +299,17 @@ class ::WarbondAward
 
   function getAwardTypeCannotBuyReason(colored = true)
   {
-    if (!isRequiredSpecialTasksComplete())
+    if (!isValid() || !isRequiredSpecialTasksComplete())
       return ""
 
-    local text = ::loc(awardType.canBuyReasonLocId())
+    local text = ::loc(awardType.canBuyReasonLocId(warbondWeak, blk))
     return colored? ::colorize("warningTextColor", text) : text
   }
 
   function isRequiredSpecialTasksComplete()
   {
-    return awardType.isReqSpecialTasks && !awardType.canBuy(blk) && isAvailableForCurrentWarbondShop()
+    return isValid() && awardType.isReqSpecialTasks
+      && !awardType.canBuy(warbondWeak, blk) && isAvailableForCurrentWarbondShop()
   }
 
   function getNotAvailableForCurrentShopText(colored = true)

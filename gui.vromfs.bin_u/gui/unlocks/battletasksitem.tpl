@@ -41,9 +41,9 @@ expandable {
         <</isLowWidthScreen>>
       }
 
-      <<#taskRankValue>>
+      <<#taskHeaderCondition>>
       textareaNoTab {
-        text:t='<<taskRankValue>>'
+        text:t='<<taskHeaderCondition>>'
         overlayTextColor:t='active'
         top:t='50%ph-50%h'
         position:t='relative'
@@ -53,7 +53,7 @@ expandable {
         normalFont:t='yes'
         <</isLowWidthScreen>>
       }
-      <</taskRankValue>>
+      <</taskHeaderCondition>>
 
       <<#taskStatus>>
         statusImg {}

@@ -28,11 +28,21 @@ textareaNoTab {
   text:t='<<header>>'
 }
 <</header>>
+
+<<#isCollapsable>>
+tdiv {
+  id:t='item_info_collapsable_prizes'
+  width:t='pw'
+  max-width:t='p.p.w'
+<</isCollapsable>>
+
 <<#list>>
 _newline{ size:t='0' }
 tdiv {
   width:t='pw'
+  <<^isCollapsable>>
   max-width:t='p.p.w'
+  <</isCollapsable>>
   flow:t='vertical'
   total-input-transparent:t='yes'
   <<#tooltip>>
@@ -49,8 +59,35 @@ tdiv {
   background-color:t='@evenTrColor'
   <</isHighlightedLine>>
 
+  <<#isCollapsable>>
+  isCategory:t=<<#isCategory>>'yes'<</isCategory>><<^isCategory>>'no'<</isCategory>>
+  <<#isCategory>>
+  categoryId:t=<<categoryId>>
+  css-hier-invalidate:t='yes'
+  collapsed:t='yes'
+  behaviour:t='button'
+  on_click:t='<<onCategoryClick>>'
+  focusBtnName:t='A'
+  focus_border {}
+  <</isCategory>>
+  <<^isCategory>>
+  display:t='hide'
+  enable:t='no'
+  <</isCategory>>
+  <</isCollapsable>>
+
   prizeNest {
     width:t='pw'
+
+    <<#isCategory>>
+    css-hier-invalidate:t='yes'
+    fullSizeCollapseBtn {
+      css-hier-invalidate:t='yes'
+      square:t='yes'
+      activeText{}
+    }
+    <</isCategory>>
+
     <<#title>>
     <<#icon>>
     img {
@@ -184,3 +221,7 @@ tdiv {
   <</commentText>>
 }
 <</list>>
+
+<<#isCollapsable>>
+}
+<</isCollapsable>>

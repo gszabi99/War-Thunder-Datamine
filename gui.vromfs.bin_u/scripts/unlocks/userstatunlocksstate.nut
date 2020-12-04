@@ -154,8 +154,8 @@ local getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unloc
 
 local function getUnlockReward(userstatUnlock) {
   local rewardMarkUp = { rewardText = "", itemMarkUp = ""}
-  local { lastRewardedStage = 0, stages = [] } = userstatUnlock
-  local stage = stages?[lastRewardedStage] ?? stages?[lastRewardedStage-1]
+  local { lastRewardedStage = 0 } = userstatUnlock
+  local stage = getStageByIndex(userstatUnlock, lastRewardedStage)
   if (stage == null)
     return rewardMarkUp
 

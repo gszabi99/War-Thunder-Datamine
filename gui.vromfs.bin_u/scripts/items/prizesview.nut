@@ -104,21 +104,37 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     }
   }
 
-  function getPrizesViewArrayByWeightCategory(prizes, category, title, isFirstHighlightedLine, params) {
+  function getPrizesViewArrayByWeightCategory(prizes, category, title, params) {
+    local { isOnlyTitle = false, categoryId } = params
+    local isFirstHighlightedLine = categoryId % 2 == 0
+    local prizeTitleView = getPrizeChanceConfig(category).__merge({
+      title = title
+      isHighlightedLine = isFirstHighlightedLine
+    })
+
+    if (isOnlyTitle)
+      return [prizeTitleView]
+
     local arrayForView = getPrizesStacksArrayForView([], params.__merge({
       stacksList = prizes
       isFirstHighlightedLine = !isFirstHighlightedLine
     }))
-    local buttonsCount = arrayForView?[0].buttonsCount ?? 0
-    local prizeListView = [(getPrizeChanceConfig(category).__merge({
-      title = title
-      isHighlightedLine = isFirstHighlightedLine
+
+    if (arrayForView.len() == 0)
+      return [prizeTitleView]
+
+    local buttonsCount = getMaxPrizeButtonsCount(arrayForView)
+    prizeTitleView = prizeTitleView.__merge({
       buttonsCount = buttonsCount
       buttons = ::array(buttonsCount, { emptyButton = true })
-    }))]
-    prizeListView.extend(arrayForView)
-    return prizeListView
+      isCategory = true
+      categoryId = categoryId
+      onCategoryClick = "onPrizeCategoryClick"
+    })
+    return [prizeTitleView].extend(arrayForView)
   }
+
+  getMaxPrizeButtonsCount = @(prizes) prizes.reduce(@(acc, prize) prize.buttonsCount > acc ? prize.buttonsCount : acc, 0)
 
   getItemPrizeRarityText = @(categoryText, tag = null) "".concat(categoryText, ::loc("ui/parentheses/space", {
     text = tag ?? ::loc("item/rarity1")
@@ -127,7 +143,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     $"trophy/unlockables_names/{itemBlkType == "unit" ? "aircraft" : itemBlkType}")
 
   function getPrizesStacksViewByWeight(content, fixedAmountHeaderFunc = null, params = null) {
-    local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight } = params
+    local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, isOnlyTitle = false } = params
     local view = params ? clone params : {}
     local stacksList = _stackContent(content, stackLevel, shopDesc)
     local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
@@ -143,13 +159,15 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     }
     local isFitByRarity = @(prize, rarity) rarity == prize?.item.getQuality()
 
+    view.isCollapsable <- !isOnlyTitle
     if (fixedAmountHeaderFunc)
       view.header <- fixedAmountHeaderFunc(fixedAmount)
 
-
+    params = params ? clone params : {}
     params.needShowDropChance <- false
     params.hasChanceIcon <- false
     params.fixedAmount <- fixedAmount
+    params.categoryId <- 0
 
     local notFoundPrizes = []
     local prizeListView = []
@@ -166,8 +184,9 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
       local categoryText = getItemTypePrizeText(itemBlkType)
       if (category.weight != null) {
+        params.categoryId++
         prizeListView.extend(getPrizesViewArrayByWeightCategory(
-          byTypeArray, { weight = category.weight }, categoryText, prizeListView.len() % 2 != 0, params))
+          byTypeArray, { weight = category.weight }, categoryText, params))
 
         continue
       }
@@ -183,10 +202,10 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
         if (byRarityArray.len() == 0)
           continue
 
+        params.categoryId++
         prizeListView.extend(getPrizesViewArrayByWeightCategory(byRarityArray,
           { weight = rarityWeight.weight },
-          getItemPrizeRarityText(categoryText, byRarityArray[0]?.item.rarity.tag),
-          prizeListView.len() % 2 != 0, params))
+          getItemPrizeRarityText(categoryText, byRarityArray[0]?.item.rarity.tag), params))
       }
 
       while (byTypeArray.len() > 0) {
@@ -202,9 +221,10 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
         local byRarityArray = byRarityLists.filteredItems
         byTypeArray = byRarityLists.lostPrizesList
+        params.categoryId++
         prizeListView.extend(getPrizesViewArrayByWeightCategory(byRarityArray,
-          { weight = "low" }, getItemPrizeRarityText(categoryText, byRarityArray[0]?.item.rarity.tag),
-          prizeListView.len() % 2 != 0, params))
+          { weight = "low" },
+          getItemPrizeRarityText(categoryText, byRarityArray[0]?.item.rarity.tag), params))
       }
     }
 
@@ -224,15 +244,16 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
       local byTypeArray = byTypeLists.filteredItems
       stacksList = byTypeLists.lostPrizesList
+      params.categoryId++
       prizeListView.extend(getPrizesViewArrayByWeightCategory(byTypeArray,
-        { weight = "low" }, getItemTypePrizeText(itemBlkType),
-        prizeListView.len() % 2 != 0, params))
+        { weight = "low" }, getItemTypePrizeText(itemBlkType), params))
     }
 
-    if (notFoundPrizes.len() > 0)
+    if (notFoundPrizes.len() > 0) {
+      params.categoryId++
       prizeListView.extend(getPrizesViewArrayByWeightCategory(
-        stacksList, { weight = "low" }, ::loc("attachables/category/other"),
-        prizeListView.len() % 2 != 0, params))
+        stacksList, { weight = "low" }, ::loc("attachables/category/other"), params))
+    }
 
     view.list <- prizeListView
     return ::handyman.renderCached(template, view)

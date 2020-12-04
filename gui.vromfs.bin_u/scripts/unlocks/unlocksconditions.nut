@@ -257,6 +257,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
 //{
 //  type = string
 //  values = null || array of values
+//  needToShowInHeader - show values in header of unlock (used in battletasks and battlepass challenges)
 //  locGroup  - group values in one loc string instead of different string for each value.
 //
 //  specific params for main progresscondition (type == "mode")
@@ -291,6 +292,7 @@ UnlockConditions._createCondition <- function _createCondition(condType, values 
   return {
     type = condType
     values = values
+    needToShowInHeader = false
   }
 }
 
@@ -539,6 +541,7 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
       minOnlyStr = ::loc("conditions/unitRank/format_min")
     }, true)
     res.values = v != "" ? v : null
+    res.needToShowInHeader = true
   }
   else if (t == "playerUnitMRank")
   {
@@ -555,6 +558,7 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
       minOnlyStr = ::loc("conditions/unitRank/format_min")
     })
     res.values = v != "" ? v : null
+    res.needToShowInHeader = true
   }
   else if (t == "playerUnitClass")
   {
@@ -1165,18 +1169,10 @@ UnlockConditions.getProgressBarData <- function getProgressBarData(modeType, cur
   return res
 }
 
-UnlockConditions.getRankValue <- function getRankValue(conditions)
+UnlockConditions.getHeaderCondition <- function getHeaderCondition(conditions)
 {
   foreach(c in conditions)
-    if (c.type == "playerUnitRank")
-      return c.values
-  return null
-}
-
-UnlockConditions.getBRValue <- function getBRValue(conditions)
-{
-  foreach(c in conditions)
-    if (c.type == "playerUnitMRank")
+    if (c.needToShowInHeader)
       return c.values
   return null
 }

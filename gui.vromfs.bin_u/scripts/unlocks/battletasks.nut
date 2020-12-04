@@ -754,8 +754,7 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
 
     local title = isTaskBattleTask ? getLocalizedTaskNameById(task.id)
                 : (isUnlock? ::get_unlock_name_text(config.unlockType, config.id) : ::getTblValue("text", config, ""))
-    local brVal = isUnlock ? ::UnlockConditions.getBRValue(config.conditions) : null
-    local rankVal = isUnlock ? ::UnlockConditions.getRankValue(config.conditions) : null
+    local headerCond = isUnlock ? ::UnlockConditions.getHeaderCondition(config.conditions) : null
 
     local id = isTaskBattleTask ? task.id : config.id
     local progressData = config?.getProgressBarData? config.getProgressBarData() : null
@@ -772,7 +771,7 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       taskPlayback = ::getTblValue("playback", task) || ::getTblValue("playback", config)
       isPlaybackDownloading = !::g_sound.canPlay(id)
       taskDifficultyImage = getDifficultyImage(task)
-      taskRankValue = brVal || rankVal ? ::loc("ui/parentheses/space", { text = brVal || rankVal }) : null
+      taskHeaderCondition = headerCond ? ::loc("ui/parentheses/space", { text = headerCond }) : null
       description = isTaskBattleTask || isUnlock ? getTaskDescription(config, paramsCfg) : null
       reward = isPromo? null : getRewardMarkUpConfig(task, config)
       newIconWidget = isTaskBattleTask ? (isTaskActive(task)? null : NewIconWidget.createLayout()) : null

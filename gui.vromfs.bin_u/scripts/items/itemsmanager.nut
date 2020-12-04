@@ -405,11 +405,19 @@ ItemsManager.getShopList <- function getShopList(typeMask = itemType.INVENTORY_A
   return _getItemsFromList(itemsList, typeMask, filterFunc, "shopFilterMask")
 }
 
+ItemsManager.isItemVisible <- function isItemVisible(item, shopTab)
+{
+  return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || ::has_feature("devItemShop"))
+      && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop
+    : shopTab == itemsTab.INVENTORY ? !item.isHiddenItem() && !item.isVisibleInWorkshopOnly()
+    : false
+}
+
 ItemsManager.getShopVisibleSeenIds <- function getShopVisibleSeenIds()
 {
   if (!shopVisibleSeenIds)
     shopVisibleSeenIds = getShopList(checkItemsMaskFeatures(itemType.INVENTORY_ALL),
-      @(it) it.isCanBuy() && !it.isHiddenItem() && !it.isVisibleInWorkshopOnly()).map(@(it) it.getSeenId())
+      @(it) ::ItemsManager.isItemVisible(it, itemsTab.SHOP)).map(@(it) it.getSeenId())
   return shopVisibleSeenIds
 }
 
@@ -703,7 +711,7 @@ ItemsManager.getInventoryVisibleSeenIds <- function getInventoryVisibleSeenIds()
   {
     local itemsList = getInventoryListByShopMask(checkItemsMaskFeatures(itemType.INVENTORY_ALL))
     inventoryVisibleSeenIds = itemsList.filter(
-      @(it) !it.isHiddenItem() && !it.isVisibleInWorkshopOnly()).map(@(it) it.getSeenId())
+      @(it) ::ItemsManager.isItemVisible(it, itemsTab.INVENTORY)).map(@(it) it.getSeenId())
   }
 
   return inventoryVisibleSeenIds
@@ -864,7 +872,9 @@ ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = 
   obj = holderObj.findObject("item_desc_div")
   if (::checkObj(obj))
   {
-    local longdescMarkup = (preferMarkup && item && item?.getLongDescriptionMarkup) ? item.getLongDescriptionMarkup({ shopDesc = shopDesc }) : ""
+    local longdescMarkup = (preferMarkup && item?.getLongDescriptionMarkup)
+      ? item.getLongDescriptionMarkup((params ?? {}).__merge({ shopDesc = shopDesc })) : ""
+
     obj.show(longdescMarkup != "")
     if (longdescMarkup != "")
       obj.getScene().replaceContentFromText(obj, longdescMarkup, longdescMarkup.len(), handler)

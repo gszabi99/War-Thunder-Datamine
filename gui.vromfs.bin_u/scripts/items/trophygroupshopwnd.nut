@@ -1,5 +1,6 @@
 local stdMath = require("std/math.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 
 ::gui_start_open_trophy_group_shop_wnd <- function gui_start_open_trophy_group_shop_wnd(trophy)
 {
@@ -18,6 +19,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
   trophy = null
   trophyInfo = null
   bitMask = null
+  infoHandler = null
 
   focusIdx = -1
 
@@ -37,13 +39,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function setDescription()
   {
-    local obj = scene.findObject("item_info_desc_place")
-    if (!::checkObj(obj))
-      return
-
-    guiScene.replaceContent(obj, "gui/items/itemDesc.blk", this)
-    obj.scrollToView(true)
-    ::ItemsManager.fillItemDescr(trophy, obj, this)
+    infoHandler?.updateHandlerData(trophy)
   }
 
   function setupSelection()
@@ -159,6 +155,7 @@ class ::gui_handlers.TrophyGroupShopWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local data = ::handyman.renderCached(sceneTplName, view)
     guiScene.replaceContentFromText(scene.findObject("root-box"), data, data.len(), this)
+    infoHandler = itemInfoHandler(scene.findObject("item_info_desc_place"))
   }
 
   function isTrophyPurchased(value)

@@ -28,9 +28,9 @@ shopSheets.template <- {
     && (shopTab != itemsTab.SHOP || getItemsList(shopTab).len() > 0)
 
   getItemFilterFunc = @(shopTab)
-    shopTab == itemsTab.SHOP ? (@(item) item.isCanBuy() && isDevItemsTab == item.isDevItem
-      && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop)
-    : (@(item) !item.isHiddenItem() && !item.isVisibleInWorkshopOnly())
+    shopTab == itemsTab.SHOP
+    ? (@(item) ::ItemsManager.isItemVisible(item, shopTab) && isDevItemsTab == item.isDevItem)
+    : (@(item) ::ItemsManager.isItemVisible(item, shopTab))
 
   getItemsList = function(shopTab, subsetId = null)
   {

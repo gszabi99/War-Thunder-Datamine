@@ -255,7 +255,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
       view.doneTasksTable.rows <- ""
       view.doneTasksTable.rows += ::buildTableRow("tr_header",
                [{textType = "textareaNoTab", text = ::loc("unlocks/battletask"), tdalign = "left", width = "65%pw"},
-               {textType = "textarea", text = ::loc("debriefing/sessionTime"), tdalign = "right", width = "30%pw"}])
+               {textType = "textarea", text = ::loc("debriefing/sessionTime"), tdalign = "right", width = "35%pw"}])
 
       foreach(idx, uLog in finishedTasksUserlogsArray)
       {
@@ -266,8 +266,8 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
         text = ::colorize("activeTextColor", text)
 
         local timeStr = time.buildDateTimeStr(uLog.time, true)
-        local rowData = [{textType = "textareaNoTab", text = text, tooltip = text, width = "60%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'"},
-                         {textType = "textarea", text = timeStr, tooltip = timeStr, tdalign = "right", width = "40%pw"}]
+        local rowData = [{textType = "textareaNoTab", text = text, tooltip = text, width = "65%pw", textRawParam = "pare-text:t='yes'; width:t='pw'; max-height:t='ph'"},
+                         {textType = "textarea", text = timeStr, tooltip = timeStr, tdalign = "right", width = "35%pw"}]
 
         view.doneTasksTable.rows += ::buildTableRow("tr_" + idx, rowData, idx % 2 == 0)
       }

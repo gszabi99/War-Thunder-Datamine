@@ -29,6 +29,9 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     if (!wbList.len())
       return goBack()
 
+    local infoObj = scene.findObject("item_info")
+    guiScene.replaceContent(infoObj, "gui/items/itemDesc.blk", this)
+
     curPageAwards = []
     if (!(curWbIdx in wbList))
       curWbIdx = 0

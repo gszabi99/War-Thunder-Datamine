@@ -619,7 +619,7 @@ local logNameByType = {
     local unlock = ::g_unlocks.getUnlockById(::getTblValue("unlockId", blk.body))
     local hideUnlockById = unlock != null && !::is_unlock_visible(unlock)
 
-    if (isUnlockTypeNotSuitable || hideUnlockById)
+    if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != ::EULT_BUYING_UNLOCK))
       continue
 
     local log = {

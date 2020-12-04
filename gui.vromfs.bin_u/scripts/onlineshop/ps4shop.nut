@@ -127,8 +127,11 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
     }
   }
 
-  function afterModalDestroy()
-  {
+  function afterModalDestroy() {
+    psnStore.hide_icon()
+  }
+
+  function onDestroy() {
     psnStore.hide_icon()
   }
 

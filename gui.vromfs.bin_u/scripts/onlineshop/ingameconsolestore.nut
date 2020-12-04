@@ -48,6 +48,9 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
   {
     needHoverSelect = ::show_console_buttons
 
+    local infoObj = scene.findObject("item_info")
+    guiScene.replaceContent(infoObj, "gui/items/itemDesc.blk", this)
+
     local titleObj = scene.findObject("wnd_title")
     titleObj.setValue(::loc(titleLocId))
 

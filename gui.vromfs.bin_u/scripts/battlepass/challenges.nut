@@ -107,8 +107,7 @@ local function getChallengeView(config, paramsCfg = {}) {
 
   local title = ::get_unlock_name_text(unlockConfig.unlockType, id)
   local { addTitle, titleIcon } = getConditionInTitleConfig(config)
-  local brVal = ::UnlockConditions.getBRValue(unlockConfig.conditions)
-  local rankVal = ::UnlockConditions.getRankValue(unlockConfig.conditions)
+  local headerCond = ::UnlockConditions.getHeaderCondition(unlockConfig.conditions)
 
   local progressData = unlockConfig?.getProgressBarData() ?? null
   local progressBarValue = unlockConfig?.curVal != null && unlockConfig.curVal >= 0
@@ -121,7 +120,7 @@ local function getChallengeView(config, paramsCfg = {}) {
     title = $"{title}{addTitle}"
     taskStatus = challengeStatus
     taskDifficultyImage = titleIcon
-    taskRankValue = brVal || rankVal ? ::loc("ui/parentheses/space", { text = brVal || rankVal }) : null
+    taskHeaderCondition = headerCond ? ::loc("ui/parentheses/space", { text = headerCond }) : null
     description = ::g_battle_tasks.getTaskDescription(unlockConfig, paramsCfg)
     reward = getUnlockRewardMarkUp(userstatUnlock)
     canGetReward = userstatUnlock?.hasReward ?? false

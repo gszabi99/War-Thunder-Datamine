@@ -1,4 +1,5 @@
 local sheets = require("scripts/items/itemsShopSheets.nut")
+local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local seenList = require("scripts/seen/seenList.nut")
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
@@ -65,9 +66,12 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   // Used to avoid expensive get...List and further sort.
   itemsListValid = false
 
+  infoHandler = null
+
   function initScreen()
   {
     needHoverSelect = ::show_console_buttons
+    infoHandler = itemInfoHandler(scene.findObject("item_info"))
     initNavigation()
     sheets.updateWorkshopSheets()
     initSheetsOnce()
@@ -572,9 +576,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   {
     local item = getCurItem()
     markItemSeen(item)
-    local infoObj = scene.findObject("item_info")
-    infoObj.scrollToView(true)
-    ::ItemsManager.fillItemDescr(item, infoObj, this, true, true)
+    infoHandler?.updateHandlerData(item, true, true)
     showSceneBtn("jumpToDescPanel", ::show_console_buttons && item != null)
     updateButtons()
   }

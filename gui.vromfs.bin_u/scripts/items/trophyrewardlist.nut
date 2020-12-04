@@ -1,3 +1,5 @@
+local itemInfoHandler = require("scripts/items/itemInfoHandler.nut")
+
 ::gui_start_open_trophy_rewards_list <- function gui_start_open_trophy_rewards_list(params = {})
 {
   local rewardsArray = params?.rewardsArray
@@ -15,11 +17,15 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
   rewardsArray = []
   tittleLocId = "mainmenu/rewardsList"
 
+  infoHandler = null
+
   function initScreen()
   {
     local listObj = scene.findObject("items_list")
     if (!::checkObj(listObj))
       return goBack()
+
+    infoHandler = itemInfoHandler(scene.findObject("item_info"))
 
     local titleObj = scene.findObject("title")
     if (::check_obj(titleObj))
@@ -53,16 +59,15 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
     local val = obj.getValue()
     local reward_config = rewardsArray[val]
     local isItem = reward_config?.item != null
-    local infoObj = showSceneBtn("item_info", isItem)
+    infoHandler?.setHandlerVisible(isItem)
     local infoTextObj = showSceneBtn("item_info_text", !isItem)
     if (isItem)
     {
-      if (!::check_obj(infoObj))
+      if (!infoHandler)
         return
 
       local item = ::ItemsManager.findItemById(reward_config.item)
-      infoObj.scrollToView(true)
-      ::ItemsManager.fillItemDescr(item, infoObj, this, true, true, reward_config)
+      infoHandler.updateHandlerData(item, true, true, reward_config)
     } else
     {
       if (!::check_obj(infoTextObj))

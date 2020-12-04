@@ -968,6 +968,7 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       return ""
 
     case ::UNLOCKABLE_ACHIEVEMENT:
+    case ::UNLOCKABLE_CHALLENGE:
       local unlockBlk = ::g_unlocks.getUnlockById(id)
       if (unlockBlk?.locId)
         return get_locId_name(unlockBlk)

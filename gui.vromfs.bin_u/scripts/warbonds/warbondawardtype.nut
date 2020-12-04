@@ -1,4 +1,4 @@
-local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
+local { getPurchaseLimitWb } = require("scripts/warbonds/warbondShopState.nut")
 
 local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
@@ -49,13 +49,14 @@ local getBoughtCountByAmount = @(warbond, blk)
   requestBuy = requestBuyByName //warbond, blk
   getBoughtCount = getBoughtCountByName //warbond, blk
 
-  canBuy = @(blk) true
-  getMaxBoughtCount = @(blk) blk?.maxBoughtCount ?? 0
+  canBuy = @(warbond, blk) true
+  getMaxBoughtCount = @(warbond, blk) blk?.maxBoughtCount ?? 0
   showAvailableAmount = true
   isAvailableForCurrentShop = @(warbond) true
 
   isReqSpecialTasks = false
-  canBuyReasonLocId = @() isReqSpecialTasks? "item/specialTasksPersonalUnlocks/purchaseRestriction" : ""
+  hasIncreasingLimit = @() false
+  canBuyReasonLocId = @(warbond, blk) isReqSpecialTasks? "item/specialTasksPersonalUnlocks/purchaseRestriction" : ""
   userlogResourceTypeText = ""
   getUserlogBuyText = function(blk, priceText)
   {
@@ -153,7 +154,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       }))
     }
 
-    getMaxBoughtCount = function(blk) { return 1 }
+    getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {
       local unit = ::getAircraftByName(blk.name)
       return (unit && ::isUnitBought(unit)) ? 1 : 0
@@ -193,7 +194,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::get_unlock_description(blk?.name ?? "")
     }
 
-    getMaxBoughtCount = @(blk) 1
+    getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = @(warbond, blk) ::g_decorator_type.SKINS.isPlayerHaveDecorator(blk?.name ?? "") ? 1 : 0
     showAvailableAmount = false
     imgNestDoubleSize = "yes"
@@ -223,7 +224,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::get_unlock_description(blk?.name ?? "")
     }
 
-    getMaxBoughtCount = function(blk) { return 1 }
+    getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {
       return ::player_have_decal(blk?.name ?? "") ? 1 : 0
     }
@@ -255,7 +256,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       return ::get_unlock_description(blk?.name ?? "")
     }
 
-    getMaxBoughtCount = function(blk) { return 1 }
+    getMaxBoughtCount = @(warbond, blk) 1
     getBoughtCount = function(warbond, blk) {
       return ::player_have_attachable(blk?.name ?? "") ? 1 : 0
     }
@@ -294,15 +295,18 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     getLayeredImage = @(blk, warbond) ::LayersIcon.getIconData("reward_battle_task_" + warbond.medalIcon)
     getNameText = @(blk) ::loc("item/" + blk.name)
     getDescText = @(blk) ::loc("item/" + blk.name + "/desc")
-    needCheckLimit = @() ::has_feature("BattlePass")
-    canBuy = @(blk) ::warbonds_can_buy_battle_task(blk.name) && (!needCheckLimit() || leftSpecialTasksBoughtCount.value > 0)
-    getBoughtCount = @(warbond, blk) needCheckLimit() ? 0 : getBoughtCountByName(warbond, blk)
-    getMaxBoughtCount = @(blk) needCheckLimit() ? leftSpecialTasksBoughtCount.value : blk?.maxBoughtCount ?? 0
+    hasIncreasingLimit = @() ::has_feature("BattlePass")
+    canBuy = @(warbond, blk) ::warbonds_can_buy_battle_task(blk.name)
+      && (!hasIncreasingLimit() || getPurchaseLimitWb(warbond) > getBoughtCount(warbond, blk))
+    getMaxBoughtCount = @(warbond, blk) hasIncreasingLimit() ? getPurchaseLimitWb(warbond) : blk?.maxBoughtCount ?? 0
     isReqSpecialTasks = true
     isAvailableForCurrentShop = @(warbond) warbond.isCurrent()
-    canBuyReasonLocId = @() ::g_battle_tasks.hasInCompleteHardTask.value ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
-      : needCheckLimit() && leftSpecialTasksBoughtCount.value == 0 ? "item/specialTasksPersonalUnlocks/limitRestriction"
-      : ""
+    canBuyReasonLocId = @(warbond, blk)
+      ::g_battle_tasks.hasInCompleteHardTask.value
+        ? "item/specialTasksPersonalUnlocks/purchaseRestriction"
+        : hasIncreasingLimit() && (getPurchaseLimitWb(warbond) <= getBoughtCount(warbond, blk))
+           ? "item/specialTasksPersonalUnlocks/limitRestriction"
+           : ""
     getTooltipId = @(blk, warbond) ::g_tooltip_type.SPECIAL_TASK.getTooltipId(blk.name,
                                                                               {
                                                                                 wbId = warbond.id,

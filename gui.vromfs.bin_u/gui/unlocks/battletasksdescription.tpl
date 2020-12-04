@@ -100,7 +100,7 @@ textareaNoTab {
     table {
       width:t='pw'
       baseRow:t='yes'
-      padding:t='0.01@scrn_tgt,0'
+      text-valign:t='center'
       total-input-transparent:t='yes'
       <<@rows>>
     }
