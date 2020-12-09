@@ -725,12 +725,20 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     }
 
     local reward = ::get_unlock_rewards_text(config)
+    local difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
     if (::has_feature("BattlePass")) {
-      local difficulty = ::g_battle_task_difficulty.getDifficultyTypeByTask(task)
       local unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
 
       reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
       rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
+    }
+
+    if(difficulty == ::g_battle_task_difficulty.MEDIUM) {
+      local specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[::EWBAT_BATTLE_TASK])
+      if (specialTaskAward?.awardType.hasIncreasingLimit()) {
+        local rewardText = ::loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
+        reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
+      }
     }
 
     if (reward == "" && !rewardMarkUp.len())

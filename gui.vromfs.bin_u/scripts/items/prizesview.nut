@@ -142,9 +142,9 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
   getItemTypePrizeText = @(itemBlkType) ::loc(
     $"trophy/unlockables_names/{itemBlkType == "unit" ? "aircraft" : itemBlkType}")
 
-  function getPrizesStacksViewByWeight(content, fixedAmountHeaderFunc = null, params = null) {
+  function getPrizesStacksViewByWeight(content, fixedAmountHeaderFunc, params) {
     local { shopDesc = false, stackLevel = prizesStack.DETAILED, categoryWeight, showOnlyCategoriesOfPrizes = false } = params
-    local view = params ? clone params : {}
+    local view = clone params
     local stacksList = _stackContent(content, stackLevel, shopDesc)
     local fixedAmount = fixedAmountHeaderFunc ? _getContentFixedAmount(content) : 1
     local isFitByItemType = function(prize, itemType) {
@@ -163,7 +163,7 @@ local unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
     if (fixedAmountHeaderFunc)
       view.header <- fixedAmountHeaderFunc(fixedAmount)
 
-    params = params ? clone params : {}
+    params = clone params
     params.needShowDropChance <- false
     params.hasChanceIcon <- false
     params.fixedAmount <- fixedAmount

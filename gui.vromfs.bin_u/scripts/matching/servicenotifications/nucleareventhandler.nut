@@ -41,18 +41,22 @@ local function checkNuclearEvent(params = {}) {
 }
 
 local function bigQuerryForNuclearEvent() {
+  if (!::g_login.isProfileReceived())
+    return
+
   local needSendStatistic = ::load_local_account_settings("sendNuclearStatistic", true)
-  if (needSendStatistic && ::g_login.isProfileReceived()) {
-    ::add_big_query_record("nuclear_event", ::save_to_json({
-      user = ::my_user_id_str,
-      seenInOldClient = is_seen_nuclear_event(),
-      seenInNewClient = is_seen_main_nuclear_event()}))
-    ::save_local_account_settings("sendNuclearStatistic", false)
-  }
+  if (!needSendStatistic)
+    return
+
+  ::add_big_query_record("nuclear_event", ::save_to_json({
+    user = ::my_user_id_str,
+    seenInOldClient = is_seen_nuclear_event(),
+    seenInNewClient = is_seen_main_nuclear_event()}))
+  ::save_local_account_settings("sendNuclearStatistic", false)
 }
 
 addListenersWithoutEnv({
-  LoginComplete = @(p) bigQuerryForNuclearEvent()
+  ProfileReceived = @(p) bigQuerryForNuclearEvent()
 })
 
 ::web_rpc.register_handler("new_client_version", onNewClientVersion)

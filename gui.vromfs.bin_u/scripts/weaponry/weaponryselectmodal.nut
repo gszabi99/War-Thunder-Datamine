@@ -72,7 +72,7 @@ local CHOOSE_WEAPON_PARAMS = {
     })
   }
 
-  if (needSecondaryWeaponsWnd)
+  if (needSecondaryWeaponsWnd(unit))
     weaponryPresetsModal.open({ //open modal menu for air and helicopter only
         unit = unit
         chooseMenuList   = list

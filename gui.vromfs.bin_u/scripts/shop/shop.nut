@@ -1404,18 +1404,23 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       openUnitActionsList(curAirObj, false, ignoreMenuHover)
   }
 
+  function selectCell(obj) {
+    local holderId = obj?.holderId
+    if (holderId == null)
+      return
+
+    local { idx } = getUnitById(holderId)
+    if (idx < 0)
+      return
+    if (groupChooseObj?.isValid())
+      groupChooseObj.findObject("airs_table").setValue(idx)
+    else
+      scene.findObject("shop_items_list").setValue(idx)
+  }
+
   function onAircraftClick(obj, ignoreMenuHover = false)
   {
-    local holderId = obj?.holderId
-    if (holderId != null) {
-      local { idx } = getUnitById(holderId)
-      if (idx < 0)
-        return
-      if (::checkObj(groupChooseObj))
-        groupChooseObj.findObject("airs_table").setValue(idx)
-      else
-        scene.findObject("shop_items_list").setValue(idx)
-    }
+    selectCell(obj)
     local unit = getCurAircraft()
     checkSelectAirGroup(unit)
     openMenuForUnit(unit, ignoreMenuHover)
@@ -1883,6 +1888,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       return
     }
 
+    selectCell(obj)
     local unit = ::getAircraftByName(obj?.holderId) ?? getCurAircraft()
     if (!unit)
       return

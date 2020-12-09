@@ -64,6 +64,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     sendTutorialChoiceStatisticOnce("start", obj)
     saveTutorialToCheckReward(tutorialMission)
     ::saveLocalByAccount("firstRunTutorial_"+tutorialMission.name, true)
+    setLaunchedTutorialQuestions()
     ::destroy_session_scripted()
 
     ::set_mp_mode(::GM_TRAINING)
@@ -78,6 +79,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     if( ! canSkipTutorial)
       return;
     sendTutorialChoiceStatisticOnce("close", obj)
+    setLaunchedTutorialQuestions()
     goBack()
   }
 
@@ -114,6 +116,8 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
       return userInputType
     return "invalid"
   }
+
+  setLaunchedTutorialQuestions = @() setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.value | (1 << checkIdx))
 }
 
 ::gui_handlers.NextTutorialHandler <- NextTutorialHandler
@@ -134,7 +138,6 @@ local function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
       if ((launchedTutorialQuestionsPeerSession.value & (1 << i)) && checkSkip)
         return false
 
-      setLaunchedTutorialQuestionsValue(launchedTutorialQuestionsPeerSession.value | (1 << i))
       idx = i
       break
     }

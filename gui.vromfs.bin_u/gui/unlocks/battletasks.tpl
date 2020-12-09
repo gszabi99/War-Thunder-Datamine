@@ -112,7 +112,6 @@ frame {
       pos:t='50%pw-50%w, 0'
       position:t='relative'
       max-width:t='pw'
-      margin-bottom:t='0.01@scrn_tgt'
     }
   }
 

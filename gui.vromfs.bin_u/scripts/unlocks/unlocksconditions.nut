@@ -101,8 +101,9 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag",
     "targetUnit", "targetType", "targetExpClass", "targetUnitClass", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
-    "activity", "minStat", "statPlace", "statScore", "statAwardDamage",
-    "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
+    "activity", "minStat", "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
+    "statKillsPlayerInSession", "statKillsAirInSession", "statKillsAirAiInSession",
+    "statKillsGroundInSession", "statKillsGroundAiInSession",
     "targetIsPlayer", "eliteUnitsOnly", "noPremiumVehicles", "era", "country", "playerCountry",
     "targets", "targetDistance"
   ]
@@ -200,6 +201,8 @@ local function getOverrideCondType(condBlk, unlockMode) {
 
   regExpNumericEnding = ::regexp2("\\d+$")
 
+  nestedUnlockModes = ["unlockOpenCount", "unlockStageCount", "unlocks", "char_unlocks"]
+
   function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false)
   {
     if (!(type(val) == "instance" && (val instanceof ::Point2)) && !(type(val) == "table"))
@@ -236,7 +239,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
 
   function hideConditionsFromBlk(blk, unlockBlk)
   {
-    local conditionsArray = blk % "condition"
+    local conditionsArray = (blk % "condition").extend(blk % "visualCondition")
     for (local i = conditionsArray.len() - 1; i >= 0 ; i--)
     {
       local condBlk = conditionsArray[i]
@@ -278,7 +281,9 @@ UnlockConditions.loadConditionsFromBlk <- function loadConditionsFromBlk(blk, un
 
   local unlockMode = unlockBlk?.mode.type
 
-  foreach(condBlk in blk % "condition") //conditions determined by blocks "condition"
+  //conditions determined by blocks "condition"; "visualCondition" is similar one, but for use in UI only
+  local conditionsArray = (blk % "condition").extend(blk % "visualCondition")
+  foreach(condBlk in conditionsArray)
   {
     local condition = loadCondition(condBlk, unlockMode)
     if (condition)
@@ -596,10 +601,7 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     if (!res.values.len())
       return null
 
-    res.locGroup <- ::getTblValue(stat, minStatGroups, stat)
-
-    if (blk?.inSession == true)
-      res.locGroup +=  "InSession"
+    res.locGroup <- $"{(minStatGroups?[stat] ?? "")}InSession"
   }
   else if (::isInArray(t, unlock_time_range_conditions))
   {
@@ -898,10 +900,9 @@ UnlockConditions.getMainConditionListPrefix <- function getMainConditionListPref
 
   local modeType = mainCondition.modeType
 
-  if (mainCondition.hasCustomUnlockableList || (::isInArray(modeType, ["unlockOpenCount", "unlocks"]) && mainCondition.values.len() > 1))
-  {
+  if (mainCondition.hasCustomUnlockableList ||
+      (::isInArray(modeType, nestedUnlockModes) && mainCondition.values.len() > 1))
     return ::loc("ui/awards") + ::loc("ui/colon")
-  }
 
   return ""
 }
@@ -1112,8 +1113,7 @@ UnlockConditions.getMultipliersText <- function getMultipliersText(condition)
 UnlockConditions.getLocForBitValues <- function getLocForBitValues(modeType, values, hasCustomUnlockableList = false)
 {
   local valuesLoc = []
-  if (hasCustomUnlockableList || modeType == "unlocks" || modeType == "char_unlocks"
-    || modeType == "unlockOpenCount" || modeType == "unlockStageCount")
+  if (hasCustomUnlockableList || ::isInArray(modeType, nestedUnlockModes))
     foreach(name in values)
       valuesLoc.append(::get_unlock_name_text(-1, name))
   else if (modeType == "char_unit_exist")
@@ -1142,7 +1142,7 @@ UnlockConditions.getLocForBitValues <- function getLocForBitValues(modeType, val
 
 UnlockConditions.getTooltipIdByModeType <- function getTooltipIdByModeType(modeType, id, hasCustomUnlockableList = false)
 {
-  if (hasCustomUnlockableList || modeType == "unlocks" || modeType == "char_unlocks" || modeType == "unlockOpenCount")
+  if (hasCustomUnlockableList || ::isInArray(modeType, nestedUnlockModes))
     return ::g_tooltip.getIdUnlock(id)
 
   if (modeType == "char_unit_exist")

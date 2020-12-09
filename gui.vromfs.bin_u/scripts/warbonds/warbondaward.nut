@@ -210,7 +210,7 @@ class ::WarbondAward
   {
     return ::g_string.implode([
       ::g_string.implode(getAdditionalTextsArray(), "\n"),
-      desc], "\n\n")
+      desc, getRequiredUnitsRankLevel()], "\n\n")
   }
 
   function getAdditionalTextsArray()
@@ -220,7 +220,6 @@ class ::WarbondAward
       getAwardTypeCannotBuyReason(),
       getRequiredShopLevelText(),
       getRequiredMedalsLevelText(),
-      getRequiredUnitsRankLevel(),
       getAvailableAmountText()
     ]
   }

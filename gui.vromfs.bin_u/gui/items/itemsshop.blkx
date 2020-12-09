@@ -62,7 +62,7 @@
             "tdiv": {
               "size": "pw, 1@frameHeaderHeight",
               "position": "relative",
-              "pos": "0, 0.5sh-0.5@rh-1@blockInterval",
+              "pos": "0, 1@bh-1@blockInterval",
               "flow": "horizontal",
               "HorizontalListBox": {
                 "id": "tabs_list",
@@ -389,7 +389,7 @@
                 "id": "warbond_shop_progress_block"
               },
               {
-                "size": "pw, 2@battleTasksHardMedalWidth"
+                "size": "pw, 0.08@scrn_tgt"
               },
               {
                 "margin-top": "1@blockInterval"
@@ -434,14 +434,9 @@
               {
                 "tdiv": {
                   "id": "special_tasks_progress_block",
-                  "size": "fw, ph",
-                  "pos": "1@warbondShopLevelItemHeight, 0",
-                  "position": "relative",
+                  "position": "absolute",
                   "tdiv": {
-                    "id": "medal_icon",
-                    "pos": "pw-w-1@blockInterval, 50%ph-50%h",
-                    "position": "relative",
-                    "flow": "vertical"
+                    "id": "medal_icon"
                   }
                 }
               }

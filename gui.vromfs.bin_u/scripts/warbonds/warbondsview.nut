@@ -26,7 +26,6 @@ enum WARBOND_SHOP_LEVEL_STATUS {
       countText = needShowZero && reqAwardMedals==0? reqAwardMedals.tostring() : reqAwardMedals
       inactive = medalsCount < reqAwardMedals
       title = hasName ? ::loc("mainmenu/battleTasks/special/medals") : null
-      titleTooltip = hasName ? getSpecialMedalsTooltip(wbClass) : null
     }
   }
 
@@ -43,12 +42,15 @@ enum WARBOND_SHOP_LEVEL_STATUS {
     if (leftSpecialTasksBoughtCount.value < 0)
       return ""
 
-    local view = { medal = [{
-      posX = 0
-      image = wbClass?.getMedalIcon()
-      countText = leftSpecialTasksBoughtCount.value.tostring()
-      title = ::loc("warbonds/canBuySpecialTasks")
-    }]}
+    local view = {
+      medal = [{
+        posX = 0
+        image = wbClass?.getMedalIcon()
+        countText = leftSpecialTasksBoughtCount.value.tostring()
+        title = ::loc("warbonds/canBuySpecialTasks")
+      }]
+      tooltip = ::loc("warbonds/canBuySpecialTasks/tooltip")
+    }
 
     return ::handyman.renderCached("gui/items/warbondSpecialMedal", view)
   }
@@ -228,7 +230,7 @@ g_warbonds_view.getShopProgressBarText <- function getShopProgressBarText(curTas
   })
 }
 
-g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler)
+g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgress(wbClass, placeObj, handler, addCanBuySpecialTasks = false)
 {
   if (!::check_obj(placeObj))
     return
@@ -237,16 +239,15 @@ g_warbonds_view.createSpecialMedalsProgress <- function createSpecialMedalsProgr
   if (!::check_obj(nest))
     return
 
-  local show = wbClass && wbClass.haveAnySpecialRequirements()
+  local show = showSpecialProgress(wbClass)
   nest.show(show)
   if (!show)
     return
 
-  nest.tooltip = getSpecialMedalsTooltip(wbClass)
   local data = getSpecialMedalsMarkUp(wbClass, getWarbondMedalsCount(wbClass), true, true, true)
 
-  if (::has_feature("BattlePass"))
-    data += getSpecialMedalCanBuyMarkUp(wbClass)
+  if (addCanBuySpecialTasks)
+    data = $"{data}{getSpecialMedalCanBuyMarkUp(wbClass)}"
 
   nest.getScene().replaceContentFromText(nest, data, data.len(), handler)
 }
@@ -262,7 +263,10 @@ g_warbonds_view.getSpecialMedalsTooltip <- function getSpecialMedalsTooltip(wbCl
 
 g_warbonds_view.getSpecialMedalsMarkUp <- function getSpecialMedalsMarkUp(wbClass, reqAwardMedals = 0, needShowZero = false, hasName = false, needShowInProgress = false)
 {
-  local view = { medal = [getSpecialMedalView(wbClass, reqAwardMedals, needShowZero, hasName)]}
+  local view = {
+    medal = [getSpecialMedalView(wbClass, reqAwardMedals, needShowZero, hasName)]
+    tooltip = getSpecialMedalsTooltip(wbClass)
+  }
 
   if (needShowInProgress && wbClass.needShowSpecialTasksProgress)
     view.medal.append(getSpecialMedalInProgressView(wbClass))

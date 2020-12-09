@@ -114,5 +114,5 @@ subscriptions.addListenersWithoutEnv({
 return {
   openChangelog = openChangelog
   needShowChangelog = @() ::has_feature("Changelog") && !isShowedUnseenPatchnoteOnce
-    && unseenPatchnote.value != null
+    && unseenPatchnote.value != null && !::my_stats.isMeNewbie()
 }

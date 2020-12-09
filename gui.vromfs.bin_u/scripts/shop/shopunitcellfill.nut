@@ -463,8 +463,11 @@ local function updateCellTimedStatus(cell, getTimedStatus) {
   if (!timedStatus?.needUpdateByTime)
     return
 
-  local cardObj = cell.findObject(cell.holderId)
+  local holderId = cell.holderId
+  local cardObj = cell.findObject(holderId)
   SecondsUpdater(cardObj, function(obj, _) {
+    if (holderId != cell.holderId) //remove timer if cell show other vehicle
+      return true
     timedStatus = getTimedStatus()
     updateCellTimedStatusImpl(cell, timedStatus) //cell is valid while cardObj is valid
     return !timedStatus?.needUpdateByTime

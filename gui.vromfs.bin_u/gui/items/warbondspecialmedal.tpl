@@ -1,4 +1,6 @@
 tdiv {
+  total-input-transparent:t="yes"
+  tooltip:t='<<tooltip>>'
   <<#medal>>
   warbondSpecialMedal {
     pos:t='<<#posX>><<posX>><</posX>><<^posX>>0<</posX>>, 0'
@@ -10,7 +12,6 @@ tdiv {
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         text:t='<<title>>'
-        tooltip:t='<<titleTooltip>>'
         margin-right:t='1@blockInterval'
       }
     <</title>>

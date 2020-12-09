@@ -48,8 +48,6 @@ return {
     fontIcon = ::loc("icon/unittype/tank")
     testFlightIcon = "#ui/gameuiskin#slot_testdrive.svg"
     testFlightName = "TestDrive"
-    bailoutName = "btnLeaveTheTank"
-    bailoutQuestion = "questionLeaveTheTank"
     hudTypeCode = ::HUD_TYPE_TANK
     firstChosenTypeUnlockName = "chosen_unit_type_tank"
     missionSettingsAvailabilityFlag = "isTanksAllowed"
@@ -81,8 +79,6 @@ return {
     fontIcon = ::loc("icon/unittype/ship")
     testFlightIcon = "#ui/gameuiskin#slot_test_out_to_sea.svg"
     testFlightName = "TestSail"
-    bailoutName = "btnLeaveTheTank"
-    bailoutQuestion = "questionLeaveTheTank"
     hudTypeCode = ::HUD_TYPE_TANK
     firstChosenTypeUnlockName = "chosen_unit_type_ship_without_boat"
     missionSettingsAvailabilityFlag = "isShipsAllowed"
@@ -142,8 +138,6 @@ return {
     fontIcon = ::loc("icon/unittype/boat")
     testFlightIcon = "#ui/gameuiskin#slot_test_out_to_sea_boat.svg"
     testFlightName = "TestSail"
-    bailoutName = "btnLeaveTheTank"
-    bailoutQuestion = "questionLeaveTheTank"
     hudTypeCode = ::HUD_TYPE_TANK
     firstChosenTypeUnlockName = "chosen_unit_type_ship"
     missionSettingsAvailabilityFlag = "isShipsAllowed"

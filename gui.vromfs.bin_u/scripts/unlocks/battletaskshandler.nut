@@ -202,7 +202,7 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (needShowWarbondProgress && currentTabType == BattleTasksWndTab.BATTLE_TASKS)
       ::g_warbonds_view.createProgressBox(curWb, obj, this)
     else if (currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD)
-      ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this)
+      ::g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !::g_battle_tasks.hasInCompleteHardTask.value)
   }
 
   function updateNoTasksText(items = [])

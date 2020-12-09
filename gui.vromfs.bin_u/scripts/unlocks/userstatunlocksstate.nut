@@ -166,7 +166,8 @@ local function getUnlockReward(userstatUnlock) {
   }
 
   rewardMarkUp.rewardText = "\n".join((stage?.updStats ?? [])
-    .map(@(stat) ::loc($"updStats/{stat.name}", { amount = stat.value }, "")))
+    .map(@(stat) ::loc($"updStats/{stat.name}", { amount = stat.value }, ""))
+    .filter(@(rewardText) rewardText != ""))
 
   return rewardMarkUp
 }

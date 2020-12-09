@@ -12,10 +12,10 @@
 @const battlePassStampHeight: 41@sf/@pf \ 1;
 
 @const battlePassPromoBottomMargin: 1@battlePassFreeTextHeight;
-@const battlePassWndPreferredWidth: (10@battlePassStageWidth + 11@battlePassStageMargin) \ 1;
-@const battlePassWndPreferredPromoWidth: (0.55*450/800)@battlePassWndPreferredWidth;
-@const battlePassWndPromoHeight: 1@battlePassWndPreferredPromoWidth $min (1@maxWindowHeight - 2@frameHeaderHeight - 1@battlePassStageHeight - 2@battlePassFreeTextHeight- 2@battlePassStageMargin - 1@frameFooterHeight);
-@const battlePassWndWidth: 1@battlePassWndPreferredWidth $min ((100.0/55)*800.0/450)@battlePassWndPromoHeight);
+@const battlePassWndPreferredWidth: (10@battlePassStageWidth + 12@battlePassStageMargin) \ 1;
+@const battlePassWndPreferredPromoHeight: (0.55*450/800)@battlePassWndPreferredWidth;
+@const battlePassWndPromoHeight: 1@battlePassWndPreferredPromoHeight $min (1@maxWindowHeight - 2@frameHeaderHeight - 1@battlePassStageHeight - 2@battlePassFreeTextHeight- 2@battlePassStageMargin - 1@frameFooterHeight);
+@const battlePassWndPromoWidth: (800.0/450)@battlePassWndPromoHeight;
 
 @const battlePassStageBgColor: #252c37;
 @const battlePassCurStageBgColor: #3b4351;

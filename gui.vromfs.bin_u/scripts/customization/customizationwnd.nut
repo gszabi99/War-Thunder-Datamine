@@ -793,7 +793,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_info       = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && !access_WikiOnline
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
-            needSecondaryWeaponsWnd && isUnitHaveSecondaryWeapons(unit)
+            needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
           btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked

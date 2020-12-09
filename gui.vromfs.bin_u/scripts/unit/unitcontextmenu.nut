@@ -118,7 +118,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
-        needSecondaryWeaponsWnd && isUnitHaveSecondaryWeapons(unit)
+        needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
       actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
     else if (action == "weapons")

@@ -156,7 +156,7 @@ local function copyFromDataBlock(fromDataBlock, toDataBlock, override = true) {
   }
   for (local i = 0; i < fromDataBlock.paramCount(); i++) {
     local paramName = fromDataBlock.getParamName(i)
-    if (!toDataBlock?[paramName])
+    if (toDataBlock?[paramName] == null)
       toDataBlock[paramName] <- fromDataBlock[paramName]
     else if (override)
       toDataBlock[paramName] = fromDataBlock[paramName]

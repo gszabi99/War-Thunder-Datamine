@@ -1,3 +1,5 @@
+local { doesLocTextExist, loc } = require("dagor.localize")
+
 {
   class BhvHint
   {
@@ -38,7 +40,8 @@
         flowAlign = obj.getFinalProp("flow-align") ?? "center"
         showShortcutsNameIfNotAssign = true
       }
-      local markup = ::g_hints.buildHintMarkup(::loc(obj?.value ?? ""), params)
+      local value = obj?.value ?? ""
+      local markup = ::g_hints.buildHintMarkup(doesLocTextExist(value) ? loc(value) : value, params)
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), null)
 
       obj.setIntProp(isUpdateInProgressPID, 0)
