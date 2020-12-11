@@ -134,6 +134,10 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
   curPage = 0
   replaysPerPage = 20
 
+  listIdxPID = ::dagui_propid.add_name_id("listIdx")
+  hoveredIdx = -1
+  isMouseMode = true
+
   statsColumnsOrderPvp  = [ "team", "name", "missionAliveTime", "score", "kills", "groundKills", "navalKills", "awardDamage", "aiKills",
                             "aiGroundKills", "aiNavalKills", "aiTotalKills", "assists", "captureZone", "damageZone", "deaths" ]
   statsColumnsOrderRace = [ "team", "rowNo", "name", "raceFinishTime", "raceLap", "raceLastCheckpoint", "raceBestLapTime", "deaths" ]
@@ -170,13 +174,14 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       ::current_replay_author = null
     }
     calculateReplaysPerPage()
+    updateMouseMode()
     refreshList(selItem)
   }
 
   function goToPage(obj)
   {
     curPage = obj.to_page.tointeger()
-    refreshList()
+    refreshList(curPage * replaysPerPage)
   }
 
   function loadReplays()
@@ -185,28 +190,19 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     replays.sort(@(a,b) b.startTime <=> a.startTime || b.name <=> a.name)
   }
 
-  function refreshList(selItem = 0)
+  function refreshList(selItem)
   {
     local listObj = scene.findObject("items_list")
     if (!::checkObj(listObj))
       return
 
-    if (selItem == 0)
-    {
-      local index = listObj.getValue()
-      if (index >= 0 && index < listObj.childrenCount())
-      {
-        index--
-        if (index < 0)
-          index = 0
-        selItem = index
-      }
-      selItem += curPage * replaysPerPage
-    }
+    selItem = replays.len() == 0 ? -1 : ::clamp(selItem, 0, replays.len() - 1)
+    curPage = ::max(0, selItem / replaysPerPage)
 
     local view = { items = [] }
+    local firstIdx = curPage * replaysPerPage
     local lastIdx = ::min(replays.len(), ((curPage + 1) * replaysPerPage))
-    for (local i = curPage * replaysPerPage; i < lastIdx; i++)
+    for (local i = firstIdx; i < lastIdx; i++)
     {
       local iconName = "";
       local autosave = ::g_string.startsWith(replays[i].name, ::autosave_replay_prefix)
@@ -220,17 +216,21 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
         itemIcon = iconName
         id = "replay_" + i
         isSelected = i == selItem
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    for (local i = 0; i < listObj.childrenCount(); i++)
+      listObj.getChild(i).setIntProp(listIdxPID, firstIdx + i)
+    listObj.setValue(selItem % replaysPerPage)
 
     //* - text addition is ok
     //depends on ::get_new_replay_filename() format
     local defaultReplayNameMask =
       regexp2(@"2\d\d\d\.[0-3]\d\.[0-3]\d [0-2]\d\.[0-5]\d\.[0-5]\d*");
-    for (local i = curPage * replaysPerPage; i < lastIdx; i++)
+    for (local i = firstIdx; i < lastIdx; i++)
     {
       local obj = scene.findObject("txt_replay_" + i);
       local name = replays[i].name;
@@ -250,24 +250,40 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
     scene.findObject("optionlist-include").show(replays.len()>0)
     scene.findObject("info-text").setValue(replays.len()? "" : ::loc("mainmenu/noReplays"))
-    if (replays.len() > 0)
-    {
-      doOpenInfo(selItem)
-      doSelectList()
-      showSceneBtn("btn_del_replay", true)
-    }
-    else
-      foreach(btnName in ["btn_view_replay", "btn_upload_replay", "btn_rename_replay", "btn_del_replay"])
-        showSceneBtn(btnName, false)
 
     ::generatePaginator(scene.findObject("paginator_place"),
                         this,
                         curPage,
                         ((replays.len() - 1) / replaysPerPage).tointeger())
+
+    if (replays.len() > 0)
+    {
+      updateDescription()
+      doSelectList()
+    }
+    updateButtons()
   }
 
-  function doOpenInfo(index)
+  function updateButtons()
   {
+    local curReplay = replays?[getCurrentReplayIndex()]
+
+    local hoveredReplay = isMouseMode ? null : replays?[hoveredIdx]
+    local isCurItemInFocus = curReplay != null && (isMouseMode || hoveredReplay == curReplay)
+
+    local replayInfo = isCurItemInFocus ? ::get_replay_info(curReplay.path) : null
+    local isCorrupted = replayInfo?.corrupted ?? true
+
+    ::showBtnTable(scene, {
+        btn_view_replay   = isCurItemInFocus && ::is_replay_turned_on() && (!isCorrupted || ::is_dev_version)
+        btn_rename_replay = isCurItemInFocus
+        btn_del_replay    = isCurItemInFocus
+    })
+  }
+
+  function updateDescription()
+  {
+    local index = getCurrentReplayIndex()
     local objDesc = scene.findObject("item_desc")
     //local objPic = objDesc.findObject("item_picture")
     //if (objPic != null)
@@ -293,12 +309,6 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       local corrupted = ::getTblValue("corrupted", replayInfo, false) // Any error reading headers (including version mismatch).
       local isVersionMismatch = ::getTblValue("isVersionMismatch", replayInfo, false) // Replay was recorded for in older game version.
       local isHeaderUnreadable = corrupted && !isVersionMismatch // Failed to read header (file not found or incomplete).
-
-      local canWatch  = ::is_replay_turned_on() && (!corrupted || ::is_dev_version) && !::is_in_leaderboard_menu
-      local canUpload = ::is_replay_turned_on() && !corrupted && ::is_in_leaderboard_menu && ::can_upload_replay()
-      showSceneBtn("btn_view_replay", canWatch)
-      showSceneBtn("btn_upload_replay", canUpload)
-      showSceneBtn("btn_rename_replay", true)
 
       local headerText = ""
       local text = ""
@@ -521,12 +531,34 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemSelect(obj)
   {
-    doOpenInfo(getCurrentReplayIndex())
+    updateDescription()
+    updateButtons()
   }
 
-  function onStart()
+  function onItemDblClick(obj)
   {
+    if (::show_console_buttons)
+      return
+
     onViewReplay()
+  }
+
+  function onItemHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
+    if (isHover == (hoveredIdx == idx))
+      return
+    hoveredIdx = isHover ? idx : -1
+    updateMouseMode()
+    updateButtons()
+  }
+
+  function updateMouseMode()
+  {
+    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   doSelectList = @() ::move_mouse_on_child_by_value(scene.findObject("items_list"))
@@ -593,7 +625,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     {
       ::on_del_replay(replays[index].path)
       replays.remove(index)
-      refreshList()
+      refreshList(::min(index, replays.len() - 1))
     }
   }
 
@@ -605,15 +637,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       local afterRenameFunc = function(newName)
       {
         loadReplays()
-        refreshList()
-
-        foreach(idx, replay in replays)
-          if (replay.name == newName)
-          {
-            local list = scene.findObject("items_list")
-            if (::checkObj(list))
-              list.setValue(idx)
-          }
+        refreshList(index)
       }
 
       ::gui_modal_rename_replay(replays[index].name, replays[index].path, this, afterRenameFunc);
@@ -636,7 +660,6 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function onChapterSelect(obj) {}
   function onSelect(obj) {}
-  function onListItemsFocusChange(obj) {}
 
   function calculateReplaysPerPage() {
     guiScene.applyPendingChanges(false)

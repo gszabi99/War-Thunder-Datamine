@@ -169,8 +169,7 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.replaceContentFromText(objImgDiv, data, data.len(), this)
   }
 
-  function onStart() {}
-  function onListItemsFocusChange(obj) {}
+  function onItemDblClick() {}
 }
 
 return {

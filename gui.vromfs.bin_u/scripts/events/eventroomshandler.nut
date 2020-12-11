@@ -27,6 +27,7 @@ enum eRoomFlags { //bit enum. sorted by priority
 }
 
 const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
+const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
 class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -42,7 +43,6 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   roomIdToSelect = null
   roomsListData = null
   isSelectedRoomDataChanged = false
-  isEventsListInFocus = false
   roomsListObj  = null
 
   chaptersTree = null
@@ -52,6 +52,12 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   slotbarActions = ["aircraft", "crew", "sec_weapons", "weapons", "showroom", "repair"]
 
   eventDescription = null
+
+  listIdxPID = ::dagui_propid.add_name_id("listIdx")
+  hoveredIdx  = -1
+  selectedIdx = -1
+  isMouseMode = true
+  initTime = -1
 
   static TEAM_DIVIDE = "/"
   static COUNTRY_DIVIDE = ", "
@@ -86,6 +92,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (hasBackToEventsButton)
       initFrameOverEventsWnd()
 
+    updateMouseMode()
     roomsListObj = scene.findObject("items_list")
     roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = ::events.getEventEconomicName(event) })
     eventDescription = ::create_event_description(scene)
@@ -96,7 +103,14 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     scene.findObject("wnd_title").setValue(::events.getEventNameText(event))
     scene.findObject("event_update").setUserData(this)
-    ::move_mouse_on_child_by_value(roomsListObj)
+
+    if (selectedIdx != -1)
+    {
+      guiScene.applyPendingChanges(false)
+      ::move_mouse_on_child_by_value(roomsListObj)
+    }
+    else
+      initTime = ::dagor.getCurTime()
   }
 
   function initFrameOverEventsWnd()
@@ -123,29 +137,12 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     return roomsListData.getRoom(curRoomId)
   }
 
-  function updateEventsListFocusStatus()
-  {
-    isEventsListInFocus = !::show_console_buttons || (::check_obj(roomsListObj) && roomsListObj.isHovered())
-  }
-
   function onItemSelect()
   {
     if (!isValid())
       return
 
-    updateEventsListFocusStatus()
     onItemSelectAction()
-  }
-
-  function onListItemsFocusChange(obj)
-  {
-    guiScene.performDelayed(this, function() {
-      if (!isValid())
-        return
-
-      updateEventsListFocusStatus()
-      updateButtons()
-    })
   }
 
   function onItemSelectAction()
@@ -166,6 +163,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     isSelectedRoomDataChanged = false
     curChapterId = selChapterId
     curRoomId = selRoomId
+    selectedIdx = selItemIdx
 
     updateWindow()
   }
@@ -185,6 +183,9 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function joinEvent(isFromDebriefing = false)
   {
     if (curRoomId == "")
+      return
+
+    if (!suggestAndAllowPsnPremiumFeatures())
       return
 
     local configForStatistic = {
@@ -261,7 +262,11 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateButtons()
   {
     local hasRoom = curRoomId.len() != 0
-    local reasonData = ::events.getCantJoinReasonData(event, getCurRoom())
+
+    local isCurItemInFocus = selectedIdx >= 0 && (isMouseMode || hoveredIdx == selectedIdx)
+    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredIdx >= 0)
+
+    local reasonData = ::events.getCantJoinReasonData(event, isCurItemInFocus ? getCurRoom() : null)
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = ::loc("multiplayer/no_room_selected")
 
@@ -269,7 +274,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local isReady = ::g_squad_manager.isMeReady()
     local isSquadMember = ::g_squad_manager.isSquadMember()
 
-    local joinButtonObj = showSceneBtn("btn_join_event", isEventsListInFocus && hasRoom)
+    local joinButtonObj = showSceneBtn("btn_join_event", isCurItemInFocus && hasRoom)
     joinButtonObj.inactiveColor = reasonData.activeJoinButton || isSquadMember ? "no" : "yes"
     joinButtonObj.tooltip = isSquadMember ? reasonData.reasonText : ""
     local availTeams = ::events.getAvailableTeams(roomMGM)
@@ -292,7 +297,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("btn_create_room", ::events.canCreateCustomRoom(event))
 
-    local isHeader = isEventsListInFocus && curChapterId != "" && curRoomId == ""
+    local isHeader = isCurItemInFocus && curChapterId != "" && curRoomId == ""
     local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
     if (isHeader)
     {
@@ -321,6 +326,13 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     generateChapters(roomsList)
     updateListInfo(roomsList.len())
+
+    if (initTime != -1 && selectedIdx != -1)
+    {
+      if (::dagor.getCurTime() - initTime < NOTICEABLE_RESPONCE_DELAY_TIME_MS)
+        ::move_mouse_on_child_by_value(roomsListObj)
+      initTime = -1
+    }
   }
 
   function getMGameModeFlags(mGameMode, room, isMultiSlot)
@@ -493,7 +505,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateChaptersTree(roomsList)
 
-    local selectedIndex = 1///select first room by default
+    selectedIdx = 1 //select first room by default
     local view = { items = [] }
 
     foreach (idx, chapter in chaptersTree)
@@ -503,11 +515,12 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         continue
 
       if (chapter.name == curChapterId)
-        selectedIndex = view.items.len()
+        selectedIdx = view.items.len()
 
       local listRow = {
         id = chapter.name
         isCollapsable = true
+        isNeedOnHover = ::show_console_buttons
       }
       local mGameMode = chapter.chapterGameMode
       if (::events.isCustomGameMode(mGameMode))
@@ -526,7 +539,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
         local roomId = room.roomId
         if (roomId == curRoomId || roomId == roomIdToSelect)
         {
-          selectedIndex = view.items.len()
+          selectedIdx = view.items.len()
           if (roomId == roomIdToSelect)
             curRoomId = roomIdToSelect
         }
@@ -538,6 +551,7 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
           isBattle = ::SessionLobby.isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
+          isNeedOnHover = ::show_console_buttons
         })
       }
     }
@@ -548,15 +562,18 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     viewRoomList = view
     local data = ::handyman.renderCached("gui/events/eventRoomsList", view)
     guiScene.replaceContentFromText(roomsListObj, data, data.len(), this)
+    for (local i = 0; i < roomsListObj.childrenCount(); i++)
+      roomsListObj.getChild(i).setIntProp(listIdxPID, i)
 
     if (roomsList.len())
     {
-      roomsListObj.setValue(selectedIndex)
+      roomsListObj.setValue(selectedIdx)
       if (roomIdToSelect == curRoomId)
         roomIdToSelect = null
     }
     else
     {
+      selectedIdx = -1
       curRoomId = ""
       curChapterId = ""
       updateWindow()
@@ -749,8 +766,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::events.openCreateRoomWnd(event)
   }
 
-  function onStart() {
-    if (!suggestAndAllowPsnPremiumFeatures())
+  function onItemDblClick() {
+    if (::show_console_buttons)
       return
 
     if (curRoomId == "") {
@@ -758,6 +775,30 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateButtons()
     } else
       joinEvent()
+  }
+
+  function onItemHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
+    if (isHover == (hoveredIdx == idx))
+      return
+    hoveredIdx = isHover ? idx : -1
+    updateMouseMode()
+    updateButtons()
+  }
+
+  function onHoveredItemSelect(obj)
+  {
+    if (hoveredIdx != -1 && ::check_obj(roomsListObj))
+      roomsListObj.setValue(hoveredIdx)
+  }
+
+  function updateMouseMode()
+  {
+    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   function goBackShortcut() { goBack() }

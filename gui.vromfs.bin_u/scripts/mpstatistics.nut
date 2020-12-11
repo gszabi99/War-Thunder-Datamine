@@ -102,6 +102,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
   local trSize      = markupData?.tr_size   ?? "pw, @baseTrHeight"
   local isRowInvert = markupData?.invert    ?? false
   local colorTeam   = markupData?.colorTeam ?? "blue"
+  local trOnHover   = markupData?.trOnHover
 
   local markup = markupData.columns
 
@@ -117,6 +118,8 @@ const OVERRIDE_COUNTRY_ID = "override_country"
     local isEmpty = i >= numTblRows
     local trData = format("even:t='%s'; ", (i%2 == 0)? "yes" : "no")
     local trAdd = isEmpty? "inactive:t='yes'; " : ""
+    if (!::u.isEmpty(trOnHover))
+      trAdd = "".concat(trAdd, $"rowIdx='{i}'; on_hover:t='{trOnHover}'; on_unhover:t='{trOnHover}';")
 
     for (local j = 0; j < hdr.len(); ++j)
     {
@@ -339,7 +342,11 @@ const OVERRIDE_COUNTRY_ID = "override_country"
   {
     local objTr = null
     if (realTblRows <= i)
+    {
       objTr = obj_tbl.getChild(realTblRows-1).getClone()
+      if (objTr?.rowIdx != null)
+        objTr.rowIdx = i.tostring()
+    }
     else
       objTr = obj_tbl.getChild(i)
 

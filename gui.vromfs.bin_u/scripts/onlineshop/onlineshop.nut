@@ -629,7 +629,6 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onFav() {}
   function onChapterSelect() {}
-  function onListItemsFocusChange(obj) {}
 
   function getRowView(name, item, isGold, even) {
     local amount = ent.getEntitlementAmount(item)

@@ -19,6 +19,10 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
   curMissionIdx = -1
   missionDescWeak = null
 
+  listIdxPID = ::dagui_propid.add_name_id("listIdx")
+  hoveredIdx = -1
+  isMouseMode = true
+
   misListType = ::g_mislist_type.BASE
   canSwitchMisListType = false
 
@@ -49,6 +53,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     loadCollapsedChapters()
     initCollapsingOptions()
 
+    updateMouseMode()
     initMisListTypeSwitcher()
     updateFavorites()
     updateWindow()
@@ -169,6 +174,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
           id = mission.id
           itemText = misListType.getMissionNameText(mission)
           isCollapsable = (mission.isCampaign && canCollapseCampaigns) || canCollapseChapters
+          isNeedOnHover = ::show_console_buttons
         })
         continue
       }
@@ -201,6 +207,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
           itemIcon = medalIcon
           id = mission.id
           itemText = misListType.getMissionNameText(mission)
+          isNeedOnHover = ::show_console_buttons
         })
         continue
       }
@@ -243,11 +250,14 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
         itemIcon = medalIcon
         id = mission.id
         itemText = misListType.getMissionNameText(mission)
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    for (local i = 0; i < listObj.childrenCount(); i++)
+      listObj.getChild(i).setIntProp(listIdxPID, i)
 
     if (selIdx >= 0 && selIdx < listObj.childrenCount())
     {
@@ -317,7 +327,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
 
   function getSelectedMission(needCheckFocused = true)
   {
-    curMissionIdx = getSelectedMissionIndex(::show_console_buttons && needCheckFocused)
+    curMissionIdx = getSelectedMissionIndex(!isMouseMode && needCheckFocused)
     curMission = ::getTblValue(curMissionIdx, missions, null)
     return curMission
   }
@@ -340,6 +350,38 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
       if (value > 0 && value < obj.childrenCount())
         obj.getChild(value).scrollToView()
     }
+  }
+
+  function onItemDblClick()
+  {
+    if (::show_console_buttons)
+      return
+
+    onStart()
+  }
+
+  function onItemHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
+    if (isHover == (hoveredIdx == idx))
+      return
+    hoveredIdx = isHover ? idx : -1
+    updateMouseMode()
+    updateButtons()
+  }
+
+  function onHoveredItemSelect(obj)
+  {
+    if (hoveredIdx != -1)
+      getObj("items_list")?.setValue(hoveredIdx)
+  }
+
+  function updateMouseMode()
+  {
+    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   function onEventSquadDataUpdated(params)
@@ -551,60 +593,55 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     setMission()
   }
 
-  function onListItemsFocusChange(obj)
-  {
-    guiScene.performDelayed(this, function() {
-      if (!isValid())
-        return
-
-      getSelectedMission()
-      updateButtons()
-    })
-  }
-
   function updateButtons()
   {
-    local isHeader = curMission?.isHeader ?? false
+    local hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
+    local isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == curMission)
 
-    local isShowFavoritesBtn = misListType.canMarkFavorites() && curMission != null && !isHeader
-    showSceneBtn("btn_favorite", isShowFavoritesBtn)
-    if (isShowFavoritesBtn)
-    {
-      local favObj = getObj("btn_favorite")
-      if (favObj)
-        favObj.setValue(misListType.isMissionFavorite(curMission) ?
-                        ::loc("mainmenu/btnFavoriteUnmark") : ::loc("mainmenu/btnFavorite"))
-    }
+    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
+
+    local isHeader  = curMission?.isHeader ?? false
+    local isMission = curMission != null && !isHeader
+
+    local isShowFavoritesBtn = isCurItemInFocus && isMission && misListType.canMarkFavorites()
+    local favObj = showSceneBtn("btn_favorite", isShowFavoritesBtn)
+    if (::check_obj(favObj) && isShowFavoritesBtn)
+      favObj.setValue(misListType.isMissionFavorite(curMission) ?
+        ::loc("mainmenu/btnFavoriteUnmark") : ::loc("mainmenu/btnFavorite"))
 
     local startText = ""
-    if (!isHeader)
-      startText = ::loc("multiplayer/btnStart")
-    else if (filterText.len() == 0 && ((curMission?.isCampaign && canCollapseCampaigns) || (isHeader && canCollapseChapters)))
-      startText = ::loc(::isInArray(curMission.id, collapsedCamp) ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
-    else if (gm == ::GM_CAMPAIGN)
-      startText = ::loc("mainmenu/btnWatchMovie")
-
-    local showStartBtn = curMission && startText != ""
-    local objButton = showSceneBtn("btn_select", showStartBtn)
-    if (::checkObj(objButton) && showStartBtn)
+    if (isCurItemInFocus && (isMission || isHeader))
     {
-      local enabled = isHeader || (curMission && checkStartBlkMission())
-      objButton.inactiveColor = enabled ? "no" : "yes"
-      setDoubleTextToButton(scene, "btn_select", startText)
+      if (isMission)
+        startText = ::loc("multiplayer/btnStart")
+      else if (filterText.len() == 0 && ((curMission?.isCampaign && canCollapseCampaigns) || (isHeader && canCollapseChapters)))
+        startText = ::loc(collapsedCamp.contains(curMission.id) ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
+      else if (gm == ::GM_CAMPAIGN)
+        startText = ::loc("mainmenu/btnWatchMovie")
     }
 
-    local isNeedSquadBtn = ::is_gamemode_coop(gm) && ::can_play_gamemode_by_squad(gm) && ::g_squad_manager.canInviteMember()
+    local isShowStartBtn = startText != ""
+    local startBtnObj = showSceneBtn("btn_start", isShowStartBtn)
+    if (::check_obj(startBtnObj) && isShowStartBtn)
+    {
+      local enabled = isHeader || (isMission && checkStartBlkMission())
+      startBtnObj.inactiveColor = enabled ? "no" : "yes"
+      setDoubleTextToButton(scene, "btn_start", startText)
+    }
+
+    local isShowSquadBtn = isCurItemInFocus && isMission &&
+      ::is_gamemode_coop(gm) && ::can_play_gamemode_by_squad(gm) && ::g_squad_manager.canInviteMember()
     if (gm == ::GM_SINGLE_MISSION)
-      isNeedSquadBtn = isNeedSquadBtn && !isHeader && curMission!=null
+      isShowSquadBtn = isShowSquadBtn
                        && (!("blk" in curMission)
                           || (curMission.blk.getBool("gt_cooperative", false) && !::is_user_mission(curMission.blk)))
-    showSceneBtn("btn_inviteSquad", curMission!= null && isNeedSquadBtn)
+    showSceneBtn("btn_inviteSquad", isShowSquadBtn)
 
     showSceneBtn("btn_refresh", misListType.canRefreshList)
     showSceneBtn("btn_refresh_console", misListType.canRefreshList && ::show_console_buttons)
     showSceneBtn("btn_add_mission", misListType.canAddToList)
-    showSceneBtn("btn_modify_mission", curMission != null && misListType.canModify(curMission))
-    showSceneBtn("btn_delete_mission", curMission != null && misListType.canDelete(curMission))
+    showSceneBtn("btn_modify_mission", isCurItemInFocus && isMission && misListType.canModify(curMission))
+    showSceneBtn("btn_delete_mission", isCurItemInFocus && isMission && misListType.canDelete(curMission))
 
     local linkData = misListType.getInfoLinkData()
     local linkObj = showSceneBtn("btn_user_missions_info_link", linkData != null)

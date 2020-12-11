@@ -27,7 +27,6 @@ const NOTIFY_EXPIRE_PREMIUM_ACCOUNT = 15
 ::flight_menu_handler <- null
 ::postfx_settings_handler <- null
 ::credits_handler <- null
-::is_in_leaderboard_menu <- false
 ::gui_start_logout_scheduled <- false
 
 ::delayed_gblk_error_popups <- []

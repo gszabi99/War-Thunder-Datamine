@@ -25,10 +25,10 @@
   class:t='<<itemClass>>'
   <</itemClass>>
 
-  <<#onHoverChangeFunc>>
-  on_hover:t='<<onHoverChangeFunc>>'
-  on_unhover:t='<<onHoverChangeFunc>>'
-  <</onHoverChangeFunc>>
+  <<#isNeedOnHover>>
+  on_hover:t='onItemHover'
+  on_unhover:t='onItemHover'
+  <</isNeedOnHover>>
 
   <<#itemPrefixText>>
   hasItemPrefixText:t='yes'
@@ -113,4 +113,6 @@
     text:t='<<discountText>>'
   }
   <</discountText>>
+
+  ButtonImg { btnName:t='A' }
 }

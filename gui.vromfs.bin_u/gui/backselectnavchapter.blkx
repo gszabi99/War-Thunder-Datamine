@@ -38,9 +38,18 @@
       "Button_text": {
         "id": "btn_refresh_console",
         "text": "#mainmenu/btnRefresh",
-        "btnName": "RB",
+        "btnName": "L3",
         "_on_click": "onRefresh",
         "display": "hide",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_add_mission",
+        "display": "hide",
+        "text": "#urlMissions/add",
+        "_on_click": "onAddMission",
         "ButtonImg": []
       }
     }
@@ -52,24 +61,14 @@
         "text": "#squad/invite_player",
         "_on_click": "onInviteSquad",
         "display": "hide",
-        "btnName": "X",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
-        "id": "btn_add_mission",
-        "btnName": "X",
-        "display": "hide",
-        "text": "#urlMissions/add",
-        "_on_click": "onAddMission",
+        "btnName": "RB",
         "ButtonImg": []
       }
     },
     {
       "Button_text": {
         "id": "btn_modify_mission",
-        "btnName": "LT",
+        "btnName": "L3",
         "display": "hide",
         "text": "#urlMissions/modify",
         "_on_click": "onModifyMission",
@@ -89,7 +88,7 @@
     {
       "Button_text": {
         "id": "btn_purchase_campaigns",
-        "btnName": "L3",
+        "btnName": "LT",
         "display": "hide",
         "enable": "no",
         "text": "#btn/buyMoreCampaigns",
@@ -99,13 +98,25 @@
     },
     {
       "Button_text": {
-        "id": "btn_select",
+        "id": "btn_select_console",
+        "skip-navigation": "yes",
+        "btnName": "A",
+        "display": "hide",
+        "enable": "no",
+        "text": "#mainmenu/btnSelect",
+        "_on_click": "onHoveredItemSelect",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_start",
         "class": "battle",
         "navButtonFont": "yes",
         "text": "#multiplayer/btnStart",
         "_on_click": "onStart",
         "css-hier-invalidate": "yes",
-        "btnName": "A",
+        "btnName": "X",
         "pattern": [],
         "buttonWink": {
           "_transp-timer": "0"
@@ -113,7 +124,7 @@
         "buttonGlance": [],
         "ButtonImg": [],
         "btnText": {
-          "id": "btn_select_text",
+          "id": "btn_start_text",
           "text": "#multiplayer/btnStart"
         }
       }

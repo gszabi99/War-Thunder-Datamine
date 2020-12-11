@@ -49,7 +49,7 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
         id = "preset" + idx
         isSelected = idx == chosenValue
         itemText = title
-        onHoverChangeFunc = ::show_console_buttons ? "onPresetHover" : null
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
@@ -269,7 +269,7 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
       scene.findObject("items_list")?.setValue(hoveredValue)
   }
 
-  function onPresetHover(obj)
+  function onItemHover(obj)
   {
     if (!::show_console_buttons)
       return
@@ -281,7 +281,7 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
     updateButtons()
   }
 
-  function onStart(obj)
+  function onItemDblClick(obj)
   {
     if (::show_console_buttons)
       return
@@ -297,8 +297,6 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
   {
     reinit(::getTblValue("showPreset", params, -1))
   }
-
-  function onListItemsFocusChange(obj) {}
 
   function onEventModalWndDestroy(params)
   {

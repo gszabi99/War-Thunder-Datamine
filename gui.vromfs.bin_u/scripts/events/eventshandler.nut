@@ -72,7 +72,12 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   canAskAboutRoomsList = true
   isQueueWasStartedWithRoomsList = false
-  isEventsListInFocus = false
+
+  listMap = null
+  listIdxPID = ::dagui_propid.add_name_id("listIdx")
+  hoveredIdx  = -1
+  selectedIdx = -1
+  isMouseMode = true
 
   function initScreen()
   {
@@ -82,6 +87,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(eventsListObj))
       return goBack()
 
+    updateMouseMode()
     eventDescription = ::create_event_description(scene)
     skipCheckQueue = true
     fillEventsList()
@@ -92,46 +98,25 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     updateClusters()
 
     scene.findObject("event_update").setUserData(this)
+    guiScene.applyPendingChanges(false)
     ::move_mouse_on_child_by_value(eventsListObj)
   }
 
   //----CONTROLLER----//
-  function updateEventsListFocusStatus()
-  {
-    isEventsListInFocus = !::show_console_buttons || (::check_obj(eventsListObj) && eventsListObj.isHovered())
-  }
-
   function onItemSelect()
   {
-    updateEventsListFocusStatus()
     onItemSelectAction()
-  }
-
-  function onListItemsFocusChange(obj)
-  {
-    guiScene.performDelayed(this, function() {
-      if (!isValid())
-        return
-
-      updateEventsListFocusStatus()
-      updateButtons()
-    })
   }
 
   function onItemSelectAction(onlyChanged = true)
   {
     local curEventIdx = eventsListObj.getValue()
-    local curEventItemObj = null
-    if (curEventIdx < 0 || curEventIdx >= eventsListObj.childrenCount())
+    local rowId = listMap?[curEventIdx]
+    if (rowId == null)
       return
-    curEventItemObj = eventsListObj.getChild(curEventIdx)
-    if(!::checkObj(curEventItemObj))
-      return
-
-    local newEvent = ::events.getEvent(curEventItemObj?.id)
-    local newEventId = newEvent ? newEvent.name : ""
-    local newChapterId = newEvent ? ::events.getEventsChapter(newEvent)
-      : curEventItemObj.id
+    local newEvent = ::events.getEvent(rowId)
+    local newEventId = newEvent?.name ?? ""
+    local newChapterId = newEvent != null ? ::events.getEventsChapter(newEvent) : rowId
 
     if(onlyChanged && newChapterId == curChapterId && curEventId == newEventId)
       return
@@ -142,6 +127,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     checkQueue((@(newEventId) function () {
         curChapterId = newChapterId
         curEventId = newEventId
+        selectedIdx = curEventIdx
         updateWindow()
       })(newEventId),
       function() { selectEvent(curEventId) })
@@ -186,6 +172,9 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local event = ::events.getEvent(curEventId)
     if (!event)
+      return
+
+    if (!suggestAndAllowPsnPremiumFeatures())
       return
 
     isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)
@@ -286,8 +275,13 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!::queues.isEventQueue(p?.queue))
       return
 
-    updateEventsListFocusStatus()
     updateQueueInterface()
+
+    if (isInEventQueue())
+      hoveredIdx = -1
+    else
+      ::move_mouse_on_child_by_value(eventsListObj)
+
     updateButtons()
   }
 
@@ -350,8 +344,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     skipCheckQueue = false
   }
 
-  function onStart() {
-    if (!suggestAndAllowPsnPremiumFeatures())
+  function onItemDblClick() {
+    if (::show_console_buttons)
       return
 
     if (curEventId == "") {
@@ -359,6 +353,30 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
       updateButtons()
     } else
       joinEvent()
+  }
+
+  function onItemHover(obj)
+  {
+    if (!::show_console_buttons)
+      return
+    local isHover = obj.isHovered()
+    local idx = obj.getIntProp(listIdxPID, -1)
+    if (isHover == (hoveredIdx == idx))
+      return
+    hoveredIdx = isHover ? idx : -1
+    updateMouseMode()
+    updateButtons()
+  }
+
+  function onHoveredItemSelect(obj)
+  {
+    if (hoveredIdx != -1 && ::check_obj(eventsListObj))
+      eventsListObj.setValue(hoveredIdx)
+  }
+
+  function updateMouseMode()
+  {
+    isMouseMode = !::show_console_buttons || ::is_mouse_last_time_used()
   }
 
   function onEventSquadStatusChanged(params)
@@ -470,13 +488,19 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateButtons()
   {
     local event = ::events.getEvent(curEventId)
-    local isValid = event != null
-    local reasonData = ::events.getCantJoinReasonData(event)
+    local isEvent = event != null
+    local isHeader = curChapterId != "" && curEventId == ""
     local isInQueue = isInEventQueue()
+
+    local isCurItemInFocus = (isEvent || isHeader) && (isMouseMode || hoveredIdx == selectedIdx || isInQueue)
+
+    local reasonData = ::events.getCantJoinReasonData(isCurItemInFocus ? event : null)
     local isReady = ::g_squad_manager.isMeReady()
     local isSquadMember = ::g_squad_manager.isSquadMember()
 
-    local showJoinBtn = isEventsListInFocus && (isValid && (!isInQueue || (isSquadMember && !isReady)))
+    showSceneBtn("btn_select_console", !isCurItemInFocus && (isEvent || isHeader))
+
+    local showJoinBtn = isCurItemInFocus && (isEvent && (!isInQueue || (isSquadMember && !isReady)))
     local joinButtonObj = scene.findObject("btn_join_event")
     joinButtonObj.show(showJoinBtn)
     joinButtonObj.enable(showJoinBtn)
@@ -505,9 +529,9 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     leaveButtonObj.show(isInQueue)
     leaveButtonObj.enable(isInQueue)
 
-    local isHeader = isEventsListInFocus && curChapterId != "" && curEventId == ""
-    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isHeader)
-    if (isHeader)
+    local isShowCollapseBtn = isCurItemInFocus && isHeader
+    local collapsedButtonObj = showSceneBtn("btn_collapsed_chapter", isShowCollapseBtn)
+    if (isShowCollapseBtn)
     {
       local isCollapsedChapter = getCollapsedChapters()?[curChapterId]
       startText = ::loc(isCollapsedChapter ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
@@ -518,9 +542,10 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     reasonTextObj.setValue(reasonData.reasonText)
     reasonTextObj.show(reasonData.reasonText.len() > 0 && !isInQueue)
 
-    showSceneBtn("btn_rooms_list", isValid && ::events.isEventWithLobby(event))
+    showSceneBtn("btn_rooms_list", isCurItemInFocus && isEvent
+      && ::events.isEventWithLobby(event))
 
-    local pack = ::events.getEventReqPack(event, true)
+    local pack = isCurItemInFocus && isEvent ? ::events.getEventReqPack(event, true) : null
     local needDownloadPack = pack != null && !::have_package(pack)
     local packBtn = showSceneBtn("btn_download_pack", needDownloadPack)
     if (needDownloadPack && packBtn)
@@ -529,7 +554,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
       packBtn.setValue(::loc("msgbox/btn_download") + " " + ::get_pkg_loc_name(pack, true))
     }
 
-    showSceneBtn("btn_queue_options", !!event && ::queue_classes.Event.hasOptions(event.name))
+    showSceneBtn("btn_queue_options", isCurItemInFocus && isEvent
+      && ::queue_classes.Event.hasOptions(event.name))
   }
 
   function fillEventsList()
@@ -552,6 +578,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
           id = eventName
           itemText = getEventNameForListBox(event)
           unseenIcon = bhvUnseen.makeConfigStr(SEEN.EVENTS, eventName)
+          isNeedOnHover = ::show_console_buttons
         })
       }
 
@@ -561,6 +588,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
           id = chapter.name
           itemText = chapter.getLocName()
           isCollapsable = true
+          isNeedOnHover = ::show_console_buttons
         })
 
       view.items.extend(eventItems)
@@ -568,18 +596,21 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(eventsListObj, data, data.len(), this)
+    for (local i = 0; i < eventsListObj.childrenCount(); i++)
+      eventsListObj.getChild(i).setIntProp(listIdxPID, i)
 
     local cId = curEventId
-    local selIdx = view.items.findindex(@(i) i.id == cId ) ?? 0
+    listMap = view.items.map(@(v) v.id)
+    selectedIdx = listMap.findindex(@(rowId) rowId == cId ) ?? 0
 
-    if (selIdx <= 0)
+    if (selectedIdx <= 0)
     {
-      selIdx = 1 //0 index is header
+      selectedIdx = 1 //0 index is header
       curEventId = "" //curEvent not found
       curChapterId = ""
     }
 
-    eventsListObj.setValue(selIdx)
+    eventsListObj.setValue(selectedIdx)
     onItemSelectAction(false)
 
     foreach (chapterId, value in getCollapsedChapters())

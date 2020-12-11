@@ -53,6 +53,7 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
 
     local markupData = {
       tr_size = "pw, @baseTrHeight"
+      trOnHover = "onPlayerHover"
       columns = {
         name = { width = "fw" }
       }
@@ -182,6 +183,16 @@ class ::gui_handlers.MRoomPlayersListWidget extends ::gui_handlers.BaseGuiHandle
   function onTableDblClick()    { if (onPlayerDblClickCb) onPlayerDblClickCb(getSelectedPlayer()) }
   function onTableRClick()      { if (onPlayerRClickCb)   onPlayerRClickCb(getSelectedPlayer()) }
   function onTableHover(obj)    { if (onTablesHoverChange) onTablesHoverChange(obj.id, obj.isHovered()) }
+
+  function onPlayerHover(obj)
+  {
+    if (!::check_obj(obj) || !obj.isHovered())
+      return
+    local value = ::to_integer_safe(obj?.rowIdx, -1, false)
+    local listObj = obj.getParent()
+    if (listObj.getValue() != value && value >= 0 && value < listObj.childrenCount())
+      listObj.setValue(value)
+  }
 
   function onEventLobbyMembersChanged(p)
   {

@@ -66,9 +66,7 @@
                 "move-only-hover": "yes",
                 "navigatorShortcuts": "yes",
                 "on_select": "onItemSelect",
-                "_on_dbl_click": "onStart",
-                "on_hover": "onListItemsFocusChange",
-                "on_unhover": "onListItemsFocusChange"
+                "_on_dbl_click": "onItemDblClick"
               },
               "textAreaCentered": {
                 "id": "items_list_msg",
@@ -215,7 +213,7 @@
                 "id": "cluster_select_button",
                 "width": "1@bigButtonWidth",
                 "on_click": "onOpenClusterSelect",
-                "btnName": "X",
+                "btnName": "R3",
                 "refuseOpenHoverMenu": "no",
                 "textarea": {
                   "id": "cluster_select_button_text",
@@ -334,6 +332,18 @@
           },
           {
             "Button_text": {
+              "id": "btn_select_console",
+              "text": "#mainmenu/btnSelect",
+              "btnName": "A",
+              "_on_click": "onHoveredItemSelect",
+              "skip-navigation": "yes",
+              "display": "hide",
+              "enable": "no",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
               "id": "btn_join_event",
               "class": "battle",
               "navButtonFont": "yes",
@@ -341,7 +351,7 @@
               "_on_click": "onJoinEvent",
               "css-hier-invalidate": "yes",
               "isCancel": "no",
-              "btnName": "A",
+              "btnName": "X",
               "display": "hide",
               "enable": "no",
               "pattern": [],
@@ -363,7 +373,7 @@
               "text": "#mainmenu/btnExpand",
               "_on_click": "onCollapsedChapter",
               "css-hier-invalidate": "yes",
-              "btnName": "A",
+              "btnName": "X",
               "display": "hide",
               "enable": "no",
               "ButtonImg": []

@@ -11,6 +11,9 @@
   collapsing:t='no'
   <</isCollapsable>>
 
+  on_hover:t='onItemHover'
+  on_unhover:t='onItemHover'
+
   <<#isBattle>>
   img {
     id:t='battle_icon'
@@ -67,5 +70,7 @@
     activeText{}
   }
   <</isCollapsable>>
+
+  ButtonImg { btnName:t='A' }
 }
 <</items>>

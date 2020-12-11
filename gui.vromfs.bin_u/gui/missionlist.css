@@ -346,3 +346,33 @@ chapterListPlace[increaseWidthForWide=yes] {
 [mislist=events] chapterListPlace {
   width:(0.03@sf + 0.02@sf * 1@isWide) * (1.3 + 1@slotbarCountries);
 }
+
+mission_item_completed > ButtonImg,
+mission_item_unlocked > ButtonImg,
+mission_item_locked > ButtonImg,
+chapter_item_unlocked > ButtonImg,
+chapter_item_locked > ButtonImg,
+campaign_item > ButtonImg {
+  size:1@buttonIconHeight, 1@buttonIconHeight;
+  pos:pw-w-1@buttonImgMargin, ph/2-h/2;
+  position:absolute;
+  display:hide;
+}
+
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_completed:hover > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_unlocked:hover > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_locked:hover > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > chapter_item_unlocked:hover > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > chapter_item_locked:hover > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > campaign_item:hover > ButtonImg {
+  display:show;
+}
+
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_completed:current > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_unlocked:current > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > mission_item_locked:current > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > chapter_item_unlocked:current > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > chapter_item_locked:current > ButtonImg,
+[show_console_buttons=yes] [move-only-hover=yes] > campaign_item:current > ButtonImg {
+  display:hide;
+}

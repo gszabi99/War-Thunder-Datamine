@@ -29,6 +29,7 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
 
     scene.findObject("optionlist-container").mislist = "yes"
 
+    updateMouseMode()
     initDescHandler()
     initMissionsList()
     ::move_mouse_on_child_by_value(scene.findObject("items_list"))
@@ -42,6 +43,9 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
     local missionsList = generateMissionsList()
 
     guiScene.replaceContentFromText(listObj, missionsList, missionsList.len(), this)
+    for (local i = 0; i < listObj.childrenCount(); i++)
+      listObj.getChild(i).setIntProp(listIdxPID, i)
+    listObj.setValue(missions.len() ? 0 : -1)
 
     refreshMissionDesc()
   }
@@ -160,6 +164,7 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
         id = mission.id
         isSelected = idx == 0
         itemText = "#" + nameId
+        isNeedOnHover = ::show_console_buttons
       })
     }
 
@@ -168,11 +173,17 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
 
   function refreshMissionDesc()
   {
-    local config = {}
-    config.countries <- ""
-    local index = getSelectedMission()
-    local missionBlock = ::getTblValue(index, missions)
+    local missionBlock = missions?[getSelectedMission()]
+    if (missionBlock != null && missionBlock?.descConfig == null)
+      missionBlock.descConfig <- buildMissionDescConfig(missionBlock)
+    if (missionDescWeak)
+      missionDescWeak.applyDescConfig(missionBlock?.descConfig ?? {})
+    updateButtons()
+  }
 
+  function buildMissionDescConfig(missionBlock)
+  {
+    local config = { countries = "" }
     local isAnyCountryUnlocked = false
     if (missionBlock)
     {
@@ -191,10 +202,9 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
         reqText = "<color=@badTextColor>" + ::loc("dynamic/requireForUnlock") + ::loc("ui/colon") + "\n" + reqText + "</color>\n"
 
       config.maintext <- reqText + ::loc("dynamic/"+ missionBlock.id + "/desc", "")
+      config.canStart <- isAnyCountryUnlocked
     }
-    updateButtons(isAnyCountryUnlocked)
-    if (missionDescWeak)
-      missionDescWeak.applyDescConfig(config) //!!FIX ME: better to generate config in mission description too
+    return config
   }
 
   function checkCountry(country)
@@ -210,21 +220,27 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
     return true
   }
 
-  function updateButtons(show)
+  function updateButtons()
   {
-    scene.findObject("btn_select").enable(show)
-    updateSquadBtn()
-  }
+    local selectedMission = missions?[getSelectedMission()]
 
-  function updateSquadBtn()
-  {
-    local showSquadBtn = ::enable_coop_in_DynCampaign && ::g_squad_manager.canInviteMember()
+    local hoveredMission = isMouseMode ? null : missions?[hoveredIdx]
+    local isCurItemInFocus = isMouseMode || (hoveredMission != null && hoveredMission == selectedMission)
+
+    showSceneBtn("btn_select_console", !isCurItemInFocus && hoveredMission != null)
+
+    local canStart = isCurItemInFocus && (selectedMission?.descConfig.canStart ?? false)
+    ::showBtn("btn_start", isCurItemInFocus && selectedMission != null, scene)
+    scene.findObject("btn_start").enable(canStart)
+
+    local showSquadBtn = isCurItemInFocus && canStart
+      && ::enable_coop_in_DynCampaign && ::g_squad_manager.canInviteMember()
     ::showBtn("btn_inviteSquad", showSquadBtn, scene)
   }
 
   function onEventSquadStatusChanged(params)
   {
-    doWhenActiveOnce("updateSquadBtn")
+    doWhenActiveOnce("updateButtons")
   }
 
   function getSelectedMission()
@@ -232,7 +248,7 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
     local list = scene.findObject("items_list")
     if(::checkObj(list))
       return list.getValue()
-    return 0
+    return -1
   }
 
   function onItemSelect(obj)
@@ -369,7 +385,6 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
   }
 
   function onFav(){}
-  function onListItemsFocusChange(obj) {}
 }
 
 //country without "country_" prefix

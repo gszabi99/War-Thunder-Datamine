@@ -90,12 +90,10 @@ g_url_missions.openModifyUrlMissionWnd <- function openModifyUrlMissionWnd(urlMi
 g_url_missions.openDeleteUrlMissionConfirmationWnd <- function openDeleteUrlMissionConfirmationWnd(urlMission)
 {
   local text = ::loc("urlMissions/msgBox/deleteConfirmation" {name = urlMission.name})
-  local defButton = "no"
-  local buttons = [
-      ["yes", (@(urlMission) function() { ::g_url_missions.deleteMission(urlMission) })(urlMission)],
-      ["no", function() {}]
-    ]
-  ::scene_msg_box("delete_url_mission_confirmation", null, text, buttons, defButton)
+  ::scene_msg_box("delete_url_mission_confirmation", null, text, [
+      [ "yes", @() ::g_url_missions.deleteMission(urlMission) ],
+      [ "no", @() null ]
+    ], "no", { cancel_fn = @() null })
 }
 
 g_url_missions.hasMissionWithSameName <- function hasMissionWithSameName(checkingMission, name)

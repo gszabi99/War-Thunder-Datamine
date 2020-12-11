@@ -2,21 +2,12 @@
   "navLeft": [
     {
       "Button_text": {
-        "id": "btn_rename_replay",
-        "text": "#msgbox/btn_rename",
-        "on_click": "onRenameReplay",
-        "btnName": "X",
-        "ButtonImg": []
-      }
-    },
-    {
-      "Button_text": {
         "id": "btn_open_folder",
         "class": "image",
         "tooltip": "#mainmenu/btnOpenReplaysFolder",
-        "btnName": "LT",
         "on_click": "onOpenFolder",
         "_isButtonWithText": "no",
+        "btnName": "LT",
         "img": {
           "background-image": "#ui/gameuiskin#btn_load_from_file.svg"
         },
@@ -25,15 +16,19 @@
     },
     {
       "Button_text": {
-        "id": "btn_del_replay",
-        "class": "image",
-        "tooltip": "#msgbox/btn_delete",
+        "id": "btn_rename_replay",
+        "text": "#msgbox/btn_rename",
+        "on_click": "onRenameReplay",
         "btnName": "Y",
+        "ButtonImg": []
+      }
+    },
+    {
+      "Button_text": {
+        "id": "btn_del_replay",
+        "text": "#msgbox/btn_delete",
         "on_click": "onDelReplay",
-        "_isButtonWithText": "no",
-        "img": {
-          "background-image": "#ui/gameuiskin#icon_primary_fail.svg"
-        },
+        "btnName": "R3",
         "ButtonImg": []
       }
     }
@@ -50,7 +45,7 @@
       "navButtonFont": "yes",
       "css-hier-invalidate": "yes",
       "isCancel": "no",
-      "btnName": "A",
+      "btnName": "X",
       "pattern": {
         "type": "bright_texture"
       },

@@ -9,6 +9,7 @@ local { KGF_TO_NEWTON,
         getPrimaryWeaponsList,
         getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { topMenuHandler } = require("scripts/mainmenu/topMenuStates.nut")
+local { doesLocTextExist = @(k) true } = require("dagor.localize")
 
 
 /*
@@ -60,6 +61,9 @@ const AFTERBURNER_CHAMBER = 3
 
   absoluteArmorThreshold = 500
   relativeArmorThreshold = 5.0
+
+  showStellEquivForArmorClassesList = [ "ships_coal_bunker" ]
+  armorClassToSteel = null
 
   prepareNameId = [
     { pattern = ::regexp2(@"_l_|_r_"),   replace = "_" },
@@ -151,6 +155,7 @@ const AFTERBURNER_CHAMBER = 3
     loadUnitBlk()
     local map = ::getTblValue("xray", unitBlk)
     xrayRemap = map ? ::u.map(map, function(val) { return val }) : {}
+    armorClassToSteel = collectArmorClassToSteelMuls()
     resetXrayCache()
     clearHint()
     difficulty = ::get_difficulty_by_ediff(::get_current_ediff())
@@ -229,6 +234,22 @@ const AFTERBURNER_CHAMBER = 3
         if (weapon?.blk && !weapon?.dummy)
           ::u.appendOnce(::u.copy(weapon), unitWeaponBlkList, false, ::u.isEqual)
     }
+  }
+
+  function collectArmorClassToSteelMuls()
+  {
+    local res = {}
+    local armorClassesBlk = blkFromPath("gameData/damage_model/armor_classes.blk")
+    local steelArmorQuality = armorClassesBlk?.ship_structural_steel.armorQuality ?? 0
+    if (unitBlk?.DamageParts == null || steelArmorQuality == 0)
+      return res
+    for (local i = 0; i < unitBlk.DamageParts.blockCount(); i++)
+    {
+      local blk = unitBlk.DamageParts.getBlock(i)
+      if (showStellEquivForArmorClassesList.contains(blk?.armorClass) && res?[blk.armorClass] == null)
+        res[blk.armorClass] <- (armorClassesBlk?[blk.armorClass].armorQuality ?? 0) / steelArmorQuality
+    }
+    return res
   }
 
   function toggle(state = null)
@@ -474,11 +495,14 @@ const AFTERBURNER_CHAMBER = 3
       nameVariations.append(nameId.slice(0, idxSeparator))
     if(unit != null)
       nameVariations.append(::getUnitTypeText(unit.esUnitType).tolower() + "_" + nameId)
+    if (unit?.esUnitType ==::ES_UNIT_TYPE_BOAT)
+      nameVariations.append($"ship_{nameId}")
 
     foreach(localizationSource in localizationSources)
       foreach(nameVariant in nameVariations)
       {
-        localizedName = ::loc(localizationSource + nameVariant, "")
+        local locId = "".concat(localizationSource, nameVariant)
+        localizedName = doesLocTextExist(locId) ? ::loc(locId, "") : ""
         if(localizedName != "")
           return ::g_string.utf8ToUpper(localizedName, 1);
       }
@@ -545,6 +569,13 @@ const AFTERBURNER_CHAMBER = 3
         desc.append(::loc("armor_class/armor_dimensions_at_point") + ::nbsp +
           ::colorize("activeTextColor", ::round(effectiveThickness)) +
           ::nbsp + ::loc("measureUnits/mm"))
+
+        if ((armorClassToSteel?[params.name] ?? 0) != 0)
+        {
+          local equivSteelMm = ::round(effectiveThickness * armorClassToSteel[params.name])
+          desc.append(::loc("shop/armorThicknessEquivalent/steel",
+            { thickness = "".concat(::colorize("activeTextColor", equivSteelMm), " ", ::loc("measureUnits/mm")) }))
+        }
       }
       else
       {
@@ -898,7 +929,7 @@ const AFTERBURNER_CHAMBER = 3
           params.partLocId <- isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
         if (stowageInfo.firstStageCount)
         {
-          local txt = ::loc("xray/ammo/first_stage")
+          local txt = ::loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
           if (unit.isTank())
             txt += ::loc("ui/comma") + stowageInfo.firstStageCount + " " + ::loc("measureUnits/pcs")
           desc.append(txt)
@@ -998,7 +1029,8 @@ const AFTERBURNER_CHAMBER = 3
               desc.append(::loc("xray/ammo/auto_load"))
             local firstStageCount = getAmmoStowageInfo(weaponInfoBlk?.trigger).firstStageCount
             if (firstStageCount)
-              desc.append(::loc("xray/ammo/first_stage") + ::loc("ui/colon") + firstStageCount)
+              desc.append("".concat(::loc(unit.isShipOrBoat() ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage"),
+                ::loc("ui/colon"), firstStageCount))
           }
           desc.extend(getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, true, true))
         }
@@ -1078,6 +1110,13 @@ const AFTERBURNER_CHAMBER = 3
         else if (!info.isComposite && !::u.isEmpty(info.armorClass)) // reactive armor
           desc.append(blockSep + ::loc("plane_engine_type") + ::loc("ui/colon") + getPartNameLocText(info.armorClass))
 
+        break
+
+      case "coal_bunker":
+        local coalToSteelMul = armorClassToSteel?["ships_coal_bunker"] ?? 0
+        if (coalToSteelMul != 0)
+          desc.append(::loc("shop/armorThicknessEquivalent/coal_bunker",
+            { thickness = "".concat(::round(coalToSteelMul * 1000).tostring(), " ", ::loc("measureUnits/mm")) }))
         break
 
       case "optic_gun":
