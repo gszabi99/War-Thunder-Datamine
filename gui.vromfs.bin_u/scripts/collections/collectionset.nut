@@ -27,19 +27,19 @@ local CollectionsSet = class {
     }
   }
 
-  isValid    = @() collectionItems.len() > 0 && prize != null
-  isVisible  = @() reqFeature == null || ::has_feature(reqFeature)
-  getLocName = @() ::loc(locId)
-  _tostring  = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
+  getDecoratorObjId = @(collectionIdx, decoratorId) $"{collectionIdx};{decoratorId}"
+  isValid           = @() collectionItems.len() > 0 && prize != null
+  isVisible         = @() reqFeature == null || ::has_feature(reqFeature)
+  getLocName        = @() ::loc(locId)
+  _tostring         = @() $"CollectionSet {id} (collectionItemsAmount = {collectionItems.len()})"
 
-  function getView(countItemsInRow, collectionTopPos, collectionHeight) {
-    local collectionNum = uid
+  function getView(countItemsInRow, collectionTopPos, collectionHeight, collectionNum) {
     local collectionItemsTopPos = $"{collectionTopPos} + 1@buttonHeight + 1@blockInterval"
     local rowCount = ::ceil(collectionItems.len() / (countItemsInRow*1.0))
     local deltaTopPos = "".concat("0.5*(", collectionHeight, "-1@buttonHeight+1@blockInterval-",
       rowCount, "@collectionItemSizeWithIndent)")
     local unlockedItemsCount = 0
-    local itemsView = collectionItems.map(function(decorator, idx) {
+    local itemsView = collectionItems.map((function(decorator, idx) {
       local decoratorType = decorator.decoratorType
       decoratorType.updateDownloadableDecoratorsInfo(decorator)
       local column = idx - countItemsInRow * (idx / countItemsInRow)
@@ -48,7 +48,7 @@ local CollectionsSet = class {
       if (isUnlocked)
         unlockedItemsCount++
       return {
-        id = $"{collectionNum};{decorator.id}"
+        id = getDecoratorObjId(collectionNum, decorator.id)
         pos = "{0}, {1}".subst($"1@blockInterval + {column}@collectionItemSizeWithIndent",
           $"{collectionItemsTopPos} + {deltaTopPos} + {row}@collectionItemSizeWithIndent")
         tag = "imgSelectable"
@@ -59,7 +59,7 @@ local CollectionsSet = class {
         focusBorder = true
         tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
       }
-    })
+    }).bindenv(this))
 
     local decoratorType = prize.decoratorType
     local isUnlocked = prize.isUnlocked()

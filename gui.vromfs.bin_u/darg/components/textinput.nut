@@ -212,6 +212,7 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
       onAttach = handlers?.onAttach
       onReturn = onReturn
       onEscape = onEscape
+      onImeFinish = handlers?.onImeFinish
 
       onElemState = @(sf) stateFlags.update(sf)
 

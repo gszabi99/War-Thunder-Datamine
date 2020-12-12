@@ -109,6 +109,9 @@
   "ri_gpu_object": {
     "_tracked": "^ri_gpu_object\\.",
     "_extends": "replicating",
+    "ri_gpu_object.node_based_shader_preload": {
+      "_tags": "render"
+    },
     "ri_gpu_object:_namespace": {
       "name": "ammunition_box_n",
       "grid_tiling": 4,
@@ -129,6 +132,7 @@
       "max_placed_on_ri": 0,
       "slope_factor": [1.0,0.0],
       "shader_graph": "",
+      "hardness": 1.0,
       "decal": false,
       "ri_placer_list:array": [],
       "biome_params:array": [],
@@ -563,8 +567,12 @@
     "track_sound": {
       "_tags": "sound"
     },
-    "physical_tracks": [],
-    "physical_tracks.isLeft:list<b>": []
+    "physical_tracks": {
+      "_tags": "render"
+    },
+    "physical_tracks.isLeft:list<b>": {
+      "_tags": "render"
+    }
   },
   "player_tank": {
     "_extends": "tank"

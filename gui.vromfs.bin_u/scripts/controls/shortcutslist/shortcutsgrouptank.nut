@@ -268,6 +268,11 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_CAMERA_COMMANDER"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
+  {
     id = "ID_ENABLE_GUN_STABILIZER_GM"
     checkGroup = ctrlGroups.TANK
     checkAssign = false

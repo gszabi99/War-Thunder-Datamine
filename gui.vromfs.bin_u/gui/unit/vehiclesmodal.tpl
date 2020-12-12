@@ -26,26 +26,12 @@ root {
       <</needCloseBtn>>
     }
 
-    tdiv {
-      width:t='pw'
-      <<#filters>>
-      tdiv {
-        <<#isRightAlign>>
-        pos:t='pw-w, 0'
-        position:t='absolute'
-        <</isRightAlign>>
-        id:t='<<id>>'
-        padding:t='@blockInterval'
-        <<@boxes>>
-      }
-      <</filters>>
-    }
-
     frameBlock {
       id:t = 'units_list'
       size:t= 'pw, <<slotCountY>>(@slot_height+2@slotPaddingNoTable)+2@blockInterval+2@dp'
       padding:t='@blockInterval'
       position:t='relative'
+      top:t='1@popupFilterHeight'
       overflow-y:t='auto'
       flow:t='h-flow'
       shortcut-on-hover:t='yes'
@@ -61,6 +47,8 @@ root {
       on_activate:t='onUnitAction'
       <<@unitsList>>
     }
+
+    popupFilter { top:t='1@frameHeaderHeight' }
 
     <<#navBar>>
     navBar {

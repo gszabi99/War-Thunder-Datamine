@@ -4,6 +4,9 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { isCrossPlayEnabled,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+
 
 ::featured_modes <- [
   {
@@ -23,10 +26,13 @@ local { isCrossPlayEnabled,
     isVisible = @() ::is_worldwar_enabled()
     isCrossPlayRequired = needShowCrossPlayInfo
     inactiveColor = @() !::g_world_war.canPlayWorldwar()
-    crossPlayRestricted = @() !isCrossPlayEnabled()
+    crossPlayRestricted = @() isMultiplayerPrivilegeAvailable() && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -51,7 +57,7 @@ local { isCrossPlayEnabled,
     startFunction = function() {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
         openUrl(::loc("url/tss_all_tournaments"), false, false)
-      else if (!::xbox_try_show_crossnetwork_message())
+      else if (checkAndShowMultiplayerPrivilegeWarning() && !::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))
     }
     isWide = false
@@ -60,11 +66,17 @@ local { isCrossPlayEnabled,
     isVisible = @() !::is_vendor_tencent() && !::is_me_newbie() && ::has_feature("Tournaments") && ::has_feature("AllowExternalLink")
     hasNewIconWidget = true
     isCrossPlayRequired = needShowCrossPlayInfo
-    inactiveColor = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
-    crossPlayRestricted = @() needShowCrossPlayInfo() && !isCrossPlayEnabled()
+    inactiveColor = @() (needShowCrossPlayInfo() && !isCrossPlayEnabled())
+                      || !isMultiplayerPrivilegeAvailable()
+    crossPlayRestricted = @() needShowCrossPlayInfo()
+                           && isMultiplayerPrivilegeAvailable()
+                           && !isCrossPlayEnabled()
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
         return null
+
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
 
       //Always send to other platform if enabled
       //Need to notify about it
@@ -103,12 +115,22 @@ local { isCrossPlayEnabled,
       return ::has_feature("Events") && ::events.getEventsVisibleInEventsWindowCount() > 0
     }
     hasNewIconWidget = false
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable()
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   {
     /*custom battles*/
     modeId = "custom_battles_featured_game_mode"
     startFunction = function ()
     {
+      if (!checkAndShowMultiplayerPrivilegeWarning())
+        return
+
       ::gui_start_skirmish()
     }
     text = function ()
@@ -128,6 +150,13 @@ local { isCrossPlayEnabled,
     }
     hasNewIconWidget = false
     newIconWidgetId = ""
+    inactiveColor = @() !isMultiplayerPrivilegeAvailable()
+    crossplayTooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
+
+      return null
+    }
   }
   //{
     /*dynamic campaign*/
@@ -171,6 +200,9 @@ local { isCrossPlayEnabled,
       onBattleButtonClick()
     }
     inactiveColor = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return true
+
       local chapter = ::events.chapters.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
@@ -627,20 +659,26 @@ local { isCrossPlayEnabled,
         local ev = getEvent()
         return ev ? ::events.getEventDescriptionText(ev, null, true) : ""
       }
+      unitTypes = null
+      reqUnitTypes = null
+      inactiveColor = null
     }
-    gameMode.unitTypes <- _getUnitTypesByGameMode(gameMode, false)
+    gameMode.unitTypes = _getUnitTypesByGameMode(gameMode, false)
     local reqUnitTypes = _getUnitTypesByGameMode(gameMode, false, true)
-    gameMode.reqUnitTypes <- reqUnitTypes
-    local inactiveColor = !::events.checkEventFeature(event, true)
+    gameMode.reqUnitTypes = reqUnitTypes
+    gameMode.inactiveColor = function() {
+      local inactiveColor = !::events.checkEventFeature(event, true)
 
-    if (!inactiveColor)
-      foreach(esUnitType in reqUnitTypes)
-      {
-        inactiveColor = !unitTypes.getByEsUnitType(esUnitType).isAvailable()
-        if (inactiveColor)
-          break
-      }
-    gameMode.inactiveColor <- inactiveColor
+      if (!inactiveColor)
+        foreach(esUnitType in reqUnitTypes)
+        {
+          inactiveColor = !unitTypes.getByEsUnitType(esUnitType).isAvailable()
+          if (inactiveColor)
+            break
+        }
+
+      return inactiveColor
+    }
     return _appendGameMode(gameMode, isTempGameMode)
   }
 
@@ -661,7 +699,7 @@ local { isCrossPlayEnabled,
       countries = []
       displayWide = gm.displayWide
       enableOnDebug = false
-      inactiveColor = ::getTblValue("inactiveColor", gm, function() { return false })()
+      inactiveColor = gm?.inactiveColor ?? @() false
       unitTypes = [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_BOAT, ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_HELICOPTER]
       startFunction = @() gm?.startFunction()
       onBattleButtonClick = @() gm?.onBattleButtonClick()

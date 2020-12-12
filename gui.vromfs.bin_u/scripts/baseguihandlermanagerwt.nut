@@ -482,12 +482,12 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
 }
 
 ::move_mouse_on_obj <- function move_mouse_on_obj(obj) { //it used in a lot of places, so leave it global
-  if (::show_console_buttons && obj?.isValid())
+  if (obj?.isValid())
     obj.setMouseCursorOnObject()
 }
 
 ::move_mouse_on_child <- function move_mouse_on_child(obj, idx = 0) { //it used in a lot of places, so leave it global
-  if (!::show_console_buttons || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
+  if (::is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
     return
   local child = obj.getChild(idx)
   if (!child.isValid())
@@ -497,17 +497,17 @@ handlersManager.getRootScreenBlkPath <- function getRootScreenBlkPath() {
 }
 
 ::move_mouse_on_child_by_value <- function move_mouse_on_child_by_value(obj) { //it used in a lot of places, so leave it global
-  if (::show_console_buttons && obj?.isValid())
+  if (obj?.isValid())
     move_mouse_on_child(obj, obj.getValue())
 }
 
 ::select_editbox <- function select_editbox(obj) {
   if (!obj?.isValid())
     return
-  if (::show_console_buttons)
-    obj.setMouseCursorOnObject()
-  else
+  if (::is_mouse_last_time_used())
     obj.select()
+  else
+    obj.setMouseCursorOnObject()
 }
 
 local needDebug = ::getFromSettingsBlk("debug/debugGamepadCursor", false)

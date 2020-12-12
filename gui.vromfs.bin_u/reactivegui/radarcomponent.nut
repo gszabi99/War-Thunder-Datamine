@@ -35,7 +35,7 @@ local function updateRadarComponentColor(radar_color) {
   styleText.__update({
     color = radar_color
   })
-  greenColorGrid = radar_color
+  greenColorGrid = radar_color //!!!it a very bad idea to override params come from outside. In different places they has different value after it
   greenColor = radar_color
 }
 
@@ -2587,48 +2587,40 @@ local function azimuthMarkStrike() {
 }
 
 
-local function radar(posX, posY, size, isAir, mfd = false) {
-  return {
-    pos = [posX, posY]
-    size = SIZE_TO_CONTENT
-    halign = ALIGN_CENTER
-    valign = ALIGN_CENTER
-    children = function(){
-      local mode = mfd ? MfdViewMode.value : ViewMode.value
-      local isSquare = mode == RadarViewMode.B_SCOPE_SQUARE
-      local width = mfd && MfdRadarEnabled.value ? radarPosSize.w : size
-      local height = mfd && MfdRadarEnabled.value ? radarPosSize.h : width
-      local pos = mfd && MfdRadarEnabled.value ? radarPosSize.h * 0.3 : 0
+local mkRadarBase = @(posWatch, size, isAir, mfd = false) function() {
+  local mode = mfd ? MfdViewMode.value : ViewMode.value
+  local isSquare = mode == RadarViewMode.B_SCOPE_SQUARE
+  local width = mfd && MfdRadarEnabled.value ? radarPosSize.w : size
+  local height = mfd && MfdRadarEnabled.value ? radarPosSize.h : width
+  local pos = mfd && MfdRadarEnabled.value ? radarPosSize.h * 0.3 : 0
 
 
-      local scopeChild = null
-      local cScope = null
-      local azimuthRange = AzimuthRange.value
-      if (mode == RadarViewMode.B_SCOPE_SQUARE) {
-        if (azimuthRange > PI)
-          scopeChild = B_Scope(width, height)
-        else
-          scopeChild = B_ScopeSquare(HasAzimuthScale.value ? width : 0.2 * width, height, mfd)
-      }
-      else if (mode == RadarViewMode.B_SCOPE_ROUND) {
-        if (azimuthRange > PI)
-          scopeChild = B_Scope(width, height)
-        else
-          scopeChild = B_ScopeHalf(width, height, pos, mfd)
-      }
-      if (IsCScopeVisible.value && !isPlayingReplay.value && azimuthRange <= PI) {
-        cScope = {
-          pos = [0, isSquare ? width * 0.5 + hdpx(180) : height * 0.5 + hdpx(30)]
-          children = C_Scope(width, height * 0.42)
-        }
-      }
-      return {
-        size = SIZE_TO_CONTENT
-        watch = [ViewMode, MfdViewMode, MfdRadarEnabled, AzimuthMax, AzimuthMin, IsCScopeVisible, HasAzimuthScale,
-          IsRadarVisible, IsRadar2Visible]
-        children = [scopeChild, cScope]
-      }
+  local scopeChild = null
+  local cScope = null
+  local azimuthRange = AzimuthRange.value
+  if (mode == RadarViewMode.B_SCOPE_SQUARE) {
+    if (azimuthRange > PI)
+      scopeChild = B_Scope(width, height)
+    else
+      scopeChild = B_ScopeSquare(HasAzimuthScale.value ? width : 0.2 * width, height, mfd)
+  }
+  else if (mode == RadarViewMode.B_SCOPE_ROUND) {
+    if (azimuthRange > PI)
+      scopeChild = B_Scope(width, height)
+    else
+      scopeChild = B_ScopeHalf(width, height, pos, mfd)
+  }
+  if (IsCScopeVisible.value && !isPlayingReplay.value && azimuthRange <= PI) {
+    cScope = {
+      pos = [0, isSquare ? width * 0.5 + hdpx(180) : height * 0.5 + hdpx(30)]
+      children = C_Scope(width, height * 0.42)
     }
+  }
+  return {
+    watch = [ViewMode, MfdViewMode, MfdRadarEnabled, AzimuthMax, AzimuthMin, IsCScopeVisible, HasAzimuthScale,
+      IsRadarVisible, IsRadar2Visible, posWatch]
+    pos = posWatch.value
+    children = [scopeChild, cScope]
   }
 }
 
@@ -2650,17 +2642,21 @@ local function radarMfdBackground() {
   }
 }
 
-local Root = function(for_mfd, radarPosX = sh(8), radarPosY = sh(32), radarSize = sh(28), isAir = false, radar_color = greenColor) {
+local function mkRadar(radarPosX = sh(8), radarPosY = sh(32), radarSize = sh(28), isAir = false, radar_color = greenColor) {
   updateRadarComponentColor(radar_color)
-  local mode = for_mfd ? MfdViewMode.value : ViewMode.value
-  local isSquare = mode == RadarViewMode.B_SCOPE_SQUARE
-  local posY = (isSquare && IsCScopeVisible.value && !for_mfd && isAir) ? (radarPosY - radarSize * 0.5) : (!for_mfd && !isSquare && !IsCScopeVisible.value && isAir) ? (radarPosY + radarSize * 0.5) : radarPosY
-  local radarMFDEnabled = radar(radarPosSize.x, radarPosSize.y, radarSize, isAir, true)
+  local radarPos = !isAir ? Watched([radarPosX, radarPosY])
+    : Computed(function() {
+        local isSquare = ViewMode.value == RadarViewMode.B_SCOPE_SQUARE
+        local offset = isSquare && IsCScopeVisible.value ? -radarSize * 0.5
+          : !isSquare && !IsCScopeVisible.value && isAir ? radarSize * 0.5
+          : 0
+        return [radarPosX, radarPosY + offset]
+      })
   local radarHudVisibleChildren = [
     targetsOnScreenComponent
     forestallComponent
     forestallTargetLine
-    radar(radarPosX, posY, radarSize, isAir)
+    mkRadarBase(radarPos, radarSize, isAir)
     scanZoneAzimuthComponent
     scanZoneElevationComponent
     lockZoneComponent
@@ -2668,28 +2664,33 @@ local Root = function(for_mfd, radarPosX = sh(8), radarPosY = sh(32), radarSize 
     azimuthMarkStrike
   ]
 
-  local RadarHudVisMfd = Computed(@() IsRadarHudVisible.value && !for_mfd)
-  local MfdRadarEnblRes = Computed(@() for_mfd && (MfdRadarEnabled.value || MfdIlsEnabled.value))
-  local Children = Computed(function(){
-    local radarMfd = MfdRadarEnabled.value ? radarMFDEnabled : null
-    return RadarHudVisMfd.value ? radarHudVisibleChildren
-      : MfdRadarEnblRes.value
-         ? [ radarMfdBackground, radarMfd ]
-         : null
-  })
-  return function(){
-    return {
-      halign = ALIGN_LEFT
-      valign = ALIGN_TOP
-      size = [sw(100), sh(100)]
-      watch = Children
-      children = Children.value
-    }
+  return @() {
+    watch = IsRadarHudVisible
+    halign = ALIGN_LEFT
+    valign = ALIGN_TOP
+    size = [sw(100), sh(100)]
+    children = IsRadarHudVisible.value ? radarHudVisibleChildren : null
+  }
+}
+
+local function mkRadarForMfd(radarPosX = sh(8), radarPosY = sh(32), radarColor = greenColor) {
+  updateRadarComponentColor(radarColor)
+  local radarMFDEnabled = mkRadarBase(Watched([radarPosX, radarPosY]), sh(28), true, true) //fix me: mfd radar size overrided inside
+  return @() {
+    watch = [MfdIlsEnabled, MfdRadarEnabled]
+    halign = ALIGN_LEFT
+    valign = ALIGN_TOP
+    size = [sw(100), sh(100)]
+    children = [
+      MfdRadarEnabled.value || MfdIlsEnabled.value ? radarMfdBackground : null,
+      MfdRadarEnabled.value ? radarMFDEnabled : null
+    ]
   }
 }
 
 
 return {
-  radar = Root
   state = radarState
+  mkRadar
+  mkRadarForMfd
 }

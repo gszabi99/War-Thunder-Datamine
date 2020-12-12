@@ -4,7 +4,7 @@ local { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("scripts/cl
 local cache = persist("cache", @() {})
 local function clearCache() {
   cache.clear()
-  foreach (id in ["guid", "xbox", ps4RegionName()])
+  foreach (id in ["guid", "xbox", ps4RegionName(), "epic"])
   {
     cache[id] <- {}
     cache[$"inv_{id}"] <- {}
@@ -66,18 +66,22 @@ subscriptions.addListenersWithoutEnv({
 
 local getXboxBundle = @(name) getCachedBundleId("xbox", name)
 local getPsnBundle  = @(name) getCachedBundleId(ps4RegionName(), name)
+local getEpicBundle = @(name) getCachedBundleId("epic", name)
 local getGuidBundle = @(name) getCachedBundleId("guid", name)
 
 local getXboxEntitlement = @(name) getCachedEntitlementId("xbox", name)
 local getPsnEntitlement  = @(name) getCachedEntitlementId(ps4RegionName(), name)
+local getEpicEntitlement = @(name) getCachedEntitlementId("epic", name)
 local getGuidEntitlement = @(name) getCachedEntitlementId("guid", name)
 
 return {
   getBundleId = isPlatformSony ? getPsnBundle
     : isPlatformXboxOne ? getXboxBundle
+    : ::epic_is_running() ? getEpicBundle
     : getGuidBundle
 
   getEntitlementId = isPlatformSony ? getPsnEntitlement
     : isPlatformXboxOne ? getXboxEntitlement
+    : ::epic_is_running() ? getEpicEntitlement
     : getGuidEntitlement
 }

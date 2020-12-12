@@ -1,7 +1,8 @@
+require("scripts/ui_globals.nut")
+
 local __string = require("string")
 foreach (name, func in require("dagor.localize"))
   ::dagor[name] <- func
-::loc <- require("dagor.localize").loc
 
 ::regexp<-__string.regexp
 ::split <-__string.split
@@ -15,9 +16,6 @@ local __math = require("math")
 local frp = require("frp")
 ::Watched <- frp.Watched
 ::Computed <-frp.Computed
-
-::utf8 <- require("utf8")
-::regexp2 <- require("regexp2")
 
 ::script_protocol_version <- null
 require("scripts/version.nut")
@@ -268,6 +266,7 @@ global enum SEEN {
   WARBONDS_SHOP = "warbondsShop"
   EXT_XBOX_SHOP = "ext_xbox_shop"
   EXT_PS4_SHOP  = "ext_ps4_shop"
+  EXT_EPIC_SHOP = "ext_epic_shop"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"
@@ -510,6 +509,7 @@ local isFullScriptsLoaded = false
     "gamercard.nut"
     "popups/popups.nut"
     "popups/popup.nut"
+    "popups/popupFilter.nut"
 
     "wheelmenu/wheelmenu.nut"
     "guiLines.nut"
@@ -900,7 +900,7 @@ local isFullScriptsLoaded = false
   require("scripts/slotbar/elems/squadronExpIconElem.nut")
   require("scripts/matching/serviceNotifications/showInfo.nut")
   require("scripts/unit/unitContextMenu.nut")
-  require("sqDagui/guiBhv/bhvUpdateByWatched.nut")
+  require("sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
   require("scripts/social/activityFeed/activityFeedModule.nut")
   require("scripts/controls/controlsPseudoAxes.nut")
 

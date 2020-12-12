@@ -222,7 +222,7 @@ class ::gui_handlers.IngameConsoleStore extends ::gui_handlers.BaseGuiHandlerWT
 
     local emptyListObj = scene.findObject("empty_items_list")
     ::show_obj(emptyListObj, isEmptyList)
-    ::show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && needWaitIcon)
+    ::show_obj(emptyListObj.findObject("loadingWait"), isEmptyList && needWaitIcon && isLoadingInProgress)
 
     showSceneBtn("items_shop_to_marketplace_button", false)
     showSceneBtn("items_shop_to_shop_button", false)

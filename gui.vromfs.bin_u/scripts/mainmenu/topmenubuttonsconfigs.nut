@@ -24,12 +24,15 @@ local topMenuHandlerClass = require("scripts/mainmenu/topMenuHandler.nut")
 local { buttonsListWatch } = require("scripts/mainmenu/topMenuButtons.nut")
 local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
-local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local {
+  checkAndShowMultiplayerPrivilegeWarning,
+  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 local template = {
   id = ""
   text = @() ""
+  tooltip = @() ""
   image = @() null
   link = null
   isLink = @() false
@@ -38,7 +41,6 @@ local template = {
   unseenIcon = null
   onClickFunc = @(obj, handler = null) null
   onChangeValueFunc = @(value) null
-  useImage = null
   isHidden = @(handler = null) false
   isVisualDisabled = @() false
   isInactiveInQueue = false
@@ -61,7 +63,8 @@ local list = {
         return ::show_not_available_msg_box()
       if (!::check_gamemode_pkg(::GM_SKIRMISH))
         return
-      if (!suggestAndAllowPsnPremiumFeatures())
+
+      if (!checkAndShowMultiplayerPrivilegeWarning())
         return
 
       ::queues.checkAndStart(
@@ -73,6 +76,12 @@ local list = {
 
     isHidden = @(...) !::is_custom_battles_enabled()
     isInactiveInQueue = true
+    isVisualDisabled = @() !isMultiplayerPrivilegeAvailable()
+    tooltip = function() {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
+      return ""
+    }
   }
   WORLDWAR = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("mainmenu/btnWorldwar"))
@@ -213,7 +222,9 @@ local list = {
   TSS = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), ::loc("topmenu/tss"))
     onClickFunc = function(obj, handler) {
-      if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
+      if (checkAndShowMultiplayerPrivilegeWarning() &&
+          (!needShowCrossPlayInfo() || isCrossPlayEnabled())
+         )
         openUrlByObj(obj)
       else if (!::xbox_try_show_crossnetwork_message())
         ::showInfoMsgBox(::loc("xbox/actionNotAvailableCrossNetworkPlay"))

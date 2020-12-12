@@ -2,7 +2,7 @@
 CheckBox {
   id:t='<<id>>'
   <<#textWidth>>
-  width:t='<<textWidth>>+1@cIco+1@checkboxSize+4@blockInterval'
+  width:t='<<textWidth>>+1@cIco+1@checkboxSize'
   <</textWidth>>
   pos:t='0, 0'
   position:t='relative'
@@ -13,9 +13,9 @@ CheckBox {
     on_change_value:t='<<funcName>>'
   <</funcName>>
 
-  <<#useImage>>
+  <<#image>>
     class:t='with_image'
-  <</useImage>>
+  <</image>>
 
   <<#isHidden>>
     display:t='hide'
@@ -26,9 +26,9 @@ CheckBox {
     enable:t='no'
   <</isDisable>>
 
-  <<#useImage>>
-    infoImg { background-image:t='<<useImage>>' }
-  <</useImage>>
+  <<#image>>
+    infoImg { background-image:t='<<image>>' }
+  <</image>>
 
   <<@specialParams>>
 

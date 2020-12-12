@@ -70,11 +70,11 @@
     "c_dural3": {
       "aileron_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 26.0
+        "hp": 26.9
       },
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 25.9
+        "hp": 26.9
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
@@ -103,7 +103,7 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 72.2
+        "hp": 71.6
       },
       "fuse_dm": {
         "hp": 72.7
@@ -122,11 +122,11 @@
       },
       "wing2_l_dm": {
         "genericDamageMult": 0.3,
-        "hp": 61.9
+        "hp": 64.2
       },
       "wing2_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 67.5
+        "hp": 70.8
       },
       "wing_l_dm": {
         "genericDamageMult": 0.3,
@@ -185,11 +185,14 @@
       }
     },
     "steel": {
+      "gear_c_dm": {
+        "hp": 39.5
+      },
       "gear_l_dm": {
-        "hp": 52.2
+        "hp": 39.5
       },
       "gear_r_dm": {
-        "hp": 52.2
+        "hp": 39.5
       }
     },
     "steel_cooling_sys": {
@@ -903,6 +906,42 @@
             "damage": 50.0,
             "tail_dm": 1.0,
             "nothing": 1.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "gear_c_dm"
+        },
+        {
+          "onHit": {
+            "damage": 15.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 25.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 40.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0
           }
         }
       ]

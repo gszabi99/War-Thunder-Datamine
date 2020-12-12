@@ -1,6 +1,8 @@
 local { sessionsListBlkPath } = require("scripts/matchingRooms/getSessionsListBlkPath.nut")
 local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+
 
 ::match_search_gm <- -1
 
@@ -424,6 +426,9 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
   function onStart(obj)
   {
     if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     local room = getCurRoom()

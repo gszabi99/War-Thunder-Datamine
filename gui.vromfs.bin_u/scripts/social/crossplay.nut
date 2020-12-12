@@ -116,9 +116,10 @@ local function reinitCrossNetworkStatus() {
 }
 
 subscriptions.addListenersWithoutEnv({
-  XboxSystemUIReturn = @(p) reinitCrossNetworkStatus
+  XboxSystemUIReturn = @(p) reinitCrossNetworkStatus()
   SignOut = @(p) invalidateCache()
-  ProfileReceived = @(p) reinitCrossNetworkStatus
+  ProfileReceived = @(p) reinitCrossNetworkStatus()
+  XboxMultiplayerPrivilegeUpdated = @(p) reinitCrossNetworkStatus()
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

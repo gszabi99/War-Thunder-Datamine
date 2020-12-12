@@ -2018,10 +2018,103 @@
       },
       "tracks": {
         "animationMultiplier": -0.68,
-        "height": 0.055,
-        "width": 0.4,
+        "height": 0.1,
+        "width": 0.55,
         "fricFrontal": [1.0,0.9],
-        "fricSideRot": [5.0,0.0,0.7,0.3]
+        "fricSideRot": [5.0,0.0,0.7,0.3],
+        "tracksTensionK": [7.0,12.0,1.0],
+        "trackMesh": "fr_arl_44_phys_track_line",
+        "trackLen": 0.158,
+        "trackCount": 84,
+        "trackFadeTime": 1.0,
+        "trackFakeWheels": [
+          {
+            "wheel": {
+              "pos": [0.77,1.5,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.5,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-2.18,1.39,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [2.37,1.2,0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [0.77,1.5,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-1.57,1.5,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [-2.18,1.39,-0.858647],
+              "radius": 0.05
+            }
+          },
+          {
+            "wheel": {
+              "pos": [2.37,1.2,-0.858647],
+              "radius": 0.05
+            }
+          }
+        ],
+        "trackLimiters": [
+          {
+            "limiter": {
+              "p1": [-2.19,1.43,0.858647],
+              "p2": [-1.57,1.54,0.858647]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [-1.57,1.54,0.858647],
+              "p2": [0.77,1.54,0.858647]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [0.77,1.54,0.858647],
+              "p2": [2.37,1.24,0.858647]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [-2.19,1.43,-0.858647],
+              "p2": [-1.57,1.54,-0.858647]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [-1.57,1.54,-0.858647],
+              "p2": [0.77,1.54,-0.858647]
+            }
+          },
+          {
+            "limiter": {
+              "p1": [0.77,1.54,-0.858647],
+              "p2": [2.37,1.24,-0.858647]
+            }
+          }
+        ]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2065,9 +2158,9 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.07,-0.04,0.04],
-        "defaultGearRadius": 0.23,
+        "defaultGearRadius": 0.15,
         "topGearRadius": 0.13,
-        "frontBackGearRadius": 0.28,
+        "frontBackGearRadius": 0.42,
         "defaultDampeningForce": [195000.0,195000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15

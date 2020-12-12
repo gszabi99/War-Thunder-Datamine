@@ -2158,15 +2158,15 @@
           },
           {
             "turret": {
-              "head": "bone_mg_aa_v_01",
-              "gun": "bone_mg_aa_h_01",
+              "head": "bone_mg_aa_h_01",
+              "gun": "bone_mg_aa_v_01",
               "gunnerDm": "commander_dm"
             }
           },
           {
             "limits": {
-              "yaw": [-0.0,0.0],
-              "pitch": [-0.0,0.0]
+              "yaw": [-120.0,120.0],
+              "pitch": [-10.0,10.0]
             }
           }
         ]
@@ -2197,7 +2197,13 @@
         "animationMultiplier": -0.63,
         "height": 0.085,
         "width": 0.67,
-        "fricSideRot": [5.0,0.0,0.6,0.3]
+        "fricSideRot": [5.0,0.0,0.6,0.3],
+        "tracksTensionK": [4.0,10.0,10.0],
+        "trackMesh": "se_strv_103ab_phys_track_line",
+        "trackLen": 0.15,
+        "trackCount": 86,
+        "trackFadeTime": 1.1,
+        "trackMaxHeight": 1.25
       },
       "collisionProps": {
         "cls_body": "convex_hull"
@@ -2209,8 +2215,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 200000.0,
-        "driveGearRadius": 0.37,
-        "mainGearRatio": 1.8,
+        "driveGearRadius": 0.27,
+        "mainGearRatio": 1.313,
         "sideGearRatio": 6.25,
         "neutralGearRatio": 13.0,
         "gearRatios": [
@@ -2262,7 +2268,7 @@
         "suspensionOffsets": [-0.3,-0.24,0.3],
         "defaultGearRadius": 0.37,
         "frontBackGearRadius": 0.27,
-        "topGearRadius": 0.15,
+        "topGearRadius": 0.1,
         "defaultDampeningForce": [120000.0,120000.0],
         "dampeningRelaxationRatio": 0.8,
         "dampeningCompressionRatio": 0.4
@@ -3191,15 +3197,15 @@
                 },
                 {
                   "turret": {
-                    "head": "bone_mg_aa_v_01",
-                    "gun": "bone_mg_aa_h_01",
+                    "head": "bone_mg_aa_h_01",
+                    "gun": "bone_mg_aa_v_01",
                     "gunnerDm": "commander_dm"
                   }
                 },
                 {
                   "limits": {
-                    "yaw": [-0.0,0.0],
-                    "pitch": [-0.0,0.0]
+                    "yaw": [-120.0,120.0],
+                    "pitch": [-10.0,10.0]
                   }
                 }
               ]

@@ -255,6 +255,9 @@
         },
         "turret_08_side_dm": {
           "armorThickness": 35.0
+        },
+        "turret_08_bottom_dm": {
+          "armorThickness": 35.0
         }
       },
       "turret_composite_armor": {
@@ -568,7 +571,6 @@
         "ex_armor_body_l_04_dm": [],
         "ex_armor_body_r_04_dm": [],
         "turret_08_back_dm": [],
-        "turret_08_bottom_dm": [],
         "turret_08_front_dm": [],
         "turret_08_top_dm": [],
         "turret_09_back_dm": [],
@@ -1195,6 +1197,38 @@
         }
       }
     }
+  },
+  {
+    "chainIK": [
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "roll_05"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "roll_06"
+            }
+          }
+        ]
+      },
+      {
+        "points": [
+          {
+            "point": {
+              "nameTemplate": "roll_11"
+            }
+          },
+          {
+            "point": {
+              "nameTemplate": "roll_12"
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     "sound": {
@@ -2236,34 +2270,12 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "bone_turret"
-            },
-            {
-              "gun": "bone_gun"
-            },
-            {
-              "barrel": "bone_gun_barrel"
-            },
-            {
-              "gunnerDm": "gunner_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_gun_roller_02",
-                "verLimits": [-6.0,17.0],
-                "verOriginLimits": [-6.0,16.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "verNode": "bone_gun_roller_01",
-                "verLimits": [7.0,-19.0],
-                "verOriginLimits": [-6.0,16.0]
-              }
-            }
-          ],
+          "turret": {
+            "head": "bone_turret",
+            "gun": "bone_gun",
+            "barrel": "bone_gun_barrel",
+            "gunnerDm": "gunner_dm"
+          },
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-6.22,13.78]
@@ -3148,34 +3160,12 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": [
-                  {
-                    "head": "bone_turret"
-                  },
-                  {
-                    "gun": "bone_gun"
-                  },
-                  {
-                    "barrel": "bone_gun_barrel"
-                  },
-                  {
-                    "gunnerDm": "gunner_dm"
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_gun_roller_02",
-                      "verLimits": [-6.0,17.0],
-                      "verOriginLimits": [-6.0,16.0]
-                    }
-                  },
-                  {
-                    "linkedAnimPart": {
-                      "verNode": "bone_gun_roller_01",
-                      "verLimits": [7.0,-19.0],
-                      "verOriginLimits": [-6.0,16.0]
-                    }
-                  }
-                ],
+                "turret": {
+                  "head": "bone_turret",
+                  "gun": "bone_gun",
+                  "barrel": "bone_gun_barrel",
+                  "gunnerDm": "gunner_dm"
+                },
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-6.22,13.78]

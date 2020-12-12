@@ -1378,14 +1378,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     lifeTime = -1.0
   }
 
-  BLOCK_NIGHT_VISION_HINT = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId = "hints/block_night_vision"
-    showEvent = "hint:block_night_vision:show"
-    lifeTime = 5.0
-    isHideOnDeath = true
-  }
-
   ATGM_NO_LINE_OF_SIGHT = {
     hintType = ::g_hud_hint_types.ACTIONBAR
     locId = "hints/atgm_no_line_of_sight"

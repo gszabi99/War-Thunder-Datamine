@@ -76,3 +76,13 @@
   get_activate_ground_active_counter_measures_on_spawn = @() false
   GO_WAITING_FOR_RESULT = 4
 })
+
+//----------------------------wop_2_1_0_X---------------------------------//
+::apply_compatibilities({
+  USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN = -1
+  epic_is_running = @() false
+  epic_get_shop_item_async = @(...) null
+  epic_get_shop_items_async = @() null
+  epic_buy_item = @(...) null
+  epic_update_purchases_on_auth = @() null
+})

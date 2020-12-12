@@ -13,6 +13,8 @@ local { getFeaturePack } = require("scripts/user/features.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isCompatibiliyMode } = require("scripts/options/systemOptions.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 ::event_ids_for_main_game_mode_list <- [
   "tank_event_in_random_battles_arcade"
@@ -189,6 +191,9 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
 
   function isEventNeedInfoButton(event)
   {
+    if (!isMultiplayerPrivilegeAvailable())
+      return false
+
     if (!event)
       return false
     return isEventForClan(event) || isEventWithLobby(event) || isEventEnableOnDebug(event)
@@ -2130,6 +2135,11 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
             [["ok", function() {}]], "ok")
       }
     }
+    else if (!isMultiplayerPrivilegeAvailable()) {
+      data.reasonText = ::loc("xbox/noMultiplayer")
+      data.msgboxReasonText = ::loc("xbox/noMultiplayer")
+      data.checkXboxOverlayMessage = true
+    }
     else if (!isEventPlatformOnlyAllowed(mGameMode) && !crossplayModule.isCrossPlayEnabled())
     {
       data.reasonText = ::loc("xbox/crossPlayRequired")
@@ -2219,7 +2229,7 @@ systemMsg.registerLocTags({ [SQUAD_NOT_READY_LOC_TAG] = "msgbox/squad_not_ready_
       data.actionFunc = function(reasonData) {
         if (!reasonData.checkXboxOverlayMessage)
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
-        else if (!::xbox_try_show_crossnetwork_message())
+        else if (checkAndShowMultiplayerPrivilegeWarning() && !::xbox_try_show_crossnetwork_message())
           ::showInfoMsgBox(reasonData.msgboxReasonText || reasonData.reasonText, "cant_join")
       }
     }

@@ -1,4 +1,5 @@
-local list = ::Watched([])
+local frp = require("frp")
+local list = ::Watched([], frp.DONT_CHECK_NESTED)
 local flex = ::flex // warning disable: -declared-never-used
 
 local WND_PARAMS = {

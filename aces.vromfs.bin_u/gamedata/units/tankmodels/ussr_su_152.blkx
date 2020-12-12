@@ -784,11 +784,17 @@
         "trackMass": 2500.0
       },
       "tracks": {
-        "animationMultiplier": 0.64,
-        "height": 0.05,
-        "width": 0.6,
+        "animationMultiplier": 0.58,
+        "height": 0.07,
+        "width": 0.7,
         "fricSideRot": [5.0,0.0,0.7,0.3],
-        "fricFrontal": [1.0,0.8]
+        "fricFrontal": [1.0,0.8],
+        "tracksTensionK": [3.0,10.0,2.0],
+        "trackMesh": "ussr_kv_wide_phys_track_line",
+        "trackLen": 0.16,
+        "trackCount": 90,
+        "trackFadeTime": 1.2,
+        "trackMaxHeight": 1.32
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
@@ -845,10 +851,10 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.25,-0.2,0.14],
-        "defaultGearRadius": 0.28,
-        "frontBackGearRadius": 0.27,
-        "topGearRadius": 0.15,
+        "suspensionOffsets": [-0.15,-0.115,0.14],
+        "defaultGearRadius": 0.305,
+        "frontBackGearRadius": 0.332,
+        "topGearRadius": 0.19,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15

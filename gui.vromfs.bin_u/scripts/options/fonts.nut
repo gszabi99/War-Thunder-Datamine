@@ -92,6 +92,10 @@ local function update_font_heights(font)
       isWide = isLowWidthScreen() ? 0 : 1
       pxFontTgtOutdated = getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
+    if (config.scrnTgt <= 0) {
+      local configStr = ::toString(config) // warning disable: -declared-never-used
+      ::script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
+    }
     foreach(prefixId in daguiFonts.getRealFontNamePrefixesMap())
       config[$"fontHeight_{prefixId}"] <- daguiFonts.getFontLineHeightPx(null, $"{prefixId}{fontGenId}")
     return ::handyman.renderCached("gui/const/const_fonts_css", config)

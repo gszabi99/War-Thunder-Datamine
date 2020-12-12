@@ -56,7 +56,7 @@ local function mkRadar() {
   local radarPosX = radarVisible ? safeAreaSizeHud.value.size[0] - radarSize - sw(1.5) : safeAreaSizeHud.value.size[0] - safeAreaSizeHud.value.size[1] * 0.40
   if (radarVisible || !CollapsedIcon.value){
     return {
-      children = radarComponent.radar(false, radarPosX, radarPosY, radarSize, true)
+      children = radarComponent.mkRadar(radarPosX, radarPosY, radarSize, true)
     }
   }
   else if (radarComponent.state.IsRadarHudVisible.value){

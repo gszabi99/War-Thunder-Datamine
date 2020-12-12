@@ -5,6 +5,8 @@ local TV_ICON = ::loc("icon/tv")
 
 local STEAM_PLAYER_POSTFIX = "@steam"
 
+local EPIC_PLAYER_POSTFIX = "@epic"
+
 local XBOX_ONE_PLAYER_PREFIX = "^"
 local XBOX_ONE_PLAYER_POSTFIX = "@live"
 
@@ -37,11 +39,14 @@ local isPS4PlayerName = @(name) ps4PrefixNameRegexp.match(name) || ps4PostfixNam
 
 local steamPostfixNameRegexp = ::regexp2($".+({STEAM_PLAYER_POSTFIX})")
 
+local epicPostfixNameRegexp = ::regexp2($".+({EPIC_PLAYER_POSTFIX})")
+
 local cutPlayerNamePrefix = @(name) string.cutPrefix(name, PS4_PLAYER_PREFIX,
                                     string.cutPrefix(name, XBOX_ONE_PLAYER_PREFIX, name))
 local cutPlayerNamePostfix = @(name) string.cutPostfix(name, PS4_PLAYER_POSTFIX,
                                      string.cutPostfix(name, XBOX_ONE_PLAYER_POSTFIX,
-                                     string.cutPostfix(name, STEAM_PLAYER_POSTFIX, name)))
+                                     string.cutPostfix(name, STEAM_PLAYER_POSTFIX,
+                                     string.cutPostfix(name, EPIC_PLAYER_POSTFIX, name))))
 
 local addPlatformIcon = function(name)
 {
@@ -57,8 +62,9 @@ local addPlatformIcon = function(name)
   local isXboxPostfix = xboxPostfixNameRegexp.match(name)
   local isPs4Postfix = ps4PostfixNameRegexp.match(name)
   local isSteamPostfix = steamPostfixNameRegexp.match(name)
+  local isEpicPostfix = epicPostfixNameRegexp.match(name)
 
-  if (isXboxPostfix || isPs4Postfix || isSteamPostfix)
+  if (isXboxPostfix || isPs4Postfix || isSteamPostfix || isEpicPostfix)
     name = cutPlayerNamePostfix(name)
 
   local platformIcon = ""

@@ -3,10 +3,10 @@ local { calcPercent } = require("std/math.nut")
 local psnStore = require("sony.store")
 local psnUser = require("sony.user")
 local statsd = require("statsd")
+local { serviceLabel } = require("sonyLib/webApi.nut")
 
 local IMAGE_TYPE = "TAM_JACKET"
 local BQ_DEFAULT_ACTION_ERROR = -1
-local SERVICE_LABEL = ::get_platform() == "ps5"? 1 : 0
 
 enum PURCHASE_STATUS {
   PURCHASED = "RED_BAG" // - Already purchased and cannot be purchased again
@@ -179,7 +179,7 @@ local psnV2ShopPurchasableItem = class {
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
-      SERVICE_LABEL,
+      serviceLabel,
       function(result) {
         sendBqRecord([metricPlaceCall, "checkout.close"], itemId, result)
         if (result.action == psnStore.Action.PURCHASED)
@@ -193,7 +193,7 @@ local psnV2ShopPurchasableItem = class {
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
-      SERVICE_LABEL,
+      serviceLabel,
       function(result) {
         sendBqRecord([metricPlaceCall, "description.close"], itemId, result)
         if (result.action == psnStore.Action.PURCHASED)

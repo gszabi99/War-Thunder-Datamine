@@ -5,6 +5,7 @@ hoverSize {
   size-time:-250;
   size-func:squareInv;
   size-backfunc:delayedSquareInv;
+  blend-time:0;
 
   total-input-transparent:yes;
   not-input-transparent:yes;
@@ -15,14 +16,19 @@ hoverSize {
 
 hoverSize:hover,
 [show_console_buttons=no] :hover > hoverSize,
-[stickHover=yes] > hoverSize {
+[forceMove=open] > hoverSize {
   moveOut:yes;
   size-time:250;
 }
 
-[stickHover=yes]:disabled > hoverSize {
+[forceMove=open]:disabled > hoverSize {
   moveOut:no;
   size-time:-750;
+}
+
+[forceMove=close] > hoverSize {
+  moveOut:no;
+  size-time:-100;
 }
 
 hoverSize[moveOut=no][width=0], hoverSize[moveOut=no][height=0]
@@ -36,7 +42,7 @@ hoverSize[move=yes] {
   order-popup:yes;
 }
 
-[stickHover=yes][noOrderPopupOnStick=yes] > hoverSize {
+[forceMove=open][noOrderPopupOnStick=yes] > hoverSize {
   order-popup:no;
 }
 

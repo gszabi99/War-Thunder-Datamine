@@ -1,6 +1,8 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 {
@@ -10,7 +12,7 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
   startTime = -1
   endTime = -1
   isAccepted = false
-  needCheckSystemCrossplayRestriction = true
+  needCheckSystemRestriction = true
 
   static function getUidByParams(params)
   {
@@ -87,14 +89,14 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
     if (needSave)
     {
-      dagor.debug("TournamentBattle invite - needSave")
+      ::dagor.debug("Invites: Tournament: invite - needSave")
       ::save_online_job()
     }
   }
 
   function haveRestrictions()
   {
-    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated()
+    return !::isInMenu() || !isAvailableByCrossPlay() || isOutdated() || !isMultiplayerPrivilegeAvailable()
   }
 
   function getRestrictionText()
@@ -104,7 +106,8 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 
     if (isOutdated())
       return ::loc("multiplayer/invite_is_overtimed")
-
+    if (!isMultiplayerPrivilegeAvailable())
+      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
 
@@ -122,10 +125,13 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
     if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
       return
 
+    if (!checkAndShowMultiplayerPrivilegeWarning())
+      return
+
     if (!isAvailableByCrossPlay())
       return ::g_popups.add(null, ::loc("xbox/crossPlayRequired"))
 
-    ::dagor.debug($"Going to join to battleId({battleId}) via accepted invite")
+    ::dagor.debug($"Invites: Tournament: Going to join to battleId({battleId}) via accepted invite")
     ::SessionLobby.joinBattle(battleId)
 
     isAccepted = true

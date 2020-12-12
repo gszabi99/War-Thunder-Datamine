@@ -75,8 +75,6 @@
     "dvRudderTrim": 0.125,
     "hasFlapsControl": true,
     "canTakeoffWithoutFlaps": true,
-    "hasTakeoffFlapsPosition": true,
-    "hasCombatFlapsPosition": true,
     "hasAirbrake": true,
     "hasGearControl": true,
     "hasArrestorControl": true,
@@ -108,7 +106,7 @@
     "FocusOffset": 0.14,
     "WingVertPos": 0.4,
     "AlphaShift": -0.02,
-    "FlapsShift": [0.02,0.04],
+    "FlapsShift": [0.03,0.05],
     "AirbrakesShift": [-0.01,-0.08],
     "GearFocusShift": [-0.01,0.01],
     "GearShift": 0.2,
@@ -193,6 +191,52 @@
     "DownwashCoeff": 0.99,
     "StabFlowInertia": 0.085,
     "VertStabFlowInertia": 0.09,
+    "FlapsAxis": {
+      "Retracted": {
+        "Presents": true,
+        "Flaps": 0.0
+      },
+      "Combat": {
+        "Presents": true,
+        "Flaps": 0.2
+      },
+      "Takeoff": {
+        "Presents": true,
+        "Flaps": 0.9
+      },
+      "Landing": {
+        "Presents": true,
+        "Flaps": 1.0
+      }
+    },
+    "Flaps0": {
+      "Flaps": 0.0,
+      "FlapsPolarBlending": 0.0,
+      "FlapsAnimation": 0.0,
+      "Stab": 0.0,
+      "Slats": 0.0
+    },
+    "Flaps1": {
+      "Flaps": 0.2,
+      "FlapsPolarBlending": 0.2,
+      "FlapsAnimation": 0.2,
+      "Stab": 0.0,
+      "Slats": 0.5
+    },
+    "Flaps2": {
+      "Flaps": 0.9,
+      "FlapsPolarBlending": 0.95,
+      "FlapsAnimation": 0.33,
+      "Stab": -3.0,
+      "Slats": 1.0
+    },
+    "Flaps3": {
+      "Flaps": 1.0,
+      "FlapsPolarBlending": 1.0,
+      "FlapsAnimation": 1.0,
+      "Stab": -4.0,
+      "Slats": 1.0
+    },
     "NoFlaps": {
       "Cl0": 0.07,
       "alphaCritHigh": 22.0,
@@ -202,11 +246,11 @@
       "CdMin": 0.007
     },
     "FullFlaps": {
-      "Cl0": 0.6,
+      "Cl0": 0.7,
       "alphaCritHigh": 24.0,
       "alphaCritLow": -17.0,
       "ClCritHigh": 1.42,
-      "ClCritLow": -0.35,
+      "ClCritLow": -0.25,
       "CdMin": 0.05
     },
     "Fuselage": {
@@ -825,7 +869,7 @@
     "GearDestructionIndSpeed": 426.0,
     "AirbrakeDestructionIndSpeed": -1.0,
     "FlapsDestructionIndSpeedP1": [0.2,1300.0],
-    "FlapsDestructionIndSpeedP2": [0.33,389.0],
+    "FlapsDestructionIndSpeedP2": [0.9,389.0],
     "FlapsDestructionIndSpeedP3": [1.0,389.0],
     "Parts": {
       "tank1_capacity": 100.0,

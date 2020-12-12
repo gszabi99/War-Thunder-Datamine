@@ -85,6 +85,7 @@ local getMainOptions = function()
       [::USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
       [::USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUNNER_FPS_CAMERA, "spinner"],
+      [::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
 
       ["options/header/helicopter"],
       [::USEROPT_HUE_HELICOPTER_HUD, "spinner"],

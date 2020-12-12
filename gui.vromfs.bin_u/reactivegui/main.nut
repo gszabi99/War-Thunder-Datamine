@@ -1,5 +1,7 @@
 // Put to global namespace for compatibility
+require("frp").set_nested_observable_debug(true)
 ::getroottable().__update(require("daRg"))
+require("scripts/ui_globals.nut")
 require("daRg/library.nut")
 require("sqStdLibs/helpers/backCompatibility.nut")
 require("reactiveGui/compatibility.nut")
@@ -9,9 +11,6 @@ require("scripts/sharedEnums.nut")
 
 ::math <- require("math")
 ::string <- require("string")
-::loc <- require("dagor.localize").loc
-::utf8 <- require("utf8")
-::regexp2 <- require("regexp2")
 
 // configure scene when hosted in game
 ::gui_scene.config.clickRumbleEnabled = false
