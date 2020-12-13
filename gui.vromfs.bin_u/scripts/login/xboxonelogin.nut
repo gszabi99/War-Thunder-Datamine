@@ -2,6 +2,20 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 
+local multiplayerSessionPrivelegeCallback = null
+local function checkMultiplayerSessionsPrivilegeSq(showMarket, cb)
+{
+  multiplayerSessionPrivelegeCallback = cb
+  ::check_multiplayer_sessions_privilege(showMarket)
+}
+
+::check_multiplayer_sessions_privilege_callback <- function check_multiplayer_sessions_privilege_callback(isAllowed)
+{
+  if (multiplayerSessionPrivelegeCallback)
+    multiplayerSessionPrivelegeCallback(isAllowed)
+  multiplayerSessionPrivelegeCallback = null
+}
+
 class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
 {
   sceneBlkName = "gui/loginBoxSimple.blk"
@@ -73,7 +87,21 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
       return
     }
 
-    performLogin()
+    loginStep2_checkMultiplayerPrivelege()
+  }
+
+  function loginStep2_checkMultiplayerPrivelege()
+  {
+    checkMultiplayerSessionsPrivilegeSq(true,
+      ::Callback(function(res)
+      {
+        if (res)
+          ::get_gui_scene().performDelayed(this, performLogin)
+        else
+          isLoginInProcess = false
+      }, this))
+    //callback check_multiplayer_sessions_privilege_callback
+    //will call checkCrossPlay if allowed
   }
 
   function performLogin()

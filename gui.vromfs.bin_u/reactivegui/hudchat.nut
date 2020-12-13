@@ -56,10 +56,6 @@ local function chatInputCtor(field, send) {
     onChange = function (new_val) {
       ::chat_on_text_update(new_val)
     }
-    onImeFinish = function onImeFinish(applied) {
-      if (applied)
-        onReturn()
-    }
   }
   local options = {
     key = "chatInput"

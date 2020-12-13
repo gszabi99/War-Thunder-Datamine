@@ -8,12 +8,10 @@ local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { get_time_msec } = require("dagor.time")
 
 local stickedDropDown = null
 local defaultSlotbarActions = [ "autorefill", "aircraft", "sec_weapons", "weapons", "showroom", "testflight", "crew", "info", "repair" ]
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
-local forceTimePID = ::dagui_propid.add_name_id("force-time")
 
 local function moveToFirstEnabled(obj) {
   local total = obj.childrenCount()
@@ -24,20 +22,6 @@ local function moveToFirstEnabled(obj) {
     ::move_mouse_on_obj(child)
     break
   }
-}
-
-local function setForceMove(obj, value) {
-  obj.forceMove = value
-  obj.setIntProp(forceTimePID, get_time_msec())
-}
-
-local function getDropDownRootObj(obj) {
-  while(obj != null) {
-    if (obj?["class"] == "dropDown")
-      return obj
-    obj = obj.getParent()
-  }
-  return null
 }
 
 local class BaseGuiHandlerWT extends ::BaseGuiHandler {
@@ -741,32 +725,30 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       ::chatInviteToSquad(null, this)
   }
 
-  function unstickLastDropDown(newObj = null, forceMove = "no")
+  function unstickLastDropDown(newObj = null)
   {
     if (::checkObj(stickedDropDown) && (!newObj || !stickedDropDown.isEqual(newObj)))
     {
-      setForceMove(stickedDropDown, forceMove)
+      stickedDropDown.stickHover = "no"
       stickedDropDown.getScene().applyPendingChanges(false)
       onStickDropDown(stickedDropDown, false)
       stickedDropDown = null
     }
   }
 
-  function forceCloseDropDown(obj) {
-    local rootObj = getDropDownRootObj(obj)
-    if (rootObj != null)
-      setForceMove(rootObj, "close")
-  }
-
-  function onDropDownToggle(obj)
+  function onDropDown(obj)
   {
-    obj = getDropDownRootObj(obj)
     if (!obj)
       return
 
-    local needStick = obj?.forceMove != "open"
-    setForceMove(obj, needStick ? "open" : "no")
-    unstickLastDropDown(obj, needStick ? "close" : "no")
+    if (obj?["class"] != "dropDown")
+      obj = obj.getParent()
+    if (obj?["class"] != "dropDown")
+      return
+
+    local needStick = obj?.stickHover != "yes"
+    obj.stickHover = needStick ? "yes" : "no"
+    unstickLastDropDown(obj)
 
     guiScene.applyPendingChanges(false)
     stickedDropDown = needStick ? obj : null
@@ -776,9 +758,11 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function onHoverSizeMove(obj)
   {
     //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
-    if (!::is_mouse_last_time_used())
+    if (::show_console_buttons)
       return
-    unstickLastDropDown(getDropDownRootObj(obj))
+    if (obj?["class"] != "dropDown")
+      obj = obj.getParent()
+    unstickLastDropDown(obj)
   }
 
   function onGCDropdown(obj)
@@ -792,7 +776,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
     local btnObj = obj.findObject(id + "_btn")
     if (::checkObj(btnObj))
-      onDropDownToggle(btnObj)
+      onDropDown(btnObj)
   }
 
   function onStickDropDown(obj, show)
@@ -814,47 +798,39 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
 
   function onDropdownAnimFinish(obj) {
     //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
-    local isOpened = obj.getFloatProp(timerPID, 0.0) == 1
-    if (!isOpened) {
-      local rootObj = getDropDownRootObj(obj)
-      guiScene.performDelayed({}, function() {
-        if (rootObj?.isValid())
-          setForceMove(rootObj, "no") //need to remove flag on the next frame, after hover will be removed
-      })
+    if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
+    if (stickedDropDown.isEqual(obj.getParent())) {
+      local menuObj = getCurGCDropdownMenu()
+      if (::check_obj(menuObj))
+        moveToFirstEnabled(menuObj)
     }
-
-    if (::is_mouse_last_time_used() || !stickedDropDown?.isValid())
-      return
-    local rootObj = getDropDownRootObj(obj)
-    if (!rootObj || !stickedDropDown.isEqual(rootObj))
-      return
-    local menuObj = getCurGCDropdownMenu()
-    if (!menuObj?.isValid())
-      return
-    moveToFirstEnabled(menuObj)
-    local tempTask = -1
-    tempTask = ::periodic_task_register(this,
-      function(_) {
-        if (isValid() && stickedDropDown?.isValid() && rootObj?.isValid() && stickedDropDown.isEqual(rootObj))
-          unstickLastDropDown()
-        ::periodic_task_unregister(tempTask)
-      },
-      1)
   }
 
   function onDropdownHover(obj) {
     // see func onDropdownAnimFinish
     if (!::show_console_buttons || !::check_obj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
-    local btn = getCurGCDropdownBtn()
-    if (btn && (getDropDownRootObj(btn)?.getIntProp(forceTimePID, 0) ?? 0) > get_time_msec() + 100)
-      unstickLastDropDown()
+    unstickGCDropdownMenu()
   }
 
-  onBackDropdownMenu   = @(obj) ::move_mouse_on_obj(getObj($"{obj?.sectionId}_btn"))
-  getCurGCDropdownBtn  = @() curGCDropdown != null ? getObj(curGCDropdown + "_btn") : null
-  getCurGCDropdownMenu = @() curGCDropdown != null ? getObj(curGCDropdown + "_focus") : null
+  function onBackDropdownMenu(obj) {
+    ::move_mouse_on_obj(getObj($"{obj?.sectionId}_btn"))
+  }
+
+  function getCurGCDropdownMenu()
+  {
+    return curGCDropdown? getObj(curGCDropdown + "_focus") : null
+  }
+
+  function unstickGCDropdownMenu()
+  {
+    if (!curGCDropdown)
+      return
+    local btnObj = getObj(curGCDropdown + "_btn")
+    if (::checkObj(btnObj))
+      onDropDown(btnObj)
+  }
 
   function setSceneTitle(text, placeObj = null, name = "gc_title")
   {

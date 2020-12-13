@@ -10,8 +10,7 @@ local function updateDecoratorDescription(obj, handler, decoratorType, decorator
   }
 
   local iObj = obj.findObject("image")
-  local img = params?.useBigImg ? decoratorType.getBigImage(decorator) : decoratorType.getImage(decorator)
-
+  local img = decoratorType.getImage(decorator)
   iObj["background-image"] = img
 
   if (img != "")

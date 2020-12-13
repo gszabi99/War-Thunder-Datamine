@@ -433,6 +433,7 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_r_04_dm": [],
         "ex_decor_r_05_dm": [],
+        "turret_03_back_dm": [],
         "ex_armor_body_l_01_dm": [],
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_03_dm": [],
@@ -464,7 +465,6 @@
         "ex_decor_04_dm": [],
         "ex_decor_12_dm": [],
         "ex_decor_13_dm": [],
-        "turret_03_back_dm": [],
         "turret_07_bottom_dm": {
           "armorThickness": 6.0,
           "secondaryShatterArmorQuality": 0.8
@@ -2105,12 +2105,34 @@
           "errTargettingOn100kmph": 0.0,
           "errTargetting": 3.0,
           "errExplTime": 0.0,
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm"
-          },
+          "turret": [
+            {
+              "head": "bone_turret"
+            },
+            {
+              "gun": "bone_gun"
+            },
+            {
+              "barrel": "bone_gun_barrel"
+            },
+            {
+              "gunnerDm": "gunner_dm"
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_gun_roller_02",
+                "verLimits": [-6.0,17.0],
+                "verOriginLimits": [-6.0,16.0]
+              }
+            },
+            {
+              "linkedAnimPart": {
+                "verNode": "bone_gun_roller_01",
+                "verLimits": [7.0,-19.0],
+                "verOriginLimits": [-6.0,16.0]
+              }
+            }
+          ],
           "limits": {
             "yaw": [-180.0,180.0],
             "pitch": [-6.22,13.78]
@@ -3002,12 +3024,34 @@
                 "errTargettingOn100kmph": 0.0,
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_turret",
-                  "gun": "bone_gun",
-                  "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm"
-                },
+                "turret": [
+                  {
+                    "head": "bone_turret"
+                  },
+                  {
+                    "gun": "bone_gun"
+                  },
+                  {
+                    "barrel": "bone_gun_barrel"
+                  },
+                  {
+                    "gunnerDm": "gunner_dm"
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_gun_roller_02",
+                      "verLimits": [-6.0,17.0],
+                      "verOriginLimits": [-6.0,16.0]
+                    }
+                  },
+                  {
+                    "linkedAnimPart": {
+                      "verNode": "bone_gun_roller_01",
+                      "verLimits": [7.0,-19.0],
+                      "verOriginLimits": [-6.0,16.0]
+                    }
+                  }
+                ],
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-6.22,13.78]

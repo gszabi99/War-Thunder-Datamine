@@ -1,45 +1,28 @@
-local frp = require("frp")
 local defStyling = require("msgbox.style.nut")
 
-local widgets = persist("widgets", @() [])
-local msgboxGeneration = persist("msgboxGeneration", @() Watched(0))
-
-local function getCurMsgbox(){
-  if (widgets.len()==0)
-    return null
-  return widgets.top()
-}
+local widgets = persist("widgets", @() ::Watched([]))
 
 local log = ::getroottable()?.log ?? @(...) ::print(" ".join(vargv))
 
 local function addWidget(w) {
-  widgets.append(w)
-  msgboxGeneration(msgboxGeneration.value+1)
+  widgets(@(v) v.append(w))
 }
 
 local function removeWidget(w) {
-  local idx = widgets.indexof(w)
-  if (idx == null)
-    return
-  widgets.remove(idx)
-  msgboxGeneration(msgboxGeneration.value+1)
+  local idx = widgets.value.indexof(w)
+  if (idx != null) {
+    widgets.update(@(value) value.remove(idx))
+  }
 }
 
-local function removeAllMsgboxes() {
-  widgets.clear()
-  msgboxGeneration(msgboxGeneration.value+1)
+local function removeByUid(uid) {
+  local idx = widgets.value.findindex(@(w) w.uid == uid)
+  if (idx != null)
+    widgets(@(l) l.remove(idx))
 }
 
-local function removeMsgboxByUid(uid) {
-  local idx = widgets.findindex(@(w) w.uid == uid)
-  if (idx == null)
-    return
-  widgets.remove(idx)
-  msgboxGeneration(msgboxGeneration.value+1)
-}
-
-local function isMsgboxInList(uid) {
-  return widgets.findindex(@(w) w.uid == uid)
+local function isInList(uid) {
+  return widgets.value.findindex(@(w) w.uid == uid)
 }
 
 /// Adds messagebox to widgets list
@@ -89,12 +72,11 @@ local function show(params, styling=defStyling) {
   }
 
   local uid = params?.uid ?? {}
-  if (params?.uid)
-    removeMsgboxByUid(uid)
+  removeByUid(uid)
 
   local btnsDesc = params?.buttons ?? defaultButtons
   if (!(btnsDesc instanceof ::Watched))
-    btnsDesc = ::Watched(btnsDesc, frp.DONT_CHECK_NESTED)
+    btnsDesc = ::Watched(btnsDesc)
 
   local defCancel = null
   local initialBtnIdx = 0
@@ -187,13 +169,12 @@ local function show(params, styling=defStyling) {
 }
 
 
-return {
+local msgbox = {
   show
-  showMsgbox = show
-  getCurMsgbox
-  msgboxGeneration
-  removeAllMsgboxes
-  isMsgboxInList
-  removeMsgboxByUid
+  widgets
+  isInList
+  removeByUid
   styling = defStyling
 }
+
+return msgbox

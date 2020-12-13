@@ -1187,7 +1187,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::checkObj(curBundleTblObj))
       return
-    onDropDownToggle(curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
+    onDropDown(curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
     curBundleTblObj = null
   }
 
@@ -1219,7 +1219,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (items[idx].type == weaponsItem.bundle)
     {
       if (stickBundle && ::check_obj(obj))
-        onDropDownToggle(obj.getParent())
+        onDropDown(obj.getParent())
       return
     }
     doItemAction(items[idx], fullAction)

@@ -1,12 +1,11 @@
 local statsd = require("statsd")
 local psn = require("sonyLib/webApi.nut")
 local datablock = require("DataBlock")
-local stdLog = require("std/log.nut")()
-local log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
-local logerr = stdLog.logerr
+local u = require("sqStdLibs/helpers/u.nut")
 
-local { fillBlock } = require("std/datablock.nut")
+local { fillBlock } = require("sqStdlibs/helpers/datablockUtils.nut")
 
+local SERVICE_LABEL = ::get_platform() == "ps5"? 1 : 0
 local STORE_REQUEST_ADDITIONAL_FLAGS = {
   useCurrencySymbol = "false"
   useFree = "true"
@@ -59,7 +58,7 @@ local fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
 requestLinksFullInfo = function(category) {
   local categoryBlock = categoriesData.getBlockByName(category)
   if (!categoryBlock)
-    log($"requestLinksFullInfo: no block found for category ", category)
+    ::dagor.debug($"PSN: Shop data: V2: requestLinksFullInfo: no block found for category {category}")
 
   local linksList = []
   for (local i = categoryBlock.links.blockCount() - 1; i >= 0; i--) {
@@ -74,7 +73,7 @@ requestLinksFullInfo = function(category) {
 
   // Remove category block if no items left
   if (!linksList.len()) {
-    log($"requestLinksFullInfo: No link left to display. Remove category {category}")
+    ::dagor.debug($"PSN: Shop Data: V2: requestLinksFullInfo: No link left to display. Remove category {category}")
     categoriesData.removeBlock(category)
   }
 
@@ -82,12 +81,12 @@ requestLinksFullInfo = function(category) {
 }
 
 local requestCategoryFullLinksList = @(category) null
-requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([category], psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
+requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([category], SERVICE_LABEL, STORE_REQUEST_ADDITIONAL_FLAGS),
   function(response, err) {
     if (err) {
       statsd.send_counter("sq.ingame_store.v2.request", 1,
         {status = "error", request = "category_full_links_list", category = category, error_code = err.code})
-      log($"requestCategoryFullLinksList: Category {category}, Error receieved: ", err)
+      ::dagor.debug($"PSN: Shop Data: V2: requestCategoryFullLinksList: Category {category}, Error receieved: {::toString(err, 4)}")
       finalizeCollectData()
       return
     }
@@ -115,8 +114,8 @@ collectCategories = function(response, err = null) {
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "error", request = "dig_category", error = err.code})
 
-    if (::type(err.code) == "string" || err.code < 500 || err.code >= 600)
-      logerr($"PSN: Shop Data: Dig Category: received error: {err}")
+    if (u.isString(err.code) || err.code < 500 || err.code >= 600)
+      ::script_net_assert_once("psn_categories_error", $"PSN: Shop Data: Dig Category: received error: {::toString(err, 4)}")
     finalizeCollectData()
     return
   }
@@ -140,7 +139,7 @@ collectCategories = function(response, err = null) {
   }
 
   if (categories.len())
-    psn.send(psn.inGameCatalog.get(categories, psn.serviceLabel), collectCategories)
+    psn.send(psn.inGameCatalog.get(categories, SERVICE_LABEL), collectCategories)
   else {
     // No categories left for digging. Left only products
     // Start request full links
@@ -148,15 +147,15 @@ collectCategories = function(response, err = null) {
   }
 }
 
-local collectCategoriesAndItems = @(catalog = []) psn.send(
-  psn.inGameCatalog.get(catalog, psn.serviceLabel),
+local collectCategoriesAndItems = @() psn.send(
+  psn.inGameCatalog.get([], SERVICE_LABEL),
   function(response, err) {
     categoriesData.reset()
 
     if (err) {
       statsd.send_counter("sq.ingame_store.v2.request", 1,
         {status = "error", request = "collect_categories_and_items", error = err.code})
-      log($"collectCategoriesAndItems: Received error: ", err)
+      ::dagor.debug($"PSN: Shop Data: V2: collectCategoriesAndItems: Received error: {::toString(err, 4)}")
       finalizeCollectData()
       return
     }
@@ -172,14 +171,13 @@ local collectCategoriesAndItems = @(catalog = []) psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
-  psn.send(psn.inGameCatalog.get(idsArray, psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
+local updateSpecificItemInfo = function(idsArray, onSuccessCb) {
+  psn.send(psn.inGameCatalog.get(idsArray, SERVICE_LABEL, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {
         statsd.send_counter("sq.ingame_store.v2.request", 1,
           {status = "error", request = "update_specific_item_info", error = err.code})
-        log("updateSpecificItemInfo: items: ", idsArray, "; Error: ", err)
-        onErrorCb(response, err)
+        ::dagor.debug($"PSN: Shop Data: V2: updateSpecificItemInfo: items: {::toString(idsArray)}; Error: {::toString(err)}")
         return
       }
 
@@ -202,9 +200,8 @@ local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, 
         }
 
         if (!linksBlock) {
-          res.append(itemData)
-          log($"updateSpecificItemInfo: not found block for {itemId}, don't cache it")
-          continue
+          ::dagor.debug($"PSN: Shop Data: V2: updateSpecificItemInfo: not found block for {itemId}")
+          return
         }
 
         // No need old info, remove block, and fill with new one

@@ -1,7 +1,6 @@
 local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { promoTextFunctions, getTutorialData } = require("scripts/promo/promoInfo.nut")
-local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
@@ -331,7 +330,6 @@ local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.n
     return ::has_feature("Events")
            && ::events
            && ::events.getEventsVisibleInEventsWindowCount()
-           && isMultiplayerPrivilegeAvailable()
   }
   //----------------- </EVENTS> -----------------------------
 
@@ -457,7 +455,6 @@ local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.n
   function onEventWWStopWorldWar(p) { updateWorldWarButton() }
   function onEventWWShortGlobalStatusChanged(p) { updateWorldWarButton() }
   function onEventCrossPlayOptionChanged(p) { updateWorldWarButton() }
-  function onEventXboxMultiplayerPrivilegeUpdated(p) { updatePromoBlocks(true) }
   function onEventWebPollAuthResult(p) { updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {
     if (p?.pollId == null)

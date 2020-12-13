@@ -28,6 +28,6 @@ return {
   size = flex()
   children = [
     shipHud,
-    radarComponent.mkRadar(sh(4), sh(18))
+    radarComponent.radar(false, sh(4), sh(18))
   ]
 }

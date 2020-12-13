@@ -1091,6 +1091,4 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     curClanLbPage = 0
     requestClansLbData()
   }
-
-  getCurClan = @() curClanId
 }

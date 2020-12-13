@@ -56,30 +56,6 @@
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
   "fireDamageType": "fire",
-  "missionActionUnitDamageType": "generic",
-  "missionActionDestroyAreaDamageType": "generic",
-  "consoleKillUnitDamageType": "generic",
-  "propellerOverspeedCrashDamageType": "generic",
-  "barrageBalloonCollisionDamageType": "generic",
-  "delayDamageType": "generic",
-  "groundModelFallDamageType": "generic",
-  "shipDestructionDamageType": "generic",
-  "gunBarrelRuptureDamageType": "generic",
-  "debugHitDamageType": "generic",
-  "fireExplosionDamageType": "fireExplosion",
-  "mergeDamageTypeWithSplashForEffectsWithoutThis": "shatter",
-  "shipCrewDrownDamageType": "drowning",
-  "tankCrewDrownDamageType": "drowning",
-  "tankEngineDrownDamageType": "drowning",
-  "groundModelCollisionDamageTypeId": "collision",
-  "groundModelCrashDamageTypeId": "collision",
-  "airplaneCollisionDamageTypeId": "collision",
-  "airplaneCrashDamageTypeId": "collision",
-  "barrageBalloonBurnDamageTypeId": "fire",
-  "airplaneFuelBurnDamageTypeId": "fire",
-  "airplaneEngineBurnDamageTypeId": "fire",
-  "metapartFireDamageType": "fire",
-  "defaultFirePresetDamageType": "fire",
   "useBlkPreprocessor": true,
   "stopChanceOnDeadPart": 1.0,
   "explodeRestrainArmorPower": 0.33,
@@ -115,7 +91,6 @@
   "aircraftToGroundCollisionDamageType": "collision",
   "aircraftToAircraftCollisionDamageType": "collision",
   "enableWheelBreakage": true,
-  "dependentDamagePartsAutoLinkage": false,
   "weaponReloadWhileRepairBreachesMult": 0.25,
   "weaponReloadWhileUnwateringMult": 0.25,
   "weaponReloadWhileRepairMult": 0.25,
@@ -1419,26 +1394,6 @@
       }
     }
   },
-  "damageTypesProps": {
-    "collision": {
-      "disableEffects": true,
-      "disableCut": true
-    },
-    "drowning": {
-      "disableEffects": true
-    },
-    "fire": {
-      "commonAirplaneFire": true,
-      "commonGroundModelFire": true,
-      "disableEffective": true,
-      "disableMissionStatistics": true,
-      "allowFireProtection": true,
-      "disableSpawnShotMarkers": true,
-      "disableCriticalIndicator": true,
-      "disableDamageInfo": true,
-      "ignoreForDeadPart": true
-    }
-  },
   "explosiveTypeToShattersParamsForAmmoStowage": {
     "ships_tanks_ammo": {
       "explosiveMassToRadius": {
@@ -2560,7 +2515,6 @@
     "ussr_zut_37": 125,
     "germ_artilleriefahrprahm_typ_d1": 28,
     "germ_artilleriefahrprahm_typ_d3": 28,
-    "germ_battlecruiser_von_der_tann": 200,
     "germ_battleship_helgoland": 225,
     "germ_battleship_westfalen": 200,
     "germ_cruiser_admiral_graf_spee": 140,
@@ -2610,7 +2564,6 @@
     "it_cruiser_montecuccoli": 140,
     "it_cruiser_trento": 140,
     "it_cruiser_zara_class": 140,
-    "it_cruiser_zara_class_pola": 140,
     "it_destroyer_aquilone": 100,
     "it_destroyer_comandanti_medaglie_doro": 81,
     "it_destroyer_dardo": 100,
@@ -2661,7 +2614,6 @@
     "jp_escort_ikazuchi_class": 80,
     "jp_karotei_type2": 35,
     "jp_karotei_type4": 35,
-    "jp_kusen_tei_13_1942": 35,
     "jp_kusen_tei_13_1944": 35,
     "jp_no1_ch2": 40,
     "jp_no4_ch8": 35,
@@ -2676,7 +2628,6 @@
     "jp_type_t1_1941": 35,
     "uk_70ft_mgb": 35,
     "uk_71ft_mgb": 35,
-    "uk_battlecruiser_invincible": 280,
     "uk_battleship_colossus": 280,
     "uk_battleship_dreadnought": 280,
     "uk_brave_borderer": 35,
@@ -2691,10 +2642,9 @@
     "uk_cruiser_london": 136,
     "uk_cruiser_southampton": 120,
     "uk_cruiser_tiger": 140,
-    "uk_cruiser_york": 132,
+    "uk_cruiser_york": 135,
     "uk_dark_class": 35,
     "uk_dark_class_mtb": 35,
-    "uk_dark_class_mtb_td": 35,
     "uk_destroyer_battle_2series": 93,
     "uk_destroyer_battle_tobruk": 93,
     "uk_destroyer_clemson_churchill": 80,
@@ -2728,7 +2678,6 @@
     "us_ashville_class": 47,
     "us_battleship_north_dakota": 217,
     "us_cruiser_atlanta_class_atlanta": 120,
-    "us_cruiser_baltimore_class": 140,
     "us_cruiser_brooklyn_class_brooklyn": 140,
     "us_cruiser_brooklyn_class_helena": 140,
     "us_cruiser_cleveland_class_cleveland": 140,
@@ -2807,7 +2756,6 @@
     "ussr_mpk_122a": 35,
     "ussr_mpk_122bis": 41,
     "ussr_mpk_163": 38,
-    "ussr_mpk_pr12412": 42,
     "ussr_od_200": 35,
     "ussr_pr_1204": 42,
     "ussr_pr_1204_late": 42,
@@ -4462,48 +4410,6 @@
       "hpForRepair": 0.7,
       "completely": true
     },
-    "fire_director_06_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_mount_06_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
     "depth_charge_mount_01_dm": {
       "speed": 5.0,
       "completely": true
@@ -4522,52 +4428,6 @@
     },
     "depth_charge_mount_05_dm": {
       "speed": 5.0,
-      "completely": true
-    },
-    "plotting_room_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 0.7,
-      "completely": true
-    },
-    "plotting_room_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 0.7,
-      "completely": true
-    },
-    "rangefinder_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "rangefinder_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "rangefinder_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "rangefinder_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "rangefinder_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "rangefinder_06_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
       "completely": true
     }
   },
@@ -4670,7 +4530,7 @@
     "tank": {
       "matchExpClass": "exp_tank|exp_heavy_tank|exp_tank_destroyer",
       "explosionImpulseDuration": 0.7,
-      "explosionImpulseThreshold": 100.0,
+      "explosionImpulseThreshold": 500.0,
       "explosionImpulseDistanceThreshold": 50.0,
       "mapMassToImpulse": [
         {

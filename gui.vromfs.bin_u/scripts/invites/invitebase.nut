@@ -23,7 +23,7 @@ class ::BaseInvite
   isAutoAccepted = false
   isRejected = false
 
-  needCheckSystemRestriction = false //Required for displaying console system message
+  needCheckSystemCrossplayRestriction = false //Required for displaying console system message
 
   timedShowStamp = -1   //  invite must be hidden till this timestamp
   timedExpireStamp = -1 //  invite must autoexpire after this timestamp

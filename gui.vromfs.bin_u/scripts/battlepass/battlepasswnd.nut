@@ -12,7 +12,6 @@ local { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
-local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
 
 local watchObjInfoConfigList = {
   season_lvl = seasonLvlWatchObj
@@ -172,7 +171,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function initBattlePassInfo() {
     updateChallenges()
     foreach (objId, config in watchObjInfoConfigList)
-      scene.findObject(objId).setValue(stashBhvValueConfig(config))
+      scene.findObject(objId).setValue(stashBhvValueConfig([{
+        watch = config.watch
+        updateFunc = config.updateFunc
+      }]))
 
     showSceneBtn("btn_warbondsShop", !::isHandlerInScene(::gui_handlers.WarbondsShop))
   }
@@ -406,15 +408,6 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.BattlePassWnd <- BattlePassWnd
 
-local function openBattlePassWnd() {
-  if (isUserstatMissingData.value) {
-    ::showInfoMsgBox(::loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
-    return
-  }
-
-  ::handlersManager.loadHandler(BattlePassWnd)
-}
-
 return {
-  openBattlePassWnd
+  openBattlePassWnd = @() ::handlersManager.loadHandler(BattlePassWnd)
 }

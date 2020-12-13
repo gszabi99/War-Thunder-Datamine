@@ -1,6 +1,5 @@
 local { maxSeasonLvl, hasBattlePass, battlePassShopConfig } = require("scripts/battlePass/seasonState.nut")
-local { refreshUserstatUnlocks, isUserstatMissingData
-} = require("scripts/userstat/userstat.nut")
+local { refreshUserstatUnlocks } = require("scripts/userstat/userstat.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 
 local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
@@ -185,15 +184,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
 ::gui_handlers.BattlePassShopWnd <- BattlePassShopWnd
 
-local function openBattlePassShopWnd() {
-  if (isUserstatMissingData.value) {
-    ::showInfoMsgBox(::loc("userstat/missingDataMsg"), "userstat_missing_data_msgbox")
-    return
-  }
-
-  ::handlersManager.loadHandler(BattlePassShopWnd)
-}
-
+local openBattlePassShopWnd = @() ::handlersManager.loadHandler(BattlePassShopWnd)
 
 globalCallbacks.addTypes({
   openBattlePassShopWnd = {

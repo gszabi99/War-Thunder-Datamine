@@ -5,7 +5,6 @@ local { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("scripts/customization/decoratorAcquire.nut")
 
 const MAX_COLLECTION_ITEMS = 10
-const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
 local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType          = handlerType.MODAL
@@ -18,16 +17,11 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   collectionHeight = 0
   lastSelectedDecoratorObjId = ""
   collectionsListObj = null
-  isOnlyUncompleted = false
-  selectedDecoratorId = null
 
   function initScreen() {
-    isOnlyUncompleted = ::load_local_account_settings(IS_ONLY_UNCOMPLETED_SAVE_ID, false)
-    collectionsList = filterCollectionsList()
+    collectionsList = getCollectionsList()
     collectionsListObj = scene.findObject("collections_list")
-    updateOnlyUncompletedCheckbox()
     initCollectionsListSizeOnce()
-    initState()
     fillPage()
     ::move_mouse_on_child_by_value(collectionsListObj)
   }
@@ -47,19 +41,6 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     collectionsPerPage = sizes.itemsCountY
   }
 
-  function initState() {
-    if (selectedDecoratorId == null)
-      return
-
-    local decoratorId = selectedDecoratorId
-    local collectionIdx = collectionsList.findindex(@(c) c.findDecoratorById(decoratorId).decorator != null)
-    if (collectionIdx == null)
-      return
-
-    curPage = ::ceil(collectionIdx / collectionsPerPage).tointeger()
-    lastSelectedDecoratorObjId = collectionsList[collectionIdx].getDecoratorObjId(collectionIdx, selectedDecoratorId)
-  }
-
   function goToPage(obj) {
     curPage = obj.to_page.tointeger()
     fillPage()
@@ -73,10 +54,9 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     for(local i=pageStartIndex; i < pageEndIndex; i++) {
       local collectionTopPos = $"{idxOnPage} * ({collectionHeight} + 1@blockInterval)"
       view.collections.append(
-        collectionsList[i].getView(countItemsInRow, collectionTopPos, collectionHeight, i))
+        collectionsList[i].getView(countItemsInRow, collectionTopPos, collectionHeight))
       idxOnPage++
     }
-    view.hasCollections <- view.collections.len() > 0
 
     local data = ::handyman.renderCached("gui/collections/collection", view)
     if (::check_obj(collectionsListObj))
@@ -150,7 +130,6 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
           ? collectionsList?[decoratorConfig?.collectionIdx ?? -1]?.getCollectionViewForPrize()
           : null
         imgSize = ["1@profileMedalSizeBig", $"{imgRatio}@profileMedalSizeBig"]
-        useBigImg = true
       })
     }
     updateButtons(decoratorConfig)
@@ -189,7 +168,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateCollectionsList() {
-    collectionsList = filterCollectionsList()
+    collectionsList = getCollectionsList()
     fillPage()
   }
 
@@ -211,7 +190,7 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       openData = {
       }
       stateData = {
-        lastSelectedDecoratorObjId = getCurDecoratorObj()?.id ?? lastSelectedDecoratorObjId
+        lastSelectedDecoratorObjId = getCurDecoratorObj()?.id
       }
     }
     return data
@@ -246,33 +225,11 @@ local collectionsWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local decorator = getDecoratorConfig()?.decorator
     askConsumeDecoratorCoupon(decorator, null)
   }
-
-  function updateOnlyUncompletedCheckbox()
-  {
-    local checkboxObj = scene.findObject("checkbox_only_uncompleted")
-    checkboxObj.setValue(isOnlyUncompleted)
-  }
-
-  function filterCollectionsList()
-  {
-    return isOnlyUncompleted
-      ? getCollectionsList().filter(@(val) !val.prize.isUnlocked())
-      : getCollectionsList()
-  }
-
-  function onOnlyUncompletedCheck(obj)
-  {
-    isOnlyUncompleted = obj.getValue()
-    collectionsList = filterCollectionsList()
-    curPage = 0
-    fillPage()
-    ::save_local_account_settings(IS_ONLY_UNCOMPLETED_SAVE_ID, isOnlyUncompleted)
-  }
 }
 
 ::gui_handlers.collectionsWnd <- collectionsWnd
 
 return {
-  openCollectionsWnd = @(params = {}) ::handlersManager.loadHandler(collectionsWnd, params)
+  openCollectionsWnd = @() ::handlersManager.loadHandler(collectionsWnd)
   hasAvailableCollections = @() ::has_feature("Collection") && getCollectionsList().len() > 0
 }

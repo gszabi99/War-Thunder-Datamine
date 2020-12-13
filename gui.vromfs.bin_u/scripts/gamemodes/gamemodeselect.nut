@@ -5,10 +5,6 @@ local crossplayModule = require("scripts/social/crossplay.nut")
 local u = require("sqStdLibs/helpers/u.nut")
 local Callback = require("sqStdLibs/helpers/callback.nut").Callback
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local {
-  checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-
 
 ::dagui_propid.add_name_id("modeId")
 
@@ -281,8 +277,8 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     local hasNewIconWidget = !::game_mode_manager.isSeen(id)
     local newIconWidgetContent = hasNewIconWidget? NewIconWidget.createLayout() : null
 
-    local crossPlayRestricted = isMultiplayerPrivilegeAvailable() && !isCrossPlayEventAvailable(event)
-    local inactiveColor = !isMultiplayerPrivilegeAvailable() || crossPlayRestricted
+    local crossPlayRestricted = !isCrossPlayEventAvailable(event)
+    local crossplayTooltip = getCrossPlayRestrictionTooltipText(event)
     if (gameMode?.updateByTimeFunc)
       gameModesWithTimer[id] <- mode.updateByTimeFunc
 
@@ -313,10 +309,10 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       // Used to easily backtrack corresponding game mode.
       gameMode = gameMode
       eventDescriptionValue = gameMode.id
-      inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
+      inactiveColor = ::getTblValue("inactiveColor", gameMode, crossPlayRestricted)
       crossPlayRestricted = crossPlayRestricted
-      crossplayTooltip = getRestrictionTooltipText(event)
-      isCrossPlayRequired = crossplayModule.needShowCrossPlayInfo() && !::events.isEventPlatformOnlyAllowed(event)
+      crossplayTooltip = crossplayTooltip
+      isCrossPlayRequired = crossplayTooltip != null
       showEventDescription = !isLink && ::events.isEventNeedInfoButton(event)
       eventTrophyImage = getTrophyMarkUpData(trophyName)
       isTrophyRecieved = trophyName == ""? false : !::can_receive_pve_trophy(-1, trophyName)
@@ -325,11 +321,8 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function getRestrictionTooltipText(event)
+  function getCrossPlayRestrictionTooltipText(event)
   {
-    if (!isMultiplayerPrivilegeAvailable())
-      return ::loc("xbox/noMultiplayer")
-
     if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
       return null
 
@@ -434,9 +427,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function onGameModeSelect(obj)
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
-
     markGameModeSeen(obj)
     local gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.value)
     performGameModeSelect(gameModeView.gameMode)
@@ -508,8 +498,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateClusters()
   {
-    local clustersObj = showBtn("cluster_select_button", isMultiplayerPrivilegeAvailable())
-    clustersModule.updateClusters(clustersObj.findObject("cluster_select_button_text"))
+    clustersModule.updateClusters(scene.findObject("cluster_select_button_text"))
   }
 
   function onClusterSelectActivate(obj)
@@ -559,16 +548,12 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateEventDescriptionConsoleButton(gameMode)
   {
-    showSceneBtn("event_description_console_button", gameMode != null
-      && gameMode?.forClan
-      && ::show_console_buttons
-      && isMultiplayerPrivilegeAvailable()
-    )
+    showSceneBtn("event_description_console_button", gameMode != null && gameMode?.forClan && ::show_console_buttons)
+    ::showBtn("map_preferences_console_button",
+      isShowMapPreferences(gameMode?.getEvent()) && ::show_console_buttons, scene)
 
-    local prefObj = showSceneBtn("map_preferences_console_button", isShowMapPreferences(gameMode?.getEvent())
-      && ::show_console_buttons)
-
-    if (!::check_obj(prefObj))
+    local prefObj = scene.findObject("map_preferences_console_button")
+    if(!::check_obj(prefObj))
       return
 
     prefObj.setValue(mapPreferencesParams.getPrefTitle(gameMode?.getEvent()))
@@ -605,7 +590,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
   function isShowMapPreferences(curEvent)
   {
     return ::has_feature("MapPreferences") && !::is_me_newbie()
-      && isMultiplayerPrivilegeAvailable()
       && mapPreferencesParams.hasPreferences(curEvent)
       && ((curEvent?.maxDislikedMissions ?? 0) > 0 || (curEvent?.maxBannedMissions ?? 0) > 0)
   }

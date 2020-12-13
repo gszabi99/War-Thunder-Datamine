@@ -1,11 +1,9 @@
 local statsd = require("statsd")
 local psn = require("sonyLib/webApi.nut")
 local datablock = require("DataBlock")
-local stdLog = require("std/log.nut")()
-local log = stdLog.with_prefix("[PSN: Shop Data: V1] ")
-local logerr = stdLog.logerr
+local u = require("sqStdLibs/helpers/u.nut")
 
-local { fillBlock } = require("std/datablock.nut")
+local { fillBlock } = require("sqStdlibs/helpers/datablockUtils.nut")
 
 local STORE_REQUEST_ADDITIONAL_FLAGS = {
   flag = "discounts"
@@ -78,7 +76,7 @@ local onReceivedResponeOnFullInfo = function(response, category, linksList) {
     })
 
   if (linksList.len())
-    log("onReceivedResponeOnFullInfo: Didn't recieved info for ", linksList)
+    ::dagor.debug($"PSN: Shop data: onReceivedResponeOnFullInfo: Didn't recieved info for {::toString(linksList)}")
 
   fillLinkFullInfo(category)
 }
@@ -86,7 +84,7 @@ local onReceivedResponeOnFullInfo = function(response, category, linksList) {
 requestLinksFullInfo = function(category) {
   local categoryBlock = categoriesData.getBlockByName(category)
   if (!categoryBlock) {
-    log("requestLinksFullInfo: no block found for category ", category)
+    ::dagor.debug($"PSN: Shop data: requestLinksFullInfo: no block found for category {category}")
     fillLinkFullInfo(category)
     return
   }
@@ -104,7 +102,7 @@ requestLinksFullInfo = function(category) {
 
   // Remove category block if no items left
   if (!linksList.len()) {
-    log("requestLinksFullInfo: No link left to display. Remove category ", category)
+    ::dagor.debug($"PSN: Shop Data: requestLinksFullInfo: No link left to display. Remove category {category}")
     categoriesData.removeBlock(category)
     fillLinkFullInfo(category)
     return
@@ -115,8 +113,8 @@ requestLinksFullInfo = function(category) {
       if (err) {
         statsd.send_counter("sq.ingame_store.request", 1,
           {status = "error", request = "links_full_info", category = category, error_code = err.code})
-        log("requestLinksFullInfo: on send linksList: Error ", err)
-        log(linksList)
+        ::dagor.debug($"PSN: Shop Data: requestLinksFullInfo: on send linksList: Error {::toString(err, 4)}")
+        ::debugTableData(linksList)
         finalizeCollectData()
         return
       }
@@ -138,7 +136,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.commerce.listCategory(ca
     if (err) {
       statsd.send_counter("sq.ingame_store.request", 1,
         {status = "error", request = "category_full_links_list", category = category, error_code = err.code})
-      log($"requestCategoryFullLinksList: Category {category}, Error receieved: ", err)
+      ::dagor.debug($"PSN: Shop Data: requestCategoryFullLinksList: Category {category}, Error receieved: {::toString(err, 4)}")
       finalizeCollectData()
       return
     }
@@ -172,8 +170,8 @@ collectCategories = function(response, err = null) {
     statsd.send_counter("sq.ingame_store.request", 1,
       {status = "error", request = "dig_category", error = err.code})
 
-    if (::type(err.code) == "string" || err.code < 500 || err.code >= 600)
-      logerr($"PSN: Shop Data: Dig Category: received error: {err.code}")
+    if (u.isString(err.code) || err.code < 500 || err.code >= 600)
+      ::script_net_assert_once("psn_categories_error", $"PSN: Shop Data: Dig Category: received error: {::toString(err)}")
     return
   }
   statsd.send_counter("sq.ingame_store.request", 1,
@@ -213,7 +211,7 @@ local collectCategoriesAndItems = @() psn.send(
     if (err) {
       statsd.send_counter("sq.ingame_store.request", 1,
         {status = "error", request = "collect_categories_and_items", error = err.code})
-      log("collectCategoriesAndItems: Received error: ", err)
+      ::dagor.debug($"PSN: Shop Data: collectCategoriesAndItems: Received error: {::toString(err)}")
       return
     }
     statsd.send_counter("sq.ingame_store.request", 1,
@@ -227,14 +225,13 @@ local collectCategoriesAndItems = @() psn.send(
 // For updating single info and send event for updating it in shop, if opened
 // We can remake on array of item labels,
 // but for now require only for single item at once.
-local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, err) null) {
+local updateSpecificItemInfo = function(idsArray, onSuccessCb) {
   psn.send(psn.commerce.detail(idsArray, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
       if (err) {
         statsd.send_counter("sq.ingame_store.request", 1,
           {status = "error", request = "update_specific_item_info", error = err.code})
-        log("updateSpecificItemInfo: items: ", idsArray, " Error: ", err)
-        onErrorCb(response, err)
+        ::dagor.debug($"PSN: Shop Data: updateSpecificItemInfo: items: {::toString(idsArray)}; Error: {::toString(err)}")
         return
       }
 
@@ -257,9 +254,8 @@ local updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(r, 
         }
 
         if (!linksBlock) {
-          res.append(itemData)
-          log($"updateSpecificItemInfo: not found block for {itemId}, don't cache it")
-          continue
+          ::dagor.debug($"PSN: Shop Data: updateSpecificItemInfo: not found block for {itemId}")
+          return
         }
 
         // No need old info, remove block, and fill with new one

@@ -11,7 +11,6 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-local popupFilter = require("scripts/popups/popupFilter.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -184,6 +183,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/profile/userCard.blk"
+  sceneCheckBoxListTpl = "gui/commonParts/checkbox"
 
   isOwnStats = false
 
@@ -202,10 +202,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   airStatsList = null
   statsType = ::ETTI_VALUE_INHISORY
   statsMode = ""
-  countryStats = null
-  unitStats = []
-  availableUTypes = null
-  availableCountries = null
+  countriesStats = null
+  availableUTypesList = null
+  unitsStats = []
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
@@ -723,9 +722,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function initAirStats()
   {
-    countryStats = []
+    countriesStats = []
     foreach(country in ::shopCountriesList)
-      countryStats.append(country)
+      countriesStats.append(country)
     initAirStatsScene(player.userstat)
   }
 
@@ -759,18 +758,16 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillUnitListCheckBoxes(sObj)
     fillCountriesCheckBoxes(sObj)
 
-    local nestObj = scene.findObject("filter_nest")
-    local filter = popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView())
-    nestObj.setUserData(filter)
-
     airStatsInited = true
     fillAirStats()
   }
 
   function fillUnitListCheckBoxes(sObj)
   {
-    availableUTypes = {}
-    local fillStatsUnits = unitStats.len() == 0
+    availableUTypesList = []
+    local fillStatsUnits = false
+    if (unitsStats.len() == 0)
+      fillStatsUnits = true
 
     maxUtypeNameWidth = getStringWidthPx(::loc("all_units"), "fontNormal")
     foreach(unitType in unitTypes.types)
@@ -781,99 +778,132 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       local armyId = unitType.armyId
       maxUtypeNameWidth = ::max(maxUtypeNameWidth,
         getStringWidthPx(unitType.getArmyLocName(), "fontNormal"))
-      local typeIdx = unitType.esUnitType
-      availableUTypes[unitType.armyId] <- {
-        id    = $"unit_{typeIdx}"
-        idx   = typeIdx
-        image = unitType.testFlightIcon
-        text  = unitType.getArmyLocName()
-      }
+      availableUTypesList.append(unitType)
       if (fillStatsUnits)
-        unitStats.append(armyId)
+        unitsStats.append(armyId)
+
     }
+
+    updateFilterCbByType("units")
   }
 
   function fillCountriesCheckBoxes(sObj)
   {
+    if (!countriesStats)
+      countriesStats = [::get_profile_country_sq()]
+
     maxCountryNameWidth = getStringWidthPx(::loc("all_countries"), "fontNormal")
-    availableCountries = {}
-    foreach (idx, inst in ::shopCountriesList)
-    {
-      availableCountries[inst] <- {
-        id    = inst
-        idx   = idx
-        image = ::get_country_icon(inst)
-        text  = $"#{inst}"
-      }
-
+    foreach(cName in countriesStats)
       maxCountryNameWidth = ::max(maxCountryNameWidth,
-        getStringWidthPx(::loc($"#{inst}"), "fontNormal"))
-    }
-
-    if (!countryStats)
-      countryStats = [::get_profile_country_sq()]
+        getStringWidthPx(::loc($"#{cName}"), "fontNormal"))
+    updateFilterCbByType("countries")
   }
 
-  function getFiltersView()
+  function updateFilterCbByType(filterType)
   {
-    local res = []
-    foreach (tName in ["country", "unit"])
-    {
-      local isUnitType = tName == "unit"
-      local selectedArr = this[$"{tName}Stats"]
-      local referenceArr = isUnitType ? availableUTypes : availableCountries
-      local isAllSelected = true
-      foreach (idx, inst in referenceArr)
-        if (!::isInArray(idx, selectedArr))
-        {
-          isAllSelected = false
-          break
-        }
+    local isTypeUnins = filterType == "units"
+    local nestObj = scene.findObject($"{filterType}_boxes")
+    local selectedArr = this[$"{filterType}Stats"]
+    local referenceArr = isTypeUnins ? availableUTypesList : ::shopCountriesList
 
-      local cbView = {
-        id = "all_items"
-        idx = -1
-        image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
-        text = $"#all_{isUnitType ? "units" : "countries"}"
-        value = isAllSelected
-        textWidth = isUnitType ? maxUtypeNameWidth : maxCountryNameWidth
-      }
-      local view = { checkbox = [cbView]}
-      foreach(idx, inst in referenceArr)
-        view.checkbox.append(cbView.__merge({
-          id = inst.id
-          idx = inst.idx
-          image = inst.image
-          text = inst.text
-          value = ::isInArray(idx, selectedArr)
-        }))
-
-      view.checkbox.sort(@(a,b) a.idx <=> b.idx)
-      res.append(view)
+    local cbView = {
+      useImage = isTypeUnins
+        ? "#ui/gameuiskin#all_unit_types.svg" : "#ui/gameuiskin#flag_all_nations.svg"
+      text = $"#all_{filterType}"
+      value = referenceArr.len() == selectedArr.len()
+      textWidth = isTypeUnins ? maxUtypeNameWidth : maxCountryNameWidth
+      funcName = "onAllCbChange"
+      specialParams = $"filterType:t='{filterType}'; type:t='rightSideCb';"
     }
+    local view = { checkbox = [cbView]}
+    foreach(inst in referenceArr)
+      view.checkbox.append(cbView.__merge({
+        id = isTypeUnins ? inst.armyId : inst
+        useImage = isTypeUnins ? inst.testFlightIcon : ::get_country_icon(inst)
+        text = isTypeUnins ? inst.getArmyLocName() : $"#{inst}"
+        value = ::isInArray((isTypeUnins ? inst.armyId : inst), selectedArr)
+        funcName = "onStatsCbChange"
+      }))
 
-    return res
+    local data = ::handyman.renderCached(sceneCheckBoxListTpl, view)
+    guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+
+    updateFilterStateIcons()
   }
 
-  function onFilterCbChange(objId, tName, value)
+  function updateFilterStateIcons()
   {
-    local selectedArr = this[$"{tName}Stats"]
-    local isUnitType = tName == "unit"
-    local referenceArr = isUnitType ? availableUTypes : availableCountries
-    local isAllObj = objId == "all_items"
+    local nestObj = scene.findObject("icon_nest")
 
-    foreach (idx, inst in referenceArr)
+    local view = { items = [] }
+    foreach(filterType in ["countries", "units"])
     {
-      if (!isAllObj && inst.id != objId)
+      local selectedArr = this[$"{filterType}Stats"]
+      if (! selectedArr)
+        return
+
+      foreach(inst in selectedArr)
+        view.items.append({
+          image = filterType == "units"
+            ? ::u.search(availableUTypesList, @(t) t.armyId == inst).testFlightIcon
+            : ::get_country_icon(inst)
+        })
+    }
+    local data = ::handyman.renderCached("gui/commonParts/imgList", view)
+    guiScene.replaceContentFromText(nestObj, data, data.len(), this)
+  }
+
+  function onShowFilterBtnClick(obj)
+  {
+    isFilterVisible = !isFilterVisible
+    ::showBtn("stats_filter", isFilterVisible)
+  }
+
+  function onAllCbChange(obj)
+  {
+    local filterType = obj.filterType
+    local isTypeUnins = filterType == "units"
+    local value = obj.getValue()
+    local nestObjId = $"{filterType}_boxes"
+    local selectedArr = this[$"{filterType}Stats"]
+    local referenceArr = isTypeUnins ? availableUTypesList : ::shopCountriesList
+
+    local nestObj = scene.findObject(nestObjId)
+    foreach(inst in referenceArr)
+    {
+      local cbObj = nestObj.findObject(isTypeUnins ? inst.armyId : inst)
+      if(!::check_obj(cbObj))
         continue
 
+      local id = cbObj.id
       if (value)
-        ::u.appendOnce(idx, selectedArr)
+        ::u.appendOnce(id, selectedArr)
       else
-        removeItemFromList(idx, selectedArr)
+        removeItemFromList(id, selectedArr)
     }
 
     fillAirStats()
+    guiScene.performDelayed(this, (@(filterType) function (){
+      updateFilterCbByType(filterType)})(filterType))
+  }
+
+  function onStatsCbChange(obj)
+  {
+    if (!::check_obj(obj))
+      return
+
+    local id = obj.id
+    local filterType = obj.filterType
+    local selectedArr = this[$"{filterType}Stats"]
+    local value = obj.getValue()
+    if (value)
+      ::u.appendOnce(id, selectedArr)
+    else
+      removeItemFromList(id, selectedArr)
+
+    fillAirStats()
+    guiScene.performDelayed(this, (@(filterType) function () {
+        updateFilterCbByType(filterType)})(filterType))
   }
 
   function fillAirStatsScene(airStats)
@@ -891,7 +921,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       local air = ::getAircraftByName(item.name)
       local unitTypeShopId = ::get_army_id_by_es_unit_type(::get_es_unit_type(air))
-      if (!::isInArray(unitTypeShopId, unitStats))
+      if (!::isInArray(unitTypeShopId, unitsStats))
           continue
       if (!("country" in item))
       {
@@ -900,7 +930,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       }
       if ( ! ("locName" in item))
         item.locName <- air ? ::getUnitName(air, true) : ""
-      if (::isInArray(item.country, countryStats))
+      if (::isInArray(item.country, countriesStats))
         airStatsList.append(item)
     }
 

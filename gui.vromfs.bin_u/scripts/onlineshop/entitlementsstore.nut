@@ -17,7 +17,6 @@ local {
   canUseIngameShop = @(...) false
 } = isPlatformSony? require("scripts/onlineShop/ps4Shop.nut")
   : isPlatformXboxOne? require("scripts/onlineShop/xboxShop.nut")
-  : ::epic_is_running() ? require("scripts/onlineShop/epicShop.nut")
   : null
 
 return {

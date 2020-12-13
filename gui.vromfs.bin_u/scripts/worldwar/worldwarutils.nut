@@ -14,10 +14,6 @@ local { getNearestMapToBattleShort,
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { actionWithGlobalStatusRequest } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
-local {
-  checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
@@ -155,9 +151,6 @@ g_world_war.getSetting <- function getSetting(settingName, defaultValue)
 
 g_world_war.canPlayWorldwar <- function canPlayWorldwar()
 {
-  if (!isMultiplayerPrivilegeAvailable())
-    return false
-
   if (!isCrossPlayEnabled())
     return false
 
@@ -187,9 +180,6 @@ g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle()
 
 g_world_war.getPlayWorldwarConditionText <- function getPlayWorldwarConditionText(fullText = false)
 {
-  if (!isMultiplayerPrivilegeAvailable())
-    return ::loc("xbox/noMultiplayer")
-
   if (!isCrossPlayEnabled())
     return fullText
       ? ::loc("xbox/actionNotAvailableCrossNetworkPlay")
@@ -246,12 +236,8 @@ g_world_war.checkPlayWorldwarAccess <- function checkPlayWorldwarAccess()
     ::show_not_available_msg_box()
     return false
   }
-
   if (!canPlayWorldwar())
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return false
-
     if (!::xbox_try_show_crossnetwork_message())
       ::showInfoMsgBox(getPlayWorldwarConditionText(true))
     return false

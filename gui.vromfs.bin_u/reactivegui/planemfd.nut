@@ -1,7 +1,7 @@
 local radarComponent = require("radarComponent.nut")
 local function planeMFD() {
   return [
-    radarComponent.mkRadarForMfd(sw(6), sh(6))
+    radarComponent.radar(true, sw(6), sh(6))
   ]
 }
 

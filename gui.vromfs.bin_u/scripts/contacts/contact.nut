@@ -7,7 +7,6 @@ local { getXboxChatEnableStatus,
         isChatEnabled,
         isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 local { updateContacts } = require("scripts/contacts/contactsManager.nut")
-local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 local psnSocial = require("sony.social")
 
@@ -283,9 +282,7 @@ local contactsByName = {}
   function canChat(needShowSystemMessage = false)
   {
     if (!needShowSystemMessage
-      && ((isMultiplayerPrivilegeAvailable() && !isCrossNetworkMessageAllowed(name))
-          || isBlockedMe)
-      )
+      && (!isCrossNetworkMessageAllowed(name) || isBlockedMe))
       return false
 
     local intSt = getInteractionStatus(needShowSystemMessage)
@@ -294,10 +291,7 @@ local contactsByName = {}
 
   function canInvite(needShowSystemMessage = false)
   {
-    if (!needShowSystemMessage
-      && (!isMultiplayerPrivilegeAvailable()
-          || !isCrossNetworkMessageAllowed(name))
-      )
+    if (!needShowSystemMessage && !isCrossNetworkMessageAllowed(name))
       return false
 
     local intSt = getInteractionStatus(needShowSystemMessage)

@@ -1,6 +1,4 @@
 local platformModule = require("scripts/clientState/platform.nut")
-local { checkAndShowMultiplayerPrivilegeWarning,
-        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 class ::g_invites_classes.Squad extends ::BaseInvite
 {
@@ -9,7 +7,7 @@ class ::g_invites_classes.Squad extends ::BaseInvite
   leaderId = 0
   isAccepted = false
   leaderContact = null
-  needCheckSystemRestriction = true
+  needCheckSystemCrossplayRestriction = true
 
   static function getUidByParams(params)
   {
@@ -140,8 +138,6 @@ class ::g_invites_classes.Squad extends ::BaseInvite
 
   function getRestrictionText()
   {
-    if (!isMultiplayerPrivilegeAvailable())
-      return ::loc("xbox/noMultiplayer")
     if (!isAvailableByCrossPlay())
       return ::loc("xbox/crossPlayRequired")
     if (!isAvailableByChatRestriction())
@@ -156,7 +152,6 @@ class ::g_invites_classes.Squad extends ::BaseInvite
     return !::g_squad_manager.canManageSquad()
     || !isAvailableByCrossPlay()
     || !isAvailableByChatRestriction()
-    || !isMultiplayerPrivilegeAvailable()
   }
 
   function getIcon()
@@ -174,9 +169,6 @@ class ::g_invites_classes.Squad extends ::BaseInvite
 
   function accept()
   {
-    if (!checkAndShowMultiplayerPrivilegeWarning())
-      return
-
     local acceptCallback = ::Callback(_implAccept, this)
     local callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight")}
 
@@ -185,10 +177,8 @@ class ::g_invites_classes.Squad extends ::BaseInvite
       callback
     )
 
-    if (!canJoin)
-      return
-
-    callback()
+    if (canJoin)
+      callback()
   }
 
   function reject()

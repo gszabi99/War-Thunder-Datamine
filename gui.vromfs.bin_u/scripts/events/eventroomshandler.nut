@@ -4,7 +4,6 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -187,8 +186,6 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     if (!suggestAndAllowPsnPremiumFeatures())
-      return
-    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     local configForStatistic = {

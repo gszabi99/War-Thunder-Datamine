@@ -1,4 +1,3 @@
-<<#hasCollections>>
 textareaNoTab {
   height:t='1@buttonHeight'
   position:t='absolute'
@@ -6,18 +5,6 @@ textareaNoTab {
   text:t='#reward'
   enable:t='no'
 }
-<</hasCollections>>
-
-<<^hasCollections>>
-textareaNoTab {
-  height:t='1@buttonHeight'
-  position:t='relative'
-  pos:t='50%pw-50%w, 50%ph-50%h'
-  text-align:t='center'
-  text:t='#collection/all_collections_completed'
-  enable:t='no'
-}
-<</hasCollections>>
 
 <<#collections>>
 <<#title>>

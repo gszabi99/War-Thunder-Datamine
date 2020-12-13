@@ -738,15 +738,7 @@ local isWaitMeasureEvent = false
         descr.items.append("#options/aerobaticsSmokeTriple");
         descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1);
       }
-      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1))
-        localSmokeType = 1;
-
-      if (::has_feature("AerobaticWinterSmoke"))
-      {
-        descr.items.append("#options/aerobaticsSmokeWinter");
-        descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2);
-      }
-      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2))
+      else if (localSmokeType > ::MAX_AEROBATICS_SMOKE_INDEX * 2)
         localSmokeType = 1;
 
       descr.value = find_in_array(descr.values, localSmokeType);
@@ -2053,13 +2045,6 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_use_rectangular_radar_indicator()
-      break
-
-    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
-      descr.id = "activate_airborne_weapon_selection_on_spawn"
-      descr.controlType = optionControlType.CHECKBOX
-      descr.controlName <- "switchbox"
-      descr.value = ::get_gui_option(optionId)
       break
 
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
@@ -4463,9 +4448,6 @@ local isWaitMeasureEvent = false
       break;
     case ::USEROPT_DEFAULT_AI_TARGET_TYPE:
       ::set_option_default_ai_target_type(value)
-      break;
-    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
-      ::set_gui_option(optionId, value)
       break;
     case ::USEROPT_SHOW_INDICATORS_TYPE:
       local val = ::get_option_indicators_mode() & ~(::HUD_INDICATORS_SELECT|::HUD_INDICATORS_CENTER|::HUD_INDICATORS_ALL);

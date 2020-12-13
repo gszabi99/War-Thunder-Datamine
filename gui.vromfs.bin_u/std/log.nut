@@ -64,41 +64,20 @@ local function Log(tostringfunc=null) {
     return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=4 tostringfunc=tostringfunc})))))
   }
   local function dlog_prefix(prefix) {
-    return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn
-  }
-
-  local function wlog(watched, prefix = "", logger = log) {
-    if (::type(prefix) == "function") {
-      logger = prefix
-      prefix = ""
-    }
-    if (::type(watched) != "array")
-      watched = [watched]
-    prefix = prefix != "" ? $"{prefix}" : null
-    if (prefix != null)
-      foreach (w in watched) {
-        logger(prefix, w.value)
-        w.subscribe(@(v) logger(prefix, v))
-      }
-    else
-      foreach (w in watched) {
-        logger(w.value)
-        w.subscribe(logger)
-      }
+    return @(...) dlog.acall([null, prefix].extend(vargv))
   }
 
   return {
-    vlog
+    vlog = vlog
     v = vlog
-    log
-    dlog //disable: -dlog-warn
+    log = log
+    dlog = dlog
     d = dlog
-    dlogsplit
-    debugTableData
-    console_print
-    with_prefix
-    dlog_prefix
-    wlog
+    dlogsplit = dlogsplit
+    debugTableData = debugTableData
+    console_print = console_print
+    with_prefix = with_prefix
+    dlog_prefix = dlog_prefix
     //lowlevel dagor functions
     debug = dagorDebug.debug
     logerr = dagorDebug.logerr

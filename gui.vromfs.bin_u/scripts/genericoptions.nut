@@ -236,7 +236,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!aerobaticsSmokeOptions.len())
       return
 
-    local show = (::get_option_aerobatics_smoke_type() == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1));
+    local show = (::get_option_aerobatics_smoke_type() > ::MAX_AEROBATICS_SMOKE_INDEX * 2);
     foreach(option in aerobaticsSmokeOptions)
       showOptionRow(option, show)
   }

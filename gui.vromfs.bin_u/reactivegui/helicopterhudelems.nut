@@ -158,8 +158,6 @@ local function generateBulletsTextFunction(countWatched, secondsWatched, salvoWa
       txts = [countWatched.value]
       if (salvoWatched != null && salvoWatched.value > 0)
         txts.append(" [", salvoWatched.value, "]")
-      else if (salvoWatched != null && salvoWatched.value == -1)
-        txts.append(" [S]")
     }
     return "".join(txts)
   }

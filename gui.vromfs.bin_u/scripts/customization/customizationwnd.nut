@@ -12,8 +12,6 @@ local { canBuyNotResearched,
 local { isPlatformPC } = require("scripts/clientState/platform.nut")
 local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
 local { needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
-local { isCollectionPrize } = require("scripts/collections/collections.nut")
-local { openCollectionsWnd, hasAvailableCollections } = require("scripts/collections/collectionsWnd.nut")
 
 ::dagui_propid.add_name_id("gamercardSkipNavigation")
 
@@ -1170,7 +1168,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     currentType = decoratorType
 
-    local decCategories = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
+    local decCategories = ::g_decorator.getCachedOrderByType(decoratorType)
     local view = { collapsableBlocks = [] }
     foreach (idx, category in decCategories)
       view.collapsableBlocks.append({
@@ -1214,7 +1212,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function generateDecalCategoryContent(categoryId, decoratorType)
   {
     local curSlotDecalId = getSlotInfo(getCurrentDecoratorSlot(decoratorType), false, decoratorType).decalId
-    local decoratorsData = ::g_decorator.getCachedDecoratorsDataByType(decoratorType, unit.unitType.tag)
+    local decoratorsData = ::g_decorator.getCachedDecoratorsDataByType(decoratorType)
 
     if (!(categoryId in decoratorsData))
       return ""
@@ -1287,55 +1285,32 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     return null
   }
 
-  function showDecoratorAccessRestriction(decorator)
+  function getDecalAccessData(decal)
   {
-    if (!decorator || decorator.canUse(unit))
-      return false
-
     local text = []
-    if (decorator.isLockedByCountry(unit))
+    if (!decal || decal.canUse(unit))
+      return ""
+
+    if (decal.isLockedByCountry(unit))
       text.append(::loc("mainmenu/decalNotAvailable"))
 
-    if (decorator.isLockedByUnit(unit))
+    if (decal.isLockedByUnit(unit))
     {
       local unitsList = []
-      foreach(unitName in decorator.units)
+      foreach(unitName in decal.units)
         unitsList.append(::colorize("userlogColoredText", ::getUnitName(unitName)))
       text.append(::loc("mainmenu/decoratorAvaiblableOnlyForUnit", {
-        decoratorName = ::colorize("activeTextColor", decorator.getName()),
+        decoratorName = ::colorize("activeTextColor", decal.getName()),
         unitsList = ::g_string.implode(unitsList, ",")}))
     }
 
-    if (decorator.lockedByDLC != null)
-      text.append(::format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decorator.lockedByDLC)))
+    if (decal.lockedByDLC != null)
+      text.append(::format(::loc("mainmenu/decalNoCampaign"), ::loc("charServer/entitlement/" + decal.lockedByDLC)))
 
-    if (text.len() != 0)
-    {
-      ::g_popups.add("", ::g_string.implode(text, ", "))
-      return true
-    }
+    if (!text.len() && !decal.isUnlocked() && !decal.canBuyUnlock(unit) && !decal.canBuyCouponOnMarketplace(unit))
+      text.append(::loc("mainmenu/decalNoAchievement"))
 
-    if (decorator.isUnlocked() || decorator.canBuyUnlock(unit) || decorator.canBuyCouponOnMarketplace(unit))
-      return false
-
-    if (hasAvailableCollections() && isCollectionPrize(decorator))
-    {
-      ::g_popups.add(
-        null,
-        ::loc("mainmenu/decoratorNoCompletedCollection" {
-          decoratorName = ::colorize("activeTextColor", decorator.getName())
-        }),
-        null,
-        [{
-          id = "gotoCollection"
-          text = ::loc("collection/go_to_collection")
-          func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
-        }])
-      return true
-    }
-
-    ::g_popups.add("", ::loc("mainmenu/decalNoAchievement"))
-    return true
+    return ::g_string.implode(text, ", ")
   }
 
   function onDecoratorItemSelect(obj)
@@ -1416,9 +1391,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     local isDecal = currentType == ::g_decorator_type.DECALS
     if (!decoratorPreview && isDecal)
     {
-      local isRestrictionShown = showDecoratorAccessRestriction(decorator)
-      if (isRestrictionShown)
-        return
+      local restrictionText = getDecalAccessData(decorator)
+      if (restrictionText != "")
+        return ::g_popups.add("", restrictionText)
 
       if (decorator.canBuyUnlock(unit))
         return askBuyDecorator(decorator, (@(curSlotIdx, decorator) function() {
@@ -1498,7 +1473,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (idx < 0)
       return
 
-    local categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType, unit.unitType.tag)
+    local categoriesOrder = ::g_decorator.getCachedOrderByType(decoratorType)
     local category = categoriesOrder[idx]
     local categoryBlockId = decoratorType.categoryWidgetIdPrefix + category
     local categoryObj = wObj.findObject(categoryBlockId)
@@ -1664,9 +1639,9 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (decorator.canBuyCouponOnMarketplace(unit))
       return askMarketplaceCouponActionOnExitEditMode(decorator)
 
-    local isRestrictionShown = showDecoratorAccessRestriction(decorator)
-    if (isRestrictionShown)
-      return
+    local restrictionText = getDecalAccessData(decorator)
+    if (restrictionText != "")
+      return ::g_popups.add("", restrictionText)
 
     setDecoratorInSlot(decorator)
   }

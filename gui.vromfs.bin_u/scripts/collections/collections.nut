@@ -32,15 +32,10 @@ local function getCollectionsList() {
   return collectionsList
 }
 
-local function isCollectionPrize(decorator) {
-  return getCollectionsList().findindex(@(c) c.prize == decorator) != null
-}
-
 subscriptions.addListenersWithoutEnv({
   SignOut = @(p) invalidateCache()
 })
 
 return {
   getCollectionsList = getCollectionsList
-  isCollectionPrize = isCollectionPrize
 }

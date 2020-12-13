@@ -191,7 +191,6 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
 
           isVisualDisable = isVisualDisable || (button.isInactiveInQueue && isInQueue)
           btnObj.inactiveColor = isVisualDisable? "yes" : "no"
-          btnObj.tooltip = button.tooltip()
         }
       }
 
@@ -272,7 +271,7 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
     if (selObj?.on_change_value)
       selObj.setValue(!selObj.getValue())
 
-    unstickLastDropDown()
+    unstickGCDropdownMenu()
     this[eventName](selObj)
   }
 
@@ -281,21 +280,21 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
 
   function moveDropDownFocus(obj, direction)
   {
-    forceCloseDropDown(obj)
-
     local mergeIdx = -1
     foreach (idx, section in sectionsOrder)
       if (obj.sectionId == section.getTopMenuButtonDivId())
         mergeIdx = idx
 
+    local panelObj = scene.findObject("top_menu_panel_place")
+
     mergeIdx += direction
+
     if (mergeIdx < 0 || mergeIdx >= sectionsOrder.len())
     {
       ::set_dirpad_event_processed(false)
       return
     }
 
-    local panelObj = scene.findObject("top_menu_panel_place")
     onGCDropdown(panelObj.getChild(mergeIdx))
     panelObj.setValue(mergeIdx)
   }
@@ -312,10 +311,6 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
 
   function onEventUpdateGamercard(p)
   {
-    doWhenActiveOnce("updateButtonsStatus")
-  }
-
-  function onEventXboxMultiplayerPrivilegeUpdated(p) {
     doWhenActiveOnce("updateButtonsStatus")
   }
 

@@ -144,17 +144,29 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
     if (::has_feature("BattlePass")) {
       scene.isBattlePass = "yes"
       view.headerAction <- "showBattlePassWnd"
-      view.seasonLvlValue <- stashBhvValueConfig(seasonLvlWatchObj)
+      view.seasonLvlValue <- stashBhvValueConfig([{
+        watch = seasonLvlWatchObj.watch
+        updateFunc = seasonLvlWatchObj.updateFunc
+      }])
       view.isShowNameInHeader = false
       local isEmptyTask = view.taskId == null
       if (isEmptyTask) {
         view.title = ""
         view.isEmptyTask <- isEmptyTask
         view.showAsUsualPromoButton = false
-        view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
-        view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
+        view.easyDailyTaskProgressValue <- stashBhvValueConfig([{
+          watch = easyDailyTaskProgressWatchObj.watch
+          updateFunc = easyDailyTaskProgressWatchObj.updateFunc
+        }])
+        view.mediumDailyTaskProgressValue <- stashBhvValueConfig([{
+          watch = mediumDailyTaskProgressWatchObj.watch
+          updateFunc = mediumDailyTaskProgressWatchObj.updateFunc
+        }])
         if (::g_battle_tasks.canActivateHardTasks()) {
-          view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
+          view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig([{
+            watch = leftSpecialTasksBoughtCountWatchObj.watch
+            updateFunc = leftSpecialTasksBoughtCountWatchObj.updateFunc
+          }])
           view.newItemsAvailable <- leftSpecialTasksBoughtCountWatchObj.watch.value > 0
         }
       }

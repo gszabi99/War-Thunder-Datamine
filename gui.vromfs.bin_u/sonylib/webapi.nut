@@ -1,20 +1,7 @@
 local DataBlock = require("DataBlock")
 local json = require_optional("json")
 local toJson = json?.to_string ?? ::save_to_json
-local nativeApi = require_optional("sony.webapi")
-local {abortAllPendingRequests= @() null,
-  getPreferredVersion = @() 2,
-  subscribeToBlocklistUpdates= @(...) null,
-  subscribeToFriendsUpdates = @(...) null,
-  unsubscribeFromBlocklistUpdates = @(...) null,
-  unsubscribeFromFriendsUpdates = @(...) null
-  } = nativeApi
-
-local nativeSend = nativeApi?.send ?? @(...) null
-
-local { dgs_get_settings } = require("dagor.system")
-local { get_platform_string_id } = require("platform")
-local platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
+local nativeApi = require("sony.webapi")
 
 local webApiMimeTypeBinary = "application/octet-stream"
 local webApiMimeTypeImage = "image/jpeg"
@@ -218,24 +205,14 @@ local profile = {
   }
 }
 
-local userProfileApi = { group = "userProfile", path = "/v1/users" }
+local userProfileApi = { group = "userProfile", path = "/v1/users/me" }
 local userProfile = {
   function listFriends(params = {}) {
-    return createRequest(userProfileApi, webApiMethodGet, "me/friends", params)
+    return createRequest(userProfileApi, webApiMethodGet, "friends", params)
   }
 
   function listBlockedUsers() {
-    return createRequest(userProfileApi, webApiMethodGet, "me/blocks")
-  }
-
-  function getPublicProfiles(accountIds) {
-    local users = {accountIds = ",".join(accountIds)}
-    return createRequest(userProfileApi, webApiMethodGet, "profiles", users)
-  }
-
-  function getBasicPresences(accountIds) {
-    local users = {accountIds = ",".join(accountIds)}
-    return createRequest(userProfileApi, webApiMethodGet, "basicPresences", users)
+    return createRequest(userProfileApi, webApiMethodGet, "blocks")
   }
 }
 
@@ -297,40 +274,31 @@ local entitlements = {
 
 // ---------- Matches actions
 local matchesApi = { group = "matches", path = "/v1/matches" }
-
-local function psnMatchCreate(data) {
-  return createRequest(matchesApi, webApiMethodPost, null, {}, data)
-}
-
-local function psnMatchUpdateStatus(id, status) {
-  local data = { status = status }
-  return createRequest(matchesApi, webApiMethodPut, $"{id}/status", {}, data)
-}
-local function psnMatchJoin(id, player) {
-  local data = { players = [ player ] }
-  return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/add", {}, data)
-}
-
-local function psnMatchLeave(id, player) {
-  local data = { players = [ player ] }
-  return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
-}
-const PSN_MATCH_LEAVE_REASON_QUIT = "QUIT"
-const PSN_MATCH_LEAVE_REASON_FINISHED = "FINISHED"
-const PSN_MATCH_LEAVE_REASON_DISCONNECTED = "DISCONNECTED"
-const PSN_MATCH_STATUS_PLAYING = "PLAYING"
-local PSN_LEAVE_MATCH_REASONS = {
-  QUIT = PSN_MATCH_LEAVE_REASON_QUIT
-  FINISHED = PSN_MATCH_LEAVE_REASON_FINISHED
-  DISCONNECTED = PSN_MATCH_LEAVE_REASON_DISCONNECTED
-}
-
 local matches = {
-  create = psnMatchCreate
-  updateStatus = psnMatchUpdateStatus
-  join = psnMatchJoin
-  leave = psnMatchLeave
-  LeaveReason = PSN_LEAVE_MATCH_REASONS
+  function create(data) {
+    return createRequest(matchesApi, webApiMethodPost, null, {}, data)
+  }
+
+  function updateStatus(id, status) {
+    local data = { status = status }
+    return createRequest(matchesApi, webApiMethodPut, $"{id}/status", {}, data)
+  }
+
+  function join(id, player) {
+    local data = { players = [ player ] }
+    return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/add", {}, data)
+  }
+
+  function leave(id, player) {
+    local data = { players = [ player ] }
+    return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
+  }
+
+  LeaveReason = {
+    QUIT = "QUIT"
+    FINISHED = "FINISHED"
+    DISCONNECTED = "DISCONNECTED"
+  }
 }
 
 
@@ -349,14 +317,14 @@ local function send(action, onResponse=noOpCb) {
     onResponse(r?.response, err)
   }
 
-  nativeSend(action, cb)
+  nativeApi.send(action, cb)
 }
 
 local function fetch(action, onChunkReceived, chunkSize = 20) {
   local function onResponse(response, err) {
     // PSN responses are somewhat inconsistent, but we need proper iterators
     local entry = ((::type(response) == "array") ? response?[0] : response) || {}
-    local received = (getPreferredVersion() == 2)
+    local received = (nativeApi.getPreferredVersion() == 2)
                    ? (entry?.nextOffset || entry?.totalItemCount)
                    : (entry?.start||0) + (entry?.size||0)
     local total = entry?.total_results || entry?.totalResults || entry?.totalItemCount || received
@@ -372,48 +340,36 @@ local function fetch(action, onChunkReceived, chunkSize = 20) {
 
 
 return {
-  psnSend = send
-  psnMatchCreate
-  psnMatchJoin
-  psnMatchLeave
-  psnMatchUpdateStatus
-  PSN_MATCH_LEAVE_REASON_DISCONNECTED
-  PSN_MATCH_LEAVE_REASON_FINISHED
-  PSN_MATCH_LEAVE_REASON_QUIT
-  PSN_MATCH_STATUS_PLAYING
+  send = send
+  fetch = fetch
+  abortAllPendingRequests = nativeApi?.abortAllPendingRequests ?? @() null
+  getPreferredVersion = nativeApi.getPreferredVersion
 
-  send
-  fetch
-  abortAllPendingRequests = abortAllPendingRequests ?? @() null
-  getPreferredVersion = getPreferredVersion
+  session = session
+  sessionManager = sessionManager
+  gameSessionManager = gameSessionManager
 
-  session
-  sessionManager
-  gameSessionManager
+  invitation = invitation
+  playerSessionInvitations = playerSessionInvitations
+  matches = matches
 
-  invitation
-  playerSessionInvitations
-  matches
+  profile = (nativeApi.getPreferredVersion() == 2) ? userProfile : profile
+  communicationRestrictionStatus = communicationRestrictionStatus
 
-  profile = (getPreferredVersion() == 2) ? userProfile : profile
-  communicationRestrictionStatus
+  feed = feed
 
-  feed
+  commerce = commerce
+  inGameCatalog = inGameCatalog
+  entitlements = entitlements
 
-  commerce
-  inGameCatalog
-  entitlements
-
-  noOpCb
+  noOpCb = noOpCb
 
   subscribe = {
-    friendslist = subscribeToFriendsUpdates
-    blocklist = subscribeToBlocklistUpdates
+    friendslist = nativeApi.subscribeToFriendsUpdates
+    blocklist = nativeApi.subscribeToBlocklistUpdates
   }
   unsubscribe = {
-    friendslist = unsubscribeFromFriendsUpdates
-    blocklist = unsubscribeFromBlocklistUpdates
+    friendslist = nativeApi.unsubscribeFromFriendsUpdates
+    blocklist = nativeApi.unsubscribeFromBlocklistUpdates
   }
-
-  serviceLabel = platformId == "ps5"? 1 : 0
 }
