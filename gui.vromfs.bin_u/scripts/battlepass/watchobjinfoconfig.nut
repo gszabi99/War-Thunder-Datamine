@@ -3,13 +3,20 @@ local { seasonLevel, todayLoginExp,
 } = require("scripts/battlePass/seasonState.nut")
 local { mainChallengeOfSeason } = require("scripts/battlePass/challenges.nut")
 local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
+local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
 
-local seasonLvlWatchObj = {
+local seasonLvlWatchObj = [{
   watch = seasonLevel
   updateFunc = function(obj, value) {
     obj.findObject("flag_text").setValue(value.tostring())
   }
-}
+},
+{
+  watch = isUserstatMissingData
+  updateFunc = function(obj, value) {
+    obj.show(!value)
+  }
+}]
 
 local levelExpWatchObj = {
   watch = levelExp

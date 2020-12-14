@@ -900,7 +900,7 @@ local isFullScriptsLoaded = false
   require("scripts/slotbar/elems/squadronExpIconElem.nut")
   require("scripts/matching/serviceNotifications/showInfo.nut")
   require("scripts/unit/unitContextMenu.nut")
-  require("sqDagui/guiBhv/bhvUpdateByWatched.nut")
+  require("sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
   require("scripts/social/activityFeed/activityFeedModule.nut")
   require("scripts/controls/controlsPseudoAxes.nut")
 

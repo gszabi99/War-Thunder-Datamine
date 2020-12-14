@@ -2,7 +2,8 @@ local { get_time_msec } = require("dagor.time")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
-const STATS_UPDATE_INTERVAL = 300000 //unlocks progress update interval
+const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
+const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
 local function doRequest(request, cb) {
   ::userstat.request(request, @(result) cb(result))
@@ -134,10 +135,52 @@ local function receiveUnlockRewards(unlockName, stage, cb = null, cbError = null
   statsUpdatable.forceRefresh()
 }
 
+local userstatUnlocks = unlocksUpdatable.data
+local userstatDescList = descListUpdatable.data
+local userstatStats = statsUpdatable.data
+
+local isUserstatMissingData = ::Computed(@() userstatUnlocks.value.len() == 0
+  || userstatDescList.value.len() == 0
+  || userstatStats.value.len() == 0)
+
+local canUpdateUserstat = @() ::g_login.isLoggedIn() && !::is_in_flight() && ::has_feature("BattlePass") // userstat used only for battle pass.
+
+local validateTaskTimer = -1
+local function validateUserstatData(dt = 0) {
+  if ( validateTaskTimer >= 0 ) {
+    ::periodic_task_unregister(validateTaskTimer)
+    validateTaskTimer = -1
+  }
+
+  if (!canUpdateUserstat() || !isUserstatMissingData.value)
+    return
+
+  if (unlocksUpdatable.data.value.len() == 0)
+    unlocksUpdatable.refresh()
+  if (descListUpdatable.data.value.len() == 0)
+    descListUpdatable.refresh()
+  if (statsUpdatable.data.value.len() == 0)
+    statsUpdatable.refresh()
+
+  validateTaskTimer = ::periodic_task_register(this,
+    validateUserstatData, FREQUENCY_MISSING_STATS_UPDATE_SEC)
+}
+
+isUserstatMissingData.subscribe(function(v) {
+  validateUserstatData()
+})
+
+addListenersWithoutEnv({
+  ProfileUpdated = @(p) validateUserstatData()
+  BattleEnded    = @(p) validateUserstatData()
+})
+
 return {
-  userstatUnlocks = unlocksUpdatable.data
-  userstatDescList = descListUpdatable.data
-  userstatStats = statsUpdatable.data
+  userstatUnlocks
+  userstatDescList
+  userstatStats
   refreshUserstatUnlocks = @() unlocksUpdatable.forceRefresh()
   receiveUnlockRewards
+  isUserstatMissingData
+  validateUserstatData
 }

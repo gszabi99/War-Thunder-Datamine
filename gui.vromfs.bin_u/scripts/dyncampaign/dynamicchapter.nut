@@ -256,7 +256,7 @@ class ::gui_handlers.DynamicLayouts extends ::gui_handlers.CampaignChapter
     refreshMissionDesc()
   }
 
-  function onStart(obj)
+  function onStart()
   {
     if (!::g_squad_utils.canJoinFlightMsgBox({
         isLeaderCanJoin = ::enable_coop_in_DynCampaign

@@ -186,9 +186,11 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
         fixData.valueFunction() : fixData.value
       if (::getTblValue("isAppend", fixData))
       {
-        if (curPreset.isHotkeyShortcutBinded(fixData.source, value) ||
-          (fixData.shouldAppendIfEmptyOnXInput && ::is_xinput_device() &&
-            curPreset.getHotkey(fixData.target).len() == 0))
+        local isGamepadExpected =  ::is_xinput_device() || ::have_xinput_device()
+        if (curPreset.isHotkeyShortcutBinded(fixData.source, value)
+            || (fixData.shouldAppendIfEmptyOnXInput
+                && isGamepadExpected
+                && curPreset.getHotkey(fixData.target).len() == 0))
           curPreset.addHotkeyShortcut(fixData.target, value)
       }
       else
