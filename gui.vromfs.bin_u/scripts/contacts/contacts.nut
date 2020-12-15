@@ -1,5 +1,6 @@
 local xboxContactsManager = require("scripts/contacts/xboxContactsManager.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
+local { isEqual } = require("sqStdLibs/helpers/u.nut")
 
 ::contacts_handler <- null
 ::contacts_sizes <- null
@@ -335,13 +336,11 @@ g_contacts.isFriendsGroupName <- function isFriendsGroupName(group)
   }
 
   local contact = ::contacts_players[uid]
-  if (forceUpdate || contact.name == "")
-  {
-    if(::u.isString(nick))
-      contact.name = nick
-    if(::u.isString(clanTag))
-      contact.setClanTag(clanTag)
-  }
+  if (::u.isString(nick) && (forceUpdate || contact.name == ""))
+    contact.name = nick
+
+  if (::u.isString(clanTag) && (forceUpdate || !isEqual(contact.clanTag, clanTag)))
+    contact.setClanTag(clanTag)
 
   return contact
 }
