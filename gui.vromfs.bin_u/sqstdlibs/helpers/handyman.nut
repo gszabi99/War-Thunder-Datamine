@@ -435,7 +435,7 @@ local Writer = class {
         scanner.scanUntil(tagRes[1])
       }
       else if (tType == "{") {
-        value = scanner.scanUntil(::regexp("".concat("\\s*", escapeRegExp("".concat("}", tags[1])))))
+        value = scanner.scanUntil(::regexp("".concat("\\s*", escapeRegExp($"\}{tags[1]}"))))
         scanner.scan(curlyRe)
         scanner.scanUntil(tagRes[1])
         tType = "&"
@@ -505,7 +505,7 @@ local Writer = class {
 
       if (token) {
         if (token[0] == "text" && lastToken && lastToken[0] == "text") {
-          lastToken[1] = "".concat(lastToken[1], token[1])
+          lastToken[1] = $"{lastToken[1]}{token[1]}"
           lastToken[3] = token[3]
         }
         else {

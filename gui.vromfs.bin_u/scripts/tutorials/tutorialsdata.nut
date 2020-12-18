@@ -1,5 +1,6 @@
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
 
 local skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
@@ -68,28 +69,84 @@ local clearTutorialRewardData = @() tutorialRewardData(null)
 local launchedTutorialQuestionsPeerSession = persist("launchedTutorialQuestionsPeerSession", @() ::Watched(0))
 local setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsPeerSession(newValue)
 
+local function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
+  local { hasRewardImage = true, needVerticalAlign = false, highlighted = null,
+    showFullReward = false } = params
+  local res = {
+    locId = "reward/tutorialFirstComplet"
+    rewardMoney = ::Cost()
+    isComplete = true
+    hasReward = false
+    hasRewardImage
+    highlighted = false
+    needVerticalAlign
+    slotReward = ""
+  }
+
+  local slot = misDataBlk?.slot
+  if (slot != null) {
+    local isRecieveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
+    res.isComplete = res.isComplete && isRecieveSlot
+    if (showFullReward || !isRecieveSlot) {
+      res.slotReward = slot.tostring()
+      res.hasReward = true
+      res.isComplete = res.isComplete && isRecieveSlot
+    }
+  }
+
+  local oneTimeAwardUnlockId = misDataBlk?.oneTimeAwardUnlock ?? ""
+  if (oneTimeAwardUnlockId == "")
+    return res
+
+  local isCompleteAwardUnlock = ::is_unlocked_scripted(-1, oneTimeAwardUnlockId)
+  if ((misDataBlk?.hideOneTimeAwardIfUnlockIsOpen ?? "") != ""
+      && ::is_unlocked_scripted(-1, misDataBlk.hideOneTimeAwardIfUnlockIsOpen)
+      && !isCompleteAwardUnlock)
+    return res
+
+  local cost = ::g_unlocks.getUnlockCost(oneTimeAwardUnlockId)
+  if (cost.isZero())
+    return res
+
+  res.rewardMoney = cost
+  res.hasReward = true
+  res.isComplete = res.isComplete && isCompleteAwardUnlock
+  res.highlighted = highlighted ?? isCompleteAwardUnlock
+  return res
+}
+
 local function saveTutorialToCheckReward(mission) {
   local mainGameMode = ::get_mp_mode()
   ::set_mp_mode(::GM_TRAINING)  //req to check progress
   local campId = ::get_game_mode_name(::GM_TRAINING)
-  local fullMissionName = mission.getStr("chapter", campId) + "/" + mission.name
+  local missionName = mission.name
+  local fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
   local progress = ::get_mission_progress(fullMissionName)
 
-  local usePresetFileName = ""
+  local presetFilename = ""
   local preset = ::g_controls_presets.getCurrentPreset()
   if (preset.name.indexof("hotas4") != null
       && checkJoystickThustmasterHotas(false)
       && ! ::has_feature("DisableSwitchPresetOnTutorialForHotas4"))
     {
-      usePresetFileName = preset.fileName
+      presetFilename = preset.fileName
       ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename("dualshock4"))
     }
 
+  local rBlk = ::get_pve_awards_blk()
+  local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  local misDataBlk = dataBlk?[missionName]
+
   tutorialRewardData({
-    missionName = mission.name,
-    progress = progress,
-    fullMissionName = fullMissionName,
-    presetFilename = usePresetFileName
+    missionName
+    progress
+    fullMissionName
+    presetFilename
+    firstCompletRewardData = getTutorialFirstCompletRewardData(misDataBlk, {
+      highlighted = true
+      hasRewardImage = false
+      needVerticalAlign = true
+    })
   })
   ::set_mp_mode(mainGameMode)
 }
@@ -104,7 +161,6 @@ local function getTutorialsTblWithMissions (diff = -1, misName = null) {
           id = v.id
           mission = null
           progress = -1
-          rewardText = ""
         }
       }),
     {})
@@ -131,15 +187,27 @@ local function getTutorialsTblWithMissions (diff = -1, misName = null) {
   return tutorialsTbl
 }
 
-local function updateTutorialRewardText(tutorialData) {
-  if (tutorialData.progress == 3) { //tutorials have reward only once
-    local rBlk = ::get_pve_awards_blk()
-    local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
-    if (dataBlk)
-      tutorialData.rewardText = ::getRewardTextByBlk(dataBlk, tutorialData.mission.name, 0, "reward", true, true)
-  }
-}
+local function getTutorialRewardMarkup(tutorialData) {
+  if (tutorialData.progress != 3) //tutorials have reward only once
+    return ""
 
+  local rBlk = ::get_pve_awards_blk()
+  local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
+  if (dataBlk == null)
+    return ""
+
+  local params = {
+    highlighted = true
+    hasRewardImage = false
+    needVerticalAlign = true
+  }
+  local rewardsConfig = [params.__merge({ isBaseReward = true })]
+  local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[tutorialData.mission.name], params)
+  if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
+    rewardsConfig.append(firstCompletRewardData)
+
+  return getMissionRewardsMarkup(dataBlk, tutorialData.mission.name, rewardsConfig)
+}
 
 local function getUncompletedTutorialData(misName, diff = -1) {
   if (!::has_feature("Tutorials"))
@@ -149,7 +217,6 @@ local function getUncompletedTutorialData(misName, diff = -1) {
   if (tutorialData?.mission == null)
     return null
 
-  updateTutorialRewardText(tutorialData)
   return tutorialData
 }
 
@@ -178,10 +245,6 @@ local function getSuitableUncompletedTutorialData(unit, diff = -1) {
       break
     }
 
-  if (tutorialData == null)
-    return null
-
-  updateTutorialRewardText(tutorialData)
   return tutorialData
 }
 
@@ -277,4 +340,6 @@ return {
   resetTutorialSkip = resetTutorialSkip
   isDiffUnlocked = isDiffUnlocked
   checkDiffTutorial = checkDiffTutorial
+  getTutorialFirstCompletRewardData
+  getTutorialRewardMarkup
 }

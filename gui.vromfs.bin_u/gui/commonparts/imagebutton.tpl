@@ -69,6 +69,7 @@ imgButton {
 
   <<#cost>>
     contentCorner {
+      side:t='right'
       textareaNoTab {
         text:t='<<cost>>'
         smallFont:t='yes';
@@ -102,6 +103,24 @@ imgButton {
   <</rarityColor>>
 
   focus_border{}
+
+  <<#leftBottomButtonCb>>
+  contentCorner {
+    side:t='left'
+    pos:t=<<^rarityColor>>'0, ph-h'<</rarityColor>><<#rarityColor>>'2@dp, ph-h-2@dp'<</rarityColor>>
+    Button_text {
+      holderId:t='<<leftBottomButtonHolderId>>'
+      tooltip:t='<<leftBottomButtonTooltip>>'
+      class:t='image'
+      imgSize:t='small'
+      visualStyle:t='noFrame'
+      showConsoleImage:t='no'
+      img { background-image:t='<<leftBottomButtonImg>>' }
+      on_click:t='<<leftBottomButtonCb>>'
+      skip-navigation:t='yes'
+    }
+  }
+  <</leftBottomButtonCb>>
 
   <<^emptySlot>>
     <<#onDeleteClick>>

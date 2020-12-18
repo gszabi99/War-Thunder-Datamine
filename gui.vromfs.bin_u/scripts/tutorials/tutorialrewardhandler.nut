@@ -1,12 +1,13 @@
 local { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("scripts/tutorials/tutorialsData.nut")
+local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
 
 local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
   sceneBlkName = "gui/showUnlock.blk"
 
   misName = ""
-  rewardText = ""
+  rewardMarkup = ""
   afterRewardText = ""
 
   function initScreen() {
@@ -18,7 +19,11 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     local msgText = ::colorize("activeTextColor", ::loc("MISSION_SUCCESS") + "\n" + ::loc("missions/" + misName, ""))
     descObj.setValue(msgText)
 
-    scene.findObject("award_reward").setValue(rewardText)
+    if (rewardMarkup != "") {
+      local rewardsObj = scene.findObject("reward_markup")
+      guiScene.replaceContentFromText(rewardsObj, rewardMarkup, rewardMarkup.len(), this)
+      rewardsObj.show(true)
+    }
 
     foreach(t in checkTutorialsList)
       if (t.tutorial == misName)
@@ -77,11 +82,12 @@ local function tryOpenTutorialRewardHandler() {
 
     if (tutorialRewardData.value.progress>=3 && progress>=0 && progress<3)
     {
-      local rewardText = ""
       local rBlk = ::get_pve_awards_blk()
       local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
       local miscText = dataBlk?[misName].rewardWndInfoText ?? ""
-      if (dataBlk?[misName].slot != null)
+      local firstCompletRewardData = tutorialRewardData.value.firstCompletRewardData
+      local hasSlotReward = firstCompletRewardData.slotReward != ""
+      if (hasSlotReward)
       {
         ::g_crews_list.invalidate()
         ::reinitAllSlotbars()
@@ -89,12 +95,20 @@ local function tryOpenTutorialRewardHandler() {
 
       ::gather_debriefing_result()
       local reward = getMoneyFromDebriefingResult("Mission")
-      rewardText = ::getRewardTextByBlk(dataBlk || ::DataBlock(), misName, 0, "reward", false, true, false, reward)
+      local rewardsConfig = [{
+        rewardMoney = reward
+        hasRewardImage = false
+        isBaseReward = true
+        needVerticalAlign = true
+      }]
+
+      if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
+        rewardsConfig.append(firstCompletRewardData)
 
       ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
         misName = misName
-        rewardText = rewardText
+        rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
         afterRewardText = ::loc(miscText)
       })
     }

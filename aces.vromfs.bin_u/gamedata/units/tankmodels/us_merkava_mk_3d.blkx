@@ -220,14 +220,6 @@
         "turret_05_top_dm": {
           "armorThickness": 20.0
         },
-        "ex_armor_11_dm": {
-          "armorThickness": 5.0,
-          "hidableInViewer": true
-        },
-        "ex_armor_12_dm": {
-          "armorThickness": 5.0,
-          "hidableInViewer": true
-        },
         "turret_03_front_dm": {
           "armorThickness": 10.0,
           "hidableInViewer": true
@@ -518,6 +510,8 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_l_03_dm": [],
         "ex_armor_10_dm": [],
+        "ex_armor_11_dm": [],
+        "ex_armor_12_dm": [],
         "ex_armor_13_dm": [],
         "turret_02_bottom_dm": [],
         "turret_03_side_dm": [],
@@ -1852,8 +1846,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1865,8 +1878,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2363,8 +2377,8 @@
           "trigger": "gunner3",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-          "emitter": "bone_mg_aa_v",
-          "flash": "emtr_mg_aa_flame",
+          "emitter": "emtr_mg_aa_flame_02",
+          "flash": "emtr_mg_aa_flame_02",
           "useEmitter": true,
           "barrelDP": "gun_barrel_04_dm",
           "defaultYaw": 0.0,
@@ -2387,8 +2401,8 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_mg_aa_h",
-            "gun": "bone_mg_aa_v",
+            "head": "bone_mg_aa_h_02",
+            "gun": "bone_mg_aa_v_02",
             "gunnerDm": "commander_dm"
           },
           "limits": {
@@ -2402,8 +2416,8 @@
           "trigger": "gunner4",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-          "emitter": "bone_mg_v_01",
-          "flash": "emtr_mg_flame_01",
+          "emitter": "emtr_mg_aa_flame_01",
+          "flash": "emtr_mg_aa_flame_01",
           "useEmitter": true,
           "barrelDP": "gun_barrel_03_dm",
           "defaultYaw": 0.0,
@@ -2426,8 +2440,8 @@
           "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
-            "head": "bone_mg_h_01",
-            "gun": "bone_mg_v_01",
+            "head": "bone_mg_aa_h_01",
+            "gun": "bone_mg_aa_v_01",
             "gunnerDm": "loader_dm"
           },
           "limits": {
@@ -3089,7 +3103,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -3775,8 +3789,8 @@
                 "trigger": "gunner3",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-                "emitter": "bone_mg_aa_v",
-                "flash": "emtr_mg_aa_flame",
+                "emitter": "emtr_mg_aa_flame_02",
+                "flash": "emtr_mg_aa_flame_02",
                 "useEmitter": true,
                 "barrelDP": "gun_barrel_04_dm",
                 "defaultYaw": 0.0,
@@ -3799,8 +3813,8 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_mg_aa_h",
-                  "gun": "bone_mg_aa_v",
+                  "head": "bone_mg_aa_h_02",
+                  "gun": "bone_mg_aa_v_02",
                   "gunnerDm": "commander_dm"
                 },
                 "limits": {
@@ -3814,8 +3828,8 @@
                 "trigger": "gunner4",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
-                "emitter": "bone_mg_v_01",
-                "flash": "emtr_mg_flame_01",
+                "emitter": "emtr_mg_aa_flame_01",
+                "flash": "emtr_mg_aa_flame_01",
                 "useEmitter": true,
                 "barrelDP": "gun_barrel_03_dm",
                 "defaultYaw": 0.0,
@@ -3838,8 +3852,8 @@
                 "errTargetting": 3.0,
                 "errExplTime": 0.0,
                 "turret": {
-                  "head": "bone_mg_h_01",
-                  "gun": "bone_mg_v_01",
+                  "head": "bone_mg_aa_h_01",
+                  "gun": "bone_mg_aa_v_01",
                   "gunnerDm": "loader_dm"
                 },
                 "limits": {

@@ -54,8 +54,8 @@ local class Version {
 }
 
 return {
-  Version = Version
-  versionToInt = versionToInt
-  mkVersionFromInt = mkVersionFromInt
-  mkVersionFromString = mkVersionFromString
+  Version
+  versionToInt
+  mkVersionFromInt
+  mkVersionFromString
 }

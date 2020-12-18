@@ -99,6 +99,12 @@
     "type": "typeTankDestroyer"
   },
   {
+    "rearmSmokeTimeOnField": 60.0
+  },
+  {
+    "canReloadNonGuns": true
+  },
+  {
     "ikGunner": [
       {
         "model": "german_gunner_early_char"
@@ -1930,8 +1936,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1943,8 +1968,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2410,7 +2436,7 @@
       },
       "primaryCharges": {
         "ammo_body_l_01_dm": {
-          "count": 3
+          "count": 2
         },
         "ammo_body_l_02_dm": {
           "count": 1
@@ -2443,6 +2469,9 @@
           "count": 1
         },
         "ammo_body_r_06_dm": {
+          "count": 1
+        },
+        "ammo_body_r_14_dm": {
           "count": 1
         }
       }
@@ -2929,7 +2958,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

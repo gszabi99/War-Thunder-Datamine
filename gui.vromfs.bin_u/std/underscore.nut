@@ -156,6 +156,24 @@ local function isEqual(val1, val2, customIsEqual={}){
   return false
 }
 /*
+* make list of the same order but with unique values
+* equals to python list(set(<list>)), and with optional hash function
+* (for example to extract key form list of tables to make unique by that)
+*/
+local function unique(list, hashfunc=null){
+  local values = {}
+  local res = []
+  hashfunc = hashfunc ?? @(v) v
+  foreach (v in list){
+    local hash = hashfunc(v)
+    if (hash in values)
+      continue
+    values[hash]<-true
+    res.append(v)
+  }
+  return res
+}
+/*
 foreach (k, v in range(-1, -5, -1))
   print($"{v}  ")
 print("\n")
@@ -215,6 +233,14 @@ local function isEqualSimple(list1, list2, compareFunc=null) {
   return true
 }
 
+//create from one-dimentional array two-dimentional array by slice it to rows with fixed amount of columns
+local function arrayByRows(arr, columns) {
+  local res = []
+  for(local i = 0; i < arr.len(); i += columns)
+    res.append(arr.slice(i, i + columns))
+  return res
+}
+
 return {
   invert
   tablesCombine
@@ -226,4 +252,6 @@ return {
   range
   enumerate
   reversed_enumerate
+  unique
+  arrayByRows
 }

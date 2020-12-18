@@ -8,6 +8,7 @@ local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -24,6 +25,9 @@ const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 ::gui_start_modal_events <- function gui_start_modal_events(options = {})
 {
   if (!suggestAndAllowPsnPremiumFeatures())
+    return
+
+  if (!checkAndShowMultiplayerPrivilegeWarning())
     return
 
   local eventId = null
@@ -175,6 +179,8 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     if (!suggestAndAllowPsnPremiumFeatures())
+      return
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     isQueueWasStartedWithRoomsList = ::events.isEventWithLobby(event)

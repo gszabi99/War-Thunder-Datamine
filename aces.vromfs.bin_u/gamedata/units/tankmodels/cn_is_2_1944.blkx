@@ -671,7 +671,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -709,9 +709,15 @@
       },
       "tracks": {
         "animationMultiplier": 0.73,
-        "height": 0.045,
-        "width": 0.65,
-        "fricSideRot": [5.0,0.0,0.6,0.3]
+        "height": 0.07,
+        "width": 0.7,
+        "fricSideRot": [5.0,0.0,0.6,0.3],
+        "tracksTensionK": [3.0,10.0,2.0],
+        "trackMesh": "ussr_kv_wide_phys_track_line",
+        "trackLen": 0.155,
+        "trackCount": 90,
+        "trackFadeTime": 1.2,
+        "trackMaxHeight": 1.15
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -764,10 +770,10 @@
         ]
       },
       "suspension": {
-        "suspensionOffsets": [-0.25,-0.2,0.14],
-        "defaultGearRadius": 0.25,
-        "frontBackGearRadius": 0.27,
-        "topGearRadius": 0.15,
+        "suspensionOffsets": [-0.08,-0.08,0.127],
+        "defaultGearRadius": 0.27,
+        "frontBackGearRadius": 0.275,
+        "topGearRadius": 0.19,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -2135,6 +2141,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -2143,7 +2150,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -2155,8 +2181,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }

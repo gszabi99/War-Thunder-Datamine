@@ -870,22 +870,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
 ::get_unlock_reward <- function get_unlock_reward(unlockName)
 {
-  local unlock = ::g_unlocks.getUnlockById(unlockName)
-  if (!unlock)
-    return ""
+  local cost = ::g_unlocks.getUnlockCost(unlockName)
 
-  local wpReward = typeof(unlock?.amount_warpoints) == "instance"
-                   ? unlock.amount_warpoints.x.tointeger()
-                   : unlock.getInt("amount_warpoints", 0)
-  local goldReward = typeof(unlock?.amount_gold) == "instance"
-                     ? unlock.amount_gold.x.tointeger()
-                     : unlock.getInt("amount_gold", 0)
-  local xpReward = typeof(unlock?.amount_exp) == "instance"
-                   ? unlock.amount_exp.x.tointeger()
-                   : unlock.getInt("amount_exp", 0)
-  local reward = ::Cost(wpReward, goldReward, xpReward)
-
-  return ::buildRewardText("", reward, true, true)
+  return cost.isZero() ? "" : ::buildRewardText("", cost, true, true)
 }
 
 ::default_unlock_data <- {
@@ -1634,6 +1621,24 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
         return isInTimerangeByUtcStrings(cond.beginDate, cond.endDate)
 
     return true
+  }
+
+  function getUnlockCost(unlockName) {
+    local unlock = ::g_unlocks.getUnlockById(unlockName)
+    if (!unlock)
+      return ::Cost()
+
+    local wpReward = typeof(unlock?.amount_warpoints) == "instance"
+      ? unlock.amount_warpoints.x.tointeger()
+      : unlock.getInt("amount_warpoints", 0)
+    local goldReward = typeof(unlock?.amount_gold) == "instance"
+      ? unlock.amount_gold.x.tointeger()
+      : unlock.getInt("amount_gold", 0)
+    local xpReward = typeof(unlock?.amount_exp) == "instance"
+      ? unlock.amount_exp.x.tointeger()
+      : unlock.getInt("amount_exp", 0)
+    local reward = ::Cost(wpReward, goldReward, xpReward)
+    return reward
   }
 }
 

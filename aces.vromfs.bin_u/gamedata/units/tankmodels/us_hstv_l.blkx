@@ -1471,8 +1471,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1484,8 +1503,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2041,9 +2061,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 20000.0,
+        "Empty": 19500.0,
         "Fuel": 450.0,
-        "TakeOff": 20450.0,
+        "TakeOff": 19950.0,
         "momentOfInertia": [2.0,4.0,4.0],
         "CenterOfGravity": [-0.2,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.5],
@@ -2641,7 +2661,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

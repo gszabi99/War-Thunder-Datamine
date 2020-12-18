@@ -68,6 +68,6 @@ local function load(file_path, params = defParamsLoad) {
   }
 }
 return json.__merge({
-  save = save
-  load = load
+  save
+  load
 })

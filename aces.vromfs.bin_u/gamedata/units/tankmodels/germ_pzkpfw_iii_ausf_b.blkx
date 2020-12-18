@@ -105,6 +105,12 @@
     "type": "typeMediumTank"
   },
   {
+    "rearmSmokeTimeOnField": 60.0
+  },
+  {
+    "canReloadNonGuns": true
+  },
+  {
     "arcadeTurnPowerMult": 1.2
   },
   {
@@ -147,9 +153,6 @@
           "armorThickness": 5.0
         },
         "superstructure_bottom_dm": {
-          "armorThickness": 10.0
-        },
-        "wheel_support_dm": {
           "armorThickness": 10.0
         },
         "gun_mask_01_dm": {
@@ -308,7 +311,8 @@
         "wheel_l_top_03_dm": [],
         "wheel_r_top_01_dm": [],
         "wheel_r_top_02_dm": [],
-        "wheel_r_top_03_dm": []
+        "wheel_r_top_03_dm": [],
+        "wheel_support_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -1462,8 +1466,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1475,8 +1498,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2504,7 +2528,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

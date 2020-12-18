@@ -1222,8 +1222,48 @@
           "setStatus": "disable",
           "control": "ID_SHIP_TOGGLE_GUNNERS"
         },
-        "triggerEnable": {
-          "target": "artModes_target_killed"
+        "triggerEnable": [
+          {
+            "target": "artModes_target_killed"
+          },
+          {
+            "target": "artModes_mercy_kill_boat"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "artModes_mercy_kill_boat": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_ship04"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 6.0
+        },
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [1.0,1.0],
+          "offset": [0.0,0.0,0.0],
+          "radiusOffset": [10.0,15.0],
+          "target": "target_ship04",
+          "doExplosion": true
         }
       },
       "else_actions": []
@@ -1255,6 +1295,11 @@
         }
       },
       "actions": [
+        {
+          "triggerDisable": {
+            "target": "artModes_mercy_kill_boat"
+          }
+        },
         {
           "playHint": {
             "hintType": "tutorialHint",
@@ -1387,11 +1432,51 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "artModes_plane_killed"
-          }
+          "triggerEnable": [
+            {
+              "target": "artModes_plane_killed"
+            },
+            {
+              "target": "artModes_mercy_kill_plane"
+            }
+          ]
         }
       ],
+      "else_actions": []
+    },
+    "artModes_mercy_kill_plane": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenHit": {
+          "target": "target_plane"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 6.0
+        },
+        "unitDamage": {
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [1.0,1.0],
+          "offset": [0.0,0.0,0.0],
+          "radiusOffset": [10.0,15.0],
+          "target": "target_plane",
+          "doExplosion": true
+        }
+      },
       "else_actions": []
     },
     "artModes_plane_killed": {
@@ -1421,6 +1506,11 @@
         }
       },
       "actions": [
+        {
+          "triggerDisable": {
+            "target": "artModes_mercy_kill_plane"
+          }
+        },
         {
           "playHint": {
             "hintType": "tutorialHint",
@@ -2230,18 +2320,6 @@
           "triggerEnable": {
             "target": "captureZone_zone_captured"
           }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_tickets_all_texts",
-            "show": false,
-            "time": -1
-          }
         }
       ],
       "else_actions": []
@@ -2296,6 +2374,18 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_tickets_all_texts",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
           }
         },
         {
@@ -3609,23 +3699,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [5159.97,0.0,3031.32]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "target_ship04_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5246.44,0.0,3449.12]
+              [5200.87,0.000244141,3150.08]
             ],
             "props": {
               "speed": 300.0,
@@ -3641,23 +3715,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [4975.38,0.0,3204.65]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "target_ship04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4877.11,0.0,3084.93]
+              [5045.03,0.0,3296.41]
             ],
             "props": {
               "speed": 300.0,
@@ -3673,7 +3731,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [4676.51,0.0,2901.04]
+              [4642.26,-0.000244141,2871.43]
             ],
             "props": {
               "speed": 300.0,

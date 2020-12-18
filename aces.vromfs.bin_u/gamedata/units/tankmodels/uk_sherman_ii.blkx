@@ -1453,8 +1453,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1466,8 +1485,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -1957,7 +1977,16 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "height": 0.055,
-        "width": 0.4
+        "width": 0.4,
+        "tracksTensionK": [6.5,10.0,3.0],
+        "trackMesh": "us_sherman_vvss_t_51_phys_track_line",
+        "trackLen": 0.152,
+        "trackCount": 79,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackStartOffset": 0.13,
+        "trackMaxHeight": 1.08,
+        "trackEmitSparks": false
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -1970,8 +1999,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 130000.0,
-        "driveGearRadius": 0.34,
-        "mainGearRatio": 4.03,
+        "driveGearRadius": 0.31,
+        "mainGearRatio": 3.674,
         "sideGearRatio": 2.74,
         "gearRatios": [
           {
@@ -2640,7 +2669,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

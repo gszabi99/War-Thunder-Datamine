@@ -366,10 +366,12 @@
     "shader_garlic_size_kb": 2048,
     "dynbuf_heap_garlic_mb": 96,
     "dynbuf_heap_onion_mb": 32,
+    "dynbuf_garlic_threshold_kb": 1024,
+    "dynbuf_onion_threshold_kb": 1024,
     "enable_deferred_mipgen": true,
-    "neo_4k_scale": 167,
+    "neo_4k_scale": 150,
     "guiWebCacheCircuit": "production",
-    "enable_defrag": false
+    "enable_defrag": true
   },
   "ps5": {
     "dcb_size_mb": 8,
@@ -378,6 +380,7 @@
     "mem_reserve_mb": 256,
     "max_genmip_tex_sz": 2052,
     "dynbuf_heap_gpu_mb": 160,
+    "dynbuf_direct_threshold_kb": 1024,
     "enable_deferred_mipgen": true,
     "guiWebCacheCircuit": "production",
     "enable_defrag": true
@@ -672,5 +675,59 @@
   },
   "ugc": {
     "enabled": true
+  },
+  "unitedVdata.dynModel": {
+    "use": false,
+    "canRebuild": false,
+    "ps4": {
+      "IB": 60000,
+      "VB1": 65536,
+      "VB2": 65536,
+      "VB3": 65536,
+      "VB4": 65536,
+      "VB5": 0
+    },
+    "common_1GB": {
+      "IB": 20000,
+      "VB1": 65536,
+      "VB2": 0
+    },
+    "common_2GB": {
+      "IB": 40000,
+      "VB1": 65536,
+      "VB2": 65536,
+      "VB3": 0
+    },
+    "common": {
+      "IB": 60000,
+      "VB1": 65536,
+      "VB2": 65536,
+      "VB3": 65536,
+      "VB4": 65536,
+      "VB5": 0
+    }
+  },
+  "unitedVdata.rendInst": {
+    "ps4": {
+      "IB": 16384,
+      "VB1": 65536,
+      "VB2": 0
+    },
+    "common_1GB": {
+      "IB": 12000,
+      "VB1": 48000,
+      "VB2": 0
+    },
+    "common_3GB": {
+      "IB": 24000,
+      "VB1": 65536,
+      "VB2": 65536,
+      "VB3": 0
+    },
+    "common": {
+      "IB": 16384,
+      "VB1": 65536,
+      "VB2": 0
+    }
   }
 }

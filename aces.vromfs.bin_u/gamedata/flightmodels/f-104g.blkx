@@ -1907,6 +1907,9 @@
         "node": "armor3_dm"
       }
     ],
+    "hideNodes": {
+      "node": "fuse2"
+    },
     "Weapon": [
       {
         "trigger": "cannon"
@@ -2377,9 +2380,89 @@
       "tier": 4,
       "reqModification": "us_750lb_m117a1"
     },
+    "aircrafts_false_thermal_targets": {
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "mi-24_EVU",
+      "tier": 1,
+      "effects": {
+        "commonWeapons": [
+          {
+            "hideDmParts": [
+              {
+                "node": "armor1_dm"
+              },
+              {
+                "node": "armor2_dm"
+              },
+              {
+                "node": "armor3_dm"
+              }
+            ]
+          },
+          {
+            "Weapon": [
+              {
+                "trigger": "cannon"
+              },
+              {
+                "blk": "gameData/Weapons/cannonM61A1.blk"
+              },
+              {
+                "emitter": "flare1"
+              },
+              {
+                "flash": "flare1"
+              },
+              {
+                "shell": "emtr_shellrejection1"
+              },
+              {
+                "dm": "cannon1_dm"
+              },
+              {
+                "bullets": 750
+              },
+              {
+                "spread": 1.0
+              },
+              {
+                "counterIndex": 1
+              },
+              {
+                "counterIndex": 2
+              }
+            ]
+          },
+          {
+            "Weapon": {
+              "trigger": "flares",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          },
+          {
+            "Weapon": {
+              "trigger": "flares",
+              "startFx": "",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 30,
+              "external": true,
+              "separate": false
+            }
+          }
+        ]
+      }
+    },
     "us_aim_9b": {
       "tier": 2,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "prevModification": "aircrafts_false_thermal_targets"
     },
     "us_aim_9b_fgw_2": {
       "tier": 4,

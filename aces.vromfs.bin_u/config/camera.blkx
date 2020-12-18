@@ -159,7 +159,7 @@
   },
   "fixed": {
     "type": "FixedCamera",
-    "fov": 55.0
+    "fov": 85.0
   },
   "camera_cutscene": {
     "type": "TpsTargetFlightCameraReplayCutscene",
@@ -1254,6 +1254,180 @@
       "right": {
         "angle": [110.0,0.0],
         "dist": 20.0
+      }
+    }
+  ],
+  "commander_view": [
+    {
+      "type": "CommanderViewCamera"
+    },
+    {
+      "fov": 40.0
+    },
+    {
+      "zoomFov": 10.0
+    },
+    {
+      "gunFov": 30.0
+    },
+    {
+      "transitionSpeed": 4.0
+    },
+    {
+      "targetOffset": [500.0,2.0,0.0]
+    },
+    {
+      "cameraOffsetNeutral": [-17.0,2.0,0.0]
+    },
+    {
+      "cameraUpNeutral": [0.0,1.0,0.0]
+    },
+    {
+      "cameraOffsetSmoothing": 0.04
+    },
+    {
+      "cameraUpSmoothing": 0.0
+    },
+    {
+      "cameraFovSmoothing": 0.005
+    },
+    {
+      "startDofDist": 0.1
+    },
+    {
+      "maxDofDist": 10.0
+    },
+    {
+      "maxDofEffect": 1.0
+    },
+    {
+      "useDof": true
+    },
+    {
+      "allowHeadControl": false
+    },
+    {
+      "useCockpitOffsets": false
+    },
+    {
+      "cameraOffsetElevatorUp": [-14.0,3.0,0.0]
+    },
+    {
+      "cameraOffsetElevatorDown": [-14.0,3.0,0.0]
+    },
+    {
+      "sensitivityElevatorDown": 1.0
+    },
+    {
+      "sensitivityElevatorUp": 1.0
+    },
+    {
+      "cameraOffsetRudderLeft": [-14.0,3.0,-1.0]
+    },
+    {
+      "cameraOffsetRudderRight": [-14.0,3.0,1.0]
+    },
+    {
+      "sensitivityRudder": 10.0
+    },
+    {
+      "cameraUpAileronsLeft": [0.0,1.0,0.7]
+    },
+    {
+      "cameraUpAileronsRight": [0.0,1.0,-0.7]
+    },
+    {
+      "sensitivityAilerons": 0.3
+    },
+    {
+      "cameraOffset": [0.0,3.0,-8.0]
+    },
+    {
+      "cameraOffsetZoomed": [1.5,2.3,-5.0]
+    },
+    {
+      "targetOffset": [10.0,4.0,0.0]
+    },
+    {
+      "useOffset": false
+    },
+    {
+      "clipType": "trace"
+    },
+    {
+      "zoomToGun": false
+    },
+    {
+      "fovVertAnglesOffsetPart": 0.0
+    },
+    {
+      "isMouseView": true
+    },
+    {
+      "isAimCamera": true
+    },
+    {
+      "cockpitOffsetsRange": [1.0,1.0]
+    },
+    {
+      "cameraControlViewRadius": 5.0
+    },
+    {
+      "cameraUpOffset": 1.0
+    },
+    {
+      "cameraFovAccelerationPositive": 1.0
+    },
+    {
+      "cameraFovAccelerationNegative": 2.0
+    },
+    {
+      "sensitivityAcceleration": 10.0
+    },
+    {
+      "cameraTpsSmoothing": 0.001
+    },
+    {
+      "maxCameraSlowAngle": 9.0
+    },
+    {
+      "cameraTpsAngleAccelaration": 2.0
+    },
+    {
+      "minimumDistanceMultiplier": 1.2
+    },
+    {
+      "targOffsMult": 0.0
+    },
+    {
+      "cameraShakeMultiplier": 0.8
+    },
+    {
+      "cameraShakeMultiplierOnShooting": 0.2
+    },
+    {
+      "transitionFadeInTime": 0.12
+    },
+    {
+      "transitionFadeOutTime": 0.05
+    },
+    {
+      "viscosity": 0.05
+    },
+    {
+      "trackGunDirection": true
+    },
+    {
+      "tiltShakeMultiplierForTanks": 0.0
+    },
+    {
+      "tiltShakeMultiplierForShips": 0.0
+    },
+    {
+      "condition": {
+        "not": {
+          "isFlightModel": []
+        }
       }
     }
   ],
@@ -4029,6 +4203,9 @@
       },
       {
         "camName": "weapon_aim_camera"
+      },
+      {
+        "camName": "commander_view"
       }
     ],
     "ship": [

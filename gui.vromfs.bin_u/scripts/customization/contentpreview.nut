@@ -1,6 +1,7 @@
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local guidParser = require("scripts/guidParser.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -72,7 +73,7 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   return true
 }
 
-local function getBestUnitForDecoratorPreview(decoratorType, forcedUnitId = null)
+local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUnitId = null)
 {
   local unit = null
   if (forcedUnitId)
@@ -82,7 +83,7 @@ local function getBestUnitForDecoratorPreview(decoratorType, forcedUnitId = null
   }
 
   unit = ::get_player_cur_unit()
-  if (decoratorType.isAvailable(unit, false))
+  if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
     return unit
 
   local countryId = ::get_profile_country_sq()
@@ -92,7 +93,7 @@ local function getBestUnitForDecoratorPreview(decoratorType, forcedUnitId = null
     if ((crew?.aircraft ?? "") != "")
     {
       unit = ::getAircraftByName(crew.aircraft)
-      if (decoratorType.isAvailable(unit, false))
+      if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
         return unit
     }
 
@@ -100,13 +101,21 @@ local function getBestUnitForDecoratorPreview(decoratorType, forcedUnitId = null
     for (local i = crew.trained.len() - 1; i >= 0; i--)
     {
       unit = ::getAircraftByName(crew.trained[i])
-      if (decoratorType.isAvailable(unit, false))
+      if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
         return unit
     }
 
+  local allowedUnitType = ::ES_UNIT_TYPE_TANK
+  foreach (unitType in unitTypes.types) {
+    if (decorator.isAllowedByUnitTypes(unitType.tag)) {
+      allowedUnitType = unitType.esUnitType
+      break
+    }
+  }
+
   unit = ::getAircraftByName(::getReserveAircraftName({
     country = countryId
-    unitType = ::ES_UNIT_TYPE_TANK
+    unitType = allowedUnitType
     ignoreSlotbarCheck = true
   }))
   if (decoratorType.isAvailable(unit, false))
@@ -114,7 +123,7 @@ local function getBestUnitForDecoratorPreview(decoratorType, forcedUnitId = null
 
   unit = ::getAircraftByName(::getReserveAircraftName({
     country = "country_usa"
-    unitType = ::ES_UNIT_TYPE_TANK
+    unitType = allowedUnitType
     ignoreSlotbarCheck = true
   }))
   if (decoratorType.isAvailable(unit, false))
@@ -142,7 +151,7 @@ local function showUnitDecorator(unitId, resource, resourceType)
   if (!decorator)
     return false
 
-  local unit = getBestUnitForDecoratorPreview(decoratorType, unitId)
+  local unit = getBestUnitForDecoratorPreview(decorator, decoratorType, unitId)
   if (!unit)
     return false
 

@@ -1,7 +1,7 @@
 local stdMath = require("std/math.nut")
 local { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
-  getUncompletedTutorialData } = require("scripts/tutorials/tutorialsData.nut")
+  getUncompletedTutorialData, getTutorialRewardMarkup } = require("scripts/tutorials/tutorialsData.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -12,7 +12,7 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   sceneBlkName = "gui/nextTutorial.blk"
 
   tutorialMission = null
-  rewardText = ""
+  rewardMarkup = ""
   checkIdx = 0
   canSkipTutorial = true
 
@@ -21,14 +21,18 @@ local NextTutorialHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (!tutorialMission)
       return goBack()
 
-    rewardText = rewardText != "" ? "".concat("\n", rewardText) : rewardText
     local msgText = ::g_string.implode([
       ::loc("askPlayTutorial"),
       ::colorize("userlogColoredText", ::loc($"missions/{tutorialMission.name}")),
-      rewardText, "\n"
     ], "\n")
 
     scene.findObject("msgText").setValue(msgText)
+
+    if (rewardMarkup != "") {
+      local rewardsObj = scene.findObject("rewards")
+      guiScene.replaceContentFromText(rewardsObj, rewardMarkup, rewardMarkup.len(), this)
+      rewardsObj.show(true)
+    }
 
     canSkipTutorial = true
     if (checkIdx in checkTutorialsList)
@@ -154,7 +158,7 @@ local function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
 
   ::handlersManager.loadHandler(NextTutorialHandler, {
     tutorialMission = mData.mission
-    rewardText = mData.rewardText
+    rewardMarkup = getTutorialRewardMarkup(mData)
     checkIdx = idx
   })
 

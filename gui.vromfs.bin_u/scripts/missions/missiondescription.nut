@@ -13,6 +13,8 @@
 
 local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 local { checkJoystickThustmasterHotas } = require("scripts/controls/hotas.nut")
+local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
+local { getTutorialFirstCompletRewardData } = require("scripts/tutorials/tutorialsData.nut")
 
 class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -104,14 +106,11 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     getObj("descr-flag")["background-image"] = ("flag" in config && gm != ::GM_BENCHMARK)? config.flag : ""
     getObj("descr-chapterImg")["background-image"] = ("chapterImg" in config)? config.chapterImg : ""
 
-    local status = ("status" in config)? config.status : -1
-    for(local i=0; i<3; i++)
-    {
-      local text = (("reward"+i) in config)? config["reward"+i] : ""
-      getObj("descr-reward"+i).setValue(text)
-      getObj("descr-status"+i).show(text!="")
-      getObj("descr-completed"+i).show(status >= i)
-    }
+    local rewardsObj = getObj("descr-rewards")
+    local isShow = (config?.rewards.len() ?? 0) > 0
+    rewardsObj.show(isShow)
+    if (isShow)
+      guiScene.replaceContentFromText(rewardsObj, config.rewards, config.rewards.len(), this)
 
     local countriesObj = getObj("descr-countries")
     if ("countries" in config)
@@ -265,15 +264,39 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
     local rBlk = ::get_pve_awards_blk()
     if (gm == ::GM_CAMPAIGN || gm == ::GM_SINGLE_MISSION || gm == ::GM_TRAINING)
     {
-      config.status <- max(mission.singleProgress, mission.onlineProgress)
+      local status = max(mission.singleProgress, mission.onlineProgress)
+      config.status <- status
       local dataBlk = rBlk?[::get_game_mode_name(gm)]
       if (dataBlk)
       {
-        //local misDataBlk = dataBlk[mission.id]
-        local diffList = (gm==::GM_TRAINING)? ["reward"] : ["reward", "difficulty1", "difficulty2"]
-        //local muls = ::get_player_multipliers()
-        foreach(diff, langId in diffList)
-          config["reward"+diff] <- ::getRewardTextByBlk(dataBlk, mission.id, diff, langId, diff > config.status, true, diff > 0)
+        local rewardsConfig = [{
+          highlighted = ::DIFFICULTY_ARCADE > status
+          isComplete = ::DIFFICULTY_ARCADE <= status
+          isBaseReward = true
+        }]
+
+        if (gm != ::GM_TRAINING)
+          rewardsConfig.append({
+            locId = "difficulty1"
+            diff = ::DIFFICULTY_REALISTIC
+            highlighted = ::DIFFICULTY_REALISTIC > status
+            isComplete = ::DIFFICULTY_REALISTIC <= status
+            isAdditionalReward = true
+          },
+          {
+            locId = "difficulty2"
+            diff = ::DIFFICULTY_HARDCORE
+            highlighted = ::DIFFICULTY_HARDCORE > status
+            isComplete = ::DIFFICULTY_HARDCORE <= status
+            isAdditionalReward = true
+          })
+        else {
+          local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[mission.id],
+            { showFullReward = true })
+          if (firstCompletRewardData.hasReward)
+            rewardsConfig.append(firstCompletRewardData)
+        }
+        config.rewards <- getMissionRewardsMarkup(dataBlk, mission.id, rewardsConfig)
       }
     } else
     if (gm == ::GM_DYNAMIC && rBlk?.dynamic)

@@ -25,6 +25,7 @@ local stdMath = require("std/math.nut")
 
   countries = null
   units = null
+  allowedUnitTypes = []
 
   tags = null
   rarity = null
@@ -74,6 +75,8 @@ local stdMath = require("std/math.nut")
     units = []
     if ("units" in blk)
       units = ::split(blk.units, "; ")
+
+    allowedUnitTypes = blk?.unitType ? (blk % "unitType") : []
 
     if ("tags" in blk)
     {
@@ -393,5 +396,10 @@ local stdMath = require("std/math.nut")
   {
     if (canPreview())
       contentPreview.showResource(id, decoratorType.resourceType)
+  }
+
+  function isAllowedByUnitTypes(unitType)
+  {
+    return (allowedUnitTypes.len() == 0 || allowedUnitTypes.indexof(unitType) != null)
   }
 }

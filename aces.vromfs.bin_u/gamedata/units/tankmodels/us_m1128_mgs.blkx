@@ -1601,8 +1601,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1614,8 +1633,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2180,6 +2200,7 @@
           "openHatchTime": 1.0,
           "sleevesLifeTime": 10.0,
           "sleeveImpulse": [5.0,0.0,0.0],
+          "sleeveExtractSound": "shell_eject_hatch",
           "maxAdditionalPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
           "breechDP": "cannon_breech_dm",
@@ -3052,7 +3073,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -3221,6 +3242,7 @@
                 "openHatchTime": 1.0,
                 "sleevesLifeTime": 10.0,
                 "sleeveImpulse": [5.0,0.0,0.0],
+                "sleeveExtractSound": "shell_eject_hatch",
                 "maxAdditionalPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
                 "breechDP": "cannon_breech_dm",

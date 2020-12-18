@@ -269,6 +269,7 @@
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
         "armorThickness": 20.0,
+        "wheel_support_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -290,6 +291,19 @@
           "track_r_dm": [],
           "track_l_dm": []
         }
+      },
+      "body_shields": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_r_01_dm": [],
+        "ex_armor_r_01_dm": [],
+        "ex_decor_r_02_dm": [],
+        "ex_decor_l_02_dm": [],
+        "ex_armor_l_01_dm": [],
+        "ex_decor_l_01_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -1588,8 +1602,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1601,8 +1634,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2596,7 +2630,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

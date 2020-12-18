@@ -1,4 +1,5 @@
 local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { get_primary_screen_info } = ::require_native("dagor.system")
 //------------------------------------------------------------------------------
 local mSettings = {}
 local mShared = {}
@@ -34,6 +35,7 @@ local compModeGraphicsOptions = {
     msaa              = { compMode = true, fullMode = false }
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
+    riGpuObjects      = { fullMode = false }
   }
   standaloneOptions = {
     dlss              = { compMode = false }
@@ -556,10 +558,12 @@ mShared = {
     if (isListTruncated && ::is_dev_version && ::is_platform_pc) {
       local debugResolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "3840 x 1080", "2560 x 1440", "3840 x 2160" ]
-      local maxW = data?[data.len() - 1].w ?? 0
-      local maxH = data?[data.len() - 1].h ?? 0
+      local psi = ::is_platform_windows ? get_primary_screen_info() : {}
+      local maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
+      local maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
+      ::u.appendOnce($"{maxW} x {maxH}", debugResolutions)
       local bonus = debugResolutions.map(parseResolution).filter(@(r)
-        (r.w < maxW || r.h < maxH) && list.indexof(r.resolution) == null)
+        (r.w <= maxW || r.h <= maxH) && !list.contains(r.resolution))
       data.extend(bonus)
       data.sort(sortFunc)
     }
@@ -860,6 +864,8 @@ mSettings = {
     onChanged = "contactShadowsQualityClick"
   }
   staticShadowsOnEffects = { widgetType="checkbox" def=false blk="render/staticShadowsOnEffects" restart=false
+  }
+  riGpuObjects = { widgetType="checkbox" def=true blk="graphics/riGpuObjects" restart=false
   }
 }
 //------------------------------------------------------------------------------
@@ -1259,7 +1265,7 @@ local function fillGuiOptions(containerObj, handler) {
   mContainerObj = containerObj
   mHandler = handler
 
-  if (!::get_video_modes().len()) // Hiding resolution, mode, vsync.
+  if (::get_video_modes().len() == 0 && !::is_platform_windows) // Hiding resolution, mode, vsync.
   {
     local topBlockId = "sysopt_top"
     if (topBlockId in guiScene)

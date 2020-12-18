@@ -324,17 +324,17 @@ local function breakable_reduce(obj, func, memo=MemoNotInited()) {
 }
 
 return {
-  partial = partial
-  pipe = pipe
-  compose = compose
-  kwarg = kwarg
-  kwpartial = kwpartial
-  curry = curry
-  memoize = memoize
-  isCallable = isCallable
-  once = once
-  before = before
-  after = after
+  partial
+  pipe
+  compose
+  kwarg
+  kwpartial
+  curry
+  memoize
+  isCallable
+  once
+  before
+  after
   reduce = breakable_reduce
-  BreakValue = BreakValue
+  BreakValue
 }

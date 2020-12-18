@@ -3,7 +3,7 @@ local enums = require("sqStdLibs/helpers/enums.nut")
   template = {
     name = "unknown"
     visualStyle = "noFrame"
-    onClick = "onDropDown"
+    onClick = "onDropDownToggle"
     hoverMenuPos = "0"
     getText = function(totalSections = 0) { return null }
     getImage = function(totalSections = 0) { return null }

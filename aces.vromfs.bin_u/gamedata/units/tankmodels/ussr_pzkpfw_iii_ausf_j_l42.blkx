@@ -885,8 +885,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -898,8 +917,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -1634,7 +1654,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2563,12 +2583,28 @@
     }
   },
   {
-    "default_skin": {
-      "replace_tex": {
-        "from": "ger_camo_grey*",
-        "to": "ussr_camo_green*"
+    "default_skin": [
+      {
+        "replace_tex": {
+          "from": "ger_camo_grey*",
+          "to": "ussr_camo_green*"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "pzkpfw_III_ausf_J_kwk_38_L_42_body_c*",
+          "to": "pzkpfw_III_ausf_J_kwk_38_L_42_skin_t3_body_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "pzkpfw_III_ausf_J_kwk_38_L_42_turret_c*",
+          "to": "pzkpfw_III_ausf_J_kwk_38_L_42_skin_t3_turret_c*",
+          "param": "camo_skin_tex"
+        }
       }
-    }
+    ]
   },
   {
     "skin": {

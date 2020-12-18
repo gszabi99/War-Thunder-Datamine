@@ -150,7 +150,7 @@ local function func2str(func, p={}){
   local showsrc = p?.showsrc ?? false
   local showparams = p?.showparams ?? compact
   local showdefparams = p?.showdefparams ?? compact
-  local tostr_func = p?.tostr_func ?? @(v) "".concat(v)
+  local tostr_func = p?.tostr_func ?? @(v) $"{v}"
 
   if (::type(func)=="thread") {
     return $"thread: {func.getstatus()}"
@@ -178,7 +178,7 @@ local function func2str(func, p={}){
         }
       }
     }
-    local fname = "".concat(info.name)
+    local fname = $"{info.name}"
     if (fname.slice(0,1)=="(")
       fname = "@"
     if (showsrc)

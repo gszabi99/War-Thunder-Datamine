@@ -18,7 +18,7 @@ local function Root() {
     valign = ALIGN_TOP
     size = [sw(100), sh(100)]
     children = [
-      radarComponent.radar(false)
+      radarComponent.mkRadar()
       aamAim(styleAamAim, getColor)
     ]
   }

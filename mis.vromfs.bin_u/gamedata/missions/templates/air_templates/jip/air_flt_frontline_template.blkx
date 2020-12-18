@@ -153,7 +153,7 @@
         },
         {
           "comment": {
-            "value": "параметры арты и танков"
+            "value": "параметры арты "
           }
         },
         {
@@ -175,6 +175,54 @@
             },
             {
               "object": "flt_t2_art_squad"
+            },
+            {
+              "object_type": "any"
+            },
+            {
+              "stealthRadius": 125000.0
+            },
+            {
+              "calmDetection": true
+            },
+            {
+              "attack_type": "fire_at_will"
+            },
+            {
+              "targetAir": false
+            },
+            {
+              "targetGnd": true
+            },
+            {
+              "accuracy": 0.6
+            },
+            {
+              "checkVisibilityTarget": false
+            },
+            {
+              "effShootingRate": 0.6
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "параметры танков"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
             },
             {
               "object": "flt_t1_tanks_squad"
@@ -208,6 +256,9 @@
             },
             {
               "effShootingRate": 0.6
+            },
+            {
+              "ignoresObstaclesAfterTime": true
             }
           ]
         },
@@ -3825,6 +3876,7 @@
               "unitGetRandomNameFromSquad": {
                 "string_var": "flt_t1_tank_name",
                 "check_objects": "any",
+                "object_marking": 0,
                 "squad": "flt_t1_tanks_squad",
                 "object_type": "isInactive"
               }
@@ -4317,6 +4369,7 @@
               "unitGetRandomNameFromSquad": {
                 "string_var": "flt_t2_tank_name",
                 "check_objects": "any",
+                "object_marking": 0,
                 "squad": "flt_t2_tanks_squad",
                 "object_type": "isInactive"
               }
@@ -7563,7 +7616,8 @@
             "varCompareInt": {
               "var_value": "flt_state_cur_col",
               "value": 4,
-              "comparasion_func": "less"
+              "comparasion_func": "less",
+              "var_value_other": "flt_army_A_width"
             }
           },
           {
@@ -7640,7 +7694,8 @@
             "varCompareInt": {
               "var_value": "flt_state_cur_col",
               "value": 4,
-              "comparasion_func": "more"
+              "comparasion_func": "more",
+              "var_value_other": "flt_army_A_width"
             }
           },
           {
@@ -7717,7 +7772,8 @@
             "varCompareInt": {
               "var_value": "flt_state_cur_col",
               "value": 4,
-              "comparasion_func": "equal"
+              "comparasion_func": "equal",
+              "var_value_other": "flt_army_A_width"
             }
           },
           {
@@ -8113,7 +8169,8 @@
     "flt_draw_cur_cell_bottom_draw_left_point": "",
     "flt_draw_cur_cell_left_skip_point": "",
     "flt_draw_cur_cell_bottom_skip_point": "",
-    "flt_log_string": ""
+    "flt_log_string": "",
+    "flt_army_A_width": 4
   },
   "dialogs": [],
   "airfields": [],

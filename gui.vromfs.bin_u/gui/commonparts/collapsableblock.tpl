@@ -22,7 +22,10 @@ collapsableBlock {
 
     <<#onSelect>> on_select:t='<<onSelect>>' <</onSelect>>
     <<#onActivate>> on_activate:t='<<onActivate>>' <</onActivate>>
-    <<#onCancelEdit>> on_cancel_edit:t='<<onCancelEdit>>' <</onCancelEdit>>
+    <<#onHoverChange>>
+    on_hover:t='<<onHoverChange>>'
+    on_unhover:t='<<onHoverChange>>'
+    <</onHoverChange>>
     <<@contentParams>>
   }
 }

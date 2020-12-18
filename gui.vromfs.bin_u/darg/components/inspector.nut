@@ -219,8 +219,8 @@ local function elemLocationText(elem, builder) {
 
   local location = ::locate_element_source(elem)
   if (location)
-    text = "".concat(location.stack, "\n-------\n")
-  return "".concat(text, (builder ? "\n(Function)" : "\n(Table)"))
+    text = $"{location.stack}\n-------\n"
+  return builder ? $"{text}\n(Function)" : $"{text}\n(Table)"
 }
 
 

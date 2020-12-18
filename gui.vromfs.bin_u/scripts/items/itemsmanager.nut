@@ -197,6 +197,15 @@ foreach (fn in [
   function onEventPriceUpdated(p) {
     markItemsListUpdate()
   }
+
+  function canGetDecoratorFromTrophy(decorator) {
+    if (!decorator || decorator.isUnlocked())
+      return false
+    local visibleTypeMask = checkItemsMaskFeatures(itemType.TROPHY)
+    local filterFunc = @(item) !item.isDevItem && isItemVisible(item, itemsTab.SHOP)
+    return getShopList(visibleTypeMask, filterFunc)
+      .findindex(@(item) item.getContent().findindex(@(prize) prize?.resource == decorator.id) != null) != null
+  }
 }
 
 ItemsManager.fillFakeItemsList <- function fillFakeItemsList()

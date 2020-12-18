@@ -139,6 +139,30 @@
         },
         "body_bottom_dm": {
           "armorThickness": 114.3
+        },
+        "ex_decor_l_02_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
+        },
+        "ex_decor_l_09_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
+        },
+        "ex_decor_l_06_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
+        },
+        "ex_decor_r_01_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
+        },
+        "ex_decor_r_08_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
+        },
+        "ex_decor_r_05_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "tank_structural_steel"
         }
       },
       "hull_RHA": {
@@ -306,7 +330,8 @@
         "wheel_r_drive_dm": [],
         "wheel_l_drive_dm": [],
         "wheel_r_front_dm": [],
-        "wheel_l_front_dm": []
+        "wheel_l_front_dm": [],
+        "wheel_support_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -1299,8 +1324,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1312,8 +1356,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2546,7 +2591,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

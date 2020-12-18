@@ -158,6 +158,12 @@
         },
         "superstructure_front_dm": {
           "armorThickness": 15.0
+        },
+        "gun_barrel_02_dm": {
+          "armorThickness": 5.0
+        },
+        "gun_barrel_03_dm": {
+          "armorThickness": 5.0
         }
       },
       "turret": {
@@ -337,11 +343,7 @@
         "hp": 100.0,
         "armorThickness": 10.0,
         "gun_barrel_dm": [],
-        "gun_barrel_01_dm": [],
-        "gun_barrel_02_dm": [],
-        "gun_barrel_03_dm": [],
-        "gun_barrel_04_dm": [],
-        "gun_barrel_05_dm": []
+        "gun_barrel_01_dm": []
       },
       "tracks": {
         "armorClass": "tank_traks",
@@ -1491,8 +1493,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1504,8 +1525,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2666,7 +2688,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

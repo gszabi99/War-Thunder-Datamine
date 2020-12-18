@@ -13,7 +13,9 @@
   "ElevatorSens": 0.99,
   "AileronSens": 0.1,
   "RudderSensMultipler": 1.0,
-  "ElevatorSensMultipler": 1.0,
+  "ElevatorSensMultipler0": [0.0,1.2],
+  "ElevatorSensMultipler1": [0.4,1.2],
+  "ElevatorSensMultipler2": [0.6,1.0],
   "AileronSensMultipler": 1.0,
   "ElevatorSensCl": 0.0,
   "GearActuatorSpeed": 0.2,
@@ -137,7 +139,7 @@
     "FocusOffset": 0.0,
     "WingVertPos": 0.1,
     "AlphaShift": -0.1,
-    "FlapsShift": [0.08,0.22],
+    "FlapsShift": [0.05,0.1],
     "AirbrakesShift": [-0.01,-0.08],
     "GearFocusShift": [0.0,0.0],
     "ElevonFocusShift": [0.0,0.0],
@@ -260,12 +262,12 @@
       "CdMin": 0.0055
     },
     "FullFlaps": {
-      "Cl0": 0.75,
+      "Cl0": 0.3,
       "alphaCritHigh": 28.0,
       "alphaCritLow": -25.0,
-      "ClCritHigh": 1.65,
+      "ClCritHigh": 1.35,
       "ClCritLow": -0.35,
-      "CdMin": 0.042
+      "CdMin": 0.05
     },
     "Fuselage": {
       "OswaldsEfficiencyNumber": 0.5,
@@ -1055,7 +1057,46 @@
       "AileronsToThrust": [0.0,0.0,0.0],
       "ElevatorToThrust": [0.0,0.0,0.0],
       "RudderToThrust": [0.0,0.0,0.0],
-      "VtolToThrust": [0.0,0.0]
+      "VtolToThrust": [0.0,0.0],
+      "FlapsToThrust": [0.33,1.0,0.5,0.8]
+    },
+    "Nozzle1": {
+      "Position": [-0.4,0.0,2.05],
+      "Direction": [-0.0,100.0],
+      "Direction2": [-90.0,-0.0],
+      "ThrustRatio": 2.0,
+      "ThrustMax": 17000.0,
+      "AileronsToThrustDeflection": [0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [0.0,0.0,0.0],
+      "RudderToThrustDeflection": [0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,0.0],
+      "AileronsToThrust1": [0.0,-1.0,-1.0,-1.0],
+      "AileronsToThrust2": [200.0,-0.2,0.0,0.2],
+      "AileronsToThrust3": [400.0,0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,0.0],
+      "FlapsToThrust": [0.33,0.0,0.5,1.0],
+      "TipPosition": true
+    },
+    "Nozzle2": {
+      "Position": [-0.4,0.0,-2.05],
+      "Direction": [-0.0,100.0],
+      "Direction2": [-90.0,-0.0],
+      "ThrustRatio": 2.0,
+      "ThrustMax": 17000.0,
+      "AileronsToThrustDeflection": [0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [0.0,0.0,0.0],
+      "RudderToThrustDeflection": [0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,0.0],
+      "AileronsToThrust1": [0.0,-1.0,-1.0,-1.0],
+      "AileronsToThrust2": [200.0,0.2,0.0,-0.2],
+      "AileronsToThrust3": [400.0,0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,0.0],
+      "FlapsToThrust": [0.33,0.0,0.5,1.0],
+      "TipPosition": true
     }
   },
   "Mass": {

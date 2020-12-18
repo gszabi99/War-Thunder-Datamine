@@ -104,19 +104,19 @@ local function getRomanNumeral(num) {
 
 //EXPORT content for require
 local export = math.__merge({
-  GOLDEN_RATIO = GOLDEN_RATIO
-  minByAbs = minByAbs
-  maxByAbs = maxByAbs
-  round_by_value = round_by_value
-  number_of_set_bits = number_of_set_bits
-  roundToDigits = roundToDigits
-  is_bit_set = is_bit_set
-  change_bit = change_bit
-  change_bit_mask = change_bit_mask
-  lerp = lerp
-  calc_golden_ratio_columns = calc_golden_ratio_columns
-  color2uint = color2uint
-  getRomanNumeral = getRomanNumeral
+  GOLDEN_RATIO
+  minByAbs
+  maxByAbs
+  round_by_value
+  number_of_set_bits
+  roundToDigits
+  is_bit_set
+  change_bit
+  change_bit_mask
+  lerp
+  calc_golden_ratio_columns
+  color2uint
+  getRomanNumeral
   calcPercent = @(value) (100.0 * value + 0.5).tointeger()
 })
 

@@ -790,8 +790,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -803,8 +822,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -1652,6 +1672,50 @@
             "firePart": "transmission_dm"
           }
         }
+      ],
+      "crew_hull_compartment": [
+        {
+          "part": "driver_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 0.0,
+            "pressure": true
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "shatter",
+            "conditionDamage": 0.0,
+            "pressure": true
+          }
+        }
+      ],
+      "crew_turret_compartment": [
+        {
+          "part": "loader_dm"
+        },
+        {
+          "part": "gunner_dm"
+        },
+        {
+          "part": "commander_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 0.0,
+            "pressure": true
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "shatter",
+            "conditionDamage": 0.0,
+            "pressure": true
+          }
+        }
       ]
     }
   },
@@ -2403,7 +2467,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

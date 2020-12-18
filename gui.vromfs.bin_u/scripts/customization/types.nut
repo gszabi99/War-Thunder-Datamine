@@ -39,6 +39,7 @@ local function memoizeByProfile(func, hashFunc = null) {
     getMaxSlots = function() {return 1 }
 
     getImage = function(decorator) { return "" }
+    getBigImage = @(decorator) getImage(decorator) // while implemented only for ATTACHABLES
     getRatio = function(decorator) { return 1 }
     getImageSize = function(decorator) { return "0, 0" }
 
@@ -270,6 +271,10 @@ enums.addTypesByGlobalName("g_decorator_type", {
         ? (decorator?.blk.image ?? "".concat("#ui/images/attachables/", decorator.id))
         : ""
     }
+    getBigImage = function(decorator) {
+      local image = getImage(decorator)
+      return image != "" ? $"{image}_big" : image
+    }
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
 
     getLocName = function(decoratorName, ...) { return ::loc("attachables/" + decoratorName) }
@@ -293,7 +298,8 @@ enums.addTypesByGlobalName("g_decorator_type", {
     getDecoratorGroupInSlot = function(slotIdx, ...) { return ::hangar_get_attachable_group(slotIdx) }
 
     isAvailable = @(unit, checkUnitUsable = true) !!unit && ::has_feature("AttachablesUse")
-      && unit.isTank() && (!checkUnitUsable || unit.isUsable())
+      && (unit.isTank() || unit.isShipOrBoat())
+      && (!checkUnitUsable || unit.isUsable())
     isPlayerHaveDecorator = memoizeByProfile(::player_have_attachable)
 
     getBlk = function() { return ::get_attachable_blk() }

@@ -884,6 +884,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -892,7 +893,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -904,8 +924,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }
@@ -1194,7 +1215,15 @@
       "tracks": {
         "animationMultiplier": 0.75,
         "height": 0.04,
-        "width": 0.5
+        "width": 0.5,
+        "tracksTensionK": [3.0,8.0,1.5],
+        "trackMesh": "ussr_t_34_phys_track_line",
+        "trackLen": 0.172,
+        "trackCount": 72,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.17,
+        "trackMaxHeight": 1.04
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -1239,7 +1268,7 @@
         "maxDisplacementOffsets": [-0.01,0.02],
         "suspensionOffsets": [-0.115,-0.115,0.14],
         "defaultGearRadius": 0.41,
-        "frontBackGearRadius": 0.21,
+        "frontBackGearRadius": 0.25,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -1769,7 +1798,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2815,23 +2844,6 @@
     }
   },
   {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [2.5,-1.09278e-07,0.0,-1.90581],
-      "decal0Line1": [-1.09278e-07,-2.5,0.0,5.56655],
-      "decal0HaveCP": true,
-      "decal0CP": [0.967081,2.25038,0.881393],
-      "decal0CPNormDepth": [0.0,0.0,-1.0,-0.886582],
-      "decal0RotScale": [1.5708,0.4],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0Tex": "ussr_number_k230"
-    }
-  },
-  {
     "modifications": {
       "new_tank_tracks": [],
       "new_tank_suspension": [],
@@ -2859,5 +2871,23 @@
       "85mm_APCR_ammo_pack": [],
       "85mm_ussr_HE": []
     }
+  },
+  {
+    "default_skin": [
+      {
+        "set_tex": {
+          "from": "t_34_85_e_gun_c*",
+          "to": "t_34_85_e_skin_gun_c*",
+          "param": "camo_skin_tex"
+        }
+      },
+      {
+        "set_tex": {
+          "from": "t_34_85_e_turret_c*",
+          "to": "t_34_85_e_skin_turret_c*",
+          "param": "camo_skin_tex"
+        }
+      }
+    ]
   }
 ]

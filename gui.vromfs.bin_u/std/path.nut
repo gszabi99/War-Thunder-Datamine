@@ -65,9 +65,9 @@ local function isNormalized(path) {
 
 
 /**
- * Get last slash seperator index in past string
+ * Get last slash separator index in past string
  */
-local function getLastSeperatorIndex(path) {
+local function getLastSeparatorIndex(path) {
   for (local j = path.len() - 1; j >= 0; j--)
     if (path[j] == '/')
       return j
@@ -90,7 +90,7 @@ local function parentPath(path) {
   if (path == "/")
     return null
 
-  local separatorIdx = getLastSeperatorIndex(path)
+  local separatorIdx = getLastSeparatorIndex(path)
   if (separatorIdx > 0)
     return path.slice(0, separatorIdx)
   else if (separatorIdx == 0)
@@ -115,7 +115,7 @@ local function fileName(path) {
   if (path == "/")
     return "/"
 
-  local separatorIdx = getLastSeperatorIndex(path)
+  local separatorIdx = getLastSeparatorIndex(path)
   if (separatorIdx == -1)
     return path
   else
@@ -141,11 +141,11 @@ local function _join(basePath, other) {
   else if (other == "" || other == "/")
     return basePath
   else if (basePath[basePath.len() - 1] == '/' && other[0] == '/')
-    return "".concat(basePath,other.slice(1))
+    return $"{basePath}{other.slice(1)}"
   else if (basePath[basePath.len() - 1] == '/' || other[0] == '/')
-    return "".concat(basePath, other)
+    return $"{basePath}{other}"
   else
-    return "/".concat(basePath,other)
+    return $"{basePath}/{other}"
 }
 
 
@@ -197,14 +197,12 @@ local function splitToArray(path) {
 }
 
 //EXPORT content for require
-local export = {
-  normalize = normalize
-  isNormalized = isNormalized
-  getLastSeperatorIndex = getLastSeperatorIndex
-  parentPath = parentPath
-  fileName = fileName
-  join = join
-  splitToArray = splitToArray
+return {
+  normalize
+  isNormalized
+  getLastSeparatorIndex
+  parentPath
+  fileName
+  join
+  splitToArray
 }
-
-return export

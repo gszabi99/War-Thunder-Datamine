@@ -1,0 +1,5531 @@
+[
+  {
+    "model": "buccaneer_s2"
+  },
+  {
+    "fmFile": "fm/buccaneer_s2.blk"
+  },
+  {
+    "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk"
+  },
+  {
+    "haveCCIPForRocket": true
+  },
+  {
+    "haveCCIPForBombs": true
+  },
+  {
+    "haveCCRPForBombs": true
+  },
+  {
+    "gearSinkRangeLR": 0.4
+  },
+  {
+    "gearSinkRangeC": 0.308
+  },
+  {
+    "JetNozzlesAnim1": [0.3,0.5]
+  },
+  {
+    "JetNozzlesAnim2": [0.5,1.0]
+  },
+  {
+    "JetNozzlesAnim3": [1.0,0.0]
+  },
+  {
+    "radarCScope": true
+  },
+  {
+    "gyroscopicSightOverSensors": true
+  },
+  {
+    "type": "typeFighter"
+  },
+  {
+    "paratrooper": "italy_late_para"
+  },
+  {
+    "advancedInstructor": true
+  },
+  {
+    "standardExhaustFxType": "jet_exhaust"
+  },
+  {
+    "afterburnerExhaustFxType": "jet_afterburner_exhaust"
+  },
+  {
+    "startExhaustFxType": "jet_start_exhaust"
+  },
+  {
+    "overheatBlk": "gameData/FlightModels/DM/overheat.blk"
+  },
+  {
+    "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk"
+  },
+  {
+    "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk"
+  },
+  {
+    "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk"
+  },
+  {
+    "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk"
+  },
+  {
+    "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk"
+  },
+  {
+    "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk"
+  },
+  {
+    "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk"
+  },
+  {
+    "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk"
+  },
+  {
+    "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk"
+  },
+  {
+    "fireParamsPreset": "1200kph"
+  },
+  {
+    "fightAiBehaviour": "assault"
+  },
+  {
+    "autopilotImpl": "FBW"
+  },
+  {
+    "DamageParts": {
+      "armor_engine": {
+        "engine1_dm": {
+          "genericDamageMult": 1.6,
+          "hp": 32.9
+        },
+        "engine2_dm": {
+          "genericDamageMult": 1.6,
+          "hp": 33.0
+        }
+      },
+      "c_dural10": {
+        "tail_dm": {
+          "genericDamageMult": 0.6,
+          "hp": 160.5
+        },
+        "wing1_l_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 75.5
+        },
+        "wing1_r_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 75.5
+        },
+        "wing2_l_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 75.5
+        },
+        "wing2_r_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 75.5
+        },
+        "wing_l_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 125.5
+        },
+        "wing_r_dm": {
+          "genericDamageMult": 0.35,
+          "hp": 125.5
+        }
+      },
+      "c_dural15": {
+        "fuse1_dm": {
+          "hp": 125.5
+        },
+        "fuse_dm": {
+          "hp": 125.5
+        }
+      },
+      "c_dural5": {
+        "elevator_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 60.5
+        },
+        "fin_dm": {
+          "hp": 60.5
+        },
+        "flap1_l_dm": {
+          "hp": 39.5
+        },
+        "flap1_r_dm": {
+          "hp": 39.5
+        },
+        "flap_l_dm": {
+          "hp": 39.5
+        },
+        "flap_r_dm": {
+          "hp": 39.5
+        },
+        "flaperon_l_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 51.7
+        },
+        "flaperon_r_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 51.7
+        },
+        "rudder_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 39.5
+        }
+      },
+      "dural": {
+        "airbrake_l_dm": {
+          "hp": 19.5
+        },
+        "airbrake_r_dm": {
+          "hp": 19.5
+        },
+        "cover1_dm": {
+          "hp": 19.5
+        }
+      },
+      "dural5": {
+        "radar_dm": {
+          "hp": 35.0
+        }
+      },
+      "dural90": {
+        "spar1_l_dm": {
+          "hp": 79.5
+        },
+        "spar1_r_dm": {
+          "hp": 79.5
+        },
+        "spar2_l_dm": {
+          "hp": 79.5
+        },
+        "spar2_r_dm": {
+          "hp": 79.5
+        },
+        "spar_l_dm": {
+          "hp": 95.9
+        },
+        "spar_r_dm": {
+          "hp": 95.9
+        }
+      },
+      "protected_controls": {
+        "tailcontrol_dm": {
+          "hp": 80.5
+        },
+        "wingcontrol_dm": {
+          "hp": 59.5
+        },
+        "wingcontrol_l_dm": {
+          "hp": 80.5
+        },
+        "wingcontrol_r_dm": {
+          "hp": 80.5
+        }
+      },
+      "steel": {
+        "gear_c_dm": {
+          "hp": 49.5
+        },
+        "gear_l_dm": {
+          "hp": 70.5
+        },
+        "gear_r_dm": {
+          "hp": 70.5
+        }
+      },
+      "steel_cooling_sys": {
+        "oil1_dm": {
+          "hp": 17.5
+        },
+        "oil2_dm": {
+          "hp": 17.5
+        }
+      },
+      "steel_pilot": {
+        "pilot1_dm": {
+          "fireProtectionHp": 20.0,
+          "hp": 20.0
+        },
+        "pilot_dm": {
+          "fireProtectionHp": 20.0,
+          "hp": 20.0
+        }
+      },
+      "steel_tank_armor": {
+        "tank1_dm": {
+          "hp": 66.9
+        },
+        "tank2_dm": {
+          "hp": 59.2
+        },
+        "tank3_dm": {
+          "hp": 63.5
+        },
+        "tank4_dm": {
+          "hp": 61.1
+        },
+        "tank5_dm": {
+          "hp": 60.0
+        },
+        "tank6_dm": {
+          "hp": 66.0
+        },
+        "tank7_dm": {
+          "hp": 66.4
+        },
+        "tank8_dm": {
+          "hp": 69.3
+        }
+      }
+    }
+  },
+  {
+    "DamageEffects": [
+      {
+        "part": {
+          "name": "airbrake_l_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "airbrake_r_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cover1_dm"
+        }
+      },
+      {
+        "part": [
+          {
+            "name": "elevator_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "engine1_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.001,
+              "leak_oil": 0.8,
+              "cut": 0.0
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "fire": 0.005,
+              "leak_oil": 0.95,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "fire": 25.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "fire": 30.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "engine2_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.001,
+              "leak_oil": 0.8,
+              "cut": 0.0
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "fire": 0.005,
+              "leak_oil": 0.95,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "fire": 25.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "fire": 30.0,
+              "leak_oil": 10.0,
+              "cut": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "fin_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 14.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flap1_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flap1_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flap_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flap_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flaperon_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "flaperon_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "fuse1_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "wing_r_dm": 0.1,
+              "wing_l_dm": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "wing_r_dm": 0.3,
+              "wing_l_dm": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "wing_r_dm": 0.5,
+              "wing_l_dm": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "wing_r_dm": 0.7,
+              "wing_l_dm": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "wing_r_dm": 0.9,
+              "wing_l_dm": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "wingcontrol_l_dm": 1.0,
+              "wingcontrol_r_dm": 1.0,
+              "nothing": 14.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "wing_l_dm": 1.0,
+              "wing_r_dm": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "wing_l_dm": 1.0,
+              "wing_r_dm": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "wing_l_dm": 1.0,
+              "wing_r_dm": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "wing_l_dm": 1.0,
+              "wing_r_dm": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "wing_l_dm": 1.0,
+              "wing_r_dm": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "fuse_dm"
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "tail_dm": 0.2
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "tail_dm": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "tail_dm": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "tail_dm": 0.8
+            }
+          },
+          {
+            "onHit": {
+              "damage": 100.0,
+              "tail_dm": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tail_dm": 1.0,
+              "nothing": 12.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 3.0,
+              "tail_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 7.0,
+              "tail_dm": 1.0,
+              "nothing": 8.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "tail_dm": 1.0,
+              "nothing": 7.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "tail_dm": 1.0,
+              "nothing": 6.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "tail_dm": 1.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "tail_dm": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "tail_dm": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 100.0,
+              "tail_dm": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "gear_c_dm"
+          },
+          {
+            "onHit": {
+              "damage": 15.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 25.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 40.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "gear_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 15.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 25.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 40.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "gear_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 15.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 25.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 40.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "name": "oil1_dm",
+          "onHit": {
+            "leak_oil": 0.95
+          },
+          "onKill": {
+            "leak_oil": 1.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "oil2_dm",
+          "onHit": {
+            "leak_oil": 0.95
+          },
+          "onKill": {
+            "leak_oil": 1.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "pilot1_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "pilot_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "radar_dm"
+        }
+      },
+      {
+        "part": [
+          {
+            "name": "rudder_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.1
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.4
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "name": "spar1_l_dm",
+          "onKill": {
+            "nothing": 2.0,
+            "cut": 4.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "spar1_r_dm",
+          "onKill": {
+            "nothing": 2.0,
+            "cut": 4.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "spar2_l_dm",
+          "onKill": {
+            "nothing": 2.0,
+            "cut": 4.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "spar2_r_dm",
+          "onKill": {
+            "nothing": 2.0,
+            "cut": 4.0
+          }
+        }
+      },
+      {
+        "part": {
+          "name": "spar_l_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "spar_r_dm"
+        }
+      },
+      {
+        "part": [
+          {
+            "name": "tail_dm"
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.25
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 65.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 19.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 3.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 65.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "name": "tailcontrol_dm"
+        }
+      },
+      {
+        "part": [
+          {
+            "name": "tank1_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank2_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank3_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank4_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank5_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank6_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank7_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "tank8_dm"
+          },
+          {
+            "onHit": {
+              "fire": 0.0001,
+              "leak": 0.3
+            }
+          },
+          {
+            "onHit": {
+              "damage": 3.0,
+              "fire": 0.001,
+              "leak": 0.5
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "fire": 0.005,
+              "leak": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "fire": 0.01,
+              "leak": 0.9
+            }
+          },
+          {
+            "onKill": {
+              "fire": 0.01,
+              "leak": 9.99
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "fire": 50.0,
+              "leak": 15.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "fire": 50.0,
+              "leak": 10.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "wing1_l_dm"
+          },
+          {
+            "defaultEffectPart": "spar1_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.1,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.2,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.4,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.8,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "nothing": 9.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "nothing": 5.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "nothing": 3.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "nothing": 1.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "wing1_r_dm"
+          },
+          {
+            "defaultEffectPart": "spar1_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.1,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.2,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.4,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.8,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "nothing": 9.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "nothing": 5.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "nothing": 3.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "nothing": 1.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "wing2_l_dm"
+          },
+          {
+            "defaultEffectPart": "spar2_l_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.1,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.2,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.4,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.8,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "nothing": 9.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "nothing": 5.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "nothing": 3.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "nothing": 1.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "wing2_r_dm"
+          },
+          {
+            "defaultEffectPart": "spar2_r_dm"
+          },
+          {
+            "onHit": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.1,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.2,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.4,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 0.8,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 0.0,
+              "nothing": 9.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 20.0,
+              "cut": 0.0,
+              "nothing": 5.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 0.0,
+              "nothing": 3.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 0.0,
+              "nothing": 1.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          },
+          {
+            "onKill": {
+              "damage": 70.0,
+              "cut": 0.0,
+              "part": {
+                "ratio": 1.0,
+                "canCut": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "name": "wing_l_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "wing_r_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "wingcontrol_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "wingcontrol_l_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "wingcontrol_r_dm"
+        }
+      }
+    ]
+  },
+  {
+    "ikPilot": [
+      {
+        "model": "pilot_italy_late_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis01"
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_1",
+          "flexionDir": [0.0,-1.0,0.2]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_1",
+          "flexionDir": [0.0,-1.0,-0.5]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_1",
+          "flexionDir": [0.0,1.0,0.3]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_1",
+          "flexionDir": [0.0,1.0,-0.3]
+        }
+      }
+    ]
+  },
+  {
+    "ikPilot": [
+      {
+        "model": "pilot_italy_late_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "suffix": "2"
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_",
+          "flexionDir": [0.0,-1.0,0.1]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_",
+          "flexionDir": [0.0,-1.0,-0.1]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [0.0,1.0,-0.2]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [0.0,1.0,0.2]
+        }
+      }
+    ]
+  },
+  {
+    "attach": {
+      "pilot1": "pilot_it_late_500",
+      "pilot2": "pilot_it_late_500"
+    }
+  },
+  {
+    "Params": {
+      "Range": 882.0
+    }
+  },
+  {
+    "Sound": {
+      "Engine": "engine23",
+      "gun": "gun_default"
+    }
+  },
+  {
+    "cockpit": {
+      "headPos": [4.8,0.92,0.044],
+      "headPosOnShooting": [4.9,0.92,0.044],
+      "mirror": true,
+      "mirrorPos": [5.111,1.2,0.0],
+      "mirrorNorm": [-0.92,-0.39,0.0],
+      "mirrorNode": "blister2",
+      "collimatorColor": [1.5,3.0,0.3],
+      "lightPos": [5.313,0.572,0.128],
+      "lightColor": [0.7,0.01,0.0],
+      "lightRadius": 0.3,
+      "lightPos1": [5.313,0.572,-0.128],
+      "lightColor1": [0.7,0.01,0.0],
+      "lightRadius1": 0.3,
+      "lightPos2": [5.232,0.471678,-0.360818],
+      "lightColor2": [0.7,0.01,0.0],
+      "lightRadius2": 0.35,
+      "lightPos3": [5.232,0.471678,0.360818],
+      "lightColor3": [0.7,0.01,0.0],
+      "lightRadius3": 0.35,
+      "devices": {
+        "stick_ailerons": [-1.0,1.0],
+        "stick_elevator": [-1.0,1.0],
+        "pedals1": [-1.0,1.0],
+        "pedals2": [-1.0,1.0],
+        "pedals3": [-1.0,1.0],
+        "pedals4": [-1.0,1.0],
+        "throttle": [0.0,1.0],
+        "throttle1": [0.0,1.0],
+        "flaps": [0.0,1.0],
+        "flaps_fixed": true,
+        "flaps_indicator": [0.0,1.0],
+        "gears": [0.0,1.0],
+        "gears1": [0.0,1.0],
+        "gear_fixed": false,
+        "trimmer": [-1.0,1.0],
+        "trimmer_fixed": false,
+        "trimmer_indicator": [-1.0,1.0],
+        "weapon1": [0.0,1.0],
+        "speed": [0.0,514.444],
+        "speed_01": [0.0,514.444],
+        "speed_02": [0.0,360.111],
+        "vario": [-30.0,30.0],
+        "altitude_10k": [0.0,100000.0],
+        "altitude_hour": [0.0,10000.0],
+        "altitude_min": [0.0,1000.0],
+        "altitude1_10k": [0.0,100000.0],
+        "altitude1_hour": [0.0,10000.0],
+        "altitude1_min": [0.0,1000.0],
+        "altitude2_min": [0.0,1000.0],
+        "radio_altitude": [0.0,5000.0],
+        "altitude_koef": 3.28,
+        "aviahorizon_pitch": [-80.0,80.0],
+        "aviahorizon_roll": [-180.0,180.0],
+        "aviahorizon_pitch1": [-45.0,45.0],
+        "aviahorizon_roll1": [-180.0,180.0],
+        "aoa": [0.0,30.0],
+        "compass": [0.0,360.0],
+        "compass1": [0.0,360.0],
+        "compass2": [0.0,360.0],
+        "bank": [-8.0,8.0],
+        "turn": [-0.23562,0.23562],
+        "clock_hour": [0.0,12.0],
+        "clock_min": [0.0,60.0],
+        "clock_sec": [0.0,60.0],
+        "fuel_consume": [0.0,100.0],
+        "rpm_min": [0.0,1000.0],
+        "rpm_hour": [0.0,13000.0],
+        "rpm1_min": [0.0,1000.0],
+        "rpm1_hour": [0.0,13000.0],
+        "rpm": [0.0,13000.0],
+        "rpm1": [0.0,13000.0],
+        "fuel": [0.0,2720.0],
+        "fuel1": [0.0,2835.0],
+        "oil_pressure": [0.0,120.0],
+        "oil_pressure1": [0.0,120.0],
+        "oil_temperature": [0.0,150.0],
+        "water_temperature": [0.0,800.0],
+        "water_temperature1": [0.0,800.0],
+        "fuel_pressure": [0.0,15.0],
+        "fuel_pressure1": [0.0,15.0],
+        "g_meter": [-5.0,10.0],
+        "g_meter_min": [-5.0,10.0],
+        "g_meter_max": [-5.0,10.0]
+      },
+      "multifunctionDisplays": {
+        "display": {
+          "textureArea": [0.0,0.0,1.0,1.0],
+          "isNotDisplay": true,
+          "page": {
+            "type": "devices",
+            "speed_slider": {
+              "arrowTex": "uk_gauge_comb_speed_slider_c",
+              "position": [683.0,128.0],
+              "arrowTexCoord": [0.5,0.0,1.0,1.0],
+              "size": [1366.0,256.0],
+              "notDrawBackground": true,
+              "ranges": [
+                {
+                  "limits": [0.0,148.16,0.0,-0.006]
+                },
+                {
+                  "limits": [148.16,185.2,-0.006,-0.035]
+                },
+                {
+                  "limits": [185.2,370.4,-0.035,-0.178]
+                },
+                {
+                  "limits": [370.4,555.6,-0.178,-0.267]
+                },
+                {
+                  "limits": [555.6,740.8,-0.267,-0.338]
+                },
+                {
+                  "limits": [740.8,926.0,-0.338,-0.396]
+                },
+                {
+                  "limits": [926.0,1111.2,-0.396,-0.444]
+                },
+                {
+                  "limits": [1111.2,1296.4,-0.444,-0.492]
+                }
+              ]
+            },
+            "mach_slider": {
+              "arrowTex": "uk_gauge_comb_mach_slider_c",
+              "position": [683.0,384.0],
+              "arrowTexCoord": [0.0,0.0,0.4,1.0],
+              "size": [1366.0,256.0],
+              "notDrawBackground": true,
+              "parentDevId": 0,
+              "ranges": {
+                "limits": [0.3,2.8,0.093,0.99]
+              }
+            },
+            "aviahorizon_pitch": {
+              "arrowTex": "uk_gauge_aviahorizon_type_f4_slider_c",
+              "position": [683.0,768.0],
+              "arrowTexCoord": [0.0,0.35,2.0,0.65],
+              "size": [1366.0,512.0],
+              "notDrawBackground": true,
+              "ranges": {
+                "limits": [-90.0,90.0,0.25,-0.25]
+              }
+            }
+          }
+        }
+      },
+      "parts_holes_dmg": {
+        "part": "fuse"
+      },
+      "parts_oil_dmg": [
+        {
+          "part": "engine1"
+        },
+        {
+          "part": "engine2"
+        },
+        {
+          "part": "engine3"
+        },
+        {
+          "part": "engine4"
+        }
+      ]
+    }
+  },
+  {
+    "commonWeapons": []
+  },
+  {
+    "weapon_presets": [
+      {
+        "preset": {
+          "name": "buccaneer_s2_default",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs.blk",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+              },
+              {
+                "iconType": "bombs_middle_group"
+              },
+              {
+                "amountPerTier": 3.0
+              },
+              {
+                "tier": {
+                  "idx": 2
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_1000lb_bombs",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs.blk",
+          "reqModification": "uk_mk_10_1000lb",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+              },
+              {
+                "iconType": "bombs_large_group"
+              },
+              {
+                "amountPerTier": 3.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_rp3",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3.blk",
+          "reqModification": "uk_rp3_mk12"
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_agm_12",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12.blk",
+          "reqModification": "fj_4b_agm_12b"
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_aim_9b",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_aim_9b.blk",
+          "reqModification": "us_aim_9b",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+              },
+              {
+                "iconType": "missile_air_to_air"
+              },
+              {
+                "amountPerTier": 1.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_matra7",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7.blk",
+          "reqModification": "uk_matra_7"
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_1000lb.blk"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                  },
+                  {
+                    "iconType": "nar_he_large"
+                  },
+                  {
+                    "amountPerTier": 36.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_aim_9b.blk"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                  },
+                  {
+                    "iconType": "nar_he_large"
+                  },
+                  {
+                    "amountPerTier": 36.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_ltc"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_ltc.blk"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "weaponConfig": {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                },
+                {
+                  "iconType": "nar_he_large"
+                },
+                {
+                  "amountPerTier": 36.0
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_1000lb_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_1000lb_aim_9b.blk"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                  },
+                  {
+                    "iconType": "nar_he_large"
+                  },
+                  {
+                    "amountPerTier": 36.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_1000lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_1000lb.blk",
+          "reqModification": "uk_mk_10_1000lb",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "amountPerTier": 3.0
+                },
+                {
+                  "tier": {
+                    "idx": 0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 12
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_1000lb_bombs_1000lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_1000lb.blk",
+          "reqModification": "uk_mk_10_1000lb",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "iconType": "bombs_large_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "bombs_large_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "bombs_large",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "bombs_large",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "bombs_large",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "bombs_large",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "bombs_large_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "iconType": "bombs_large_group",
+                  "amountPerTier": 3.0
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_rp3_1000lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_1000lb.blk",
+          "reqModification": "uk_mk_10_1000lb"
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_1000lb.blk"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_aim_9b_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_aim_9b_1000lb.blk"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_aim_9b",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_aim_9b.blk",
+          "reqModification": "us_aim_9b",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "iconType": "bombs_middle_group"
+                },
+                {
+                  "amountPerTier": 3.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_1000lb_bombs_aim_9b",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_aim_9b.blk",
+          "reqModification": "us_aim_9b",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                },
+                {
+                  "iconType": "bombs_large_group"
+                },
+                {
+                  "amountPerTier": 3.0
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_aim_9b.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 5
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_aim_9b.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_500lb_bombs_aim_9b_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_aim_9b_1000lb.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 1
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 11
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "iconType": "bombs_middle_group"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_aim_9b_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_aim_9b_1000lb.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 3
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_aim_9b_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_aim_9b_1000lb.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_uni"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_ltc",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc.blk",
+          "reqModification": "aircrafts_false_thermal_targets",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+              },
+              {
+                "iconType": "bombs_middle_group"
+              },
+              {
+                "amountPerTier": 3.0
+              },
+              {
+                "tier": {
+                  "idx": 4
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_1000lb_bombs_ltc",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc.blk",
+          "reqModification": "aircrafts_false_thermal_targets",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+              },
+              {
+                "iconType": "bombs_large_group"
+              },
+              {
+                "amountPerTier": 3.0
+              },
+              {
+                "tier": {
+                  "idx": 5
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_ltc"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 5
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_ltc"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_500lb_bombs_ltc_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc_1000lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "iconType": "bombs_middle_group"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_1000lb_bombs_ltc_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc_1000lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_large_group",
+                      "amountPerTier": 3.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_large_group",
+                      "amountPerTier": 3.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_ltc_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc_1000lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 3
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_ltc_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc_1000lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "bombs_large",
+                      "amountPerTier": 1.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_ltc_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_ltc_1000lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_ltc_500lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc_500lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "rockets_he_small_group",
+                    "amountPerTier": 4.0
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "rockets_he_small_group",
+                    "amountPerTier": 4.0
+                  }
+                }
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_aim_9b_500lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_aim_9b_500lb.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "iconType": "bombs_middle"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 3
+                  }
+                }
+              },
+              {
+                "Weapon": {
+                  "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+                  "iconType": "rockets_he_small_group",
+                  "amountPerTier": 4.0,
+                  "tier": {
+                    "idx": 9
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_rp3_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_500lb.blk"
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_matra7_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_500lb.blk",
+          "reqModification": "uk_matra_7",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                },
+                {
+                  "iconType": "nar_he_large"
+                },
+                {
+                  "amountPerTier": 36.0
+                },
+                {
+                  "tier": {
+                    "idx": 2
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "iconType": "bombs_middle"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_500lb_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_500lb_aim_9b.blk"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/uk_2_inch_rocket.blk"
+                  },
+                  {
+                    "iconType": "nar_he_large"
+                  },
+                  {
+                    "amountPerTier": 36.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "iconType": "bombs_middle"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_ltc_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_ltc_500lb.blk",
+          "reqModification": "aircrafts_false_thermal_targets"
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_aim_9b_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_aim_9b_500lb.blk",
+          "reqModification": "us_aim_9b"
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_ltc_500lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc_500lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_agm_12_aim_9b_500lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_aim_9b_500lb.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "iconType": "bombs_middle"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_agm_12b_bullpup.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_uni"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_agm_12_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_500lb.blk",
+          "reqModification": "fj_4b_agm_12b"
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_ltc_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc_500lb.blk",
+          "reqModification": "aircrafts_false_thermal_targets",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 2,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 1,
+                    "iconType": "ltc"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11,
+                    "iconType": "ltc"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_aim_9b_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_aim_9b_500lb.blk",
+          "reqModification": "us_aim_9b",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "iconType": "missile_air_to_air"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 1
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 11
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 2,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10,
+                    "iconType": "bombs_middle_group",
+                    "amountPerTier": 3.0
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_500lb_bombs_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_500lb.blk",
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+              },
+              {
+                "tier": {
+                  "idx": 0,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 1,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 2,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 3,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "bombs_middle",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "bombs_middle",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "bombs_middle",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "bombs_middle",
+                  "amountPerTier": 1.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 9,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 10,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 11,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              },
+              {
+                "tier": {
+                  "idx": 12,
+                  "iconType": "bombs_middle_group",
+                  "amountPerTier": 3.0
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_1000lb_bombs_ltc_500lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc_500lb.blk"
+          },
+          {
+            "reqModification": "aircrafts_false_thermal_targets"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "bombs_middle",
+                      "amountPerTier": 1.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_large_group",
+                      "amountPerTier": 3.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_large_group",
+                      "amountPerTier": 3.0
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "ltc"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "ltc"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": {
+          "name": "buccaneer_s2_1000lb_bombs_500lb",
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_500lb.blk",
+          "reqModification": "uk_mk_10_1000lb",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "bombs_middle",
+                    "amountPerTier": 1.0
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 2,
+                    "iconType": "bombs_large_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "bombs_large_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "bombs_large_group",
+                    "amountPerTier": 3.0
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10,
+                    "iconType": "bombs_large_group",
+                    "amountPerTier": 3.0
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "preset": [
+          {
+            "name": "buccaneer_s2_matra7_agm_12"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_matra7_agm_12.blk"
+          },
+          {
+            "reqModification": "fj_4b_agm_12b"
+          },
+          {
+            "reqModification": "uk_matra_7"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sensors": {
+      "sensor": {
+        "blk": "gameData/sensors/us_an_apr_36.blk"
+      }
+    }
+  },
+  {
+    "propellers": {
+      "prop0": -1,
+      "prop1": -1,
+      "engine0": 0,
+      "engine1": 1
+    }
+  },
+  {
+    "turbulence": {
+      "segmentlength": 100.0,
+      "startSpeed": 28.0,
+      "maxSpeed": 140.0,
+      "maxPower": 6.0,
+      "initialRadius": 12.0,
+      "radiusSpeed": 2.0
+    }
+  },
+  {
+    "fireParams": {
+      "engineExtinguishFireSpeed": [299.0,345.0],
+      "engineExtinguishFireSpeedChance": [0.01,0.1],
+      "fireDamagePowerRel": 0.05,
+      "nonExtinguishFireTime": 5.0
+    }
+  },
+  {
+    "arcadeOverride": {
+      "maxSpeedMultiplier": 1.01,
+      "wepOverspeed": 1.05
+    }
+  },
+  {
+    "wiki": {
+      "general": {
+        "length": 12.62,
+        "wingspan": 11.23,
+        "wingArea": 32.56,
+        "emptyWeight": 5382.6001,
+        "normalWeight": 7020.0698,
+        "maxTakeoffWeight": 8061.0,
+        "powerPlantType": 2,
+        "thrustMaxMil": 26800.0
+      },
+      "performance": {
+        "table": {
+          "rpmMil": 14700.0,
+          "airSpeedMil0": [100.0,962.0],
+          "climbRateMil0": [0.0,40.2],
+          "climbTimeMil0": [2000.0,51.7775],
+          "climbTimeMil1": [4000.0,107.129],
+          "climbTimeMil2": [6000.0,178.27],
+          "climbTimeMil3": [8000.0,278.663],
+          "turnTimeMil": [1000.0,23.0],
+          "takeoffDistance": 678.83,
+          "ceiling": 12000.0,
+          "rollRate": 137.0,
+          "wingLoading": 216.0,
+          "thrustToWeightRatio": 0.43
+        },
+        "plot": {
+          "airSpeedMil0": [0.0,962.0],
+          "airSpeedMil1": [12000.0,864.0],
+          "climbRateMil0": [0.0,40.2],
+          "climbRateMil1": [3000.0,37.5],
+          "climbRateMil2": [7500.0,18.5],
+          "climbRateMil3": [9100.0,12.8],
+          "climbRateMil4": [12000.0,10.8]
+        }
+      }
+    }
+  },
+  {
+    "balanceData": {
+      "accSpd": 2.9792,
+      "climbSpeed": 40.2,
+      "maxSpeed": 267.22,
+      "turnTime": 23.0
+    }
+  },
+  {
+    "user_skin": [
+      {
+        "name": "buccaneer_s2"
+      },
+      {
+        "replace_tex": {
+          "from": "buccaneer_s2_a*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "buccaneer_s2_a_dmg*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "buccaneer_s2_n*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "buccaneer_s2_n_dmg*"
+        }
+      }
+    ]
+  },
+  {
+    "modifications": {
+      "cd_98": [],
+      "CdMin_Fuse": [],
+      "new_cover": [],
+      "structure_str": [],
+      "hp_105_jet": [],
+      "g_suit": [],
+      "new_compressor_jet": [],
+      "hydravlic_power": {
+        "effects": {
+          "aileronBooster": 0.9,
+          "elevatorBooster": 0.9
+        }
+      },
+      "uk_matra_7": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "uk_rp3_mk12": {
+        "modClass": "weapon",
+        "tier": 3,
+        "reqModification": "uk_matra_7"
+      },
+      "uk_mk_10_1000lb": {
+        "tier": 2,
+        "modClass": "weapon"
+      },
+      "fj_4b_agm_12b": {
+        "reqModification": "uk_mk_10_1000lb",
+        "tier": 4,
+        "modClass": "weapon"
+      },
+      "aircrafts_false_thermal_targets": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "us_aim_9b": {
+        "reqModification": "aircrafts_false_thermal_targets",
+        "tier": 3,
+        "modClass": "weapon"
+      }
+    }
+  },
+  {
+    "parachutes": {
+      "emitterRange": [1,1],
+      "emitterName": "emtr_chute",
+      "chuteModel": "chute_mirage_3c_char",
+      "chuteAnimVarName": "chute_state_switch",
+      "chuteTimeScaleParam": "chute_time_scale",
+      "chuteFallSpeed": 1.9
+    }
+  },
+  {
+    "cutting": {
+      "emtr_break_wing1_l_from": [-0.363582,0.250767,2.89682],
+      "emtr_break_wing1_l_to": [-0.363582,0.250767,3.59564],
+      "emtr_break_wing2_l_from": [-0.363582,0.250767,4.64388],
+      "emtr_break_wing2_l_to": [-0.363582,0.250767,5.46865],
+      "emtr_break_wing1_r_from": [-0.363581,0.250767,-2.89682],
+      "emtr_break_wing1_r_to": [-0.363581,0.250767,-3.59564],
+      "emtr_break_wing2_r_from": [-0.363581,0.250767,-4.64387],
+      "emtr_break_wing2_r_to": [-0.363581,0.250767,-5.46864],
+      "emtr_break_wing_tail": [-5.18086,0.0,0.0],
+      "finCut": false,
+      "emtr_break_fin_from": [-6.55513,1.40721,-1.19209e-07],
+      "emtr_break_fin_to": [-6.55513,2.65141,-1.19209e-07]
+    }
+  }
+]

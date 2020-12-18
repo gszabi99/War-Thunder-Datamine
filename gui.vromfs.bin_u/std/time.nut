@@ -45,7 +45,7 @@ local function secondsToTimeSimpleString(time) {
   local hoursStr = hours > 0 ? hours.tostring() : null
   local secondsStr = stdStr.format("%02d", seconds)//minutes+hours > 0 ? stdStr.format("%02d", seconds) : seconds.tostring()
   local res = ":".join([hoursStr,minuteStr,secondsStr].filter(@(v) v != null))
-  return time < 0 ? "".concat("-",res) : res
+  return time < 0 ? $"-{res}" : $"{res}"
 }
 
 local function roundTime(time){
@@ -103,35 +103,32 @@ local function secondsToTimeFormatString(time) {
   return "".join(res)
 }
 
-local export = {
-  millisecondsToSeconds = millisecondsToSeconds
-  secondsToMilliseconds = secondsToMilliseconds
-  millisecondsToSecondsInt = millisecondsToSecondsInt
-  secondsToMinutes = secondsToMinutes
-  minutesToSeconds = minutesToSeconds
-  secondsToHours = secondsToHours
-  hoursToSeconds = hoursToSeconds
-  daysToSeconds = daysToSeconds
+return {
+  millisecondsToSeconds
+  secondsToMilliseconds
+  millisecondsToSecondsInt
+  secondsToMinutes
+  minutesToSeconds
+  secondsToHours
+  hoursToSeconds
+  daysToSeconds
 
-  secondsToTimeFormatString = secondsToTimeFormatString
-  secondsToTimeSimpleString = secondsToTimeSimpleString
-  secondsToTime = secondsToTime
-  roundTime = roundTime
-  getSecondsFromTemplate = getSecondsFromTemplate
+  secondsToTimeFormatString
+  secondsToTimeSimpleString
+  secondsToTime
+  roundTime
+  getSecondsFromTemplate
 
-  TIME_SECOND_IN_MSEC = TIME_SECOND_IN_MSEC
-  TIME_SECOND_IN_MSEC_F = TIME_SECOND_IN_MSEC_F
-  TIME_MINUTE_IN_SECONDS = TIME_MINUTE_IN_SECONDS
-  TIME_MINUTE_IN_SECONDS_F = TIME_MINUTE_IN_SECONDS_F
-  TIME_HOUR_IN_SECONDS = TIME_HOUR_IN_SECONDS
-  TIME_HOUR_IN_SECONDS_F = TIME_HOUR_IN_SECONDS_F
-  TIME_DAY_IN_HOURS = TIME_DAY_IN_HOURS
-  TIME_DAY_IN_SECONDS = TIME_DAY_IN_SECONDS
-  TIME_DAY_IN_SECONDS_F = TIME_DAY_IN_SECONDS_F
-  TIME_WEEK_IN_SECONDS = TIME_WEEK_IN_SECONDS
-  TIME_WEEK_IN_SECONDS_F = TIME_WEEK_IN_SECONDS_F
-  DAYS_TO_YEAR_1970 = DAYS_TO_YEAR_1970
+  TIME_SECOND_IN_MSEC
+  TIME_SECOND_IN_MSEC_F
+  TIME_MINUTE_IN_SECONDS
+  TIME_MINUTE_IN_SECONDS_F
+  TIME_HOUR_IN_SECONDS
+  TIME_HOUR_IN_SECONDS_F
+  TIME_DAY_IN_HOURS
+  TIME_DAY_IN_SECONDS
+  TIME_DAY_IN_SECONDS_F
+  TIME_WEEK_IN_SECONDS
+  TIME_WEEK_IN_SECONDS_F
+  DAYS_TO_YEAR_1970
 }
-
-
-return export

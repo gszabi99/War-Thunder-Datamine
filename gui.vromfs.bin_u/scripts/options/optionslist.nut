@@ -4,6 +4,7 @@ local contentPreset = require("scripts/customization/contentPreset.nut")
 local soundDevice = ::require_native("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 //
 
@@ -18,7 +19,7 @@ local getSystemOptions = @() {
 
 local getMainOptions = function()
 {
-  local hasTripleColorSmokeFeature = ::has_feature("AerobaticTricolorSmoke")
+  local isTripleColorSmokeVisible = isTripleColorSmokeAvailable()
   local isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
     (::current_campaign_mission == "tutorial01")
   local curUnit = ::get_player_cur_unit()
@@ -68,9 +69,9 @@ local getMainOptions = function()
       [::USEROPT_FLARES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
-      [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner", hasTripleColorSmokeFeature],
-      [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner", hasTripleColorSmokeFeature],
-      [::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner", hasTripleColorSmokeFeature],
+      [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner", isTripleColorSmokeVisible],
+      [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner", isTripleColorSmokeVisible],
+      [::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner", isTripleColorSmokeVisible],
       [::USEROPT_SHOW_PILOT, "spinner"],
       [::USEROPT_AUTOPILOT_ON_BOMBVIEW, "spinner"],
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
@@ -85,6 +86,7 @@ local getMainOptions = function()
       [::USEROPT_CROSSHAIR_DEFLECTION, "spinner"],
       [::USEROPT_AIR_DAMAGE_DISPLAY, "spinner", ! ::is_in_flight()],
       [::USEROPT_GUNNER_FPS_CAMERA, "spinner"],
+      [::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN, "spinner"],
 
       ["options/header/helicopter"],
       [::USEROPT_HUE_HELICOPTER_HUD, "spinner"],

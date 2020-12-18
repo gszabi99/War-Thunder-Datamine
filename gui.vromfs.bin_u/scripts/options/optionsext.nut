@@ -16,6 +16,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { reloadDargUiScript } = require("reactiveGuiCommand")
 local {bombNbr} = require("scripts/unit/unitStatus.nut")
 local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+local { checkUnitSpeechLangPackWatch } = require("scripts/options/optionsManager.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 //
 
@@ -738,7 +739,16 @@ local isWaitMeasureEvent = false
         descr.items.append("#options/aerobaticsSmokeTriple");
         descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1);
       }
-      else if (localSmokeType > ::MAX_AEROBATICS_SMOKE_INDEX * 2)
+      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1))
+        localSmokeType = 1;
+
+      local unlockId = "aerobatics_smoke_winter" // temp hardcode for winter smoke, will be read from the config when the code for this is ready
+      if (::g_unlocks.getUnlockById(unlockId) && ::is_unlocked(-1, unlockId))
+      {
+        descr.items.append("#options/aerobaticsSmokeWinter");
+        descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2);
+      }
+      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2))
         localSmokeType = 1;
 
       descr.value = find_in_array(descr.values, localSmokeType);
@@ -2045,6 +2055,13 @@ local isWaitMeasureEvent = false
       descr.controlType = optionControlType.CHECKBOX
       descr.controlName <- "switchbox"
       descr.value = ::get_option_use_rectangular_radar_indicator()
+      break
+
+    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
+      descr.id = "activate_airborne_weapon_selection_on_spawn"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_gui_option(optionId)
       break
 
     case ::USEROPT_USE_RADAR_HUD_IN_COCKPIT:
@@ -3995,7 +4012,7 @@ local isWaitMeasureEvent = false
     case ::USEROPT_SPEECH_TYPE:
       local curOption = ::get_option(::USEROPT_SPEECH_TYPE)
       ::set_option_speech_country_type(descr.values[value])
-      ::g_options.needCheckUnitSpeechLangPack = curOption.value != value && value == SPEECH_COUNTRY_UNIT_VALUE
+      checkUnitSpeechLangPackWatch(curOption.value != value && value == SPEECH_COUNTRY_UNIT_VALUE)
       break
     case ::USEROPT_GUN_TARGET_DISTANCE:
       ::set_option_gun_target_dist(descr.values[value])
@@ -4448,6 +4465,9 @@ local isWaitMeasureEvent = false
       break;
     case ::USEROPT_DEFAULT_AI_TARGET_TYPE:
       ::set_option_default_ai_target_type(value)
+      break;
+    case ::USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN:
+      ::set_gui_option(optionId, value)
       break;
     case ::USEROPT_SHOW_INDICATORS_TYPE:
       local val = ::get_option_indicators_mode() & ~(::HUD_INDICATORS_SELECT|::HUD_INDICATORS_CENTER|::HUD_INDICATORS_ALL);

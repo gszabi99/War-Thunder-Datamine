@@ -87,31 +87,16 @@
     "explosionFx": "ship_explosion"
   },
   {
-    "smokeScreenActivateTime": 10.0
-  },
-  {
-    "smokeScreenTime": 30.0
-  },
-  {
-    "smokeScreenRad": 50.0
-  },
-  {
-    "smokeScreenFx": "smoke_screen_effect"
-  },
-  {
-    "smokeScreenOffset": [-46.0,2.0,0.0]
-  },
-  {
     "rearmSmokeTimeOnField": 180.0
   },
   {
     "canReloadNonGuns": true
   },
   {
-    "depthTraceWarningDepth": 7.0
+    "depthTraceWarningDepth": 14.0
   },
   {
-    "depthTraceCriticalDepth": 5.3
+    "depthTraceCriticalDepth": 11.0
   },
   {
     "haveAnchor": true
@@ -244,6 +229,12 @@
         "replace_tex": {
           "from": "airplane_usa_curtiss_sc_seahawk_c*",
           "to": "airplane_usa_curtiss_sc_seahawk_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "airplane_uk_vought_os2u_kingfisher_usa_c*",
+          "to": "airplane_uk_vought_os2u_kingfisher_usa_c_tomoe*"
         }
       }
     ]
@@ -422,79 +413,6 @@
       },
       {
         "suffix": "3"
-      },
-      {
-        "deadHeadAttitudeMin": -55.0
-      },
-      {
-        "deadHeadAttitudeMax": -40.0
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [0.5,-0.5,0.3]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [-0.5,-0.5,0.3]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [-0.2,1.0,-1.0]
-        }
-      },
-      {
-        "ikNode": {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [-0.6,1.0,-1.0]
-        }
-      }
-    ]
-  },
-  {
-    "ikGunner": [
-      {
-        "model": "japan_sailor_char"
-      },
-      {
-        "maxHeadHorAngle": 60.0
-      },
-      {
-        "maxHeadDownAngle": 60.0
-      },
-      {
-        "maxHeadUpAngle": 10.0
-      },
-      {
-        "headNode": "Bip01 Head"
-      },
-      {
-        "pelvisNode": "Bip01 Pelvis"
-      },
-      {
-        "pelvisTargetNode": "Bip01 Pelvis_"
-      },
-      {
-        "crouchDelta": [0.0,0.0,0.0]
-      },
-      {
-        "suffix": "4"
       },
       {
         "deadHeadAttitudeMin": -55.0
@@ -1859,7 +1777,6 @@
       "Bip01 Pelvis_1": "japan_sailor_standing",
       "Bip01 Pelvis_2": "japan_sailor_standing",
       "Bip01 Pelvis_3": "japan_officer_standing",
-      "Bip01 Pelvis_4": "japan_sailor_standing",
       "Bip01 Pelvis_5": "japan_sailor_standing",
       "Bip01 Pelvis_6": "japan_sailor_standing",
       "Bip01 Pelvis_7": "japan_sailor_sit",
@@ -1959,6 +1876,7 @@
   {
     "DamageParts": {
       "formatVersion": 2,
+      "createSecondaryShatters": false,
       "compartments": {
         "fireParamsPreset": "ship_compartment_cruiser",
         "stopChanceOnDeadPart": 1.0,
@@ -2058,7 +1976,7 @@
           "hp": 5574.0
         },
         "superstructure_dm": {
-          "hp": 5150.0
+          "hp": 5180.0
         }
       },
       "hull_construction": {
@@ -2181,7 +2099,7 @@
         "stopChanceOnDeadPart": 0.25,
         "fireProtectionHp": 30.0,
         "variableThickness": true,
-        "kineticProtectionEquivalent": 27.3,
+        "kineticProtectionEquivalentPerMeter": 27.3,
         "coal_bunker_01_dm": {
           "hp": 15000.0
         },
@@ -2451,11 +2369,10 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 28.2,
         "stopChanceOnDeadPart": 0.0,
-        "explosionArmorQuality": 8.6,
+        "explosionArmorQuality": 9.2,
         "explosionDamageMult": 2.0,
         "fireDamageMult": 0.001,
-        "hidableInViewer": true,
-        "createSecondaryShatters": true
+        "hidableInViewer": true
       },
       "turrets_main_caliber": {
         "fireParamsPreset": "ship_turrets",
@@ -2747,7 +2664,6 @@
       "ammo_first_stage": {
         "armorClass": "ship_structural_steel",
         "fireParamsPreset": "ship_ammo_fire",
-        "createSecondaryShatters": false,
         "oneSided": true,
         "armorThickness": 25.4,
         "fireProtectionHp": 10.0
@@ -4133,7 +4049,7 @@
           "bullets": 80,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4141,42 +4057,25 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
-          "turret": [
-            {
-              "head": "main_caliber_turret_01"
-            },
-            {
-              "gun": "main_caliber_gun_01"
-            },
-            {
-              "barrel": "gun_barrel_03"
-            },
-            {
-              "gunnerDm": "main_caliber_turret_01_dm"
-            },
-            {
-              "linkedAnimPart": {
-                "horNode": "ex_decor_01",
-                "horLimits": [-135.0,135.0],
-                "horOriginLimits": [-135.0,135.0]
-              }
-            },
-            {
-              "linkedAnimPart": {
-                "horNode": "ex_decor_04",
-                "horLimits": [-135.0,135.0],
-                "horOriginLimits": [-135.0,135.0]
-              }
+          "turret": {
+            "head": "main_caliber_turret_01",
+            "gun": "main_caliber_gun_01",
+            "barrel": "gun_barrel_03",
+            "gunnerDm": "main_caliber_turret_01_dm",
+            "linkedAnimPart": {
+              "horNode": "ex_decor_04",
+              "horLimits": [-135.0,135.0],
+              "horOriginLimits": [-135.0,135.0]
             }
-          ],
+          },
           "limits": {
             "yaw": [-135.0,135.0],
             "pitch": [-5.0,25.0]
@@ -4225,7 +4124,7 @@
           "bullets": 80,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4233,13 +4132,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "main_caliber_turret_01",
@@ -4300,7 +4199,7 @@
           "bullets": 80,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4308,13 +4207,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "main_caliber_turret_02",
@@ -4375,7 +4274,7 @@
           "bullets": 80,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4383,13 +4282,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "main_caliber_turret_02",
@@ -4451,7 +4350,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4459,13 +4358,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_01",
@@ -4523,7 +4422,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4531,13 +4430,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_02",
@@ -4595,7 +4494,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4603,13 +4502,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_03",
@@ -4663,7 +4562,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4671,13 +4570,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_04",
@@ -4730,7 +4629,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4738,13 +4637,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_05",
@@ -4797,7 +4696,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4805,13 +4704,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_06",
@@ -4864,7 +4763,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4872,13 +4771,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_07",
@@ -4931,7 +4830,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -4939,13 +4838,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_08",
@@ -4998,7 +4897,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5006,13 +4905,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_09",
@@ -5060,7 +4959,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5068,13 +4967,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_10",
@@ -5123,7 +5022,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5131,13 +5030,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_11",
@@ -5199,7 +5098,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5207,13 +5106,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_12",
@@ -5275,7 +5174,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5283,13 +5182,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_13",
@@ -5351,7 +5250,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5359,13 +5258,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_14",
@@ -5426,7 +5325,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5434,13 +5333,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_15",
@@ -5488,7 +5387,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5496,13 +5395,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_16",
@@ -5551,7 +5450,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5559,13 +5458,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_17",
@@ -5619,7 +5518,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5627,13 +5526,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_18",
@@ -5686,7 +5585,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5694,13 +5593,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_19",
@@ -5753,7 +5652,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5761,13 +5660,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_20",
@@ -5820,7 +5719,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5828,13 +5727,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_21",
@@ -5887,7 +5786,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5895,13 +5794,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_22",
@@ -5955,7 +5854,7 @@
           "bullets": 150,
           "useGunnerTargetingQuality": false,
           "fireConeAngle": 1.0,
-          "allowableDelta": 2.0,
+          "allowableDelta": 1.0,
           "ChainfireTime": 60.0,
           "DelayAfterShoot": 0.0,
           "aimMinDist": 20.0,
@@ -5963,13 +5862,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.0,
           "accuracyAir": 0.0,
-          "accuracyGnd": 0.5,
-          "errMeasureVel": 0.0,
+          "accuracyGnd": 0.75,
+          "errMeasureVel": 10.0,
           "errTargettingOn100kmph": 0.0,
-          "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
-          "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errMeasureVelFast": 10.0,
+          "errMeasureVelFwdShift": 0.5,
+          "errMeasureVelDir": 1.5,
+          "errTargetting": 5.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "auxiliary_caliber_turret_23",
@@ -6063,7 +5962,7 @@
             "fireConeAngle": 1.0
           },
           {
-            "allowableDelta": 2.0
+            "allowableDelta": 1.0
           },
           {
             "ChainfireTime": 60.0
@@ -6087,25 +5986,25 @@
             "accuracyAir": 0.0
           },
           {
-            "accuracyGnd": 0.5
+            "accuracyGnd": 0.75
           },
           {
-            "errMeasureVel": 0.0
+            "errMeasureVel": 10.0
           },
           {
             "errTargettingOn100kmph": 0.0
           },
           {
-            "errMeasureVelFast": 100.0
+            "errMeasureVelFast": 10.0
           },
           {
-            "errMeasureVelFwdShift": 1.0
+            "errMeasureVelFwdShift": 0.5
           },
           {
-            "errMeasureVelDir": 3.0
+            "errMeasureVelDir": 1.5
           },
           {
-            "errTargetting": 1.0
+            "errTargetting": 5.0
           },
           {
             "errExplTime": 0.0
@@ -6182,13 +6081,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.55,
           "accuracyAir": 1.0,
-          "accuracyGnd": 0.5,
+          "accuracyGnd": 0.8,
           "errMeasureVel": 0.0,
           "errTargettingOn100kmph": 0.0,
           "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelFwdShift": 0.5,
           "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "aa_turret_01",
@@ -6250,13 +6149,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.55,
           "accuracyAir": 1.0,
-          "accuracyGnd": 0.5,
+          "accuracyGnd": 0.8,
           "errMeasureVel": 0.0,
           "errTargettingOn100kmph": 0.0,
           "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelFwdShift": 0.5,
           "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "aa_turret_02",
@@ -6317,13 +6216,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.55,
           "accuracyAir": 1.0,
-          "accuracyGnd": 0.5,
+          "accuracyGnd": 0.8,
           "errMeasureVel": 0.0,
           "errTargettingOn100kmph": 0.0,
           "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelFwdShift": 0.5,
           "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "aa_turret_03",
@@ -6385,13 +6284,13 @@
           "randomAngle": 0.0,
           "accuracyBotMultAir": 0.55,
           "accuracyAir": 1.0,
-          "accuracyGnd": 0.5,
+          "accuracyGnd": 0.8,
           "errMeasureVel": 0.0,
           "errTargettingOn100kmph": 0.0,
           "errMeasureVelFast": 100.0,
-          "errMeasureVelFwdShift": 1.0,
+          "errMeasureVelFwdShift": 0.5,
           "errMeasureVelDir": 3.0,
-          "errTargetting": 1.0,
+          "errTargetting": 3.0,
           "errExplTime": 0.0,
           "turret": {
             "head": "aa_turret_04",

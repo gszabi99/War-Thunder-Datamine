@@ -1,4 +1,8 @@
 local extContactsService = require("scripts/contacts/externalContactsService.nut")
+local { isMultiplayerPrivilegeAvailable,
+        checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+
+local ignoreSystemInvite = persist("ignoreSystemInvite", @() ::Watched(false))
 
 ::g_xbox_squad_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["lastReceivedUsersCache", "isSquadStatusCheckedOnce",
@@ -17,10 +21,21 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
 
   notFoundIds = []
 
-  function updateSquadList(xboxIdsList = [])
+  function updateSquadList(xboxIdsList = [], isScriptCall = false)
   {
     if (!::is_platform_xbox)
       return
+
+    if (!isMultiplayerPrivilegeAvailable()) {
+      ignoreSystemInvite(true) //It is called after update
+      invalidateCache()
+
+      //updateSquadList was called from script,
+      //so no need to wait xbox_on_invite_accepted call
+      if (isScriptCall)
+        checkAndDisplayInviteRestiction()
+      return
+    }
 
     if (!::isInMenu() || !::g_login.isLoggedIn())
     {
@@ -32,8 +47,8 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
 
     if (!xboxIdsList || !xboxIdsList.len()) //C++ code return empty array when leader is in battle or offline
     {
-      ::dagor.debug("XBOX SQUAD MANAGER: show popup in updateSquadList")
-      ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
+      ::dagor.debug($"XBOX SQUAD MANAGER: show popup in updateSquadList, needCheckSquadInvites {needCheckSquadInvites}")
+      invalidateCache()
       return
     }
 
@@ -45,8 +60,10 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
         ::dagor.debug("XBOX SQUAD MANAGER: player is not a leader. Requested to check invites on squad update.")
         checkSquadInvites(currentUsersListCache)
       }
-      else
+      else {
         ::dagor.debug("XBOX SQUAD MANAGER: player is not a leader. Don't proceed invites.")
+        invalidateCache()
+      }
       return
     }
 
@@ -98,12 +115,12 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
     if (suspendedData)
     {
       isSquadStatusCheckedOnce = true
-      updateSquadList(suspendedData)
+      updateSquadList(suspendedData, true)
     }
 
     if (xboxIsGameStartedByInvite && !suspendedData && !isSquadStatusCheckedOnce && !::g_squad_manager.isInSquad())
     {
-      ::dagor.debug("XBOX SQUAD MANAGER: show popup in checkAfterFlight")
+      ::dagor.debug($"XBOX SQUAD MANAGER: show popup in checkAfterFlight, needCheckSquadInvites {needCheckSquadInvites}")
       ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
     }
 
@@ -284,6 +301,10 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
     if (::g_squad_manager.isInSquad())
       return
 
+    invalidateCache()
+  }
+
+  function invalidateCache() {
     lastReceivedUsersCache.clear()
     currentUsersListCache.clear()
     isSquadStatusCheckedOnce = false
@@ -292,8 +313,26 @@ local extContactsService = require("scripts/contacts/externalContactsService.nut
     needCheckSquadInvitesOnContactsUpdate = false
   }
 
+  function checkAndDisplayInviteRestiction() {
+    if (!ignoreSystemInvite.value)
+      return false
+
+    ::dagor.debug($"XBOX SQUAD MANAGER: show invite warning restriction, {isMultiplayerPrivilegeAvailable()}")
+    ignoreSystemInvite(false)
+
+    if (checkAndShowMultiplayerPrivilegeWarning())
+      ::g_popups.add(::loc("squad/name"), ::loc("squad/wait_until_battle_end"))
+
+    return true
+  }
+
   function onEventXboxInviteAccepted(p)
   {
+    ::dagor.debug("XBOX SQUAD MANAGER: onEventXboxInviteAccepted")
+
+    if (checkAndDisplayInviteRestiction())
+      return
+
     needCheckSquadInvites = true
     if (::is_in_flight())
     {

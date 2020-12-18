@@ -458,7 +458,7 @@
           "requiredKillsToGain": 3
         },
         {
-          "requiredKillsToGainEx": 20
+          "requiredKillsToGainEx": 15
         },
         {
           "instantWinOnShellExplosionEx": true
@@ -3686,6 +3686,14 @@
     "selfSteeringWheelSideFrictionMult": 2.0,
     "treeImpulseTreshold": 80000.0,
     "explosionImpulseVel": 15.0,
+    "contactImpulseSpeedTreshold": 3.0,
+    "collisionImpulseSpeedToDamage": 75.0,
+    "frictionImpulseSpeedToDamage": 15.0,
+    "propellerImpulseMultiplierToDamage": 3.0,
+    "contactDamageThreshold": 5.0,
+    "contactDamageSphereRadius": 0.5,
+    "automaticBackwardGroundSteering": false,
+    "automaticBackwardRollProtection": false,
     "engineDegradationSpeed1": 0.0005,
     "engineDegradationSpeed2": 0.0035,
     "engineDegradationSpeed3": 0.025,
@@ -3711,7 +3719,7 @@
     "damagedSurfaceCxMultSquareRatioMin": 0.3,
     "damagedSurfaceCxMultSquareRatioMax": 0.5,
     "damagedSurfaceCxMultMax": 2.3,
-    "propellerScreenEffectMultiRayCast": false,
+    "propellerScreenEffectMultiRayCast": true,
     "distToSurfaceTimeConst": 0.2,
     "mainRotorLowSpeedAlarmPercent": 0.9,
     "vortexRingAlarmPercent": 0.7,
@@ -4799,6 +4807,127 @@
     },
     {
       "allowNode": "ex_armor_body_r_11_dm"
+    },
+    {
+      "ships": [
+        {
+          "allowNode": "compartment_01_dm"
+        },
+        {
+          "allowNode": "compartment_02_dm"
+        },
+        {
+          "allowNode": "compartment_03_dm"
+        },
+        {
+          "allowNode": "compartment_04_dm"
+        },
+        {
+          "allowNode": "compartment_05_dm"
+        },
+        {
+          "allowNode": "compartment_06_dm"
+        },
+        {
+          "allowNode": "compartment_07_dm"
+        },
+        {
+          "allowNode": "compartment_08_dm"
+        },
+        {
+          "allowNode": "compartment_09_dm"
+        },
+        {
+          "allowNode": "compartment_10_dm"
+        },
+        {
+          "allowNode": "compartment_11_dm"
+        },
+        {
+          "allowNode": "bulkhead_01_dm"
+        },
+        {
+          "allowNode": "bulkhead_02_dm"
+        },
+        {
+          "allowNode": "bulkhead_03_dm"
+        },
+        {
+          "allowNode": "bulkhead_04_dm"
+        },
+        {
+          "allowNode": "bulkhead_05_dm"
+        },
+        {
+          "allowNode": "bulkhead_06_dm"
+        },
+        {
+          "allowNode": "bulkhead_07_dm"
+        },
+        {
+          "allowNode": "bulkhead_08_dm"
+        },
+        {
+          "allowNode": "bulkhead_09_dm"
+        },
+        {
+          "allowNode": "bulkhead_10_dm"
+        },
+        {
+          "allowNode": "bulkhead_11_dm"
+        },
+        {
+          "allowNode": "bulkhead_12_dm"
+        },
+        {
+          "allowNode": "bulkhead_13_dm"
+        },
+        {
+          "allowNode": "bulkhead_14_dm"
+        },
+        {
+          "allowNode": "bulkhead_15_dm"
+        },
+        {
+          "allowNode": "bulkhead_16_dm"
+        },
+        {
+          "allowNode": "bulkhead_17_dm"
+        },
+        {
+          "allowNode": "bulkhead_18_dm"
+        },
+        {
+          "allowNode": "bulkhead_19_dm"
+        },
+        {
+          "allowNode": "bulkhead_20_dm"
+        },
+        {
+          "allowNode": "cover_01_dm"
+        },
+        {
+          "allowNode": "cover_02_dm"
+        },
+        {
+          "allowNode": "cover_03_dm"
+        },
+        {
+          "allowNode": "cover_04_dm"
+        },
+        {
+          "allowNode": "cover_05_dm"
+        },
+        {
+          "allowNode": "cover_06_dm"
+        },
+        {
+          "allowNode": "cover_07_dm"
+        },
+        {
+          "allowNode": "cover_08_dm"
+        }
+      ]
     }
   ],
   "torpedoCourseCorrection": {

@@ -1123,8 +1123,14 @@
       },
       "tracks": {
         "animationMultiplier": 0.72,
-        "height": 0.045,
-        "width": 0.65
+        "height": 0.07,
+        "width": 0.65,
+        "tracksTensionK": [4.0,10.0,3.0],
+        "trackMesh": "ussr_t_10_phys_track_line",
+        "trackLen": 0.16,
+        "trackCount": 88,
+        "trackFadeTime": 1.1,
+        "trackMaxHeight": 1.12
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -1178,7 +1184,7 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.14,-0.14,0.12],
-        "defaultGearRadius": 0.25,
+        "defaultGearRadius": 0.26,
         "frontBackGearRadius": 0.27,
         "topGearRadius": 0.15,
         "defaultDampeningForce": [200000.0,200000.0],
@@ -1710,7 +1716,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2925,6 +2931,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -2933,7 +2940,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -2945,8 +2971,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }

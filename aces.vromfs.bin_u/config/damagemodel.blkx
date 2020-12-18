@@ -56,6 +56,30 @@
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
   "fireDamageType": "fire",
+  "missionActionUnitDamageType": "generic",
+  "missionActionDestroyAreaDamageType": "generic",
+  "consoleKillUnitDamageType": "generic",
+  "propellerOverspeedCrashDamageType": "generic",
+  "barrageBalloonCollisionDamageType": "generic",
+  "delayDamageType": "generic",
+  "groundModelFallDamageType": "generic",
+  "shipDestructionDamageType": "generic",
+  "gunBarrelRuptureDamageType": "generic",
+  "debugHitDamageType": "generic",
+  "fireExplosionDamageType": "fireExplosion",
+  "mergeDamageTypeWithSplashForEffectsWithoutThis": "shatter",
+  "shipCrewDrownDamageType": "drowning",
+  "tankCrewDrownDamageType": "drowning",
+  "tankEngineDrownDamageType": "drowning",
+  "groundModelCollisionDamageTypeId": "collision",
+  "groundModelCrashDamageTypeId": "collision",
+  "airplaneCollisionDamageTypeId": "collision",
+  "airplaneCrashDamageTypeId": "collision",
+  "barrageBalloonBurnDamageTypeId": "fire",
+  "airplaneFuelBurnDamageTypeId": "fire",
+  "airplaneEngineBurnDamageTypeId": "fire",
+  "metapartFireDamageType": "fire",
+  "defaultFirePresetDamageType": "fire",
   "useBlkPreprocessor": true,
   "stopChanceOnDeadPart": 1.0,
   "explodeRestrainArmorPower": 0.33,
@@ -91,6 +115,7 @@
   "aircraftToGroundCollisionDamageType": "collision",
   "aircraftToAircraftCollisionDamageType": "collision",
   "enableWheelBreakage": true,
+  "dependentDamagePartsAutoLinkage": false,
   "weaponReloadWhileRepairBreachesMult": 0.25,
   "weaponReloadWhileUnwateringMult": 0.25,
   "weaponReloadWhileRepairMult": 0.25,
@@ -1394,6 +1419,26 @@
       }
     }
   },
+  "damageTypesProps": {
+    "collision": {
+      "disableEffects": true,
+      "disableCut": true
+    },
+    "drowning": {
+      "disableEffects": true
+    },
+    "fire": {
+      "commonAirplaneFire": true,
+      "commonGroundModelFire": true,
+      "disableEffective": true,
+      "disableMissionStatistics": true,
+      "allowFireProtection": true,
+      "disableSpawnShotMarkers": true,
+      "disableCriticalIndicator": true,
+      "disableDamageInfo": true,
+      "ignoreForDeadPart": true
+    }
+  },
   "explosiveTypeToShattersParamsForAmmoStowage": {
     "ships_tanks_ammo": {
       "explosiveMassToRadius": {
@@ -1817,6 +1862,7 @@
     "cn_bt_5": 125,
     "cn_cm11": 164,
     "cn_cm_25": 125,
+    "cn_gmc_cckw_353_m45_quad": 125,
     "cn_is_2_1943": 125,
     "cn_is_2_1943_no402": 125,
     "cn_is_2_1944": 164,
@@ -1866,6 +1912,7 @@
     "cn_ztz_96": 125,
     "cn_ztz_96a": 125,
     "cn_ztz_96a_race": 125,
+    "cn_ztz_99": 125,
     "fr_amc_34": 125,
     "fr_amc_35": 125,
     "fr_amd_35": 125,
@@ -1920,6 +1967,7 @@
     "fr_m4a3e2_sherman_jumbo": 140,
     "fr_m4a4_cn_75_50": 140,
     "fr_m4a4_sherman": 140,
+    "fr_panhard_ebr_1954": 125,
     "fr_pzkpfw_V_panther_dauphine": 140,
     "fr_renault_d2": 140,
     "fr_renault_r39": 125,
@@ -1988,6 +2036,7 @@
     "germ_pzkpfw_III_ausf_F": 140,
     "germ_pzkpfw_III_ausf_J": 140,
     "germ_pzkpfw_III_ausf_J_L42": 140,
+    "germ_pzkpfw_III_ausf_J_td": 140,
     "germ_pzkpfw_III_ausf_L": 140,
     "germ_pzkpfw_III_ausf_M": 140,
     "germ_pzkpfw_III_ausf_N": 140,
@@ -2029,6 +2078,7 @@
     "germ_sdkfz_234_3": 125,
     "germ_sdkfz_234_4": 125,
     "germ_sdkfz_251_10": 125,
+    "germ_sdkfz_251_21": 125,
     "germ_sdkfz_6_2_flak36": 125,
     "germ_sdkfz_9_flak37": 125,
     "germ_stug_III_ausf_A": 140,
@@ -2038,6 +2088,7 @@
     "germ_sturmpanzer_II": 150,
     "germ_sturmpanzer_IV_brummbar": 150,
     "germ_t_34_747": 140,
+    "germ_th_800_bismark": 125,
     "germ_thyssen_henschel_tam": 140,
     "germ_thyssen_henschel_tam_2c": 140,
     "germ_vsw_flak_41": 140,
@@ -2108,6 +2159,7 @@
     "jp_pzkpfw_VI_ausf_e_tiger": 164,
     "jp_st_a1": 140,
     "jp_st_a2": 140,
+    "jp_st_a3": 140,
     "jp_st_b1": 140,
     "jp_type_16": 125,
     "jp_type_1_chi_he": 140,
@@ -2149,6 +2201,7 @@
     "jp_type_97_kai": 125,
     "jp_type_98_ke_ni": 125,
     "jp_type_98_ta_se": 125,
+    "sw_asrad_r": 125,
     "sw_cv_90105_tml": 125,
     "sw_cv_90120": 125,
     "sw_ikv_103": 125,
@@ -2219,6 +2272,7 @@
     "uk_a_34_comet_iron_duke": 140,
     "uk_a_43_black_prince": 125,
     "uk_ac4_thunderbolt": 140,
+    "uk_adats_m113a3": 125,
     "uk_armored_car_aec_mk_2": 125,
     "uk_armored_car_mk_2_aa": 125,
     "uk_centurion_action_x": 140,
@@ -2300,7 +2354,7 @@
     "us_m1a1_abrams_yt_cup_2019": 125,
     "us_m1a2_abrams": 125,
     "us_m22_locust": 125,
-    "us_m22_locust_race": 124,
+    "us_m22_locust_race": 125,
     "us_m247": 140,
     "us_m24_chaffee": 125,
     "us_m24_chaffee_tl": 125,
@@ -2511,10 +2565,12 @@
     "ussr_zsu_23_4": 125,
     "ussr_zsu_29k": 125,
     "ussr_zsu_37": 125,
+    "ussr_zsu_37_2": 125,
     "ussr_zsu_57_2": 125,
     "ussr_zut_37": 125,
     "germ_artilleriefahrprahm_typ_d1": 28,
     "germ_artilleriefahrprahm_typ_d3": 28,
+    "germ_battlecruiser_von_der_tann": 200,
     "germ_battleship_helgoland": 225,
     "germ_battleship_westfalen": 200,
     "germ_cruiser_admiral_graf_spee": 140,
@@ -2564,6 +2620,7 @@
     "it_cruiser_montecuccoli": 140,
     "it_cruiser_trento": 140,
     "it_cruiser_zara_class": 140,
+    "it_cruiser_zara_class_pola": 140,
     "it_destroyer_aquilone": 100,
     "it_destroyer_comandanti_medaglie_doro": 81,
     "it_destroyer_dardo": 100,
@@ -2587,6 +2644,7 @@
     "jp_abtei_pr1": 42,
     "jp_abtei_pr4": 42,
     "jp_armoredcruiser_ikoma": 200,
+    "jp_battleship_hyuga": 280,
     "jp_battleship_settsu": 279,
     "jp_cruiser_agano": 140,
     "jp_cruiser_furutaka": 140,
@@ -2614,6 +2672,7 @@
     "jp_escort_ikazuchi_class": 80,
     "jp_karotei_type2": 35,
     "jp_karotei_type4": 35,
+    "jp_kusen_tei_13_1942": 35,
     "jp_kusen_tei_13_1944": 35,
     "jp_no1_ch2": 40,
     "jp_no4_ch8": 35,
@@ -2628,6 +2687,7 @@
     "jp_type_t1_1941": 35,
     "uk_70ft_mgb": 35,
     "uk_71ft_mgb": 35,
+    "uk_battlecruiser_invincible": 280,
     "uk_battleship_colossus": 280,
     "uk_battleship_dreadnought": 280,
     "uk_brave_borderer": 35,
@@ -2642,9 +2702,10 @@
     "uk_cruiser_london": 136,
     "uk_cruiser_southampton": 120,
     "uk_cruiser_tiger": 140,
-    "uk_cruiser_york": 135,
+    "uk_cruiser_york": 132,
     "uk_dark_class": 35,
     "uk_dark_class_mtb": 35,
+    "uk_dark_class_mtb_td": 35,
     "uk_destroyer_battle_2series": 93,
     "uk_destroyer_battle_tobruk": 93,
     "uk_destroyer_clemson_churchill": 80,
@@ -2678,6 +2739,7 @@
     "us_ashville_class": 47,
     "us_battleship_north_dakota": 217,
     "us_cruiser_atlanta_class_atlanta": 120,
+    "us_cruiser_baltimore_class": 140,
     "us_cruiser_brooklyn_class_brooklyn": 140,
     "us_cruiser_brooklyn_class_helena": 140,
     "us_cruiser_cleveland_class_cleveland": 140,
@@ -2756,6 +2818,7 @@
     "ussr_mpk_122a": 35,
     "ussr_mpk_122bis": 41,
     "ussr_mpk_163": 38,
+    "ussr_mpk_pr12412": 42,
     "ussr_od_200": 35,
     "ussr_pr_1204": 42,
     "ussr_pr_1204_late": 42,
@@ -2775,1662 +2838,2620 @@
     "ussr_tb_g5": 0,
     "ussr_ya_5m": 16
   },
-  "repairShips": {
-    "partRepairHp": 0.7,
-    "hpForRepair": 0.7,
-    "engine_01_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_02_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_03_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_04_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_05_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_06_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_07_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_08_dm": {
-      "speed": 9.5,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_01_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_02_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_03_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_04_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_05_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_06_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_07_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_08_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_09_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "funnel_10_dm": {
-      "speed": 14.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "steering_gear_01_dm": {
-      "speed": 17.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "steering_gear_02_dm": {
-      "speed": 17.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_room_01_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_room_02_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_room_03_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "engine_room_04_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "transmission_01_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "transmission_02_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "transmission_03_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "transmission_04_dm": {
-      "speed": 25.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "pump_01_dm": {
-      "speed": 12.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "pump_02_dm": {
-      "speed": 12.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "pump_03_dm": {
-      "speed": 12.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "pump_04_dm": {
-      "speed": 12.0,
-      "partRepairHp": 1.0,
-      "completely": true
-    },
-    "rudder_01_dm": {
-      "speed": 6.0,
-      "completely": true,
-      "modRequired": false
-    },
-    "rudder_02_dm": {
-      "speed": 6.0,
-      "completely": true,
-      "modRequired": false
-    },
-    "rudder_03_dm": {
-      "speed": 6.0,
-      "completely": true,
-      "modRequired": false
-    },
-    "rudder_04_dm": {
-      "speed": 6.0,
-      "completely": true,
-      "modRequired": false
-    },
-    "main_caliber_gun_01_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_02_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_03_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_04_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_05_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_06_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_07_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_08_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_09_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_10_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_11_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_12_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_13_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_14_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_15_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_16_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_17_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_18_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_19_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_gun_20_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_01_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_02_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_03_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_04_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_05_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_06_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_07_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_08_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_09_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_10_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_11_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_12_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_13_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_14_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_15_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_16_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_17_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_18_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_19_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "main_caliber_turret_20_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_01_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_02_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_03_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_04_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_05_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_06_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_07_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_08_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_09_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_10_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_11_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_12_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_13_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_14_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_15_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_16_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_17_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_18_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_19_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_gun_20_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_01_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_02_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_03_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_04_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_05_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_06_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_07_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_08_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_09_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_10_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_11_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_12_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_13_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_14_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_15_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_16_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_17_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_18_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_19_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_20_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_21_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_22_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_23_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_24_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_25_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_26_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_27_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_28_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_29_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "auxiliary_caliber_turret_30_dm": {
-      "speed": 7.0,
-      "completely": true
-    },
-    "aa_gun_01_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_02_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_03_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_04_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_05_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_06_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_07_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_08_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_09_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_10_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_11_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_12_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_13_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_14_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_15_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_16_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_17_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_18_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_19_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_20_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_21_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_22_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_23_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_24_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_25_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_26_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_27_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_28_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_29_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_30_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_31_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_32_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_33_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_34_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_35_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_36_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_37_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_38_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_39_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_gun_40_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_01_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_02_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_03_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_04_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_05_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_06_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_07_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_08_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_09_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_10_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_11_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_12_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_13_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_14_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_15_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_16_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_17_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_18_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_19_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_20_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_21_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_22_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_23_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_24_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_25_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_26_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_27_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_28_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_29_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_30_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_31_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_32_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_33_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_34_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_35_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_36_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_37_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_38_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_39_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "aa_turret_40_dm": {
-      "speed": 7.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "elevator_01_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_02_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_03_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_04_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_05_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_06_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_07_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_08_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_09_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_10_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_11_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_12_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_13_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_14_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_15_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "elevator_16_dm": {
-      "speed": 22.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.85
-    },
-    "torpedo_01_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
+  "repairShips": [
+    {
+      "partRepairHp": 0.7
+    },
+    {
       "hpForRepair": 0.7
     },
-    "torpedo_02_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_03_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_04_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_05_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_06_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_07_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_08_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_09_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_10_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_11_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_12_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_13_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_14_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_15_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_16_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_17_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_18_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_19_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_20_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_21_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_22_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_23_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_24_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_25_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_26_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_27_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_28_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_29_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "torpedo_30_dm": {
-      "speed": 9.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "gun_barrel_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_01_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_02_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_03_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_04_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_05_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_06_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_07_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_08_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "gun_barrel_09_dm": {
-      "speed": 3.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "modRequired": true
-    },
-    "tt_01_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_02_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_03_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_04_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_05_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_06_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_07_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_08_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_09_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_10_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_11_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_12_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_13_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_14_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_15_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_16_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_17_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_18_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_19_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "tt_20_dm": {
-      "speed": 8.0,
-      "completely": true,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7
-    },
-    "sonar_dm": {
-      "speed": 6.0,
-      "completely": true,
-      "modRequired": true
-    },
-    "radio_station_dm": {
-      "speed": 8.5,
-      "partRepairHp": 0.7,
-      "completely": true
-    },
-    "radio_station_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 0.7,
-      "completely": true
-    },
-    "radio_station_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 0.7,
-      "completely": true
-    },
-    "bridge_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "completely": true,
-      "modRequired": false
-    },
-    "ammunition_storage_aux_01_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_02_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_03_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_04_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_05_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_06_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_07_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_08_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_09_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_10_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_11_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_12_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_13_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_14_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_15_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_16_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_17_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_18_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_19_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "ammunition_storage_aux_20_dm": {
-      "speed": 50.0,
-      "completely": true
-    },
-    "antenna_target_location_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_location_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_location_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_location_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_location_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_mount_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_mount_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_mount_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_mount_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "antenna_target_tagging_mount_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_01_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_02_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_03_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_04_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "fire_director_05_dm": {
-      "speed": 8.5,
-      "partRepairHp": 1.0,
-      "hpForRepair": 0.7,
-      "completely": true
-    },
-    "depth_charge_mount_01_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "depth_charge_mount_02_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "depth_charge_mount_03_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "depth_charge_mount_04_dm": {
-      "speed": 5.0,
-      "completely": true
-    },
-    "depth_charge_mount_05_dm": {
-      "speed": 5.0,
-      "completely": true
+    {
+      "engine_01_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_02_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_03_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_04_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_05_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_06_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_07_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_08_dm": {
+        "speed": 9.5,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_01_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_02_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_03_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_04_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_05_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_06_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_07_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_08_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_09_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "funnel_10_dm": {
+        "speed": 14.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "steering_gear_01_dm": {
+        "speed": 17.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "steering_gear_02_dm": {
+        "speed": 17.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_room_01_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_room_02_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_room_03_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "engine_room_04_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "transmission_01_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "transmission_02_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "transmission_03_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "transmission_04_dm": {
+        "speed": 25.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "pump_01_dm": {
+        "speed": 12.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "pump_02_dm": {
+        "speed": 12.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "pump_03_dm": {
+        "speed": 12.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "pump_04_dm": {
+        "speed": 12.0,
+        "partRepairHp": 1.0,
+        "completely": true
+      }
+    },
+    {
+      "rudder_01_dm": {
+        "speed": 6.0,
+        "completely": true,
+        "modRequired": false
+      }
+    },
+    {
+      "rudder_02_dm": {
+        "speed": 6.0,
+        "completely": true,
+        "modRequired": false
+      }
+    },
+    {
+      "rudder_03_dm": {
+        "speed": 6.0,
+        "completely": true,
+        "modRequired": false
+      }
+    },
+    {
+      "rudder_04_dm": {
+        "speed": 6.0,
+        "completely": true,
+        "modRequired": false
+      }
+    },
+    {
+      "main_caliber_gun_01_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_02_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_03_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_04_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_05_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_06_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_07_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_08_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_09_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_10_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_11_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_12_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_13_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_14_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_15_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_16_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_17_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_18_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_19_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_gun_20_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_01_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_02_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_03_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_04_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_05_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_06_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_07_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_08_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_09_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_10_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_11_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_12_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_13_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_14_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_15_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_16_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_17_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_18_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_19_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "main_caliber_turret_20_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_01_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_02_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_03_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_04_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_05_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_06_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_07_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_08_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_09_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_10_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_11_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_12_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_13_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_14_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_15_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_16_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_17_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_18_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_19_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_20_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_11_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_12_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_13_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_14_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_15_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_16_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_17_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_18_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_19_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_gun_30_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_01_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_02_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_03_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_04_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_05_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_06_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_07_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_08_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_09_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_10_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_11_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_12_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_13_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_14_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_15_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_16_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_17_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_18_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_19_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_20_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_21_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_22_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_23_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_24_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_25_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_26_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_27_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_28_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_29_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "auxiliary_caliber_turret_30_dm": {
+        "speed": 7.0,
+        "completely": true
+      }
+    },
+    {
+      "aa_gun_01_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_02_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_03_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_04_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_05_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_06_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_07_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_08_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_09_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_10_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_11_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_12_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_13_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_14_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_15_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_16_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_17_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_18_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_19_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_20_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_21_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_22_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_23_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_24_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_25_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_26_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_27_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_28_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_29_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_30_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_31_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_32_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_33_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_34_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_35_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_36_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_37_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_38_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_39_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_gun_40_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_01_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_02_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_03_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_04_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_05_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_06_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_07_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_08_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_09_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_10_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_11_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_12_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_13_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_14_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_15_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_16_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_17_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_18_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_19_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_20_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_21_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_22_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_23_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_24_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_25_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_26_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_27_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_28_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_29_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_30_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_31_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_32_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_33_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_34_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_35_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_36_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_37_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_38_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_39_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "aa_turret_40_dm": {
+        "speed": 7.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "elevator_01_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_02_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_03_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_04_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_05_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_06_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_07_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_08_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_09_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_10_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_11_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_12_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_13_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_14_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_15_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_16_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_17_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_18_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_19_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_20_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_21_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_22_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_23_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_24_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_25_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_26_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_27_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_28_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_29_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "elevator_30_dm": {
+        "speed": 22.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.85
+      }
+    },
+    {
+      "torpedo_01_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_02_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_03_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_04_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_05_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_06_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_07_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_08_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_09_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_10_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_11_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_12_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_13_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_14_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_15_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_16_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_17_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_18_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_19_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_20_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_21_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_22_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_23_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_24_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_25_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_26_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_27_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_28_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_29_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "torpedo_30_dm": {
+        "speed": 9.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "gun_barrel_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_01_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_02_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_03_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_04_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_05_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_06_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_07_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_08_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "gun_barrel_09_dm": {
+        "speed": 3.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "modRequired": true
+      }
+    },
+    {
+      "tt_01_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_02_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_03_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_04_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_05_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_06_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_07_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_08_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_09_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_10_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_11_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_12_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_13_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_14_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_15_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_16_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_17_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_18_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_19_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "tt_20_dm": {
+        "speed": 8.0,
+        "completely": true,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7
+      }
+    },
+    {
+      "sonar_dm": {
+        "speed": 6.0,
+        "completely": true,
+        "modRequired": true
+      }
+    },
+    {
+      "radio_station_dm": {
+        "speed": 8.5,
+        "partRepairHp": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "radio_station_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "radio_station_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "bridge_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "completely": true,
+        "modRequired": false
+      }
+    },
+    {
+      "ammunition_storage_aux_01_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_02_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_03_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_04_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_05_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_06_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_07_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_08_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_09_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_10_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_11_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_12_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_13_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_14_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_15_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_16_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_17_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_18_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_19_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "ammunition_storage_aux_20_dm": {
+        "speed": 50.0,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_location_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_location_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_location_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_location_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_location_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_mount_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_mount_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_mount_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_mount_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "antenna_target_tagging_mount_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_06_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "fire_director_mount_06_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "depth_charge_mount_01_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "depth_charge_mount_02_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "depth_charge_mount_03_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "depth_charge_mount_04_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "depth_charge_mount_05_dm": {
+        "speed": 5.0,
+        "completely": true
+      }
+    },
+    {
+      "plotting_room_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "plotting_room_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_01_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_02_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_03_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_04_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_05_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
+    },
+    {
+      "rangefinder_06_dm": {
+        "speed": 8.5,
+        "partRepairHp": 1.0,
+        "hpForRepair": 0.7,
+        "completely": true
+      }
     }
-  },
+  ],
   "secondaryShattersWithoutPenetration": {
     "default": {
       "caliberToShatterCountMult": [40.0,152.0,0.33,1.0],
@@ -4530,7 +5551,7 @@
     "tank": {
       "matchExpClass": "exp_tank|exp_heavy_tank|exp_tank_destroyer",
       "explosionImpulseDuration": 0.7,
-      "explosionImpulseThreshold": 500.0,
+      "explosionImpulseThreshold": 100.0,
       "explosionImpulseDistanceThreshold": 50.0,
       "mapMassToImpulse": [
         {
@@ -4876,27 +5897,27 @@
   "fuelMassToSplashParams": {
     "fuelMassToInnerRadius": [
       {
-        "p0": [50.0,2.0]
+        "p0": [50.0,0.8]
       },
       {
-        "p1": [100.0,4.0]
+        "p1": [100.0,1.0]
       },
       {
-        "p2": [500.0,6.0]
+        "p2": [500.0,2.0]
       },
       {
-        "p2": [1000.0,7.0]
+        "p2": [1000.0,5.0]
       }
     ],
     "fuelMassToOuterRadius": [
       {
-        "p0": [50.0,3.5]
+        "p0": [50.0,1.5]
       },
       {
-        "p1": [100.0,7.0]
+        "p1": [100.0,3.0]
       },
       {
-        "p2": [500.0,8.0]
+        "p2": [500.0,5.0]
       },
       {
         "p2": [1000.0,10.0]
@@ -4912,13 +5933,13 @@
         "p0": [50.0,20.0]
       },
       {
-        "p1": [100.0,30.0]
+        "p1": [100.0,25.0]
       },
       {
         "p2": [500.0,30.0]
       },
       {
-        "p2": [1000.0,30.0]
+        "p2": [1000.0,35.0]
       }
     ]
   },

@@ -13,7 +13,22 @@ class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
     setVersionText()
     ::setProjectAwards(this)
 
-    guiScene.performDelayed(this, function() { doLogin() })
+    local isAutologin = !(::getroottable()?.disable_autorelogin_once ?? false)
+    if (isAutologin) {
+      guiScene.performDelayed(this, function() { doLogin() })
+      return
+    }
+
+    local data = ::handyman.renderCached("gui/commonParts/button", {
+      id = "authorization_button"
+      text = "#HUD_PRESS_A_CNT"
+      shortcut = "A"
+      funcName = "doLogin"
+      delayed = true
+      isToBattle = true
+      titleButtonFont = true
+    })
+    guiScene.prependWithBlk(scene.findObject("authorization_button_place"), data, this)
   }
 
   function doLogin()
@@ -54,5 +69,17 @@ class ::gui_handlers.LoginWndHandlerDMM extends ::BaseGuiHandler
     }
   }
 
-  function goBack(obj) {}
+  function goBack()
+  {
+    onExit()
+  }
+
+  function onExit()
+  {
+    msgBox("login_question_quit_game", ::loc("mainmenu/questionQuitGame"),
+      [
+        ["yes", exitGame],
+        ["no", @() null]
+      ], "no", { cancel_fn = @() null})
+  }
 }

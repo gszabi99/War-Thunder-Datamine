@@ -6,7 +6,7 @@ local tostring_r = string.tostring_r
 local join = string.join //like join, but skip emptylines
 
 local function print_(val, separator="\n"){
-  ::print("".concat(val,separator))
+  ::print($"{val}{separator}")
 }
 
 local function Log(tostringfunc=null) {
@@ -48,7 +48,7 @@ local function Log(tostringfunc=null) {
     local printFn = params?.printFn ?? print
     local prefix = silentMode ? "" : "DD: "
 
-    local newline = "".concat("\n", prefix, addStr)
+    local newline = $"\n{prefix}{addStr}"
     local maxdeeplevel = recursionLevel+1
 
     if (addStr=="" && !silentMode)
@@ -64,20 +64,41 @@ local function Log(tostringfunc=null) {
     return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=4 tostringfunc=tostringfunc})))))
   }
   local function dlog_prefix(prefix) {
-    return @(...) dlog.acall([null, prefix].extend(vargv))
+    return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn
+  }
+
+  local function wlog(watched, prefix = "", logger = log) {
+    if (::type(prefix) == "function") {
+      logger = prefix
+      prefix = ""
+    }
+    if (::type(watched) != "array")
+      watched = [watched]
+    prefix = prefix != "" ? $"{prefix}" : null
+    if (prefix != null)
+      foreach (w in watched) {
+        logger(prefix, w.value)
+        w.subscribe(@(v) logger(prefix, v))
+      }
+    else
+      foreach (w in watched) {
+        logger(w.value)
+        w.subscribe(logger)
+      }
   }
 
   return {
-    vlog = vlog
+    vlog
     v = vlog
-    log = log
-    dlog = dlog
+    log
+    dlog //disable: -dlog-warn
     d = dlog
-    dlogsplit = dlogsplit
-    debugTableData = debugTableData
-    console_print = console_print
-    with_prefix = with_prefix
-    dlog_prefix = dlog_prefix
+    dlogsplit
+    debugTableData
+    console_print
+    with_prefix
+    dlog_prefix
+    wlog
     //lowlevel dagor functions
     debug = dagorDebug.debug
     logerr = dagorDebug.logerr

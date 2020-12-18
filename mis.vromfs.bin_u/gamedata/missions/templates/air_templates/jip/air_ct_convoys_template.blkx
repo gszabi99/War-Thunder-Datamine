@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -66,14 +66,14 @@
         },
         {
           "comment": {
-            "value": "маркируем состояние юнитов 0"
+            "value": "маркируем состояние юнитов 1"
           }
         },
         {
           "unitSetVar": {
             "object_var_name": "ct_state",
             "object": "ct_all_convoys_squad",
-            "object_var_value": 1
+            "object_var_value": 0
           }
         },
         {
@@ -249,6 +249,13 @@
                 "var": "ct_t1_generate_check_convoy_idx"
               }
             ]
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "ct_t1_all_convoys_squad",
+              "object_var_value": 1
+            }
           },
           {
             "comment": {
@@ -532,7 +539,7 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 1,
+            "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
             "object": "@ct_t1_generate_cur_status_squad_name",
@@ -782,6 +789,13 @@
             "varGetStringValue": {
               "from_var_name": "ct_t1_generate_cur_convoy_name",
               "var": "@ct_t1_generate_check_convoy_name"
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_generate_check_convoy_name",
+              "object_var_value": 1
             }
           },
           {
@@ -1201,7 +1215,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -1265,13 +1279,20 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t1_spawn_sub_unit_name",
               "object_type": "isInactive",
               "target": "@ct_t1_spawn_cur_spawn_name",
               "randomObjectsCount": 1,
               "isStealth": true
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_spawn_sub_unit_name",
+              "object_var_value": 1
             }
           },
           {
@@ -1282,6 +1303,9 @@
           {
             "__unitSetRoute": {
               "route": "@ct_t1_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t1_generate_cur_status_squad_name",
               "pos": "@ct_t1_spawn_cur_spawn_name"
             }
@@ -1321,7 +1345,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -1385,13 +1409,20 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t1_spawn_sub_unit_name",
               "object_type": "isInactive",
               "target": "@ct_t1_spawn_cur_spawn_name",
               "randomObjectsCount": 1,
               "isStealth": true
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_spawn_sub_unit_name",
+              "object_var_value": 1
             }
           },
           {
@@ -1402,6 +1433,9 @@
           {
             "__unitSetRoute": {
               "route": "@ct_t1_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t1_generate_cur_status_squad_name",
               "pos": "@ct_t1_spawn_cur_spawn_name"
             }
@@ -1441,7 +1475,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -1505,13 +1539,20 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t1_spawn_sub_unit_name",
               "object_type": "isInactive",
               "target": "@ct_t1_spawn_cur_spawn_name",
               "randomObjectsCount": 1,
               "isStealth": true
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_spawn_sub_unit_name",
+              "object_var_value": 1
             }
           },
           {
@@ -1522,6 +1563,9 @@
           {
             "__unitSetRoute": {
               "route": "@ct_t1_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t1_generate_cur_status_squad_name",
               "pos": "@ct_t1_spawn_cur_spawn_name"
             }
@@ -1561,7 +1605,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -1625,13 +1669,20 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t1_spawn_sub_unit_name",
               "object_type": "isInactive",
               "target": "@ct_t1_spawn_cur_spawn_name",
               "randomObjectsCount": 1,
               "isStealth": true
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_spawn_sub_unit_name",
+              "object_var_value": 1
             }
           },
           {
@@ -1642,6 +1693,9 @@
           {
             "__unitSetRoute": {
               "route": "@ct_t1_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t1_generate_cur_status_squad_name",
               "pos": "@ct_t1_spawn_cur_spawn_name"
             }
@@ -1691,7 +1745,6 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "object_var_value": 0,
               "func": "more",
               "value": 0,
               "object": "@ct_t1_generate_cur_status_squad_name"
@@ -1703,10 +1756,10 @@
               "object_marking": 0,
               "object_var_name": "ct_state",
               "object_var_comp_op": "equal",
-              "object_var_value": 1,
               "func": "more",
               "value": 0,
-              "object": "@ct_t1_generate_cur_status_squad_name"
+              "object": "@ct_t1_generate_cur_status_squad_name",
+              "object_var_value": 0
             }
           }
         ],
@@ -1721,7 +1774,7 @@
               "object_var_name": "ct_state",
               "object": "@ct_t1_generate_cur_status_squad_name",
               "useForTriggerFiltered": true,
-              "object_var_value": 2
+              "object_var_value": 1
             }
           },
           {
@@ -1732,6 +1785,9 @@
           {
             "unitSetRoute": {
               "route": "@ct_t1_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": false,
               "object": "@ct_t1_generate_cur_status_squad_name",
               "useForTriggerFiltered": true,
               "pos": "@ct_t1_spawn_cur_spawn_name"
@@ -1806,6 +1862,13 @@
                 "var": "ct_t2_generate_check_convoy_idx"
               }
             ]
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "ct_t2_all_convoys_squad",
+              "object_var_value": 1
+            }
           },
           {
             "comment": {
@@ -2089,7 +2152,7 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 1,
+            "object_var_value": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
             "object": "@ct_t2_generate_cur_status_squad_name",
@@ -2339,6 +2402,13 @@
             "varGetStringValue": {
               "from_var_name": "ct_t2_generate_cur_convoy_name",
               "var": "@ct_t2_generate_check_convoy_name"
+            }
+          },
+          {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_generate_check_convoy_name",
+              "object_var_value": 1
             }
           },
           {
@@ -2763,7 +2833,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -2827,7 +2897,7 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t2_spawn_sub_unit_name",
               "object_type": "isInactive",
@@ -2842,8 +2912,18 @@
             }
           },
           {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_spawn_sub_unit_name",
+              "object_var_value": 1
+            }
+          },
+          {
             "__unitSetRoute": {
               "route": "@ct_t2_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t2_generate_cur_status_squad_name",
               "pos": "@ct_t2_spawn_cur_spawn_name"
             }
@@ -2883,7 +2963,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -2947,7 +3027,7 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t2_spawn_sub_unit_name",
               "object_type": "isInactive",
@@ -2962,8 +3042,18 @@
             }
           },
           {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_spawn_sub_unit_name",
+              "object_var_value": 1
+            }
+          },
+          {
             "__unitSetRoute": {
               "route": "@ct_t2_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t2_generate_cur_status_squad_name",
               "pos": "@ct_t2_spawn_cur_spawn_name"
             }
@@ -3003,7 +3093,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -3067,7 +3157,7 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t2_spawn_sub_unit_name",
               "object_type": "isInactive",
@@ -3082,8 +3172,18 @@
             }
           },
           {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_spawn_sub_unit_name",
+              "object_var_value": 1
+            }
+          },
+          {
             "__unitSetRoute": {
               "route": "@ct_t2_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t2_generate_cur_status_squad_name",
               "pos": "@ct_t2_spawn_cur_spawn_name"
             }
@@ -3123,7 +3223,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 3.0
+            "time": 1.0
           }
         },
         "conditions": [
@@ -3187,7 +3287,7 @@
           },
           {
             "unitRespawn": {
-              "delay": 1.0,
+              "delay": 0.0,
               "offset": [0.0,0.0,0.0],
               "object": "@ct_t2_spawn_sub_unit_name",
               "object_type": "isInactive",
@@ -3202,8 +3302,18 @@
             }
           },
           {
+            "__unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_spawn_sub_unit_name",
+              "object_var_value": 1
+            }
+          },
+          {
             "__unitSetRoute": {
               "route": "@ct_t2_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": true,
               "object": "@ct_t2_generate_cur_status_squad_name",
               "pos": "@ct_t2_spawn_cur_spawn_name"
             }
@@ -3253,7 +3363,6 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "object_var_value": 0,
               "func": "more",
               "value": 0,
               "object": "@ct_t2_generate_cur_status_squad_name"
@@ -3265,10 +3374,10 @@
               "object_marking": 0,
               "object_var_name": "ct_state",
               "object_var_comp_op": "equal",
-              "object_var_value": 1,
               "func": "more",
               "value": 0,
-              "object": "@ct_t2_generate_cur_status_squad_name"
+              "object": "@ct_t2_generate_cur_status_squad_name",
+              "object_var_value": 0
             }
           }
         ],
@@ -3283,7 +3392,7 @@
               "object_var_name": "ct_state",
               "object": "@ct_t2_generate_cur_status_squad_name",
               "useForTriggerFiltered": true,
-              "object_var_value": 2
+              "object_var_value": 1
             }
           },
           {
@@ -3294,6 +3403,9 @@
           {
             "unitSetRoute": {
               "route": "@ct_t2_spawn_cur_road_name",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "teleportToStart": false,
               "object": "@ct_t2_generate_cur_status_squad_name",
               "useForTriggerFiltered": true,
               "pos": "@ct_t2_spawn_cur_spawn_name"
@@ -3539,10 +3651,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t1_detect_convoy_name"
+            "object": "@ct_t1_detect_convoy_name",
+            "object_var_value": 1
           }
         },
         "actions": [
@@ -3730,10 +3842,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t1_detect_convoy_name",
             "target": "t2_players_squad",
             "var": "ct_t1_detect_calculated_range",
+            "object_var_value": 0,
             "compareCenters": false
           },
           "varCompareBool": {
@@ -3870,8 +3982,10 @@
           {
             "moAddMissionObjective": {
               "target": "ct_t1_protect",
-              "unit_or_area": "@ct_t1_detect_convoy_name",
-              "unit_type": "isActive"
+              "unit_type": "isActive",
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
+              "unit_or_area": "@ct_t1_detect_convoy_name"
             }
           },
           {
@@ -3882,8 +3996,10 @@
           {
             "moAddMissionObjective": {
               "target": "ct_t2_destroy",
-              "unit_or_area": "@ct_t1_detect_convoy_name",
-              "unit_type": "isActive"
+              "unit_type": "isActive",
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
+              "unit_or_area": "@ct_t1_detect_convoy_name"
             }
           },
           {
@@ -4154,10 +4270,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t2_detect_convoy_name"
+            "object": "@ct_t2_detect_convoy_name",
+            "object_var_value": 1
           }
         },
         "actions": [
@@ -4345,10 +4461,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t2_detect_convoy_name",
             "target": "t1_players_squad",
             "var": "ct_t2_detect_calculated_range",
+            "object_var_value": 0,
             "compareCenters": false
           },
           "varCompareBool": {
@@ -4485,8 +4601,10 @@
           {
             "moAddMissionObjective": {
               "target": "ct_t2_protect",
-              "unit_or_area": "@ct_t2_detect_convoy_name",
-              "unit_type": "isActive"
+              "unit_type": "isActive",
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
+              "unit_or_area": "@ct_t2_detect_convoy_name"
             }
           },
           {
@@ -4497,8 +4615,10 @@
           {
             "moAddMissionObjective": {
               "target": "ct_t1_destroy",
-              "unit_or_area": "@ct_t2_detect_convoy_name",
-              "unit_type": "isActive"
+              "unit_type": "isActive",
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
+              "unit_or_area": "@ct_t2_detect_convoy_name"
             }
           },
           {
@@ -4713,9 +4833,11 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_protect",
               "status": 1,
+              "unit_type": "any",
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A",
-              "unit_or_area": "@ct_t1_objective_update_convoy_name",
-              "unit_type": "any"
+              "unit_or_area": "@ct_t1_objective_update_convoy_name"
             },
             "comment": {
               "value": ""
@@ -4753,6 +4875,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_destroy",
               "status": 1,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B",
               "unit_or_area": "@ct_t1_objective_update_convoy_name",
               "object_type": "any"
@@ -4931,6 +5055,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_protect",
               "status": 1,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B",
               "unit_or_area": "@ct_t2_objective_update_convoy_name",
               "object_type": "any"
@@ -4971,6 +5097,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_destroy",
               "status": 1,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A",
               "unit_or_area": "@ct_t2_objective_update_convoy_name",
               "object_type": "any"
@@ -5013,6 +5141,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_protect",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ct_t1_objective_success_convoy_name"
@@ -5040,6 +5170,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_protect",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -5070,6 +5202,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_protect",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@ct_t2_objective_success_convoy_name"
@@ -5097,7 +5231,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_protect",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -5128,6 +5263,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_destroy",
               "status": 3,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ct_t2_objective_success_convoy_name"
@@ -5147,7 +5284,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_destroy",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -5178,6 +5316,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_destroy",
               "status": 3,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@ct_t1_objective_success_convoy_name"
@@ -5197,6 +5337,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_destroy",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -5227,6 +5369,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_protect",
               "status": 3,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ct_t1_kill_convoy_name"
@@ -5254,7 +5398,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_protect",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -5285,6 +5430,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_protect",
               "status": 3,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@ct_t2_kill_convoy_name"
@@ -5312,7 +5459,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_protect",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -5343,6 +5491,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_destroy",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@ct_t2_kill_convoy_name"
@@ -5357,7 +5507,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t1_destroy",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -5388,6 +5539,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_destroy",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@ct_t1_kill_convoy_name"
@@ -5402,7 +5555,8 @@
             "moSetObjectiveStatus": {
               "target": "ct_t2_destroy",
               "status": 0,
-              "extendedEnding": true,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -5563,7 +5717,6 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "func": "more",
             "value": 0,
             "object": "@ct_t1_move_convoy_name"
@@ -5862,10 +6015,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t1_move_convoy_name"
+            "object": "@ct_t1_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -5982,10 +6135,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t1_move_convoy_name"
+            "object": "@ct_t1_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -6102,10 +6255,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t1_move_convoy_name"
+            "object": "@ct_t1_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -6167,7 +6320,6 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target_type": "isAlive",
             "target_marking": 0,
             "check_objects": "any",
@@ -6265,6 +6417,13 @@
           {
             "comment": {
               "value": "стираем имя конвоя"
+            }
+          },
+          {
+            "unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_move_convoy_var_name",
+              "object_var_value": 0
             }
           },
           {
@@ -6495,7 +6654,6 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "func": "more",
             "value": 0,
             "object": "@ct_t2_move_convoy_name"
@@ -6794,10 +6952,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t2_move_convoy_name"
+            "object": "@ct_t2_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -6914,10 +7072,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t2_move_convoy_name"
+            "object": "@ct_t2_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -7034,10 +7192,10 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 2,
             "func": "more",
             "value": 0,
-            "object": "@ct_t2_move_convoy_name"
+            "object": "@ct_t2_move_convoy_name",
+            "object_var_value": 2
           }
         },
         "actions": [
@@ -7099,7 +7257,6 @@
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target_type": "isAlive",
             "target_marking": 0,
             "check_objects": "any",
@@ -7197,6 +7354,13 @@
           {
             "comment": {
               "value": "стираем имя конвоя"
+            }
+          },
+          {
+            "unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_move_convoy_var_name",
+              "object_var_value": 0
             }
           },
           {
@@ -7298,13 +7462,13 @@
             "object_marking": 0,
             "object_var_name": "ct_state",
             "object_var_comp_op": "equal",
-            "object_var_value": 4,
             "target_type": "isActive",
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
             "object": "ct_all_convoys_squad",
             "target": "all_players_squad",
+            "object_var_value": 4,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -7318,7 +7482,7 @@
             "object_var_name": "ct_state",
             "object": "ct_all_convoys_squad",
             "useForTriggerFiltered": true,
-            "object_var_value": 1
+            "object_var_value": 0
           }
         },
         "else_actions": []
@@ -7516,7 +7680,6 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "object_var_value": 0,
               "func": "less",
               "value": 1,
               "object": "@ct_t1_kill_convoy_name"
@@ -7528,10 +7691,10 @@
               "object_marking": 0,
               "object_var_name": "ct_state",
               "object_var_comp_op": "equal",
-              "object_var_value": 4,
               "func": "less",
               "value": 1,
-              "object": "@ct_t1_kill_convoy_name"
+              "object": "@ct_t1_kill_convoy_name",
+              "object_var_value": 4
             }
           }
         ],
@@ -7679,9 +7842,16 @@
             }
           },
           {
+            "unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t1_kill_convoy_name",
+              "object_var_value": 0
+            }
+          },
+          {
             "varSetString": {
               "value": "",
-              "var": "@ct_t1_kill_convoy_name"
+              "var": "@ct_t1_kill_convoy_var_name"
             }
           },
           {
@@ -7897,7 +8067,6 @@
               "object_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "object_var_value": 0,
               "func": "less",
               "value": 1,
               "object": "@ct_t2_kill_convoy_name"
@@ -7909,10 +8078,10 @@
               "object_marking": 0,
               "object_var_name": "ct_state",
               "object_var_comp_op": "equal",
-              "object_var_value": 4,
               "func": "less",
               "value": 1,
-              "object": "@ct_t2_kill_convoy_name"
+              "object": "@ct_t2_kill_convoy_name",
+              "object_var_value": 4
             }
           }
         ],
@@ -8060,9 +8229,16 @@
             }
           },
           {
+            "unitSetVar": {
+              "object_var_name": "ct_state",
+              "object": "@ct_t2_kill_convoy_name",
+              "object_var_value": 0
+            }
+          },
+          {
             "varSetString": {
               "value": "",
-              "var": "@ct_t1_kill_convoy_name"
+              "var": "@ct_t2_kill_convoy_var_name"
             }
           },
           {
@@ -8557,10 +8733,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t1_activity_convoy_name",
             "target": "t1_players_squad",
             "var": "ct_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -8612,10 +8788,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t1_activity_convoy_name",
             "target": "t2_players_squad",
             "var": "ct_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -8891,10 +9067,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t2_activity_convoy_name",
             "target": "t2_players_squad",
             "var": "ct_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -8946,10 +9122,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@ct_t2_activity_convoy_name",
             "target": "t1_players_squad",
             "var": "ct_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -9076,8 +9252,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@bt_t2_bomber_name"
+            "object": "@bt_t2_bomber_name",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -9123,8 +9299,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@bt_t2_bomber_name"
+            "object": "@bt_t2_bomber_name",
+            "object_var_value": 0
           }
         },
         "actions": {

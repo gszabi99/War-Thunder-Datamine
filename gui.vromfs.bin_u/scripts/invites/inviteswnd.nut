@@ -1,3 +1,5 @@
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+
 ::gui_start_invites <- function gui_start_invites()
 {
   ::handlersManager.loadHandler(::gui_handlers.InvitesWnd)
@@ -75,10 +77,14 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
     guiScene.performDelayed(this, (@(invite) function() {
       if (invite.haveRestrictions())
       {
-        if (invite.needCheckSystemCrossplayRestriction
-            && !invite.isAvailableByCrossPlay()) {
-          if (!::xbox_try_show_crossnetwork_message())
+        if (invite.needCheckSystemRestriction) {
+          if (!checkAndShowMultiplayerPrivilegeWarning())
+            return
+
+          if (!invite.isAvailableByCrossPlay() && !::xbox_try_show_crossnetwork_message()) {
             ::showInfoMsgBox(invite.getRestrictionText())
+            return
+          }
         }
         else
           ::showInfoMsgBox(invite.getRestrictionText())
@@ -154,6 +160,10 @@ class ::gui_handlers.InvitesWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventInviteRemoved(p)
   {
+    updateList()
+  }
+
+  function onEventXboxMultiplayerPrivilegeUpdated(p) {
     updateList()
   }
 

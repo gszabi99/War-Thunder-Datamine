@@ -7,7 +7,7 @@
         "id": "countryChoice-root"
       },
       {
-        "width": "0.75@scrn_tgt+2@framePadding"
+        "width": "0.75@scrn_tgt"
       },
       {
         "pos": "0.5pw-0.5w, 0.5ph-0.5h"
@@ -71,36 +71,49 @@
       {
         "tdiv": {
           "width": "pw",
-          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "max-height": "1@maxWindowHeightNoSrh - 1@frameTopPadding - 0.5w - 1@battleButtonHeight",
+          "pos": "0.5pw-0.5w, 0",
           "position": "relative",
           "flow": "vertical",
+          "overflow-y": "auto",
           "textAreaCentered": {
             "id": "msgText",
             "width": "pw",
-            "position": "relative"
-          },
-          "Button_text": {
-            "id": "btn_start",
-            "size": "pw, 0.5w+1@battleButtonHeight",
             "position": "relative",
-            "visualStyle": "bigImg",
-            "iconPos": "middleBottom",
-            "btnName": "X",
-            "userInputType": "mouse",
-            "on_click": "onStart",
-            "img": {
-              "id": "tutorial_image",
-              "width": "pw",
-              "height": "0.5w",
-              "background-image": "#ui/images/tutorial_fighter.jpg?P1",
-              "background-color": "@white"
-            },
-            "text": {
-              "size": "pw, 1@battleButtonHeight",
-              "text": "#multiplayer/btnStart"
-            },
-            "ButtonImg": []
+            "padding-bottom": "0.02@scrn_tgt"
+          },
+          "tdiv": {
+            "id": "rewards",
+            "pos": "0.5pw-0.5w, 0",
+            "position": "relative",
+            "flow": "vertical",
+            "padding-bottom": "0.02@scrn_tgt",
+            "display": "hide"
           }
+        }
+      },
+      {
+        "Button_text": {
+          "id": "btn_start",
+          "size": "pw, 0.5w+1@battleButtonHeight",
+          "position": "relative",
+          "visualStyle": "bigImg",
+          "iconPos": "middleBottom",
+          "btnName": "X",
+          "userInputType": "mouse",
+          "on_click": "onStart",
+          "img": {
+            "id": "tutorial_image",
+            "width": "pw",
+            "height": "0.5w",
+            "background-image": "#ui/images/tutorial_fighter.jpg?P1",
+            "background-color": "@white"
+          },
+          "text": {
+            "size": "pw, 1@battleButtonHeight",
+            "text": "#multiplayer/btnStart"
+          },
+          "ButtonImg": []
         }
       },
       {

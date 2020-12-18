@@ -19,6 +19,11 @@
   "bullets": -1,
   "bulletsCluster": 1,
   "useSingleIconForBullet": true,
+  "fxGroundDust": "",
+  "fxSandDust": "",
+  "fxSnowDust": "",
+  "fxConcreteDust": "",
+  "fxWaterShockWave": "",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/atgm",
   "sound_pathStudio": "ground/weapon/atgm",
@@ -88,7 +93,7 @@
       "waterCollisionEffect": "120-203_he_water_splash",
       "waterFxScale": [1.2,1.4],
       "explosionPatchRadius": 5.0,
-      "fireEffect": "rocket_fire_light_sam",
+      "fireEffect": "rocket_fire_light_multiple",
       "smokeEffect": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
@@ -122,6 +127,8 @@
       "timeToLive": 18.0,
       "price": 3000.0,
       "mesh": "adats_rocket_deployed",
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [-0.5,0.0,0.0],
       "stabilityRicochetModifier": [
         {
           "mod1": [0.0,0.0]
@@ -274,6 +281,14 @@
         "cumulativeFragmentsAmount": 40,
         "cumulativeFragmentsArmorPower": 5.0,
         "cumulativeFragmentsHit": 9.0
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "noTrail"
+        }
       }
     }
   }

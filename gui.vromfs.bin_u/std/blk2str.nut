@@ -9,7 +9,7 @@ local function blkParamToString(name, val){
   local vType = " "
   if (val == null) { val = "null" }
   else if (::type(val)=="integer") vType = ":i"
-  else if (::type(val)=="float") { vType = ":r"; val = "".concat(val,((val % 1) ? "" : ".0")) }
+  else if (::type(val)=="float") { vType = ":r"; val = (val % 1) ? $"{val}" : $"{val}.0" }
   else if (::type(val)=="bool") vType = ":b"
   else if (::type(val)=="string") { vType = ":t"; val = $"'{val}'"}
   else if (isPoint2(val)) { vType = ":p2"; val = $"{val.x}, {val.y}"}
@@ -20,7 +20,7 @@ local function blkParamToString(name, val){
     val = " ".concat("[", " ". concat("[", ", ".concat( val[j].x, val[j].y, val[j].z), "]"), "]")
   }
   else val = val.tostring()
-  return "".concat(name,vType," = ",val)
+  return $"{name}{vType} = {val}"
 }
 local function blkParamsToString(info, indent=0){
   local res = []
@@ -35,10 +35,10 @@ local function datablockToAst(info, params = {}, result = null){
   result = result ?? []
   local recursionLevel = params?.recursionLevel ?? 6
   local printFn = @(v, indent) ::type(v)=="array" ? result.extend(v) : result.append([v, indent])
-  local blockName = (info.getBlockName()!="") ? "".concat(info.getBlockName()," ") : ""
+  local blockName = (info.getBlockName()!="") ? $"{info.getBlockName()} " : ""
   local indent = params?.indent ?? 0
   if (blockName!="null ") {
-    printFn("".concat(blockName,"{"), indent)
+    printFn($"{blockName}\{", indent)
     indent = indent+1
   }
   printFn(blkParamsToString(info, indent), 0)
@@ -48,7 +48,7 @@ local function datablockToAst(info, params = {}, result = null){
         {recursionLevel = recursionLevel-1, indent=indent}, result)
     }
     else
-      printFn("".concat(info.getBlock(j).getBlockName(), " = DataBlock()"), indent)
+      printFn($"{info.getBlock(j).getBlockName()} = DataBlock()", indent)
   }
   if (blockName!="null ")
     printFn("}", indent-1)

@@ -10,8 +10,8 @@
 */
 
 return [
-  {version="2.1.0.00", type="major", title={
-    english="Update “New Power”"
-    russian="Обновление “Новая сила”"
+  {version="2.3.0.00", type="major", title={
+    english="Update “Hot Tracks”"
+    russian="Обновление “Раскалённые траки”"
   }}
 ]

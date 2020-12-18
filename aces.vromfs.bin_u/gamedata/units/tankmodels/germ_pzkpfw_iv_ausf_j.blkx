@@ -697,7 +697,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -1514,8 +1514,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1527,8 +1546,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2724,7 +2744,6 @@
           "emitter": "bone_mg_aa_barrel",
           "flash": "emtr_mg_flame_03",
           "useEmitter": true,
-          "rollOrientationDeg": 90.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_02_dm",
@@ -2979,7 +2998,6 @@
                 "emitter": "bone_mg_aa_barrel",
                 "flash": "emtr_mg_flame_03",
                 "useEmitter": true,
-                "rollOrientationDeg": 90.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_02_dm",
@@ -3139,6 +3157,17 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "dunkelgelb",
+      "nameLocId": "skin/ger_camo_dunkelgelb",
+      "descLocId": "skin/ger_camo_dunkelgelb/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb*"
       }
     }
   },

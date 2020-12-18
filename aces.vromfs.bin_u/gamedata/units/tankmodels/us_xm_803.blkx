@@ -291,9 +291,6 @@
         "turret_03_front_dm": {
           "armorThickness": 5.0
         },
-        "turret_07_side_dm": {
-          "armorThickness": 23.0
-        },
         "turret_09_side_dm": {
           "armorThickness": 23.0
         },
@@ -524,6 +521,16 @@
             "hp": 300.0
           }
         }
+      },
+      "body_structural_steel": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "turret_07_side_dm": [],
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": []
       },
       "tracks": {
         "armorClass": "tank_traks",
@@ -1777,6 +1784,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1785,7 +1793,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1797,8 +1824,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }
@@ -2889,7 +2917,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

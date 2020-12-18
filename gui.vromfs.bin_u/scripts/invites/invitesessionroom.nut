@@ -1,5 +1,7 @@
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
 class ::g_invites_classes.SessionRoom extends ::BaseInvite
 {
@@ -7,7 +9,7 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
   roomId = ""
   password = ""
   isAccepted = false
-  needCheckSystemCrossplayRestriction = true
+  needCheckSystemRestriction = true
 
   static function getUidByParams(params)
   {
@@ -103,7 +105,10 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
 
   function haveRestrictions()
   {
-    return !::isInMenu() || !isMissionAvailable() || !isAvailableByCrossPlay()
+    return !::isInMenu()
+      || !isMissionAvailable()
+      || !isAvailableByCrossPlay()
+      || !isMultiplayerPrivilegeAvailable()
   }
 
   function isMissionAvailable()
@@ -116,6 +121,8 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
   {
     if (haveRestrictions())
     {
+      if (!isMultiplayerPrivilegeAvailable())
+        return ::loc("xbox/noMultiplayer")
       if (!isAvailableByCrossPlay())
         return ::loc("xbox/crossPlayRequired")
       if (!isMissionAvailable())
@@ -137,6 +144,9 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
   function accept()
   {
     if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     local room = ::g_mroom_info.get(roomId).getFullRoomData()

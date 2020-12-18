@@ -1,5 +1,5 @@
 local { secondsToMilliseconds, minutesToSeconds } = require("scripts/time.nut")
-local { isPlatformSony, isPlatformPS4, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local hotasPS4DevId = "044F:B67B"
 local hotasXONEDevId = "044F:B68C"
@@ -56,7 +56,7 @@ local function askHotasPresetChange()
 return {
   checkJoystickThustmasterHotas = function(changePreset = true) {
     local deviceId =
-      isPlatformPS4 ? hotasPS4DevId :
+      isPlatformSony ? hotasPS4DevId :
       isPlatformXboxOne ? hotasXONEDevId :
       null
 

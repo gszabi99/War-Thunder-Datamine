@@ -82,26 +82,26 @@ g_decorator.clearLivePreviewParams <- function clearLivePreviewParams()
   ::g_decorator.approversUnitToPreviewLiveResource = null
 }
 
-g_decorator.getCachedDataByType <- function getCachedDataByType(decType)
+g_decorator.getCachedDataByType <- function getCachedDataByType(decType, unitType = null)
 {
-  local id = "proceedData_" + decType.name
+  local id = unitType ? $"proceedData_{decType.name}_{unitType}" : $"proceedData_{decType.name}"
   if (id in ::g_decorator.cache)
     return ::g_decorator.cache[id]
 
-  local data = ::g_decorator.splitDecoratorData(decType)
+  local data = ::g_decorator.splitDecoratorData(decType, unitType)
   ::g_decorator.cache[id] <- data
   return data
 }
 
-g_decorator.getCachedDecoratorsDataByType <- function getCachedDecoratorsDataByType(decType)
+g_decorator.getCachedDecoratorsDataByType <- function getCachedDecoratorsDataByType(decType, unitType = null)
 {
-  local data = ::g_decorator.getCachedDataByType(decType)
+  local data = ::g_decorator.getCachedDataByType(decType, unitType)
   return data.decorators
 }
 
-g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType)
+g_decorator.getCachedOrderByType <- function getCachedOrderByType(decType, unitType = null)
 {
-  local data = ::g_decorator.getCachedDataByType(decType)
+  local data = ::g_decorator.getCachedDataByType(decType, unitType)
   return data.categories
 }
 
@@ -169,7 +169,7 @@ g_decorator.getCachedDecoratorByUnlockId <- function getCachedDecoratorByUnlockI
   return foundDecorator
 }
 
-g_decorator.splitDecoratorData <- function splitDecoratorData(decType)
+g_decorator.splitDecoratorData <- function splitDecoratorData(decType, unitType)
 {
   local result = {
     decorators = {}
@@ -188,6 +188,11 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType)
   for (local c = 0; c < blk.blockCount(); c++)
   {
     local dblk = blk.getBlock(c)
+
+    local decorator = ::Decorator(dblk, decType)
+    if (unitType != null && !decorator.isAllowedByUnitTypes(unitType))
+      continue
+
     local category = dblk?.category ?? prevCategory
 
     if (!(category in result.decorators))
@@ -196,7 +201,6 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType)
       result.decorators[category] <- []
     }
 
-    local decorator = ::Decorator(dblk, decType)
     decorator.category = category
     decorator.catIndex = result.decorators[category].len()
 
@@ -208,12 +212,16 @@ g_decorator.splitDecoratorData <- function splitDecoratorData(decType)
       result.decorators[category].append(decorator)
   }
 
-  foreach (category, decoratorsList in result.decorators)
-    if (!decoratorsList.len())
+  for (local i = result.categories.len() - 1; i > -1; i--)
+  {
+    local category = result.categories[i]
+    local decoratorsList = result.decorators[category]
+    if (decoratorsList.len() == 0)
     {
-      result.categories.remove(::find_in_array(result.categories, category))
+      result.categories.remove(i)
       delete result.decorators[category]
     }
+  }
 
   return result
 }
@@ -435,22 +443,32 @@ g_decorator.onEventAttachableReceived <- function onEventAttachableReceived(p)
     updateDecalVisible(p, ::g_decorator_type.ATTACHABLES)
 }
 
+local function addDecoratorToCachedData(decorator, data) {
+  local category = decorator.category
+  if (!(category in data.decorators)) {
+    data.decorators[category] <- []
+    data.categories.append(category)
+  }
+  ::u.appendOnce(decorator, data.decorators[category], true, @(a, b) a?.id == b.id)
+}
+
 g_decorator.updateDecalVisible <- function updateDecalVisible(params, decType)
 {
   local decorId = params.id
   local data = getCachedDataByType(decType)
   local decorator = data.decoratorsList?[decorId]
-  local category = decorator?.category
 
   if (!decorator || (!decorator.isVisible() && !decorator.isForceVisible()))
     return
 
-  if (!(category in data.decorators))
-  {
-    data.decorators[category] <- []
-    data.categories.append(category)
+  addDecoratorToCachedData(decorator, data)
+
+  foreach (unitType in unitTypes.types) {
+    if (decorator.isAllowedByUnitTypes(unitType.tag)) {
+      local dataByUnitType = getCachedDataByType(decType, unitType.tag)
+      addDecoratorToCachedData(decorator, dataByUnitType)
+    }
   }
-  ::u.appendOnce(decorator, data.decorators[category])
 }
 
 g_decorator.onEventUnitBought <- function onEventUnitBought(p)

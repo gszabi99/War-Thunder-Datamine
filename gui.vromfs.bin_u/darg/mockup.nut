@@ -2,13 +2,16 @@
 
 
 ::vlog <- function vlog(val) {
-  print("".concat(val,"\n"))
+  print(val)
+  print("\n")
 }
 
 ::logerr <- function logerr(val) {
-  print("".concat(val,"\n"))
+  print(val)
+  print("\n")
 }
 
 ::debug <- function debug(val) {
-  print("".concat(val,"\n"))
+  print(val)
+  print("\n")
 }

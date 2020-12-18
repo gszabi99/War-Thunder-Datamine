@@ -1317,6 +1317,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1325,7 +1326,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1337,8 +1357,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }
@@ -1651,7 +1672,15 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "height": 0.04,
-        "width": 0.5
+        "width": 0.5,
+        "tracksTensionK": [3.0,8.0,1.5],
+        "trackMesh": "ussr_t_34_phys_track_line",
+        "trackLen": 0.172,
+        "trackCount": 72,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.17,
+        "trackMaxHeight": 1.04
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
@@ -1695,7 +1724,7 @@
         "maxDisplacementOffsets": [-0.01,0.02],
         "suspensionOffsets": [-0.115,-0.115,0.14],
         "defaultGearRadius": 0.41,
-        "frontBackGearRadius": 0.21,
+        "frontBackGearRadius": 0.25,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -2204,7 +2233,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

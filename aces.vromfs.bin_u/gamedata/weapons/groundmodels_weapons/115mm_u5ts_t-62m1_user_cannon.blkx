@@ -15,8 +15,12 @@
   "bEnablePause": false,
   "bullets": -1,
   "bulletsCluster": 1,
-  "fxType": "big_gun_flame",
-  "fxGroundDust": "ground_shock_wave_dust",
+  "fxType": "muzzle_ground_100mm",
+  "fxGroundDust": "dust_ground_wave_dirt_big",
+  "fxSandDust": "dust_ground_wave_sand_big",
+  "fxSnowDust": "dust_ground_wave_snow_big",
+  "fxConcreteDust": "dust_ground_wave_asphalt_big",
+  "fxWaterShockWave": "water_shock_wave_big",
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
   "sound_pathStudio": "ground/weapon/cannons",
@@ -899,6 +903,7 @@
       "sound_inside": "atgm_interior",
       "sfxReloadBullet": "grd_cannon_reload_auto",
       "recoilMultiplier": 0.05,
+      "shotFxType": "muzzle_ground_40mm_slow",
       "stabilityRicochetModifier": [
         {
           "mod1": [0.0,0.0]
@@ -940,6 +945,7 @@
         "operatedDist": 5000.0,
         "autoLeveling": true,
         "autoAiming": true,
+        "isBeamRider": true,
         "explosionEffect": "atgm_hit",
         "defFxScale": [1.7,2.1],
         "groundCollisionEffect": "art_ground_splash",

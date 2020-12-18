@@ -267,6 +267,13 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
   }
+//
+
+
+
+
+
+
   {
     id = "ID_ENABLE_GUN_STABILIZER_GM"
     checkGroup = ctrlGroups.TANK

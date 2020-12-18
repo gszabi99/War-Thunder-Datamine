@@ -1894,8 +1894,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1907,8 +1926,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -3007,7 +3027,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -3118,15 +3138,6 @@
     }
   },
   {
-    "default_skin": {
-      "name": "default",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "uk_camo_very_dark_drab*"
-      }
-    }
-  },
-  {
     "skin": {
       "name": "uk_camo_earth_yellow",
       "nameLocId": "skin/uk_camo_earth_yellow",
@@ -3226,40 +3237,12 @@
     }
   },
   {
-    "defaultDecals": {
-      "skin_condition": 0.0,
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "decal0Line0": [1.06437e-07,-5.5194e-08,3.57143,4.52585],
-      "decal0Line1": [2.52538,-2.52538,-1.56112e-07,-3.8835],
-      "decal0HaveCP": true,
-      "decal0CP": [1.36685,1.29298,2.68955],
-      "decal0CPNormDepth": [0.707107,0.707107,0.0,-2.73022],
-      "decal0RotScale": [1.5708,0.28],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": false,
-      "decal0Tex": "uk_number_77",
-      "decal1Line0": [1.06437e-07,-5.5194e-08,3.57143,-3.43262],
-      "decal1Line1": [2.52538,-2.52538,-1.56112e-07,-3.90491],
-      "decal1HaveCP": true,
-      "decal1CP": [-0.852563,1.29001,2.88925],
-      "decal1CPNormDepth": [0.707107,0.707107,0.0,-2.73201],
-      "decal1RotScale": [1.5708,0.28],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": false,
-      "decal1Tex": "uk_emblem_desert_rats",
-      "decal2Line0": [4.65661e-08,-2.41474e-08,1.5625,0.478558],
-      "decal2Line1": [1.10485,-1.10485,-6.8299e-08,0.265627],
-      "decal2HaveCP": true,
-      "decal2CP": [0.135969,1.7351,1.71158],
-      "decal2CPNormDepth": [0.707107,0.707107,0.0,-2.27809],
-      "decal2RotScale": [1.5708,0.64],
-      "decal2Mirrored": false,
-      "decal2Wrap": false,
-      "decal2Abs": false,
-      "decal2Tex": "usa_tank_emblem_08"
+    "default_skin": {
+      "set_tex": {
+        "from": "m10_achilles_body_c*",
+        "to": "m10_achilles_skin_body_c*",
+        "param": "camo_skin_tex"
+      }
     }
   },
   {

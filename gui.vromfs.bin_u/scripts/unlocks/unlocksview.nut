@@ -226,7 +226,7 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   for(local i = 0; i < names.len(); i++)
   {
     local unlock = ::g_unlocks.getUnlockById(unlockConfig.names[i])
-    if(unlock && !::is_unlock_visible(unlock))
+    if(unlock && !::is_unlock_visible(unlock) && !(unlock?.showInDesc ?? false))
       continue
 
     local isUnlocked = unlockConfig.curVal & (1 << i)

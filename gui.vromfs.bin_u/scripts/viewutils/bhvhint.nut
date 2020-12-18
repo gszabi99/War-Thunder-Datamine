@@ -1,4 +1,4 @@
-local { doesLocTextExist = @(k) true, loc } = require("dagor.localize")
+local { doesLocTextExist, loc } = require("dagor.localize")
 
 {
   class BhvHint

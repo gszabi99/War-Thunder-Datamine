@@ -54,6 +54,8 @@ local updateGiftUnitsDiscountTask = -1
 
   onEventXboxShopDataUpdated = @(p) updateOnlineShopDiscounts()
   onEventPs4ShopDataUpdated = @(p) updateOnlineShopDiscounts()
+  onEventEpicShopDataUpdated = @(p) updateOnlineShopDiscounts()
+  onEventEpicShopItemUpdated = @(p) updateOnlineShopDiscounts()
 
   function updateGiftUnitsDiscountFromGuiBlk(giftUnits) { // !!!FIX ME Remove this function when gift units discount will received from char
     if (updateGiftUnitsDiscountTask >= 0) {

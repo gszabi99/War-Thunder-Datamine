@@ -313,10 +313,9 @@
                     "behaviour": "posNavigator",
                     "moveX": "linear",
                     "moveY": "linear",
-                    "navigatorShortcuts": "cancel",
+                    "navigatorShortcuts": "yes",
                     "move-only-hover": "yes",
                     "on_select": "onDecalCategoryActivate",
-                    "on_cancel_edit": "onDecalCategoryCancel",
                     "css-hier-invalidate": "yes",
                     "flow": "vertical",
                     "class": "decalsList",
@@ -916,12 +915,22 @@
           },
           {
             "Button_text": {
+              "id": "btn_go_to_collection",
+              "text": "#collection/go_to_collection",
+              "showButtonImageOnConsole": "no",
+              "btnName": "Y",
+              "_on_click": "onCollectionButtonClick",
+              "display": "hide",
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
               "id": "btn_back",
               "text": "#mainmenu/btnBack",
               "showButtonImageOnConsole": "no",
               "btnName": "B",
               "_on_click": "onBtnBack",
-              "display": "hide",
               "skip-navigation": "yes",
               "ButtonImg": []
             }

@@ -205,86 +205,80 @@
         },
         "turret_01_side_dm": {
           "armorThickness": 70.0
+        },
+        "turret_bottom_dm": {
+          "armorThickness": 25.4
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_01_back_dm": {
+          "armorThickness": 119.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 136.0
+        },
+        "turret_02_top_dm": {
+          "armorThickness": 150.0,
+          "variableThickness": true
+        },
+        "turret_02_bottom_dm": {
+          "armorThickness": 154.0
+        },
+        "turret_02_front_dm": {
+          "armorThickness": 135.5
+        },
+        "turret_02_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 69.0
+        },
+        "turret_03_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_03_top_dm": {
+          "armorThickness": 16.0
+        },
+        "turret_03_front_dm": {
+          "armorThickness": 88.9
+        },
+        "turret_04_back_dm": {
+          "armorThickness": 55.0
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 105.0
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 132.4
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 119.4
+        },
+        "turret_04_front_dm": {
+          "armorThickness": 115.8
+        },
+        "turret_05_back_dm": {
+          "armorThickness": 100.0
+        },
+        "turret_05_side_dm": {
+          "armorThickness": 114.5
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 135.5
+        },
+        "turret_05_bottom_dm": {
+          "armorThickness": 119.0
+        },
+        "turret_05_front_dm": {
+          "armorThickness": 83.2
+        },
+        "turret_06_front_dm": {
+          "armorThickness": 91.5
+        },
+        "turret_06_top_dm": {
+          "armorThickness": 78.2
         }
-      },
-      "turret_bottom_dm": {
-        "armorThickness": 25.4
-      },
-      "turret_01_top_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_01_back_dm": {
-        "armorThickness": 119.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 136.0
-      },
-      "turret_02_top_dm": {
-        "armorThickness": 150.0,
-        "variableThickness": true
-      },
-      "turret_02_bottom_dm": {
-        "armorThickness": 154.0
-      },
-      "turret_02_front_dm": {
-        "armorThickness": 135.5
-      },
-      "turret_02_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_02_side_dm": {
-        "armorThickness": 69.0
-      },
-      "turret_03_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 76.0
-      },
-      "turret_03_top_dm": {
-        "armorThickness": 16.0
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_03_front_dm": {
-        "armorThickness": 88.9
-      },
-      "turret_04_back_dm": {
-        "armorThickness": 55.0
-      },
-      "turret_04_side_dm": {
-        "armorThickness": 105.0
-      },
-      "turret_04_top_dm": {
-        "armorThickness": 132.4
-      },
-      "turret_04_bottom_dm": {
-        "armorThickness": 119.4
-      },
-      "turret_04_front_dm": {
-        "armorThickness": 115.8
-      },
-      "turret_05_back_dm": {
-        "armorThickness": 100.0
-      },
-      "turret_05_side_dm": {
-        "armorThickness": 114.5
-      },
-      "turret_05_top_dm": {
-        "armorThickness": 135.5
-      },
-      "turret_05_bottom_dm": {
-        "armorThickness": 119.0
-      },
-      "turret_05_front_dm": {
-        "armorThickness": 83.2
-      },
-      "turret_06_front_dm": {
-        "armorThickness": 91.5
-      },
-      "turret_06_top_dm": {
-        "armorThickness": 78.2
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -353,6 +347,7 @@
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
         "armorThickness": 20.0,
+        "wheel_support_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -392,6 +387,19 @@
             "hp": 200.0
           }
         }
+      },
+      "body_shields": {
+        "armorClass": "tank_structural_steel",
+        "hp": 1000.0,
+        "armorThickness": 4.0,
+        "stopChanceOnDeadPart": 0.0,
+        "createSecondaryShatters": false,
+        "ex_decor_l_02_dm": [],
+        "ex_decor_r_02_dm": [],
+        "ex_decor_l_03_dm": [],
+        "ex_decor_r_03_dm": [],
+        "turret_03_side_dm": [],
+        "turret_03_bottom_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
@@ -1570,8 +1578,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1583,8 +1610,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2746,7 +2774,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

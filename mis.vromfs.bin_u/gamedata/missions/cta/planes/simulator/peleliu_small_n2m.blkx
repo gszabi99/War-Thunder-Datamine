@@ -217,7 +217,7 @@
       "scoreLimit": 15000,
       "timeLimit": 180,
       "deathPenaltyMul": 0.0,
-      "allowEmptyTeams": false,
+      "allowEmptyTeams": true,
       "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "usa",
@@ -330,6 +330,22 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/planes/simulator/peleliu/cr_carriers_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -385,6 +401,25 @@
           "comment": {
             "value": ""
           }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "cr_is_detect_on"
+          }
+        },
+        {
+          "varSetBool": [
+            {
+              "value": true
+            },
+            {
+              "var": "cr_t1_carriers_alowed"
+            },
+            {
+              "var": "cr_t2_carriers_alowed"
+            }
+          ]
         },
         {
           "__wait": {
@@ -4033,7 +4068,7 @@
           [-0.991445,0.0,0.130526],
           [2236.14,99.9961,-9733.87]
         ],
-        "unit_class": "pby-5",
+        "unit_class": "a5m4",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

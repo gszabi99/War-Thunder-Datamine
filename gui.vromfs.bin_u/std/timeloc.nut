@@ -129,9 +129,9 @@ local buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = tru
   formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds)})
 
 return timeBase.__merge({
-  secondsToString = secondsToString
-  hoursToString = hoursToString
-  buildDateStr = buildDateStr
-  buildTimeStr = buildTimeStr
-  buildDateTimeStr = buildDateTimeStr
+  secondsToString
+  hoursToString
+  buildDateStr
+  buildTimeStr
+  buildDateTimeStr
 })

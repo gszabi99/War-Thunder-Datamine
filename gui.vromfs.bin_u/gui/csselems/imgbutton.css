@@ -106,13 +106,20 @@ imgButton[highlighted=yes] > hoverBg {
 
 imgButton > contentCorner {
   re-type:9rect;
-  pos:pw-w, ph-h;
   position:absolute;
   background-color:@white;
-  background-image:#ui/gameuiskin#item_type_bg_flip.svg;
   background-svg-size:10@dp, 10@dp;
   background-position:5@dp;
   background-repeat:expand-svg;
+}
+
+imgButton > contentCorner[side=right] {
+  pos:pw-w, ph-h;
+  background-image:#ui/gameuiskin#item_type_bg_flip.svg;
+}
+
+imgButton > contentCorner[side=left] {
+  background-image:#ui/gameuiskin#item_type_bg.svg;
 }
 
 LockedImg{

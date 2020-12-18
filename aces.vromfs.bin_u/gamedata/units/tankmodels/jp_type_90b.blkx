@@ -1724,8 +1724,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1737,8 +1756,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -1964,7 +1984,7 @@
           "breechDP": "cannon_breech_dm",
           "autoLoader": true,
           "speedYaw": 30.0,
-          "speedPitch": 4.0,
+          "speedPitch": 10.0,
           "fireConeAngle": 1.0,
           "bullets": 42,
           "salvoAmount": 100.0,
@@ -2184,11 +2204,17 @@
       },
       "tracks": {
         "animationMultiplier": 0.71,
-        "criticalHillAngle": 30.0,
-        "hillClimbingDeclineFricKoef": 15.0,
         "width": 0.55,
-        "height": 0.05,
-        "fricFrontal": [1.1,0.9]
+        "height": 0.07,
+        "fricFrontal": [1.1,0.9],
+        "tracksTensionK": [5.0,10.0,4.0],
+        "trackMesh": "jp_type_90_phys_track_line",
+        "trackLen": 0.171,
+        "trackCount": 88,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackStartOffset": 0.05,
+        "trackMaxHeight": 1.27
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2203,10 +2229,10 @@
       },
       "mechanics": {
         "maxBrakeForce": 250000.0,
-        "driveGearRadius": 0.33,
-        "mainGearRatio": 1.0,
+        "driveGearRadius": 0.3,
+        "mainGearRatio": 0.909,
         "sideGearRatio": 4.2,
-        "neutralGearRatio": 10.0,
+        "neutralGearRatio": 9.0,
         "manufacturer": "mitsubishi",
         "model": "mt1500",
         "type": "auto",
@@ -2801,7 +2827,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2886,7 +2912,7 @@
                 "breechDP": "cannon_breech_dm",
                 "autoLoader": true,
                 "speedYaw": 30.0,
-                "speedPitch": 4.0,
+                "speedPitch": 10.0,
                 "fireConeAngle": 1.0,
                 "bullets": 42,
                 "salvoAmount": 100.0,

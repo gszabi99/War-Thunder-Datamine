@@ -13,6 +13,8 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { needShowChangelog, openChangelog } = require("scripts/changelog/openChangelog.nut")
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning,
+        isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
@@ -208,20 +210,25 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(gameModeChangeButtonObj))
       return
 
-    local gameMode = ::game_mode_manager.getCurrentGameMode()
-    local br = recentBR.value
-    local name = gameMode && gameMode?.text != ""
-      ? gameMode.text + (br > 0 ? ::loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
+    local name = ""
+    if (isMultiplayerPrivilegeAvailable()) {
+      local gameMode = ::game_mode_manager.getCurrentGameMode()
+      local br = recentBR.value
+      name = gameMode && gameMode?.text != ""
+        ? gameMode.text + (br > 0 ? ::loc("mainmenu/BR", {br = format("%.1f", br)}) : "") : ""
 
-    if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
-    {
-      local gameModeId = ::g_squad_manager.getLeaderGameModeId()
-      local leaderBR = ::g_squad_manager.getLeaderBattleRating()
-      if(gameModeId != "")
-        name = ::events.getEventNameText(::events.getEvent(gameModeId))
-      if(leaderBR > 0)
-        name += ::loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+      if (::g_squad_manager.isSquadMember() && ::g_squad_manager.isMeReady())
+      {
+        local gameModeId = ::g_squad_manager.getLeaderGameModeId()
+        local leaderBR = ::g_squad_manager.getLeaderBattleRating()
+        if(gameModeId != "")
+          name = ::events.getEventNameText(::events.getEvent(gameModeId))
+        if(leaderBR > 0)
+          name += ::loc("mainmenu/BR", {br = format("%.1f", leaderBR)})
+      }
     }
+    else
+      name = ::loc("xbox/noMultiplayer")
 
     gameModeChangeButtonObj.findObject("game_mode_change_button_text").setValue(
       name != "" ? name : ::loc("mainmenu/gamemodesNotLoaded")
@@ -416,6 +423,9 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   function onStart()
   {
     if (!suggestAndAllowPsnPremiumFeatures())
+      return
+
+    if (!checkAndShowMultiplayerPrivilegeWarning())
       return
 
     if (!::g_squad_manager.isMeReady())
@@ -1282,6 +1292,10 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   {
     local hasModalObjectVal = guiScene.hasModalObject()
     doWhenActive(@() ::g_popup_msg.showPopupWndIfNeed(hasModalObjectVal))
+  }
+
+  function onEventCrossPlayOptionChanged(p) {
+    setCurrentGameModeName()
   }
 
   function on_show_clan_requests() //FIXME: FUNC in 'on_click' somehow calls

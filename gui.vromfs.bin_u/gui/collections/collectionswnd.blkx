@@ -165,9 +165,21 @@
         }
       ],
       "navBar": {
+        "navLeft": {
+          "padding-left": "1@blockInterval",
+          "CheckBox": {
+            "id": "checkbox_only_uncompleted",
+            "text": "#collection/only_uncompleted",
+            "tooltip": "#collection/only_uncompleted/hint",
+            "on_change_value": "onOnlyUncompletedCheck",
+            "btnName": "Y",
+            "ButtonImg": [],
+            "CheckBoxImg": []
+          }
+        },
         "paginatorPlace": {
           "id": "paginator_place",
-          "left": "0.5pw - 0.5@decorationInfoMaxWidth - 0.5w",
+          "left": "0.5pw - 0.5w",
           "top": "0.5ph + 0.5@navBarTopPadding - 0.5h",
           "smallPaginatorWidth": "yes",
           "position": "absolute"
@@ -202,6 +214,23 @@
               "buttonWink": [],
               "img": {
                 "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_store",
+              "text": "#items/shop/emptyTab/toShopButton",
+              "btnName": "X",
+              "on_click": "onItemsShop",
+              "display": "hide",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": [],
+              "img": {
+                "background-image": "#ui/gameuiskin#store_icon.svg"
               },
               "ButtonImg": []
             }

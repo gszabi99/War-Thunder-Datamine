@@ -1914,6 +1914,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1922,7 +1923,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1934,8 +1954,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }
@@ -2550,7 +2571,16 @@
         "animationMultiplier": -0.63,
         "height": 0.085,
         "width": 0.635,
-        "fricFrontal": [1.5,1.3]
+        "fricFrontal": [1.5,1.3],
+        "tracksTensionK": [11.0,10.0,5.0],
+        "trackMesh": "us_m1_abrams_phys_track_line",
+        "trackLen": 0.192,
+        "trackCount": 78,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.3,
+        "trackStartOffset": 0.08
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2566,8 +2596,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 250000.0,
-        "driveGearRadius": 0.37,
-        "mainGearRatio": 1.9,
+        "driveGearRadius": 0.32,
+        "mainGearRatio": 1.643,
         "sideGearRatio": 6.25,
         "neutralGearRatio": 6.0,
         "manufacturer": "allison",
@@ -2619,7 +2649,7 @@
         "suspensionOffsets": [-0.2,-0.16,0.14],
         "defaultGearRadius": 0.3,
         "frontBackGearRadius": 0.27,
-        "topGearRadius": 0.15,
+        "topGearRadius": 0.12,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -3149,7 +3179,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

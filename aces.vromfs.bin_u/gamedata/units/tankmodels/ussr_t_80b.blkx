@@ -1877,6 +1877,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -1885,7 +1886,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1897,8 +1917,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }
@@ -2450,8 +2471,16 @@
       },
       "tracks": {
         "animationMultiplier": 0.72,
-        "height": 0.045,
-        "width": 0.65
+        "height": 0.065,
+        "width": 0.6,
+        "tracksTensionK": [5.0,10.0,6.0],
+        "trackMesh": "ussr_t_80_phys_track_line",
+        "trackLen": 0.164,
+        "trackCount": 80,
+        "trackFadeTime": 1.5,
+        "trackConnector": true,
+        "trackStartOffset": 0.08,
+        "trackMaxHeight": 1.22
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2467,8 +2496,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 170000.0,
-        "driveGearRadius": 0.47,
-        "mainGearRatio": 1.28,
+        "driveGearRadius": 0.292,
+        "mainGearRatio": 0.795,
         "sideGearRatio": 6.25,
         "gearRatios": [
           {
@@ -2508,9 +2537,9 @@
       },
       "suspension": {
         "suspensionOffsets": [-0.14,-0.14,0.12],
-        "defaultGearRadius": 0.35,
+        "defaultGearRadius": 0.33,
         "frontBackGearRadius": 0.27,
-        "topGearRadius": 0.15,
+        "topGearRadius": 0.08,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -3040,7 +3069,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

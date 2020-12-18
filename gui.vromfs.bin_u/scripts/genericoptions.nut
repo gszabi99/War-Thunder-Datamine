@@ -1,5 +1,6 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 
 class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -236,9 +237,11 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!aerobaticsSmokeOptions.len())
       return
 
-    local show = (::get_option_aerobatics_smoke_type() > ::MAX_AEROBATICS_SMOKE_INDEX * 2);
-    foreach(option in aerobaticsSmokeOptions)
-      showOptionRow(option, show)
+    local curHeaderOptions = getOptionsListForCurrentHeader()
+    local show = isTripleColorSmokeAvailable()
+    foreach(option in aerobaticsSmokeOptions) {
+      showOptionRow(option, show && curHeaderOptions.contains(option.type))
+    }
   }
 
   function getOptionObj(option) {
@@ -787,6 +790,28 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
         return
       }
     }
+  }
+
+  function getOptionsListForCurrentHeader() {
+    local curNavItem = navigationHandlerWeak?.getCurrentItem()
+    if (!curNavItem)
+      return []
+
+    local activeOptionsList = getCurrentOptionsList()
+    local isReqBlock = false
+
+    local res = []
+    foreach (opt in activeOptionsList) {
+      if (opt.controlType == optionControlType.HEADER) {
+        isReqBlock = opt.id == curNavItem.id
+        continue
+      }
+
+      if (isReqBlock)
+        res.append(opt.type)
+    }
+
+    return res
   }
 
   function getSelectedOption()

@@ -885,8 +885,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -898,8 +917,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -1099,8 +1119,15 @@
       },
       "tracks": {
         "animationMultiplier": -0.5,
-        "height": 0.035,
-        "width": 0.25
+        "height": 0.075,
+        "width": 0.25,
+        "tracksTensionK": [4.0,7.0,1.5],
+        "trackMesh": "jp_type_97_chi_ha_phys_track_line",
+        "trackLen": 0.122,
+        "trackCount": 96,
+        "trackFadeTime": 1.1,
+        "trackMaxHeight": 1.17,
+        "trackStartOffset": 0.02
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -1141,7 +1168,7 @@
         "suspensionOffsets": [-0.2,-0.1,0.06],
         "defaultGearRadius": 0.28,
         "topGearRadius": 0.13,
-        "frontBackGearRadius": 0.287,
+        "frontBackGearRadius": 0.31,
         "defaultDampeningForce": [30000.0,30000.0],
         "dampeningRelaxationRatio": 0.4,
         "dampeningCompressionRatio": 0.15
@@ -1773,7 +1800,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

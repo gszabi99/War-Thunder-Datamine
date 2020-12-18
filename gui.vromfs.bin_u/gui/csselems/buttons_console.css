@@ -792,8 +792,8 @@ Button_text[visualStyle=noFrame][isColoredImg=yes] > img {
 
 Button_text.image:pushed > img,
 Button_text[visualStyle=noFrame][isColoredImg=yes]:pushed > img,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrame] > img,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrameGold] > img
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrame] > img,
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrameGold] > img
 {
   background-color: @buttonFontColorPushed;
 }
@@ -1261,16 +1261,16 @@ Button_text[visualStyle=noFrame]:hover > text {
 }
 
 Button_text[visualStyle=noFrame]:pushed,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrame] {
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrame] {
   background-color: @menuButtonColorPushed;
   border-color:@menuButtonBorderColorPushed;
 }
 
 Button_text[visualStyle=noFrame]:pushed,
 Button_text[visualStyle=noFrame]:pushed > btnText,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrame] > btnText,
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrame] > btnText,
 Button_text[visualStyle=noFrameGold]:pushed > btnText,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrameGold] > btnText
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrameGold] > btnText
 {
   color: @menuButtonTextColorPushed;
 }
@@ -1281,9 +1281,9 @@ Button_text[visualStyle=noFrameGold]:hover > img {
 }
 
 Button_text[visualStyle=noFrame]:pushed > img,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrame] > img,
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrame] > img,
 Button_text[visualStyle=noFrameGold]:pushed > img,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrameGold] > img {
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrameGold] > img {
   background-color: @menuButtonTextColorPushed;
 }
 
@@ -1332,7 +1332,7 @@ Button_text[visualStyle=noFrameGold]:hover {
 }
 
 Button_text[visualStyle=noFrameGold]:pushed,
-.dropDown[stickHover=yes] > Button_text[visualStyle=noFrameGold] {
+.dropDown[forceMove=open] > Button_text[visualStyle=noFrameGold] {
   background-color:@goldButtonPushedColor;
 }
 
@@ -2470,6 +2470,7 @@ Button_text[visualStyle=bigImg] {
   margin: 0;
   border: no;
   background-color: @black;
+  padding-left:0;
 }
 
 Button_text[visualStyle=bigImg] > text {

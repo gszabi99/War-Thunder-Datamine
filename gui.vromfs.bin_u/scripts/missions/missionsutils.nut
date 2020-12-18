@@ -197,40 +197,6 @@ global enum MIS_PROGRESS //value received from get_mission_progress
   return rewText
 }
 
-::getRewardTextByBlk <- function getRewardTextByBlk(dataBlk, misName, diff, langId, highlighted=false, coloredIcon=false,
-                            additionalReward = false, rewardMoney = null)
-{
-  local res = ""
-  local misDataBlk = dataBlk?[misName]
-
-  if (!rewardMoney)
-  {
-    local getRewValue = function(key, def = 0) {
-      local pId = key + "EarnedWinDiff" + diff
-      return misDataBlk?[pId] ?? dataBlk?[pId] ?? def
-    }
-
-    local muls = ::get_player_multipliers()
-    rewardMoney = ::Cost(getRewValue("wp") * muls.wpMultiplier,
-                            getRewValue("gold"),
-                            0,
-                            getRewValue("xp") * muls.xpMultiplier)
-  }
-
-  res = ::buildRewardText(::loc(langId), rewardMoney, highlighted, coloredIcon, additionalReward)
-  if (diff == 0 && misDataBlk?.slot)
-  {
-    local slot = misDataBlk.slot;
-    foreach(c in ::g_crews_list.get())
-      if (c.crews.len() < slot || (c.crews.len() == slot && c.crews[slot-1].isEmpty == 1))
-      {
-        res += ((res=="")? "" : ", ") + ::loc("options/crewName") + slot
-        break
-      }
-  }
-  return res
-}
-
 ::add_mission_list_full <- function add_mission_list_full(gm_builder, add, dynlist)
 {
   add_custom_mission_list_full(gm_builder, add, dynlist)

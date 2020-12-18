@@ -329,6 +329,22 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/planes/simulator/saipan/cr_carriers_template_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -369,6 +385,25 @@
             "value": true,
             "var": "sbt_is_launch_alowed"
           }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "cr_is_detect_on"
+          }
+        },
+        {
+          "varSetBool": [
+            {
+              "value": true
+            },
+            {
+              "var": "cr_t1_carriers_alowed"
+            },
+            {
+              "var": "cr_t2_carriers_alowed"
+            }
+          ]
         },
         {
           "comment": {

@@ -263,9 +263,11 @@
         "ex_decor_r_03_dm": [],
         "ex_decor_r_04_dm": [],
         "ex_decor_r_05_dm": [],
+        "ex_decor_r_06_dm": [],
+        "ex_decor_r_07_dm": [],
+        "ex_decor_r_08_dm": [],
         "ex_decor_r_09_dm": [],
         "ex_decor_r_10_dm": [],
-        "ex_decor_r_11_dm": [],
         "ex_decor_r_12_dm": [],
         "ex_decor_r_14_dm": [],
         "ex_decor_l_01_dm": [],
@@ -274,7 +276,10 @@
         "ex_decor_l_04_dm": [],
         "ex_decor_l_05_dm": [],
         "ex_decor_l_06_dm": [],
+        "ex_decor_l_07_dm": [],
         "ex_decor_l_08_dm": [],
+        "ex_decor_l_09_dm": [],
+        "ex_decor_l_10_dm": [],
         "ex_decor_l_13_dm": [],
         "ex_decor_l_15_dm": [],
         "timber": {
@@ -283,7 +288,7 @@
           "hp": 250.0,
           "armorEffectiveThicknessMax": 100.0,
           "hidableInViewer": true,
-          "ex_decor_r_07_dm": []
+          "ex_decor_r_11_dm": []
         }
       },
       "optics": {
@@ -1097,7 +1102,14 @@
       "tracks": {
         "animationMultiplier": 0.72,
         "height": 0.045,
-        "width": 0.65
+        "width": 0.65,
+        "tracksTensionK": [4.0,10.0,3.0],
+        "trackMesh": "ussr_t_10_phys_track_line",
+        "trackLen": 0.16,
+        "trackCount": 88,
+        "trackFadeTime": 1.1,
+        "trackMaxHeight": 1.12,
+        "trackStartOffset": 0.04
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -1683,7 +1695,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2878,6 +2890,7 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.2,
+              "expl": 0.2,
               "damage": 200.0,
               "fHitCritical": true
             }
@@ -2886,7 +2899,26 @@
             "onHit": {
               "damageType": "generic",
               "fire": 0.4,
+              "expl": 0.25,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.45,
+              "expl": 0.45,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -2898,8 +2930,9 @@
           },
           {
             "onKill": {
-              "fire": 0.25,
-              "nothing": 0.75,
+              "fire": 0.35,
+              "expl": 0.35,
+              "nothing": 0.3,
               "fHitCritical": true
             }
           }

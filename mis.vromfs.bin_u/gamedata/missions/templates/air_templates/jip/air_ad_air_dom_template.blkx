@@ -12,10 +12,10 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -581,6 +581,15 @@
           }
         },
         {
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "ad_search_upper_idx",
+            "use_variable": true,
+            "var_value": "flt_offset"
+          }
+        },
+        {
           "varSetString": {
             "value": "flt_area_",
             "var": "ad_search_upper_name"
@@ -637,6 +646,15 @@
             "var": "ad_search_bottom_idx",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ad_search_bottom_idx",
+            "use_variable": true,
+            "var_value": "flt_offset"
           }
         },
         {
@@ -1610,13 +1628,17 @@
             "timeMultiplier": 10.0,
             "disableZone": true,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "@ad_zone_name",
             "canCaptureOnGround": false,
             "canCaptureInAir": true,
             "canCaptureByGM": false,
             "onlyPlayersCanCapture": true,
             "silent_mode": true,
-            "captureNoPenalty": true
+            "captureNoPenalty": true,
+            "zoneDefenders": []
           }
         },
         {
@@ -1779,13 +1801,17 @@
             "timeMultiplier": 10.0,
             "disableZone": true,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "@ad_zone_name",
             "canCaptureOnGround": false,
             "canCaptureInAir": true,
             "canCaptureByGM": false,
             "onlyPlayersCanCapture": true,
             "silent_mode": true,
-            "captureNoPenalty": true
+            "captureNoPenalty": true,
+            "zoneDefenders": []
           }
         },
         {
@@ -1926,13 +1952,17 @@
             "timeMultiplier": 10.0,
             "disableZone": true,
             "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
             "target": "@ad_zone_name",
             "canCaptureOnGround": false,
             "canCaptureInAir": true,
             "canCaptureByGM": false,
             "onlyPlayersCanCapture": true,
             "silent_mode": true,
-            "captureNoPenalty": true
+            "captureNoPenalty": true,
+            "zoneDefenders": []
           }
         },
         {
@@ -2727,6 +2757,9 @@
           "timeMultiplier": 20.0,
           "disableZone": false,
           "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
           "target": "@ad_zone_name",
           "canCaptureOnGround": false,
           "playAirfieldSound": false,
@@ -2736,6 +2769,7 @@
           "zoneType": "supremacy",
           "silent_mode": true,
           "captureNoPenalty": true,
+          "zoneDefenders": [],
           "tags": {
             "type_fighter": true
           }
@@ -2747,6 +2781,9 @@
           "timeMultiplier": 10.0,
           "disableZone": false,
           "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
           "target": "@ad_zone_name",
           "canCaptureOnGround": false,
           "playAirfieldSound": false,
@@ -2755,7 +2792,8 @@
           "onlyPlayersCanCapture": true,
           "zoneType": "supremacy",
           "silent_mode": true,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": []
         }
       }
     },

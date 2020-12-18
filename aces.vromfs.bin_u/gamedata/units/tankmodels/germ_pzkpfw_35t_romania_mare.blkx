@@ -1355,8 +1355,27 @@
         {
           "onHit": {
             "damageType": "generic",
-            "fire": 0.8,
+            "fire": 0.7,
+            "expl": 0.1,
             "damage": 300.0,
+            "fHitCritical": true
+          }
+        },
+        {
+          "onHit": {
+            "damageType": "generic",
+            "fire": 0.5,
+            "expl": 0.5,
+            "damage": 400.0,
+            "fHitCritical": true
+          }
+        },
+        {
+          "onHit": {
+            "damageType": "generic",
+            "fire": 0.2,
+            "expl": 0.8,
+            "damage": 600.0,
             "fHitCritical": true
           }
         },
@@ -1368,8 +1387,9 @@
         },
         {
           "onKill": {
-            "fire": 0.3,
-            "nothing": 0.7,
+            "fire": 0.5,
+            "expl": 0.3,
+            "nothing": 0.2,
             "fHitCritical": true
           }
         }
@@ -2333,7 +2353,7 @@
       "event": {
         "name": "fuel_internal",
         "fx": {
-          "name": "tank_engine_fire",
+          "name": "tank_ex_fuel_explosion",
           "centerDmgPart": true
         }
       }
@@ -2398,10 +2418,14 @@
     }
   },
   "default_skin": {
-    "name": "default",
     "replace_tex": {
       "from": "ger_camo_grey*",
       "to": "ussr_camo_winter*"
+    },
+    "set_tex": {
+      "from": "pzkpfw_35t_body_c*",
+      "to": "pzkpfw_35t_skin_body_c*",
+      "param": "camo_skin_tex"
     }
   },
   "skin": {
@@ -2411,18 +2435,11 @@
     "replace_tex": {
       "from": "ger_camo_grey*",
       "to": "us_camo_olive_late*"
+    },
+    "set_tex": {
+      "from": "pzkpfw_35t_body_c*",
+      "to": "pzkpfw_35t_skin_body_c*",
+      "param": "camo_skin_tex"
     }
-  },
-  "defaultDecals": {
-    "decal0Line0": [0.0,-2.18557e-07,5.0,-2.46811],
-    "decal0Line1": [0.0,-5.0,-2.18557e-07,7.40336],
-    "decal0HaveCP": true,
-    "decal0CP": [-0.462563,1.57737,1.52394],
-    "decal0CPNormDepth": [1.0,0.0,0.0,-1.47782],
-    "decal0RotScale": [1.5708,0.2],
-    "decal0Mirrored": false,
-    "decal0Wrap": false,
-    "decal0Abs": false,
-    "decal0Tex": "rum_tank_emblem_00"
   }
 }

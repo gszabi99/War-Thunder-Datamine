@@ -7,6 +7,7 @@ local { isChatEnabled, attemptShowOverlayMessage,
 local { updateContactsStatusByContacts } = require("scripts/contacts/updateContactsStatus.nut")
 
 local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
+local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
 
 //-----------------------------
 // params keys:
@@ -223,6 +224,8 @@ local getActions = function(contact, params)
         action = function() {
           if (!canInteractCrossConsole)
             showNotAvailableActionPopup()
+          else if (!checkAndShowMultiplayerPrivilegeWarning())
+            return
           else if (!canInteractCrossPlatform) {
             if (!::xbox_try_show_crossnetwork_message())
               showCrossNetworkPlayRestrictionMsgBox()

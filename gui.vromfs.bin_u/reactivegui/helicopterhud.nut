@@ -506,7 +506,7 @@ local function mkRadar(colorStyle) {
   local radarSize = radarVisible ? sh(28) : sh(8)
   if (radarVisible || !CollapsedIcon.value){
     return {
-      children = radarComponent.radar(false, radarPosX, radarPosY, radarSize, true, colorStyle.color)
+      children = radarComponent.mkRadar(radarPosX, radarPosY, radarSize, true, colorStyle.color)
     }
   }
   else if (radarComponent.state.IsRadarHudVisible.value){

@@ -1,7 +1,8 @@
+require("scripts/ui_globals.nut")
+
 local __string = require("string")
 foreach (name, func in require("dagor.localize"))
   ::dagor[name] <- func
-::loc <- require("dagor.localize").loc
 
 ::regexp<-__string.regexp
 ::split <-__string.split
@@ -15,9 +16,6 @@ local __math = require("math")
 local frp = require("frp")
 ::Watched <- frp.Watched
 ::Computed <-frp.Computed
-
-::utf8 <- require("utf8")
-::regexp2 <- require("regexp2")
 
 ::script_protocol_version <- null
 require("scripts/version.nut")
@@ -268,6 +266,7 @@ global enum SEEN {
   WARBONDS_SHOP = "warbondsShop"
   EXT_XBOX_SHOP = "ext_xbox_shop"
   EXT_PS4_SHOP  = "ext_ps4_shop"
+  EXT_EPIC_SHOP = "ext_epic_shop"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"
@@ -375,7 +374,6 @@ foreach (fn in [
   "scripts/options/optionsExtNames.nut"
   "scripts/options/fonts.nut"
   "scripts/options/consoleMode.nut"
-  "scripts/options/optionsManager.nut"
   "scripts/options/optionsBeforeLogin.nut"
 
   //probably used before login on ps4
@@ -510,6 +508,7 @@ local isFullScriptsLoaded = false
     "gamercard.nut"
     "popups/popups.nut"
     "popups/popup.nut"
+    "popups/popupFilter.nut"
 
     "wheelmenu/wheelmenu.nut"
     "guiLines.nut"

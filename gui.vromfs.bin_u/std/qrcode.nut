@@ -786,6 +786,6 @@ local function generateQrBlocks(data) {
 }
 
 return {
-  generateQrArray = generateQrArray
-  generateQrBlocks = generateQrBlocks
+  generateQrArray
+  generateQrBlocks
 }

@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -66,29 +66,6 @@
           "varSetString": {
             "value": "cr_t2_carrier",
             "var": "cr_t2_carrier_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "cr_t1_carrier_fleet_01",
-            "var": "cr_t1_carrier_fleet_01_name"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "cr_t1_carrier_fleet_02",
-            "var": "cr_t1_carrier_fleet_02_name"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "cr_t1_carrier_fleet_03",
-            "var": "cr_t1_carrier_fleet_03_name"
           }
         },
         {
@@ -152,7 +129,7 @@
           },
           {
             "comment": {
-              "value": "создаем имя спавн точки"
+              "value": "создаем имя спавн точки авианосца"
             }
           },
           {
@@ -170,6 +147,56 @@
           },
           {
             "comment": {
+              "value": "создаем имя спавн точки флота"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "cr_t1_fleet_spawn_point_",
+              "var": "cr_t1_fleet_spawn_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@cr_t1_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t1_fleet_spawn_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем есть ли нужные объекты"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "cr_t1_carriers_continue"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerDisable": {
+            "target": "cr_t1_carriers_start"
+          }
+        }
+      },
+      "cr_t1_carriers_continue": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
               "value": "создаем имя пути движения"
             }
           },
@@ -184,6 +211,24 @@
               "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
               "var": "cr_t1_carrier_route_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя свкада"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "cr_t1_carrier_squad_",
+              "var": "cr_t1_carrier_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@cr_t1_respawns_left",
+              "digits": 2,
+              "var": "cr_t1_carrier_squad_name"
             }
           },
           {
@@ -236,7 +281,7 @@
           },
           {
             "comment": {
-              "value": "создаем имя спавн точки"
+              "value": "создаем имя спавн точки авианосца"
             }
           },
           {
@@ -254,6 +299,56 @@
           },
           {
             "comment": {
+              "value": "создаем имя спавн точки флота"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "cr_t2_fleet_spawn_point_",
+              "var": "cr_t2_fleet_spawn_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@cr_t2_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t2_fleet_spawn_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем есть ли нужные объекты"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "cr_t2_carriers_continue"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerDisable": {
+            "target": "cr_t2_carriers_start"
+          }
+        }
+      },
+      "cr_t2_carriers_continue": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
               "value": "создаем имя пути движения"
             }
           },
@@ -268,6 +363,24 @@
               "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
               "var": "cr_t2_carrier_route_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя свкада"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "cr_t2_carrier_squad_",
+              "var": "cr_t2_carrier_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@cr_t2_respawns_left",
+              "digits": 2,
+              "var": "cr_t2_carrier_squad_name"
             }
           },
           {
@@ -296,7 +409,9 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "periodicEvent": {
+            "time": 1.0
+          }
         },
         "conditions": [
           {
@@ -327,6 +442,23 @@
             }
           },
           {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "dst_t1_destroyers_squad",
+              "object_type": "isInactive",
+              "target": "@cr_t1_fleet_spawn_name",
+              "randomObjectsCount": 3,
+              "resetFormation": true,
+              "formation": {
+                "formation_type": "rows",
+                "formation_div": 2,
+                "formation_step": [12.0,3.0],
+                "formation_noise": [0.3,0.2]
+              }
+            }
+          },
+          {
             "comment": {
               "value": "назначаем точность зениткам"
             }
@@ -337,34 +469,13 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
+              "targetChangeProf": 0.25,
               "object": "@cr_t1_carrier_name",
               "accuracy": 0.8,
               "effShootingRate": 0.8,
               "airEffShootingRate": 0.8,
               "fireRandom": true,
-              "targetChangeInterval": 5.0,
-              "targetChangeProf": 0.25
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "__wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем путь"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_carrier_route_name",
-              "object": "@cr_t1_carrier_name"
+              "targetChangeInterval": 5.0
             }
           },
           {
@@ -386,12 +497,14 @@
               "canSpawnOnNeutral": false,
               "showOnMap": true,
               "radius": -1.0,
-              "separate_fuel_time": false,
-              "modular_airfield": false,
+              "resetStrictSpawnIndex": false,
+              "forceCreate": false,
+              "replaceAreas": false,
               "target": "@cr_t1_carrier_name",
               "team": "A",
               "object": "@cr_t1_carrier_name",
-              "offset": [0.0,0.0,0.0],
+              "separate_fuel_time": false,
+              "modular_airfield": false,
               "tags": {
                 "carrier_take_off": true
               }
@@ -440,7 +553,9 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "periodicEvent": {
+            "time": 1.0
+          }
         },
         "conditions": [
           {
@@ -471,6 +586,23 @@
             }
           },
           {
+            "unitRespawn": {
+              "delay": 0.0,
+              "offset": [0.0,0.0,0.0],
+              "object": "dst_t2_destroyers_squad",
+              "object_type": "isInactive",
+              "target": "@cr_t2_fleet_spawn_name",
+              "randomObjectsCount": 3,
+              "resetFormation": true,
+              "formation": {
+                "formation_type": "rows",
+                "formation_div": 2,
+                "formation_step": [12.0,3.0],
+                "formation_noise": [0.3,0.2]
+              }
+            }
+          },
+          {
             "comment": {
               "value": "назначаем точность зениткам"
             }
@@ -481,34 +613,18 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0,
+              "targetChangeProf": 0.25,
               "object": "@cr_t2_carrier_name",
               "accuracy": 0.8,
               "effShootingRate": 0.8,
               "airEffShootingRate": 0.8,
               "fireRandom": true,
-              "targetChangeInterval": 5.0,
-              "targetChangeProf": 0.25
+              "targetChangeInterval": 5.0
             }
           },
           {
             "comment": {
               "value": ""
-            }
-          },
-          {
-            "__wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем путь"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_carrier_route_name",
-              "object": "@cr_t2_carrier_name"
             }
           },
           {
@@ -530,12 +646,14 @@
               "canSpawnOnNeutral": false,
               "showOnMap": true,
               "radius": -1.0,
-              "separate_fuel_time": false,
-              "modular_airfield": false,
+              "resetStrictSpawnIndex": false,
+              "forceCreate": false,
+              "replaceAreas": false,
               "target": "@cr_t2_carrier_name",
               "team": "B",
               "object": "@cr_t2_carrier_name",
-              "offset": [0.0,0.0,0.0],
+              "separate_fuel_time": false,
+              "modular_airfield": false,
               "tags": {
                 "carrier_take_off": true
               }
@@ -584,112 +702,76 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_01_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_02_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_03_name",
-              "type": "unit"
-            }
+          "periodicEvent": {
+            "time": 1.0
           }
-        ],
+        },
+        "conditions": {
+          "unitDistanceBetween": [
+            {
+              "value": 2500.0
+            },
+            {
+              "math": "2D"
+            },
+            {
+              "object_type": "isActive"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "target_type": "isActive"
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "check_targets": "any"
+            },
+            {
+              "object": "@cr_t1_carrier_spawn_name"
+            },
+            {
+              "target": "@cr_t1_carrier_name"
+            },
+            {
+              "target": "dst_t1_destroyers_squad"
+            },
+            {
+              "compareCenters": false
+            },
+            {
+              "check_all_units": true
+            }
+          ]
+        },
         "actions": [
           {
-            "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [450.0,0.0,450.0],
-              "object": "@cr_t1_carrier_fleet_01_name",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [-350.0,0.0,0.0],
-              "object": "@cr_t1_carrier_fleet_02_name",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,-350.0],
-              "object": "@cr_t1_carrier_fleet_03_name",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
-            "unitSetProperties": [
+            "makeSquadFromUnits": [
+              {
+                "name": "@cr_t1_carrier_squad_name"
+              },
               {
                 "object_marking": 0
               },
               {
-                "object_var_name": ""
+                "object": "@cr_t1_carrier_name"
               },
               {
-                "object_var_comp_op": "equal"
+                "object": "dst_t1_destroyers_squad"
               },
               {
-                "object_var_value": 0
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_01_name"
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_02_name"
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_03_name"
-              },
-              {
-                "accuracy": 0.3
-              },
-              {
-                "effShootingRate": 0.3
-              },
-              {
-                "airEffShootingRate": 0.3
-              },
-              {
-                "enableShipCollisionAvoidance": true
-              },
-              {
-                "advancedCollisionAvoidance": true
-              },
-              {
-                "ignoreCollisions": false
-              },
-              {
-                "fireRandom": true
-              },
-              {
-                "targetChangeInterval": 5.0
-              },
-              {
-                "targetChangeProf": 0.25
+                "useForTriggerFiltered": true
               }
             ]
           },
@@ -699,33 +781,39 @@
             }
           },
           {
-            "wait": {
-              "time": 1.0
-            }
+            "setHeadSquad": [
+              {
+                "name": "@cr_t1_carrier_squad_name"
+              },
+              {
+                "removeOnKill": true
+              },
+              {
+                "followLowestSpeed": true
+              },
+              {
+                "useCurrentFormation": true
+              },
+              {
+                "object": "@cr_t1_carrier_name"
+              },
+              {
+                "object": "dst_t1_destroyers_squad"
+              },
+              {
+                "useForTriggerFiltered": true
+              }
+            ]
           },
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": ""
             }
           },
           {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_01",
-              "digits": 0,
-              "var": "cr_t1_fleet_01_route_name"
+            "unitLoadBehTree": {
+              "name": "shipBot",
+              "objects": "@cr_t1_carrier_squad_name"
             }
           },
           {
@@ -734,71 +822,12 @@
             }
           },
           {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_02",
-              "digits": 2,
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_03",
-              "digits": 2,
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем движение"
-            }
-          },
-          {
             "unitSetRoute": {
-              "route": "@cr_t1_fleet_01_route_name",
-              "object": "@cr_t1_carrier_fleet_01_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_fleet_02_route_name",
-              "object": "@cr_t1_carrier_fleet_02_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_fleet_03_route_name",
-              "object": "@cr_t1_carrier_fleet_03_name"
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "route": "@cr_t1_carrier_route_name",
+              "teleportToStart": false,
+              "object": "@cr_t1_carrier_squad_name"
             }
           }
         ],
@@ -813,112 +842,76 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_01_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_02_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_03_name",
-              "type": "unit"
-            }
+          "periodicEvent": {
+            "time": 1.0
           }
-        ],
+        },
+        "conditions": {
+          "unitDistanceBetween": [
+            {
+              "value": 2500.0
+            },
+            {
+              "math": "2D"
+            },
+            {
+              "object_type": "isActive"
+            },
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "target_type": "isActive"
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "check_objects": "any"
+            },
+            {
+              "check_targets": "any"
+            },
+            {
+              "object": "@cr_t2_carrier_spawn_name"
+            },
+            {
+              "target": "@cr_t2_carrier_name"
+            },
+            {
+              "target": "dst_t2_destroyers_squad"
+            },
+            {
+              "compareCenters": false
+            },
+            {
+              "check_all_units": true
+            }
+          ]
+        },
         "actions": [
           {
-            "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [450.0,0.0,450.0],
-              "object": "@cr_t2_carrier_fleet_01_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [-350.0,0.0,0.0],
-              "object": "@cr_t2_carrier_fleet_02_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,-350.0],
-              "object": "@cr_t2_carrier_fleet_03_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
-            "unitSetProperties": [
+            "makeSquadFromUnits": [
+              {
+                "name": "@cr_t2_carrier_squad_name"
+              },
               {
                 "object_marking": 0
               },
               {
-                "object_var_name": ""
+                "object": "@cr_t2_carrier_name"
               },
               {
-                "object_var_comp_op": "equal"
+                "object": "dst_t2_destroyers_squad"
               },
               {
-                "object_var_value": 0
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_01_name"
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_02_name"
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_03_name"
-              },
-              {
-                "accuracy": 0.3
-              },
-              {
-                "effShootingRate": 0.3
-              },
-              {
-                "airEffShootingRate": 0.3
-              },
-              {
-                "enableShipCollisionAvoidance": true
-              },
-              {
-                "advancedCollisionAvoidance": true
-              },
-              {
-                "ignoreCollisions": false
-              },
-              {
-                "fireRandom": true
-              },
-              {
-                "targetChangeInterval": 5.0
-              },
-              {
-                "targetChangeProf": 0.25
+                "useForTriggerFiltered": true
               }
             ]
           },
@@ -928,33 +921,39 @@
             }
           },
           {
-            "wait": {
-              "time": 1.0
-            }
+            "setHeadSquad": [
+              {
+                "name": "@cr_t2_carrier_squad_name"
+              },
+              {
+                "removeOnKill": true
+              },
+              {
+                "followLowestSpeed": true
+              },
+              {
+                "useCurrentFormation": true
+              },
+              {
+                "object": "@cr_t2_carrier_name"
+              },
+              {
+                "object": "dst_t2_destroyers_squad"
+              },
+              {
+                "useForTriggerFiltered": true
+              }
+            ]
           },
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": ""
             }
           },
           {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_01",
-              "digits": 0,
-              "var": "cr_t2_fleet_01_route_name"
+            "unitLoadBehTree": {
+              "name": "shipBot",
+              "objects": "@cr_t2_carrier_squad_name"
             }
           },
           {
@@ -963,71 +962,12 @@
             }
           },
           {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_02",
-              "digits": 2,
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_03",
-              "digits": 2,
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем движение"
-            }
-          },
-          {
             "unitSetRoute": {
-              "route": "@cr_t2_fleet_01_route_name",
-              "object": "@cr_t2_carrier_fleet_01_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_fleet_02_route_name",
-              "object": "@cr_t2_carrier_fleet_02_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_fleet_03_route_name",
-              "object": "@cr_t2_carrier_fleet_03_name"
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "route": "@cr_t2_carrier_route_name",
+              "teleportToStart": false,
+              "object": "@cr_t2_carrier_squad_name"
             }
           }
         ],
@@ -1067,46 +1007,46 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя респауна"
-            }
-          },
-          {
             "varSetRandomInt": {
-              "var": "cr_t1_carrier_respawn_idx",
+              "var": "cr_t1_carrier_random_idx",
               "from": 1,
               "to_not_including": 5
             }
           },
           {
+            "comment": {
+              "value": "создаем имя респауна"
+            }
+          },
+          {
             "varSetString": {
-              "value": "cr_t1_carrier_spawn_point_",
+              "value": "cr_t1_carrier_respawn_point_",
               "var": "cr_t1_carrier_spawn_name"
             }
           },
           {
             "varAddString": {
-              "value": "@cr_t1_carrier_respawn_idx",
+              "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
               "var": "cr_t1_carrier_spawn_name"
             }
           },
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": "создаем имя респауна"
             }
           },
           {
             "varSetString": {
-              "value": "cr_t1_carrier_route_",
-              "var": "cr_t1_carrier_route_name"
+              "value": "cr_t1_fleet_respawn_point_",
+              "var": "cr_t1_fleet_spawn_name"
             }
           },
           {
             "varAddString": {
-              "value": "@cr_t1_carrier_respawn_idx",
+              "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t1_carrier_route_name"
+              "var": "cr_t1_fleet_spawn_name"
             }
           },
           {
@@ -1115,38 +1055,17 @@
             }
           },
           {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@cr_t1_carrier_name",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем путь"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_carrier_route_name",
-              "object": "@cr_t1_carrier_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "пытаемся отспавнить корабли сопровождения"
-            }
-          },
-          {
             "triggerEnable": {
-              "target": "cr_t1_fleet_respawn_check"
+              "target": "cr_t1_carriers_continue"
             }
           }
         ],
         "else_actions": {
           "comment": {
             "value": "респавны кончились"
+          },
+          "triggerDisable": {
+            "target": "cr_t1_carrier_respawn_timer"
           }
         }
       },
@@ -1164,7 +1083,13 @@
             "var": "cr_t2_carrier_respawn_time"
           }
         },
-        "conditions": [],
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cr_t2_respawns_left",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
         "actions": [
           {
             "varModify": {
@@ -1174,46 +1099,46 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя респауна"
-            }
-          },
-          {
             "varSetRandomInt": {
-              "var": "cr_t2_carrier_respawn_idx",
+              "var": "cr_t2_carrier_random_idx",
               "from": 1,
               "to_not_including": 5
             }
           },
           {
+            "comment": {
+              "value": "создаем имя респауна"
+            }
+          },
+          {
             "varSetString": {
-              "value": "cr_t2_carrier_spawn_point_",
+              "value": "cr_t2_carrier_respawn_point_",
               "var": "cr_t2_carrier_spawn_name"
             }
           },
           {
             "varAddString": {
-              "value": "@cr_t2_carrier_respawn_idx",
+              "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
               "var": "cr_t2_carrier_spawn_name"
             }
           },
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": "создаем имя респауна"
             }
           },
           {
             "varSetString": {
-              "value": "cr_t2_carrier_route_",
-              "var": "cr_t2_carrier_route_name"
+              "value": "cr_t2_fleet_respawn_point_",
+              "var": "cr_t2_fleet_spawn_name"
             }
           },
           {
             "varAddString": {
-              "value": "@cr_t2_carrier_respawn_idx",
+              "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t2_carrier_route_name"
+              "var": "cr_t2_fleet_spawn_name"
             }
           },
           {
@@ -1222,503 +1147,19 @@
             }
           },
           {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,0.0],
-              "object": "@cr_t2_carrier_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем путь"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_carrier_route_name",
-              "object": "@cr_t2_carrier_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "пытаемся отспавнить корабли сопровождения"
-            }
-          },
-          {
             "triggerEnable": {
-              "target": "cr_t2_fleet_respawn_check"
+              "target": "cr_t2_carriers_continue"
             }
           }
         ],
         "else_actions": {
           "comment": {
             "value": "респавны кончились"
+          },
+          "triggerDisable": {
+            "target": "cr_t2_carrier_respawn_timer"
           }
         }
-      },
-      "cr_t1_fleet_respawn_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_01_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_02_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t1_carrier_fleet_03_name",
-              "type": "unit"
-            }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [450.0,0.0,450.0],
-              "object": "@cr_t1_carrier_fleet_01_name",
-              "object_type": "isInactive",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [-350.0,0.0,0.0],
-              "object": "@cr_t1_carrier_fleet_02_name",
-              "object_type": "isInactive",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,-350.0],
-              "object": "@cr_t1_carrier_fleet_03_name",
-              "object_type": "isInactive",
-              "target": "@cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
-            "unitSetProperties": [
-              {
-                "object_marking": 0
-              },
-              {
-                "object_var_name": ""
-              },
-              {
-                "object_var_comp_op": "equal"
-              },
-              {
-                "object_var_value": 0
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_01_name"
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_02_name"
-              },
-              {
-                "object": "@cr_t1_carrier_fleet_03_name"
-              },
-              {
-                "accuracy": 0.3
-              },
-              {
-                "effShootingRate": 0.3
-              },
-              {
-                "airEffShootingRate": 0.3
-              },
-              {
-                "fireRandom": true
-              },
-              {
-                "targetChangeInterval": 5.0
-              },
-              {
-                "targetChangeProf": 0.25
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя пути движения"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_01",
-              "digits": 0,
-              "var": "cr_t1_fleet_01_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_02",
-              "digits": 2,
-              "var": "cr_t1_fleet_02_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t1_fleet_route_",
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_03",
-              "digits": 2,
-              "var": "cr_t1_fleet_03_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем движение"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_fleet_01_route_name",
-              "object": "@cr_t1_carrier_fleet_01_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_fleet_02_route_name",
-              "object": "@cr_t1_carrier_fleet_02_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t1_fleet_03_route_name",
-              "object": "@cr_t1_carrier_fleet_03_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "включаем отслеживание перерождения"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "cr_t1_carrier_dead_start"
-            }
-          }
-        ],
-        "else_actions": []
-      },
-      "cr_t2_fleet_respawn_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_01_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_02_name",
-              "type": "unit"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@cr_t2_carrier_fleet_03_name",
-              "type": "unit"
-            }
-          }
-        ],
-        "actions": [
-          {
-            "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [450.0,0.0,450.0],
-              "object": "@cr_t2_carrier_fleet_01_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [-350.0,0.0,0.0],
-              "object": "@cr_t2_carrier_fleet_02_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 1.0,
-              "offset": [0.0,0.0,-350.0],
-              "object": "@cr_t2_carrier_fleet_03_name",
-              "target": "@cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
-            "unitSetProperties": [
-              {
-                "object_marking": 0
-              },
-              {
-                "object_var_name": ""
-              },
-              {
-                "object_var_comp_op": "equal"
-              },
-              {
-                "object_var_value": 0
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_01_name"
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_02_name"
-              },
-              {
-                "object": "@cr_t2_carrier_fleet_03_name"
-              },
-              {
-                "accuracy": 0.3
-              },
-              {
-                "effShootingRate": 0.3
-              },
-              {
-                "airEffShootingRate": 0.3
-              },
-              {
-                "fireRandom": true
-              },
-              {
-                "targetChangeInterval": 5.0
-              },
-              {
-                "targetChangeProf": 0.25
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя пути движения"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_01_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_01",
-              "digits": 0,
-              "var": "cr_t2_fleet_01_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_02",
-              "digits": 2,
-              "var": "cr_t2_fleet_02_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "varSetString": {
-              "value": "cr_t2_fleet_route_",
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_03",
-              "digits": 2,
-              "var": "cr_t2_fleet_03_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем движение"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_fleet_01_route_name",
-              "object": "@cr_t2_carrier_fleet_01_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_fleet_02_route_name",
-              "object": "@cr_t2_carrier_fleet_02_name"
-            }
-          },
-          {
-            "unitSetRoute": {
-              "route": "@cr_t2_fleet_03_route_name",
-              "object": "@cr_t2_carrier_fleet_03_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "включаем отслеживание перерождения"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "cr_t2_carrier_dead_start"
-            }
-          }
-        ],
-        "else_actions": []
       }
     },
     "carriers_detection": {
@@ -2009,10 +1450,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@cr_t1_carrier_name",
             "target": "t2_players_squad",
             "var": "cr_t2_detection_range",
+            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -2083,10 +1524,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@cr_t2_carrier_name",
             "target": "t1_players_squad",
             "var": "cr_t1_detection_range",
+            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -2277,7 +1718,9 @@
             "value": "разрешен квест на нахождение авика"
           },
           "moAddMissionObjective": {
-            "target": "cr_t1_detect_carrier_quest"
+            "target": "cr_t1_detect_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -2311,7 +1754,9 @@
             "value": "разрешен квест на нахождение авика"
           },
           "moAddMissionObjective": {
-            "target": "cr_t2_detect_carrier_quest"
+            "target": "cr_t2_detect_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -2355,6 +1800,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t1_detect_carrier_quest",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           },
@@ -2367,6 +1814,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t1_detect_carrier_quest",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -2412,6 +1861,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t2_detect_carrier_quest",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           },
@@ -2424,6 +1875,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t2_detect_carrier_quest",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -2459,7 +1912,6 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@cr_t1_carrier_name"
           }
         },
@@ -2508,8 +1960,7 @@
             "value": 1,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@cr_t1_carrier_name"
+            "object": "@cr_t2_carrier_name"
           }
         },
         "actions": [
@@ -2520,7 +1971,7 @@
           },
           {
             "triggerEnable": {
-              "target": "cr_t1_carrier_respawn_timer"
+              "target": "cr_t2_carrier_respawn_timer"
             }
           },
           {
@@ -2561,7 +2012,9 @@
             "value": "разрешен квест на нахождение авика"
           },
           "moAddMissionObjective": {
-            "target": "cr_t1_destroy_carrier_quest"
+            "target": "cr_t1_destroy_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -2595,7 +2048,9 @@
             "value": "разрешен квест на нахождение авика"
           },
           "moAddMissionObjective": {
-            "target": "cr_t2_destroy_carrier_quest"
+            "target": "cr_t2_destroy_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         "else_actions": {
@@ -2638,6 +2093,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t1_destroy_carrier_quest",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
               "unit_or_area": "@cr_t1_carrier_name",
@@ -2653,6 +2110,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t1_destroy_carrier_quest",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "A"
             }
           }
@@ -2697,6 +2156,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t2_destroy_carrier_quest",
               "status": 2,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
               "unit_or_area": "@cr_t2_carrier_name",
@@ -2712,6 +2173,8 @@
             "moSetObjectiveStatus": {
               "target": "cr_t2_destroy_carrier_quest",
               "status": 0,
+              "object_var_comp_op": "equal",
+              "object_var_name": "",
               "team": "B"
             }
           }
@@ -2787,18 +2250,6 @@
     "cr_t2_carrier_route_name": "",
     "cr_t1_carrier_name": "",
     "cr_t2_carrier_name": "",
-    "cr_t1_carrier_fleet_01_name": "",
-    "cr_t1_carrier_fleet_02_name": "",
-    "cr_t1_carrier_fleet_03_name": "",
-    "cr_t2_carrier_fleet_01_name": "",
-    "cr_t2_carrier_fleet_02_name": "",
-    "cr_t2_carrier_fleet_03_name": "",
-    "cr_t1_fleet_01_route_name": "",
-    "cr_t1_fleet_02_route_name": "",
-    "cr_t1_fleet_03_route_name": "",
-    "cr_t2_fleet_01_route_name": "",
-    "cr_t2_fleet_02_route_name": "",
-    "cr_t2_fleet_03_route_name": "",
     "cr_t1_carrier_respawn_time": 60,
     "cr_t2_carrier_respawn_time": 60,
     "cr_is_detect_on": false,
@@ -2809,8 +2260,10 @@
     "cr_destroy_quest_is_on": false,
     "cr_t1_respawns_left": 5,
     "cr_t2_respawns_left": 5,
-    "cr_t1_carrier_respawn_idx": 0,
-    "cr_t2_carrier_respawn_idx": 0
+    "cr_t1_carrier_squad_name": "",
+    "cr_t2_carrier_squad_name": "",
+    "cr_t1_fleet_spawn_name": "",
+    "cr_t2_fleet_spawn_name": ""
   },
   "dialogs": [],
   "airfields": [],

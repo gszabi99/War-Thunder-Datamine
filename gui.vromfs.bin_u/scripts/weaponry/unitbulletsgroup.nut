@@ -162,8 +162,6 @@ local { AMMO,
   }
 
   function getBulletNameForCode(bulName) {
-    //Code read '' empty string as default bullet,
-    //but for other purpose uses fake name with 'default' in the end
     local mod = getModByBulletName(bulName)
     return "isDefaultForGroup" in mod? "" : mod.name
   }

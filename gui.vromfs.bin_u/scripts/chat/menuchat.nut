@@ -2274,7 +2274,14 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local blocked = ::isPlayerNickInContacts(data.user, ::EPL_BLOCKLIST)
     if (blocked)
-      addRoomMsg(curRoom.id, "", format(::loc("chat/cantChatWithBlocked"), "<Link="+::g_chat.generatePlayerLink(data.user)+">"+data.user+"</Link>"))
+      addRoomMsg(
+        curRoom.id,
+        "",
+        ::format(
+          ::loc("chat/cantChatWithBlocked"),
+          $"<Link={::g_chat.generatePlayerLink(data.user)}>{getPlayerName(data.user)}</Link>"
+        )
+      )
     else if (data.user != curRoom.id)
     {
       local userRoom = ::g_chat.getRoomById(data.user)

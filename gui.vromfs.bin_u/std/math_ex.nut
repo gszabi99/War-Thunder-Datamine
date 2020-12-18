@@ -13,6 +13,6 @@ local function radToDeg(angle){
 }
 
 return math.__merge({
-  degToRad = degToRad
-  radToDeg = radToDeg
+  degToRad
+  radToDeg
 })

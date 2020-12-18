@@ -646,7 +646,13 @@
         "armorThickness": 50.0,
         "hp": 1000.0,
         "ex_armor_07_dm": [],
-        "ex_armor_08_dm": []
+        "ex_armor_08_dm": [],
+        "ex_decor_r_01_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_decor_l_02_dm": {
+          "armorThickness": 5.0
+        }
       },
       "chassis": {
         "armorClass": "tank_steel_wheels",
@@ -1890,8 +1896,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1903,8 +1928,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2256,7 +2282,16 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "height": 0.05,
-        "width": 0.4
+        "width": 0.4,
+        "tracksTensionK": [6.5,10.0,3.0],
+        "trackMesh": "us_sherman_vvss_t_51_phys_track_line",
+        "trackLen": 0.152,
+        "trackCount": 79,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackStartOffset": 0.13,
+        "trackMaxHeight": 1.08,
+        "trackEmitSparks": false
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2269,8 +2304,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 120000.0,
-        "driveGearRadius": 0.34,
-        "mainGearRatio": 4.81,
+        "driveGearRadius": 0.3,
+        "mainGearRatio": 4.244,
         "sideGearRatio": 2.56,
         "gearType": "differential",
         "gearRatios": [
@@ -3027,7 +3062,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }

@@ -1,4 +1,5 @@
 local comboStyle = require("combobox.style.nut")
+local {isTouch} = require("ui/control/active_controls.nut")
 
 local popupContentAnim = [
   { prop=AnimProp.opacity, from=0, to=1, duration=0.12, play=true, easing=InOutQuad }
@@ -157,7 +158,7 @@ local function combobox(watches, options, combo_style=comboStyle) {
       clipChildren = true
       xmbNode = ::XmbContainer()
       children = {
-        behavior = Behaviors.WheelScroll
+        behavior = [Behaviors.WheelScroll, Behaviors.TouchScroll]
         joystickScroll = true
         flow = FLOW_VERTICAL
         children = children
@@ -208,6 +209,7 @@ local function combobox(watches, options, combo_style=comboStyle) {
       size = flex()
       //behavior = wdisable.value ? null : Behaviors.Button
       behavior = Behaviors.Button
+      eventPassThrough = isTouch.value
       watch = [comboOpen, watches?.disable, wdata, options]
       group
       onElemState = @(sf) stateFlags(sf)

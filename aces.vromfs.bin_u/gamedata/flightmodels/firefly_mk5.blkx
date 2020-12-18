@@ -2267,24 +2267,24 @@
     "hispano_mk5_new_gun": {
       "reqModification": "hispano_belt_pack"
     },
-    "halker_lbc": {
+    "halker_sbc": {
       "modClass": "weapon",
       "tier": 1
     },
-    "gloster_rc": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "halker_lbc"
-    },
-    "halker_sbc": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "gloster_rc"
-    },
     "halker_mbc": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 2,
       "reqModification": "halker_sbc"
+    },
+    "halker_lbc": {
+      "reqModification": "halker_mbc",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "gloster_rc": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "halker_lbc"
     }
   },
   "user_skin": [

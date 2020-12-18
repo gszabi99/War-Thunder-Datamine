@@ -1493,8 +1493,27 @@
           {
             "onHit": {
               "damageType": "generic",
-              "fire": 0.8,
+              "fire": 0.7,
+              "expl": 0.1,
               "damage": 300.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.5,
+              "expl": 0.5,
+              "damage": 400.0,
+              "fHitCritical": true
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "generic",
+              "fire": 0.2,
+              "expl": 0.8,
+              "damage": 600.0,
               "fHitCritical": true
             }
           },
@@ -1506,8 +1525,9 @@
           },
           {
             "onKill": {
-              "fire": 0.3,
-              "nothing": 0.7,
+              "fire": 0.5,
+              "expl": 0.3,
+              "nothing": 0.2,
               "fHitCritical": true
             }
           }
@@ -2005,7 +2025,15 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "height": 0.055,
-        "width": 0.4
+        "width": 0.4,
+        "tracksTensionK": [6.0,10.0,6.0],
+        "trackMesh": "us_sherman_vvss_t_74_phys_track_line",
+        "trackLen": 0.154,
+        "trackCount": 79,
+        "trackFadeTime": 1.0,
+        "trackConnector": true,
+        "trackStartOffset": 0.13,
+        "trackMaxHeight": 1.07
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2018,8 +2046,8 @@
       },
       "mechanics": {
         "maxBrakeForce": 130000.0,
-        "driveGearRadius": 0.34,
-        "mainGearRatio": 3.88,
+        "driveGearRadius": 0.31,
+        "mainGearRatio": 3.537,
         "sideGearRatio": 2.74,
         "gearRatios": [
           {
@@ -2688,7 +2716,7 @@
         "event": {
           "name": "fuel_internal",
           "fx": {
-            "name": "tank_engine_fire",
+            "name": "tank_ex_fuel_explosion",
             "centerDmgPart": true
           }
         }
@@ -2714,10 +2742,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 25.7,
-      "zoomInFov": 24.7,
+      "zoomOutFov": 40.0,
+      "zoomInFov": 21.0,
       "sightFov": 20.0,
-      "sightName": "telescope_m70f",
+      "sightName": "default_tank_spg",
       "headPos": [0.0,4.0,-8.0],
       "headPosOnShooting": [-0.9,3.35,0.5],
       "detectionHeight": 2.74
