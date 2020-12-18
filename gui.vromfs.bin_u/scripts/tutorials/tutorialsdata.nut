@@ -147,6 +147,8 @@ local function saveTutorialToCheckReward(mission) {
       hasRewardImage = false
       needVerticalAlign = true
     })
+    resource = misDataBlk?.decal
+    resourceType = "decal"
   })
   ::set_mp_mode(mainGameMode)
 }

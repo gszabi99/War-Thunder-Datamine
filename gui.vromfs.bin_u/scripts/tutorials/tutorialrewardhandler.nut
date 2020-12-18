@@ -9,6 +9,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   misName = ""
   rewardMarkup = ""
   afterRewardText = ""
+  decorator = null
 
   function initScreen() {
     scene.findObject("award_name").setValue(::loc("mainmenu/btnTutorial"))
@@ -23,6 +24,15 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
       local rewardsObj = scene.findObject("reward_markup")
       guiScene.replaceContentFromText(rewardsObj, rewardMarkup, rewardMarkup.len(), this)
       rewardsObj.show(true)
+    }
+
+    if (decorator != null) { //Not show new unlock window
+      local decoratorId = decorator.id
+      ::getUserLogsList({
+        show = [::EULT_NEW_UNLOCK]
+        disableVisible = true
+        checkFunc = @(userlog) decoratorId == (userlog?.body.unlockId ?? "")
+      })
     }
 
     foreach(t in checkTutorialsList)
@@ -110,6 +120,8 @@ local function tryOpenTutorialRewardHandler() {
         misName = misName
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
         afterRewardText = ::loc(miscText)
+        decorator = ::g_decorator.getDecoratorByResource(tutorialRewardData.value.resource,
+          tutorialRewardData.value.resourceType)
       })
     }
 
