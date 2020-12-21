@@ -183,8 +183,10 @@ local function isCaliberCannon(caliber_mm)
 
 local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null, wConf = null)
 {
-  local unitType = ::get_es_unit_type(unit)
+  if (block == null)
+    return weapons
 
+  local unitType = ::get_es_unit_type(unit)
   foreach (weapon in (block % "Weapon"))
   {
     if (weapon?.dummy)

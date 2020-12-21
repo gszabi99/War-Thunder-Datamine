@@ -332,4 +332,6 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     ::g_promo.launchAction(actionData, this, null)
   }
+
+  function onUseDecorator() {}
 }

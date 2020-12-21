@@ -172,6 +172,8 @@ class ::gui_handlers.facebookReminderModal extends ::gui_handlers.BaseGuiHandler
     ::start_facebook_login()
   }
 
+  function onUseDecorator() {}
+
   wndType = handlerType.MODAL
   sceneBlkName = "gui/showUnlock.blk"
 }

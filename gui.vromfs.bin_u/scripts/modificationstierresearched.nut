@@ -141,4 +141,6 @@ class ::gui_handlers.ModificationsTierResearched extends ::gui_handlers.BaseGuiH
     ::checkNonApprovedResearches(true)
     activityFeedPostFunc(postConfig, postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
+
+  function onUseDecorator() {}
 }

@@ -122,8 +122,8 @@ local function receiveEmtyRewards(unlock, progressData) {
     receiveRewards(unlock?.name, { showProgressBox = false }, false)
 }
 
-local getSeasonMainPrizesData = @() (premiumUnlock.value?.meta.promo ?? [])
-  .extend(basicUnlock.value?.meta.promo ?? [])
+local getSeasonMainPrizesData = @() [].extend(premiumUnlock.value?.meta.promo ?? [],
+  basicUnlock.value?.meta.promo ?? [])
 
 basicProgress.subscribe(@(progressData) receiveEmtyRewards(basicUnlock.value, progressData))
 premiumProgress.subscribe(function(progressData) {

@@ -289,6 +289,47 @@ local function onEventItemsShopUpdate(params)
     item.doPreview()
 }
 
+local function getDecoratorDataToUse(resource, resourceType) {
+  local res = {
+    decorator = null
+    decoratorUnit = null
+    decoratorSlot = null
+  }
+  local decorator = ::g_decorator.getDecoratorByResource(resource, resourceType)
+  if (decorator == null)
+    return res
+
+  local decoratorType = decorator.decoratorType
+  local decoratorUnit = decoratorType == ::g_decorator_type.SKINS
+    ? ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decorator.id))
+    : ::get_player_cur_unit()
+
+  if (decoratorUnit == null || !decoratorType.isAvailable(decoratorUnit) || !decorator.canUse(decoratorUnit))
+    return res
+
+  local freeSlotIdx = decoratorType.getFreeSlotIdx(decoratorUnit)
+  local decoratorSlot = freeSlotIdx != -1 ? freeSlotIdx
+    : (decoratorType.getAvailableSlots(decoratorUnit) - 1)
+
+  return {
+    decorator
+    decoratorUnit
+    decoratorSlot
+  }
+}
+
+local function useDecorator(decorator, decoratorUnit, decoratorSlot) {
+  if (!decorator)
+    return
+  if (!canStartPreviewScene(true))
+    return
+  ::gui_start_decals({
+    unit = decoratorUnit
+    preSelectDecorator = decorator
+    preSelectDecoratorSlot = decoratorSlot
+  })
+}
+
 local doDelayed = @(action) get_gui_scene().performDelayed({}, action)
 
 globalCallbacks.addTypes({
@@ -341,4 +382,6 @@ return {
   showUnitSkin = showUnitSkin
   showResource = showResource
   canStartPreviewScene = canStartPreviewScene
+  getDecoratorDataToUse
+  useDecorator
 }

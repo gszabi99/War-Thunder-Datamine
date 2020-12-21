@@ -1,7 +1,7 @@
 local time = require("scripts/time.nut")
 local sheets = require("scripts/items/itemsShopSheets.nut")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
-local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
+local { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
 local ExchangeRecipes = require("scripts/items/exchangeRecipes.nut")
 local { findGenByReceptUid } = require("scripts/items/itemsClasses/itemGenerators.nut")
 
@@ -324,28 +324,15 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
       if (rewardType == "resource" || rewardType == "resourceType")
       {
-        local decor = ::g_decorator.getDecoratorByResource(reward?.resource, reward?.resourceType)
-        if (decor)
+        local decorData = getDecoratorDataToUse(reward?.resource, reward?.resourceType)
+        if (decorData.decorator != null)
         {
-          local decoratorType = decor.decoratorType
-          local decorUnit = decoratorType == ::g_decorator_type.SKINS ?
-            ::getAircraftByName(::g_unlocks.getPlaneBySkinId(decor.id)) :
-            ::get_player_cur_unit()
-
-          if (decorUnit && decoratorType.isAvailable(decorUnit) && decor.canUse(decorUnit)
-            && canStartPreviewScene(false))
-          {
-            local freeSlotIdx = decoratorType.getFreeSlotIdx(decorUnit)
-            local slotIdx = freeSlotIdx != -1 ? freeSlotIdx
-              : (decoratorType.getAvailableSlots(decorUnit) - 1)
-            decorator = decor
-            decoratorUnit = decorUnit
-            decoratorSlot = slotIdx
-
-            local obj = scene.findObject("btn_use_decorator")
-            if (::check_obj(obj))
-              obj.setValue(::loc("decorator/use/" + decoratorType.resourceType))
-          }
+          decorator = decorData.decorator
+          decoratorUnit = decorData.decoratorUnit
+          decoratorSlot = decorData.decoratorSlot
+          local obj = scene.findObject("btn_use_decorator")
+          if (::check_obj(obj))
+            obj.setValue(::loc($"decorator/use/{decorator.decoratorType.resourceType}"))
         }
       }
     }
@@ -487,18 +474,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
       ::gui_start_items_list(-1, { curItem = rewardItem })
   }
 
-  function onUseDecorator()
-  {
-    if (!decorator)
-      return
-    if (!canStartPreviewScene(true))
-      return
-    ::gui_start_decals({
-        unit = decoratorUnit
-        preSelectDecorator = decorator
-        preSelectDecoratorSlot = decoratorSlot
-      })
-  }
+  onUseDecorator = @() useDecorator(decorator, decoratorUnit, decoratorSlot)
 
   function onReUseItem() {
     if (reUseRecipe == null)

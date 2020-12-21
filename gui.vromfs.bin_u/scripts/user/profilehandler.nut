@@ -1195,6 +1195,12 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local currentItemNum = 0
     foreach(unlock in ::g_unlocks.getAllUnlocksWithBlkOrder())
     {
+      if (unlock?.id == null) {
+        local unlockConfigString = ::toString(unlock, 2) // warning disable: -declared-never-used
+        ::script_net_assert_once("missing id in unlock after cashed", "ProfileHandler: Missing id in unlock after cashed")
+        continue
+      }
+
       if (!::isInArray(unlock.id, unlocksList))
         continue
 

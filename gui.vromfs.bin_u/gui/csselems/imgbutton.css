@@ -170,8 +170,17 @@ LockedImg[statusLock=country] {
 img[click_to_resize] {
   tooltip:#click_to_view_image;
   behaviour:button;
+  css-hier-invalidate:yes;
   snd_click:click;
   on_click:onViewImage;
   input-transparent:no;
   focusBtnName:A;
+}
+
+img[click_to_resize] > ButtonImg {
+  class:independent;
+  position:absolute;
+  pos:pw-w, ph-h;
+  fullSizeIcons:yes;
+  showOnSelect:hover;
 }

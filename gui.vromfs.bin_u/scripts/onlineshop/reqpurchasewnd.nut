@@ -103,4 +103,5 @@ class ::gui_handlers.ReqPurchaseWnd extends ::gui_handlers.BaseGuiHandlerWT
   function onFacebookLoginAndPostMessage() {}
   function sendInvitation() {}
   function onOk() {}
+  function onUseDecorator() {}
 }

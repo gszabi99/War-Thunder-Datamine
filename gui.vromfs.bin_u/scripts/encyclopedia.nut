@@ -161,7 +161,7 @@ class ::gui_handlers.Encyclopedia extends ::gui_handlers.BaseGuiHandlerWT
       {
         local image = "ui/slides/encyclopedia/" + imageName + ".jpg"
         data += format("imgFrame { img { width:t='%s'; height:t='%s'; max-width:t='%d'; max-height:t='%d'; " +
-                       " background-image:t='%s'; click_to_resize:t='yes' }} ",
+                       "background-image:t='%s'; click_to_resize:t='yes'; ButtonImg {}}} ",
                        sizeText[0], sizeText[1], maxWidth, maxHeight,
                        image)
       }

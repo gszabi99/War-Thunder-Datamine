@@ -1,6 +1,7 @@
 local { checkTutorialsList, reqTutorial, tutorialRewardData, clearTutorialRewardData
 } = require("scripts/tutorials/tutorialsData.nut")
 local { getMissionRewardsMarkup } = require("scripts/missions/missionsUtilsModule.nut")
+local { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("scripts/customization/contentPreview.nut")
 
 local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -10,6 +11,8 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   rewardMarkup = ""
   afterRewardText = ""
   decorator = null
+  decoratorUnit = null
+  decoratorSlot = null
 
   function initScreen() {
     scene.findObject("award_name").setValue(::loc("mainmenu/btnTutorial"))
@@ -26,6 +29,7 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
       rewardsObj.show(true)
     }
 
+    updateDecoratorButton()
     if (decorator != null) { //Not show new unlock window
       local decoratorId = decorator.id
       ::getUserLogsList({
@@ -56,6 +60,31 @@ local TutorialRewardHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function onOk() {
     goBack()
+  }
+
+  onUseDecorator = @() useDecorator(decorator, decoratorUnit, decoratorSlot)
+
+  function updateDecoratorButton() {
+    local canUseDecorator = decorator != null && canStartPreviewScene(false)
+    local obj = showSceneBtn("btn_use_decorator", canUseDecorator)
+    if (!canUseDecorator)
+      return
+
+    local resourceType = decorator.decoratorType.resourceType
+    local decorData = getDecoratorDataToUse(decorator.id, resourceType)
+    canUseDecorator = decorData.decorator != null
+    obj?.show(canUseDecorator)
+    if (!canUseDecorator)
+      return
+
+    decoratorUnit = decorData.decoratorUnit
+    decoratorSlot = decorData.decoratorSlot
+    if (obj?.isValid ?? false)
+      obj.setValue(::loc($"decorator/use/{resourceType}"))
+  }
+
+  function onEventHangarModelLoaded(params = {}) {
+    updateDecoratorButton()
   }
 }
 
