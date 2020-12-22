@@ -2116,74 +2116,110 @@
     }
   },
   {
-    "commonWeapons": [
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-          "emitter": "flare1",
-          "flash": "flare1",
-          "dm": "mgun1_dm",
-          "bullets": 300,
-          "light": true,
-          "spread": 1.35,
-          "traceOffset": 1
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-          "emitter": "flare2",
-          "flash": "flare2",
-          "dm": "mgun2_dm",
-          "bullets": 300,
-          "light": true,
-          "spread": 1.35,
-          "traceOffset": 1
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-          "emitter": "flare3",
-          "flash": "flare3",
-          "dm": "mgun3_dm",
-          "bullets": 300,
-          "light": true,
-          "spread": 1.35,
-          "traceOffset": 1
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_M3.blk",
-          "emitter": "flare4",
-          "flash": "flare4",
-          "dm": "mgun4_dm",
-          "bullets": 300,
-          "light": true,
-          "spread": 1.35,
-          "traceOffset": 1
-        }
-      }
-    ]
+    "commonWeapons": []
   },
   {
     "weapon_presets": [
       {
         "preset": {
-          "name": "fiat_g91_default",
-          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_default.blk"
+          "name": "fiat_g91_r4_default",
+          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_default.blk",
+          "tags": {
+            "free": true
+          },
+          "weaponConfig": {
+            "Weapon": [
+              {
+                "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+              },
+              {
+                "tier": {
+                  "idx": 5,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 4,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 7,
+                  "iconType": "cannon_inner"
+                }
+              },
+              {
+                "tier": {
+                  "idx": 8,
+                  "iconType": "cannon_inner"
+                }
+              }
+            ]
+          }
         }
       },
       {
         "preset": {
-          "name": "fiat_g91_2_75in_ffar_rockets",
-          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_2_75in_ffar_rockets.blk",
-          "reqModification": "us_2_75_in_ffar"
+          "name": "fiat_g91_r4_2_75in_ffar_rockets",
+          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_2_75in_ffar_rockets.blk",
+          "reqModification": "us_2_75_in_ffar",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "cannon_inner"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk"
+                },
+                {
+                  "amountPerTier": 19.0
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "nar_ap_middle"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "nar_ap_middle"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -2199,6 +2235,63 @@
           },
           {
             "reqModification": "nord_aa_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -2215,6 +2308,375 @@
           },
           {
             "reqModification": "nord_as_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_as20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "fiat_g91_r4_4xas20"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_4xas20.blk"
+          },
+          {
+            "reqModification": "us_2_75_in_ffar"
+          },
+          {
+            "reqModification": "nord_as_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_as20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "fiat_g91_r4_4xaa20"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_4xaa20.blk"
+          },
+          {
+            "reqModification": "us_2_75_in_ffar"
+          },
+          {
+            "reqModification": "nord_as_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "fiat_g91_r4_2xas20_2x500lb_bombs"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_2xas20_2x500lb_bombs.blk"
+          },
+          {
+            "reqModification": "b-17_sbc"
+          },
+          {
+            "reqModification": "nord_as_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_as20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "missile_air_to_uni"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_middle"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_middle"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "preset": [
+          {
+            "name": "fiat_g91_r4_2xaa20_2x500lb_bombs"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_2xaa20_2x500lb_bombs.blk"
+          },
+          {
+            "reqModification": "b-17_sbc"
+          },
+          {
+            "reqModification": "nord_as_20"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 5,
+                      "iconType": "cannon_inner"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "cannon_inner"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/fr_aa20.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 2,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 10,
+                      "iconType": "missile_air_to_air_special"
+                    }
+                  }
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 3,
+                      "iconType": "bombs_middle"
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 9,
+                      "iconType": "bombs_middle"
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -2222,14 +2684,136 @@
         "preset": {
           "name": "fiat_g91_r4_4xaim9",
           "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_4xaim9.blk",
-          "reqModification": "us_aim_9b"
+          "reqModification": "us_aim_9b",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "cannon_inner"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 2,
+                    "iconType": "missile_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "missile_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "missile_air_to_air"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 10,
+                    "iconType": "missile_air_to_air"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
         "preset": {
-          "name": "fiat_g91_2x500lb_bombs",
-          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_2x500lb_bombs.blk",
-          "reqModification": "b-17_sbc"
+          "name": "fiat_g91_r4_2x500lb_bombs",
+          "blk": "gameData/FlightModels/weaponPresets/fiat_g91_r4_2x500lb_bombs.blk",
+          "reqModification": "b-17_sbc",
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/gunBrowning50_M3.blk"
+                },
+                {
+                  "tier": {
+                    "idx": 5,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 4,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7,
+                    "iconType": "cannon_inner"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8,
+                    "iconType": "cannon_inner"
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "tier": {
+                    "idx": 3,
+                    "iconType": "bombs_middle"
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 9,
+                    "iconType": "bombs_middle"
+                  }
+                }
+              ]
+            }
+          ]
         }
       }
     ]
