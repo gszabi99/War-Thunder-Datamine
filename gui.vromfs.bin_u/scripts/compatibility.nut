@@ -86,3 +86,9 @@
   epic_buy_item = @(...) null
   epic_update_purchases_on_auth = @() null
 })
+
+//----------------------------wop_2_3_0_X---------------------------------//
+::apply_compatibilities({
+  set_dagui_mouse_last_time_used = @(...) null
+})
+
