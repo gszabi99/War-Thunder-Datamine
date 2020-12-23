@@ -11,7 +11,7 @@ autoConsumeItems = function() {
   if (isAutoConsumeInProgress)
     return
 
-  local onConsumeFinish = function(p, ...) {
+  local onConsumeFinish = function(p = {}) {
     if (!(p?.success ?? true) && p?.itemId != null)
       failedAutoConsumeItems[p.itemId] <- true
     isAutoConsumeInProgress = false
@@ -41,6 +41,7 @@ addListenersWithoutEnv({
 return {
   shouldCheckAutoConsume
   checkAutoConsume
+  autoConsumeItems
 }
 
 

@@ -7,7 +7,7 @@ local startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
 local { isUserstatItemRewards, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
-
+local { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
 
 global enum MARK_RECIPE {
   NONE
@@ -667,7 +667,7 @@ local ExchangeRecipes = class {
       removeUserstatItemRewardToShow(componentItem.id)
     }
 
-    ::ItemsManager.autoConsumeItems()
+    autoConsumeItems()
   }
 
   getSaveId = @() markRecipeSaveId + uid
