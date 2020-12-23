@@ -116,7 +116,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       actionText = ::loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
-      haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
+      haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
       showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
       actionFunc = @() weaponryPresetsModal.open({ unit = unit })

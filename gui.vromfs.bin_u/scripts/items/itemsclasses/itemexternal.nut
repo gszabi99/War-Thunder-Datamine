@@ -517,9 +517,10 @@ local ItemExternal = class extends ::BaseItem
       if (cb)
         cb({ success = true })
     }
-
+    local itemId = id
     local taskId = ::char_send_blk("cln_consume_inventory_item", blk)
-    ::g_tasker.addTask(taskId, { showProgressBox = !shouldAutoConsume }, taskCallback, @() cb?({ success = false }))
+    ::g_tasker.addTask(taskId, { showProgressBox = !shouldAutoConsume }, taskCallback,
+      @() cb?({ success = false, itemId = itemId }))
   }
 
   getAssembleHeader       = @() ::loc(getLocIdsList().headerRecipesList, { itemName = getName() })

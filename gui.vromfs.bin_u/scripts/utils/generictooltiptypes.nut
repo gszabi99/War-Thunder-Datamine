@@ -551,7 +551,6 @@ enums.addTypesByGlobalName("g_tooltip_type", {
         return false
 
       local unlockBlk = unlockId && unlockId != "" && ::g_unlocks.getUnlockById(unlockId)
-      obj["class"] = unlockBlk ? "" : "empty"
       if(!unlockBlk)
         return false
 

@@ -1,4 +1,4 @@
-local {localTeam, scoreTeamA, scoreTeamB, timeLeft} = require("reactiveGui/missionState.nut")
+local {localTeam, scoreTeamA, scoreTeamB, roundTimeLeft} = require("reactiveGui/missionState.nut")
 local teamColors = require("reactiveGui/style/teamColors.nut")
 local { secondsToTimeSimpleString } = require("std/time.nut")
 
@@ -50,11 +50,11 @@ return {
       halign = ALIGN_CENTER
       color = Color(0, 0, 0, 102)
       children = @(){
-        watch = timeLeft
+        watch = roundTimeLeft
         rendObj = ROBJ_DTEXT
         font = Fonts.medium_text_hud
         color = Color(249, 219, 120)
-        text = secondsToTimeSimpleString(timeLeft.value)
+        text = secondsToTimeSimpleString(roundTimeLeft.value)
       }
     }
     getScoreObj("enemyTeam")

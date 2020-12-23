@@ -85,7 +85,7 @@ class ::gui_handlers.EntitlementRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!::checkObj(obj))
       return
 
-    local data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__update({
+    local data = getEntitlementView(entitlementConfig, (viewParams ?? {}).__merge({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true

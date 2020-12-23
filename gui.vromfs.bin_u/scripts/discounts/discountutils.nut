@@ -19,35 +19,31 @@ local personalDiscount = require("scripts/discounts/personalDiscount.nut")
   return result.maxDiscount
 }
 
-::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName = "")
+::get_max_weaponry_discount_by_unitName <- function get_max_weaponry_discount_by_unitName(unitName, discountTypes = null)
 {
-  if (unitName == "")
+  local unitTable = ::get_price_blk()?.aircrafts[unitName]
+  if (!unitTable)
     return 0
 
   local discount = 0
-  local priceBlk = ::get_price_blk()
-  if (priceBlk?.aircrafts[unitName])
-  {
-    local unitTable = priceBlk.aircrafts[unitName]
-    if (unitTable?.weapons)
-      foreach(name, table in unitTable.weapons)
-        if (!::shop_is_weapon_purchased(unitName, name))
-        {
-          discount = ::max(discount, ::getTblValue("discount", table, 0))
-          discount = ::max(discount, ::item_get_personal_discount_for_weapon(unitName, name))
-        }
+  discountTypes = discountTypes ?? ["weapons", "mods", "spare"]
+  if (discountTypes.contains("weapons") && unitTable?.weapons)
+    foreach (name, table in unitTable.weapons)
+      if (!::shop_is_weapon_purchased(unitName, name))
+        discount = ::max(discount,
+          ::getTblValue("discount", table, 0),
+          ::item_get_personal_discount_for_weapon(unitName, name))
 
-    if (unitTable?.mods)
-      foreach(name, table in unitTable.mods)
-        if (!::shop_is_modification_purchased(unitName, name))
-        {
-          discount = ::max(discount, ::getTblValue("discount", table, 0))
-          discount = ::max(discount, ::item_get_personal_discount_for_mod(unitName, name))
-        }
+  if (discountTypes.contains("mods") && unitTable?.mods)
+    foreach (name, table in unitTable.mods)
+      if (!::shop_is_modification_purchased(unitName, name))
+        discount = ::max(discount,
+          ::getTblValue("discount", table, 0),
+          ::item_get_personal_discount_for_mod(unitName, name))
 
-    if (unitTable?.spare)
-      discount = ::max(discount, ::getTblValue("discount", unitTable.spare, 0))
-  }
+  if (discountTypes.contains("spare") && unitTable?.spare)
+    discount = ::max(discount, ::getTblValue("discount", unitTable.spare, 0))
+
   return discount
 }
 

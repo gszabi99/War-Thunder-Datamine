@@ -4,6 +4,7 @@ local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
 local stdMath = require("std/math.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { shouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
 
 local seenList = require("scripts/seen/seenList.nut")
 local seenInventory = seenList.get(SEEN.INVENTORY)
@@ -136,8 +137,6 @@ foreach (fn in [
   _reqUpdateList = true
   _reqUpdateItemDefsList = true
   _needInventoryUpdate = true
-
-  shouldCheckAutoConsume = false
 
   isInventoryInternalUpdated = false
   isInventoryFullUpdated = false
@@ -604,7 +603,7 @@ ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
     local item = createItem(iType, blk, invItemBlk, slot)
     inventory.append(item)
     if (item.shouldAutoConsume && !item.isActive())
-      shouldCheckAutoConsume = true
+      shouldCheckAutoConsume(true)
   }
 
   ::ItemsManager.fillFakeItemsList()
@@ -658,7 +657,7 @@ ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
       if (item.id in transferAmounts)
         item.transferAmount += delete transferAmounts[item.id]
       if (item.shouldAutoConsume)
-        shouldCheckAutoConsume = true
+        shouldCheckAutoConsume(true)
       extInventoryItems.append(item)
     }
   }
@@ -690,14 +689,6 @@ ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
 
   inventory.extend(extInventoryItems)
   extInventoryUpdateTime = ::dagor.getCurTime()
-}
-
-ItemsManager.checkAutoConsume <- function checkAutoConsume()
-{
-  if (!shouldCheckAutoConsume)
-    return
-  shouldCheckAutoConsume = false
-  autoConsumeItems()
 }
 
 ItemsManager.getInventoryList <- function getInventoryList(typeMask = itemType.ALL, filterFunc = null)
@@ -769,27 +760,8 @@ ItemsManager.onItemsLoaded <- function onItemsLoaded()
   markInventoryUpdate()
 }
 
-local isAutoConsumeInProgress = false
-ItemsManager.autoConsumeItems <- function autoConsumeItems()
-{
-  if (isAutoConsumeInProgress)
-    return
-
-  local onConsumeFinish = function(...) {
-    isAutoConsumeInProgress = false
-    autoConsumeItems()
-  }.bindenv(this)
-
-  foreach(item in getInventoryList())
-    if (item.shouldAutoConsume && item.consume(onConsumeFinish, {}))
-    {
-      isAutoConsumeInProgress = true
-      break
-    }
-}
-
 ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) {
-  shouldCheckAutoConsume = true
+  shouldCheckAutoConsume(true)
   _reqUpdateList = true
 }
 
