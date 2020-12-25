@@ -5,6 +5,7 @@ local mpChatModel = require("scripts/chat/mpChatModel.nut")
 local avatars = require("scripts/user/avatars.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
+local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -1734,6 +1735,7 @@ class ::gui_handlers.MPStatistics extends ::gui_handlers.BaseGuiHandlerWT
       return false
 
     tblObj.setValue(playerIdx)
+    setMousePointerInitialPosOnChildByValue(tblObj)
     updateListsButtons()
     return true
   }

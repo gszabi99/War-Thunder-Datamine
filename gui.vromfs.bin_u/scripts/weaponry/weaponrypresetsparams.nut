@@ -402,7 +402,7 @@ local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
         foreach (weaponName, weapon in t)
           if (typeof(weapon) == "table")
           {
-            w.append(weapon.__update(
+            w.append(weapon.__merge(
               {
                 name = weaponName
                 purposeType = pType

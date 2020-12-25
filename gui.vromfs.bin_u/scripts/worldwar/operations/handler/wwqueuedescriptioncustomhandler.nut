@@ -5,7 +5,7 @@ class ::gui_handlers.WwQueueDescriptionCustomHandler extends ::gui_handlers.WwMa
   function mapCountriesToView(side, amountByCountry, joinedCountries)
   {
     local cuntriesByTeams = descItem.getCountriesByTeams()
-    local countries = cuntriesByTeams?[side] ?? {}
+    local countries = cuntriesByTeams?[side] ?? []
     local mapName = descItem.getId()
     return {
       countries = countries.map(function(countryId) {

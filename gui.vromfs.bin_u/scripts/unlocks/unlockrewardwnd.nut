@@ -84,7 +84,7 @@ class ::gui_handlers.UnlockRewardWnd extends ::gui_handlers.trophyRewardWnd
     if (!::checkObj(obj))
       return
 
-    local data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__update({
+    local data = ::g_unlock_view.getViewItem(unlockData, (viewParams ?? {}).__merge({
       header = ::loc("mainmenu/you_received")
       multiAwardHeader = true
       widthByParentParent = true

@@ -454,19 +454,6 @@ foreach (i, v in ::cssColorsMapDark)
   return mode == ::GM_DOMINATION || mode == ::GM_TOURNAMENT;
 }
 
-::fillCountryInfo <- function fillCountryInfo(scene, country, expChange=0, showMedals = false, profileData=null)
-{
-  if (!scene) return
-  local rank = ::get_player_rank_by_country(country, profileData)
-
-  local obj = scene.findObject("rankName")
-  if (obj) obj.setValue((country!="")? ::loc("mainmenu/rank/"+country) : ::loc("mainmenu/rank"))
-  obj = scene.findObject("rank")
-  if (obj) obj.setValue(rank.tostring())
-  obj = scene.findObject("rankIcon")
-  if (obj) obj["background-image"] = (country!="")? ::get_country_icon(country) : "#ui/gameuiskin#prestige0"
-}
-
 ::stringReplace <- function stringReplace(str, replstr, value)
 {
   local findex = 0;
@@ -1565,17 +1552,6 @@ const PASSWORD_SYMBOLS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQR
 ::inherit_table <- function inherit_table(parent_table, child_table)
 {
   return ::u.extend(::u.copy(parent_table), child_table)
-}
-
-/** Triggered from C++ when in-game cursor visibility toggles. */
-::on_changed_cursor_visibility <- function on_changed_cursor_visibility(old_value)
-{
-  ::broadcastEvent("ChangedCursorVisibility", {
-    oldValue = old_value
-    newValue = ::is_cursor_visible_in_gui()
-  })
-
-  ::call_darg("hudCursorVisibleUpdate", ::is_cursor_visible_in_gui())
 }
 
 ::is_mode_with_teams <- function is_mode_with_teams(gt = null)

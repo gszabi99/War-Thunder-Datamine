@@ -306,7 +306,7 @@ UnlockConditions._mergeConditionToList <- function _mergeConditionToList(newCond
   local cType = newCond.type
   local cond = _findCondition(list, cType, ::getTblValue("locGroup", newCond, null))
   if (!cond)
-    return list.append(newCond)
+    return list.append(newCond) // warning disable: -unwanted-modification
 
   if (!newCond.values)
     return

@@ -120,7 +120,7 @@ class ::gui_handlers.WwMapDescription extends ::gui_handlers.BaseGuiHandlerWT
     local cuntriesByTeams = descItem.getCountriesByTeams()
     local sides = []
     foreach (side in ::g_world_war.getCommonSidesOrder())
-      sides.append(mapCountriesToView(cuntriesByTeams?.side ?? {}))
+      sides.append(mapCountriesToView(cuntriesByTeams?[side] ?? []))
     local view = {
       sides = sides
       vsText = ::loc("country/VS") + "\n "

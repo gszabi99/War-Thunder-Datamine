@@ -2,6 +2,7 @@ crewStatus:t='<<crewStatus>>'
 
 <<#hasExtraInfoBlock>>
 extraInfoBlock {
+  id:t='extra_info_block'
   <<#hasCrewInfo>>
   crewInfoBlock {
     icon {

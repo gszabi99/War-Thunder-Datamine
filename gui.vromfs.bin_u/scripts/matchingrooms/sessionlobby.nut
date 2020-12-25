@@ -750,8 +750,7 @@ SessionLobby.getSessionInfo <- function getSessionInfo()
 SessionLobby.getMissionName <- function getMissionName(isOriginalName = false, room = null)
 {
   local misData = getMissionData(room)
-  return (isOriginalName && ::getTblValue("originalMissionName", misData))
-         || ::getTblValue("name", misData, "")
+  return isOriginalName ? (misData?.originalMissionName ?? "") : (misData?.name ?? "")
 }
 
 SessionLobby.getMissionNameLoc <- function getMissionNameLoc(room = null)

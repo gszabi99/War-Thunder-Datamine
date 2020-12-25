@@ -67,7 +67,7 @@ local function getTabs(contentSet)
   {
     local filteredGroup = group.list.filter(@(t) t.needShow(contentSet))
     if (filteredGroup.len() > 0)
-      res.append(group.__update({list = filteredGroup}))
+      res.append(group.__merge({list = filteredGroup}))
   }
   return res
 }

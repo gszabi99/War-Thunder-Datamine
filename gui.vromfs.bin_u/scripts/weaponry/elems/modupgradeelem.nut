@@ -28,7 +28,7 @@ elemViewType.addTypes({
   MOD_UPGRADE_ICON = {
     model = elemModelType.MOD_UPGRADE
     getBhvParamsString = @(params) bhvParamsToString(
-      params.__update({
+      params.__merge({
         subscriptions = [params?.unit || "", params?.mod || ""]
       }))
     createMarkup = @(params, objId = null) ::format("modUpgradeImg { id:t='%s'; value:t='%s' } ",

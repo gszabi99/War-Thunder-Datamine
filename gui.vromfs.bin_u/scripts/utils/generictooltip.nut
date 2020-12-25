@@ -163,7 +163,7 @@ g_tooltip.init <- function init()
 g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibility(params)
 {
   // Proceed if cursor is hidden now.
-  if (params.newValue)
+  if (params.isVisible)
     return
 
   removeAll()

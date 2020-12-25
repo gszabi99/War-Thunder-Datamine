@@ -162,7 +162,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       cost = cost + ::get_unlock_cost(battlePassUnlock.id)
     }
 
-    return goodsConfig.__update({
+    return goodsConfig.__update({ // warning disable: -unwanted-modification
       name = name
       valueText = valueText
       isBought = isBought

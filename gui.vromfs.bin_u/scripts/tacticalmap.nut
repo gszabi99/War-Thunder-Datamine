@@ -1,4 +1,6 @@
 local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryVisual.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)
 {
   ::tactical_map_handler = ::handlersManager.loadHandler(::gui_handlers.TacticalMap,
@@ -258,8 +260,8 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
 
     local pilotsObj = scene.findObject("pilots_list")
     guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
-    ::move_mouse_on_child(pilotsObj, 0)
     pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
+    setMousePointerInitialPos(pilotsObj.getChild(0))
   }
 
   function updatePlayer()

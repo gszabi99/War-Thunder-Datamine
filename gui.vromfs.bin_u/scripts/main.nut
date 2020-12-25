@@ -902,6 +902,8 @@ local isFullScriptsLoaded = false
   require("sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(::script_net_assert_once)
   require("scripts/social/activityFeed/activityFeedModule.nut")
   require("scripts/controls/controlsPseudoAxes.nut")
+  require("scripts/controls/mousePointerVisibility.nut")
+  require("scripts/controls/controlsFootballNy2021Hack.nut")
 
   if (platform.isPlatformXboxOne)
     require("scripts/global/xboxCallbacks.nut")

@@ -21,6 +21,7 @@ local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { hasFlares , bombNbr } = require("scripts/unit/unitStatus.nut")
 local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -549,9 +550,11 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
         slotbarInited = true
         updateUnitOptions()
 
-        ::move_mouse_on_child_by_value(scene.findObject("respawn_options_table"))
         if (canChangeAircraft)
           readyForRespawn = false
+
+        if (isRespawn)
+          setMousePointerInitialPos(getSlotbar()?.getCurrentCrewSlot().findObject("extra_info_block"))
       }
     }
     else

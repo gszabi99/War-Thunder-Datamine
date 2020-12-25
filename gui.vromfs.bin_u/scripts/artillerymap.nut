@@ -1,4 +1,5 @@
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 
 enum POINTING_DEVICE
 {
@@ -93,7 +94,7 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
     update(null, 0.0)
     updateShotcutImages()
 
-    ::move_mouse_on_obj(scene.findObject("tactical_map"))
+    setMousePointerInitialPos(scene.findObject("tactical_map"))
   }
 
   function update(obj = null, dt = 0.0)

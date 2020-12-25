@@ -2,6 +2,7 @@ local { canRestart, canBailout } = require("scripts/flightMenu/flightMenuState.n
 local flightMenuButtonTypes = require("scripts/flightMenu/flightMenuButtonTypes.nut")
 local { openOptionsWnd } = require("scripts/options/handlers/optionsWnd.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
+local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 
 ::gui_start_flight_menu <- function gui_start_flight_menu()
 {
@@ -32,6 +33,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
     local markup = ::handyman.renderCached("gui/flightMenu/menuButtons", { buttons = menuButtonsCfg })
     guiScene.replaceContentFromText(scene.findObject("menu-buttons"), markup, markup.len(), this)
+    guiScene.applyPendingChanges(false)
 
     reinitScreen()
   }
@@ -49,6 +51,7 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     updateButtons()
+    restoreFocus(true)
   }
 
   function updateButtons()
@@ -68,16 +71,19 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     ::showBtn("btn_back", !isMissionFailed, scene)
-
-    restoreFocus()
   }
 
-  function restoreFocus()
+  function restoreFocus(isInitial = false)
   {
     if (!isSceneActiveNoModals())
       return
     local btnId = lastSelectedBtnId ?? (isMissionFailed ? "btn_restart" : "btn_resume")
-    ::move_mouse_on_obj(getObj(btnId))
+    local btnObj = getObj(btnId)
+
+    if (::show_console_buttons)
+      ::move_mouse_on_obj(btnObj)
+    else if (isInitial)
+      setMousePointerInitialPos(btnObj)
   }
 
   function onEventModalWndDestroy(params)

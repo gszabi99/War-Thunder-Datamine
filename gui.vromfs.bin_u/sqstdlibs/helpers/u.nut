@@ -211,7 +211,7 @@ local function extend(destination, ... /*sources*/) {
         v = extend(isArray(val) ? [] : {}, val)
 
       isArray(destination)
-        ? destination.append(v)
+        ? destination.append(v) // warning disable: -unwanted-modification
         : destination[key] <- v
     }
 
