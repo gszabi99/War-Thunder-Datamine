@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 761.0,
-      "temperature": 18.0
-    },
     "player": {
       "army": 1,
       "wing": ""
@@ -17,10 +13,14 @@
     "mission": {
       "level": "levels/tunisia.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 761.0,
+      "temperature": 18.0
     },
     "spectator_points": []
   },
@@ -112,7 +112,41 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t1_usa_rank_05.blk",
-        "rankRange": [17,30],
+        "rankRange": [17,20],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t1_usa_rank_06.blk",
+        "rankRange": [21,25],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t1_usa_rank_07.blk",
+        "rankRange": [26,50],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -197,7 +231,41 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t2_germ_rank_05.blk",
-        "rankRange": [17,30],
+        "rankRange": [17,20],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t2_germ_rank_06.blk",
+        "rankRange": [21,25],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/hunters_planesets/ht_t2_germ_rank_07.blk",
+        "rankRange": [26,50],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -236,6 +304,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "ht_t1_hunter_rank_01"
           },
           {
@@ -264,6 +335,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "ht_t2_hunter_rank_01"
           },
           {
@@ -286,10 +360,10 @@
     "ht_t2_hunter_retreat_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
+        [-2.98023e-08,0.0,1.0],
         [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [32000.0,350.0,0.0]
+        [-1.0,0.0,-2.98023e-08],
+        [-8545.58,1250.0,15000.0]
       ],
       "objLayer": 0,
       "props": []
@@ -297,10 +371,10 @@
     "ht_t1_hunter_retreat_point": {
       "type": "Point",
       "tm": [
-        [1.0,0.0,0.0],
+        [-2.98023e-08,0.0,1.0],
         [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [-32000.0,350.0,0.0]
+        [-1.0,0.0,-2.98023e-08],
+        [-8545.58,1250.0,-15000.0]
       ],
       "objLayer": 0,
       "props": []

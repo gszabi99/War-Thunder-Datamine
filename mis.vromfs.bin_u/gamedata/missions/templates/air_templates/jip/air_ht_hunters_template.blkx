@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -50,6 +50,15 @@
           "unitSetProperties": [
             {
               "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
             },
             {
               "object": "ht_t1_hunters_squad"
@@ -461,6 +470,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t2_players_squad"
           }
         },
@@ -497,6 +508,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t2_players_squad",
             "target": "all_players_squad",
             "compareCenters": false,
@@ -621,6 +634,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t2_players_squad",
             "target": "@ht_t2_airfield_name",
             "compareCenters": false,
@@ -717,6 +732,9 @@
               "object_marking": 0,
               "target_type": "isAlive",
               "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": "@ht_t2_player_name"
             }
           },
@@ -765,9 +783,12 @@
           },
           "unitSetProperties": {
             "object_marking": 0,
+            "realisticAI": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t1_hunter_name",
-            "targetableByAi": false,
-            "realisticAI": false
+            "targetableByAi": false
           },
           "triggerEnable": [
             {
@@ -815,6 +836,8 @@
             "object_marking": 0,
             "func": "more",
             "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t1_players_squad"
           }
         },
@@ -851,6 +874,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t1_players_squad",
             "target": "all_players_squad",
             "compareCenters": false,
@@ -975,6 +1000,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "t1_players_squad",
             "target": "@ht_t1_airfield_name",
             "compareCenters": false,
@@ -1071,6 +1098,9 @@
               "object_marking": 0,
               "target_type": "isAlive",
               "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "object": "@ht_t1_player_name"
             }
           },
@@ -1119,9 +1149,12 @@
           },
           "unitSetProperties": {
             "object_marking": 0,
+            "realisticAI": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t2_hunter_name",
-            "targetableByAi": false,
-            "realisticAI": false
+            "targetableByAi": false
           },
           "triggerEnable": [
             {
@@ -1183,6 +1216,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t2_player_name"
           }
         },
@@ -1236,6 +1272,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "@ht_t1_hunter_name",
             "target": "@ht_t2_player_name",
             "compareCenters": false
@@ -1252,6 +1290,9 @@
               "priority": 0,
               "isOverFade": false,
               "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "team": "B"
             }
           },
@@ -1270,6 +1311,9 @@
               "priority": 0,
               "isOverFade": false,
               "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "team": "B"
             }
           }
@@ -1296,6 +1340,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t1_hunter_name"
           }
         },
@@ -1370,6 +1417,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t1_hunter_name"
           }
         },
@@ -1379,6 +1429,9 @@
           },
           "unitSetProperties": {
             "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t1_hunter_name",
             "targetableByAi": true
           },
@@ -1448,6 +1501,11 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@ht_t1_hunter_name",
             "speed": 1500.0
           },
@@ -1486,6 +1544,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t1_player_name"
           }
         },
@@ -1539,6 +1600,8 @@
             "target_marking": 0,
             "check_objects": "any",
             "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
             "object": "@ht_t2_hunter_name",
             "target": "@ht_t1_player_name",
             "compareCenters": false
@@ -1555,6 +1618,9 @@
               "priority": 0,
               "isOverFade": false,
               "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "team": "A"
             }
           },
@@ -1573,6 +1639,9 @@
               "priority": 0,
               "isOverFade": false,
               "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
               "team": "A"
             }
           }
@@ -1599,6 +1668,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t2_hunter_name"
           }
         },
@@ -1673,6 +1745,9 @@
             "object_marking": 0,
             "target_type": "isAlive",
             "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t2_hunter_name"
           }
         },
@@ -1682,6 +1757,9 @@
           },
           "unitSetProperties": {
             "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "@ht_t2_hunter_name",
             "targetableByAi": true
           },
@@ -1751,6 +1829,11 @@
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@ht_t2_hunter_name",
             "speed": 1500.0
           },
@@ -1784,6 +1867,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t1_hunter_name",
           "target": "all_players_squad",
           "compareCenters": false,
@@ -1820,6 +1905,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t1_hunter_name"
         }
       },
@@ -1849,6 +1936,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t1_hunter_name"
         }
       },
@@ -1919,6 +2008,8 @@
           "target_marking": 0,
           "check_objects": "any",
           "check_targets": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t2_hunter_name",
           "target": "all_players_squad",
           "compareCenters": false,
@@ -1955,6 +2046,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t2_hunter_name"
         }
       },
@@ -1984,6 +2077,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "@ht_t2_hunter_name"
         }
       },
@@ -2245,13 +2340,22 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ht_matching_rank",
-            "value": 16,
-            "comparasion_func": "more"
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 16,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 21,
+              "comparasion_func": "less"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "varSetString": {
@@ -2262,6 +2366,96 @@
           {
             "varSetString": {
               "value": "ht_t2_hunter_rank_05",
+              "var": "ht_t2_hunter_name"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ht_matching_21_25": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 20,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 26,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "varSetString": {
+              "value": "ht_t1_hunter_rank_06",
+              "var": "ht_t1_hunter_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "ht_t2_hunter_rank_06",
+              "var": "ht_t2_hunter_name"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ht_matching_26_50": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 25,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ht_matching_rank",
+              "value": 51,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "varSetString": {
+              "value": "ht_t1_hunter_rank_07",
+              "var": "ht_t1_hunter_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "ht_t2_hunter_rank_07",
               "var": "ht_t2_hunter_name"
             }
           }

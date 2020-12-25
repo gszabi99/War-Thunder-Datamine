@@ -2123,6 +2123,29 @@
   "commonWeapons": [
     {
       "Weapon": {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "bone_gun_barrel",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "optic_gun_dm",
+        "speedYaw": 120.0,
+        "speedPitch": 90.0,
+        "bullets": 1,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun"
+        },
+        "limits": {
+          "yaw": [-90.0,90.0],
+          "pitch": [-10.0,20.0]
+        }
+      }
+    },
+    {
+      "Weapon": {
         "trigger": "gunner0",
         "blk": "gameData/Weapons/groundModels_weapons/152mm_football_user_cannon.blk",
         "emitter": "bone_gun_barrel",
