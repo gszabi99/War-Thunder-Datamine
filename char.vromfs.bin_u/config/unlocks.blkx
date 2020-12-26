@@ -174681,7 +174681,53 @@
     "unlockable": {
       "id": "aerobatics_smoke_winter",
       "type": "award",
-      "hidden": false
+      "hidden": false,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "2020_12_28_aerobatics_smoke_winter"
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "2020_12_28_aerobatics_smoke_winter",
+      "type": "achievement",
+      "chapter": "new_year2021",
+      "mode": [
+        {
+          "type": "killedPlayersScore"
+        },
+        {
+          "num": 30
+        },
+        {
+          "condition": {
+            "type": "online"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerType",
+            "unitType": "aircraft"
+          }
+        },
+        {
+          "condition": {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "maxRank": 7,
+            "inSession": false
+          }
+        },
+        {
+          "condition": {
+            "type": "timeRange",
+            "beginDate": "2020-12-28 11:00:00",
+            "endDate": "2021-01-04 11:30:00"
+          }
+        }
+      ]
     }
   },
   {
