@@ -81,6 +81,7 @@ selImg {
   Button_text {
     pos:t='pw-w - 1*@scrn_tgt/100.0 - 1@selImgRightPadding, ph-h - 1*@scrn_tgt/100.0'
     position:t='absolute'
+    showOnSelect:t='yes'
     noMargin:t='yes'
     text:t='<<buttonName>>'
     logIdx:t='<<logIdx>>'
@@ -88,7 +89,6 @@ selImg {
     btnName:t=''
     ButtonImg {
       btnName:t='A'
-      showOnSelect:t='hover'
     }
   }
   <</buttonName>>

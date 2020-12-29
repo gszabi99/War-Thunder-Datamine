@@ -54,6 +54,17 @@ local seasonStages = ::Computed(function() {
   return res
 })
 
+local function getChallengeTooltipId(stage, stageChallenge) {
+  if (stageChallenge == null)
+    return null
+
+  local challenge = curSeasonChallengesByStage.value?[stage]
+  if (challenge == null)
+    return null
+
+  return ::g_tooltip_type.BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
+}
+
 local function getStageViewData(stageData, idxOnPage) {
   local { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
   local itemId = rewards?.keys()[0]
@@ -80,9 +91,7 @@ local function getStageViewData(stageData, idxOnPage) {
         count = rewards[itemId]
       })]
     : null
-    challengeTooltipId = stageChallenge != null
-      ? ::g_tooltip_type.BATTLE_PASS_CALLENGE.getTooltipId(stage)
-      : null
+    challengeTooltipId = getChallengeTooltipId(stage, stageChallenge)
   }
 }
 

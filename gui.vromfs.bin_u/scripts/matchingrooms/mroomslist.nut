@@ -132,13 +132,13 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"
-          value = "xboxOne"
+          value = "xbox"
         }
       }
       else {
         filter["public/platformRestriction"] <- {
           test = "in"
-          value = ["xboxOne", null]
+          value = ["xbox", null]
         }
       }
     }
@@ -146,13 +146,13 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"
-          value = "ps4"
+          value = "ps"
         }
       }
       else {
         filter["public/platformRestriction"] <- {
           test = "in"
-          value = ["ps4", null]
+          value = ["ps", null]
         }
       }
     }

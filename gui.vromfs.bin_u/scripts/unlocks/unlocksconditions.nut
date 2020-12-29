@@ -1144,17 +1144,6 @@ UnlockConditions.getLocForBitValues <- function getLocForBitValues(modeType, val
   return valuesLoc
 }
 
-UnlockConditions.getTooltipIdByModeType <- function getTooltipIdByModeType(modeType, id, hasCustomUnlockableList = false)
-{
-  if (hasCustomUnlockableList || ::isInArray(modeType, nestedUnlockModes))
-    return ::g_tooltip.getIdUnlock(id)
-
-  if (modeType == "char_unit_exist")
-    return ::g_tooltip.getIdUnit(id)
-
-  return id
-}
-
 UnlockConditions.getProgressBarData <- function getProgressBarData(modeType, curVal, maxVal)
 {
   local res = {

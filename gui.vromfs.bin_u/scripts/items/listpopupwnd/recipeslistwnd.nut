@@ -73,8 +73,12 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   {
     align = ::g_dagui_utils.setPopupMenuPosAndAlign(alignObj, align, scene.findObject("main_frame"))
     needMarkRecipes = ExchangeRecipes.hasFakeRecipes(recipesList)
+    local recipesListObj = scene.findObject("recipes_list")
+    if (recipesList.len() > 0)
+      recipesListObj.setValue(0)
 
-    ::move_mouse_on_child_by_value(scene.findObject("recipes_list"))
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_child_by_value(recipesListObj)
     updateCurRecipeInfo()
   }
 

@@ -270,6 +270,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
         idx = count++
         text = ::loc(sh.locId)
         isCollapsable = isCollapsable
+        isHeader = true
         }))
       if (isCollapsable)
         foreach(param in sh.getSubsetsListParameters().subsetList)

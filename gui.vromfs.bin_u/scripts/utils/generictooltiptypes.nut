@@ -11,7 +11,7 @@ local { updateModType,
         updateSpareType,
         updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
 local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
-local { curSeasonChallengesByStage, getChallengeView } = require("scripts/battlePass/challenges.nut")
+local { getChallengeView } = require("scripts/battlePass/challenges.nut")
 
 ::g_tooltip_type <- {
   types = []
@@ -519,27 +519,42 @@ enums.addTypesByGlobalName("g_tooltip_type", {
   }
 
   BATTLE_TASK = {
-    getTooltipContent = function(battleTaskId, params)
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, id, params)
     {
-      local battleTask = ::g_battle_tasks.getTaskById(battleTaskId)
+      if (!::check_obj(obj))
+        return false
+
+      local battleTask = ::g_battle_tasks.getTaskById(id)
       if (!battleTask)
-        return ""
+        return false
 
       local config = ::g_battle_tasks.generateUnlockConfigByTask(battleTask)
       local view = ::g_battle_tasks.generateItemView(config, { isOnlyInfo = true})
-      return ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view]})
+      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", {items = [view]})
+
+      local guiScene = obj.getScene()
+      obj.width = "1@unlockBlockWidth"
+      guiScene.replaceContentFromText(obj, data, data.len(), handler)
+      return true
     }
   }
 
-  BATTLE_PASS_CALLENGE = {
-    getTooltipContent = function(stage, params)
+  BATTLE_PASS_CHALLENGE = {
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, id, params)
     {
-      local challenge = curSeasonChallengesByStage.value?[stage]
-      if (challenge == null)
-        return ""
+      if (!::check_obj(obj))
+        return false
 
-      return ::handyman.renderCached("gui/unlocks/battleTasksItem",
-        { items = [getChallengeView(challenge, { isOnlyInfo = true })]})
+      local unlockBlk = id && id != "" && ::g_unlocks.getUnlockById(id)
+      local data = ::handyman.renderCached("gui/unlocks/battleTasksItem",
+        { items = [getChallengeView(unlockBlk, { isOnlyInfo = true })]})
+
+      local guiScene = obj.getScene()
+      obj.width = "1@unlockBlockWidth"
+      guiScene.replaceContentFromText(obj, data, data.len(), handler)
+      return true
     }
   }
 

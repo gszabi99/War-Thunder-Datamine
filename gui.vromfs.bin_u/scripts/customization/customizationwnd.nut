@@ -767,7 +767,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       bObj.inactiveColor = can_createUserSkin ? "no" : "yes"
 
     local isInEditMode = currentState & decoratorEditState.EDITING
-    updateBackButtonLabel()
+    updateBackButton()
 
     if (decoratorType == null)
       decoratorType = currentType
@@ -835,7 +835,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     update_gamercards()
   }
 
-  function updateBackButtonLabel()
+  function updateBackButton()
   {
     local bObj = scene.findObject("btn_back")
     if (!bObj?.isValid())
@@ -844,6 +844,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (currentState & decoratorEditState.EDITING)
     {
       bObj.text = ::loc("mainmenu/btnCancel")
+      bObj["skip-navigation"] = "yes"
       return
     }
 
@@ -853,11 +854,13 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       if (listObj?.isValid() && listObj.isHovered())
       {
         bObj.text = ::loc("mainmenu/btnCollapse")
+        bObj["skip-navigation"] = "no"
         return
       }
     }
 
     bObj.text = ::loc("mainmenu/btnBack")
+    bObj["skip-navigation"] = "no"
   }
 
   function isNavigationAllowed()
@@ -1365,7 +1368,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onCollectionIconClick(obj)
   {
     openCollectionsWnd({ selectedDecoratorId = obj.holderId })
-    updateBackButtonLabel()
+    updateBackButton()
   }
 
   function onCollectionButtonClick()
@@ -1375,7 +1378,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     openCollectionsWnd({ selectedDecoratorId = selectedDecorator.id })
-    updateBackButtonLabel()
+    updateBackButton()
   }
 
   function onDecoratorItemSelect(obj)
@@ -1385,7 +1388,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onDecoratorsListHoverChange()
   {
-    updateBackButtonLabel()
+    updateBackButton()
   }
 
   function getSelectedDecal(decoratorType)
@@ -1422,7 +1425,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     local prevValue = wObj.getValue()
     wObj.setValue(-1)
-    updateBackButtonLabel()
+    updateBackButton()
     guiScene.applyPendingChanges(false)
     if (::show_console_buttons)
       ::move_mouse_on_child(wObj, prevValue)

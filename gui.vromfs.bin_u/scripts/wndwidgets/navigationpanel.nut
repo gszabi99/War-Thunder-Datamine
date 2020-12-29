@@ -48,7 +48,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
       collapseShortcut  = collapseShortcut
       needShowCollapseButton = needShowCollapseButton || ::is_low_width_screen()
       expandShortcut    = expandShortcut ?? collapseShortcut
-      focusShortcut     = focusShortcut
+      focusShortcut     = ::show_console_buttons ? focusShortcut : null
     }
   }
 
@@ -227,7 +227,7 @@ class ::gui_handlers.navigationPanel extends ::gui_handlers.BaseGuiHandlerWT
       foreach (idx in indexes)
       {
         local child = listObj.getChild(idx)
-        if (!child?.collapse_header && child.isEnabled())
+        if (!child?.collapse_header != "yes"  && child.isEnabled())
         {
           newIdx = idx
           break

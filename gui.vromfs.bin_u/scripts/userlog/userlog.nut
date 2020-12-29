@@ -1,5 +1,4 @@
-local antiCheat = require("scripts/penitentiary/antiCheat.nut")
-local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
+local { actionByLogType } = require("scripts/userLog/userlogUtils.nut")
 
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
@@ -454,23 +453,6 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!log)
       return
 
-    if (log.type == ::EULT_INVITE_TO_TOURNAMENT)    //!!!FIX ME need create eNum by userlog type and put action definition into it
-    {
-      local battleId = log?.battleId
-      if (battleId == null)
-        return
-
-      if (!::isInMenu())
-        return ::g_invites.showLeaveSessionFirstPopup()
-
-      if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
-        return
-
-      if (!isCrossPlayEnabled())
-        return ::g_popups.add(null, ::colorize("warningTextColor", ::loc("xbox/crossPlayRequired")))
-
-      ::dagor.debug($"join to tournament battle with id {battleId}")
-      ::SessionLobby.joinBattle(log.battleId)
-    }
+    actionByLogType?[log.type](log)
   }
 }

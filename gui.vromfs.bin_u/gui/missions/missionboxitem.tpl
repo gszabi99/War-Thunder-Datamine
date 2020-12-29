@@ -21,6 +21,14 @@
   collapse_header:t='yes'
   <</isCollapsable>>
 
+  <<^isCollapsable>>
+  <<#isHeader>>
+  collapsed:t='no'
+  collapsing:t='no'
+  collapse_header:t='no'
+  <</isHeader>>
+  <</isCollapsable>>
+
   <<#itemClass>>
   class:t='<<itemClass>>'
   <</itemClass>>

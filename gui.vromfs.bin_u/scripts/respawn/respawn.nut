@@ -191,8 +191,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     isRespawn = ::is_respawn_screen()
     needRefreshSlotbarOnReinit = isRespawn || wasIsRespawn
 
-    gameMode = ::get_game_mode()
-    gameType = ::get_game_type()
+    initStatsMissionParams()
 
     isFriendlyUnitsExists = isModeWithFriendlyUnits(gameType)
 

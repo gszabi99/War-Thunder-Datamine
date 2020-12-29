@@ -63,6 +63,10 @@ local easyDailyTaskProgressWatchObj = {
     obj.status = value ? "done" : "notDone"
     obj.findObject("text").setValue(::loc("battlePass/info/easy_daily_task_progress",
       { status = statusText }))
+    local imgObj = obj.findObject("task_img")
+    if (imgObj?.isValid())
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"))
   }
 }
 
@@ -73,6 +77,10 @@ local mediumDailyTaskProgressWatchObj = {
     obj.status = value ? "done" : "notDone"
     obj.findObject("text").setValue(::loc("battlePass/info/medium_daily_task_progress",
       { status = statusText }))
+    local imgObj = obj.findObject("task_img")
+    if (imgObj?.isValid())
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Medium"))
   }
 }
 
@@ -106,6 +114,10 @@ local leftSpecialTasksBoughtCountWatchObj = {
 
     obj.findObject("text").setValue(::loc("battlePass/info/available_special_tasks",
       { tasksNum = ::colorize("@goodTextColor", value) }))
+    local imgObj = obj.findObject("task_img")
+    if (imgObj?.isValid())
+      imgObj["background-image"] = ::g_battle_tasks.getDifficultyImage(
+        ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Hard"))
   }
 }
 

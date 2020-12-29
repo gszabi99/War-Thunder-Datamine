@@ -1288,11 +1288,11 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       break
 
     case ::UNLOCKABLE_WARBOND:
-      local wbAmount = ::getTblValue("warbonds", config, 0)
-      local wbStageName = ::getTblValue("warbondStageName", config)
+      local wbAmount = config?.warbonds
+      local wbStageName = config?.warbondStageName
       local wb = ::g_warbonds.findWarbond(id, wbStageName)
-      if (wb && wbAmount)
-        res.rewardText = wb.getPriceText(wbAmount, false, false)
+      if (wb !=null && wbAmount != null)
+        res.rewardText = wb.getPriceText(wbAmount, true, false)
       break
     case ::UNLOCKABLE_AIRCRAFT:
       local unit = ::getAircraftByName(id)

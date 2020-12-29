@@ -147,13 +147,14 @@ frame {
     navRight {
       Button_text {
         id:t = 'btn_warbonds_shop'
-        _on_click:t = 'onWarbondsShop'
-        btnName:t='X'
-        ButtonImg {}
-        valign:t='center'
         display:t = 'hide'
         enable:t='no'
-
+        visualStyle:t='secondary'
+        btnName:t='X'
+        _on_click:t = 'onWarbondsShop'
+        buttonWink{}
+        buttonGlance{}
+        ButtonImg {}
         <<#unseenIcon>>
         unseenIcon {
           value:t='<<unseenIcon>>'
@@ -163,7 +164,13 @@ frame {
           unseenText {}
         }
         <</unseenIcon>>
+        img {
+          size:t='1@cIco, 1@cIco'
+          background-svg-size:t='1@cIco, 1@cIco'
+          background-image:t='#ui/gameuiskin#wb.svg'
+        }
         text {
+          margin-left:t='1@blockInterval'
           text:t='#mainmenu/btnWarbondsShop'
         }
       }

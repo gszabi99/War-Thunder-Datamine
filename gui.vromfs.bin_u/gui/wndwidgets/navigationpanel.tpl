@@ -63,7 +63,7 @@ tdiv {
 
     <<#focusShortcut>>
     tdiv {
-      size:t='pw, 30@sf/@pf'
+      size:t='pw, 1@buttonHeight'
       Button_text{
         id:t = 'moveToLeftPanel'
         position:t='relative'

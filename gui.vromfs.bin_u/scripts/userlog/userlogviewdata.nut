@@ -669,8 +669,9 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     else if (config?.image2 != null)
       res.logImg2 = config?.image2
 
+    local unlock = ::g_unlocks.getUnlockById(log?.unlockId ?? log?.id ?? "")
     local desc = ""
-    if ("desc" in config)
+    if (!(unlock?.isMultiUnlock ?? false) && "desc" in config)
     {
       desc = config.desc
       res.tooltip = config.desc
@@ -1385,6 +1386,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       taskName = ::g_battle_tasks.generateStringForUserlog(log, log.id)
     }
 
+    res.buttonName = ::loc("mainmenu/battleTasks/OtherTasksCount")
     res.name = ::loc(locNameId, {taskName = taskName})
   }
   else if (log.type == ::EULT_PUNLOCK_REROLL_PROPOSAL && "new_proposals" in log)
@@ -1618,19 +1620,14 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
     res.description <- ::g_string.implode(descLines, "\n")
   }
 
-  if (::getTblValue("description", res, "") != "")
+  if ((res?.description ?? "") != "")
   {
-    local textDescriptionBlk = ::format("textareaNoTab {" +
-      "id:t='description';" +
-      "width:t='pw';" +
-      "text:t='%s';" +
-    "}",
-    ::g_string.stripTags(res.description))
-
     if (!("descriptionBlk" in res))
       res.descriptionBlk <- ""
 
-    res.descriptionBlk = textDescriptionBlk + res.descriptionBlk
+    res.descriptionBlk = "".concat(res.descriptionBlk,
+      "textareaNoTab { id:t='description'; width:t='pw'; text:t='",
+      ::g_string.stripTags(res.description),"';}")
   }
 
   //------------- when userlog not found or not full filled -------------//

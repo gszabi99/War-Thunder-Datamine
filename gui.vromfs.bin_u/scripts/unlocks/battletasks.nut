@@ -564,6 +564,7 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     local taskDescription = []
     local taskUnlocksListPrefix = ""
     local taskUnlocksList = []
+    local taskStreaksList = []
     local taskConditionsList = []
     local isPromo = paramsCfg?.isPromo ?? false
 
@@ -581,29 +582,13 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       if (::getTblValue("text", config, "") != "")
         taskDescription.append(config.text)
 
-      if (!canGetReward(task))
-      {
+      if (!canGetReward(task)) {
         taskUnlocksListPrefix = ::UnlockConditions.getMainConditionListPrefix(config.conditions)
 
-        local isBitMode = ::UnlockConditions.isBitModeType(config.type)
-        local namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
-        local typeOR = ::getTblValue("compareOR", config, false)
-        for (local i = 0; i < namesLoc.len(); i++)
-        {
-          local unlockId = config.names[i]
-          if (!::is_unlock_visible(::g_unlocks.getUnlockById(unlockId)))
-            continue
-
-          local isUnlocked = !isBitMode || (config.curVal & 1 << i)
-          taskUnlocksList.append(getUnlockConditionBlock(namesLoc[i],
-                                   unlockId,
-                                   config.type,
-                                   isUnlocked,
-                                   i == namesLoc.len() - 1,
-                                   config.hasCustomUnlockableList,
-                                   i > 0 && typeOR,
-                                   isBitMode))
-        }
+        if (isUnlocksList(config))
+          taskUnlocksList = getUnlocksListView(config)
+        else
+          taskStreaksList = getStreaksListView(config)
       }
 
       local controlledTasks = getTasksListByControllerTask(task, config.conditions)
@@ -627,7 +612,8 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       taskSpecialDescription = getRefreshTimeTextForTask(task)
       taskUnlocksListPrefix = taskUnlocksListPrefix
       taskUnlocks = taskUnlocksList
-      taskUnlocksList = taskUnlocksList.len()
+      taskStreaks = taskStreaksList
+      taskUnlocksList = taskUnlocksList.len() + taskStreaksList.len()
       taskConditionsList = taskConditionsList.len()? taskConditionsList : null
       needShowProgressBar = isPromo && progressData?.show
       progressBarValue = progressBarValue.tointeger()
@@ -636,6 +622,106 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     }
 
     return ::handyman.renderCached("gui/unlocks/battleTasksDescription", view)
+  }
+
+  function getUnlockConditionBlock(text, id, config, isUnlocked, isFinal, compareOR = false, isBitMode = true)
+  {
+    local unlockDesc = compareOR ? ::loc("hints/shortcut_separator") + "\n" : ""
+    unlockDesc += text
+    unlockDesc += compareOR? "" : ::loc(isFinal? "ui/dot" : "ui/comma")
+
+    return {
+      tooltipMarkup = getTooltipMarkupByModeType(config)
+      overlayTextColor = (isBitMode && isUnlocked) ? "userlog" : "active"
+      text = unlockDesc
+    }
+  }
+
+  function isUnlocksList(config) {
+    if (::UnlockConditions.nestedUnlockModes.contains(config.type))
+      foreach (id in config.names) {
+        local unlockBlk = ::g_unlocks.getUnlockById(id)
+        if (!(unlockBlk?.isMultiUnlock ?? false) && ::get_unlock_type(unlockBlk.type) != ::UNLOCKABLE_STREAK)
+          return true
+      }
+    return false
+  }
+
+  function getUnlocksListView(config) {
+    local res = []
+
+    local namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
+    local isBitMode = ::UnlockConditions.isBitModeType(config.type)
+
+    foreach (idx, unlockId in config.names) {
+      if (config.type == "char_resources") {
+        local decorator = ::g_decorator.getDecoratorById(unlockId)
+        if (decorator && (decorator.isVisible() || decorator.isForceVisible()))
+          res.append({
+            text = decorator.getName()
+            isUnlocked = decorator.isUnlocked()
+            tooltipMarkup = ::g_tooltip_type.DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+          })
+      }
+      else {
+        local unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+        if (!unlockBlk || !::is_unlock_visible(unlockBlk))
+          continue
+
+        local unlockConfig = ::build_conditions_config(unlockBlk)
+        local isUnlocked = isBitMode? stdMath.is_bit_set(config.curVal, idx) : ::is_unlocked_scripted(-1, unlockId)
+        res.append({
+          tooltipMarkup = getTooltipMarkupByModeType(unlockConfig)
+          text = namesLoc[idx]
+          isUnlocked
+        })
+      }
+    }
+
+    return res
+  }
+
+  function getStreaksListView(config) {
+    local isBitMode = ::UnlockConditions.isBitModeType(config.type)
+    local namesLoc = ::UnlockConditions.getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
+    local compareOR = config?.compareOR ?? false
+
+    local res = []
+    for (local i = 0; i < namesLoc.len(); i++)
+    {
+      local unlockId = config.names[i]
+      local unlockBlk = ::g_unlocks.getUnlockById(unlockId)
+      if (!unlockBlk || !::is_unlock_visible(unlockBlk))
+        continue
+
+      local unlockConfig = ::build_conditions_config(unlockBlk)
+      local isUnlocked = !isBitMode || stdMath.is_bit_set(config.curVal, i)
+      res.append(getUnlockConditionBlock(
+        namesLoc[i],
+        unlockId,
+        unlockConfig,
+        isUnlocked,
+        i == namesLoc.len() - 1,
+        i > 0 && compareOR,
+        isBitMode
+      ))
+    }
+
+    return res
+  }
+
+  function getTooltipMarkupByModeType(config)
+  {
+    if (config.type == "char_unit_exist")
+      return ::g_tooltip_type.UNIT.getMarkup(config.id, {showProgress=true})
+
+    if (isBattleTask(config.id))
+      return ::g_tooltip_type.BATTLE_TASK.getMarkup(config.id, {showProgress=true})
+
+    if (activeUnlocks.value?[config.id] != null)
+      return ::g_tooltip_type.BATTLE_PASS_CHALLENGE.getMarkup(config.id, {showProgress=true})
+
+    return ::g_tooltip_type.UNLOCK.getMarkup(config.id, {showProgress=true})
   }
 
   function getRefreshTimeTextForTask(task)
@@ -651,7 +737,7 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     return "".concat(labelText,  ::colorize("unlockActiveColor", diff.getTimeLeftText(task)))
   }
 
-  function setUpdateTimer(task, taskBlockObj)
+  function setUpdateTimer(task, taskBlockObj, addParams = {})
   {
     if (!::checkObj(taskBlockObj))
       return
@@ -664,12 +750,13 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       SecondsUpdater(holderObj, function(obj, params) {
         local timeText = ::g_battle_tasks.getRefreshTimeTextForTask(task)
         local isTimeEnded = timeText == ""
+        local addText = params?.addText ?? ""
         if (isTimeEnded)
           timeText = ::colorize("badTextColor", ::loc("mainmenu/battleTasks/timeWasted"))
-        obj.setValue(timeText)
+        obj.setValue($"{addText} {timeText}")
 
         return isTimeEnded
-      })
+      }, true, addParams)
 
     holderObj = taskBlockObj.findObject("tasks_refresh_timer")
     if (::checkObj(holderObj))
@@ -683,19 +770,6 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
     local timeLeft = diff.getTimeLeft(task)
     if (timeLeft > 0)
       ::Timer(taskBlockObj, timeLeft + 1, @() diff.notifyTimeExpired(task), this, false, true)
-  }
-
-  function getUnlockConditionBlock(text, id, mType, isUnlocked, isFinal, hasCustomUnlockableList, typeOR = false, isBitMode = true)
-  {
-    local unlockDesc = typeOR ? ::loc("hints/shortcut_separator") + "\n" : ""
-    unlockDesc += text
-    unlockDesc += typeOR? "" : ::loc(isFinal? "ui/dot" : "ui/comma")
-
-    return {
-      tooltipId = ::UnlockConditions.getTooltipIdByModeType(mType, id, hasCustomUnlockableList)
-      overlayTextColor = (isBitMode && isUnlocked) ? "userlog" : "active"
-      text = unlockDesc
-    }
   }
 
   function getPlaybackPath(playbackName, shouldUseDefaultLang = false)

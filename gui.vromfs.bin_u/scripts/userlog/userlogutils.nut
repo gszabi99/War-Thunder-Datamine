@@ -1,4 +1,6 @@
 local u = require("sqStdLibs/helpers/u.nut")
+local antiCheat = require("scripts/penitentiary/antiCheat.nut")
+local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
 function disableSeenUserlogs(idsList) {
   if (u.isEmpty(idsList))
@@ -24,6 +26,34 @@ function disableSeenUserlogs(idsList) {
   }
 }
 
+
+local actionByLogType = {
+  [::EULT_PUNLOCK_ACCEPT]       = @(log) ::gui_start_battle_tasks_wnd(),
+  [::EULT_PUNLOCK_EXPIRED]      = @(log) ::gui_start_battle_tasks_wnd(),
+  [::EULT_PUNLOCK_CANCELED]     = @(log) ::gui_start_battle_tasks_wnd(),
+  [::EULT_PUNLOCK_NEW_PROPOSAL] = @(log) ::gui_start_battle_tasks_wnd(),
+  [::EULT_PUNLOCK_ACCEPT_MULTI] = @(log) ::gui_start_battle_tasks_wnd(),
+  [::EULT_INVITE_TO_TOURNAMENT] = function (log)
+  {
+    local battleId = log?.battleId
+    if (battleId == null)
+      return
+
+    if (!::isInMenu())
+      return ::g_invites.showLeaveSessionFirstPopup()
+
+    if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
+      return
+
+    if (!isCrossPlayEnabled())
+      return ::g_popups.add(null, ::colorize("warningTextColor", ::loc("xbox/crossPlayRequired")))
+
+    ::dagor.debug($"join to tournament battle with id {battleId}")
+    ::SessionLobby.joinBattle(log.battleId)
+  }
+}
+
 return {
   disableSeenUserlogs = disableSeenUserlogs
+  actionByLogType = actionByLogType
 }

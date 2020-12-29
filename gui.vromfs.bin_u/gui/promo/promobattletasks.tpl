@@ -322,8 +322,14 @@ expandable {
               unseenText {}
             }
             <</unseenIcon>>
+            img {
+              size:t='1@cIco, 1@cIco'
+              background-svg-size:t='1@cIco, 1@cIco'
+              background-image:t='#ui/gameuiskin#wb.svg'
+            }
             text {
-              text:t = '#mainmenu/btnWarbondsShop'
+              margin-left:t='1@blockInterval'
+              text:t = '#mainmenu/btnOnlineShop'
             }
           }
         <</isConsoleMode>>
@@ -358,7 +364,7 @@ collapsedContainer {
     tdiv {
       width:t='fw'
       position:t='relative'
-      top:t='0.5ph-0.5h'    
+      top:t='0.5ph-0.5h'
       overflow:t='hidden'
       css-hier-invalidate:t='yes'
       shortHeaderText {

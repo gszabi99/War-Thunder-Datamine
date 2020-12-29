@@ -1,6 +1,7 @@
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { is_bit_set } = require("std/math.nut")
 
 ::g_unlock_view <- {
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
@@ -221,15 +222,19 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
   local guiScene = unlockObj.getScene()
   local hiddenContent = ""
   local expandImgObj = unlockObj.findObject("expandImg")
-  local names = ::UnlockConditions.getLocForBitValues(unlockConfig.type, unlockConfig.names)
+
+  local isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+  local names = ::UnlockConditions.getLocForBitValues(unlockConfig.type, unlockConfig.names, unlockConfig.hasCustomUnlockableList)
+
   guiScene.replaceContentFromText(hiddenObj, "", 0, context)
   for(local i = 0; i < names.len(); i++)
   {
-    local unlock = ::g_unlocks.getUnlockById(unlockConfig.names[i])
+    local unlockId = unlockConfig.names[i]
+    local unlock = ::g_unlocks.getUnlockById(unlockId)
     if(unlock && !::is_unlock_visible(unlock) && !(unlock?.showInDesc ?? false))
       continue
 
-    local isUnlocked = unlockConfig.curVal & (1 << i)
+    local isUnlocked = isBitMode? is_bit_set(unlockConfig.curVal, i) : ::is_unlocked_scripted(-1, unlockId)
     hiddenContent += "unlockCondition {"
     hiddenContent += ::format("textarea {text:t='%s' } \n %s \n",
                               ::g_string.stripTags(names[i]),

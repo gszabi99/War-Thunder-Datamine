@@ -1463,7 +1463,8 @@ Button_text.battle[inactiveColor=yes] > textarea
 rightClickMenu > Button_text > ButtonImg,
 LoginCheckBoxesBlock CheckBox > ButtonImg,
 button > ButtonImg,
-ButtonImg[showOnSelect] {
+ButtonImg[showOnSelect],
+selImg > Button_text[showOnSelect=yes] {
   display:hide;
 }
 
@@ -1471,6 +1472,7 @@ ButtonImg[showOnSelect] {
   padding-left:h+1@buttonTextPadding;
 }
 
+[selected=yes] > selImg > Button_text[showOnSelect=yes],
 rightClickMenu > Button_text:focus > ButtonImg[pc_style=no],
 [show_console_buttons=yes] LoginCheckBoxesBlock CheckBox:focus > ButtonImg,
 [show_console_buttons=yes] LoginCheckBoxesBlock CheckBox:hover > ButtonImg,

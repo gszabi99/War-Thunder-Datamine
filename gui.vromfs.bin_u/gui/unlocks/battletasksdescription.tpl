@@ -67,18 +67,26 @@ tdiv {
   padding-left:t='0.02@scrn_tgt'
 
   <<#taskUnlocks>>
-  textareaNoTab {
-    text:t='<<text>>'
-    overlayTextColor:t='<<overlayTextColor>>'
-    title:t='$tooltipObj'
-    tooltipObj {
-      display:t='hide'
-      on_tooltip_open:t='onGenericTooltipOpen'
-      on_tooltip_close:t='onTooltipObjClose'
-      tooltipId:t='<<tooltipId>>'
+    unlockCondition {
+      unlocked:t='<<#isUnlocked>>yes<</isUnlocked>><<^isUnlocked>>no<</isUnlocked>>'
+      textarea {
+        text:t='<<text>>'
+        overlayTextColor:t='<<overlayTextColor>>'
+      }
+      <<#isUnlocked>>
+        unlockImg{}
+      <</isUnlocked>>
+      <<@tooltipMarkup>>
     }
-  }
   <</taskUnlocks>>
+
+  <<#taskStreaks>>
+    textareaNoTab {
+      text:t='<<text>>'
+      overlayTextColor:t='<<overlayTextColor>>'
+      <<@tooltipMarkup>>
+    }
+  <</taskStreaks>>
 }
 <</taskUnlocksList>>
 

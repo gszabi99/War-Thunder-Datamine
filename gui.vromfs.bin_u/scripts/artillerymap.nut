@@ -424,7 +424,8 @@ class ::gui_handlers.ArtilleryMap extends ::gui_handlers.BaseGuiHandlerWT
   function doQuit()
   {
     ::on_artillery_close()
-    base.goBack()
+    if (isSceneActive())
+      base.goBack()
   }
 
   doQuitDelayed = @() guiScene.performDelayed(this, function() {

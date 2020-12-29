@@ -114,12 +114,17 @@ local function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.value.presetFilename != "")
     ::apply_joy_preset_xchange(tutorialRewardData.value.presetFilename)
 
+  local decorator = ::g_decorator.getDecoratorByResource(
+    tutorialRewardData.value.resource,
+    tutorialRewardData.value.resourceType)
+  local hasDecoratorUnlocked = !tutorialRewardData.value.isResourceUnlocked && (decorator?.isUnlocked() ?? false)
+
   local newCountries = null
-  if (progress!=tutorialRewardData.value.progress)
+  if (progress!=tutorialRewardData.value.progress || hasDecoratorUnlocked)
   {
     local misName = tutorialRewardData.value.missionName
 
-    if (tutorialRewardData.value.progress>=3 && progress>=0 && progress<3)
+    if ((tutorialRewardData.value.progress>=3 && progress>=0 && progress<3) || hasDecoratorUnlocked)
     {
       local rBlk = ::get_pve_awards_blk()
       local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
@@ -147,10 +152,9 @@ local function tryOpenTutorialRewardHandler() {
       ::gui_start_modal_wnd(::gui_handlers.TutorialRewardHandler,
       {
         misName = misName
+        decorator = decorator
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? ::DataBlock(), misName, rewardsConfig)
         afterRewardText = ::loc(miscText)
-        decorator = ::g_decorator.getDecoratorByResource(tutorialRewardData.value.resource,
-          tutorialRewardData.value.resourceType)
       })
     }
 

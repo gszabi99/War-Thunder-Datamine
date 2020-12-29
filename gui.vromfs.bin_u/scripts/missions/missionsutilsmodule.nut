@@ -71,6 +71,7 @@ local function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
         resourceImage = decoratorType.getImage(decorator)
         resourceImageSize = decoratorType.getImageSize(decorator)
         rewardTextArray = addRewardText(rewardTextArray, decoratorType.getLocName(id), locId)
+        isComplete = decorator.isUnlocked()
       }
     }
 

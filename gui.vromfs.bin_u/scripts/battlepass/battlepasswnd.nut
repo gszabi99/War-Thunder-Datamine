@@ -4,8 +4,6 @@ local { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unloc
 local { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
 } = require("scripts/battlePass/challenges.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-local { hoursToString, secondsToHours, TIME_DAY_IN_SECONDS
-} = require("scripts/time.nut")
 local { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   tomorowLoginExpWatchObj, easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, seasonTasksProgressWatchObj,
@@ -55,6 +53,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     updateTitle()
+    updateButtons()
     calculateStageListSizeOnce()
 
     //init main sheet
@@ -63,8 +62,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     updateMainPrizeData()
     fillPromoBlock()
     initBattlePassInfo()
-    updateRestOfDayTime()
-    scene.findObject("update_timer").setUserData(this)
+    ::g_battle_tasks.setUpdateTimer(
+      ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
+      scene.findObject("task_timer_nest"),
+      {addText = $"{::loc("mainmenu/btnBattleTasks")}{::loc("ui/colon")}"})
 
     //init challenges sheet
     initChallengesUpdater()
@@ -189,18 +190,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   onWarbondsShop = @() ::g_warbonds.openShop()
-
-  function updateRestOfDayTime() {
-    local restOfDayTimeSec = TIME_DAY_IN_SECONDS
-      - (::get_charserver_time_sec() % TIME_DAY_IN_SECONDS)
-    scene.findObject("rest_of_day").setValue(::loc("battlePass/info/rest_of_day", {
-      time = hoursToString(secondsToHours(restOfDayTimeSec), false, true)
-    }))
-  }
-
-  function onTimer(obj, dt) {
-    updateRestOfDayTime()
-  }
+  onBattleTask = @() ::gui_start_battle_tasks_wnd()
 
   function updateTitle() {
     scene.findObject("wnd_title").setValue(::loc("battlePass/name", {
@@ -401,6 +391,10 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   function onEventBattlePassPurchased(p) {
     needCalculateCurPage = true
     doWhenActiveOnce("congratulationBattlePassPurchased")
+  }
+
+  function updateButtons() {
+    showSceneBtn("btn_wiki_link", ::has_feature("AllowExternalLink") && !::is_vendor_tencent())
   }
 }
 

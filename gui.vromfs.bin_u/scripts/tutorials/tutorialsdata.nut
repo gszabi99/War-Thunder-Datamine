@@ -136,6 +136,9 @@ local function saveTutorialToCheckReward(mission) {
   local rBlk = ::get_pve_awards_blk()
   local dataBlk = rBlk?[::get_game_mode_name(::GM_TRAINING)]
   local misDataBlk = dataBlk?[missionName]
+  local resource = misDataBlk?.decal
+  local resourceType = "decal"
+  local isResourceUnlocked = ::g_decorator.getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
 
   tutorialRewardData({
     missionName
@@ -147,8 +150,9 @@ local function saveTutorialToCheckReward(mission) {
       hasRewardImage = false
       needVerticalAlign = true
     })
-    resource = misDataBlk?.decal
-    resourceType = "decal"
+    resource
+    resourceType
+    isResourceUnlocked
   })
   ::set_mp_mode(mainGameMode)
 }

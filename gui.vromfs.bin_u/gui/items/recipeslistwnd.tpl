@@ -43,6 +43,7 @@ popup_menu {
     moveY:t='linear'
     navigatorShortcuts:t='yes'
     on_select:t='onRecipeSelect'
+    _on_activate:t = 'onRecipeApply'
 
     <<#recipesList>>
     <<#isSeparator>>
