@@ -62,7 +62,7 @@ const AFTERBURNER_CHAMBER = 3
   absoluteArmorThreshold = 500
   relativeArmorThreshold = 5.0
 
-  showStellEquivForArmorClassesList = [ "ships_coal_bunker" ]
+  showStellEquivForArmorClassesList = []
   armorClassToSteel = null
 
   prepareNameId = [
@@ -91,9 +91,11 @@ const AFTERBURNER_CHAMBER = 3
     unsafe = [ handler.guiScene.calcString("@bw", null), handler.guiScene.calcString("@bh", null) ]
     offset = [ screen[1] * 0.1, 0 ]
 
-    local guiBlk = ::configs.GUI.get()
-    absoluteArmorThreshold = guiBlk?.armor_thickness_absolute_threshold ?? absoluteArmorThreshold
-    relativeArmorThreshold = guiBlk?.armor_thickness_relative_threshold ?? relativeArmorThreshold
+    local cfgBlk = ::configs.GUI.get()?.xray
+    absoluteArmorThreshold = cfgBlk?.armor_thickness_absolute_threshold ?? absoluteArmorThreshold
+    relativeArmorThreshold = cfgBlk?.armor_thickness_relative_threshold ?? relativeArmorThreshold
+    showStellEquivForArmorClassesList = (cfgBlk?.show_steel_thickness_equivalent_for_armor_class
+      ?? ::DataBlock()) % "o"
 
     updateUnitInfo()
     local timerObj = handler.getObj("dmviewer_hint")
@@ -1186,12 +1188,21 @@ const AFTERBURNER_CHAMBER = 3
   function getXrayViewerDataByDmPartName(partName)
   {
     local dataBlk = unitBlk && unitBlk?.xray_viewer_data
+    local partIdx = null
     if (dataBlk)
       for (local b = 0; b < dataBlk.blockCount(); b++)
       {
         local blk = dataBlk.getBlock(b)
         if (blk?.xrayDmPart == partName)
           return blk
+        if (blk?.xrayDmPartFmt != null)
+        {
+          partIdx = partIdx ?? extractIndexFromDmPartName(partName)
+          if (partIdx != -1
+              && partIdx >= (blk?.xrayDmPartRange.x ?? -1) && partIdx <= (blk?.xrayDmPartRange.y ?? -1)
+              && ::format(blk.xrayDmPartFmt, partIdx) == partName)
+            return blk
+        }
       }
     return null
   }
@@ -1598,6 +1609,13 @@ const AFTERBURNER_CHAMBER = 3
       break
     }
     return res
+  }
+
+  function extractIndexFromDmPartName(partName)
+  {
+    local strArr = partName.split("_")
+    local l = strArr.len()
+    return (l > 2 && strArr[l - 1] == "dm") ? ::to_integer_safe(strArr[l - 2], -1, false) : -1
   }
 
   function checkPartLocId(partId, partName, weaponInfoBlk, params)

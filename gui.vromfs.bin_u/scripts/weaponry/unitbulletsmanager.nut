@@ -162,6 +162,8 @@ global enum bulletsAmountState {
       local unallocated = gInfo.unallocated
       if (unallocated <= 0)
         continue
+      if (gInfo?.forcedMaxBulletsInRespawn ?? false) // Player can't change counts.
+        continue
 
       local status = bulletsAmountState.READY
       local totalBullets = gInfo.total
