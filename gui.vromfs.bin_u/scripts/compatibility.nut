@@ -85,6 +85,7 @@
   epic_get_shop_items_async = @() null
   epic_buy_item = @(...) null
   epic_update_purchases_on_auth = @() null
+  is_low_latency_available = @(request_mode) false
 })
 
 //----------------------------wop_2_3_0_X---------------------------------//
