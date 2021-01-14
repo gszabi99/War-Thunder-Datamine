@@ -86,22 +86,6 @@ local servUnlockProgress = ::Computed(@() userstatUnlocks.value?.unlocks ?? {})
 local RECEIVE_REWARD_DEFAULT_OPTIONS = {
   showProgressBox = true
 }
-
-local function sendReceiveRewardRequest(params)
-{
-  local { stage, rewards, unlockName, taskOptions, needShowRewardWnd } = params
-  local receiveRewardsCallback = function(res) {
-    ::dagor.debug($"receiveRewards {unlockName} results: {res}")
-    delete rewardsInProgress[unlockName]
-  }
-  rewardsInProgress[unlockName] <- stage
-  receiveUnlockRewards(unlockName, stage, function(res) {
-    receiveRewardsCallback("success")
-    if (needShowRewardWnd)
-      showRewardWnd(rewards)
-  }, receiveRewardsCallback, taskOptions)
-}
-
 local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_OPTIONS, needShowRewardWnd = true) {
   if (!unlockName || unlockName in rewardsInProgress.value)
     return
@@ -109,16 +93,19 @@ local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_O
   local progressData = servUnlockProgress.value?[unlockName]
   local stage = progressData?.stage ?? 0
   local lastReward = progressData?.lastRewardedStage ?? 0
-  local params = {
-    stage = stage
-    rewards = activeUnlocks.value?[unlockName].stages[stage - 1].rewards
-    unlockName = unlockName
-    taskOptions = taskOptions
-    needShowRewardWnd = needShowRewardWnd
+  local rewards = activeUnlocks.value?[unlockName].stages[stage - 1].rewards
+  if (lastReward < stage && canGetRewards(rewards)) {
+    local receiveRewardsCallback = function(res) {
+      ::dagor.debug($"receiveRewards {unlockName} results: {res}")
+      delete rewardsInProgress[unlockName]
+    }
+    rewardsInProgress[unlockName] <- stage
+    receiveUnlockRewards(unlockName, stage, function(res) {
+      receiveRewardsCallback("success")
+      if (needShowRewardWnd)
+        showRewardWnd(rewards)
+    }, receiveRewardsCallback, taskOptions)
   }
-  if (lastReward < stage && canGetRewards(sendReceiveRewardRequest,
-      params.__merge({ needShowRewardWnd = false })))
-    sendReceiveRewardRequest(params)
 }
 
 local function getRewards(unlockDesc) {

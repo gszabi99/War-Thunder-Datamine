@@ -4,7 +4,7 @@ local asyncActions = require("sqStdLibs/helpers/asyncActions.nut")
 local time = require("scripts/time.nut")
 local { getCustomLocalizationPresets, getEffectOnStartCraftPresetById } = require("scripts/items/workshop/workshop.nut")
 local startCraftWnd = require("scripts/items/workshop/startCraftWnd.nut")
-local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
+local { isUserstatItemRewards, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
 local { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
@@ -637,8 +637,7 @@ local ExchangeRecipes = class {
       parentGen.markAllRecipes()
 
     if (resultItemsShowOpening.len() > 0) {
-      local userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
-      local isUserstatRewards = userstatItemRewardData != null
+      local isUserstatRewards = isUserstatItemRewards(componentItem.id)
       local rewardTitle = isUserstatRewards ? userstatRewardTitleLocId
         : parentRecipe ? parentRecipe.getRewardTitleLocId(isHasFakeRecipes)
         : ""

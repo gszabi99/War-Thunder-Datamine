@@ -291,10 +291,8 @@ class ::gui_handlers.MissionDescription extends ::gui_handlers.BaseGuiHandlerWT
             isAdditionalReward = true
           })
         else {
-          local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[mission.id], {
-            showFullReward = true
-            isMissionComplete = ::DIFFICULTY_ARCADE <= status
-          })
+          local firstCompletRewardData = getTutorialFirstCompletRewardData(dataBlk?[mission.id],
+            { showFullReward = true })
           if (firstCompletRewardData.hasReward)
             rewardsConfig.append(firstCompletRewardData)
         }

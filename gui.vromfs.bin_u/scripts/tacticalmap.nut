@@ -261,8 +261,7 @@ class ::gui_handlers.TacticalMap extends ::gui_handlers.BaseGuiHandlerWT
     local pilotsObj = scene.findObject("pilots_list")
     guiScene.replaceContentFromText(pilotsObj, data, data.len(), this)
     pilotsObj.baseRow = (numUnits < 13)? "yes" : "rows16"
-    if (numUnits > 0)
-      setMousePointerInitialPos(pilotsObj.getChild(0))
+    setMousePointerInitialPos(pilotsObj.getChild(0))
   }
 
   function updatePlayer()
