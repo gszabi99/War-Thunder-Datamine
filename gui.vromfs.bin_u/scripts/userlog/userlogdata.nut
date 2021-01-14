@@ -4,7 +4,7 @@ local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
 local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
 local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
-local { isUserstatItemRewards, removeUserstatItemRewardToShow,
+local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatRewardTitleLocId, userstatItemsListLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
 
@@ -379,7 +379,8 @@ local logNameByType = {
       local key = blk.body.id + "" + ::getTblValue("parentTrophyRandId", blk.body, "")
       local itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
       local item = ::ItemsManager.findItemById(itemId)
-      local isUserstatRewards = isUserstatItemRewards(item?.id)
+      local userstatItemRewardData = getUserstatItemRewardData(itemId)
+      local isUserstatRewards = userstatItemRewardData != null
       if ((!item?.shouldAutoConsume || isUserstatRewards) &&
         (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy"))
       {

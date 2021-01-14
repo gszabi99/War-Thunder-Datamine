@@ -546,17 +546,9 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       || (!ignoreSelect && (parentObj?.chosen ?? parentObj?.selected) != "yes"))
       return
 
-    if (::show_console_buttons)
-    {
-      local currentMenuUnitObj = unitContextMenuState.value?.unitObj
-      if (currentMenuUnitObj != null && unitObj.isEqual(currentMenuUnitObj))
-        return unitContextMenuState(null)
-    }
-
     if (unitContextMenuState.value?.unitObj.isValid()
-        && unitContextMenuState.value.unitObj.isEqual(unitObj)) {
-      unitContextMenuState(null)
-    }
+      && unitContextMenuState.value.unitObj.isEqual(unitObj))
+      return unitContextMenuState(null)
 
     unitContextMenuState({
       unitObj = unitObj

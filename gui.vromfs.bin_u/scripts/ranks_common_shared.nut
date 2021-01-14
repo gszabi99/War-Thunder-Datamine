@@ -32,13 +32,6 @@ local format = require("string").format
   exp_helicopter = DS_UT_AIRCRAFT
 }
 
-::dsClassToMatchingClass <-
-{
-  [DS_UT_AIRCRAFT] = "aircraft",
-  [DS_UT_TANK] = "tank",
-  [DS_UT_SHIP] = "ship"
-}
-
 global enum EDifficulties
 {
   ARCADE = 0,

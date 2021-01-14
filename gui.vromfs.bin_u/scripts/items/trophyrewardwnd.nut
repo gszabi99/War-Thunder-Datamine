@@ -285,16 +285,18 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     if (unit && unit.isRented())
     {
+      local descTextArray = []
       local totalRentTime = unit.getRentTimeleft()
       local rentText = "mainmenu/rent/rent_unit"
       if (totalRentTime > time.hoursToSeconds(rentTimeHours))
         rentText = "mainmenu/rent/rent_unit_extended"
 
-      rentText = ::loc(rentText) + "\n"
+      descTextArray.append(::colorize("activeTextColor",::loc(rentText)))
       local timeText = ::colorize("userlogColoredText", time.hoursToString(time.secondsToHours(totalRentTime)))
-      rentText += ::loc("mainmenu/rent/rentTimeSec", {time = timeText})
-
-      scene.findObject("prize_desc_text").setValue(::colorize("activeTextColor", rentText))
+      descTextArray.append(::colorize("activeTextColor",::loc("mainmenu/rent/rentTimeSec", {time = timeText})))
+      local descText = "\n".join(descTextArray, true)
+      if (descText != "")
+        scene.findObject("prize_desc_text").setValue(descText)
     }
 
     guiScene.replaceContentFromText(obj, data, data.len(), this)

@@ -107802,6 +107802,9 @@
             },
             {
               "tag": "country_britain"
+            },
+            {
+              "tag": "country_germany"
             }
           ]
         },
@@ -166527,10 +166530,23 @@
           }
         },
         {
-          "condition": {
-            "type": "playerExpClass",
-            "class": "exp_cruiser"
-          }
+          "condition": [
+            {
+              "type": "playerTag"
+            },
+            {
+              "tag": "type_light_cruiser"
+            },
+            {
+              "tag": "type_heavy_cruiser"
+            },
+            {
+              "tag": "type_battlecruiser"
+            },
+            {
+              "tag": "type_battleship"
+            }
+          ]
         },
         {
           "condition": {
@@ -174470,6 +174486,71 @@
   },
   {
     "unlockable": {
+      "id": "battlepass_add_warbonds_350",
+      "type": "warbond",
+      "userLogId": "WarBond",
+      "amount_warbonds": 350,
+      "isMultiUnlock": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 1
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_add_warbonds_400",
+      "type": "warbond",
+      "userLogId": "WarBond",
+      "amount_warbonds": 400,
+      "isMultiUnlock": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 1
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_add_warbonds_750",
+      "type": "warbond",
+      "userLogId": "WarBond",
+      "amount_warbonds": 750,
+      "isMultiUnlock": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 1
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_add_warbonds_100",
+      "type": "warbond",
+      "userLogId": "WarBond",
+      "amount_warbonds": 100,
+      "isMultiUnlock": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 1
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "battlepass_add_warbonds_80",
+      "type": "warbond",
+      "userLogId": "WarBond",
+      "amount_warbonds": 80,
+      "isMultiUnlock": true,
+      "mode": {
+        "type": "char_static_progress",
+        "num": 1
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "tutorialB_fighter_completed",
       "type": "achievement",
       "hidden": true,
@@ -174697,6 +174778,7 @@
       "id": "2020_12_28_aerobatics_smoke_winter",
       "type": "achievement",
       "chapter": "new_year2021",
+      "hidden": true,
       "mode": [
         {
           "type": "killedPlayersScore"
