@@ -17,9 +17,12 @@ local function showRewardWnd(rewards) {
     if (item == null)
       continue
     if (item.shouldAutoConsume) //show recived rewards after auto consume
-      waitingToShowRewardsArray.append(itemId)
+      waitingToShowRewardsArray.append({ itemId })
     else {
-      rewardsToShow.append({ itemDefId = itemId, item = itemId, count = count })
+      rewardsToShow.append({ itemDefId = itemId
+        item = itemId
+        count = count
+      })
       firstItemId = firstItemId ?? itemId
     }
   }
@@ -31,27 +34,28 @@ local function showRewardWnd(rewards) {
     })
 }
 
-local isUserstatItemRewards = @(itemId) waitingToShowRewardsArray.contains(itemId)
+local getUserstatItemRewardData = @(itemId) waitingToShowRewardsArray.findvalue(
+  @(itemData) itemData.itemId == itemId)
 
 local function removeUserstatItemRewardToShow(itemId) {
-  local rewardIdx = waitingToShowRewardsArray.findindex(@(item) item == itemId)
+  local rewardIdx = waitingToShowRewardsArray.findindex(@(itemData) itemData.itemId == itemId)
   if (rewardIdx == null)
     return
 
   waitingToShowRewardsArray.remove(rewardIdx)
 }
 
-local function canGetRewards(rewards) {
-  if ((rewards?.len() ?? 0) == 0)
+local function canGetRewards(onAcceptFn, params) {
+  if ((params.rewards?.len() ?? 0) == 0)
     return true
 
-  foreach (itemId, count in rewards) {
+  foreach (itemId, count in params.rewards) {
     local item = ::ItemsManager.findItemById(itemId.tointeger())
     if (item == null)
       continue
     local warbondsAmount = item?.getWarbondsAmount() ?? 0
     if (warbondsAmount > 0
-        && ::g_warbonds.isOverLimitForExchangeCoupon(warbondsAmount * count))
+         && !::g_warbonds.checkOverLimit(warbondsAmount * count, onAcceptFn, params))
       return false
   }
 
@@ -64,7 +68,7 @@ addListenersWithoutEnv({
 
 return {
   showRewardWnd
-  isUserstatItemRewards
+  getUserstatItemRewardData
   removeUserstatItemRewardToShow
   userstatRewardTitleLocId
   userstatItemsListLocId

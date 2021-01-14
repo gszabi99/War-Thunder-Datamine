@@ -536,13 +536,21 @@ PrizesView.getPrizeText <- function getPrizeText(prize, colored = true, _typeNam
   }
   else if (prize?.unlockAddProgress)
   {
-    local progressArray = prize.unlockAddProgress.split("_")
-    local value = progressArray.top()
-    local typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
-    if (_typeName)
-      name = ::loc(typeName)
-    else
-      name = ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
+    local unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
+    if (unlock != null) {
+      local config = ::build_conditions_config(unlock)
+      if (config.maxVal <= (prize?.count ?? 1)) //show reward only for item what open unlock
+        name = get_unlock_rewards_text(config)
+    }
+    if (name == "") {
+      local progressArray = prize.unlockAddProgress.split("_")
+      local value = progressArray.top()
+      local typeName = cutPostfix(prize.unlockAddProgress, $"_{value}")
+      if (_typeName)
+        name = ::loc(typeName)
+      else
+        name = ::loc("progress/amount", { amount = value.tointeger() * (prize?.count ?? 1) })
+    }
     showCount = false
   }
   else
@@ -617,8 +625,13 @@ PrizesView.getPrizeTypeIcon <- function getPrizeTypeIcon(prize, unitImage = fals
     return "#ui/gameuiskin#item_type_Free_RP"
   if (prize?.warbonds)
     return "#ui/gameuiskin#item_type_warbonds"
-  if (prize?.unlockAddProgress)
-    return "#ui/gameuiskin#item_type_bp.svg"
+  if (prize?.unlockAddProgress) {
+    local unlock = ::g_unlocks.getUnlockById(prize.unlockAddProgress)
+    local rewardText = ""
+    if (unlock != null)
+      rewardText = ::get_unlock_rewards_text(::build_conditions_config(unlock))
+    return rewardText != "" ? "" : "#ui/gameuiskin#item_type_bp.svg"
+  }
   return "#ui/gameuiskin#item_type_placeholder"
 }
 

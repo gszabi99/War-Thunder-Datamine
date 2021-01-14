@@ -1001,7 +1001,8 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       return
 
     local battleTask = getTaskById(battleTaskId)
-    if (!::g_warbonds.checkOverLimit(battleTask))
+    if (!::g_warbonds.checkOverLimit(battleTask?.amounts_warbond ?? 0,
+         ::g_battle_tasks.sendReceiveRewardRequest, battleTask))
       return
 
     sendReceiveRewardRequest(battleTask)

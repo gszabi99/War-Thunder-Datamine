@@ -19,35 +19,13 @@ local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 
   WARBOND_ID = "WarBond"
 
-  function isOverLimitForExchangeCoupon(warbondsAmount) {
-    local curWb = ::g_warbonds.getCurrentWarbond()
-    if (!curWb)
-      return false
-    local limit = getLimit()
-    local newBalance = curWb.getBalance() + warbondsAmount
-    if (newBalance <= limit)
-      return false
-
-    ::scene_msg_box("warbonds_over_limit",
-      null,
-      ::loc("warbond/msg/needSpendBeforeReceiving", { maxWarbonds = limit }),
-      [
-        ["#mainmenu/btnWarbondsShop", @() ::g_warbonds.openShop()],
-        ["no", @() null ]
-      ],
-      "#mainmenu/btnWarbondsShop",
-      {cancel_fn = @() null})
-
-    return true
+  function getList(filterFunc = null)
+  {
+    validateList()
+    if (filterFunc)
+      return ::u.filter(list, filterFunc)
+    return list
   }
-}
-
-g_warbonds.getList <- function getList(filterFunc = null)
-{
-  validateList()
-  if (filterFunc)
-    return ::u.filter(list, filterFunc)
-  return list
 }
 
 g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null)
@@ -184,13 +162,13 @@ g_warbonds.getLimit <- function getLimit()
   return maxAllowedWarbondsBalance
 }
 
-g_warbonds.checkOverLimit <- function checkOverLimit(battleTask, silent = false)
+g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, params, silent = false)
 {
   local curWb = ::g_warbonds.getCurrentWarbond()
   if (!curWb)
     return true
   local limit = getLimit()
-  local newBalance = curWb.getBalance() + battleTask.amount_warbonds
+  local newBalance = curWb.getBalance() + wbAmount
   if (newBalance <= limit)
     return true
 
@@ -200,7 +178,7 @@ g_warbonds.checkOverLimit <- function checkOverLimit(battleTask, silent = false)
       null,
       ::loc("warbond/msg/awardMayBeLost", {maxWarbonds = limit, lostWarbonds = newBalance - limit}),
       [
-        ["yes", @() ::g_battle_tasks.sendReceiveRewardRequest(battleTask)],
+        ["yes", @() onAcceptFn(params)],
         ["#mainmenu/btnWarbondsShop", @() ::g_warbonds.openShop()],
         ["no", @() null ]
       ],

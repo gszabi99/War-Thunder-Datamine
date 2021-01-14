@@ -1425,6 +1425,11 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
       scene.findObject("shop_items_list").setValue(idx)
   }
 
+  function onUnitActivate(obj)
+  {
+    onAircraftClick(obj)
+  }
+
   function onAircraftClick(obj, ignoreMenuHover = false)
   {
     selectCell(obj)

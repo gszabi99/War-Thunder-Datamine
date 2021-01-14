@@ -71,7 +71,7 @@ local setLaunchedTutorialQuestionsValue = @(newValue) launchedTutorialQuestionsP
 
 local function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
   local { hasRewardImage = true, needVerticalAlign = false, highlighted = null,
-    showFullReward = false } = params
+    showFullReward = false, isMissionComplete = false } = params
   local res = {
     locId = "reward/tutorialFirstComplet"
     rewardMoney = ::Cost()
@@ -86,11 +86,12 @@ local function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
   local slot = misDataBlk?.slot
   if (slot != null) {
     local isRecieveSlot = ::g_crews_list.get().findindex(@(c) c.crews.len() < slot) == null
-    res.isComplete = res.isComplete && isRecieveSlot
-    if (showFullReward || !isRecieveSlot) {
-      res.slotReward = slot.tostring()
-      res.hasReward = true
-      res.isComplete = res.isComplete && isRecieveSlot
+    if (isRecieveSlot || !isMissionComplete) {
+      res.isComplete = isRecieveSlot
+      if (showFullReward || !isRecieveSlot) {
+        res.slotReward = slot.tostring()
+        res.hasReward = true
+      }
     }
   }
 
@@ -99,6 +100,9 @@ local function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
     return res
 
   local isCompleteAwardUnlock = ::is_unlocked_scripted(-1, oneTimeAwardUnlockId)
+  if (res.hasReward && !res.isComplete && isCompleteAwardUnlock)
+    return res
+
   if ((misDataBlk?.hideOneTimeAwardIfUnlockIsOpen ?? "") != ""
       && ::is_unlocked_scripted(-1, misDataBlk.hideOneTimeAwardIfUnlockIsOpen)
       && !isCompleteAwardUnlock)
@@ -122,6 +126,7 @@ local function saveTutorialToCheckReward(mission) {
   local missionName = mission.name
   local fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
   local progress = ::get_mission_progress(fullMissionName)
+  local isComplete = progress >= 0 && progress < 3
 
   local presetFilename = ""
   local preset = ::g_controls_presets.getCurrentPreset()
@@ -149,6 +154,7 @@ local function saveTutorialToCheckReward(mission) {
       highlighted = true
       hasRewardImage = false
       needVerticalAlign = true
+      isMissionComplete = isComplete
     })
     resource
     resourceType
