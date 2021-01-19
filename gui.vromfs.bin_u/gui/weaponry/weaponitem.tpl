@@ -324,6 +324,7 @@ weaponry_item {
   }
 
   modSlotButtonsNest {
+    display:t='hide'
     Button_text{
       id:t='altActionBtn'
       holderId:t='<<id>>'
