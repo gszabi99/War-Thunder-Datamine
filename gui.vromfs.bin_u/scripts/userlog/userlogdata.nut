@@ -381,7 +381,7 @@ local logNameByType = {
       local item = ::ItemsManager.findItemById(itemId)
       local userstatItemRewardData = getUserstatItemRewardData(itemId)
       local isUserstatRewards = userstatItemRewardData != null
-      if ((!item?.shouldAutoConsume || isUserstatRewards) &&
+      if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
         (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy"))
       {
         local trophyRewardTable = buildTableFromBlk(blk.body)

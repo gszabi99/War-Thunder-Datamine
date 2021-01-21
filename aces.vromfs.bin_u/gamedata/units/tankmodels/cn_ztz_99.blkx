@@ -164,7 +164,7 @@
           "cumulativeArmorQuality": 0.0
         },
         "body_back_dm": {
-          "armorThickness": 45.0
+          "armorThickness": 20.0
         },
         "superstructure_back_dm": {
           "armorThickness": 20.0
@@ -172,8 +172,8 @@
         "superstructure_top_dm": {
           "armorThickness": 20.0
         },
-        "turret_05_top_dm": {
-          "armorThickness": 45.0
+        "turret_bottom_dm": {
+          "armorThickness": 30.0
         },
         "turret_02_top_dm": {
           "armorThickness": 5.0
@@ -217,8 +217,9 @@
         "turret_02_side_dm": {
           "armorThickness": 30.0
         },
-        "turret_02_bottom_dm": {
-          "armorThickness": 5.0
+        "turret_05_bottom_dm": {
+          "armorThickness": 80.0,
+          "variableThickness": true
         },
         "turret_06_front_dm": {
           "armorThickness": 95.0
@@ -245,6 +246,9 @@
         "turret_03_side_dm": {
           "armorThickness": 5.0
         },
+        "turret_04_side_dm": {
+          "armorThickness": 80.0
+        },
         "turret_03_front_dm": {
           "armorThickness": 30.0
         },
@@ -265,13 +269,6 @@
         "armorClass": "leopard_2a5_turret_nera",
         "hidableInXrayViewer": true,
         "composite_armor_turret_01_dm": {
-          "hidableInXrayViewer": true,
-          "armorThickness": 0.0,
-          "genericArmorQuality": 0.0,
-          "cumulativeArmorQuality": 0.0,
-          "createSecondaryShatters": false
-        },
-        "composite_armor_turret_03_dm": {
           "hidableInXrayViewer": true,
           "armorThickness": 0.0,
           "genericArmorQuality": 0.0,
@@ -306,6 +303,9 @@
       },
       "turret": {
         "armorClass": "CHA_tank",
+        "composite_armor_turret_03_dm": {
+          "armorClass": "CHA_tank"
+        },
         "turret_back_dm": {
           "armorThickness": 50.0,
           "variableThickness": true
@@ -319,9 +319,6 @@
           "armorEffectiveThicknessMax": 140.0,
           "createSecondaryShatters": false
         },
-        "turret_04_side_dm": {
-          "armorThickness": 80.0
-        },
         "turret_05_side_dm": {
           "armorThickness": 45.0
         },
@@ -330,17 +327,10 @@
           "cumulativeArmorQuality": 4.0,
           "armorEffectiveThicknessMax": 150.0
         },
-        "turret_05_bottom_dm": {
-          "armorThickness": 80.0,
-          "variableThickness": true
-        },
         "turret_08_back_dm": {
           "armorThickness": 270.0,
           "armorEffectiveThicknessMax": 300.0,
           "cumulativeArmorQuality": 0.1
-        },
-        "turret_bottom_dm": {
-          "armorThickness": 30.0
         },
         "turret_10_front_dm": {
           "armorThickness": 110.0,
@@ -374,6 +364,9 @@
         },
         "turret_04_top_dm": {
           "armorThickness": 30.0
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 45.0
         },
         "turret_06_top_dm": {
           "armorThickness": 100.0
@@ -540,6 +533,10 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
+        "turret_02_bottom_dm": {
+          "armorThickness": 8.0,
+          "createSecondaryShatters": true
+        },
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_12_dm": [],
@@ -1104,6 +1101,18 @@
           "armorArrayText": {
             "layer": {
               "dmPart": "composite_armor_turret_02_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayTurret": {
+          "xrayDmPart": "composite_armor_turret_03_dm",
+          "titleLoc": "CHA_tank",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_03_dm",
+              "xrayTextThickness": [40.0,310.0]
             }
           }
         }
@@ -2393,13 +2402,14 @@
         "momentOfInertia": [2.5,2.5,6.0],
         "CenterOfGravity": [0.0,0.5,0.0],
         "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": false,
+        "AdvancedMass": true,
         "trackMass": 2500.0
       },
       "tracks": {
         "animationMultiplier": 0.72,
         "height": 0.045,
-        "width": 0.65
+        "width": 0.65,
+        "fricSideRot": [5.0,0.0,0.6,0.3]
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
