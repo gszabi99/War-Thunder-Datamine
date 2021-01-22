@@ -44,3 +44,42 @@ airInfoHeader {
   position:relative;
   pos: 0, 0.5ph-0.5h;
 }
+
+airInfoPanel, airInfoPanel > tr, airInfoPanel > tr > td {
+  css-hier-invalidate:yes;
+}
+
+airInfoPanel referenceProgress {
+  width:0.48@airInfoPanelWidth - 2@blockInterval;
+  pos:0,ph - h + 2@sf/@pf;
+}
+
+airInfoPanel > tr > td {
+  width:0.48@airInfoPanelWidth;
+  padding:0, 0, 1@blockInterval, 0;
+  overflow:hidden;
+}
+
+airInfoPanel > tr > td[hasIncreasedSize=yes] {
+  width:0.55@airInfoPanelWidth;
+}
+
+airInfoPanel > tr > td > textarea {
+  auto-scroll:slow;
+}
+
+airInfoPanel[showStatsProgress=yes] > tr > td {
+  min-height:1@fontHeightSmall + 1@blockInterval + 2@referenceProgressHeight + @referenceProgressOffset;
+}
+
+airInfoInTooltip > tr {
+  width:pw;
+}
+
+airInfoInTooltip > tr > td {
+  width:0.5pw;
+}
+
+airInfoInTooltip > tr > td > textareaNoTab {
+  max-width:pw;
+}

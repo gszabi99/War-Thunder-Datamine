@@ -484,7 +484,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
     currentContainerName = "options_" + config.name
     local container = ::create_options_container(currentContainerName, config.options, true, columnsRatio,
-                        true, true, optionsConfig)
+      true, optionsConfig)
     optionsContainers = [container.descr]
 
     guiScene.setUpdatesEnabled(false, false)

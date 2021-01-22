@@ -6,9 +6,9 @@ tr {
   <<#cell>>
   td {
     <<#params>>
-      id:t='<<id>>'
+      <<#id>>id:t='<<id>>'<</id>>
       <<#active>> active:t='yes' <</active>>
-      display:t='<<display>>'
+      <<#display>>display:t='<<display>>'<</display>>
       <<#cellType>> cellType:t='<<cellType>>' <</cellType>>
       <<#width>>
         width:t='<<width>>'

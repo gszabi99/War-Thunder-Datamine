@@ -15,6 +15,10 @@ shopFilter {
     selected:t='yes'
   <</selected>>
 
+  <<#holderDiffCode>>
+    holderDiffCode:t='<<holderDiffCode>>'
+  <</holderDiffCode>>
+
   <<#isWorldWarMode>>
     isWorldWarMode:t='yes'
   <</isWorldWarMode>>

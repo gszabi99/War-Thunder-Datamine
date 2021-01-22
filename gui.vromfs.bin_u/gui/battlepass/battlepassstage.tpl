@@ -74,7 +74,7 @@ battlePassStage {
         on_click:t='onReceiveRewards'
         holderId:t='<<holderId>>'
         stage:t='<<stage>>'
-        skip-navigation:t='yes'
+        <<#skipButtonNavigation>>skip-navigation:t='yes'<</skipButtonNavigation>>
         buttonWink{}
         buttonGlance{}
         ButtonImg {

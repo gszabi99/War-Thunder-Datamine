@@ -188,6 +188,10 @@ playerStateIcon[background-image=""] {
   size:pw,@baseTrHeight;
 }
 
+optionsList[baseRow=yes] > tr > td {
+  height:@baseTrHeight;
+}
+
 .fastshortcut > tr {
   re-type:9rect;
   background-image:#ui/gameuiskin#horizontal_fade;
@@ -280,29 +284,6 @@ tr[isLeaderBoardHeader=yes] {
 }
 [show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[id=row_header] > td {
   interactive:yes;
-}
-
-.airInfoPanel > tr > td {
-  width:0.48@airInfoPanelWidth;
-  overflow:hidden;
-}
-
-.airInfoPanel > tr > td[hasIncreasedSize=yes] {
-  width:0.55@airInfoPanelWidth;
-}
-
-.airInfoPanel > tr > td > textarea {
-  auto-scroll:slow;
-}
-
-.airInfoPanel[showStatsProgress=no] > tr > td {
-  padding:0, 0, @blockInterval, 0;
-}
-.airInfoPanel[showStatsProgress=yes] > tr > td {
-  padding:0, @referenceProgressHeight, @blockInterval, @referenceProgressHeight + @referenceProgressOffset;
-}
-.airInfoPanel, .airInfoPanel > tr, .airInfoPanel > tr > td {
-  css-hier-invalidate:yes;
 }
 
 tr[totalRowStyle], tr[totalRowStyle] > td {

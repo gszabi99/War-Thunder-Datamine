@@ -259,7 +259,10 @@ local function resetProfilePreferences(curEvent, pref)
   local curBattleTypeName = getCurBattleTypeName(curEvent)
   local params = getProfileBanData(curEvent)
   foreach(item in params[pref])
+  {
     mapPreferences.remove(curBattleTypeName, getPrefTypes()[pref].sType, item)
+    mapsListByEvent?[curEvent].findvalue(@(map) map.map == item).__update({ state = "", [pref] = false })
+  }
 }
 
 local function getPrefTitle(curEvent)

@@ -481,4 +481,8 @@ class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT
     if (listboxObj.getValue() < 0)
       onCollapseButton()
   }
+
+  function onEventCountryChanged(p) {
+    doWhenActiveOnce("updateCrewInfo")
+  }
 }

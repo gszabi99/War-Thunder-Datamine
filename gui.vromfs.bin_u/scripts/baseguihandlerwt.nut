@@ -163,7 +163,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     local isFoundSelected = false
     foreach(diff in ::g_difficulty.types)
     {
-      if (!diff.isAvailable() || (filterFunc && !filterFunc(diff.crewSkillName)))
+      if (!diff.isAvailable() || (filterFunc && !filterFunc(diff)))
         continue
 
       local isSelected = selectedDiffCode == diff.diffCode
@@ -171,6 +171,7 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       tabsView.append({
         tabName = diff.getLocName(),
         selected = isSelected,
+        holderDiffCode = diff.diffCode.tostring()
       })
     }
     if (!isFoundSelected && tabsView.len())

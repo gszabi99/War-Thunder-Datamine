@@ -100,7 +100,7 @@ optionsBoxRightScroll {
   pos:50%pw-50%w, 0;
   position:relative;
   width:pw;
-  max-height:@bigOptionsHeight;
+  max-height:ph;
   overflow-y:auto;
 }
 
@@ -108,17 +108,19 @@ optionsBox[noTopPos=yes] {
   pos:50%pw-50%w, 0;
 }
 
-optionsBoxRightScroll {
-  max-height:ph;
+optionsList {
+  flow:vertical;
 }
 
-optionsBox table.optionsTable, optionsBoxRightScroll table.optionsTable {
+optionsBox table.optionsTable, optionsBoxRightScroll table.optionsTable,
+optionsBox optionsList, optionsBoxRightScroll optionsList {
   pos:50%pw-50%w,0;
   position:relative;
   total-input-transparent:yes;
 }
 
-optionsBox table.optionsTable[disablePosition=yes], optionsBoxRightScroll table.optionsTable[disablePosition=yes] {
+optionsBox optionsList[disablePosition=yes],
+optionsBoxRightScroll optionsList[disablePosition=yes] {
   pos:0,0;
 }
 

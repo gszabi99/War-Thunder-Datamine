@@ -41,7 +41,7 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(optListObj))
       return ::dagor.assertf(false, "Error: cant load options when no optionslist object.")
 
-    local container = ::create_options_container(optId, opt, true, columnsRatio, true, true, optionsConfig)
+    local container = ::create_options_container(optId, opt, true, columnsRatio, true, optionsConfig)
     guiScene.setUpdatesEnabled(false, false);
     optionIdToObjCache.clear()
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)

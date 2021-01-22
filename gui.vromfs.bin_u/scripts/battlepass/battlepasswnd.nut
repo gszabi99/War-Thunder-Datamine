@@ -117,7 +117,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       calculateCurPage()
       needCalculateCurPage = false
     }
-    local view = { battlePassStage = [] }
+    local view = { battlePassStage = [], skipButtonNavigation = ::show_console_buttons }
     local curPageOffset = stageIndexOffset > 0 ? -1 : 0
     local pageStartIndex = ::max((curPage + curPageOffset) * stagesPerPage  + stageIndexOffset, 0)
     local pageEndIndex = ::min(pageStartIndex + stagesPerPage, stagesList.len())

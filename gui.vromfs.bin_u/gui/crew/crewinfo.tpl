@@ -93,8 +93,8 @@ tdiv {
       td {
         expProgress {
           pos:t='0.5(pw-w), 0.5(ph-h)'
+          width:t='pw'
           position:t='relative'
-          id:t='skillProgress'
           type:t='old'
           value:t='<<categoryValue>>'
           minvalue:t='0'

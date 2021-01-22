@@ -982,7 +982,8 @@ Button_text[btnName=back]              { accessKey:'J:Back'; }
 Button_text[btnName=X], CheckBox[btnName=X], DummyButton[btnName=X],
 dropright[btnName=X], ComboBox[btnName=X], SwitchBox[btnName=X], mapStateBox[btnName=X]
                                        { accessKey:'J:X'; }
-Button_text.battle[btnName=X]          { accessKey:'J:X | Enter'; }
+Button_text.battle[btnName=X], Button_text[btnName=EnterX]
+                                       { accessKey:'J:X | Enter'; }
 Button_text.battle[btnName=X][noEnter], gameModeChangeButton[btnName=X]
                                        { accessKey:'J:X'; }
 Button_text.additional[btnName=X]      { accessKey:'J:X | Space';}
@@ -1086,8 +1087,8 @@ dummy[btnName=EnterA] { accessKey:'J:A | J:RT | Enter | NumEnter'; }
 [btnName=B]:pushed > ButtonImg, :pushed > ButtonImg[btnName=B] { background-image:@control_button_b_pressed; }
 [swap_ab=yes] [btnName=B]:pushed > ButtonImg, [swap_ab=yes] :pushed > ButtonImg[btnName=B] { background-image:@control_button_a_pressed; }
 
-[btnName=X] > ButtonImg, ButtonImg[btnName=X] { background-image:@control_button_x; }
-[btnName=X]:pushed > ButtonImg { background-image:@control_button_x_pressed; }
+[btnName=X] > ButtonImg, [btnName=EnterX] > ButtonImg, ButtonImg[btnName=X] { background-image:@control_button_x; }
+[btnName=X]:pushed > ButtonImg, [btnName=EnterX]:pushed > ButtonImg { background-image:@control_button_x_pressed; }
 
 [btnName=Y] > ButtonImg, ButtonImg[btnName=Y] { background-image:@control_button_y; }
 [btnName=Y]:pushed > ButtonImg { background-image:@control_button_y_pressed; }

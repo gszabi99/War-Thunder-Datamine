@@ -462,15 +462,14 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
 
     local diff = ::g_difficulty.getDifficultyByDiffCode(diffMode)
 
-    if (::get_show_in_squadron_statistics(diff.crewSkillName))
+    if (::get_show_in_squadron_statistics(diff))
       return diffMode
-    return ::g_difficulty.ARCADE.diffCode
+    return ::g_difficulty.REALISTIC.diffCode
   }
 
   function cp_onStatsModeChange(obj)
   {
-    local value = obj.getValue()
-    local tabObj = obj.getChild(value)
+    local tabObj = obj.getChild(obj.getValue())
 
     isWorldWarMode = tabObj?.isWorldWarMode == "yes"
     showSceneBtn("clan_members_list", !isWorldWarMode)
@@ -485,11 +484,12 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    local diff = ::g_difficulty.getDifficultyByDiffCode(value)
-    if(!::get_show_in_squadron_statistics(diff.crewSkillName))
+    local diffCode = tabObj.holderDiffCode.tointeger()
+    local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    if(!::get_show_in_squadron_statistics(diff))
       return
 
-    curMode = value
+    curMode = diffCode
     setCurDMode(curMode)
     updateSortingField()
     fillClanMemberList(clanData.members)
@@ -629,7 +629,7 @@ class ::gui_handlers.clanPageModal extends ::gui_handlers.BaseGuiHandlerWT
     /*body*/
     foreach(diff in ::g_difficulty.types)
     {
-      if (!diff.isAvailable() || !::get_show_in_squadron_statistics(diff.crewSkillName))
+      if (!diff.isAvailable() || !::get_show_in_squadron_statistics(diff))
         continue
 
       local rowParams = []

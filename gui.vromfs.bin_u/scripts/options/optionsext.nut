@@ -5095,24 +5095,25 @@ local isWaitMeasureEvent = false
   ::saveLocalByAccount("wnd/diffMode", mode)
 }
 
-::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, fullTable = true, absolutePos=true, context = null)
+::create_options_container <- function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos=true, context = null)
 {
-  local data = ""
   local selectedRow = 0
   local iRow = 0
-  local resDescr = {}
-  resDescr.name <- name
-  resDescr.data <- []
+  local resDescr = {
+    name = name
+    data = []
+  }
 
   columnsRatio = ::clamp(columnsRatio, 0.1, 0.9)
   local wLeft  = ::format("%.2fpw", columnsRatio)
   local wRight = ::format("%.2fpw", 1.0 - columnsRatio)
 
+  local rowsView = []
   local headerHaveContent = false
   for(local i = options.len() - 1; i >= 0; i--)
   {
     local opt = options[i]
-    if (!::getTblValue(2, opt, true))
+    if (!(opt?[2] ?? true))
       continue
 
     local optionData = get_option(opt[0], context)
@@ -5122,34 +5123,18 @@ local isWaitMeasureEvent = false
     local isHeader = optionData.controlType == optionControlType.HEADER
     if(isHeader)
     {
-      if( ! headerHaveContent)
+      if(!headerHaveContent)
         continue
       else
         headerHaveContent = false
     } else
       headerHaveContent = true
 
-    if( ! ::getTblValue("controlName", optionData))
-      optionData.controlName <- ::getTblValue(1, opt) || "spinner"
+    if(optionData?.controlName == null)
+      optionData.controlName <- opt?[1] ?? "spinner"
 
-    local rowData = ""
     local isVlist = false
     local haveOptText = true
-
-    if ("enabled" in optionData)
-      rowData += "enable:t='" + (optionData.enabled ? "yes" : "no") + "'; "
-
-    if (!::u.isEmpty(optionData.hint))
-      rowData += "tooltip:t='" + ::g_string.stripTags(optionData.hint) + "'; "
-
-    if (optionData.controlName == "listbox")
-    {
-      if ("trListParams" in optionData)
-        rowData += optionData.trListParams
-    } else
-    if ("trParams" in optionData)
-      rowData += optionData.trParams
-
     local elemTxt = ""
     switch (optionData.controlName)
     {
@@ -5196,17 +5181,13 @@ local isWaitMeasureEvent = false
         break
     }
 
-    local optionTitleStyle = "optiontext";
-    if(isHeader)
-      optionTitleStyle = "optionBlockHeader"
-
+    local cell = []
     if (elemTxt != null)
     {
       if (isVlist)
-      {
-        rowData += "td { width:t = '0'; }"
-        rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemTxt + " }"
-      }
+        cell.append({ params = {
+          width = 0
+        }})
       else
       {
         local tdText = ""
@@ -5217,12 +5198,41 @@ local isWaitMeasureEvent = false
           elemTxt += ::format("optionValueText { id:t='%s'; text:t='%s' }",
             "value_" + optionData.id, optionData.getValueLocText(optionData.value))
 
-        rowData += "td { overflow:t='hidden'; cellType:t='left'; width:t='" + wLeft + "'; " + optionTitleStyle + " { id:t = 'lbl_" + optionData.id + "'; text:t ='" + tdText + "'; } }"
-        rowData += "td { cellType:t='right'; width:t='" + wRight + "'; padding-left:t='@optPad'; " + elemTxt + " }"
+        local optionTitleStyle = isHeader ? "optionBlockHeader" : "optiontext"
+        cell.append({ params = {
+          cellType = "left"
+          width = wLeft
+          autoScrollText = "yes"
+          rawParam = "".concat(optionTitleStyle, " { id:t = 'lbl_", optionData.id,
+            "'; text:t ='", tdText, "'; }")
+        }})
       }
 
-      data = "tr { " + (isHeader ? "inactive:t='yes' " : "") +
-        "css-hier-invalidate:t='all'; width:t='pw'; id:t = '" + optionData.getTrId() + "'; " + rowData + " }" + data
+      cell.append({ params = {
+        cellType = "right"
+        width = wRight
+        rawParam = $"padding-left:t='@optPad'; {elemTxt}"
+      }})
+
+      local rowParams = []
+      if (isHeader)
+        rowParams.append("inactive:t='yes'")
+      if ("enabled" in optionData)
+        rowParams.append($"enable:t='{optionData.enabled ? "yes" : "no"}';")
+      if (!::u.isEmpty(optionData.hint))
+        rowParams.append($"tooltip:t='{::g_string.stripTags(optionData.hint)}';")
+      if (optionData.controlName == "listbox")
+      {
+        if ("trListParams" in optionData)
+          rowParams.append(optionData.trListParams)
+      } else if ("trParams" in optionData)
+        rowParams.append(optionData.trParams)
+
+      rowsView.insert(0, {
+        row_id = optionData.getTrId()
+        trParams = "\n".join(rowParams)
+        cell = cell
+      })
 
       if (iRow == 0)
         selectedRow = iRow
@@ -5232,28 +5242,17 @@ local isWaitMeasureEvent = false
     resDescr.data.insert(0, optionData)
   }
 
-  local onTblClick = ::getTblValue("onTblClick", context)
-  if (fullTable)
-    data = format("flow:t='vertical' table {" +
-                    "id:t='%s'; " +
-                    "width:t='pw'; pos:t='(pw-w)/2, %s'; position:t = '%s'; " +
-                    "class:t = 'optionsTable'; " +
-                    "baseRow:t = 'yes'; " +
-                    "behavior:t = 'PosOptionsNavigator'; value:t='%d'; " +
-                    "%s" +
-                    "\n%s\n" +
-                  "}",
-                  name,
-                  is_centered? "(ph-h)/2":"0", absolutePos? "absolute":"relative",
-                  selectedRow,
-                  onTblClick ? "on_click:t=" + onTblClick : "",
-                  data
-                 )
-
-  local res = {}
-  res.tbl <- data
-  res.descr <- resDescr
-  return res
+  return {
+    tbl = ::handyman.renderCached("gui/options/optionsContainer", {
+      id = name
+      topPos = is_centered ? "(ph-h)/2" : "0"
+      position = absolutePos ? "absolute" : "relative"
+      value = selectedRow
+      onClick = context?.onTblClick
+      row = rowsView
+    })
+    descr = resDescr
+  }
 }
 
 ::units_img_preset <- null

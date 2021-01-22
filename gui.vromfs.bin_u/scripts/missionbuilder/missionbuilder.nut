@@ -49,7 +49,7 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
   //    [::USEROPT_SESSION_PASSWORD, "editbox"],
     ]
 
-    local container = create_options_container("builder_options", options, true, 0.5, true, true)
+    local container = create_options_container("builder_options", options, true, 0.5, true)
     local optListObj = scene.findObject("optionslist")
     guiScene.replaceContentFromText(optListObj, container.tbl, container.tbl.len(), this)
     optionsContainers.append(container.descr)

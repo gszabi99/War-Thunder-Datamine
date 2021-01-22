@@ -112,21 +112,21 @@
     }
   },
   {
-    "table": [
+    "airInfoPanel": [
       {
         "id": "air_info_panel_table"
       },
       {
-        "class": "airInfoPanel"
+        "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
+      },
+      {
+        "flow": "vertical"
       },
       {
         "allAlignLeft": "yes"
       },
       {
         "showStatsProgress": "no"
-      },
-      {
-        "width": "@airInfoPanelWidth + 0.5@referenceMarkerWidth"
       },
       {
         "tr": [
@@ -238,7 +238,7 @@
       },
       {
         "tr": {
-          "style": "size:pw, 0.01@scrn_tgt;"
+          "size": "pw, 0.01@scrn_tgt"
         }
       },
       {
@@ -486,7 +486,7 @@
       },
       {
         "tr": {
-          "style": "size:pw, 0.01@scrn_tgt;"
+          "size": "pw, 0.01@scrn_tgt"
         }
       },
       {
@@ -592,7 +592,6 @@
                     "id": "aircraft-progress-maxSpeed",
                     "display": "hide",
                     "value": "600",
-                    "pos": "0,ph-h+2*@sf/@pf_outdated",
                     "position": "absolute",
                     "referenceMarker": {
                       "id": "aircraft-reference-marker",
@@ -947,7 +946,7 @@
       },
       {
         "tr": {
-          "style": "size:pw, 0.01@scrn_tgt;"
+          "size": "pw, 0.01@scrn_tgt"
         }
       },
       {
@@ -1097,7 +1096,9 @@
             "td": {
               "hasIncreasedSize": "yes",
               "tdiv": {
-                "id": "aircraft-reward_rp"
+                "id": "aircraft-reward_rp",
+                "width": "pw",
+                "flow": "h-flow"
               }
             }
           }
@@ -1119,7 +1120,9 @@
           {
             "td": {
               "tdiv": {
-                "id": "aircraft-reward_wp"
+                "id": "aircraft-reward_wp",
+                "width": "pw",
+                "flow": "h-flow"
               }
             }
           }

@@ -1,117 +1,12 @@
 local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { clearBorderSymbols } = require("std/string.nut")
+local { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("scripts/clans/clanTablesConfig.nut")
 local time = require("scripts/time.nut")
 local clanContextMenu = require("scripts/clans/clanContextMenu.nut")
-local clanInfoView = require("scripts/clans/clanInfoView.nut")
 
 // how many top places rewards are displayed in clans list window
 local CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
 local CLAN_LEADERBOARD_FILTER_ID = "clan/leaderboard_filter"
-
-local function isFitsRequirements(clanData)
-{
-  local requirements = clanData?.membership_req
-  if (requirements == null ||
-    (requirements.blockCount() == 0 && requirements.paramCount() == 0))
-    return true
-
-  local resultBlk = ::DataBlock()
-  clan_evaluate_membership_requirements(requirements, resultBlk)
-  return resultBlk?.result
-}
-
-local clanLeaderboardsListByPage = {
-  clans_search = [
-    {id = "fits_requirements", icon="#ui/gameuiskin#lb_fits_requirements.svg",
-      type = ::g_lb_data_type.TEXT, sort = false, byDifficulty = false
-      getCellImage = @(clanData) isFitsRequirements(clanData) ? "#ui/gameuiskin#favorite"
-        : "#ui/gameuiskin#icon_primary_fail.svg"
-      getCellTooltipText = function(clanData) {
-        local reqText = clanInfoView.getClanRequirementsText(clanData?.membership_req)
-        return reqText != "" ? reqText : ::loc("clan/no_requirements")
-      }
-    }
-    {id = "activity", field = @() ::has_feature("ClanVehicles") ? "clan_activity_by_periods" : "activity",
-      showByFeature = "ClanActivity", byDifficulty = false }
-    {id = "members_cnt", sort = false, byDifficulty = false}
-    {id = ::ranked_column_prefix + "_arc", icon="#ui/gameuiskin#lb_elo_rating_arcade.svg",
-      tooltip="#clan/dr_era/desc", byDifficulty = false}
-    {id = ::ranked_column_prefix + "_hist", icon="#ui/gameuiskin#lb_elo_rating.svg",
-      tooltip="#clan/dr_era/desc", byDifficulty = false}
-    {id = "slogan", icon="", tooltip="", text="#clan/clan_slogan", byDifficulty = false, sort = false,
-      type = ::g_lb_data_type.TEXT, width = "0.4@sf", autoScrollText = "hoverOrSelect"}
-  ]
-  clans_leaderboards = [
-    {id = ::ranked_column_prefix, tooltip="#clan/dr_era/desc"
-       getIcon = @(diffCode) ::g_difficulty.getDifficultyByDiffCode(diffCode).clanRatingImage}
-    {id = "members_cnt", sort = false, byDifficulty = false}
-    {id = "air_kills", field = "akills", sort = false}
-    {id = "ground_kills", field = "gkills", sort = false}
-    {id = "deaths", sort = false}
-    {id = "time_pvp_played", type = ::g_lb_data_type.TIME_MIN, field = "ftime", sort = false}
-  ]
-}
-
-foreach (page in clanLeaderboardsListByPage)
-  foreach(category in page)
-  {
-    if (typeof(category) != "table")
-      category = { id=category }
-    if (!("type" in category))
-      category.type <- ::g_lb_data_type.NUM
-    if (!("sort" in category))
-      category.sort <- true
-    if (!("byDifficulty" in category))
-      category.byDifficulty <- true
-    if (!("field" in category))
-      category.field <- category.id
-    if (!("icon" in category))
-      category.icon <- "#ui/gameuiskin#lb_" + category.id + ".svg"
-    if (!("tooltip" in category))
-      category.tooltip <- "#clan/" + category.id + "/desc"
-    if (!("getIcon" in category))
-      category.getIcon <- @(diffCode) icon
-  }
-
-local helpsLinksByPage =  {
-  clans_search = [
-    { obj = "img_fits_requirements"
-      msgId = "hint_fits_requirements"
-    }
-    { obj = "img_activity"
-      msgId = "hint_activity"
-    }
-    { obj = "img_members_cnt"
-      msgId = "hint_members_cnt_search"
-    }
-    { obj = ["txt_" + ::ranked_column_prefix + "_arc"]
-      msgId = "hint_dr_era_column_header_arc"
-    }
-    { obj = ["txt_" + ::ranked_column_prefix + "_hist"]
-      msgId = "hint_dr_era_column_header_hist"
-    }
-  ],
-  clans_leaderboards = [
-    { obj = ["img_" + ::ranked_column_prefix]
-      msgId = "hint_dr_era_column_header"
-    }
-    { obj = "img_members_cnt"
-      msgId = "hint_members_cnt"
-    }
-    { obj = "img_air_kills"
-      msgId = "hint_air_kills"
-    }
-    { obj = "img_ground_kills"
-      msgId = "hint_ground_kills"
-    }
-    { obj = "img_deaths"
-      msgId = "hint_deaths"
-    }
-    { obj = "img_time_pvp_played"
-      msgId = "hint_time_pvp_played"
-    }
-  ]
-}
 
 local leaderboardFilterArray = [
   {
@@ -127,7 +22,6 @@ local leaderboardFilterArray = [
     locId = "clan/leaderboard/filter/autoAccept"
   }
 ]
-
 
 class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
 {
@@ -250,7 +144,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     clanByRow = []
     curClanId = null
     isLastPage = false
-    clansLbSortByPage = getCurrentSortField()
+    clansLbSortByPage = getClanTableSortFields()
   }
 
   function calculateRowNumber()
@@ -261,28 +155,6 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     local clanLboard = scene.findObject("clan_lboard_table")
     clansPerPage = ::g_dagui_utils.countSizeInItems(clanLboard, 1, "@leaderboardTrHeight", 0, 0, 0, reserveY).itemsCountY
     requestingClansCount = clansPerPage + 1
-  }
-
-  function getCurrentSortField()
-  {
-    local sortFieldByPage = {
-      clans_leaderboards = null
-      clans_search = null
-    }
-    local fieldName = ::ranked_column_prefix     // for clans_leaderboards page
-    foreach (field in clanLeaderboardsListByPage.clans_leaderboards)
-    {
-      local fieldParam = field?.field ?? field.id
-      fieldParam = ::u.isFunction(fieldParam) ? fieldParam() : fieldParam
-      if (fieldParam == fieldName)
-      {
-         sortFieldByPage.clans_leaderboards = field
-         break
-      }
-    }
-    sortFieldByPage.clans_search = ::u.search(clanLeaderboardsListByPage.clans_search, @(f) f.id == "activity")
-
-    return sortFieldByPage
   }
 
   function initMyClanPage()
@@ -340,12 +212,13 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
   {
     if (!::checkObj(obj))
       return
-    local value = obj.getValue()
-    local diff = ::g_difficulty.getDifficultyByDiffCode(value)
-    if(!::get_show_in_squadron_statistics(diff.crewSkillName))
+
+    local diffCode = obj.getChild(obj.getValue()).holderDiffCode.tointeger()
+    local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+    if(!::get_show_in_squadron_statistics(diff))
       return
 
-    curMode = value
+    curMode = diffCode
     setCurDMode(curMode)
     fillClanReward()
     calculateRowNumber()
@@ -583,7 +456,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     }
     local headerRow = [{text = "#multiplayer/place", width = "0.1@sf"}, {text = ""}, { text = "#clan/clan_name", tdalign = "left",  width = "@clanNameTableWidth"}]
 
-    local fieldList = clanLeaderboardsListByPage[curPage]
+    local fieldList = getClanTableFieldsByPage(curPage)
     foreach(item in fieldList)
     {
       if (!isColForDisplay(item))
@@ -638,7 +511,8 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       txt_name = colorizeClanText(clanType, rowBlk.name, highlightRow)
       txt_tag = colorizeClanText(clanType, rowBlk.tag, highlightRow)
     }
-    tooltips[rowName] <- { name = "\n".concat(slogan, desc) }
+    if (slogan != "" || desc != "")
+      tooltips[rowName] <- { name = "\n".concat(slogan, desc) }
     local rowData = [
       rowBlk.pos + 1
       {
@@ -652,7 +526,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
         textType = "textareaNoTab"
       }
     ]
-    local fieldList = clanLeaderboardsListByPage[curPage]
+    local fieldList = getClanTableFieldsByPage(curPage)
     foreach(item in fieldList)
       if (isColForDisplay(item))
         rowData.append(getItemCell(item, rowBlk, rowName))
@@ -733,7 +607,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       return
     }
 
-    local fieldList = clanLeaderboardsListByPage[curPage]
+    local fieldList = getClanTableFieldsByPage(curPage)
     foreach(idx, category in fieldList)
       if (obj.id == category.id)
       {
@@ -1048,7 +922,7 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
     {
       res.textsBlk <- "gui/clans/clansModalHandlerListHelp.blk"
       res.objContainer <- scene.findObject("clans_list_content")
-      res.links <- helpsLinksByPage[curPage]
+      res.links <- getClanTableHelpLinksByPage(curPage)
       return res
     }
     else if (curPage == "my_clan")

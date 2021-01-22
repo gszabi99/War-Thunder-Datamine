@@ -54,6 +54,21 @@ global enum CLAN_SEASON_MEDAL_TYPE
   }
 
 
+  function hasPrizePlacesRewards(difficulty)
+  {
+    local subRewards = ::g_clan_seasons.getRewardsBlk()?.reward.subRewards
+    if (!subRewards)
+      return false
+
+    local path = $"{difficulty.egdLowercaseName}/era5"
+    foreach (rewardBlock in subRewards)
+      if (get_blk_value_by_path(rewardBlock, path))
+        return true
+
+    return false
+  }
+
+
   /**
    * Return array of rewards for places from 1 to @till.
    * Retrun empty array if can't get any rewards.

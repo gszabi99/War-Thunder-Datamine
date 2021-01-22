@@ -176,7 +176,7 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
 
     if (!options) return
 
-    local container = create_options_container(optionsContainer, options, false, 0.5, true, false)
+    local container = create_options_container(optionsContainer, options, false, 0.5, false)
     local optObj = scene.findObject("session-options")
     if (::check_obj(optObj))
       guiScene.replaceContentFromText(optObj, container.tbl, container.tbl.len(), this)

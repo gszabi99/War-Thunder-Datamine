@@ -1351,12 +1351,9 @@ local function getSeasonName(blk)
   return ::g_contact_presence.OFFLINE
 }
 
-::get_show_in_squadron_statistics <- function get_show_in_squadron_statistics(modeId)
+::get_show_in_squadron_statistics <- function get_show_in_squadron_statistics(diff)
 {
-  local gameSettingsBlk = ::get_game_settings_blk()
-  if (gameSettingsBlk == null) return true
-  local filter = gameSettingsBlk?["squadronStatisticsFilter"]
-  return ::getTblValue(modeId, filter, true)
+  return ::g_clan_seasons.hasPrizePlacesRewards(diff)
 }
 
 ::clan_request_set_membership_requirements <- function clan_request_set_membership_requirements(clanIdStr, requirements, autoAccept)
