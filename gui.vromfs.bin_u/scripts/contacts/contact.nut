@@ -8,6 +8,7 @@ local { getXboxChatEnableStatus,
         isCrossNetworkMessageAllowed } = require("scripts/chat/chatStates.nut")
 local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { isEmpty, isInteger } = require("sqStdLibs/helpers/u.nut")
 
 local psnSocial = require("sony.social")
 
@@ -51,7 +52,7 @@ local contactsByName = {}
   {
     local newName = contactData?["name"] ?? ""
     if (newName.len()
-        && ::u.isEmpty(contactData?.clanTag)
+        && isEmpty(contactData?.clanTag)
         && ::clanUserTable?[newName])
       contactData.clanTag <- ::clanUserTable[newName]
 
@@ -250,7 +251,9 @@ local contactsByName = {}
     return isPlayerFromXboxOne(name)
   }
 
-  isSameContact = @(_uid) _uid == uid
+  isSameContact = @(_uid) isInteger(_uid)
+    ? _uid == uidInt64
+    : _uid == uid
 
   function isMe()
   {

@@ -108,18 +108,11 @@ local function psnUpdateContactsList(usersTable) {
       //Validate in-game contacts list
       //in case if in psn contacts list some players
       //are gone. So we need to clear then in game.
-      //But, if player was added to blocklist on PC, left it there.
       for (local i = existedPSNContacts.len() - 1; i >= 0; i--)
-      {
-        if (contact.isSameContact(existedPSNContacts[i].uid)
-          || (groupName == ::EPL_BLOCKLIST
-              && existedPSNContacts[i].isInBlockGroup()
-              && !existedPSNContacts[i].isInPSNFriends())
-          ) {
-            existedPSNContacts.remove(i)
-            break
-          }
-      }
+        if (contact.isSameContact(existedPSNContacts[i].uid)) {
+          existedPSNContacts.remove(i)
+          break
+        }
     }
 
     foreach (oldContact in existedPSNContacts)
