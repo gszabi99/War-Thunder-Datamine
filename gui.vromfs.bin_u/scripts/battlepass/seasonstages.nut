@@ -3,6 +3,9 @@ local { warbondsShopLevelByStages, hasBattlePass, seasonLevel
 local { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
 } = require("scripts/battlePass/unlocksRewardsState.nut")
 local { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
+local { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
+
+const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
 
 local getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
@@ -24,7 +27,7 @@ local function getPrizeStatus(unlock, stageIdx) {
 local function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, stageChallenge = null) {
   if (unlock == null)
     return
-  local curStage = unlock?.stages[stageIdx] ?? {}
+  local curStage = getStageByIndex(unlock, stageIdx)
   local unlockId = unlock?.name
   local isChallengeStage = stageChallenge != null
   if (((curStage?.rewards.len() ?? 0) > 0) || isChallengeStage) {
@@ -44,7 +47,8 @@ local function addStageConfigWithRewardToList(stagesArray, unlock, stageIdx, sta
 
 local seasonStages = ::Computed(function() {
   local stagesCount = ::max(basicUnlock.value?.stages?.len() ?? 0,
-    premiumUnlock.value?.stages?.len() ?? 0)
+    premiumUnlock.value?.stages?.len() ?? 0,
+    seasonLevel.value + COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES)
   local res = []
   for(local i=0; i < stagesCount; i++) {
     local stageChallenge = curSeasonChallengesByStage.value?[i+1]

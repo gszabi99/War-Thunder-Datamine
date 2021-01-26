@@ -82,6 +82,18 @@ local unlockProgress = ::Computed(function() {
 
 local servUnlockProgress = ::Computed(@() userstatUnlocks.value?.unlocks ?? {})
 
+local function clampStage(unlockDesc, stage) {
+  local lastStage = unlockDesc?.stages.len() ?? 0
+  if (lastStage <= 0 || !(unlockDesc?.periodic ?? false) || stage < lastStage)
+    return stage
+
+  local loopStage = (unlockDesc?.startStageLoop ?? 1) - 1
+  if (loopStage >= lastStage)
+    loopStage = 0
+  return loopStage + (stage - loopStage) % (lastStage - loopStage)
+}
+
+local getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unlockDesc, stage)]
 
 local RECEIVE_REWARD_DEFAULT_OPTIONS = {
   showProgressBox = true
@@ -111,7 +123,7 @@ local function receiveRewards(unlockName, taskOptions = RECEIVE_REWARD_DEFAULT_O
   local lastReward = progressData?.lastRewardedStage ?? 0
   local params = {
     stage = stage
-    rewards = activeUnlocks.value?[unlockName].stages[stage - 1].rewards
+    rewards = getStageByIndex(activeUnlocks.value?[unlockName], stage - 1)?.rewards
     unlockName = unlockName
     taskOptions = taskOptions
     needShowRewardWnd = needShowRewardWnd
@@ -151,19 +163,6 @@ local function requestRewardItems(unlocksByRewardValue) {
 
 unlocksByReward.subscribe(requestRewardItems)
 requestRewardItems(unlocksByReward.value)
-
-local function clampStage(unlockDesc, stage) {
-  local lastStage = unlockDesc?.stages.len() ?? 0
-  if (lastStage <= 0 || !(unlockDesc?.periodic ?? false) || stage < lastStage)
-    return stage
-
-  local loopStage = (unlockDesc?.startStageLoop ?? 1) - 1
-  if (loopStage >= lastStage)
-    loopStage = 0
-  return loopStage + (stage - loopStage) % (lastStage - loopStage)
-}
-
-local getStageByIndex = @(unlockDesc, stage) unlockDesc?.stages[clampStage(unlockDesc, stage)]
 
 local function getUnlockReward(userstatUnlock) {
   local rewardMarkUp = { rewardText = "", itemMarkUp = ""}

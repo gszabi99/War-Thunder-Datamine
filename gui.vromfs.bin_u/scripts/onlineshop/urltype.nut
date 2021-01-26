@@ -14,10 +14,10 @@ enum URL_CHECK_ORDER
 ::g_url_type.template <- {
   typeName = "" //filled automatically by typeName
   sortOrder = URL_CHECK_ORDER.BY_URL_REGEXP
-  needAutoLogin = false
   isOnlineShop = false
   urlRegexpList = null //array
-  supportedLangs = null //array of short lang
+  supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"] //array of short lang
+  langParamName = "skin_lang"
 
   isCorrespondsToUrl = function(url)
   {
@@ -43,8 +43,8 @@ enum URL_CHECK_ORDER
       return curLang
     return null
   }
-  applyLangKey = function(url, langKey) { return url }
-  applySToken = @(url) url
+  applyLangKey = @(url, langKey)
+    $"{url}{url.indexof("?") == null ? "?" : "&"}{langParamName}={langKey}"
 }
 
 enums.addTypesByGlobalName("g_url_type", {
@@ -53,9 +53,7 @@ enums.addTypesByGlobalName("g_url_type", {
   }
 
   ONLINE_SHOP = {
-    needAutoLogin = true
     isOnlineShop = true
-    supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"]
     urlRegexpList = [
       regexp(@"^https?:\/\/store\.gaijin\.net" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/online\.gaijin\.ru" + URL_ANY_ENDING),
@@ -63,36 +61,22 @@ enums.addTypesByGlobalName("g_url_type", {
       regexp(@"^https?:\/\/trade\.gaijin\.net" + URL_ANY_ENDING),
       regexp(@"^https?:\/\/inventory-test-01\.gaijin\.lan" + URL_ANY_ENDING),
     ]
-    applyLangKey = function(url, langKey)
-    {
-      url += url.indexof("?") == null ? "?" : "&";
-      url += "skin_lang=" + langKey;
-      return url
-    }
   }
 
   GAIJIN_PASS = {
-    needAutoLogin = true
-    supportedLangs = ["ru", "en", "fr", "de", "es", "pl", "ja", "cs", "pt", "ko", "tr", "zh"]
+    langParamName = "lang"
     urlRegexpList = [
       regexp(@"^https?:\/\/login\.gaijin\.net" + URL_ANY_ENDING)
     ]
-    applyLangKey = @(url, langKey)
-      $"{url}{url.indexof("?") == null ? "?" : "&"}lang={langKey}"
-
-    applySToken = @(url)
-      $"{url}{url.indexof("?") == null ? "?" : "&"}st={::get_sso_short_token()?.shortToken ?? ""}"
   }
 
   WARTHUNDER_RU = {
-    needAutoLogin = true
     urlRegexpList = [
       regexp(@"^https?:\/\/warthunder\.ru" + URL_ANY_ENDING),
     ]
   }
 
   WARTHUNDER_COM = {
-    needAutoLogin = true
     supportedLangs = ["ru", "en","pl","de","cz","fr","es","tr","pt"] //ru - forward to warthunder.ru
     urlRegexpList = [
       regexp(@"^https?:\/\/warthunder\.com" + URL_ANY_ENDING),
@@ -113,20 +97,6 @@ enums.addTypesByGlobalName("g_url_type", {
       return url.slice(0, insertIdx) + langKey + "/" + url.slice(afterLangIdx)
     }
   }
-
-  AUTHORIZED_NO_LANG = {
-    needAutoLogin = true
-    urlRegexpList = [
-      regexp(@"^https?:\/\/tss\.warthunder\.com" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/tss\.warthunder\.ru" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/tss-dev\.warthunder\.com" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/tss-dev\.warthunder\.ru" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/live\.warthunder\.com" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/achievements\.gaijin\.net" + URL_ANY_ENDING),
-      regexp(@"^https?:\/\/support\.gaijin\.net" + URL_ANY_ENDING),
-    ]
-  }
-
 }, null, "typeName")
 
 ::g_url_type.types.sort(function(a,b)

@@ -52,7 +52,10 @@
       "explosiveMass": 2.8
     },
     {
-      "distFromCmToStab": 0.02
+      "distFromCmToStab": 0.01
+    },
+    {
+      "wingAreaMult": 1.15
     },
     {
       "distanceFuse": false
@@ -190,7 +193,7 @@
       "startSpeed": 100.0
     },
     {
-      "endSpeed": 0.0
+      "endSpeed": 900.0
     },
     {
       "maxSpeed": 475.0
@@ -300,11 +303,11 @@
       "laserSeeker": {
         "range": 10000.0,
         "rangeMax": 12000.0,
-        "fov": 30.0,
-        "lockAngleMax": 90.0,
-        "angleMax": 90.0,
-        "rateMax": 45.0,
-        "prolongationTimeMax": 0.1,
+        "fov": 5.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 8.0,
+        "prolongationTimeMax": 1.0,
         "filterAlpha": 0.85,
         "filterBetta": 0.2
       }
@@ -318,6 +321,7 @@
         "loftTargetOmegaMax": 2.0,
         "baseIndSpeed": 1200.0,
         "omegaToAccelMult": 6.0,
+        "propNavAccelMax": 6.0,
         "accelControlProp": 5.0,
         "accelControlIntg": 0.5,
         "accelControlIntgLim": 0.5,
