@@ -610,19 +610,28 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    if (!updateButtonsBar())
-      return
-
     local item = getCurItem()
-    local mainActionData = item ? item.getMainActionData() : null
-    local limitsCheckData = item ? item.getLimitsCheckData() : null
-    local limitsCheckResult = ::getTblValue("result", limitsCheckData, true)
+    local mainActionData = item?.getMainActionData()
+    local limitsCheckData = item?.getLimitsCheckData()
+    local limitsCheckResult = limitsCheckData?.result ?? true
     local showMainAction = mainActionData && limitsCheckResult
-    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
     local curSet = curSheet?.getSet()
     local craftTree = curSet?.getCraftTree()
     local needShowCraftTree = craftTree != null
     local openCraftTreeBtnText = ::loc(craftTree?.openButtonLocId ?? "")
+
+    local craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
+    if (curSet != null && needShowCraftTree)
+    {
+      craftTreeBtnObj.setValue(openCraftTreeBtnText)
+      if (curSet.needShowAccentToCraftTreeBtn())
+        showAccentToCraftTreeBtn(curSet, craftTreeBtnObj)
+    }
+
+    if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
+      return
+
+    local buttonObj = showSceneBtn("btn_main_action", showMainAction)
     local canCraftOnlyInCraftTree = needShowCraftTree && (item?.canCraftOnlyInCraftTree() ?? false)
     if (showMainAction)
     {
@@ -659,14 +668,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
         linkObj["class"] = "image"
         linkObj.findObject("img")["background-image"] = item.linkActionIcon
       }
-    }
-
-    local craftTreeBtnObj = showSceneBtn("btn_open_craft_tree", needShowCraftTree)
-    if (curSet != null && needShowCraftTree)
-    {
-      craftTreeBtnObj.setValue(openCraftTreeBtnText)
-      if (curSet.needShowAccentToCraftTreeBtn())
-        showAccentToCraftTreeBtn(curSet, craftTreeBtnObj)
     }
   }
 

@@ -326,14 +326,19 @@ tr[iconType=aircraft] {
 tr[iconType=country] {
   size:pw,8*@scrn_tgt/100.0;
 }
-tr[iconType=listbox] {
-  size:pw, 3@baseTrHeight;
+
+optionsList > tr[iconType=country] > td {
+  height:8*@scrn_tgt/100.0;
 }
+
+tr[iconType=listbox],
 tr[iconType=listbox_country] {
   size:pw, 3@baseTrHeight;
 }
 
-tr[iconType=crosshair] {
+optionsList > tr[iconType=listbox] > td,
+optionsList > tr[iconType=listbox_country] > td {
+  height:3@baseTrHeight;
 }
 
 tr[queueTableIconRow=yes] > td > img {

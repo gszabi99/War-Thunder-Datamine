@@ -49,13 +49,18 @@ local function canGetRewards(onAcceptFn, params) {
   if ((params.rewards?.len() ?? 0) == 0)
     return true
 
+  local waitingWarbondsToReciveAmount = waitingToShowRewardsArray.reduce(
+    @(res, a) res + (::ItemsManager.findItemById(a.itemId)?.getWarbondsAmount() ?? 0), 0)
   foreach (itemId, count in params.rewards) {
     local item = ::ItemsManager.findItemById(itemId.tointeger())
     if (item == null)
       continue
     local warbondsAmount = item?.getWarbondsAmount() ?? 0
-    if (warbondsAmount > 0
-         && !::g_warbonds.checkOverLimit(warbondsAmount * count, onAcceptFn, params))
+    if (warbondsAmount == 0)
+      continue
+
+    waitingWarbondsToReciveAmount += warbondsAmount * count
+    if (!::g_warbonds.checkOverLimit(waitingWarbondsToReciveAmount, onAcceptFn, params))
       return false
   }
 

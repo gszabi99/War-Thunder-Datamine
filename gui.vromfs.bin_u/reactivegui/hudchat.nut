@@ -71,8 +71,8 @@ local function chatInputCtor(field, send) {
     borderRadius = 0
     valignText = ALIGN_CENTER
     textmargin = [::fpx(5) , ::fpx(8)]
+    imeOpenJoyBtn = $"{JB.A}"
     hotkeys = [
-      [ $"{JB.A} | J:RT", onReturn ],
       [ $"{JB.B}", onEscape ],
     ]
     colors = {
