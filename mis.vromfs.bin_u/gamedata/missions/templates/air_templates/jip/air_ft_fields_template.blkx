@@ -2334,7 +2334,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
@@ -2342,12 +2342,20 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "objectExists": {
-            "target": "@ft_generate_t1_aaa_name",
-            "type": "area"
+        "conditions": [
+          {
+            "objectExists": {
+              "target": "@ft_generate_t1_aaa_name",
+              "type": "area"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@ft_generate_t1_aaa_squad_name",
+              "type": "squad"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "comment": {
@@ -3972,7 +3980,7 @@
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
+          "conditionsType": "ANY",
           "enableAfterComplete": false
         },
         "events": {
@@ -3980,12 +3988,20 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "objectExists": {
-            "target": "@ft_generate_t2_aaa_name",
-            "type": "area"
+        "conditions": [
+          {
+            "objectExists": {
+              "target": "@ft_generate_t2_aaa_name",
+              "type": "area"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@ft_generate_t2_aaa_squad_name",
+              "type": "squad"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "comment": {
