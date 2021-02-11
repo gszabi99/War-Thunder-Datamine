@@ -26,7 +26,10 @@ shopFilter {
   tooltip:t='<<tooltip>>'
 
   <<#tabImage>>
-  shopFilterImg { background-image:t='<<tabImage>>' }
+  shopFilterImg {
+    background-image:t='<<tabImage>>'
+    <<@tabImageParam>>
+  }
   <</tabImage>>
 
   <<#unseenIcon>>

@@ -88,6 +88,12 @@ local psnV2ShopPurchasableItem = class {
     local imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE)
     if (imageIndex != null && imagesArray[imageIndex]?.url)
       imagePath = $"{imagesArray[imageIndex].url}?P1"
+    else {
+      local psnShopBlk = ::configs.GUI.get()?.ps4_ingame_shop
+      local ingameShopImages = psnShopBlk?.items
+      if (ingameShopImages?[id] != null && psnShopBlk?.mainPart != null && psnShopBlk?.fileExtension != null)
+        imagePath = $"!{psnShopBlk.mainPart}{id}{psnShopBlk.fileExtension}"
+    }
 
     updateSkuInfo(blk)
   }

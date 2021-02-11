@@ -12,6 +12,7 @@ local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local { promoTextFunctions } = require("scripts/promo/promoInfo.nut")
 local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
+local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
 
 enum ONLINE_SHOP_TYPES {
   WARPOINTS = "warpoints"
@@ -120,6 +121,7 @@ local openProfileSheetParams = {
     IMAGE_ROULETTE = "imageRoulette"
     BATTLE_TASK = "battleTask"
     RECENT_ITEMS = "recentItems"
+    BATTLE_PASS = "battlePass"
   }
 
   BUTTON_OUT_OF_DATE_DAYS = 15
@@ -135,6 +137,7 @@ local openProfileSheetParams = {
     events = function(handler, params, obj) { return openEventsWnd(handler, params) }
     tutorial = function(handler, params, obj) { return onOpenTutorial(handler, params) }
     battle_tasks = function(handler, params, obj) { return onOpenBattleTasksWnd(handler, params, obj) }
+    battle_pass = @(handler, params, obj) openBattlePassWnd()
     url = function(handler, params, obj) {
       local pollId = getPollIdByFullUrl(params?[0] ?? "")
       if (pollId != null)
@@ -664,6 +667,8 @@ g_promo.getType <- function getType(block)
     res = PROMO_BUTTON_TYPE.IMAGE
   else if (block.getBlockName().indexof("current_battle_tasks") != null)
     res = PROMO_BUTTON_TYPE.BATTLE_TASK
+  else if (block.getBlockName() == "battle_pass_mainmenu_button")
+    res = PROMO_BUTTON_TYPE.BATTLE_PASS
 
   return res
 }

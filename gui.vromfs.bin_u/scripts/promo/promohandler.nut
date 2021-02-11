@@ -2,6 +2,7 @@ local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut"
 local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
 local { promoTextFunctions, getTutorialData } = require("scripts/promo/promoInfo.nut")
 local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHandler.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
@@ -35,6 +36,7 @@ local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.n
     current_battle_tasks_mainmenu_button = function() { return updateCurrentBattleTaskButton() }
     invite_squad_mainmenu_button = function() { return updateSquadInviteButton() }
     recent_items_mainmenu_button = function() { return createRecentItemsHandler() }
+    battle_pass_mainmenu_button = function() { return updateBattlePassButton() }
   }
 
   constructor(_handler, _guiScene, _scene)
@@ -266,7 +268,8 @@ local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.n
   function updateCurrentBattleTaskButton()
   {
     local id = "current_battle_tasks_mainmenu_button"
-    local show = ::g_battle_tasks.isAvailableForUser() && ::g_promo.getVisibilityById(id)
+    local show = ::g_battle_tasks.isAvailableForUser()
+      && ::g_promo.getVisibilityById(id)
 
     local buttonObj = ::showBtn(id, show, scene)
     if (!show || !::checkObj(buttonObj))
@@ -275,6 +278,20 @@ local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.n
     ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
   }
   //------------- </CURRENT BATTLE TASK --------------------
+
+  //------------- <BATTLE PASS> ----------------------------
+  function updateBattlePassButton()
+  {
+    local id = "battle_pass_mainmenu_button"
+    local show = ::g_promo.getVisibilityById(id)
+
+    local buttonObj = ::showBtn(id, show, scene)
+    if (!show || !(buttonObj?.isValid() ?? false))
+      return
+
+    openBattlePassPromoHandler({ scene = buttonObj })
+  }
+  //------------- </BATTLE PASS> ---------------------------
 
   //-------------- <TUTORIAL> ------------------------------
 

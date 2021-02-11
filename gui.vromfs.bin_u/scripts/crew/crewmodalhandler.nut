@@ -1,6 +1,5 @@
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local stdMath = require("std/math.nut")
-local { getUnitBasicRole, getRoleText } = require("scripts/unit/unitInfoTexts.nut")
 local crewSkillsPageHandler = require("scripts/crew/crewSkillsPageHandler.nut")
 local { getSkillValue } = require("scripts/crew/crewSkills.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
@@ -92,7 +91,7 @@ class ::gui_handlers.CrewModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     {
       text = ::g_string.implode([
         ::loc("crew/currentAircraft") + ::loc("ui/colon")
-          + getRoleText(getUnitBasicRole(curUnit)) + " "
+          + curUnit.expClass.getShortName() + " "
           + ::colorize("activeTextColor", ::getUnitName(curUnit))
         ::loc("crew/totalCrew") + ::loc("ui/colon")
           + ::colorize("activeTextColor", curUnit.getCrewTotalCount())

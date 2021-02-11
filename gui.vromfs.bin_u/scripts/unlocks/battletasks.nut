@@ -861,7 +861,6 @@ local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlo
       canReroll = isTaskBattleTask && !isCanGetReward
       otherTasksNum = task && isPromo? getTotalActiveTasksNum() : null
       isLowWidthScreen = isPromo? ::is_low_width_screen() : null
-      showAsUsualPromoButton = isPromo && task == null
       isPromo = isPromo
       isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
       needShowProgressValue = taskStatus == null && config?.curVal != null && config.curVal >= 0 && config?.maxVal != null && config.maxVal >= 0

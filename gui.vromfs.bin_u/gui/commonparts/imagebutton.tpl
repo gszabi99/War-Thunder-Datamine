@@ -124,7 +124,6 @@ imgButton {
 
   <<^emptySlot>>
     <<#onDeleteClick>>
-      hasButton:t='yes'
       Button_close {
         smallIcon:t='yes'
         tooltip:t='#msgbox/btn_delete'

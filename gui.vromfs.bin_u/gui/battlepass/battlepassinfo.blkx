@@ -113,61 +113,77 @@
         }
       },
       {
-        "tdiv": {
-          "id": "task_timer_nest",
-          "width": "pw + 4@blockInterval",
-          "pos": "0.5pw-0.5w, 4@blockInterval",
-          "position": "relative",
-          "padding": "2@blockInterval, 2@dp",
-          "background-color": "@separatorBlockColor",
-          "textareaNoTab": {
-            "id": "task_timer_text",
-            "behavior": "Timer",
-            "width": "pw-2@blockInterval",
-            "pos": "pw-w, 0.5ph-0.5h",
-            "position": "relative",
-            "text": "",
-            "smallFont": "yes"
+        "tdiv": [
+          {
+            "id": "battle_tasks_info_nest"
+          },
+          {
+            "width": "pw"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "tdiv": {
+              "id": "task_timer_nest",
+              "width": "pw + 4@blockInterval",
+              "pos": "0.5pw-0.5w, 4@blockInterval",
+              "position": "relative",
+              "padding": "2@blockInterval, 2@dp",
+              "background-color": "@separatorBlockColor",
+              "textareaNoTab": {
+                "id": "task_timer_text",
+                "behavior": "Timer",
+                "width": "pw-2@blockInterval",
+                "pos": "pw-w, 0.5ph-0.5h",
+                "position": "relative",
+                "text": "",
+                "smallFont": "yes"
+              }
+            }
+          },
+          {
+            "battlePassInfoWatch": {
+              "id": "easy_daily_task_progress",
+              "css-hier-invalidate": "yes",
+              "img": {
+                "id": "task_img",
+                "background-image": ""
+              },
+              "textareaNoTab": {
+                "id": "text"
+              },
+              "icon": []
+            }
+          },
+          {
+            "battlePassInfoWatch": {
+              "id": "medium_daily_task_progress",
+              "css-hier-invalidate": "yes",
+              "img": {
+                "id": "task_img"
+              },
+              "textareaNoTab": {
+                "id": "text"
+              },
+              "icon": []
+            }
+          },
+          {
+            "battlePassInfoWatch": {
+              "id": "left_special_tasks_bought_count",
+              "img": {
+                "id": "task_img"
+              },
+              "textareaNoTab": {
+                "id": "text"
+              }
+            }
           }
-        }
-      },
-      {
-        "battlePassInfoWatch": {
-          "id": "easy_daily_task_progress",
-          "css-hier-invalidate": "yes",
-          "img": {
-            "id": "task_img",
-            "background-image": ""
-          },
-          "textareaNoTab": {
-            "id": "text"
-          },
-          "icon": []
-        }
-      },
-      {
-        "battlePassInfoWatch": {
-          "id": "medium_daily_task_progress",
-          "css-hier-invalidate": "yes",
-          "img": {
-            "id": "task_img"
-          },
-          "textareaNoTab": {
-            "id": "text"
-          },
-          "icon": []
-        }
-      },
-      {
-        "battlePassInfoWatch": {
-          "id": "left_special_tasks_bought_count",
-          "img": {
-            "id": "task_img"
-          },
-          "textareaNoTab": {
-            "id": "text"
-          }
-        }
+        ]
       }
     ]
   },
@@ -216,6 +232,8 @@
           "visualStyle": "secondary",
           "btnName": "L3",
           "on_click": "onBattleTask",
+          "display": "hide",
+          "enable": "no",
           "buttonWink": [],
           "buttonGlance": [],
           "ButtonImg": []

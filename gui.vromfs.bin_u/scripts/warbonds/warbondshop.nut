@@ -246,11 +246,11 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateButtons()
   {
-    if (!updateButtonsBar())
-      return
-
     if (::has_feature("BattlePass"))
       showSceneBtn("btn_battlePass", !::isHandlerInScene(::gui_handlers.BattlePassWnd))
+
+    if (!updateButtonsBar()) //buttons below are hidden if item action bar is hidden
+      return
 
     local award = getCurAward()
     showSceneBtn("btn_specialTasks", award != null

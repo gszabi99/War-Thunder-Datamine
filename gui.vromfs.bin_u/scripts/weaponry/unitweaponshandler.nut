@@ -48,7 +48,6 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateShowItemParams()
   {
     showItemParams = {
-      useGenericTooltip = true
       canShowPrice = canShowPrice
       canShowStatusImage = false
       selectBulletsByManager = (canChangeWeaponry && canChangeBulletsAmount) ? bulletsManager : null
@@ -213,7 +212,6 @@ class ::gui_handlers.unitWeaponsHandler extends ::gui_handlers.BaseGuiHandlerWT
     local params = {
       posX = 0
       posY = offsetY
-      useGenericTooltip = true
       itemWidth = itemWidth
       needSliderButtons = true
       wideItemWithSlider = itemWidth > 1

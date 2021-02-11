@@ -702,7 +702,6 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
       canShowResearch = false
       canShowPrice = false
       isForceHidePlayerInfo = true
-      useGenericTooltip = true
       hasMenu = hasPresetToChoose(unit)
     }
     if (!::check_obj(modItemObj))
@@ -758,7 +757,6 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
         canShowResearch = false
         canShowPrice = false
         isForceHidePlayerInfo = true
-        useGenericTooltip = true
       }
     ::gui_start_choose_unit_weapon(unit, cb, {
       itemParams = params, alignObj = obj, align = "right", isWorldWarUnit = true

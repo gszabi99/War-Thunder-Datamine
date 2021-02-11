@@ -134,6 +134,9 @@ local function getChallengeView(config, paramsCfg = {}) {
   }
 }
 
+local hasChallengesReward = ::Computed(@() battlePassChallenges.value
+  .findindex(@(unlock) activeUnlocks.value?[unlock.id].hasReward ?? false) != null)
+
 return {
   updateChallenges
   curSeasonChallenges
@@ -141,4 +144,5 @@ return {
   mainChallengeOfSeasonId
   mainChallengeOfSeason
   curSeasonChallengesByStage
+  hasChallengesReward
 }

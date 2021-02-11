@@ -2,47 +2,6 @@
 blur {}
 blur_foreground {}
 
-<<^isShowNameInHeader>>
-headerBg {
-  <<#headerAction>>on_click:t='<<headerAction>>'<</headerAction>>
-
-  battlePassStamp{
-    pos:t='1@blockInterval, 0.5@blockInterval'
-    position:t='absolute'
-  }
-
-  <<#seasonLvlValue>>
-  tdiv {
-    id:t='season_lvl'
-    behaviour:t='bhvUpdateByWatched'
-    height:t='ph'
-    left:t='1@arrowButtonWidth-w'
-    position:t='relative'
-    value:t='<<seasonLvlValue>>'
-
-    textareaNoTab {
-      top:t='0.5ph-0.5h'
-      position:t='relative'
-      text:t='#mainmenu/rank'
-      margin-right:t='1@blockInterval'
-      normalBoldFont:t='yes'
-    }
-
-    battlePassFlag {
-      top:t='0.5ph-0.5h'
-      position:t='relative'
-      flagSize:t='small'
-
-      textareaNoTab {
-        id:t='flag_text'
-        text:t=''
-      }
-    }
-  }
-  <</seasonLvlValue>>
-}
-<</isShowNameInHeader>>
-
 expandable {
   id:t='<<performActionId>>'
   type:t='battleTask'
@@ -53,12 +12,8 @@ expandable {
   battleTaskStatus:t='<<taskStatus>>'
   <</taskStatus>>
 
-  <<#showAsUsualPromoButton>>
-    setStandartWidth:t='yes'
-  <</showAsUsualPromoButton>>
-
   fullSize:t='yes'
-  <<#isShowNameInHeader>>headerBg {}<</isShowNameInHeader>>
+  headerBg {}
   selImg {
     header {
       position:t='relative'
@@ -96,11 +51,9 @@ expandable {
           position:t='relative'
           auto-scroll:t='medium'
 
-          <<^showAsUsualPromoButton>>
-            <<#isLowWidthScreen>>
-              normalFont:t='yes'
-            <</isLowWidthScreen>>
-          <</showAsUsualPromoButton>>
+          <<#isLowWidthScreen>>
+            normalFont:t='yes'
+          <</isLowWidthScreen>>
         }
       }
 
@@ -118,7 +71,7 @@ expandable {
     tdiv {
       width:t='pw'
       flow:t='vertical'
-      <<#isShowNameInHeader>>padding-top:t='1@blockInterval'<</isShowNameInHeader>>
+      padding-top:t='1@blockInterval'
 
       <<#taskImage>>
       img {
@@ -346,7 +299,6 @@ collapsedContainer {
   shortcut-on-hover:t='yes'
   <</collapsedAction>>
 
-  <<^isEmptyTask>>
   shortInfoBlock {
     position:t='relative'
     left:t='pw-w'
@@ -378,7 +330,6 @@ collapsedContainer {
       text:t='<<collapsedIcon>>'
     }
   }
-  <</isEmptyTask>>
 
   <<#needShowProgressBar>>
   progressDiv {

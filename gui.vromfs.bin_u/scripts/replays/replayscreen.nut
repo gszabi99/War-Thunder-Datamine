@@ -3,6 +3,12 @@ local replayMetadata = require("scripts/replays/replayMetadata.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGHT = 16
 
+local isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
+  || (replay?.isVersionMismatch ?? false)
+
+local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
+  && (!isCorruptedReplay(replay) || ::is_dev_version)
+
 ::autosave_replay_max_count <- 100
 ::autosave_replay_prefix <- "#"
 
@@ -89,7 +95,7 @@ const REPLAY_SESSION_ID_MIN_LENGHT = 16
       if (replays[i].name.slice(0,1) != ::autosave_replay_prefix)
         continue;
 
-      if (replays[i]?.corrupted || replays[i]?.isVersionMismatch)
+      if (isCorruptedReplay(replays[i]))
       {
         indexToDelete = i;
         break;
@@ -206,8 +212,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     {
       local iconName = "";
       local autosave = ::g_string.startsWith(replays[i].name, ::autosave_replay_prefix)
-      local corrupted = replays[i]?.corrupted || replays[i]?.isVersionMismatch
-      if (corrupted)
+      if (isCorruptedReplay(replays[i]))
         iconName = "#ui/gameuiskin#icon_primary_fail.svg"
       else if (autosave)
         iconName = "#ui/gameuiskin#slot_modifications.svg"
@@ -235,8 +240,7 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
       local obj = scene.findObject("txt_replay_" + i);
       local name = replays[i].name;
       local hasDateInName = ::g_string.startsWith(name, ::autosave_replay_prefix) || defaultReplayNameMask.match(name)
-      local isCorrupted = ::getTblValue("corrupted", replays[i], false) || ::getTblValue("isVersionMismatch", replays[i], false)
-      if (!hasDateInName && !isCorrupted)
+      if (!hasDateInName && !isCorruptedReplay(replays[i]))
       {
         local startTime = replays[i]?.startTime ?? -1
         if (startTime >= 0)
@@ -271,11 +275,8 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     local hoveredReplay = isMouseMode ? null : replays?[hoveredIdx]
     local isCurItemInFocus = curReplay != null && (isMouseMode || hoveredReplay == curReplay)
 
-    local replayInfo = isCurItemInFocus ? ::get_replay_info(curReplay.path) : null
-    local isCorrupted = replayInfo?.corrupted ?? true
-
     ::showBtnTable(scene, {
-        btn_view_replay   = isCurItemInFocus && ::is_replay_turned_on() && (!isCorrupted || ::is_dev_version)
+        btn_view_replay   = isCurItemInFocus && canPlayReplay(curReplay)
         btn_rename_replay = isCurItemInFocus
         btn_del_replay    = isCurItemInFocus
     })
@@ -575,6 +576,11 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
 
   function onViewReplay()
   {
+    local index = getCurrentReplayIndex()
+    local curReplay = replays?[index]
+    if (!canPlayReplay(curReplay))
+      return
+
     if (!::g_squad_utils.canJoinFlightMsgBox())
       return
 
@@ -583,38 +589,19 @@ class ::gui_handlers.ReplayScreen extends ::gui_handlers.BaseGuiHandlerWT
     {
       if (isReplayPressed)
         return
-      local index = getCurrentReplayIndex()
-      if (index >= 0 && index < replays.len())
-      {
-        if (::getTblValue("corrupted", replays[index], false) && !::is_dev_version)
-        {
-          if (("isVersionMismatch" in replays[index]) && replays[index].isVersionMismatch)
-          {
-            msgBox("replay_corrupted", ::loc("replays/versionMismatch"),
-            [["ok", function(){} ]], "ok")
-          }
-          else
-          {
-            msgBox("replay_corrupted", ::loc("replays/corrupted"),
-            [["ok", function(){} ]], "ok")
-          }
-        }
-        else
-        {
-          dagor.debug("gui_nav ::back_from_replays = ::gui_start_replays");
-          ::back_from_replays = function() {
-            ::SessionLobby.resetPlayersInfo()
-            ::gui_start_menuReplays()
-          }
-          ::req_unlock_by_client("view_replay", false)
-          ::current_replay = replays[index].path
-          local replayInfo = ::get_replay_info(::current_replay)
-          local comments = ::getTblValue("comments", replayInfo)
-          ::current_replay_author = comments ? ::getTblValue("authorUserId", comments, null) : null
-          ::on_view_replay(::current_replay)
-          isReplayPressed = false
-        }
+
+      dagor.debug("gui_nav ::back_from_replays = ::gui_start_replays");
+      ::back_from_replays = function() {
+        ::SessionLobby.resetPlayersInfo()
+        ::gui_start_menuReplays()
       }
+      ::req_unlock_by_client("view_replay", false)
+      ::current_replay = replays[index].path
+      local replayInfo = ::get_replay_info(::current_replay)
+      local comments = ::getTblValue("comments", replayInfo)
+      ::current_replay_author = comments ? ::getTblValue("authorUserId", comments, null) : null
+      ::on_view_replay(::current_replay)
+      isReplayPressed = false
     })
   }
 

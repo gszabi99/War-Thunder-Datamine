@@ -445,16 +445,29 @@
           },
           {
             "navBar": {
-              "navLeft": {
-                "Button_text": {
-                  "id": "btn_open_craft_tree",
-                  "text": "#mainmenu/btnAircraftInfo",
-                  "on_click": "onOpenCraftTree",
-                  "display": "hide",
-                  "enable": "no",
-                  "ButtonImg": []
+              "navLeft": [
+                {
+                  "Button_text": {
+                    "id": "btn_open_craft_tree",
+                    "text": "#mainmenu/btnAircraftInfo",
+                    "on_click": "onOpenCraftTree",
+                    "display": "hide",
+                    "enable": "no",
+                    "ButtonImg": []
+                  }
+                },
+                {
+                  "Button_text": {
+                    "id": "btn_battlePass",
+                    "text": "#battlePass",
+                    "btnName": "Y",
+                    "on_click": "onShowBattlePass",
+                    "display": "hide",
+                    "enable": "no",
+                    "ButtonImg": []
+                  }
                 }
-              },
+              ],
               "paginatorPlace": {
                 "id": "paginator_place",
                 "top": "0.5ph + 0.5@navBarTopPadding - 0.5h",
@@ -496,17 +509,6 @@
                     "img": {
                       "background-image": "#ui/gameuiskin#btn_preview.svg"
                     },
-                    "ButtonImg": []
-                  }
-                },
-                {
-                  "Button_text": {
-                    "id": "btn_battlePass",
-                    "text": "#battlePass",
-                    "btnName": "Y",
-                    "on_click": "onShowBattlePass",
-                    "display": "hide",
-                    "enable": "no",
                     "ButtonImg": []
                   }
                 },

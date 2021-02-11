@@ -2225,13 +2225,6 @@ local isWaitMeasureEvent = false
           descr.items = bullets.items
           descr.values = bullets.values
           descr.value = bullets.value
-
-          for(local i = 0; i < descr.items.len(); i++)
-            descr.items[i].tooltipObj <- {
-              id = bullets.values[i]
-              open = "onModificationTooltipOpen"
-              tooltipParams = format("unitName:t='%s'; groupIdx:t='%d';", aircraft, groupIndex)
-            }
         }
         descr.cb = "onMyWeaponOptionUpdate"
       }

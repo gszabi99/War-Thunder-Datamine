@@ -3,6 +3,8 @@ local platformModule = require("scripts/clientState/platform.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { hasBattlePass } = require("scripts/battlePass/seasonState.nut")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -195,6 +197,13 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
   local queueTextObj = getObj("gc_queue_wait_text")
   ::g_qi_view_utils.updateShortQueueInfo(queueTextObj, queueTextObj, getObj("gc_queue_wait_icon"))
 
+  local battlePassImgObj = getObj("gc_BattlePassProgressImg")
+  if (battlePassImgObj?.isValid() ?? false)
+    battlePassImgObj.setValue(stashBhvValueConfig([{
+      watch = hasBattlePass
+      updateFunc = @(obj, value) obj["background-saturate"] = value ? 1 : 0
+  }]))
+
   local canSpendGold = ::has_feature("SpendGold")
   local featureEnablePremiumPurchase = ::has_feature("EnablePremiumPurchase")
   local canHaveFriends = ::has_feature("Friends")
@@ -213,7 +222,7 @@ local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
                              gc_eagles = canSpendGold
                              gc_warpoints = ::has_feature("WarpointsInMenu")
                              gc_PremiumAccount = ::has_feature("showPremiumAccount") && ((canSpendGold && featureEnablePremiumPurchase) || hasPremiumAccount)
-                             gc_BattlePassProgress = ::has_feature("BattlePass") && ::g_battle_tasks.isAvailableForUser()
+                             gc_BattlePassProgress = ::has_feature("BattlePass")
                              gc_dropdown_premium_button = featureEnablePremiumPurchase
                              gc_dropdown_shop_eagles_button = canSpendGold
                              gc_free_exp = ::has_feature("SpendGold") && ::has_feature("SpendFreeRP")

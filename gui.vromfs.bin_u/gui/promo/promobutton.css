@@ -41,7 +41,8 @@ promoButton > uncollapsedContainer {
   width: 1@arrowButtonWidth;
 }
 
-promoButton[type=battleTask] > expandable {
+promoButton[type=battleTask] > expandable,
+promoButton[type=battlePass] > expandable {
   behaviour: button;
   background-color:@transparent;
   width:1@arrowButtonWidth + 1@contentRightPadding;
@@ -109,15 +110,13 @@ promoButton fillBlock[needAnim=yes] {
   behaviour:massTransparency;
 }
 
-promoButton[type=arrowButton] fillBlock,
-promoButton[type=battleTask] expandable[setStandartWidth=yes] {
+promoButton[type=arrowButton] fillBlock {
   height:1@arrowButtonHeight;
   width: 1@arrowButtonWidth + 1@contentRightPadding;
 }
 
-promoButton[type=battleTask] expandable[setStandartWidth=yes] > selImg,
-promoButton[type=battleTask] expandable[setStandartWidth=yes] > selImg > header {
-  height:ph;
+promoButton[type=battleTask] expandable > selImg > header {
+  height:1@promoButtonSizeWithOffsets;
 }
 
 promoButton > collapsedContainer {
@@ -420,26 +419,16 @@ headerBg[type=transparent] {
   background-color: @transparent;
 }
 
-promoButton[isBattlePass=yes] {
-  hasFocusBorder:no;
-  interactive:no;
-}
-
-promoButton[isBattlePass=yes] > baseToggleButton:hover {
+promoButton[type=battlePass] > baseToggleButton:hover {
   background-color:@battleTaskToggleButtonColorHover;
 }
 
-promoButton[isBattlePass=yes] > baseToggleButton:pushed {
+promoButton[type=battlePass] > baseToggleButton:pushed {
   background-color:@battleTaskToggleButtonColorPushed;
 }
 
-promoButton[isBattlePass=yes] > headerBg {
-  behaviour:button;
+promoButton[type=battlePass] > expandable > headerBg {
   width:1@arrowButtonWidth + 1@arrowButtonHeight + 1@blockInterval;
   position:relative;
   background-color:@battleTaskHeaderBgColor;
-  css-hier-invalidate:yes;
-
-  interactive:yes;
-  navigatorShortcuts:active;
 }

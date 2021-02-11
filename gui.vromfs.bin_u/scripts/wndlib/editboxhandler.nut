@@ -22,10 +22,12 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
 
   title = ::loc("mainmenu/password")
   editboxHeaderText = ""
+  editboxWarningTooltip = ""
   canCancel = true
   allowEmpty = true
   validateFunc = null //function(value)  return true if valid
   checkButtonFunc = null
+  checkWarningFunc = null
 
   editBoxObj = null
   needOpenIMEonInit = true
@@ -34,13 +36,14 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   {
     scene.findObject("edit_box_window_header").setValue(title)
     scene.findObject("editbox_header").setValue(editboxHeaderText)
+    checkWarningFunc = checkWarningFunc || @(...) true
 
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
 
     local isEnabled = editBoxEnableFunc? editBoxEnableFunc() : true
     editBoxObj.enable(isEnabled)
     if (editBoxTextOnDisable)
-      editBoxObj["edit-hint"] = editBoxTextOnDisable
+      editBoxObj["edit-hint"] = isEnabled? "" : editBoxTextOnDisable
     if (value)
       editBoxObj.setValue(value)
     if (maxLen)
@@ -73,6 +76,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
         return obj.setValue(newVal)
     }
     updateBtnByValue(curVal)
+    updateWarningByValue(obj, curVal)
   }
 
   function isApplyEnabled(curVal)
@@ -84,6 +88,13 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   function updateBtnByValue(curVal)
   {
     scene.findObject("btn_ok").enable(isApplyEnabled(curVal))
+  }
+
+  function updateWarningByValue(obj, curVal) {
+    local res = !checkWarningFunc(curVal)
+    obj.warning = res? "yes" : "no"
+    obj.warningText = res? "yes" : "no"
+    obj.tooltip = res? editboxWarningTooltip : ""
   }
 
   function onOk()

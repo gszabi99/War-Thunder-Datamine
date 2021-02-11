@@ -1,7 +1,7 @@
-local { seasonLevel, todayLoginExp,
+local { seasonLevel, todayLoginExp, hasBattlePassReward,
   loginStreak, tomorowLoginExp, levelExp
 } = require("scripts/battlePass/seasonState.nut")
-local { mainChallengeOfSeason } = require("scripts/battlePass/challenges.nut")
+local { mainChallengeOfSeason, hasChallengesReward } = require("scripts/battlePass/challenges.nut")
 local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
 local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
 
@@ -121,6 +121,16 @@ local leftSpecialTasksBoughtCountWatchObj = {
   }
 }
 
+local hasBattlePassRewardWatchObj = {
+  watch = hasBattlePassReward
+  updateFunc = @(obj, value) obj.show(value)
+}
+
+local hasChallengesRewardWatchObj = {
+  watch = hasChallengesReward
+  updateFunc = @(obj, value) obj.show(value)
+}
+
 return {
   seasonLvlWatchObj
   levelExpWatchObj
@@ -131,4 +141,6 @@ return {
   mediumDailyTaskProgressWatchObj
   seasonTasksProgressWatchObj
   leftSpecialTasksBoughtCountWatchObj
+  hasBattlePassRewardWatchObj
+  hasChallengesRewardWatchObj
 }

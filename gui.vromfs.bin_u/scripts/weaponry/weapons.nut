@@ -485,7 +485,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    return createModItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY })
+    return createModItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY, useGenericTooltip = false })
   }
 
   function wrapUnitToItem(unit)
@@ -524,6 +524,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = createItemForBundle
         cellSizeObj = scene.findObject("cell_size")
+        useGenericTooltip = false
       })
   }
 
@@ -558,6 +559,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       hideStatus = hasMenu
       hasMenu
       actionBtnText = hasMenu ? ::loc("mainmenu/btnAirGroupOpen") : null
+      useGenericTooltip = false
     })
   }
 
@@ -1702,7 +1704,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("item_name_header").setValue(getModItemName(unit, item))
 
     updateSlider()
-    createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
+    createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this, { useGenericTooltip = false })
 
     local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)

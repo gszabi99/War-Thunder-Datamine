@@ -7,20 +7,23 @@ local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 local { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
   tomorowLoginExpWatchObj, easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, seasonTasksProgressWatchObj,
-  leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj
+  leftSpecialTasksBoughtCountWatchObj, levelExpWatchObj, hasChallengesRewardWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
 local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
 
-local watchObjInfoConfigList = {
+local watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj
   level_exp = levelExpWatchObj
   today_login_exp = todayLoginExpWatchObj
   login_streak = loginStreakWatchObj
   tomorow_login_exp = tomorowLoginExpWatchObj
+  season_tasks_progress = seasonTasksProgressWatchObj
+}
+
+local watchObjInfoBattleTasksConfig = {
   easy_daily_task_progress = easyDailyTaskProgressWatchObj
   medium_daily_task_progress = mediumDailyTaskProgressWatchObj
-  season_tasks_progress = seasonTasksProgressWatchObj
   left_special_tasks_bought_count = leftSpecialTasksBoughtCountWatchObj
 }
 
@@ -42,6 +45,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   {
     objId = "challenges_sheet"
     text = "#mainmenu/btnUnlockChallenge"
+    tabImage = "#ui/gameuiskin#new_reward_icon"
+    getTabImageParam = @() $"behaviour:t='bhvUpdateByWatched'; value:t='{stashBhvValueConfig(hasChallengesRewardWatchObj)}'"
     fillFunc = "fillChallengesSheet"
   }]
 
@@ -62,10 +67,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     updateMainPrizeData()
     fillPromoBlock()
     initBattlePassInfo()
-    ::g_battle_tasks.setUpdateTimer(
-      ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
-      scene.findObject("task_timer_nest"),
-      {addText = $"{::loc("mainmenu/btnBattleTasks")}{::loc("ui/colon")}"})
+    initBattleTasksInfo()
 
     //init challenges sheet
     initChallengesUpdater()
@@ -172,10 +174,26 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initBattlePassInfo() {
     updateChallenges()
-    foreach (objId, config in watchObjInfoConfigList)
+    foreach (objId, config in watchObjInfoConfig)
+      scene.findObject(objId).setValue(stashBhvValueConfig(config))
+  }
+
+  function initBattleTasksInfo() {
+    if (!::g_battle_tasks.isAvailableForUser())
+      return
+
+    foreach (objId, config in watchObjInfoBattleTasksConfig)
       scene.findObject(objId).setValue(stashBhvValueConfig(config))
 
-    showSceneBtn("btn_warbondsShop", !::isHandlerInScene(::gui_handlers.WarbondsShop))
+    showSceneBtn("btn_warbondsShop",
+      ::g_warbonds.isShopAvailable() && !::isHandlerInScene(::gui_handlers.WarbondsShop))
+    showSceneBtn("btn_battleTask", true)
+    showSceneBtn("battle_tasks_info_nest", true)
+
+    ::g_battle_tasks.setUpdateTimer(
+      ::g_battle_tasks.currentTasksArray.findvalue(@(v) v._puType == "Easy"),
+      scene.findObject("task_timer_nest"),
+      {addText = $"{::loc("mainmenu/btnBattleTasks")}{::loc("ui/colon")}"})
   }
 
   function initStageUpdater() {
@@ -259,6 +277,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       view.tabs.append({
         tabName = sheetData.text
         navImagesText = ::get_navigation_images_text(idx, sheetsList.len())
+        tabImage = sheetData?.tabImage
+        tabImageParam = sheetData?.getTabImageParam()
       })
     }
 
@@ -380,12 +400,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function congratulationBattlePassPurchased() {
     scene.findObject("sheet_list").setValue(0)
+    showSceneBtn("congrat_content", true)
     scene.findObject("promo_img")["background-image"] = "#ui/images/bp_bg.jpg?P1"
-    scene.findObject("congrat_img")["background-image"] = "#ui/gameuiskin#bp_congr.svg"
-    showSceneBtn("congrat_text", true)
     showSceneBtn("promo_preview", false)
-    local descObj = showSceneBtn("congrat_desc", true)
-    descObj.setValue(::loc("battlePass/congratulations/buy"))
   }
 
   function onEventBattlePassPurchased(p) {

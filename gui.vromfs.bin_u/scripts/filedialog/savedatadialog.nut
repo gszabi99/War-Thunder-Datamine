@@ -40,7 +40,7 @@ class ::gui_handlers.SaveDataDialog extends ::gui_handlers.BaseGuiHandlerWT
     {
       id = "mtime"
       headerLocId = "#filesystem/fileMTime"
-      width = "0.18@sf"
+      width = "0.22@sf"
       param = "mtime"
       textFunc = @(p) time.buildTabularDateTimeStr(p)
     }

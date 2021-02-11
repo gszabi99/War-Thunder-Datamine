@@ -693,7 +693,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function initExpTexts() {
-    if (!::has_feature("BattlePass") || !::g_battle_tasks.isAvailableForUser())
+    if (!::has_feature("BattlePass"))
       return
 
     scene.findObject("today_login_exp").setValue(stashBhvValueConfig([{
@@ -707,7 +707,7 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function updateExpTexts() {
-    if (!::has_feature("BattlePass") || !::g_battle_tasks.isAvailableForUser())
+    if (!::has_feature("BattlePass"))
       return
 
     updateTodayLoginExp(scene.findObject("today_login_exp"), todayLoginExp.value)

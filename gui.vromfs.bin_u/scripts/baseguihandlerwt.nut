@@ -6,8 +6,6 @@ local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
 local { isChatEnabled } = require("scripts/chat/chatStates.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { get_time_msec } = require("dagor.time")
 
 local stickedDropDown = null
@@ -642,26 +640,6 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
   function onGenericTooltipOpen(obj)
   {
     ::g_tooltip.open(obj, this)
-  }
-
-  function onModificationTooltipOpen(obj)
-  {
-    local modName = ::getObjIdByPrefix(obj, "tooltip_")
-    local unitName = obj?.unitName
-    if (!modName || !unitName)
-    {
-      obj["class"] = "empty"
-      return
-    }
-
-    local unit = ::getAircraftByName(unitName)
-    if (!unit)
-      return
-
-    local mod = getModificationByName(unit, modName)
-      || { name = modName, isDefaultForGroup = (obj?.groupIdx ?? 0).tointeger() }
-    mod.type <- weaponsItem.modification
-    updateWeaponTooltip(obj, unit, mod, this)
   }
 
   function onTooltipObjClose(obj)

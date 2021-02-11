@@ -143,11 +143,12 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
     ::gui_modal_editbox_wnd({
       title = ::loc("mainmenu/XboxOneEmailRegistration")
       editboxHeaderText = ::loc("mainmenu/XboxOneEmailRegistration/desc")
-      checkButtonFunc = ::g_string.validateEmail
+      checkWarningFunc = ::g_string.validateEmail
       allowEmpty = false
       needOpenIMEonInit = false
       editBoxEnableFunc = @() ::g_user_utils.haveTag("livelogin")
       editBoxTextOnDisable = ::loc("mainmenu/alreadyBinded")
+      editboxWarningTooltip = ::loc("tooltip/invalidEmail/possibly")
       okFunc = @(val) ::xbox_link_email(val, function(status) {
         ::g_popups.add("", ::colorize(
           status == ::YU2_OK? "activeTextColor" : "warningTextColor",

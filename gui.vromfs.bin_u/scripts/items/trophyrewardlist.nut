@@ -31,10 +31,11 @@ class ::gui_handlers.trophyRewardsList extends ::gui_handlers.BaseGuiHandlerWT
     if (::check_obj(titleObj))
       titleObj.setValue(::loc(tittleLocId))
 
-    if (rewardsArray.len() > 3)
-      listObj.width = (listObj.getSize()[0] + guiScene.calcString("1@scrollBarSize", null)).tostring()
-
     fillList(listObj)
+
+    if (rewardsArray.len() > 4)
+      listObj.width = (listObj.getSize()[0] + ::to_pixels("1@scrollBarSize")).tostring()
+
     listObj.setValue(rewardsArray.len() > 0 ? 0 : -1)
     ::move_mouse_on_child_by_value(listObj)
   }

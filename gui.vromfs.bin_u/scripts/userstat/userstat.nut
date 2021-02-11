@@ -180,6 +180,7 @@ return {
   userstatDescList
   userstatStats
   refreshUserstatUnlocks = @() unlocksUpdatable.forceRefresh()
+  refreshUserstatDescList = @() descListUpdatable.forceRefresh()
   refreshUserstatStats = @() statsUpdatable.forceRefresh()
   receiveUnlockRewards
   isUserstatMissingData

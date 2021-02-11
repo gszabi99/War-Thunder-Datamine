@@ -1,6 +1,5 @@
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
-local { seasonLvlWatchObj, easyDailyTaskProgressWatchObj,
+local { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
@@ -139,24 +138,14 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
 
     view.isShowRadioButtons <- (difficultyGroupArray.len() > 1 && ::has_feature("PromoBattleTasksRadioButtons"))
     view.radioButtons <- difficultyGroupArray
-    view.isShowNameInHeader <- true
     view.otherTasksNumText <- view.otherTasksNum > 0 ? "#mainmenu/battleTasks/OtherTasksCount" : ""
-    if (::has_feature("BattlePass")) {
-      scene.isBattlePass = "yes"
-      view.headerAction <- "showBattlePassWnd"
-      view.seasonLvlValue <- stashBhvValueConfig(seasonLvlWatchObj)
-      view.isShowNameInHeader = false
-      local isEmptyTask = view.taskId == null
-      if (isEmptyTask) {
-        view.title = ""
-        view.isEmptyTask <- isEmptyTask
-        view.showAsUsualPromoButton = false
-        view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
-        view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
-        if (::g_battle_tasks.canActivateHardTasks()) {
-          view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
-          view.newItemsAvailable <- leftSpecialTasksBoughtCountWatchObj.watch.value > 0
-        }
+    local isEmptyTask = view.taskId == null
+    if (isEmptyTask) {
+      view.easyDailyTaskProgressValue <- stashBhvValueConfig(easyDailyTaskProgressWatchObj)
+      view.mediumDailyTaskProgressValue <- stashBhvValueConfig(mediumDailyTaskProgressWatchObj)
+      if (::g_battle_tasks.canActivateHardTasks()) {
+        view.leftSpecialTasksBoughtCountValue <- stashBhvValueConfig(leftSpecialTasksBoughtCountWatchObj)
+        view.newItemsAvailable <- leftSpecialTasksBoughtCountWatchObj.watch.value > 0
       }
     }
 
@@ -232,11 +221,4 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
   onEventCurrentGameModeIdChanged             = @(p) updateHandler()
   onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
-
-  function showBattlePassWnd() {
-    if (!::has_feature("BattlePass"))
-      return
-
-    openBattlePassWnd()
-  }
 }

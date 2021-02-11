@@ -13,7 +13,8 @@ unitClassType.template <- {
   checkOrder = -1
 
   /** Returns localized name of unit class type. */
-  getName = @() ::loc($"mainmenu/type_{name}")
+  getShortName = @() ::loc($"mainmenu/type_{name}")
+  getName = @() getShortName()
 
   /** Check code against specified code mask. */
   checkCode = function(codeMask) {

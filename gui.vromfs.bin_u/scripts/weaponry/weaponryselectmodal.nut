@@ -120,7 +120,7 @@ class ::gui_handlers.WeaponrySelectModal extends ::gui_handlers.BaseGuiHandlerWT
     local rows = cols ? ::ceil(list.len().tofloat() / cols).tointeger() : 0
 
     wasSelIdx = -1
-    local params = { posX = 0, posY = 0, useGenericTooltip = true }
+    local params = { posX = 0, posY = 0 }
     local weaponryListMarkup = ""
     foreach(idx, config in list)
     {

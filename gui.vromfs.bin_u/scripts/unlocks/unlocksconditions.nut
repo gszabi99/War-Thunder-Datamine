@@ -104,8 +104,10 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "activity", "minStat", "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
     "statKillsPlayerInSession", "statKillsAirInSession", "statKillsAirAiInSession",
     "statKillsGroundInSession", "statKillsGroundAiInSession",
+    "statKillsNavalInSession", "statKillsNavalAiInSession",
+    "statKillsSurfaceInSession", "statKillsSurfaceAiInSession",
     "targetIsPlayer", "eliteUnitsOnly", "noPremiumVehicles", "era", "country", "playerCountry",
-    "targets", "targetDistance"
+    "targets", "targetDistance", "higherBR"
   ]
 
   condWithValuesInside = [
@@ -155,14 +157,18 @@ local function getOverrideCondType(condBlk, unlockMode) {
   }
 
   minStatGroups = {
-    place         = "statPlace"
-    score         = "statScore"
-    awardDamage   = "statAwardDamage"
-    playerkills   = "statKillsPlayer"
-    kills         = "statKillsAir"
-    aikills       = "statKillsAirAi"
-    groundkills   = "statKillsGround"
-    aigroundkills = "statKillsGroundAi"
+    place          = "statPlace"
+    score          = "statScore"
+    awardDamage    = "statAwardDamage"
+    playerkills    = "statKillsPlayer"
+    kills          = "statKillsAir"
+    aikills        = "statKillsAirAi"
+    groundkills    = "statKillsGround"
+    aigroundkills  = "statKillsGroundAi"
+    navalkills     = "statKillsNaval"
+    ainavalkills   = "statKillsNavalAi"
+    surfacekills   = "statKillsSurface"
+    aisurfacekills = "statKillsSurfaceAi"
   }
 
   bitModesList = {
@@ -317,7 +323,7 @@ UnlockConditions._mergeConditionToList <- function _mergeConditionToList(newCond
   {
     if (typeof(cond.values) != "array")
       cond.values = [cond.values]
-    cond.values.extend(newCond.values)
+    cond.values.extend((typeof(newCond.values) == "array") ? newCond.values : [newCond.values])
   }
 
   //merge specific by type
@@ -663,6 +669,15 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     res.type = "additional"
     res.values = t
   }
+  else if (t == "higherBR")
+  {
+    local range = ::Point2(blk?.diffBR ?? 0, blk?.diffBRMax ?? 0)
+    local v = getRangeTextByPoint2(range, {
+      maxOnlyStr = ::loc("conditions/unitRank/format_max")
+      minOnlyStr = ::loc("conditions/unitRank/format_min")
+    })
+    res.values = v != "" ? v : null
+  }
 
   local overrideCondType = getOverrideCondType(blk, unlockMode)
   if (overrideCondType)
@@ -973,7 +988,7 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
              cType == "playerCountry" || cType == "usedInSessionTag" || cType == "lastInSessionTag")
       text = ::loc("unlockTag/" + v)
     else if (::isInArray(cType, [ "activity", "playerUnitRank", "playerUnitMRank",
-      "crewsUnitRank", "crewsUnitMRank", "minStat", "targetDistance"]))
+      "crewsUnitRank", "crewsUnitMRank", "minStat", "targetDistance", "higherBR"]))
       text = condition?.gt != null
         ? ::format( ::loc("conditions/" + (condition.gt ? "min" : "max") + "_limit"), v.tostring())
         : v.tostring()

@@ -1,5 +1,5 @@
 local { activeUnlocks, receiveRewards, getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
-local { userstatStats } = require("scripts/userstat/userstat.nut")
+local { userstatStats, refreshUserstatDescList } = require("scripts/userstat/userstat.nut")
 local { basicUnlock, basicProgress, premiumUnlock, premiumProgress
 } = require("scripts/battlePass/unlocksRewardsState.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
@@ -11,6 +11,17 @@ local hasBattlePass = ::Computed(@() curSeasonBattlePassUnlockId.value != null
   && (activeUnlocks.value?[curSeasonBattlePassUnlockId.value].isCompleted ?? false))
 
 local season = ::Computed(@() userstatStats.value?.stats.seasons["$index"] ?? 0)
+
+local lastSeasonIndex = 0
+season.subscribe(function(seasonIndex) {
+  if (seasonIndex == 0 || lastSeasonIndex == seasonIndex)
+    return
+
+  if (lastSeasonIndex > 0) // update userstat unlocks description when season changed
+    refreshUserstatDescList()
+
+  lastSeasonIndex = seasonIndex
+})
 
 local totalProgressExp = ::Computed(@() basicUnlock.value?.current ?? 0)
 
@@ -146,6 +157,9 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
     inventoryClient.requestItemdefsByIds(itemsToRequest)
 })
 
+local hasBattlePassReward = ::Computed(@() basicUnlock.value?.hasReward
+  || premiumUnlock.value?.hasReward)
+
 return {
   seasonLevel
   maxSeasonLvl
@@ -161,4 +175,5 @@ return {
   levelExp
   warbondsShopLevelByStages
   getLevelByExp
+  hasBattlePassReward
 }
