@@ -1,4 +1,4 @@
-local { seasonLevel, season, getSeasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
+local { seasonLevel, season, seasonMainPrizesData } = require("scripts/battlePass/seasonState.nut")
 local { seasonStages, getStageViewData } = require("scripts/battlePass/seasonStages.nut")
 local { receiveRewards, unlockProgress, activeUnlocks } = require("scripts/unlocks/userstatUnlocksState.nut")
 local { updateChallenges, curSeasonChallenges, getChallengeView, mainChallengeOfSeasonId
@@ -57,15 +57,12 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   needCalculateCurPage = true
 
   function initScreen() {
-    updateTitle()
     updateButtons()
     calculateStageListSizeOnce()
 
     //init main sheet
     calculateCurPage()
     initStageUpdater()
-    updateMainPrizeData()
-    fillPromoBlock()
     initBattlePassInfo()
     initBattleTasksInfo()
 
@@ -107,11 +104,11 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     fillStagePage()
   }
 
-  function fillStagePage() {
-    updateStagePage(scene.findObject("wnd_battlePass"), seasonStages.value)
+  function fillStagePage(forceUpdate = false) {
+    updateStagePage(scene.findObject("wnd_battlePass"), seasonStages.value, forceUpdate)
   }
 
-  function updateStagePage(obj, stagesList) {
+  function updateStagePage(obj, stagesList, forceUpdate = false) {
     if (getCurSheetObjId() != "battle_pass_sheet")
       return
 
@@ -135,7 +132,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
     curPageStagesList = view.battlePassStage
     local stagesObj = scene.findObject("battlePassStages")
-    if (isChangesRewards) {
+    if (isChangesRewards || forceUpdate) {
       local data = ::handyman.renderCached("gui/battlePass/battlePassStage", view)
       guiScene.replaceContentFromText(stagesObj, data, data.len(), this)
     } else {
@@ -168,8 +165,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     receiveRewards(holderId)
   }
 
-  function onEventInventoryUpdate(params) {
-    fillStagePage()
+  function onEventItemsShopUpdate(params) {
+    fillStagePage(true)//force update stages because recived itemdefs for it
   }
 
   function initBattlePassInfo() {
@@ -200,6 +197,17 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     scene.findObject("wnd_battlePass").setValue(stashBhvValueConfig([{
       watch = seasonStages
       updateFunc = ::Callback(@(obj, stagesList) updateStagePage(obj, stagesList), this)
+    },
+    {
+      watch = season
+      updateFunc = @(obj, value)
+        obj.findObject("wnd_title").setValue(::loc("battlePass/name", {
+          name = ::loc($"battlePass/seasonName/{value}")
+        }))
+    },
+    {
+      watch = seasonMainPrizesData
+      updateFunc = ::Callback(@(obj, mainPrizesValue) updateMainPrizeData(mainPrizesValue), this)
     }]))
   }
 
@@ -210,22 +218,15 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   onWarbondsShop = @() ::g_warbonds.openShop()
   onBattleTask = @() ::gui_start_battle_tasks_wnd()
 
-  function updateTitle() {
-    scene.findObject("wnd_title").setValue(::loc("battlePass/name", {
-      name = ::loc($"battlePass/seasonName/{season.value}")
-    }))
-  }
-
-  function updateMainPrizeData() {
-    if (mainPrizeData != null)
+  function updateMainPrizeData(mainPrizesValue) {
+    local countMainPrizes = mainPrizesValue.len()
+    local mainPrizeImage = mainPrizeData?.mainPrizeImage
+    if (countMainPrizes == 0 || (mainPrizeImage != null && mainPrizesValue.findvalue(
+        @(v) v?.mainPrizeImage == mainPrizeImage) != null)) //main prize is already showed
       return
 
-    local mainPrizesData = getSeasonMainPrizesData()
-    local countMainPrizes = mainPrizesData.len()
-    if (countMainPrizes == 0)
-      return
-
-    mainPrizeData = mainPrizesData[::math.rnd() % countMainPrizes]
+    mainPrizeData = clone mainPrizesValue[::math.rnd() % countMainPrizes]
+    fillPromoBlock()
   }
 
   function fillPromoBlock() {
@@ -233,6 +234,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (promoImage != null)
       scene.findObject("promo_img")["background-image"] = promoImage
 
+    showSceneBtn("congrat_content", false)
     showSceneBtn("promo_preview", ::getAircraftByName(mainPrizeData?.mainPrizeId) != null)
   }
 

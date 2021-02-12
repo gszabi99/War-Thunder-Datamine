@@ -160,8 +160,10 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     }
 
     local data = ::handyman.renderCached("gui/firstChoice/unitTypeChoice", view)
-    if (selectedUnitType == null)
-      selectedUnitType = unitTypes.TANK
+    if (selectedUnitType == null) {
+      local preselectUnits = [unitTypes.AIRCRAFT, unitTypes.TANK]
+      selectedUnitType = preselectUnits[::math.rnd() % preselectUnits.len()]
+    }
 
     fillChoiceScene(data, ::find_in_array(unitTypesList, selectedUnitType, 0), "firstUnit")
   }
@@ -181,7 +183,7 @@ class ::gui_handlers.CountryChoiceHandler extends ::gui_handlers.BaseGuiHandlerW
     local listBoxObj = listObj.getChild(0)
     if (focusItemNum != null) {
       listBoxObj.setValue(focusItemNum)
-      ::move_mouse_on_child(listBoxObj, 0)
+      ::move_mouse_on_child(listBoxObj, focusItemNum)
     }
   }
 

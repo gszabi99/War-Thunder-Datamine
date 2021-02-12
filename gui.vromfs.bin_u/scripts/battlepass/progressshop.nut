@@ -2,6 +2,7 @@ local { maxSeasonLvl, hasBattlePass, battlePassShopConfig } = require("scripts/b
 local { refreshUserstatUnlocks, isUserstatMissingData
 } = require("scripts/userstat/userstat.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
+local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -11,7 +12,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   function initScreen() {
     if (battlePassShopConfig.value == null)
-      return
+      return goBack()
 
     updateWindow()
   }
@@ -25,13 +26,15 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local contentObj = rootObj.findObject("wnd_content")
     contentObj.flow = "vertical"
 
-    updateContent()
-    updateRowsView()
+    contentObj.setValue(stashBhvValueConfig([{
+      watch = battlePassShopConfig
+      updateFunc = ::Callback(@(obj, shopConfig) updateContent(shopConfig), this)
+    }]))
   }
 
-  function updateContent() {
+  function updateContent(shopConfig) {
     goods = []
-    foreach (idx, config in (battlePassShopConfig.value ?? [])) {
+    foreach (idx, config in (shopConfig ?? [])) {
       local { battlePassUnlock = "", additionalTrophy = [] } = config
       local passUnlock = ::g_unlocks.getUnlockById(battlePassUnlock)
       local additionalTrophyItems = additionalTrophy.map(@(itemId) ::ItemsManager.findItemById(
@@ -46,6 +49,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
       goods.append(goodsConfig)
     }
+
+    updateRowsView()
   }
 
   function actualizeGoodsConfig() {
