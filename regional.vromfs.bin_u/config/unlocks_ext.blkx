@@ -10936,6 +10936,39 @@
   },
   {
     "unlockable": {
+      "id": "cn_t_62_check_popup",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-02-13 00:00:00",
+        "endDate": "2021-02-15 10:00:00",
+        "condition": {
+          "type": "char_unlocked",
+          "positive": false,
+          "unlock": "cn_t_62_check"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "cn_t_62_check",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": "cn_t_62",
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2021-02-13 00:00:00",
+          "endDate": "2021-02-15 10:00:00"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
       "id": "mi_24v_check_popup",
       "type": "achievement",
       "hidden": true,
@@ -13511,6 +13544,7 @@
       "id": "2021_02_12_battle_bull",
       "type": "achievement",
       "chapter": "lunar_ny_valentine",
+      "hidden": true,
       "mode": [
         {
           "type": "missionsPlayedScore"
@@ -13573,6 +13607,7 @@
       "id": "2021_02_12_decor_composite_bow",
       "type": "achievement",
       "chapter": "lunar_ny_valentine",
+      "hidden": true,
       "mode": [
         {
           "type": "missionsWonScore"
