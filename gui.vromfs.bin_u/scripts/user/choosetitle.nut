@@ -49,8 +49,8 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
     local titleHeight = ::to_pixels("1@buttonHeight")
     local gRatioColumns = stdMath.calc_golden_ratio_columns(titlesData.len(),
       titleWidth / (titleHeight || 1))
-    local maxColumns = (::to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger()
-    local columns = ::clamp(gRatioColumns, 3, maxColumns)
+    local maxColumns = (::to_pixels("1@rw - 1@scrollBarSize") / titleWidth ).tointeger() || 1
+    local columns = ::clamp(gRatioColumns, ::min(3, maxColumns), maxColumns)
 
     //sort alphabetically, and by columns
     titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)

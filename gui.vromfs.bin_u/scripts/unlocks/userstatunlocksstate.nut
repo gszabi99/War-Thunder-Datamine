@@ -26,7 +26,6 @@ local unlockTables = ::Computed(function() {
 })
 
 local function calcUnlockProgress(progressData, unlockDesc) {
-  unlockDesc = unlockDesc ?? {}
   local res = clone emptyProgress
   local stage = progressData?.stage ?? 0
   res.stage = stage
@@ -36,7 +35,6 @@ local function calcUnlockProgress(progressData, unlockDesc) {
   if (progressData?.progress != null) {
     res.current = progressData.progress
     res.required = progressData.nextStage
-    unlockDesc.__update(res)
     return res
   }
 
@@ -48,7 +46,6 @@ local function calcUnlockProgress(progressData, unlockDesc) {
     res.isFinished = isLastStageCompleted && !res.hasReward
     res.current = res.required
   }
-  unlockDesc.__update(res)
   return res
 }
 

@@ -262,6 +262,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     curPage = stateData.curPage
     stageIndexOffset = stateData.stageIndexOffset
     fillStagePage()
+    fillPromoBlock()
   }
 
   function onEventBeforeStartShowroom(p) {

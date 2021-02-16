@@ -53,7 +53,7 @@ local updateCrossNetworkChatStatus = function()
   persistentData.crossNetworkChatStatus = XBOX_COMMUNICATIONS_ALLOWED
   if (isPlatformXboxOne)
     persistentData.crossNetworkChatStatus = ::check_crossnetwork_communications_permission()
-  else if (isPlatformSony && ::has_feature("PS4CrossNetwork"))
+  else if (isPlatformSony && ::has_feature("PS4CrossNetwork") && ::g_login.isProfileReceived())
     persistentData.crossNetworkChatStatus = ::load_local_account_settings(PS4_CROSSNETWORK_CHAT_OPT_ID, XBOX_COMMUNICATIONS_ALLOWED)
 }
 

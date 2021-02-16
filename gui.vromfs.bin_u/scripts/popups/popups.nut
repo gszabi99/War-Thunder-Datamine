@@ -90,8 +90,7 @@ g_popups.performDelayedFlushPopupsIfCan <- function performDelayedFlushPopupsIfC
       for(local i = suspendedPopupsList.len()-1; i >= 0; i--)
       {
         local popup = suspendedPopupsList[i]
-        local hasShowedPopupWithSameGroup = !::u.isEmpty(getByGroup(popup))
-        if (canShowPopup() || hasShowedPopupWithSameGroup)
+        if (canShowPopup())
         {
           ::u.removeFrom(suspendedPopupsList, popup)
           show(popup)
