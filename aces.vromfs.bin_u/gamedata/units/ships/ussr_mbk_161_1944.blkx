@@ -131,6 +131,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_poland_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_japan_01_c*",
           "to": "flag_japan_01_c_tomoe*"
         }
@@ -1634,70 +1640,142 @@
   {
     "MetaParts": [
       {
-        "cover": {
-          "part": "compartment_01_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_01_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_02_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_02_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_03_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_03_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_04_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_04_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_05_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_05_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "bridge": {
-          "part": "bridge_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 415.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "bridge": [
+          {
+            "part": "bridge_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 415.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 3500.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -2147,12 +2225,12 @@
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 3
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 7
+        "crew": 2
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
@@ -2162,12 +2240,37 @@
       "sailor6": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
-        "crew": 4
+        "crew": 2
       },
       "sailor7": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
+        "crew": 2
+      },
+      "sailor8": {
+        "dmPart": "auxiliary_caliber_turret_01_dm",
+        "role": "sailor",
         "crew": 3
+      },
+      "sailor9": {
+        "dmPart": "auxiliary_caliber_turret_02_dm",
+        "role": "sailor",
+        "crew": 3
+      },
+      "sailor10": {
+        "dmPart": "auxiliary_caliber_turret_03_dm",
+        "role": "sailor",
+        "crew": 3
+      },
+      "sailor11": {
+        "dmPart": "aa_turret_02_dm",
+        "role": "sailor",
+        "crew": 1
+      },
+      "sailor12": {
+        "dmPart": "aa_turret_03_dm",
+        "role": "sailor",
+        "crew": 1
       }
     }
   },

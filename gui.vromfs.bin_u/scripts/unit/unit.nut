@@ -30,6 +30,7 @@ local defaultAvailableWeapons = {
   hasDepthCharges = false
   hasMines = false
   hasFlares = false
+  hasChaffs = false
   hasTorpedoes = false
 }
 
@@ -606,6 +607,8 @@ local Unit = class
               availableWeapons.hasDepthCharges = true
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
+            if (weapBlk?.rocket && weapBlk.rocket?.isChaff)
+              availableWeapons.hasChaffs = true
             if (weapBlk?.torpedo != null)
               availableWeapons.hasTorpedoes = true
 

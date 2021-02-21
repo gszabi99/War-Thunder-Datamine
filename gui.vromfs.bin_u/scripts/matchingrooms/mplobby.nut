@@ -6,6 +6,7 @@ local fillSessionInfo = require("scripts/matchingRooms/fillSessionInfo.nut")
 local { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -318,7 +319,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
         status = getUnitItemStatusText(bit_unit_status.owned)
       }
       local data = ::build_aircraft_item(airName, air, params)
-      data = "rankUpList { id:t='curAircraft_place'; {0} }".subst(data)
+      data = "rankUpList { id:t='curAircraft_place'; holdTooltipChildren:t='yes'; {0} }".subst(data)
       guiScene.appendWithBlk(airObj, data, this)
       ::fill_unit_item_timers(airObj.findObject(airName), air)
     }
@@ -579,7 +580,8 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
   function onReady()
   {
     local event = ::SessionLobby.getRoomEvent()
-    if (event != null && !antiCheat.showMsgboxIfEacInactive(event))
+    if (event != null && (!antiCheat.showMsgboxIfEacInactive(event) ||
+                          !showMsgboxIfSoundModsNotAllowed(event)))
       return
 
     if (::SessionLobby.tryJoinSession())

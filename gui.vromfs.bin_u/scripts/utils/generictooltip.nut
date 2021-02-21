@@ -1,64 +1,54 @@
+local { getTooltipType, UNLOCK, ITEM, INVENTORY, SUBTROPHY, UNIT,
+  CREW_SPECIALIZATION, BUY_CREW_SPEC, DECORATION
+} = require("genericTooltipTypes.nut")
+
+local openedTooltipObjs = []
+local function removeInvalidTooltipObjs() {
+  openedTooltipObjs = openedTooltipObjs.filter(@(t) t.isValid())
+}
+
 ::g_tooltip <- {
-  openedTooltipObjs = []
   inited = false
-}
 
-g_tooltip.getIdUnlock <- function getIdUnlock(unlockId, params = null)
-{
-  return ::g_tooltip_type.UNLOCK.getTooltipId(unlockId, params)
-}
-
-g_tooltip.getIdItem <- function getIdItem(itemName, params = null)
-{
-  return ::g_tooltip_type.ITEM.getTooltipId(itemName, params)
-}
-
-g_tooltip.getIdInventoryItem <- function getIdInventoryItem(itemUid)
-{
-  return ::g_tooltip_type.INVENTORY.getTooltipId(itemUid)
-}
-
+//!!TODO: remove this functions from this module
+  getIdUnlock = @(unlockId, params = null)
+    UNLOCK.getTooltipId(unlockId, params)
+  getIdItem = @(itemName, params = null)
+    ITEM.getTooltipId(itemName, params)
+  getIdInventoryItem = @(itemUid)
+    INVENTORY.getTooltipId(itemUid)
 //only trophy content without trophy info. for hidden trophy items content.
-g_tooltip.getIdSubtrophy <- function getIdSubtrophy(itemName)
-{
-  return ::g_tooltip_type.SUBTROPHY.getTooltipId(itemName)
-}
-
-g_tooltip.getIdUnit <- function getIdUnit(unitName, params = null)
-{
-  return ::g_tooltip_type.UNIT.getTooltipId(unitName, params)
-}
-
-g_tooltip.getIdModification <- function getIdModification(unitName, modName, params = null)
-{
-  return ::g_tooltip_type.MODIFICATION.getTooltipId(unitName, modName, params)
-}
-
-g_tooltip.getIdSpare <- function getIdSpare(unitName)
-{
-  return ::g_tooltip_type.SPARE.getTooltipId(unitName)
-}
-
+  getIdSubtrophy = @(itemName)
+    SUBTROPHY.getTooltipId(itemName)
+  getIdUnit = @(unitName, params = null)
+    UNIT.getTooltipId(unitName, params)
 //specTypeCode == -1  -> current crew specialization
-g_tooltip.getIdCrewSpecialization <- function getIdCrewSpecialization(crewId, unitName, specTypeCode = -1)
-{
-  return ::g_tooltip_type.CREW_SPECIALIZATION.getTooltipId(crewId, unitName, specTypeCode)
+  getIdCrewSpecialization = @(crewId, unitName, specTypeCode = -1)
+    CREW_SPECIALIZATION.getTooltipId(crewId, unitName, specTypeCode)
+  getIdBuyCrewSpec = @(crewId, unitName, specTypeCode = -1)
+    BUY_CREW_SPEC.getTooltipId(crewId, unitName, specTypeCode)
+  getIdDecorator = @(decoratorId, unlockedItemType, params = null)
+    DECORATION.getTooltipId(decoratorId, unlockedItemType, params)
 }
 
-g_tooltip.getIdBuyCrewSpec <- function getIdBuyCrewSpec(crewId, unitName, specTypeCode = -1)
-{
-  return ::g_tooltip_type.BUY_CREW_SPEC.getTooltipId(crewId, unitName, specTypeCode)
-}
-
-g_tooltip.getIdDecorator <- function getIdDecorator(decoratorId, unlockedItemType, params = null)
-{
-  return ::g_tooltip_type.DECORATION.getTooltipId(decoratorId, unlockedItemType, params)
+local function fillTooltip(obj, handler, tooltipType, id, params) {
+  local isSucceed = true
+  if (tooltipType.isCustomTooltipFill)
+    isSucceed = tooltipType.fillTooltip(obj, handler, id, params)
+  else
+  {
+    local content = tooltipType.getTooltipContent(id, params)
+    if (content.len())
+      obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
+    else
+      isSucceed = false
+  }
+  return isSucceed
 }
 
 g_tooltip.open <- function open(obj, handler)
 {
-  ::g_tooltip.removeInvalidObjs(::g_tooltip.openedTooltipObjs)
-
+  removeInvalidTooltipObjs()
   if (!::check_obj(obj))
     return
   obj["class"] = "empty"
@@ -72,10 +62,10 @@ g_tooltip.open <- function open(obj, handler)
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return
 
-  local tooltipType = ::g_tooltip_type.getTypeByName(params.ttype)
+  local tooltipType = getTooltipType(params.ttype)
   local id = params.id
 
-  local isSucceed = fill(obj, handler, tooltipType, id, params)
+  local isSucceed = fillTooltip(obj, handler, tooltipType, id, params)
 
   if (!isSucceed || !::check_obj(obj))
     return
@@ -107,26 +97,14 @@ g_tooltip.register <- function register(obj, handler, tooltipType, id, params)
   openedTooltipObjs.append(data)
 }
 
-g_tooltip.fill <- function fill(obj, handler, tooltipType, id, params)
+g_tooltip.close <- function close(obj) //!!FIXME: this function can be called with wrong context. Only for replace content in correct handler
 {
-  local isSucceed = true
-  if (tooltipType.isCustomTooltipFill)
-    isSucceed = tooltipType.fillTooltip(obj, handler, id, params)
-  else
-  {
-    local content = tooltipType.getTooltipContent(id, params)
-    if (content.len())
-      obj.getScene().replaceContentFromText(obj, content, content.len(), handler)
-    else
-      isSucceed = false
+  local tIdx = !obj.isValid() ? null
+    : openedTooltipObjs.findindex(@(v) v.obj.isValid() && v.obj.isEqual(obj))
+  if (tIdx != null) {
+    openedTooltipObjs[tIdx].tooltipType.onClose(obj)
+    openedTooltipObjs.remove(tIdx)
   }
-  return isSucceed
-}
-
-g_tooltip.close <- function close(obj)
-{
-  local tooltipId = ::checkObj(obj) ? ::getTooltipObjId(obj) : null
-  ::g_tooltip.removeInvalidObjs(::g_tooltip.openedTooltipObjs, tooltipId)
 
   if (!::checkObj(obj) || !obj.childrenCount())
     return
@@ -169,19 +147,9 @@ g_tooltip.onEventChangedCursorVisibility <- function onEventChangedCursorVisibil
   removeAll()
 }
 
-g_tooltip.removeInvalidObjs <- function removeInvalidObjs(objs, tooltipId = null)
-{
-  for (local i = objs.len() - 1; i >= 0; --i)
-  {
-    local obj = objs[i].obj
-    if (!objs[i].isValid() || (tooltipId && ::getTooltipObjId(obj) == tooltipId))
-      objs.remove(i)
-  }
-}
-
 g_tooltip.removeAll <- function removeAll()
 {
-  removeInvalidObjs(openedTooltipObjs)
+  removeInvalidTooltipObjs()
 
   while (openedTooltipObjs.len())
   {
@@ -192,3 +160,7 @@ g_tooltip.removeAll <- function removeAll()
 }
 
 ::g_tooltip.init()
+
+return {
+  fillTooltip
+}

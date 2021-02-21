@@ -5711,6 +5711,28 @@
         "additiveBulletMod": "40mm_vickers_terni_mod_1930_he"
       }
     },
+    "65mm_asnalso_terni_navy_he_tf": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "65mm_HE",
+      "effects": {
+        "additiveBulletMod": "65mm_asnalso_terni_navy_he_tf"
+      }
+    },
+    "65mm_asnalso_terni_navy_he": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "65mm_asnalso_terni_navy_he_ammo_pack",
+      "group": "65mm_HE",
+      "effects": {
+        "additiveBulletMod": "65mm_asnalso_terni_navy_he"
+      }
+    },
+    "65mm_asnalso_terni_navy_he_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
     "76mm_it_oto_mom_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
@@ -7240,17 +7262,31 @@
         "additiveBulletMod": "305mm_ger_l_3_8_bdz_navy_he"
       }
     },
-    "305mm_gerl_3_4_navy_apc": {
+    "305mm_ger_l_3_3_navy_sap": {
       "image": "#ui/gameuiskin#tank_ammo",
-      "reqModification": "305mm_gerl_3_4_navy_apc_ammo_pack",
-      "group": "305mm_APC",
+      "reqModification": "305mm_ger_l_3_3_navy_sap_ammo_pack",
+      "group": "305mm_SAP",
       "effects": {
-        "additiveBulletMod": "305mm_gerl_3_4_navy_apc"
+        "additiveBulletMod": "305mm_ger_l_3_3_navy_sap"
       }
     },
-    "305mm_gerl_3_4_navy_apc_ammo_pack": {
+    "305mm_ger_l_3_3_navy_sap_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "305mm_ger_l_3_4_navy_apc": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "305mm_ger_l_3_4_navy_apc_ammo_pack",
+      "group": "305mm_APC",
+      "effects": {
+        "additiveBulletMod": "305mm_ger_l_3_4_navy_apc"
+      }
+    },
+    "305mm_ger_l_3_4_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 2,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -8698,13 +8734,27 @@
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
-    "305mm_us_45_mk15_navy_apc": {
+    "305mm_us_45_cl_b_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
+      "group": "305mm_HE",
+      "effects": {
+        "additiveBulletMod": "305mm_us_45_cl_b_navy_he"
+      }
+    },
+    "305mm_us_45_mk15_navy_apc": {
+      "image": "#ui/gameuiskin#he_frag_base_fuse_tank",
+      "reqModification": "305mm_us_45_mk15_navy_apc_ammo_pack",
       "group": "305mm_AP",
       "effects": {
         "additiveBulletMod": "305mm_us_45_mk15_navy_apc"
       }
+    },
+    "305mm_us_45_mk15_navy_apc_ammo_pack": {
+      "image": "#ui/gameuiskin#he_frag_base_fuse_tank",
+      "tier": 1,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
     },
     "305mm_us_mk8_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
@@ -9735,6 +9785,28 @@
     "152mm_us_tow_2_ammo_pack": {
       "image": "#ui/gameuiskin#tank_ammo",
       "tier": 2,
+      "modClass": "firepower",
+      "deactivationIsAllowed": false
+    },
+    "127mm_uk_zt3_swift": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "isReserve": true,
+      "group": "152mm_AP",
+      "effects": {
+        "additiveBulletMod": "127mm_uk_zt3_swift"
+      }
+    },
+    "127mm_uk_zt3_ingwe": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "reqModification": "127mm_uk_zt3_ingwe_ammo_pack",
+      "group": "152mm_AP",
+      "effects": {
+        "additiveBulletMod": "127mm_uk_zt3_ingwe"
+      }
+    },
+    "127mm_uk_zt3_ingwe_ammo_pack": {
+      "image": "#ui/gameuiskin#tank_ammo",
+      "tier": 3,
       "modClass": "firepower",
       "deactivationIsAllowed": false
     },
@@ -10811,7 +10883,9 @@
         "mulSideRotMinFric": 0.95,
         "mulSideRotMaxFric": 0.95,
         "tracks": {
-          "width": 0.56
+          "width": 0.56,
+          "trackMesh": "ger_winterketten_phys_track_line",
+          "nonSymmetricMesh": true
         },
         "hideNodes": [
           {
@@ -10853,7 +10927,9 @@
           }
         ],
         "tracks": {
-          "width": 0.56
+          "width": 0.56,
+          "trackMesh": "ger_ostketten_phys_track_line",
+          "nonSymmetricMesh": true
         },
         "damagePartsOverride": {
           "tracks": {
@@ -11876,6 +11952,16 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "su_17_x25": {
+      "image": "#ui/gameuiskin#agm_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
+    "su_17_x29l": {
+      "image": "#ui/gameuiskin#agm_missile",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mig_21_x66": {
       "image": "#ui/gameuiskin#agm_missile",
       "modClass": "weapon",
@@ -12482,6 +12568,11 @@
     "yak_38_vspu_36_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
       "modClass": "weapon"
+    },
+    "su_17_sppu_22_gunpod": {
+      "image": "#ui/gameuiskin#gunpods",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
     },
     "mk4_mod0_gunpod": {
       "image": "#ui/gameuiskin#gunpods",
@@ -14099,7 +14190,7 @@
     "80mm_japan_type_0_naval_HE": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
-      "group": "80mm_he",
+      "group": "76mm_he",
       "effects": {
         "additiveBulletMod": "80mm_japan_type_0_naval_HE"
       }
@@ -14107,7 +14198,7 @@
     "80mm_jp_type98_navy_he": {
       "image": "#ui/gameuiskin#tank_ammo",
       "isReserve": true,
-      "group": "80mm_he",
+      "group": "76mm_he",
       "effects": {
         "additiveBulletMod": "80mm_jp_type98_navy_he"
       }
@@ -14115,7 +14206,7 @@
     "80mm_jp_type98_distant_fuse_navy_he": {
       "image": "#ui/gameuiskin#he_frag_dist_fuse_ship",
       "reqModification": "80mm_jp_type98_distant_fuse_navy_he_ammo_pack",
-      "group": "80mm_he",
+      "group": "76mm_he",
       "effects": {
         "additiveBulletMod": "80mm_jp_type98_distant_fuse_navy_he"
       }
@@ -16279,6 +16370,11 @@
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon"
     },
+    "us_agm_65a": {
+      "image": "#ui/gameuiskin#atgm_heli_preset",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "uk_fireflash": {
       "image": "#ui/gameuiskin#air_to_air_missile",
       "modClass": "weapon",
@@ -17181,6 +17277,11 @@
       "modClass": "weapon",
       "deactivationIsAllowed": false
     },
+    "su_17_ofab_100": {
+      "image": "#ui/gameuiskin#pilon_bomb",
+      "modClass": "weapon",
+      "deactivationIsAllowed": false
+    },
     "mi_24_fab_250": {
       "image": "#ui/gameuiskin#pilon_bomb",
       "modClass": "weapon",
@@ -17306,6 +17407,40 @@
       "modClass": "weapon",
       "requiresModelReload": true,
       "group": "mi-24_EVU"
+    },
+    "countermeasures_belt_pack": {
+      "image": "#ui/gameuiskin#heli_false_thermal_targets",
+      "modClass": "weapon",
+      "requiresModelReload": true,
+      "group": "countermeasures"
+    },
+    "countermeasures_launcher_chaff_priority": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_chaff_priority"
+      }
+    },
+    "countermeasures_launcher_flare_priority": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_flare_priority"
+      }
+    },
+    "countermeasures_launcher_flare_only": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_flare_only"
+      }
+    },
+    "countermeasures_launcher_chaff_only": {
+      "reqModification": "countermeasures_belt_pack",
+      "group": "countermeasures",
+      "effects": {
+        "bulletMod": "countermeasures_launcher_chaff_only"
+      }
     },
     "q_5b_ltc": {
       "image": "#ui/gameuiskin#heli_false_thermal_targets",

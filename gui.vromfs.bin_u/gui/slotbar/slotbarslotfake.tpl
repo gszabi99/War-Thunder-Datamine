@@ -1,4 +1,5 @@
 id:t='<<slotId>>'
+<<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
 
 <<#position>>
 position:t='<<position>>'
@@ -14,6 +15,12 @@ shopItem {
   behavior:t='Timer'
   timer_interval_msec:t='1000'
   unit_name:t='<<unitName>>'
+
+  <<#isTooltipByHold>>
+  tooltipId:t='<<tooltipId>>'
+  on_hover:t='::gcb.delayedTooltipHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
+  <</isTooltipByHold>>
 
   slotPlate {
     middleBg {
@@ -77,6 +84,7 @@ shopItem {
     <</bottomLineText>>
   }
 
+  <<^isTooltipByHold>>
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'
@@ -84,6 +92,7 @@ shopItem {
     display:t='hide'
   }
   title:t='$tooltipObj'
+  <</isTooltipByHold>>
 
   focus_border{}
 }

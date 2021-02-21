@@ -12,6 +12,7 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local popupFilter = require("scripts/popups/popupFilter.nut")
+local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -974,7 +975,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     for(local idx = fromIdx; idx <= toIdx; idx++)
     {
       local airData = airStatsList[idx]
-      local unitTooltipId = ::g_tooltip_type.UNIT.getTooltipId(airData.name)
+      local unitTooltipId = UNIT.getTooltipId(airData.name)
 
       local rowName = "row_"+idx
       local rowData = [

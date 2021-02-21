@@ -82,6 +82,15 @@ rankUpList {
   input-transparent:yes;
 }
 
+rankUpList[holdTooltipChildren=yes], slotbarTable[holdTooltipChildren=yes] {
+  total-input-transparent:yes;
+  behavior:PosNavigator;
+  navigatorShortcuts:yes;
+  on_pushed:"::gcb.delayedTooltipListPush";
+  on_hold_start:"::gcb.delayedTooltipListHoldStart";
+  on_hold_stop:"::gcb.delayedTooltipListHoldStop";
+}
+
 unitCell {
   size:@shop_width, @shop_height;
   padding:@shop_interval, @shop_pad;

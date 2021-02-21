@@ -622,8 +622,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
-        "armorThickness": 25.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -669,7 +669,9 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
-        "hp": 300.0,
+        "armorEffectiveThicknessMax": 20.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 20.0,
         "track_r_dm": [],
         "track_l_dm": [],
         "track_r_01_dm": [],
@@ -2002,7 +2004,7 @@
     "gunConvergence": {
       "updateFromRangefinder": true,
       "minDistance": 200.0,
-      "distance": 1000.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2241,6 +2243,34 @@
               }
             }
           ]
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
+          "xrayDmPartRange": [1,14],
+          "titleLoc": "leopard_2a5_turret_nera",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 400.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_01_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayERA": {
+          "xrayDmPartFmt": "ex_era_hull_%02d_dm",
+          "xrayDmPartRange": [15,26],
+          "titleLoc": "uk_era_romor_a",
+          "kineticProtectionEquivalent": 30.0,
+          "cumulativeProtectionEquivalent": 300.0,
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "ex_era_hull_15_dm"
+            }
+          }
         }
       },
       {

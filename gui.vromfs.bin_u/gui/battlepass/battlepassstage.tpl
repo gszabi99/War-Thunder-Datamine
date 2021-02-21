@@ -36,22 +36,24 @@ battlePassStage {
     include "gui/items/item"
 
     <<^items>>
-    <<#challengeTooltipId>>
+    <<#stageIcon>>
     img {
+      size:t='pw - 2@itemPadding, ph - 2@itemPadding'
+      pos:t='0.5pw-0.5w, 0.5ph - 0.5h'
       position:t='absolute'
-      size:t='pw, ph'
-      background-image:t='https://static-ggc.gaijin.net/item_special_task.png' /*!!! FIX ME need replaced after 2.1.0.X by #ui/gameuiskin#item_challenge*/
+      background-image:t='<<stageIcon>>'
       input-transparent:t='yes'
-
-      title:t='$tooltipObj'
-      tooltipObj {
-        tooltipId:t='<<challengeTooltipId>>'
-        display:t='hide'
-        on_tooltip_open:t='onGenericTooltipOpen'
-        on_tooltip_close:t='onTooltipObjClose'
-      }
     }
-    <</challengeTooltipId>>
+    <</stageIcon>>
+    <<#stageTooltipId>>
+    title:t='$tooltipObj'
+    tooltipObj {
+      tooltipId:t='<<stageTooltipId>>'
+      display:t='hide'
+      on_tooltip_open:t='onGenericTooltipOpen'
+      on_tooltip_close:t='onTooltipObjClose'
+    }
+    <</stageTooltipId>>
     <</items>>
 
     tdiv {

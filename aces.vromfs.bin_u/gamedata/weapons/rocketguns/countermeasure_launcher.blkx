@@ -1,0 +1,1196 @@
+[
+  {
+    "cannon": false
+  },
+  {
+    "bUseHookAsRel": true
+  },
+  {
+    "emitColor": [1.0,1.0,0.0]
+  },
+  {
+    "emitI": 10.0
+  },
+  {
+    "emitR": 3.0
+  },
+  {
+    "emitTime": 0.03
+  },
+  {
+    "aimMinDist": 10.0
+  },
+  {
+    "aimMaxDist": 1000.0
+  },
+  {
+    "maxDeltaAngle": 0.1
+  },
+  {
+    "shotFreq": 100.0
+  },
+  {
+    "traceFreq": 4
+  },
+  {
+    "bEnablePause": false
+  },
+  {
+    "bullets": 90
+  },
+  {
+    "bulletsCluster": 0
+  },
+  {
+    "shootingCharge": 5.5
+  },
+  {
+    "preset_cost": 200
+  },
+  {
+    "dragCx": 0.15
+  },
+  {
+    "mass": 0.0
+  },
+  {
+    "recoilMultiplier": 0.0
+  },
+  {
+    "fxType": "muzzle_air_20mm"
+  },
+  {
+    "fxMultipleSpawn": true
+  },
+  {
+    "isBulletBelt": true
+  },
+  {
+    "isBurstMode": true
+  },
+  {
+    "iconType": "ltc"
+  },
+  {
+    "bullet": [
+      {
+        "cannon": true
+      },
+      {
+        "isBulletBelt": true
+      },
+      {
+        "mass": 0.09
+      },
+      {
+        "sound_path": "sounds/guns"
+      },
+      {
+        "sound_pathStudio": "aircraft/weapon"
+      },
+      {
+        "sound": "flare_launcher_outside"
+      },
+      {
+        "sound_inside": "flare_launcher_inside"
+      },
+      {
+        "isBulletBelt": false
+      },
+      {
+        "bulletType": "flr"
+      },
+      {
+        "helicopterGroup": 2
+      },
+      {
+        "reloadTime": 8.0
+      },
+      {
+        "allowHumanReload": true
+      },
+      {
+        "bulletName": "flare_launcher"
+      },
+      {
+        "tags": {
+          "antiTankRocket": true,
+          "antiShipRocket": true
+        }
+      },
+      {
+        "rocket": {
+          "normalizationPreset": "default",
+          "ricochetPreset": "defaultExt",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "flare",
+          "caliber": 0.026,
+          "mass": 0.09,
+          "massEnd": 0.04,
+          "maxDeltaAngle": 15.0,
+          "maxDeltaAngleVertical": 5.0,
+          "dragCx": 0.0001,
+          "length": 0.08,
+          "distFromCmToStab": 0.005,
+          "CxK": 8.0,
+          "WdK": [0.1,0.1,0.1],
+          "isFlare": true,
+          "force": 0.1,
+          "timeFire": 4.4,
+          "thrustDeviation": 0.01,
+          "explosionEffect": "",
+          "fireEffect": "",
+          "smokeEffect": "flare_fire",
+          "hazeFx": "",
+          "pylonFx": "",
+          "waterExplosionEffect": "water_splash",
+          "timeLife": 4.4,
+          "maxDistance": 1000.0,
+          "minDistance": 200.0,
+          "smokeShell": false,
+          "smokeFx": "",
+          "smokeShellRad": 10.0,
+          "smokeActivateTime": 5.0,
+          "smokeTime": 20.0,
+          "spawnExplosionWreckage": false,
+          "spawnExplosionFx": false,
+          "explosionOffset": 0.05,
+          "hitPowerMult": 1.0,
+          "nearHitPower": [1.0,50.0],
+          "midHitPower": [0.9,400.0],
+          "farHitPower": [0.1,1000.0],
+          "endHitPower": [0.01,1500.0],
+          "relativeVelHitShift": [300.0,1000.0],
+          "nearArmorPower": [3.0,50.0],
+          "midArmorPower": [2.0,400.0],
+          "farArmorPower": [0.2,700.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "distanceFuse": false,
+          "rendinstDamageRadius": 0.1,
+          "advancedMissiles": false,
+          "useStartSpeed": true,
+          "startSpeed": 70.0,
+          "endSpeed": 0.0,
+          "price": 300.0,
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "infraRedVisibility": {
+            "band2": 1.0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "bullet": {
+      "mass": 0.09,
+      "sound_path": "sounds/guns",
+      "sound_pathStudio": "aircraft/weapon",
+      "sound": "flare_launcher_outside",
+      "sound_inside": "flare_launcher_inside",
+      "isBulletBelt": false,
+      "bulletType": "chff",
+      "helicopterGroup": 2,
+      "reloadTime": 8.0,
+      "allowHumanReload": true,
+      "bulletName": "chaffs_launcher",
+      "tags": {
+        "antiTankRocket": true,
+        "antiShipRocket": true
+      },
+      "rocket": {
+        "normalizationPreset": "default",
+        "ricochetPreset": "defaultExt",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "flare",
+        "caliber": 0.026,
+        "mass": 0.09,
+        "massEnd": 0.04,
+        "maxDeltaAngle": 15.0,
+        "maxDeltaAngleVertical": 5.0,
+        "dragCx": 0.0001,
+        "length": 0.08,
+        "distFromCmToStab": 0.005,
+        "CxK": 16.0,
+        "WdK": [0.1,0.1,0.1],
+        "isChaff": true,
+        "force": 0.1,
+        "timeFire": 0.0,
+        "thrustDeviation": 0.01,
+        "explosionEffect": "",
+        "fireEffect": "",
+        "smokeEffect": "flare_fire",
+        "hazeFx": "",
+        "pylonFx": "",
+        "waterExplosionEffect": "water_splash",
+        "timeLife": 10.0,
+        "maxDistance": 1000.0,
+        "minDistance": 200.0,
+        "smokeShell": false,
+        "smokeFx": "",
+        "smokeShellRad": 10.0,
+        "smokeActivateTime": 5.0,
+        "smokeTime": 20.0,
+        "spawnExplosionWreckage": false,
+        "spawnExplosionFx": false,
+        "explosionOffset": 0.05,
+        "hitPowerMult": 1.0,
+        "nearHitPower": [1.0,50.0],
+        "midHitPower": [0.9,400.0],
+        "farHitPower": [0.1,1000.0],
+        "endHitPower": [0.01,1500.0],
+        "relativeVelHitShift": [300.0,1000.0],
+        "nearArmorPower": [3.0,50.0],
+        "midArmorPower": [2.0,400.0],
+        "farArmorPower": [0.2,700.0],
+        "relativeVelArmorShift": [200.0,1000.0],
+        "distanceFuse": false,
+        "rendinstDamageRadius": 0.1,
+        "advancedMissiles": false,
+        "useStartSpeed": true,
+        "startSpeed": 0.0,
+        "endSpeed": 0.0,
+        "speedViscosity": 0.2,
+        "timeToLive": 10.0,
+        "price": 300.0,
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.05]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod3": [30.0,0.2]
+          },
+          {
+            "mod3": [45.0,0.3]
+          }
+        ],
+        "radarVisibility": {
+          "band0": 0.075
+        }
+      }
+    }
+  },
+  {
+    "countermeasures_launcher_chaff_priority": [
+      {
+        "bullet": {
+          "mass": 0.09,
+          "sound_path": "sounds/guns",
+          "sound_pathStudio": "aircraft/weapon",
+          "sound": "flare_launcher_outside",
+          "sound_inside": "flare_launcher_inside",
+          "isBulletBelt": false,
+          "bulletType": "chff",
+          "helicopterGroup": 2,
+          "reloadTime": 8.0,
+          "allowHumanReload": true,
+          "bulletName": "chaffs_launcher",
+          "tags": {
+            "antiTankRocket": true,
+            "antiShipRocket": true
+          },
+          "rocket": {
+            "normalizationPreset": "default",
+            "ricochetPreset": "defaultExt",
+            "secondaryShattersPreset": "ap",
+            "stabilityThreshold": 0.05,
+            "stabilityCaliberToArmorThreshold": 5.0,
+            "stabilityReductionAfterRicochet": 0.5,
+            "stabilityReductionAfterPenetration": 0.15,
+            "bulletType": "flare",
+            "caliber": 0.026,
+            "mass": 0.09,
+            "massEnd": 0.04,
+            "maxDeltaAngle": 15.0,
+            "maxDeltaAngleVertical": 5.0,
+            "dragCx": 0.0001,
+            "length": 0.08,
+            "distFromCmToStab": 0.005,
+            "CxK": 16.0,
+            "WdK": [0.1,0.1,0.1],
+            "isChaff": true,
+            "force": 0.1,
+            "timeFire": 0.0,
+            "thrustDeviation": 0.01,
+            "explosionEffect": "",
+            "fireEffect": "",
+            "smokeEffect": "flare_fire",
+            "hazeFx": "",
+            "pylonFx": "",
+            "waterExplosionEffect": "water_splash",
+            "timeLife": 10.0,
+            "maxDistance": 1000.0,
+            "minDistance": 200.0,
+            "smokeShell": false,
+            "smokeFx": "",
+            "smokeShellRad": 10.0,
+            "smokeActivateTime": 5.0,
+            "smokeTime": 20.0,
+            "spawnExplosionWreckage": false,
+            "spawnExplosionFx": false,
+            "explosionOffset": 0.05,
+            "hitPowerMult": 1.0,
+            "nearHitPower": [1.0,50.0],
+            "midHitPower": [0.9,400.0],
+            "farHitPower": [0.1,1000.0],
+            "endHitPower": [0.01,1500.0],
+            "relativeVelHitShift": [300.0,1000.0],
+            "nearArmorPower": [3.0,50.0],
+            "midArmorPower": [2.0,400.0],
+            "farArmorPower": [0.2,700.0],
+            "relativeVelArmorShift": [200.0,1000.0],
+            "distanceFuse": false,
+            "rendinstDamageRadius": 0.1,
+            "advancedMissiles": false,
+            "useStartSpeed": true,
+            "startSpeed": 0.0,
+            "endSpeed": 0.0,
+            "speedViscosity": 0.2,
+            "timeToLive": 10.0,
+            "price": 300.0,
+            "stabilityRicochetModifier": [
+              {
+                "mod1": [0.0,0.05]
+              },
+              {
+                "mod2": [20.0,0.1]
+              },
+              {
+                "mod3": [30.0,0.2]
+              },
+              {
+                "mod3": [45.0,0.3]
+              }
+            ],
+            "radarVisibility": {
+              "band0": 0.075
+            }
+          }
+        }
+      },
+      {
+        "bullet": {
+          "mass": 0.09,
+          "sound_path": "sounds/guns",
+          "sound_pathStudio": "aircraft/weapon",
+          "sound": "flare_launcher_outside",
+          "sound_inside": "flare_launcher_inside",
+          "isBulletBelt": false,
+          "bulletType": "chff",
+          "helicopterGroup": 2,
+          "reloadTime": 8.0,
+          "allowHumanReload": true,
+          "bulletName": "chaffs_launcher",
+          "tags": {
+            "antiTankRocket": true,
+            "antiShipRocket": true
+          },
+          "rocket": {
+            "normalizationPreset": "default",
+            "ricochetPreset": "defaultExt",
+            "secondaryShattersPreset": "ap",
+            "stabilityThreshold": 0.05,
+            "stabilityCaliberToArmorThreshold": 5.0,
+            "stabilityReductionAfterRicochet": 0.5,
+            "stabilityReductionAfterPenetration": 0.15,
+            "bulletType": "flare",
+            "caliber": 0.026,
+            "mass": 0.09,
+            "massEnd": 0.04,
+            "maxDeltaAngle": 15.0,
+            "maxDeltaAngleVertical": 5.0,
+            "dragCx": 0.0001,
+            "length": 0.08,
+            "distFromCmToStab": 0.005,
+            "CxK": 16.0,
+            "WdK": [0.1,0.1,0.1],
+            "isChaff": true,
+            "force": 0.1,
+            "timeFire": 0.0,
+            "thrustDeviation": 0.01,
+            "explosionEffect": "",
+            "fireEffect": "",
+            "smokeEffect": "flare_fire",
+            "hazeFx": "",
+            "pylonFx": "",
+            "waterExplosionEffect": "water_splash",
+            "timeLife": 10.0,
+            "maxDistance": 1000.0,
+            "minDistance": 200.0,
+            "smokeShell": false,
+            "smokeFx": "",
+            "smokeShellRad": 10.0,
+            "smokeActivateTime": 5.0,
+            "smokeTime": 20.0,
+            "spawnExplosionWreckage": false,
+            "spawnExplosionFx": false,
+            "explosionOffset": 0.05,
+            "hitPowerMult": 1.0,
+            "nearHitPower": [1.0,50.0],
+            "midHitPower": [0.9,400.0],
+            "farHitPower": [0.1,1000.0],
+            "endHitPower": [0.01,1500.0],
+            "relativeVelHitShift": [300.0,1000.0],
+            "nearArmorPower": [3.0,50.0],
+            "midArmorPower": [2.0,400.0],
+            "farArmorPower": [0.2,700.0],
+            "relativeVelArmorShift": [200.0,1000.0],
+            "distanceFuse": false,
+            "rendinstDamageRadius": 0.1,
+            "advancedMissiles": false,
+            "useStartSpeed": true,
+            "startSpeed": 0.0,
+            "endSpeed": 0.0,
+            "speedViscosity": 0.2,
+            "timeToLive": 10.0,
+            "price": 300.0,
+            "stabilityRicochetModifier": [
+              {
+                "mod1": [0.0,0.05]
+              },
+              {
+                "mod2": [20.0,0.1]
+              },
+              {
+                "mod3": [30.0,0.2]
+              },
+              {
+                "mod3": [45.0,0.3]
+              }
+            ],
+            "radarVisibility": {
+              "band0": 0.075
+            }
+          }
+        }
+      },
+      {
+        "bullet": [
+          {
+            "cannon": true
+          },
+          {
+            "isBulletBelt": true
+          },
+          {
+            "mass": 0.09
+          },
+          {
+            "sound_path": "sounds/guns"
+          },
+          {
+            "sound_pathStudio": "aircraft/weapon"
+          },
+          {
+            "sound": "flare_launcher_outside"
+          },
+          {
+            "sound_inside": "flare_launcher_inside"
+          },
+          {
+            "isBulletBelt": false
+          },
+          {
+            "bulletType": "flr"
+          },
+          {
+            "helicopterGroup": 2
+          },
+          {
+            "reloadTime": 8.0
+          },
+          {
+            "allowHumanReload": true
+          },
+          {
+            "bulletName": "flare_launcher"
+          },
+          {
+            "tags": {
+              "antiTankRocket": true,
+              "antiShipRocket": true
+            }
+          },
+          {
+            "rocket": {
+              "normalizationPreset": "default",
+              "ricochetPreset": "defaultExt",
+              "secondaryShattersPreset": "ap",
+              "stabilityThreshold": 0.05,
+              "stabilityCaliberToArmorThreshold": 5.0,
+              "stabilityReductionAfterRicochet": 0.5,
+              "stabilityReductionAfterPenetration": 0.15,
+              "bulletType": "flare",
+              "caliber": 0.026,
+              "mass": 0.09,
+              "massEnd": 0.04,
+              "maxDeltaAngle": 15.0,
+              "maxDeltaAngleVertical": 5.0,
+              "dragCx": 0.0001,
+              "length": 0.08,
+              "distFromCmToStab": 0.005,
+              "CxK": 8.0,
+              "WdK": [0.1,0.1,0.1],
+              "isFlare": true,
+              "force": 0.1,
+              "timeFire": 4.4,
+              "thrustDeviation": 0.01,
+              "explosionEffect": "",
+              "fireEffect": "",
+              "smokeEffect": "flare_fire",
+              "hazeFx": "",
+              "pylonFx": "",
+              "waterExplosionEffect": "water_splash",
+              "timeLife": 4.4,
+              "maxDistance": 1000.0,
+              "minDistance": 200.0,
+              "smokeShell": false,
+              "smokeFx": "",
+              "smokeShellRad": 10.0,
+              "smokeActivateTime": 5.0,
+              "smokeTime": 20.0,
+              "spawnExplosionWreckage": false,
+              "spawnExplosionFx": false,
+              "explosionOffset": 0.05,
+              "hitPowerMult": 1.0,
+              "nearHitPower": [1.0,50.0],
+              "midHitPower": [0.9,400.0],
+              "farHitPower": [0.1,1000.0],
+              "endHitPower": [0.01,1500.0],
+              "relativeVelHitShift": [300.0,1000.0],
+              "nearArmorPower": [3.0,50.0],
+              "midArmorPower": [2.0,400.0],
+              "farArmorPower": [0.2,700.0],
+              "relativeVelArmorShift": [200.0,1000.0],
+              "distanceFuse": false,
+              "rendinstDamageRadius": 0.1,
+              "advancedMissiles": false,
+              "useStartSpeed": true,
+              "startSpeed": 70.0,
+              "endSpeed": 0.0,
+              "price": 300.0,
+              "stabilityRicochetModifier": [
+                {
+                  "mod1": [0.0,0.05]
+                },
+                {
+                  "mod2": [20.0,0.1]
+                },
+                {
+                  "mod3": [30.0,0.2]
+                },
+                {
+                  "mod3": [45.0,0.3]
+                }
+              ],
+              "infraRedVisibility": {
+                "band2": 1.0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "countermeasures_launcher_flare_priority": [
+      {
+        "bullet": [
+          {
+            "cannon": true
+          },
+          {
+            "isBulletBelt": true
+          },
+          {
+            "mass": 0.09
+          },
+          {
+            "sound_path": "sounds/guns"
+          },
+          {
+            "sound_pathStudio": "aircraft/weapon"
+          },
+          {
+            "sound": "flare_launcher_outside"
+          },
+          {
+            "sound_inside": "flare_launcher_inside"
+          },
+          {
+            "isBulletBelt": false
+          },
+          {
+            "bulletType": "flr"
+          },
+          {
+            "helicopterGroup": 2
+          },
+          {
+            "reloadTime": 8.0
+          },
+          {
+            "allowHumanReload": true
+          },
+          {
+            "bulletName": "flare_launcher"
+          },
+          {
+            "tags": {
+              "antiTankRocket": true,
+              "antiShipRocket": true
+            }
+          },
+          {
+            "rocket": {
+              "normalizationPreset": "default",
+              "ricochetPreset": "defaultExt",
+              "secondaryShattersPreset": "ap",
+              "stabilityThreshold": 0.05,
+              "stabilityCaliberToArmorThreshold": 5.0,
+              "stabilityReductionAfterRicochet": 0.5,
+              "stabilityReductionAfterPenetration": 0.15,
+              "bulletType": "flare",
+              "caliber": 0.026,
+              "mass": 0.09,
+              "massEnd": 0.04,
+              "maxDeltaAngle": 15.0,
+              "maxDeltaAngleVertical": 5.0,
+              "dragCx": 0.0001,
+              "length": 0.08,
+              "distFromCmToStab": 0.005,
+              "CxK": 8.0,
+              "WdK": [0.1,0.1,0.1],
+              "isFlare": true,
+              "force": 0.1,
+              "timeFire": 4.4,
+              "thrustDeviation": 0.01,
+              "explosionEffect": "",
+              "fireEffect": "",
+              "smokeEffect": "flare_fire",
+              "hazeFx": "",
+              "pylonFx": "",
+              "waterExplosionEffect": "water_splash",
+              "timeLife": 4.4,
+              "maxDistance": 1000.0,
+              "minDistance": 200.0,
+              "smokeShell": false,
+              "smokeFx": "",
+              "smokeShellRad": 10.0,
+              "smokeActivateTime": 5.0,
+              "smokeTime": 20.0,
+              "spawnExplosionWreckage": false,
+              "spawnExplosionFx": false,
+              "explosionOffset": 0.05,
+              "hitPowerMult": 1.0,
+              "nearHitPower": [1.0,50.0],
+              "midHitPower": [0.9,400.0],
+              "farHitPower": [0.1,1000.0],
+              "endHitPower": [0.01,1500.0],
+              "relativeVelHitShift": [300.0,1000.0],
+              "nearArmorPower": [3.0,50.0],
+              "midArmorPower": [2.0,400.0],
+              "farArmorPower": [0.2,700.0],
+              "relativeVelArmorShift": [200.0,1000.0],
+              "distanceFuse": false,
+              "rendinstDamageRadius": 0.1,
+              "advancedMissiles": false,
+              "useStartSpeed": true,
+              "startSpeed": 70.0,
+              "endSpeed": 0.0,
+              "price": 300.0,
+              "stabilityRicochetModifier": [
+                {
+                  "mod1": [0.0,0.05]
+                },
+                {
+                  "mod2": [20.0,0.1]
+                },
+                {
+                  "mod3": [30.0,0.2]
+                },
+                {
+                  "mod3": [45.0,0.3]
+                }
+              ],
+              "infraRedVisibility": {
+                "band2": 1.0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "bullet": [
+          {
+            "cannon": true
+          },
+          {
+            "isBulletBelt": true
+          },
+          {
+            "mass": 0.09
+          },
+          {
+            "sound_path": "sounds/guns"
+          },
+          {
+            "sound_pathStudio": "aircraft/weapon"
+          },
+          {
+            "sound": "flare_launcher_outside"
+          },
+          {
+            "sound_inside": "flare_launcher_inside"
+          },
+          {
+            "isBulletBelt": false
+          },
+          {
+            "bulletType": "flr"
+          },
+          {
+            "helicopterGroup": 2
+          },
+          {
+            "reloadTime": 8.0
+          },
+          {
+            "allowHumanReload": true
+          },
+          {
+            "bulletName": "flare_launcher"
+          },
+          {
+            "tags": {
+              "antiTankRocket": true,
+              "antiShipRocket": true
+            }
+          },
+          {
+            "rocket": {
+              "normalizationPreset": "default",
+              "ricochetPreset": "defaultExt",
+              "secondaryShattersPreset": "ap",
+              "stabilityThreshold": 0.05,
+              "stabilityCaliberToArmorThreshold": 5.0,
+              "stabilityReductionAfterRicochet": 0.5,
+              "stabilityReductionAfterPenetration": 0.15,
+              "bulletType": "flare",
+              "caliber": 0.026,
+              "mass": 0.09,
+              "massEnd": 0.04,
+              "maxDeltaAngle": 15.0,
+              "maxDeltaAngleVertical": 5.0,
+              "dragCx": 0.0001,
+              "length": 0.08,
+              "distFromCmToStab": 0.005,
+              "CxK": 8.0,
+              "WdK": [0.1,0.1,0.1],
+              "isFlare": true,
+              "force": 0.1,
+              "timeFire": 4.4,
+              "thrustDeviation": 0.01,
+              "explosionEffect": "",
+              "fireEffect": "",
+              "smokeEffect": "flare_fire",
+              "hazeFx": "",
+              "pylonFx": "",
+              "waterExplosionEffect": "water_splash",
+              "timeLife": 4.4,
+              "maxDistance": 1000.0,
+              "minDistance": 200.0,
+              "smokeShell": false,
+              "smokeFx": "",
+              "smokeShellRad": 10.0,
+              "smokeActivateTime": 5.0,
+              "smokeTime": 20.0,
+              "spawnExplosionWreckage": false,
+              "spawnExplosionFx": false,
+              "explosionOffset": 0.05,
+              "hitPowerMult": 1.0,
+              "nearHitPower": [1.0,50.0],
+              "midHitPower": [0.9,400.0],
+              "farHitPower": [0.1,1000.0],
+              "endHitPower": [0.01,1500.0],
+              "relativeVelHitShift": [300.0,1000.0],
+              "nearArmorPower": [3.0,50.0],
+              "midArmorPower": [2.0,400.0],
+              "farArmorPower": [0.2,700.0],
+              "relativeVelArmorShift": [200.0,1000.0],
+              "distanceFuse": false,
+              "rendinstDamageRadius": 0.1,
+              "advancedMissiles": false,
+              "useStartSpeed": true,
+              "startSpeed": 70.0,
+              "endSpeed": 0.0,
+              "price": 300.0,
+              "stabilityRicochetModifier": [
+                {
+                  "mod1": [0.0,0.05]
+                },
+                {
+                  "mod2": [20.0,0.1]
+                },
+                {
+                  "mod3": [30.0,0.2]
+                },
+                {
+                  "mod3": [45.0,0.3]
+                }
+              ],
+              "infraRedVisibility": {
+                "band2": 1.0
+              }
+            }
+          }
+        ]
+      },
+      {
+        "bullet": {
+          "mass": 0.09,
+          "sound_path": "sounds/guns",
+          "sound_pathStudio": "aircraft/weapon",
+          "sound": "flare_launcher_outside",
+          "sound_inside": "flare_launcher_inside",
+          "isBulletBelt": false,
+          "bulletType": "chff",
+          "helicopterGroup": 2,
+          "reloadTime": 8.0,
+          "allowHumanReload": true,
+          "bulletName": "chaffs_launcher",
+          "tags": {
+            "antiTankRocket": true,
+            "antiShipRocket": true
+          },
+          "rocket": {
+            "normalizationPreset": "default",
+            "ricochetPreset": "defaultExt",
+            "secondaryShattersPreset": "ap",
+            "stabilityThreshold": 0.05,
+            "stabilityCaliberToArmorThreshold": 5.0,
+            "stabilityReductionAfterRicochet": 0.5,
+            "stabilityReductionAfterPenetration": 0.15,
+            "bulletType": "flare",
+            "caliber": 0.026,
+            "mass": 0.09,
+            "massEnd": 0.04,
+            "maxDeltaAngle": 15.0,
+            "maxDeltaAngleVertical": 5.0,
+            "dragCx": 0.0001,
+            "length": 0.08,
+            "distFromCmToStab": 0.005,
+            "CxK": 16.0,
+            "WdK": [0.1,0.1,0.1],
+            "isChaff": true,
+            "force": 0.1,
+            "timeFire": 0.0,
+            "thrustDeviation": 0.01,
+            "explosionEffect": "",
+            "fireEffect": "",
+            "smokeEffect": "flare_fire",
+            "hazeFx": "",
+            "pylonFx": "",
+            "waterExplosionEffect": "water_splash",
+            "timeLife": 10.0,
+            "maxDistance": 1000.0,
+            "minDistance": 200.0,
+            "smokeShell": false,
+            "smokeFx": "",
+            "smokeShellRad": 10.0,
+            "smokeActivateTime": 5.0,
+            "smokeTime": 20.0,
+            "spawnExplosionWreckage": false,
+            "spawnExplosionFx": false,
+            "explosionOffset": 0.05,
+            "hitPowerMult": 1.0,
+            "nearHitPower": [1.0,50.0],
+            "midHitPower": [0.9,400.0],
+            "farHitPower": [0.1,1000.0],
+            "endHitPower": [0.01,1500.0],
+            "relativeVelHitShift": [300.0,1000.0],
+            "nearArmorPower": [3.0,50.0],
+            "midArmorPower": [2.0,400.0],
+            "farArmorPower": [0.2,700.0],
+            "relativeVelArmorShift": [200.0,1000.0],
+            "distanceFuse": false,
+            "rendinstDamageRadius": 0.1,
+            "advancedMissiles": false,
+            "useStartSpeed": true,
+            "startSpeed": 0.0,
+            "endSpeed": 0.0,
+            "speedViscosity": 0.2,
+            "timeToLive": 10.0,
+            "price": 300.0,
+            "stabilityRicochetModifier": [
+              {
+                "mod1": [0.0,0.05]
+              },
+              {
+                "mod2": [20.0,0.1]
+              },
+              {
+                "mod3": [30.0,0.2]
+              },
+              {
+                "mod3": [45.0,0.3]
+              }
+            ],
+            "radarVisibility": {
+              "band0": 0.075
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "countermeasures_launcher_flare_only": {
+      "bullet": [
+        {
+          "cannon": true
+        },
+        {
+          "isBulletBelt": true
+        },
+        {
+          "mass": 0.09
+        },
+        {
+          "sound_path": "sounds/guns"
+        },
+        {
+          "sound_pathStudio": "aircraft/weapon"
+        },
+        {
+          "sound": "flare_launcher_outside"
+        },
+        {
+          "sound_inside": "flare_launcher_inside"
+        },
+        {
+          "isBulletBelt": false
+        },
+        {
+          "bulletType": "flr"
+        },
+        {
+          "helicopterGroup": 2
+        },
+        {
+          "reloadTime": 8.0
+        },
+        {
+          "allowHumanReload": true
+        },
+        {
+          "bulletName": "flare_launcher"
+        },
+        {
+          "tags": {
+            "antiTankRocket": true,
+            "antiShipRocket": true
+          }
+        },
+        {
+          "rocket": {
+            "normalizationPreset": "default",
+            "ricochetPreset": "defaultExt",
+            "secondaryShattersPreset": "ap",
+            "stabilityThreshold": 0.05,
+            "stabilityCaliberToArmorThreshold": 5.0,
+            "stabilityReductionAfterRicochet": 0.5,
+            "stabilityReductionAfterPenetration": 0.15,
+            "bulletType": "flare",
+            "caliber": 0.026,
+            "mass": 0.09,
+            "massEnd": 0.04,
+            "maxDeltaAngle": 15.0,
+            "maxDeltaAngleVertical": 5.0,
+            "dragCx": 0.0001,
+            "length": 0.08,
+            "distFromCmToStab": 0.005,
+            "CxK": 8.0,
+            "WdK": [0.1,0.1,0.1],
+            "isFlare": true,
+            "force": 0.1,
+            "timeFire": 4.4,
+            "thrustDeviation": 0.01,
+            "explosionEffect": "",
+            "fireEffect": "",
+            "smokeEffect": "flare_fire",
+            "hazeFx": "",
+            "pylonFx": "",
+            "waterExplosionEffect": "water_splash",
+            "timeLife": 4.4,
+            "maxDistance": 1000.0,
+            "minDistance": 200.0,
+            "smokeShell": false,
+            "smokeFx": "",
+            "smokeShellRad": 10.0,
+            "smokeActivateTime": 5.0,
+            "smokeTime": 20.0,
+            "spawnExplosionWreckage": false,
+            "spawnExplosionFx": false,
+            "explosionOffset": 0.05,
+            "hitPowerMult": 1.0,
+            "nearHitPower": [1.0,50.0],
+            "midHitPower": [0.9,400.0],
+            "farHitPower": [0.1,1000.0],
+            "endHitPower": [0.01,1500.0],
+            "relativeVelHitShift": [300.0,1000.0],
+            "nearArmorPower": [3.0,50.0],
+            "midArmorPower": [2.0,400.0],
+            "farArmorPower": [0.2,700.0],
+            "relativeVelArmorShift": [200.0,1000.0],
+            "distanceFuse": false,
+            "rendinstDamageRadius": 0.1,
+            "advancedMissiles": false,
+            "useStartSpeed": true,
+            "startSpeed": 70.0,
+            "endSpeed": 0.0,
+            "price": 300.0,
+            "stabilityRicochetModifier": [
+              {
+                "mod1": [0.0,0.05]
+              },
+              {
+                "mod2": [20.0,0.1]
+              },
+              {
+                "mod3": [30.0,0.2]
+              },
+              {
+                "mod3": [45.0,0.3]
+              }
+            ],
+            "infraRedVisibility": {
+              "band2": 1.0
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "countermeasures_launcher_chaff_only": {
+      "bullet": {
+        "mass": 0.09,
+        "sound_path": "sounds/guns",
+        "sound_pathStudio": "aircraft/weapon",
+        "sound": "flare_launcher_outside",
+        "sound_inside": "flare_launcher_inside",
+        "isBulletBelt": false,
+        "bulletType": "chff",
+        "helicopterGroup": 2,
+        "reloadTime": 8.0,
+        "allowHumanReload": true,
+        "bulletName": "chaffs_launcher",
+        "tags": {
+          "antiTankRocket": true,
+          "antiShipRocket": true
+        },
+        "rocket": {
+          "normalizationPreset": "default",
+          "ricochetPreset": "defaultExt",
+          "secondaryShattersPreset": "ap",
+          "stabilityThreshold": 0.05,
+          "stabilityCaliberToArmorThreshold": 5.0,
+          "stabilityReductionAfterRicochet": 0.5,
+          "stabilityReductionAfterPenetration": 0.15,
+          "bulletType": "flare",
+          "caliber": 0.026,
+          "mass": 0.09,
+          "massEnd": 0.04,
+          "maxDeltaAngle": 15.0,
+          "maxDeltaAngleVertical": 5.0,
+          "dragCx": 0.0001,
+          "length": 0.08,
+          "distFromCmToStab": 0.005,
+          "CxK": 16.0,
+          "WdK": [0.1,0.1,0.1],
+          "isChaff": true,
+          "force": 0.1,
+          "timeFire": 0.0,
+          "thrustDeviation": 0.01,
+          "explosionEffect": "",
+          "fireEffect": "",
+          "smokeEffect": "flare_fire",
+          "hazeFx": "",
+          "pylonFx": "",
+          "waterExplosionEffect": "water_splash",
+          "timeLife": 10.0,
+          "maxDistance": 1000.0,
+          "minDistance": 200.0,
+          "smokeShell": false,
+          "smokeFx": "",
+          "smokeShellRad": 10.0,
+          "smokeActivateTime": 5.0,
+          "smokeTime": 20.0,
+          "spawnExplosionWreckage": false,
+          "spawnExplosionFx": false,
+          "explosionOffset": 0.05,
+          "hitPowerMult": 1.0,
+          "nearHitPower": [1.0,50.0],
+          "midHitPower": [0.9,400.0],
+          "farHitPower": [0.1,1000.0],
+          "endHitPower": [0.01,1500.0],
+          "relativeVelHitShift": [300.0,1000.0],
+          "nearArmorPower": [3.0,50.0],
+          "midArmorPower": [2.0,400.0],
+          "farArmorPower": [0.2,700.0],
+          "relativeVelArmorShift": [200.0,1000.0],
+          "distanceFuse": false,
+          "rendinstDamageRadius": 0.1,
+          "advancedMissiles": false,
+          "useStartSpeed": true,
+          "startSpeed": 0.0,
+          "endSpeed": 0.0,
+          "speedViscosity": 0.2,
+          "timeToLive": 10.0,
+          "price": 300.0,
+          "stabilityRicochetModifier": [
+            {
+              "mod1": [0.0,0.05]
+            },
+            {
+              "mod2": [20.0,0.1]
+            },
+            {
+              "mod3": [30.0,0.2]
+            },
+            {
+              "mod3": [45.0,0.3]
+            }
+          ],
+          "radarVisibility": {
+            "band0": 0.075
+          }
+        }
+      }
+    }
+  }
+]

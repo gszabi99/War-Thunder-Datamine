@@ -1,3 +1,5 @@
+local { WW_LOG_BATTLE_TOOLTIP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
+
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 
 class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
@@ -224,7 +226,7 @@ class ::gui_handlers.WwOperationLog extends ::gui_handlers.BaseGuiHandlerWT
         status = wwBattleView.getStatus(),
         battleId = wwBattleView.getId() })
 
-    local tooltipId = ::g_tooltip_type.WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
+    local tooltipId = WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
       {currentId = wwBattleView.getId()})
     local tooltipObj = bodyObj.findObject("battle_icon_tooltip")
     if (::check_obj(tooltipObj))

@@ -350,7 +350,8 @@ class ::BaseItem
     local bigPicture = ::getTblValue("bigPicture", params, false)
     local addItemName = ::getTblValue("addItemName", params, true)
     local res = {
-      layered_image = openedPicture? (bigPicture? getOpenedBigIcon() : getOpenedIcon()) : bigPicture? getBigIcon() : getIcon(addItemName)
+      layered_image = params?.overrideLayeredImage
+        ?? (openedPicture? (bigPicture? getOpenedBigIcon() : getOpenedIcon()) : bigPicture? getBigIcon() : getIcon(addItemName))
       enableBackground = ::getTblValue("enableBackground", params, true)
     }
 

@@ -164,6 +164,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_poland_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_japan_01_c*",
           "to": "flag_japan_01_c_tomoe*"
         }
@@ -1596,48 +1602,96 @@
   {
     "MetaParts": [
       {
-        "cover": {
-          "part": "compartment_01_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 274.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_01_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 274.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 700.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_02_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 274.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_02_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 274.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 700.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "cover": {
-          "part": "compartment_03_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 274.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "cover": [
+          {
+            "part": "compartment_03_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 274.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 700.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       },
       {
-        "bridge": {
-          "part": "bridge_dm",
-          "effect": {
-            "conditionDamageType": "explosion",
-            "conditionDamage": 274.0,
-            "kill": true,
-            "killEffect": "destruction"
+        "bridge": [
+          {
+            "part": "bridge_dm"
+          },
+          {
+            "effect": {
+              "conditionDamageType": "explosion",
+              "conditionDamage": 274.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
+          },
+          {
+            "effect": {
+              "conditionDamageType": "generic",
+              "conditionDamage": 700.0,
+              "kill": true,
+              "killEffect": "destruction"
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -3019,37 +3073,6 @@
     ]
   },
   {
-    "defaultDecals": {
-      "decal0Line0": [-0.391669,0.0677736,0.0677736,3.61336],
-      "decal0Line1": [-0.191693,-0.553903,-0.553903,3.49998],
-      "decal0HaveCP": true,
-      "decal0CP": [128.384,0.973654,2251.54],
-      "decal0CPNormDepth": [0.0,-0.707107,0.707107,-0.401962],
-      "decal0RotScale": [1.3308,1.24],
-      "decal0Mirrored": false,
-      "decal0Wrap": false,
-      "decal0Abs": true,
-      "decal0OppositeMirrored": false,
-      "decal0SymmetryPlaneZ": 0.0,
-      "decal0Tex": "822",
-      "decal1Line0": [-0.625,-2.73196e-08,0.0,-5.17431],
-      "decal1Line1": [1.09278e-07,-2.5,0.0,3.84503],
-      "decal1HaveCP": true,
-      "decal1CP": [110.921,1.34509,2253.04],
-      "decal1CPNormDepth": [0.0,0.0,1.0,-3.04028],
-      "decal1RotScale": [1.5708,0.4],
-      "decal1Mirrored": false,
-      "decal1Wrap": false,
-      "decal1Abs": true,
-      "decal1OppositeMirrored": false,
-      "decal1SymmetryPlaneZ": 0.0,
-      "decal1Tex": "pg02",
-      "camo_scale": 0.0,
-      "camo_rotation": 0.0,
-      "skin_condition": 0.0
-    }
-  },
-  {
     "user_skin": [
       {
         "name": "pg02"
@@ -3072,5 +3095,15 @@
         }
       }
     ]
+  },
+  {
+    "default_skin": {
+      "name": "default",
+      "set_tex": {
+        "from": "pg02_c*",
+        "to": "pg02_822_skin_c*",
+        "param": "camo_skin_tex"
+      }
+    }
   }
 ]

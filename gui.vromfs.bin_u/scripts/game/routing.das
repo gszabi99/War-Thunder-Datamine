@@ -27,7 +27,7 @@ def route_init(evt : Event;
     let wayPointName = string(route_dot_wayPointsNames[i])
     find_query() <| $ [es](way_point_dot_name : string; eid : EntityId)
       if wayPointName == way_point_dot_name
-        push_back(route_dot_wayPoints, eid)
+        push(route_dot_wayPoints, eid)
       return wayPointName == way_point_dot_name
 
 def set_next_way_point(wpEid, unitEid : EntityId; uid : int)

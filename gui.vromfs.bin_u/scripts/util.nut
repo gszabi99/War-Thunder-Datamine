@@ -8,6 +8,8 @@ local stdMath = require("std/math.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
+local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 ::allowingMultCountry <- [1.5, 2, 2.5, 3, 4, 5]
@@ -289,15 +291,6 @@ foreach (i, v in ::cssColorsMapDark)
   require("scripts/chat/mpChatModel.nut").init()
 }
 
-
-::have_active_bonuses_by_effect_type <- function have_active_bonuses_by_effect_type(effectType, personal = false)
-{
-  return ::ItemsManager.hasActiveBoosters(effectType, personal)
-    || (personal
-        && (::get_cyber_cafe_bonus_by_effect_type(effectType) > 0.0
-            || ::get_squad_bonus_for_same_cyber_cafe(effectType)))
-}
-
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1)
 {
   if (num < 0)
@@ -324,13 +317,13 @@ foreach (i, v in ::cssColorsMapDark)
   if (havePremium)
   {
     local rate = ""
-    if (effectType == ::BoosterEffectType.WP)
+    if (effectType == boosterEffectType.WP)
     {
       local blk = ::get_warpoints_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.wpMultiplier ?? 1.0) - 1.0)
       rate = ::getWpPriceText(::colorize("activeTextColor", rate), true)
     }
-    else if (effectType == ::BoosterEffectType.RP)
+    else if (effectType == boosterEffectType.RP)
     {
       local blk = ::get_ranks_blk()
       rate = "+" + ::g_measure_type.PERCENT_FLOAT.getMeasureUnitsText((blk?.xpMultiplier ?? 1.0) - 1.0)
@@ -355,8 +348,8 @@ foreach (i, v in ::cssColorsMapDark)
     tooltipText.append(::loc("item/FakeBoosterForNetCafeLevel/squad", {num = ::g_squad_manager.getSameCyberCafeMembersNum()}) + ::loc("ui/colon") + value)
   }
 
-  local boostersArray = ::ItemsManager.getActiveBoostersArray(effectType)
-  local boostersDescription = ::ItemsManager.getActiveBoostersDescription(boostersArray, effectType)
+  local boostersArray = getActiveBoostersArray(effectType)
+  local boostersDescription = getActiveBoostersDescription(boostersArray, effectType)
   if (boostersDescription != "")
     tooltipText.append((havePremium? "\n" : "") + boostersDescription)
 

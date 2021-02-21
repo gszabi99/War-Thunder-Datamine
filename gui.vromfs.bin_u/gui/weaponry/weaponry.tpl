@@ -15,6 +15,9 @@ modificationsBlock {
   //on_select:t = 'updateDependingButtons';
   //on_click:t='onAircraftClick'
   on_activate:t='onWeaponryActivate'
+  on_pushed:t='::gcb.delayedTooltipListPush'
+  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
 
   <<@weaponryList>>
 }

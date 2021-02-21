@@ -160,27 +160,6 @@ root {
     navBar {
       navLeft{
         Button_text {
-          id:t='cluster_select_button'
-          width:t='1@bigButtonWidth'
-          on_click:t='onOpenClusterSelect'
-          btnName:t='X'
-          refuseOpenHoverMenu:t='no'
-          display:t='hide'
-          enable:t='no'
-
-          textarea {
-            id:t='cluster_select_button_text'
-            text:t='#options/cluster'
-            height:t='ph'
-            width:t='pw'
-            pare-text:t='yes'
-            input-transparent:t='yes'
-            class:t='buttonText'
-          }
-          ButtonImg {}
-        }
-
-        Button_text {
           id:t='invite_squads_button'
           text:t='#worldwar/inviteSquads'
           on_click:t='onOpenSquadsListModal'

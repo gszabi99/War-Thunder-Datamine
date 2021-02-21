@@ -1,3 +1,5 @@
+local { memoize } = require("std/functools.nut")
+
 local function getNearestSelectableChildIndex(listObj, curIndex, way)
 {
   if (!check_obj(listObj))
@@ -44,10 +46,28 @@ local function markObjShortcutOnHover(obj, isByHover) {
   obj["shortcut-on-hover"] = isByHover ? "yes" : "no"
 }
 
+local centeringStrToArray = memoize(function(str) {
+  local list = str.split(",")
+  if (list.len() != 2)
+    return [0.5, 0.5]
+  return list.map(@(v) v.tofloat() * 0.01)
+})
+
+local getObjCentering = @(obj) centeringStrToArray(obj.getFinalProp("mouse-pointer-centering") ?? "")
+
+local function getObjCenteringPosRC(obj) {
+  local pos = obj.getPosRC()
+  local size = obj.getSize()
+  return getObjCentering(obj).map(@(pointerMul, a) (pos[a] + pointerMul * size[a]).tointeger())
+}
+
 return {
-  isObjHaveActiveChilds = isObjHaveActiveChilds
-  getNearestSelectableChildIndex = getNearestSelectableChildIndex
-  markChildrenInteractive = markChildrenInteractive
-  markInteractive = markInteractive
-  markObjShortcutOnHover = markObjShortcutOnHover
+  isObjHaveActiveChilds
+  getNearestSelectableChildIndex
+  markChildrenInteractive
+  markInteractive
+  markObjShortcutOnHover
+  centeringStrToArray
+  getObjCentering
+  getObjCenteringPosRC
 }

@@ -1,6 +1,7 @@
 <<#hasFullGroupBlock>>
 id:t='<<fullGroupBlockId>>'
 group:t='yes'
+<<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
 
 <<#position>>
 position:t='<<position>>'
@@ -19,6 +20,12 @@ shopItem {
   timer_interval_msec:t='1000'
   group:t='yes'
   primaryUnitId:t='<<primaryUnitId>>'
+
+  <<#isTooltipByHold>>
+  tooltipId:t='<<tooltipId>>'
+  on_hover:t='::gcb.delayedTooltipHover'
+  on_unhover:t='::gcb.delayedTooltipHover'
+  <</isTooltipByHold>>
 
   <<#showInService>>
   shopInServiceImg {
@@ -149,6 +156,7 @@ shopItem {
   }
   <</bonusId>>
 
+  <<^isTooltipByHold>>
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'
@@ -158,6 +166,7 @@ shopItem {
 
   tooltip-float:t='horizontal'
   title:t='$tooltipObj'
+  <</isTooltipByHold>>
 
   focus_border {}
 

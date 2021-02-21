@@ -181,6 +181,7 @@ class ::gui_handlers.researchUnitNotification extends ::gui_handlers.BaseGuiHand
 
     local unit_blk = ::build_aircraft_item(unit.name, unit)
     guiScene.replaceContentFromText(placeObj, unit_blk, unit_blk.len(), this)
+    placeObj.tooltipId = ::g_tooltip.getIdUnit(unit.name)
     ::fill_unit_item_timers(placeObj.findObject(unit.name), unit)
   }
 

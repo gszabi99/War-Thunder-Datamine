@@ -1,6 +1,10 @@
-local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { getModificationByName, getModificationBulletsGroup
+} = require("scripts/weaponry/modificationInfo.nut")
+
+local isModificationInTree = @(unit, mod) !mod.isHidden
+  && !::wp_get_modification_cost_gold(unit.name, mod.name)
+  && getModificationBulletsGroup(mod.name) == ""
 
 local modsTree = {
   tree = null
@@ -412,6 +416,7 @@ return {
   generateModsTree    = @(air) modsTree.generateTree(air)
   generateModsBgElems = @(air) modsTree.generateBlocksAndArrows(air)
   getModsTreeSize     = @(air) modsTree.getTreeSize(air)
+  isModificationInTree
 
   debugTree           = @(branch=null, addStr="DD: ") modsTree.debugTree(branch, addStr)
 }

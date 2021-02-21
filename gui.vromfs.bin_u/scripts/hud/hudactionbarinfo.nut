@@ -1,4 +1,4 @@
-local { getWeaponDescTextByTriggerGroup } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponDescTextByTriggerGroup } = require("scripts/weaponry/weaponryDescription.nut")
 local cachedUnitId = ""
 local cache = {}
 

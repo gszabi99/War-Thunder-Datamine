@@ -146,8 +146,7 @@ class ::gui_handlers.TopMenuButtonsHandler extends ::gui_handlers.BaseGuiHandler
     local hover = obj.findObject(obj.id+"_list_hover")
     if (::check_obj(hover)) {
       local menu = obj.findObject(obj.id+"_focus")
-      if (menu.getSize()[1] < 0)
-        menu.getScene().applyPendingChanges(true)
+      menu.getScene().applyPendingChanges(true)
       hover["height-end"] = menu.getSize()[1] + guiScene.calcString("@dropDownMenuBottomActivityGap", null)
     }
 

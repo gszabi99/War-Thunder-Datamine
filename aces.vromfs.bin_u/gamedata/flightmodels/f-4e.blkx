@@ -2939,15 +2939,27 @@
         }
       },
       {
-        "multifunctionDisplays": {
-          "display": {
-            "textureArea": [0.0,0.5,0.5,1.0],
-            "page": {
-              "type": "radar",
-              "radarScale": 0.67
+        "multifunctionDisplays": [
+          {
+            "display": {
+              "textureArea": [0.0,0.5,0.5,1.0],
+              "page": {
+                "type": "radar",
+                "radarScale": 0.67
+              }
+            }
+          },
+          {
+            "display": {
+              "textureArea": [0.0,0.0,0.5,0.5],
+              "page": {
+                "type": "plane_ils",
+                "ilsNode": "collimator_glass",
+                "ilsSize": [0.112,0.103]
+              }
             }
           }
-        }
+        ]
       },
       {
         "parts_holes_dmg": {
@@ -4825,83 +4837,7 @@
         "tier": 3,
         "modClass": "weapon"
       },
-      "aircrafts_false_thermal_targets": {
-        "turn_it_off": false,
-        "invertEnableLogic": false,
-        "group": "mi-24_EVU",
-        "tier": 1,
-        "effects": {
-          "commonWeapons": [
-            {
-              "hideNodes": [
-                {
-                  "node": "pylon_l_in"
-                },
-                {
-                  "node": "pylon_r_in"
-                }
-              ]
-            },
-            {
-              "Weapon": {
-                "trigger": "cannon",
-                "blk": "gameData/Weapons/cannonM61.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
-                "dm": "cannon4_dm",
-                "bullets": 640,
-                "spread": 1.0
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "flares",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "flares",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 30,
-                "external": true,
-                "separate": false
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "flares",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 15,
-                "external": true,
-                "separate": false
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "flares",
-                "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 15,
-                "external": true,
-                "separate": false
-              }
-            }
-          ]
-        }
-      },
       "us_aim_9e": {
-        "prevModification": "aircrafts_false_thermal_targets",
         "tier": 2,
         "modClass": "weapon"
       },

@@ -73,17 +73,17 @@ local function showUnitSkin(unitId, skinId = null, isForApprove = false)
   return true
 }
 
-local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUnitId = null)
+local function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null)
 {
   local unit = null
   if (forcedUnitId)
   {
     unit = ::getAircraftByName(forcedUnitId)
-    return decoratorType.isAvailable(unit, false) ? unit : null
+    return isAvailableFn(unit, false) ? unit : null
   }
 
   unit = ::get_player_cur_unit()
-  if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
+  if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
     return unit
 
   local countryId = ::get_profile_country_sq()
@@ -93,7 +93,7 @@ local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUn
     if ((crew?.aircraft ?? "") != "")
     {
       unit = ::getAircraftByName(crew.aircraft)
-      if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
+      if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
     }
 
@@ -101,13 +101,13 @@ local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUn
     for (local i = crew.trained.len() - 1; i >= 0; i--)
     {
       unit = ::getAircraftByName(crew.trained[i])
-      if (decoratorType.isAvailable(unit, false) && decorator.isAllowedByUnitTypes(unit.unitType.tag))
+      if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
         return unit
     }
 
   local allowedUnitType = ::ES_UNIT_TYPE_TANK
   foreach (unitType in unitTypes.types) {
-    if (decorator.isAllowedByUnitTypes(unitType.tag)) {
+    if (isAllowedByUnitTypesFn(unitType.tag)) {
       allowedUnitType = unitType.esUnitType
       break
     }
@@ -118,7 +118,7 @@ local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUn
     unitType = allowedUnitType
     ignoreSlotbarCheck = true
   }))
-  if (decoratorType.isAvailable(unit, false))
+  if (isAvailableFn(unit, false))
     return unit
 
   unit = ::getAircraftByName(::getReserveAircraftName({
@@ -126,7 +126,7 @@ local function getBestUnitForDecoratorPreview(decorator, decoratorType, forcedUn
     unitType = allowedUnitType
     ignoreSlotbarCheck = true
   }))
-  if (decoratorType.isAvailable(unit, false))
+  if (isAvailableFn(unit, false))
     return unit
 
   return null
@@ -151,7 +151,8 @@ local function showUnitDecorator(unitId, resource, resourceType)
   if (!decorator)
     return false
 
-  local unit = getBestUnitForDecoratorPreview(decorator, decoratorType, unitId)
+  local unit = getBestUnitForPreview(@(unitType) decorator.isAllowedByUnitTypes(unitType),
+    @(unit, checkUnitUsable = true) decoratorType.isAvailable(unit, checkUnitUsable), unitId)
   if (!unit)
     return false
 
@@ -382,6 +383,7 @@ return {
   showUnitSkin = showUnitSkin
   showResource = showResource
   canStartPreviewScene = canStartPreviewScene
+  getBestUnitForPreview
   getDecoratorDataToUse
   useDecorator
 }

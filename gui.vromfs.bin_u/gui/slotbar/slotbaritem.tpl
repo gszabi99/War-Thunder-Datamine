@@ -31,11 +31,16 @@ massTransp {
         behaviour:t='<<#slotbarBehavior>><<slotbarBehavior>><</slotbarBehavior>><<^slotbarBehavior>>ActivateSelect<</slotbarBehavior>>'
         navigatorShortcuts:t='yes'
         activateChoosenItemByShortcut:t='yes'
+        alwaysShowBorder:t='<<alwaysShowBorder>>'
+
         on_select:t = 'onSlotbarSelect'
         _on_activate:t='onSlotbarActivate'
         _on_r_click:t='onSlotbarActivate'
         _on_dbl_click:t = 'onSlotbarDblClick'
-        alwaysShowBorder:t='<<alwaysShowBorder>>'
+
+        on_pushed:t='::gcb.delayedTooltipListPush'
+        on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+        on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
       }
     }
   }

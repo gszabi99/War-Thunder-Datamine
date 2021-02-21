@@ -27,6 +27,8 @@
   "saclosMissileTreesTransparencyTreshold": 0.5,
   "saclosMissileClientOnlyMoveCompensation": false,
   "guidedMissileAutopilotVelFrameReference": true,
+  "resyncGuidedMissilesOnClient": true,
+  "seekerPostArretTimeOut": 0.5,
   "minFreeCrewIntegrity": -1.0,
   "ai": {
     "outerSphereMul": 3.0,
@@ -3095,8 +3097,15 @@
     "ricochetCosinePower": 2.0
   },
   "instructor": {
+    "minOnGroundSpeed": 0.1,
     "pitchPropCoeffBase": 0.12,
-    "pitchDerrCoeffBase": 5.0
+    "pitchDerrCoeffBase": 5.0,
+    "ailDegToPredict": 14.0,
+    "elevonDegToPredict": 10.0,
+    "maxCvtAngle": 1.5,
+    "instructorSmoothness": 0.29,
+    "instructorAlphaPrediction": 5.0,
+    "instructorCritAngleK": 0.2
   },
   "mouseAim": {
     "mouseAimDisableControlTreshold": 0.8,

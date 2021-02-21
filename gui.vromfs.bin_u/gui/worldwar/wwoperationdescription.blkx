@@ -78,10 +78,7 @@
         {
           "tdiv": [
             {
-              "size": "pw, 35%fh"
-            },
-            {
-              "min-height": "@wwOperationClanListMinHeight"
+              "width": "pw"
             },
             {
               "margin-bottom": "@blockInterval"
@@ -127,10 +124,7 @@
         {
           "tdiv": [
             {
-              "size": "pw, 65%fh"
-            },
-            {
-              "min-height": "1@wwOperationDescSideStrenghtHeight"
+              "size": "pw, fh"
             },
             {
               "margin-bottom": "1@sf/@pf_outdated"
@@ -208,62 +202,18 @@
       ]
     },
     {
-      "tdiv": [
-        {
-          "id": "operation_create_block"
-        },
-        {
-          "width": "pw"
-        },
-        {
-          "margin-left": "1@blockInterval"
-        },
-        {
-          "Button_text": {
-            "id": "btn_back",
-            "text": "#mainmenu/btnBack",
-            "btnName": "B",
-            "_on_click": "goBack",
-            "ButtonImg": []
-          }
-        },
-        {
-          "tdiv": {
-            "width": "fw"
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_collapsed_chapter",
-            "text": "",
-            "btnName": "A",
-            "display": "hide",
-            "enable": "no",
-            "_on_click": "onCollapsedChapter",
-            "ButtonImg": []
-          }
-        },
-        {
-          "Button_text": {
-            "id": "btn_create_operation",
-            "class": "battle",
-            "text": "#worldwar/btnCreateOperation",
-            "navButtonFont": "yes",
-            "btnName": "Y",
-            "hasConsoleImage": "yes",
-            "_on_click": "onCreateOperation",
-            "pattern": [],
-            "buttonWink": {
-              "_transp-timer": "0"
-            },
-            "buttonGlance": [],
-            "ButtonImg": [],
-            "btnText": {
-              "text": "#worldwar/btnCreateOperation"
-            }
-          }
+      "tdiv": {
+        "width": "pw",
+        "Button_text": {
+          "id": "btn_collapsed_chapter",
+          "text": "",
+          "btnName": "A",
+          "display": "hide",
+          "enable": "no",
+          "_on_click": "onCollapsedChapter",
+          "ButtonImg": []
         }
-      ]
+      }
     },
     {
       "tdiv": [

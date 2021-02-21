@@ -3,9 +3,23 @@ tdiv {
   width:t='pw'
   margin:t='0, 1@slot_vert_pad'
 
+  behavior:t='posNavigator'
+  navigatorShortcuts:t='yes'
+  <<#isTooltipByHold>>
+  on_pushed:t='::gcb.delayedTooltipListPush'
+  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+  <</isTooltipByHold>>
+
   tdiv {
     pos:t='0, 50%ph-50%h'; position:t='relative'
     size:t='2@modItemHeight, 1@modItemHeight'
+    total-input-transparent:t='yes'
+    <<#isTooltipByHold>>
+    tooltipId:t='<<unitTooltipId>>'
+    on_hover:t='::gcb.delayedTooltipHover'
+    on_unhover:t='::gcb.delayedTooltipHover'
+    <</isTooltipByHold>>
 
     img {
       height:t='1@slot_height -2@slot_vert_pad -2'
@@ -26,6 +40,7 @@ tdiv {
       text:t='<<unitName>>'
     }
 
+    <<^isTooltipByHold>>
     title:t='$tooltipObj'
     tooltipObj {
       tooltipId:t='<<unitTooltipId>>'
@@ -33,10 +48,17 @@ tdiv {
       on_tooltip_close:t='onTooltipObjClose'
       display:t='hide'
     }
+    <</isTooltipByHold>>
   }
 
   tdiv {
     size:t='fw, 1@modItemHeight'
+    <<#isTooltipByHold>>
+    tooltipId:t='<<modTooltipId>>'
+    on_hover:t='::gcb.delayedTooltipHover'
+    on_unhover:t='::gcb.delayedTooltipHover'
+    <</isTooltipByHold>>
+
 
     <<#hasModItem>>
     weaponry_item {
@@ -47,7 +69,7 @@ tdiv {
       equipped:t='<<optEquipped>>'
       status:t= '<<optStatus>>'
 
-      weaponBody{
+      weaponBody {
         id:t='centralBlock'
         size:t='1@modItemHeight, 1@modItemHeight'
         position:t='relative'
@@ -133,6 +155,7 @@ tdiv {
         <</isCompleted>>
       }
 
+      <<^isTooltipByHold>>
       title:t='$tooltipObj'
       tooltipObj {
         tooltipId:t='<<modTooltipId>>'
@@ -140,6 +163,7 @@ tdiv {
         on_tooltip_close:t='onTooltipObjClose'
         display:t='hide'
       }
+      <</isTooltipByHold>>
 
       hoverHighlight {}
     }

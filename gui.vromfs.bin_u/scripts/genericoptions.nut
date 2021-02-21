@@ -1,6 +1,5 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 
 class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -57,7 +56,6 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
     checkMissionCountries()
     checkAllowedUnitTypes()
     checkBotsOption()
-    updateTripleAerobaticsSmokeOptions()
   }
 
   function applyReturn()
@@ -78,7 +76,8 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 
       foreach(idx, option in container.data)
       {
-        if(option.controlType == optionControlType.HEADER)
+        if(option.controlType == optionControlType.HEADER ||
+           option.controlType == optionControlType.BUTTON)
           continue
 
         local obj = getObj(option.id)
@@ -215,33 +214,6 @@ class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     enableOptionRow(opt, !::checkIsInQueue())
-  }
-
-  function onTripleAerobaticsSmokeSelected(obj)
-  {
-    local option = get_option_by_id(obj?.id)
-    if (!option) return
-
-    ::set_option(option.type, obj.getValue(), option)
-    updateTripleAerobaticsSmokeOptions();
-  }
-
-  function updateTripleAerobaticsSmokeOptions()
-  {
-    local aerobaticsSmokeOptions = find_options_in_containers([
-      ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
-      ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
-      ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
-    ])
-
-    if (!aerobaticsSmokeOptions.len())
-      return
-
-    local curHeaderOptions = getOptionsListForCurrentHeader()
-    local show = isTripleColorSmokeAvailable()
-    foreach(option in aerobaticsSmokeOptions) {
-      showOptionRow(option, show && curHeaderOptions.contains(option.type))
-    }
   }
 
   function getOptionObj(option) {
@@ -790,28 +762,6 @@ class ::gui_handlers.GenericOptionsModal extends ::gui_handlers.GenericOptions
         return
       }
     }
-  }
-
-  function getOptionsListForCurrentHeader() {
-    local curNavItem = navigationHandlerWeak?.getCurrentItem()
-    if (!curNavItem)
-      return []
-
-    local activeOptionsList = getCurrentOptionsList()
-    local isReqBlock = false
-
-    local res = []
-    foreach (opt in activeOptionsList) {
-      if (opt.controlType == optionControlType.HEADER) {
-        isReqBlock = opt.id == curNavItem.id
-        continue
-      }
-
-      if (isReqBlock)
-        res.append(opt.type)
-    }
-
-    return res
   }
 
   function getSelectedOption()

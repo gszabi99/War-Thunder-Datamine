@@ -6,6 +6,9 @@ local { isPlatformSony,
         isPlatformXboxOne,
         isPlatformPC } = require("scripts/clientState/platform.nut")
 local psnUser = require("sony.user");
+local { isLoadingBgUnlock,
+        getLoadingBgName,
+        getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -994,6 +997,8 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       return res
 
     case ::UNLOCKABLE_AWARD:
+      if (isLoadingBgUnlock(id))
+        return getLoadingBgName(getLoadingBgIdByUnlockId(id))
       return ::loc("award/"+id)
 
     case ::UNLOCKABLE_ENTITLEMENT:
@@ -1045,6 +1050,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
 
   if (id && ::g_battle_tasks.isBattleTask(id))
     return ::loc("unlocks/battletask")
+
+  if (id && isLoadingBgUnlock(id))
+    return ::loc("unlocks/loading_bg")
 
   return ::loc("unlocks/" + ::get_name_by_unlock_type(unlockType))
 }
@@ -1235,9 +1243,16 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       res.desc = ::loc("award/"+id+"/desc", "")
       if (id == "money_back")
       {
-        local unitName = ::getTblValue("unit", config)
+        local unitName = config?.unit
         if (unitName)
-          res.desc += ((res.desc == "")? "":"\n") + ::loc("award/money_back/unit", { unitName = ::getUnitName(unitName)})
+          res.desc = "".concat(res.desc, (res.desc == "")? "" : "\n",
+            ::loc("award/money_back/unit", { unitName = ::getUnitName(unitName)}))
+      }
+      if (config?.isAerobaticSmoke)
+      {
+        res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)
+            ?.getDescriptionTitle() ?? ""
+        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke"
       }
       break
 

@@ -1,4 +1,4 @@
-local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
+local { getBulletsListHeader } = require("scripts/weaponry/weaponryDescription.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { getBulletsSetData,
         setUnitLastBullets,

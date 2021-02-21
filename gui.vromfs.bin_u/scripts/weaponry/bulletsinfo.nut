@@ -10,9 +10,9 @@ local { WEAPON_TYPE,
         getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
-local { isModResearched,
-        isModAvailableOrFree,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { isModResearched, isModAvailableOrFree, getModificationByName,
+  getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
+local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -51,33 +51,6 @@ const BULLETS_CALIBER_QUANTITY = 4
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 
-local function getModificationBulletsGroup(modifName)
-{
-  local blk = ::get_modifications_blk()
-  local modification = blk?.modifications?[modifName]
-  if (modification)
-  {
-    if (!modification?.group)
-      return "" //new_gun etc. - not a bullets list
-    if (modification?.effects)
-      foreach (effectType, effect in modification.effects)
-      {
-        if (effectType == "additiveBulletMod")
-        {
-          local underscore = modification.group.indexof("_")
-          if (underscore)
-            return modification.group.slice(0, underscore)
-        }
-        if (effectType == "bulletMod" || effectType == "additiveBulletMod")
-          return modification.group
-      }
-  }
-  else if (modifName.len()>8 && modifName.slice(modifName.len()-8)=="_default")
-    return modifName.slice(0, modifName.len()-8)
-
-  return ""
-}
-
 local function isBullets(item)
 {
   return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
@@ -92,11 +65,10 @@ local function isWeaponTierAvailable(unit, tierNum)
   {
     local reqMods = unit.needBuyToOpenNextInTier[tierNum-2]
     foreach(mod in unit.modifications)
-      if(mod.tier == (tierNum-1) &&
-         isModResearched(unit, mod) &&
-         getModificationBulletsGroup(mod.name) == "" &&
-         !::wp_get_modification_cost_gold(unit.name, mod.name)
-        )
+      if(mod.tier == (tierNum-1)
+        && isModificationInTree(unit, mod)
+        && isModResearched(unit, mod)
+      )
         reqMods--
 
     isAvailable = reqMods <= 0
@@ -1518,7 +1490,6 @@ local function getUnitLastBullets(unit)
 
 return {
   BULLET_TYPE                           = BULLET_TYPE
-  getModificationBulletsGroup           = getModificationBulletsGroup
   isFakeBullet                          = isFakeBullet
   setUnitLastBullets                    = setUnitLastBullets
   getBulletsItemsList                   = getBulletsItemsList

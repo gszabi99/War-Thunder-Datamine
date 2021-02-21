@@ -81,7 +81,7 @@ local centeredAircraftIcon = ::kwarg(function(colorStyle, pos = [0, 0], size = f
   }
 })
 
-local function createCircle(colorStyle, backGroundColorEnabled) {
+local function createCircle(colorStyle, backGroundColorEnabled, scale = 1.0) {
   local targetOpacity = max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0))
   local targetComponent = colorStyle.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -92,27 +92,27 @@ local function createCircle(colorStyle, backGroundColorEnabled) {
     size = flex()
     commands =
     [
-      [VECTOR_ELLIPSE, 50, 50, indicatorRadius, indicatorRadius]
+      [VECTOR_ELLIPSE, 50, 50, indicatorRadius * scale, indicatorRadius * scale]
     ]
     })
 
   return targetComponent
 }
 
-local function createAzimuthMark(colorStyle) {
+local function createAzimuthMark(colorStyle, scale = 1.0) {
   local targetOpacity = max(0.0, 1.0 - min(LastTargetAge.value * MlwsLwsSignalHoldTimeInv.value, 1.0))
   local azimuthMarksCommands = []
   const angleGrad = 30.0
   local angle = math.PI * angleGrad / 180.0
   local dashCount = 360.0 / angleGrad
-  local innerMarkRadius = indicatorRadius - azimuthMarkLength
+  local innerMarkRadius = indicatorRadius * scale - azimuthMarkLength
   for(local i = 0; i < dashCount; ++i) {
     azimuthMarksCommands.append([
       VECTOR_LINE,
       50 + math.cos(i * angle) * innerMarkRadius,
       50 + math.sin(i * angle) * innerMarkRadius,
-      50 + math.cos(i * angle) * indicatorRadius,
-      50 + math.sin(i * angle) * indicatorRadius
+      50 + math.cos(i * angle) * indicatorRadius * scale,
+      50 + math.sin(i * angle) * indicatorRadius * scale
     ])
   }
 
@@ -149,11 +149,11 @@ local function twsBackground(colorStyle) {
   }
 }
 
-local rwrBackground = function(colorStyle) {
+local rwrBackground = function(colorStyle, scale) {
   local getTargets = function() {
     local backgroundTargets = []
-    backgroundTargets.append(createCircle(colorStyle, !IsMlwsLwsHudVisible.value))
-    backgroundTargets.append(createAzimuthMark(colorStyle))
+    backgroundTargets.append(createCircle(colorStyle, !IsMlwsLwsHudVisible.value, scale))
+    backgroundTargets.append(createAzimuthMark(colorStyle, scale))
      return backgroundTargets
   }
 
@@ -410,15 +410,15 @@ local function displayAircraftIcon(colorStyle) {
   return null
 }
 
-local function scope(colorStyle, relativCircleRadius, needDrawCentralIcon) {
+local function scope(colorStyle, relativCircleRadius, needDrawCentralIcon, scale) {
   return @() {
     size = flex()
     children = [
       twsBackground(colorStyle),
-      rwrBackground(colorStyle),
+      rwrBackground(colorStyle, scale),
       needDrawCentralIcon ? displayAircraftIcon(colorStyle) : null,
       {
-        size = [pw(relativCircleRadius), ph(relativCircleRadius)]
+        size = [pw(relativCircleRadius * scale), ph(relativCircleRadius * scale)]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = [
@@ -431,13 +431,13 @@ local function scope(colorStyle, relativCircleRadius, needDrawCentralIcon) {
   }
 }
 
-local tws = ::kwarg(function(colorStyle, pos = [rw(75), sh(70)], size = flex(), relativCircleSize = 0, needDrawCentralIcon = true) {
+local tws = ::kwarg(function(colorStyle, pos = [rw(75), sh(70)], size = flex(), relativCircleSize = 0, needDrawCentralIcon = true, scale = 1.0) {
   return {
     size = size
     pos = pos
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    children = scope(colorStyle, relativCircleSize, needDrawCentralIcon)
+    children = scope(colorStyle, relativCircleSize, needDrawCentralIcon, scale)
   }
 })
 

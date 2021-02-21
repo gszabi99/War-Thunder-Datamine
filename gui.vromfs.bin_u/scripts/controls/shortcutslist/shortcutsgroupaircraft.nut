@@ -209,6 +209,15 @@ return [
     checkAssign = false
   }
   {
+    id = "swept"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
+    id = "ID_SWEPT_AUTO"
+    checkAssign = false
+  }
+  {
     id = "ID_FLAPS"
     reqInMouseAim = false
     alternativeIds = [ "ID_FLAPS_DOWN", "ID_FLAPS_UP" ]
@@ -223,6 +232,10 @@ return [
   }
   {
     id = "ID_AIR_BRAKE"
+    reqInMouseAim = false
+  }
+  {
+    id = "ID_AIR_REVERSE"
     reqInMouseAim = false
   }
   {

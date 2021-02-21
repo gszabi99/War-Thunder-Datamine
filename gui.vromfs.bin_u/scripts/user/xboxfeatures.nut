@@ -17,6 +17,10 @@ local function checkMultiplayerPrivilege(showMarket = true, cb = null)
     multiplayerPrivelegeCallback?()
 
   multiplayerPrivelegeCallback = null
+
+  if (!::g_login.isLoggedIn())
+    return
+
   ::broadcastEvent("XboxMultiplayerPrivilegeUpdated")
 }
 

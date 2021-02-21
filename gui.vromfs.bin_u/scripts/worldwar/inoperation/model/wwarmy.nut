@@ -1,6 +1,7 @@
 local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+local { WW_MAP_TOOLTIP_TYPE_ARMY } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
 
 local transportTypeByTextCode = {
   TT_NONE      = ::TT_NONE
@@ -272,10 +273,7 @@ class ::WwArmy extends ::WwFormation
     return WW_ARMY_ACTION_STATUS.IDLE
   }
 
-  function getTooltipId()
-  {
-    return ::g_tooltip_type.WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(name, {armyName = name})
-  }
+  getTooltipId = @() WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(name, {armyName = name})
 
   function getPosition()
   {

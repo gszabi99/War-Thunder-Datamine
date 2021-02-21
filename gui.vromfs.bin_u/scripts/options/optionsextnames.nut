@@ -5,6 +5,7 @@ global enum optionControlType {
   CHECKBOX
   EDITBOX
   HEADER
+  BUTTON
 }
 
 global enum AIR_MOUSE_USAGE {
@@ -166,7 +167,10 @@ local user_option_names = [
     "USEROPT_DEPTHCHARGE_ACTIVATION_TIME",
     "USEROPT_FLARES_PERIODS", // how much time between every flares
     "USEROPT_FLARES_SERIES", // how many flares in a series
-    "USEROPT_FLARES_SERIES_PERIODS", // gow many time between every series
+    "USEROPT_FLARES_SERIES_PERIODS", // how many time between every series
+    "USEROPT_CHAFFS_PERIODS", // how much time between every chaffs
+    "USEROPT_CHAFFS_SERIES", // how many chaffs in a series
+    "USEROPT_CHAFFS_SERIES_PERIODS", // how many time between every series
     "USEROPT_USE_PERFECT_RANGEFINDER",
     "USEROPT_ROCKET_FUSE_DIST",
     "USEROPT_FRIENDS_ONLY",
@@ -259,6 +263,7 @@ local user_option_names = [
     "USEROPT_BAN_TIME",
     "USEROPT_USERLOG_FILTER",
     "USEROPT_AUTOLOGIN",
+    "USEROPT_PRELOADER_SETTINGS",
     "USEROPT_ONLY_FRIENDLIST_CONTACT",
     "USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL",
     "USEROPT_SKIP_WEAPON_WARNING",
@@ -347,6 +352,7 @@ local user_option_names = [
     "USEROPT_CD_DISTANCE_DETECTION",
     "USEROPT_GRASS_IN_TANK_VISION",
     "USEROPT_PITCH_BLOCKER_WHILE_BRACKING",
+    "USEROPT_COMMANDER_CAMERA_IN_VIEWS",
 
 
     "USEROPT_HEADTRACK_ENABLE",

@@ -121,279 +121,149 @@
       ]
     },
     {
-      "tdiv": [
-        {
-          "id": "wnd_content"
-        },
-        {
-          "pos": "pw/2-w/2, 1@minYposWindow"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "size": "sw-2@bw, 1@maxWindowHeightNoSrh"
-        },
-        {
-          "wwMainMenuBackgroundShadow": [
-            {
-              "id": "panel_left"
-            },
-            {
-              "width": "50%sh"
-            },
-            {
+      "tdiv": {
+        "id": "wnd_content",
+        "pos": "pw/2-w/2, 1@minYposWindow",
+        "position": "absolute",
+        "size": "sw-2@bw, 1@maxWindowHeightNoSrh",
+        "wwMainMenuBackgroundShadow": [
+          {
+            "id": "panel_left"
+          },
+          {
+            "width": "50%sh"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "display": "hide"
+          },
+          {
+            "type": "left"
+          },
+          {
+            "div": {
+              "id": "trophy_list",
               "flow": "vertical"
-            },
+            }
+          },
+          {
+            "div": {
+              "id": "unlocks_block",
+              "flow": "vertical",
+              "ww_map_item": {
+                "class": "header",
+                "isReflected": "yes",
+                "textareaNoTab": {
+                  "position": "relative",
+                  "top": "0.5(ph-h)",
+                  "padding-left": "1@framePadding",
+                  "input-transparent": "yes",
+                  "text": "#mainmenu/btnUnlockAchievement",
+                  "overlayTextColor": "silver",
+                  "caption": "yes"
+                },
+                "Button_text": {
+                  "position": "relative",
+                  "top": "0.5(ph-h)",
+                  "class": "image",
+                  "noMargin": "yes",
+                  "margin-left": "1@buttonMargin",
+                  "btnName": "L3",
+                  "on_click": "onOpenAchievments",
+                  "ButtonImg": [],
+                  "img": {
+                    "background-image": "#ui/gameuiskin#sh_unlockachievement.svg"
+                  }
+                }
+              },
+              "listbox": {
+                "id": "unlocks_list",
+                "flow": "vertical",
+                "width": "0.3sh",
+                "itemInterval": "@unlocksListboxItemInterval",
+                "overflow": "auto",
+                "scroll-align": "left",
+                "navigatorShortcuts": "cancel",
+                "scrollbarShortcuts": "yes"
+              }
+            }
+          }
+        ],
+        "navBar": {
+          "style": "size:pw, 1@navBarBattleButtonHeight; pos:pw/2-w/2, ph-h;",
+          "navLeft": {
+            "height": "ph",
+            "Button_text": {
+              "id": "btn_back",
+              "text": "#mainmenu/btnBack",
+              "btnName": "B",
+              "_on_click": "goBack",
+              "ButtonImg": []
+            }
+          },
+          "navRight": [
             {
-              "display": "hide"
-            },
-            {
-              "type": "left"
-            },
-            {
-              "div": {
-                "id": "trophy_list",
-                "flow": "vertical"
+              "tdiv": {
+                "id": "queues_wait_time_div",
+                "padding-right": "1@blockInterval",
+                "display": "hide",
+                "activeText": {
+                  "id": "queues_wait_time_text",
+                  "pos": "0, ph/2-h/2",
+                  "position": "relative",
+                  "hideEmptyText": "yes",
+                  "text": "#worldwar/mapStatus/yourClanInQueue"
+                },
+                "animated_wait_icon": {
+                  "pos": "1@blockInterval, ph/2-h/2",
+                  "position": "relative",
+                  "background-rotation": "0"
+                },
+                "timer": {
+                  "id": "queues_wait_timer",
+                  "timer_handler_func": "onTimerQueuesWaitTime",
+                  "timer_interval_msec": "250"
+                }
               }
             },
             {
-              "div": {
-                "id": "unlocks_block",
-                "flow": "vertical",
-                "ww_map_item": {
-                  "class": "header",
-                  "isReflected": "yes",
-                  "textareaNoTab": {
-                    "position": "relative",
-                    "top": "0.5(ph-h)",
-                    "padding-left": "1@framePadding",
-                    "input-transparent": "yes",
-                    "text": "#mainmenu/btnUnlockAchievement",
-                    "overlayTextColor": "silver",
-                    "caption": "yes"
-                  },
-                  "Button_text": {
-                    "position": "relative",
-                    "top": "0.5(ph-h)",
-                    "class": "image",
-                    "noMargin": "yes",
-                    "margin-left": "1@buttonMargin",
-                    "btnName": "L3",
-                    "on_click": "onOpenAchievments",
-                    "ButtonImg": [],
-                    "img": {
-                      "background-image": "#ui/gameuiskin#sh_unlockachievement.svg"
-                    }
-                  }
+              "tdiv": {
+                "id": "begin_map_wait_time_div",
+                "pos": "0, ph/2-h/2",
+                "position": "relative",
+                "padding-right": "1@blockInterval",
+                "display": "hide",
+                "activeText": {
+                  "id": "begin_map_wait_time_text",
+                  "hideEmptyText": "yes",
+                  "text": ""
                 },
-                "listbox": {
-                  "id": "unlocks_list",
-                  "flow": "vertical",
-                  "width": "0.3sh",
-                  "itemInterval": "@unlocksListboxItemInterval",
-                  "overflow": "auto",
-                  "scroll-align": "left",
-                  "navigatorShortcuts": "cancel",
-                  "scrollbarShortcuts": "yes"
+                "timer": {
+                  "id": "begin_map_wait_timer",
+                  "timer_handler_func": "onTimerBeginMapWaitTime",
+                  "timer_interval_msec": "250"
                 }
+              }
+            },
+            {
+              "Button_text": {
+                "id": "btn_map_action",
+                "text": "",
+                "btnName": "RB",
+                "display": "hide",
+                "enable": "no",
+                "_on_click": "onMapAction",
+                "buttonWink": {
+                  "_transp-timer": "0"
+                },
+                "ButtonImg": []
               }
             }
           ]
-        },
-        {
-          "wwMainMenuBackgroundShadow": {
-            "id": "panel_right",
-            "width": "50%sh",
-            "widthModeNormal": "50%sh",
-            "type": "right",
-            "div": [
-              {
-                "id": "top_list"
-              },
-              {
-                "width": "0.3sh"
-              },
-              {
-                "pos": "pw-w, 0"
-              },
-              {
-                "position": "relative"
-              },
-              {
-                "flow": "vertical"
-              },
-              {
-                "overflow-y": "auto"
-              },
-              {
-                "scroll-align": "right"
-              },
-              {
-                "display": "hide"
-              },
-              {
-                "behaviour": "posNavigator"
-              },
-              {
-                "moveY": "linear"
-              },
-              {
-                "navigatorShortcuts": "yes"
-              },
-              {
-                "wwTopNest": {
-                  "id": "top_daily_players"
-                }
-              },
-              {
-                "wwTopNest": {
-                  "id": "top_global_players"
-                }
-              },
-              {
-                "wwTopNest": {
-                  "id": "top_global_managers"
-                }
-              },
-              {
-                "wwTopNest": {
-                  "id": "top_global_clans"
-                }
-              }
-            ],
-            "DummyButton": {
-              "btnName": "RB",
-              "on_click": "onOpenSelectedTopLeaderboard"
-            }
-          }
-        },
-        {
-          "navBar": {
-            "style": "size:pw, 1@navBarBattleButtonHeight; pos:pw/2-w/2, ph-h;",
-            "navLeft": [
-              {
-                "height": "ph"
-              },
-              {
-                "Button_text": {
-                  "id": "btn_back",
-                  "text": "#mainmenu/btnBack",
-                  "btnName": "B",
-                  "_on_click": "goBack",
-                  "ButtonImg": []
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_ww_url",
-                  "text": "",
-                  "btnName": "LB",
-                  "externalLink": "yes",
-                  "link": "",
-                  "on_click": "onMsgLink",
-                  "display": "hide",
-                  "enable": "no",
-                  "hideText": "yes",
-                  "ButtonImg": [],
-                  "btnText": {
-                    "id": "btn_ww_url_text",
-                    "text": "",
-                    "underline": []
-                  }
-                }
-              }
-            ],
-            "navRight": [
-              {
-                "tdiv": {
-                  "id": "queues_wait_time_div",
-                  "padding-right": "1@blockInterval",
-                  "display": "hide",
-                  "activeText": {
-                    "id": "queues_wait_time_text",
-                    "pos": "0, ph/2-h/2",
-                    "position": "relative",
-                    "hideEmptyText": "yes",
-                    "text": "#worldwar/mapStatus/yourClanInQueue"
-                  },
-                  "animated_wait_icon": {
-                    "pos": "1@blockInterval, ph/2-h/2",
-                    "position": "relative",
-                    "background-rotation": "0"
-                  },
-                  "timer": {
-                    "id": "queues_wait_timer",
-                    "timer_handler_func": "onTimerQueuesWaitTime",
-                    "timer_interval_msec": "250"
-                  }
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "begin_map_wait_time_div",
-                  "pos": "0, ph/2-h/2",
-                  "position": "relative",
-                  "padding-right": "1@blockInterval",
-                  "display": "hide",
-                  "activeText": {
-                    "id": "begin_map_wait_time_text",
-                    "hideEmptyText": "yes",
-                    "text": ""
-                  },
-                  "timer": {
-                    "id": "begin_map_wait_timer",
-                    "timer_handler_func": "onTimerBeginMapWaitTime",
-                    "timer_interval_msec": "250"
-                  }
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_operation_descr",
-                  "text": "#worldwar/scenarioDescription",
-                  "btnName": "X",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onOperationDescr",
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "ButtonImg": []
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_map_action",
-                  "text": "",
-                  "btnName": "RB",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onMapAction",
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "ButtonImg": []
-                }
-              },
-              {
-                "Button_text": {
-                  "id": "btn_operation_list",
-                  "text": "#worldwar/operationsList",
-                  "btnName": "R3",
-                  "display": "hide",
-                  "enable": "no",
-                  "_on_click": "onOperationListSwitch",
-                  "buttonWink": {
-                    "_transp-timer": "0"
-                  },
-                  "ButtonImg": []
-                }
-              }
-            ]
-          }
         }
-      ]
+      }
     },
     {
       "timer": {
@@ -1298,7 +1168,8 @@
           "moveY": "linear",
           "navigatorShortcuts": "yes",
           "on_select": "onItemSelect",
-          "snd_select": "ww_globe_battle_select"
+          "snd_select": "ww_globe_battle_select",
+          "_on_click": "onOperationListSwitch"
         }
       }
     }

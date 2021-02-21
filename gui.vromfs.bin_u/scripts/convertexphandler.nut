@@ -1,5 +1,6 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local unitActions = require("scripts/unit/unitActions.nut")
+local { research } = require("scripts/unit/unitActions.nut")
+local { isEqual } = require("sqStdLibs/helpers/u.nut")
 
 enum windowState
 {
@@ -463,16 +464,28 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onUnitSelect(obj)
   {
     local newUnit = unitList[obj.getValue()]
-    if (!::checkForResearch(newUnit))
+    local isNewUnitInResearch = ::isUnitInResearch(newUnit)
+    local isNewUnitResearched = ::isUnitResearched(newUnit)
+    local hasChangedUnit = !isEqual(newUnit, unit)
+    if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))
+      return
+
+    if (hasChangedUnit && !::checkForResearch(newUnit))
     {
       obj.setValue(unitList.indexof(unit))
       return
     }
 
-    unitActions.research(newUnit, true, ::Callback(function() {
+    local cb = function() {
       unit = newUnit
       updateWindow()
-    }, this))
+    }
+    if (isNewUnitInResearch || isNewUnitResearched) {
+      cb()
+      return
+    }
+
+    research(newUnit, true, ::Callback(cb, this))
   }
 
   function getAvailableUnitForConversion()
@@ -583,7 +596,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitResearch(p)
   {
-    local newUnit = ::getAircraftByName(p?.unitName ?? null)
+    local newUnit = ::getAircraftByName(p?.unitName)
     if (newUnit == unit)
       return
     if (!newUnit || newUnit.shopCountry != country || ::get_es_unit_type(newUnit) != listType)

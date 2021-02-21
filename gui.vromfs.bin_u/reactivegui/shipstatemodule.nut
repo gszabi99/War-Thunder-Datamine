@@ -318,16 +318,16 @@ local crewBlock = @() {
       image = images.shipCrew
       color = crewCountColor.value
       watch = crewCountColor
-      children = @() {
-        vplace = ALIGN_BOTTOM
-        hplace = ALIGN_RIGHT
-        rendObj = ROBJ_DTEXT
-        watch = countCrewLeftPercent
-        text = $"{countCrewLeftPercent.value}%"
-        font = Fonts.tiny_text_hud
-        fontFx = fontFx
-        fontFxColor = fontFxColor
-      }
+    }
+    @() {
+      vplace = ALIGN_BOTTOM
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_DTEXT
+      watch = countCrewLeftPercent
+      text = $"{countCrewLeftPercent.value}%"
+      font = Fonts.tiny_text_hud
+      fontFx = fontFx
+      fontFxColor = fontFxColor
     }
   ]
 }

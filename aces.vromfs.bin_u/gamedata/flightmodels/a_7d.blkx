@@ -2,12 +2,17 @@
   "model": "a_7d",
   "fmFile": "fm/a_7d.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.36,
   "gearSinkRangeC": 0.36,
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "havePointOfInterestDesignator": true,
+  "ilsAVQ7": true,
+  "ilsHaveAVQ7CCIP": true,
+  "ilsHaveAVQ7CCRP": true,
   "type": "typeBomber",
   "paratrooper": "raf_para",
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
@@ -23,6 +28,7 @@
   "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
+  "laserDesignator": true,
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2035,6 +2041,15 @@
       "lightRadius2": 0.2
     },
     {
+      "sightInFov": 3.2
+    },
+    {
+      "sightOutFov": -1.0
+    },
+    {
+      "sightFov": 0.1
+    },
+    {
       "mirror": true
     },
     {
@@ -2109,14 +2124,61 @@
       }
     },
     {
-      "multifunctionDisplays": {
-        "display": {
-          "textureArea": [0.0,0.5,0.5,1.0],
-          "page": {
-            "type": "map"
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.5,0.5,1.0],
+            "page": {
+              "type": "map"
+            }
+          }
+        },
+        {
+          "display": [
+            {
+              "textureArea": [0.5,0.5,1.0,1.0]
+            },
+            {
+              "monoDisplayColor": [0.37,0.45,0.4]
+            },
+            {
+              "cameraFromShell": true
+            },
+            {
+              "page": {
+                "type": "target_tracking",
+                "turretIdx": 0
+              }
+            },
+            {
+              "page": {
+                "type": "thermal",
+                "turretIdx": 0
+              }
+            }
+          ]
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,0.5,0.5],
+            "page": {
+              "type": "rwr",
+              "radarScale": 1.3
+            }
+          }
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "page": {
+              "type": "plane_ils",
+              "ilsSize": [0.28,0.28],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5
+            }
           }
         }
-      }
+      ]
     },
     {
       "parts_holes_dmg": {
@@ -2145,19 +2207,51 @@
       "blk": "gameData/sensors/us_an_apr_36.blk"
     }
   },
-  "commonWeapons": {
-    "Weapon": {
-      "trigger": "cannon",
-      "blk": "gameData/Weapons/cannonM61.blk",
-      "emitter": "flare1",
-      "flash": "flare1",
-      "dm": "cannon1_dm",
-      "bullets": 1000,
-      "light": false,
-      "spread": 1.2,
-      "traceOffset": 1
-    }
+  "gunnerOpticFps": {
+    "pos": [0.3,-0.2,0.0],
+    "head": "optic1_turret",
+    "crosshairPreset": "test_crosshair",
+    "angularLimits": [-30.0,30.0,-30.0,30.0]
   },
+  "commonWeapons": [
+    {
+      "Weapon": {
+        "dummy": true,
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "optic1_gun",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 25.0,
+        "speedPitch": 25.0,
+        "parkInDeadzone": false,
+        "aimForOperatedShell": true,
+        "turret": {
+          "head": "optic1_turret",
+          "gun": "optic1_gun",
+          "mainTurret": true
+        },
+        "limits": {
+          "yaw": [-30.0,30.0],
+          "pitch": [-30.0,30.0]
+        }
+      }
+    },
+    {
+      "Weapon": {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonM61.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "dm": "cannon1_dm",
+        "bullets": 1000,
+        "light": false,
+        "spread": 1.2,
+        "traceOffset": 1
+      }
+    }
+  ],
   "weapon_presets": [
     {
       "preset": {
@@ -3966,6 +4060,121 @@
         "blk": "gameData/FlightModels/weaponPresets/a_7d_rockets_aim9j.blk",
         "reqModification": "us_aim_9j"
       }
+    },
+    {
+      "preset": {
+        "name": "a_7d_rocket_agm_65a",
+        "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a.blk",
+        "reqModification": "us_agm_65a"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9e"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9e.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9j"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9j.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9e_m84"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9e_m84.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "reqModification": "us_2000lb_mk84"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9j_m84"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9j_m84.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "reqModification": "us_2000lb_mk84"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9e_m117"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9e_m117.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9e"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "a_7d_rocket_agm_65a_aim9j_m117"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/a_7d_rocket_agm_65a_aim9j_m117.blk"
+        },
+        {
+          "reqModification": "us_agm_65a"
+        },
+        {
+          "reqModification": "us_aim_9j"
+        },
+        {
+          "reqModification": "us_750lb_m117a1"
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -4084,41 +4293,6 @@
       "reqModification": "M60_belt_pack",
       "tier": 3
     },
-    "a_7d_gpu_5a": {
-      "deactivationIsAllowed": false,
-      "tier": 2,
-      "modClass": "weapon"
-    },
-    "GAU_13A_air_targets": [],
-    "GAU_13A_ground_targets": [],
-    "GAU_13A_stealth": [],
-    "GAU_13A_belt_pack": {
-      "reqModification": "a_7d_gpu_5a",
-      "tier": 3
-    },
-    "GAU_13A_new_gun": {
-      "reqModification": "GAU_13A_belt_pack",
-      "tier": 4
-    },
-    "us_500lb_mk82": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "us_750lb_m117a1": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "us_500lb_mk82"
-    },
-    "us_1000lb_mk83": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "us_750lb_m117a1"
-    },
-    "us_2000lb_mk84": {
-      "modClass": "weapon",
-      "tier": 4,
-      "reqModification": "us_1000lb_mk83"
-    },
     "aircrafts_false_thermal_targets": {
       "turn_it_off": false,
       "invertEnableLogic": false,
@@ -4129,6 +4303,30 @@
           {
             "hideNodes": {
               "node": "flare_cover"
+            }
+          },
+          {
+            "Weapon": {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [-30.0,30.0],
+                "pitch": [-30.0,30.0]
+              }
             }
           },
           {
@@ -4169,17 +4367,58 @@
         ]
       }
     },
-    "us_2_75_in_ffar_lau_3a": {
+    "a_7d_gpu_5a": {
+      "prevModification": "aircrafts_false_thermal_targets",
+      "deactivationIsAllowed": false,
       "tier": 2,
+      "modClass": "weapon"
+    },
+    "GAU_13A_air_targets": [],
+    "GAU_13A_ground_targets": [],
+    "GAU_13A_stealth": [],
+    "GAU_13A_belt_pack": {
+      "reqModification": "a_7d_gpu_5a",
+      "tier": 3
+    },
+    "GAU_13A_new_gun": {
+      "reqModification": "GAU_13A_belt_pack",
+      "tier": 4
+    },
+    "us_500lb_mk82": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_750lb_m117a1": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "us_500lb_mk82"
+    },
+    "us_1000lb_mk83": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "us_750lb_m117a1"
+    },
+    "us_2000lb_mk84": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_1000lb_mk83"
+    },
+    "us_2_75_in_ffar_lau_3a": {
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_aim_9e": {
       "reqModification": "us_2_75_in_ffar_lau_3a",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9j": {
       "reqModification": "us_aim_9e",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_agm_65a": {
+      "prevModification": "us_aim_9j",
       "tier": 4,
       "modClass": "weapon"
     }

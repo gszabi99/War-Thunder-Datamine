@@ -158,6 +158,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_poland_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_japan_01_c*",
           "to": "flag_japan_01_c_tomoe*"
         }
@@ -1675,34 +1681,37 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 16.0,
         "hidableInViewer": true,
+        "oneSided": false,
+        "genericDamageMult": 0.5,
         "compartment_01_dm": {
-          "hp": 3526.0
+          "hp": 2015.0
         },
         "compartment_02_dm": {
-          "hp": 6711.0
+          "hp": 3835.0
         },
         "compartment_03_dm": {
-          "hp": 3310.0
+          "hp": 1891.0
         },
         "compartment_04_dm": {
-          "hp": 7000.0
+          "hp": 4000.0
         },
         "compartment_05_dm": {
-          "hp": 6997.0
+          "hp": 3998.0
         },
         "compartment_06_dm": {
-          "hp": 4598.0
+          "hp": 2627.0
         },
         "compartment_07_dm": {
-          "hp": 4055.0
+          "hp": 2317.0
         },
         "bridge_dm": {
           "armorThickness": 1.45,
-          "hp": 450.0
+          "genericDamageMult": 1.0,
+          "hp": 500.0
         },
         "radio_station_dm": {
           "armorThickness": 1.45,
-          "hp": 400.0
+          "hp": 500.0
         }
       },
       "superstructures": {
@@ -1710,126 +1719,127 @@
         "stopChanceOnDeadPart": 0.7,
         "armorClass": "ship_structural_steel",
         "armorThickness": 4.0,
-        "oneSided": true,
+        "oneSided": false,
+        "genericDamageMult": 0.5,
         "superstructure_back_dm": {
-          "hp": 1500.0
+          "hp": 10000.0
         },
         "superstructure_front_dm": {
-          "hp": 3598.0
+          "hp": 10000.0
         },
         "superstructure_bottom_dm": {
-          "hp": 1500.0
+          "hp": 10000.0
         },
         "superstructure_side_dm": {
-          "hp": 3636.0
+          "hp": 10000.0
         },
         "superstructure_top_dm": {
-          "hp": 2324.0
+          "hp": 10000.0
         }
       },
       "hull_construction": {
         "stopChanceOnDeadPart": 0.3,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 16.0,
+        "armorThickness": 12.7,
         "fireDamageMult": 0.1,
-        "stern_bottom_dm": {
-          "hp": 15000.0
-        },
+        "genericDamageMult": 0.1,
         "mid_bottom_dm": {
-          "hp": 15000.0
-        },
-        "bow_bottom_dm": {
           "hp": 15000.0
         }
       },
       "bulkheads": {
         "stopChanceOnDeadPart": 0.3,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 13.35,
+        "armorThickness": 14.5,
         "fireDamageMult": 0.1,
         "bulkhead_01_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_02_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_03_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_04_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_05_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_06_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_07_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_08_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_09_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_10_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_11_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_12_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         },
         "bulkhead_13_dm": {
-          "hp": 1000.0
+          "hp": 7000.0
         }
       },
       "masts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 10.0,
+        "armorThickness": 20.0,
         "mast_01_dm": {
-          "hp": 420.0
+          "hp": 2500.0
         },
         "mast_02_dm": {
-          "hp": 477.0
+          "hp": 2500.0
         }
       },
       "engine": {
         "fireParamsPreset": "ship_engine",
-        "genericDamageMult": 1.5,
+        "genericDamageMult": 1.0,
         "shatterDamageMult": 1.0,
-        "secondaryShatterDamageMult": 1.5,
+        "secondaryShatterDamageMult": 1.0,
         "armorClass": "armor_tank_engine",
         "armorThickness": 15.0,
         "fireProtectionHp": 10.0,
         "engine_room_01_dm": {
-          "armorThrough": 500.0,
+          "armorThrough": 150.0,
           "hp": 2500.0
         },
         "engine_room_02_dm": {
-          "armorThrough": 500.0,
+          "armorThrough": 150.0,
           "hp": 2000.0
-        },
-        "funnel_01_dm": {
-          "hp": 300.0
-        },
-        "funnel_02_dm": {
-          "hp": 300.0
         },
         "transmission_01_dm": {
           "fireProtectionHp": 30.0,
-          "armorThrough": 200.0,
-          "secondaryShatterDamageMult": 0.1,
+          "armorThrough": 150.0,
           "hp": 2500.0
         },
         "transmission_02_dm": {
           "fireProtectionHp": 30.0,
-          "armorThrough": 200.0,
-          "secondaryShatterDamageMult": 0.1,
+          "armorThrough": 150.0,
           "hp": 2433.0
+        }
+      },
+      "funnels": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 7.0,
+        "genericDamageMult": 0.3,
+        "explosionDamageMult": 1.5,
+        "fireDamageMult": 0.1,
+        "funnel_01_dm": {
+          "hp": 1000.0
+        },
+        "funnel_02_dm": {
+          "hp": 1000.0
         }
       },
       "steering_gear": {
@@ -1997,6 +2007,7 @@
         "armorThickness": 15.0,
         "oneSided": true,
         "fireProtectionHp": 20.0,
+        "armorThrough": 150.0,
         "ammunition_storage_shells_01_dm": {
           "hp": 2500.0
         },
@@ -2018,7 +2029,7 @@
         }
       },
       "ammo_storages_auxiliary": {
-        "genericDamageMult": 0.85,
+        "genericDamageMult": 1.0,
         "armorClass": "ship_structural_steel",
         "fireParamsPreset": "ship_ammo_fire_aux",
         "armorThickness": 1.45,
@@ -2045,160 +2056,160 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 2.0,
         "mine_01_dm": {
-          "hp": 195.0
+          "hp": 119.0
         },
         "mine_02_dm": {
-          "hp": 173.0
+          "hp": 113.0
         },
         "mine_03_dm": {
-          "hp": 152.0
+          "hp": 108.0
         },
         "mine_04_dm": {
-          "hp": 157.0
+          "hp": 101.0
         },
         "mine_05_dm": {
-          "hp": 175.0
+          "hp": 100.0
         },
         "mine_06_dm": {
-          "hp": 171.0
+          "hp": 100.0
         },
         "mine_07_dm": {
-          "hp": 166.0
+          "hp": 102.0
         },
         "mine_08_dm": {
-          "hp": 162.0
+          "hp": 107.0
         },
         "mine_09_dm": {
-          "hp": 160.0
+          "hp": 106.0
         },
         "mine_10_dm": {
-          "hp": 155.0
+          "hp": 103.0
         },
         "mine_11_dm": {
-          "hp": 152.0
+          "hp": 101.0
         },
         "mine_12_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_13_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_14_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_15_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_16_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_17_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_18_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_19_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_20_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_21_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_22_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_23_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_24_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_25_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_26_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_27_dm": {
-          "hp": 195.0
+          "hp": 119.0
         },
         "mine_28_dm": {
-          "hp": 173.0
+          "hp": 113.0
         },
         "mine_29_dm": {
-          "hp": 152.0
+          "hp": 108.0
         },
         "mine_30_dm": {
-          "hp": 157.0
+          "hp": 101.0
         },
         "mine_31_dm": {
-          "hp": 175.0
+          "hp": 100.0
         },
         "mine_32_dm": {
-          "hp": 171.0
+          "hp": 100.0
         },
         "mine_33_dm": {
-          "hp": 166.0
+          "hp": 102.0
         },
         "mine_34_dm": {
-          "hp": 162.0
+          "hp": 107.0
         },
         "mine_35_dm": {
-          "hp": 160.0
+          "hp": 106.0
         },
         "mine_36_dm": {
-          "hp": 155.0
+          "hp": 103.0
         },
         "mine_37_dm": {
-          "hp": 152.0
+          "hp": 101.0
         },
         "mine_38_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_39_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_40_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_41_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_42_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_43_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_44_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_45_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_46_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_47_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_48_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_49_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_50_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_51_dm": {
-          "hp": 152.0
+          "hp": 100.0
         },
         "mine_52_dm": {
-          "hp": 152.0
+          "hp": 100.0
         }
       },
       "torpedos": {
@@ -2717,7 +2728,7 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.05,
+              "fire": 0.95,
               "damage": 400.0,
               "fHitCritical": false
             }
@@ -2911,9 +2922,179 @@
             "name": "main_caliber_turret_15_dm"
           },
           {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.85,
+              "damage": 50.0
+            }
+          },
+          {
             "onKill": {
-              "nothing": 0.75,
-              "fire": 0.25
+              "fire": 0.3,
+              "nothing": 0.31
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "auxiliary_caliber_turret_01_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_02_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_03_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_04_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_05_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_06_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_07_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_08_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_09_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_10_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_11_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_12_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_13_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_14_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_15_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_16_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_17_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_18_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_19_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_20_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_21_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_22_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_23_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_24_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_25_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_26_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_27_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_28_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_29_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_30_dm"
+          },
+          {
+            "onKill": {
+              "fire": 0.3,
+              "nothing": 0.31
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "elevator_01_dm"
+          },
+          {
+            "name": "elevator_02_dm"
+          },
+          {
+            "name": "elevator_03_dm"
+          },
+          {
+            "name": "elevator_04_dm"
+          },
+          {
+            "name": "elevator_05_dm"
+          },
+          {
+            "name": "elevator_06_dm"
+          },
+          {
+            "name": "elevator_07_dm"
+          },
+          {
+            "name": "elevator_08_dm"
+          },
+          {
+            "name": "elevator_09_dm"
+          },
+          {
+            "name": "elevator_10_dm"
+          },
+          {
+            "name": "elevator_11_dm"
+          },
+          {
+            "name": "elevator_12_dm"
+          },
+          {
+            "name": "elevator_13_dm"
+          },
+          {
+            "name": "elevator_14_dm"
+          },
+          {
+            "name": "elevator_15_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.85,
+              "damage": 50.0
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 1.0,
+              "damage": 400.0
             }
           }
         ]

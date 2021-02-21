@@ -4,6 +4,7 @@ local platformModule = require("scripts/clientState/platform.nut")
 local battleRating = require("scripts/battleRating.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
@@ -96,7 +97,8 @@ local DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
     if (isSquadMember())
     {
       local event = ::events.getEvent(getLeaderGameModeId())
-      if (isMeReady() && !antiCheat.showMsgboxIfEacInactive(event))
+      if (isMeReady() && (!antiCheat.showMsgboxIfEacInactive(event) ||
+                          !showMsgboxIfSoundModsNotAllowed(event)))
         setReadyFlag(false)
       updateMyMemberData(::g_user_utils.getMyStateData())
     }
@@ -593,7 +595,7 @@ g_squad_manager.setReadyFlag <- function setReadyFlag(ready = null, needUpdateMe
   local isSetNoReady = (ready == false || (ready == null && isMeReady() == true))
   local event = ::events.getEvent(getLeaderGameModeId())
   if (!isLeader && !isSetNoReady
-    && !antiCheat.showMsgboxIfEacInactive(event))
+    && (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event)))
     return
 
   if (::checkIsInQueue() && !isLeader && isInSquad() && isSetNoReady)

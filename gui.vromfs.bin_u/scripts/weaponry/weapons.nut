@@ -1,15 +1,11 @@
-local modsTree = require("scripts/weaponry/modsTree.nut")
+local { getModsTreeSize, generateModsTree, generateModsBgElems,
+  isModificationInTree } = require("scripts/weaponry/modsTree.nut")
 local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local prepareUnitsForPurchaseMods = require("scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-local { canBuyMod,
-        canResearchMod,
-        isModResearched,
-        isModUpgradeable,
-        isModClassPremium,
-        isModClassExpendable,
-        getModificationByName,
-        findAnyNotResearchedMod } = require("scripts/weaponry/modificationInfo.nut")
+local { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
+  isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
+  getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
 local { isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 local { getItemAmount,
         getItemCost,
@@ -21,13 +17,9 @@ local { getItemAmount,
         isModInResearch,
         getBundleCurItem,
         canResearchItem } = require("scripts/weaponry/itemInfo.nut")
-local { updateModItem,
-        createModItem,
-        getModItemName,
-        getReqModsText,
-        createModBundle,
-        updateWeaponTooltip,
-        getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
+local { getModItemName, getReqModsText, getBulletsListHeader
+} = require("scripts/weaponry/weaponryDescription.nut")
+local { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
 local { isBullets,
         getBulletsList,
         setUnitLastBullets,
@@ -36,8 +28,7 @@ local { isBullets,
         getModificationName,
         isWeaponTierAvailable,
         getLastFakeBulletsIndex,
-        isBulletsGroupActiveByMod,
-        getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
+        isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
 local { AMMO, getAmmoCost } = require("scripts/weaponry/ammoInfo.nut")
 local { WEAPON_TAG,
         getLastWeapon,
@@ -50,6 +41,7 @@ local { WEAPON_TAG,
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton,
   placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 17
@@ -86,6 +78,10 @@ local timerPID = ::dagui_propid.add_name_id("_size-timer")
   ::aircraft_for_weapons = unit.name
   ::handlersManager.loadHandler(::gui_handlers.WeaponsModalHandler, params)
 }
+
+local getCustomTooltipId = @(unitName, mod) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
+  ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name)
+  : null
 
 class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -485,7 +481,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (isItemTypeUnit(iType))
       return createUnitItemObj(id, item, holderObj, posX, posY)
 
-    return createModItem(id, air, item, iType, holderObj, this, { posX = posX, posY = posY, useGenericTooltip = false })
+    return createModItem(id, air, item, iType, holderObj, this,
+      { posX = posX, posY = posY, tooltipId = getCustomTooltipId(air.name, item) })
   }
 
   function wrapUnitToItem(unit)
@@ -524,7 +521,6 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       { posX = posX, posY = posY, subType = subType,
         maxItemsInColumn = 5, createItemFunc = createItemForBundle
         cellSizeObj = scene.findObject("cell_size")
-        useGenericTooltip = false
       })
   }
 
@@ -559,7 +555,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       hideStatus = hasMenu
       hasMenu
       actionBtnText = hasMenu ? ::loc("mainmenu/btnAirGroupOpen") : null
-      useGenericTooltip = false
+      tooltipId = getCustomTooltipId(air.name, item)
     })
   }
 
@@ -581,7 +577,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillAvailableRPText()
     for(local i = 0; i < items.len(); i++)
       updateItem(i)
-    local treeSize = modsTree.getModsTreeSize(air)
+    local treeSize = getModsTreeSize(air)
     updateTiersStatus(treeSize)
     updateButtons()
     updateBuyAllButton()
@@ -659,6 +655,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
     local unitBlk = ::build_aircraft_item("unit_item", item.unit, params)
     guiScene.replaceContentFromText(itemObj, unitBlk, unitBlk.len(), this)
+    itemObj.tooltipId = ::g_tooltip.getIdUnit(item.unit.name, params)
     ::fill_unit_item_timers(itemObj.findObject("unit_item"), item.unit, params)
   }
 
@@ -787,11 +784,11 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillModsTree(treeOffsetY)
   {
-    local tree = modsTree.generateModsTree(air)
+    local tree = generateModsTree(air)
     if (!tree)
       return
 
-    local treeSize = modsTree.getModsTreeSize(air)
+    local treeSize = getModsTreeSize(air)
     if (treeSize.guiPosX > 6)
       ::dagor.logerr($"Modifications: {air.name} too much modifications in a row")
 
@@ -799,7 +796,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!(treeSize.tier > 0))
       return
 
-    local bgElems = modsTree.generateModsBgElems(air)
+    local bgElems = generateModsBgElems(air)
     createTreeBlocks(modsBgObj, bgElems.blocks, treeSize.tier, 0, treeOffsetY, "unlocked", tierIdPrefix)
     createTreeArrows(modsBgObj, bgElems.arrows, treeOffsetY)
     createTreeItems(mainModsObj, tree, treeOffsetY)
@@ -861,19 +858,18 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if("modifications" in air && tiersCount > 0)
     {
       tiersArray = array(tiersCount, null)
-      foreach(mod in air.modifications)
-        if (!::wp_get_modification_cost_gold(airName, mod.name) &&
-            getModificationBulletsGroup(mod.name) == ""
-           )
-          {
-            local idx = mod.tier-1
-            tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
+      foreach(mod in air.modifications) {
+        if (!isModificationInTree(air, mod))
+          continue
 
-            if(isModResearched(air, mod))
-              tiersArray[idx].researched++
-            else
-              tiersArray[idx].notResearched++
-          }
+        local idx = mod.tier-1
+        tiersArray[idx] = tiersArray[idx] || { researched=0, notResearched=0 }
+
+         if(isModResearched(air, mod))
+           tiersArray[idx].researched++
+         else
+           tiersArray[idx].notResearched++
+      }
     }
     return tiersArray
   }
@@ -1011,44 +1007,6 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
           if (item.name == searchItem.name && item.type==searchItem.type)
             return bundle
     return null
-  }
-
-  function onModificationTooltipOpen(obj)
-  {
-    local id = ::getObjIdByPrefix(obj, "tooltip_item_")
-    if (!id) return
-    local idx = id.tointeger()
-    if (!(idx in items))
-      return
-
-    local item = items[idx]
-    local curTier = "tier" in item? item.tier : 1
-    local canDisplayInfo = curTier <= 1 || ::isInArray(curTier, shownTiers)
-    tooltipOpenTime = canDisplayInfo? -1 : ::tooltip_display_delay
-    updateWeaponTooltip(obj, air, item, this, { canDisplayInfo = canDisplayInfo })
-
-    obj.findObject("weapons_timer").setUserData(this)
-  }
-
-  function onUpdateWeaponTooltip(obj, dt)
-  {
-    if(tooltipOpenTime <= 0)
-      return
-    tooltipOpenTime -= dt
-    if(tooltipOpenTime <= 0)
-    {
-      local tooltipObj = obj.getParent()
-      local id = ::getObjIdByPrefix(tooltipObj, "tooltip_item_")
-      if (!id)
-        return
-      local idx = id.tointeger()
-      if (!(idx in items))
-        return
-      local item = items[idx]
-      if ("tier" in item && !::isInArray(item.tier, shownTiers))
-        shownTiers.append(item.tier)
-      updateWeaponTooltip(tooltipObj, air, item, this)
-    }
   }
 
   function getItemIdxByObj(obj)
@@ -1704,7 +1662,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("item_name_header").setValue(getModItemName(unit, item))
 
     updateSlider()
-    createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this, { useGenericTooltip = false })
+    createModItem("mod_" + item.name, unit, item, item.type, scene.findObject("icon"), this)
 
     local discountType = item.type == weaponsItem.spare? "spare" : (item.type == weaponsItem.weapon)? "weapons" : "mods"
     ::showAirDiscount(scene.findObject("multPurch_discount"), unit.name, discountType, item.name, true)
@@ -1738,11 +1696,6 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     local newObj = scene.findObject("newSkillProgress")
     newObj.min = minValue
     newObj.max = maxValue
-  }
-
-  function onModificationTooltipOpen(obj)
-  {
-    updateWeaponTooltip(obj, unit, item, this)
   }
 
   function onButtonDec()

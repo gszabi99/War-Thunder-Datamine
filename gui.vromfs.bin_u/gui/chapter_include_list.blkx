@@ -1,0 +1,57 @@
+{
+  "chapterListPlace": [
+    {
+      "id": "chapter_place"
+    },
+    {
+      "height": "ph"
+    },
+    {
+      "flow": "vertical"
+    },
+    {
+      "tdiv": {
+        "id": "div_before_chapters_list",
+        "width": "pw",
+        "display": "hide"
+      }
+    },
+    {
+      "tdiv": {
+        "id": "chapters_list_place",
+        "size": "pw, fh",
+        "flow": "vertical",
+        "tdiv": {
+          "id": "listbox_filter_holder",
+          "width": "pw",
+          "pos": "1@blockInterval, 0",
+          "position": "relative"
+        },
+        "listbox": {
+          "id": "items_list",
+          "size": "pw, fh",
+          "flow": "vertical",
+          "move-only-hover": "yes",
+          "navigatorShortcuts": "yes",
+          "on_select": "onItemSelect",
+          "_on_dbl_click": "onItemDblClick"
+        },
+        "textAreaCentered": {
+          "id": "items_list_msg",
+          "width": "80%pw",
+          "pos": "50%pw-50%w, 40%ph-40%h",
+          "position": "absolute",
+          "hideEmptyText": "yes",
+          "text": ""
+        },
+        "animated_wait_icon": {
+          "id": "items_list_wait_icon",
+          "pos": "50%pw-50%w, 40%ph-40%h",
+          "position": "absolute",
+          "background-rotation": "0",
+          "display": "hide"
+        }
+      }
+    }
+  ]
+}

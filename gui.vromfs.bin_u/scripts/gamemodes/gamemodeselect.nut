@@ -241,7 +241,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
         newIconWidgetContent = newIconWidgetContent
         inactiveColor = mode?.inactiveColor ?? @() false
         crossPlayRestricted = mode?.crossPlayRestricted ?? @() false
-        crossplayTooltip = mode?.crossplayTooltip ?? null
+        crossplayTooltip = mode?.crossplayTooltip
         isCrossPlayRequired = mode?.isCrossPlayRequired ?? @() false
       })
       if (mode?.updateByTimeFunc)

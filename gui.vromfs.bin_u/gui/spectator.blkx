@@ -224,12 +224,136 @@
           "pos": "pw/2-w/2, ph-h - 0.06@shHud - 1@sIco",
           "position": "absolute",
           "flow": "vertical",
+          "tdiv": [
+            {
+              "id": "hud_hints_nest"
+            },
+            {
+              "width": "2/3@rwHud"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "css-hier-invalidate": "yes"
+            },
+            {
+              "behavior": "Timer"
+            },
+            {
+              "tdiv": [
+                {
+                  "width": "pw"
+                },
+                {
+                  "position": "absolute"
+                },
+                {
+                  "pos": "pw/2 - w/2, -h"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "tdiv": {
+                    "id": "common_priority_hints",
+                    "width": "pw",
+                    "flow": "vertical"
+                  }
+                },
+                {
+                  "tdiv": {
+                    "id": "ship_obstacle_rf",
+                    "size": "pw, 0.04@shHud"
+                  }
+                },
+                {
+                  "tdiv": {
+                    "width": "pw",
+                    "min-height": "0.1@shHud",
+                    "tdiv": {
+                      "id": "mission_hints",
+                      "width": "pw",
+                      "position": "relative",
+                      "pos": "0, ph-h",
+                      "flow": "vertical"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "hudMessages": {
+                "id": "hud_message_zone_capture_notification",
+                "width": "pw",
+                "height": "0.065@shHud",
+                "message_style": "zone_capture_notification",
+                "input-transparent": "yes"
+              }
+            },
+            {
+              "div": {
+                "id": "display_timers",
+                "height": "0.08@shHud",
+                "position": "relative",
+                "left": "pw/2 - w/2"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "actionbar_hints_nest",
+                "width": "1@shHud",
+                "height": "0.065@shHud",
+                "left": "0.5pw-0.5w",
+                "position": "relative",
+                "tdiv": {
+                  "width": "pw",
+                  "position": "absolute",
+                  "pos": "0, ph-h",
+                  "flow": "vertical",
+                  "tdiv": {
+                    "id": "actionbar_hints",
+                    "width": "pw",
+                    "flow": "vertical"
+                  }
+                }
+              }
+            },
+            {
+              "textAreaCentered": {
+                "id": "low-quality-model-warning",
+                "width": "pw",
+                "style": "color:@warningTextColor; font:@fontHudNormal;",
+                "text": "#low_quality_model_in_hangar",
+                "display": "hide"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "tutorial_hints",
+                "width": "pw",
+                "position": "root",
+                "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
+                "flow": "vertical"
+              }
+            },
+            {
+              "tdiv": {
+                "id": "minor_priority_hints",
+                "width": "pw",
+                "position": "root",
+                "pos": "50%sw-50%w, @shHud - h",
+                "flow": "vertical"
+              }
+            }
+          ],
           "activeText": {
             "id": "waiting_for_target_spawn",
             "pos": "pw/2-w/2, 0",
             "position": "relative",
             "padding-bottom": "12@sf/@pf",
-            "text": "#spectator/waiting_for_target_spawn"
+            "text": "#spectator/waiting_for_target_spawn",
+            "display": "hide"
           },
           "targetInfo": {
             "id": "target_info",
@@ -694,137 +818,6 @@
           "position": "root",
           "pos": "0, 0",
           "size": "sw, sh"
-        }
-      }
-    ]
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_hints_nest"
-      },
-      {
-        "width": "2/3@rwHud"
-      },
-      {
-        "pos": "0.5pw-0.5w, @hintAboveActionBarPos -h"
-      },
-      {
-        "position": "absolute"
-      },
-      {
-        "flow": "vertical"
-      },
-      {
-        "css-hier-invalidate": "yes"
-      },
-      {
-        "behavior": "Timer"
-      },
-      {
-        "tdiv": [
-          {
-            "width": "pw"
-          },
-          {
-            "position": "absolute"
-          },
-          {
-            "pos": "pw/2 - w/2, -h"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "tdiv": {
-              "id": "common_priority_hints",
-              "width": "pw",
-              "flow": "vertical"
-            }
-          },
-          {
-            "tdiv": {
-              "id": "ship_obstacle_rf",
-              "size": "pw, 0.04@shHud"
-            }
-          },
-          {
-            "tdiv": {
-              "width": "pw",
-              "min-height": "0.1@shHud",
-              "tdiv": {
-                "id": "mission_hints",
-                "width": "pw",
-                "position": "relative",
-                "pos": "0, ph-h",
-                "flow": "vertical"
-              }
-            }
-          }
-        ]
-      },
-      {
-        "hudMessages": {
-          "id": "hud_message_zone_capture_notification",
-          "width": "pw",
-          "height": "0.065@shHud",
-          "message_style": "zone_capture_notification",
-          "input-transparent": "yes"
-        }
-      },
-      {
-        "div": {
-          "id": "display_timers",
-          "height": "0.08@shHud",
-          "position": "relative",
-          "left": "pw/2 - w/2"
-        }
-      },
-      {
-        "tdiv": {
-          "id": "actionbar_hints_nest",
-          "width": "1@shHud",
-          "height": "0.065@shHud",
-          "left": "0.5pw-0.5w",
-          "position": "relative",
-          "tdiv": {
-            "width": "pw",
-            "position": "absolute",
-            "pos": "0, ph-h",
-            "flow": "vertical",
-            "tdiv": {
-              "id": "actionbar_hints",
-              "width": "pw",
-              "flow": "vertical"
-            }
-          }
-        }
-      },
-      {
-        "textAreaCentered": {
-          "id": "low-quality-model-warning",
-          "width": "pw",
-          "style": "color:@warningTextColor; font:@fontHudNormal;",
-          "text": "#low_quality_model_in_hangar",
-          "display": "hide"
-        }
-      },
-      {
-        "tdiv": {
-          "id": "tutorial_hints",
-          "width": "pw",
-          "position": "root",
-          "pos": "50%sw-50%w, 1@bhHud + 0.67@shHud",
-          "flow": "vertical"
-        }
-      },
-      {
-        "tdiv": {
-          "id": "minor_priority_hints",
-          "width": "pw",
-          "position": "root",
-          "pos": "50%sw-50%w, @shHud - h",
-          "flow": "vertical"
         }
       }
     ]

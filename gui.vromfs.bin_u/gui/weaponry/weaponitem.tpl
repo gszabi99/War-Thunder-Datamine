@@ -13,6 +13,10 @@ weaponry_item {
   equipped:t='<<optEquipped>>'
   status:t= '<<optStatus>>'
   <<#wideItemWithSlider>>wideItemWithSlider:t='yes'<</wideItemWithSlider>>
+  <<#isTooltipByHold>>
+  tooltipId:t='<<tooltipId>>'
+  tooltip:t=''
+  <</isTooltipByHold>>
 
   tdiv {
     id:t='modItem_discount'
@@ -37,6 +41,15 @@ weaponry_item {
     behaviour:t='button'
     on_click:t='onModItemClick'
     on_dbl_click:t = 'onModItemDblClick'
+
+    <<#isTooltipByHold>>
+    tooltipId:t='<<tooltipId>>'
+    on_pushed:t='::gcb.delayedTooltipPush'
+    on_hold_start:t='::gcb.delayedTooltipHoldStart'
+    on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+    on_hover:t='::gcb.delayedTooltipHover'
+    on_unhover:t='::gcb.delayedTooltipHover'
+    <</isTooltipByHold>>
 
     <<#wideItemWithSlider>>
     behaviour:t='wrapBroadcast'
@@ -308,20 +321,17 @@ weaponry_item {
     }
   }
 
+  <<^isTooltipByHold>>
   title:t='$tooltipObj'
   tooltip-float:t='horizontal'
   tooltipObj {
     id:t='tooltip_<<id>>'
-    <<^useGenericTooltip>>
-    on_tooltip_open:t='onModificationTooltipOpen'
-    <</useGenericTooltip>>
-    <<#useGenericTooltip>>
-    tooltipId:t='<<genericTooltipId>>'
+    tooltipId:t='<<tooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'
-    <</useGenericTooltip>>
     on_tooltip_close:t='onTooltipObjClose'
     display:t='hide'
   }
+  <</isTooltipByHold>>
 
   modSlotButtonsNest {
     display:t='hide'
@@ -330,7 +340,6 @@ weaponry_item {
       holderId:t='<<id>>'
       class:t='additional'
       text:t=''
-      display:t='hide'
       canShow:t='<<altBtnCanShow>>'
       tooltip:t='<<altBtnTooltip>>'
       btnName:t='X'
@@ -358,11 +367,26 @@ weaponry_item {
       skip-navigation:t='yes'
       text:t='<<actionBtnText>>'
       on_click:t='onModActionBtn'
-      display:t='hide'
+      <<#isTooltipByHold>>
+      on_pushed:t='::gcb.delayedTooltipChildPush'
+      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+      <</isTooltipByHold>>
       btnName:t='A'
       hasIncreasedTopMargin:t='yes'
       ButtonImg {}
     }
+
+    <<#isTooltipByHold>>
+    dummy {
+      id:t='actionHoldDummy'
+      behavior:t='accesskey'
+      btnName:t='A'
+      on_pushed:t='::gcb.delayedTooltipChildPush'
+      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+    }
+    <</isTooltipByHold>>
   }
 
   <<#shortcutIcon>>

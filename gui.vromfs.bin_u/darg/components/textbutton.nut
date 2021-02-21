@@ -50,10 +50,10 @@ local textButton = @(fill_color, border_width) function(text, handler, params={}
 
   local font = params?.font ?? Fonts.medium_text //!!FIX ME: why real font name in general library?
   local size = params?.size ?? SIZE_TO_CONTENT
-  local halign = params?.halign ?? ALIGN_LEFT
-  local valign = params?.valign ?? ALIGN_CENTER
-  local sound = params?.style?.sound ?? {}
+  local {halign = ALIGN_LEFT, valign = ALIGN_CENTER} = params
+  local sound = params?.style.sound
   local textCtor = params?.textCtor ?? defTextCtor
+
   local function builder(sf) {
     return {
       watch = stateFlags
@@ -61,18 +61,18 @@ local textButton = @(fill_color, border_width) function(text, handler, params={}
       margin = params?.margin ?? btnMargin
       key = ("key" in params) ? params.key : handler
 
-      group = group
+      group
 
       rendObj = ROBJ_BOX
-      size = size
+      size
       fillColor = fill_color(sf, style, isEnabled)
       borderWidth = border_width
       borderRadius = hdpx(4)
-      halign = halign
-      valign = valign
+      halign
+      valign
       clipChildren = true
       borderColor = borderColor(sf, style, isEnabled)
-      sound = sound
+      sound
 
       children = textCtor({
         rendObj = ROBJ_DTEXT
@@ -84,8 +84,8 @@ local textButton = @(fill_color, border_width) function(text, handler, params={}
         maxWidth = pw(100)
         ellipsis = false
         margin = textMargin
-        font = font
-        group = group
+        font
+        group
         behavior = [Behaviors.Marquee]
         color = textColor(sf, style, isEnabled)
       }.__update(params?.textParams ?? {}), params, handler, group, sf)

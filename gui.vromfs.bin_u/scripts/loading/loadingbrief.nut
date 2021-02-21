@@ -1,5 +1,5 @@
 local { clearBorderSymbolsMultiline } = require("std/string.nut")
-local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local changeStartMission = require("scripts/missions/changeStartMission.nut")
 local { setDoubleTextToButton, setHelpTextOnLoading } = require("scripts/viewUtils/objectTextUpdate.nut")
 

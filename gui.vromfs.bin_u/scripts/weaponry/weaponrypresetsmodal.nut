@@ -7,9 +7,8 @@ local { TIERS_NUMBER,
 local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
-local { getTierDescTbl,
-        getWeaponItemViewParams,
-        updateWeaponTooltip } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
+local { getTierDescTbl, updateWeaponTooltip } = require("scripts/weaponry/weaponryTooltipPkg.nut")
 
 class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
 {

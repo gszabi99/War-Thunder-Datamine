@@ -52,7 +52,7 @@ local DEBUG_TABLE_DATA_PARAMS = {
   local addStr = params?.addStr ?? ""
   local silentMode = params?.silentMode ?? false
   local recursionLevel = params?.recursionLevel ?? 4
-  local printFn = params?.printFn ?? null
+  local printFn = params?.printFn
 
   if (printFn == null)
     printFn = silentMode ? @(t) ::print(t + "\n") : ::dagor.debug;

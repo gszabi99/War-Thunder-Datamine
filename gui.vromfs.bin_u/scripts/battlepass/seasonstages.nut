@@ -4,8 +4,11 @@ local { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
 } = require("scripts/battlePass/unlocksRewardsState.nut")
 local { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
 local { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
+local { BATTLE_PASS_CHALLENGE } = require("scripts/utils/genericTooltipTypes.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
+
+local overrideStagesIcon = ::Computed(@() basicUnlock.value?.meta.overrideStageIcon ?? {})
 
 local getStageStatus = @(stageIdx) (stageIdx + 1) < seasonLevel.value ? "past"
   : (stageIdx + 1) == seasonLevel.value ? "current"
@@ -66,13 +69,15 @@ local function getChallengeTooltipId(stage, stageChallenge) {
   if (challenge == null)
     return null
 
-  return ::g_tooltip_type.BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
+  return BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
 }
 
 local function getStageViewData(stageData, idxOnPage) {
   local { unlockId, stageStatus, prizeStatus, stage, isFree, rewards = null, warbondsShopLevel, stageChallenge } = stageData
+  local overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
   local itemId = rewards?.keys()[0]
   local currentWarbond = ::g_warbonds.getCurrentWarbond()
+  local isChallengeStage = stageChallenge != null
   return {
     holderId = unlockId
     rewardId = itemId
@@ -86,6 +91,7 @@ local function getStageViewData(stageData, idxOnPage) {
         hasOverlayIcon = false })
       : ""
     items = itemId != null ? [::ItemsManager.findItemById(itemId.tointeger())?.getViewData({
+        overrideLayeredImage = overrideStageIcon != null ? ::LayersIcon.getIconData(null, overrideStageIcon) : null
         enableBackground = false
         showAction = false
         showPrice = false
@@ -95,7 +101,10 @@ local function getStageViewData(stageData, idxOnPage) {
         count = rewards[itemId]
       })]
     : null
-    challengeTooltipId = getChallengeTooltipId(stage, stageChallenge)
+    stageIcon = overrideStageIcon ?? (isChallengeStage ? "#ui/gameuiskin#item_challenge" : null)
+    stageTooltipId = isChallengeStage
+      ? getChallengeTooltipId(stage, stageChallenge)
+      : null
   }
 }
 
