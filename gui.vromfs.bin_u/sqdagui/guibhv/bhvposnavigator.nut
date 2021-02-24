@@ -1,7 +1,12 @@
-local { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCentering
-} = require("sqDagui/guiBhv/guiBhvUtils.nut")
+local { markChildrenInteractive, markInteractive, markObjShortcutOnHover } = require("sqDagui/guiBhv/guiBhvUtils.nut")
+local { memoize } = require("std/functools.nut")
 
-const DEF_HOLD_DELAY = 700 //same with bhvButton
+local centeringStrToArray = memoize(function(str) {
+  local list = str.split(",")
+  if (list.len() != 2)
+    return [0.5, 0.5]
+  return list.map(@(v) v.tofloat() * 0.01)
+})
 
 //blk params:
 //  value
@@ -9,22 +14,18 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 
 class gui_bhv.posNavigator
 {
-  bhvId = "posNavigator"
   eventMask = ::EV_JOYSTICK | ::EV_PROCESS_SHORTCUTS | ::EV_MOUSE_L_BTN | ::EV_MOUSE_EXT_BTN | ::EV_MOUSE_DBL_CLICK
-    | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST | ::EV_ON_CMD | ::EV_ON_INSERT_REMOVE | ::EV_TIMER | ::EV_MOUSE_NOT_ON_OBJ
-  valuePID                 = ::dagui_propid.add_name_id("value")
-  selectedPID              = ::dagui_propid.add_name_id("value") //value = selected
-  moveTypeXPID             = ::dagui_propid.add_name_id("moveX")
-  moveTypeYPID             = ::dagui_propid.add_name_id("moveY")
-  fixedCoordPID            = ::dagui_propid.add_name_id("_fixedCoord")
-  fixedAxisPID             = ::dagui_propid.add_name_id("_fixedAxis")
-  disableFocusParentPID    = ::dagui_propid.add_name_id("disableFocusParent")
-  disableFixedCoordPID     = ::dagui_propid.add_name_id("disableFixedCoord")
-  lastMoveTimeMsecPID      = ::dagui_propid.add_name_id("_lastMoveTimeMsec")
-  canSelectNonePID         = ::dagui_propid.add_name_id("canSelectNone")
-  holdStartDelayPID        = ::dagui_propid.add_name_id("hold-start-delay"); //same id with bhvButton
-  holdTimePID              = ::dagui_propid.add_name_id("hold-time");
-  activatePushedIdxPID     = ::dagui_propid.add_name_id("_activatePushedIdx");
+              | ::EV_ON_FOCUS_SET | ::EV_ON_FOCUS_LOST | ::EV_ON_CMD | ::EV_ON_INSERT_REMOVE
+  valuePID    = ::dagui_propid.add_name_id("value")
+  selectedPID = ::dagui_propid.add_name_id("value") //value = selected
+  moveTypeXPID = ::dagui_propid.add_name_id("moveX")
+  moveTypeYPID = ::dagui_propid.add_name_id("moveY")
+  fixedCoordPID = ::dagui_propid.add_name_id("_fixedCoord")
+  fixedAxisPID = ::dagui_propid.add_name_id("_fixedAxis")
+  disableFocusParentPID = ::dagui_propid.add_name_id("disableFocusParent")
+  disableFixedCoordPID = ::dagui_propid.add_name_id("disableFixedCoord")
+  lastMoveTimeMsecPID = ::dagui_propid.add_name_id("_lastMoveTimeMsec")
+  canSelectNonePID = ::dagui_propid.add_name_id("canSelectNone")
   fixedCoordTimeoutMsec = 5000
 
   canChooseByMClick = false
@@ -33,7 +34,6 @@ class gui_bhv.posNavigator
   {
     if (obj?.value)
       setValue(obj, obj.value.tointeger())
-    obj.timer_interval_msec = "100"
     markChildrenInteractive(obj, true)
     markObjShortcutOnHover(obj, true)
     return ::RETCODE_NOTHING
@@ -42,8 +42,6 @@ class gui_bhv.posNavigator
   function onDetach(obj) {
     markChildrenInteractive(obj, false)
     markObjShortcutOnHover(obj, false)
-    if (obj.getIntProp(activatePushedIdxPID, -1) >= 0)
-      onActivateUnpushed(obj)
     return ::RETCODE_NOTHING
   }
 
@@ -236,19 +234,9 @@ class gui_bhv.posNavigator
 
   function onShortcutActivate(obj, is_down)
   {
-    if (is_down) {
-      ::set_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
-      onActivatePushed(obj, getValue(obj))
-      return ::RETCODE_HALT
-    }
-
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
-    if (pushedIdx < 0)
-      return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
-    if ((!wasHoldStarted || needActionAfterHold(obj)) && idx == pushedIdx)
+    if (!is_down)
       activateAction(obj)
-    return ::RETCODE_HALT
+    return ::RETCODE_HALT;
   }
 
   function findClickedObj(obj, mx, my)
@@ -267,63 +255,29 @@ class gui_bhv.posNavigator
   function selectItemByClick(obj, mx, my) {
     local clicked = findClickedObj(obj, mx, my)
     if (!clicked)
-      return -1
+      return ::RETCODE_NOTHING
 
     selectItem(obj, clicked.idx, clicked.obj, !canChooseByMClick)
     resetFixedCoord(obj)
     obj.sendNotify("click")
     if (canChooseByMClick)
       chooseItem(obj, clicked.idx, true)
-    return clicked.idx
-  }
-
-  function onLMouse(obj, mx, my, is_up, bits) {
-    if (!is_up) {
-      local isOnObj = !(bits & (is_up ? ::BITS_MOUSE_OUTSIDE : ::BITS_MOUSE_NOT_ON_OBJ))
-      if (!isOnObj)
-        return ::RETCODE_NOTHING
-      local { idx = -1 } = findClickedObj(obj, mx, my)
-      if (idx < 0)
-        return ::RETCODE_NOTHING
-
-      if (!(bits & ::BITS_MOUSE_TAP))
-        obj.getScene().setProtectedMouseCapture(obj)
-      onActivatePushed(obj, idx)
-      return ::RETCODE_HALT
-    }
-
-    if (obj.isMouseCaptured())
-      obj.getScene().setProtectedMouseCapture(null)
-
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
-    if (pushedIdx < 0)
-      return ::RETCODE_NOTHING
-
-    local wasHoldStarted = onActivateUnpushed(obj)
-    if (wasHoldStarted && !needActionAfterHold(obj))
-      return ::RETCODE_HALT
-    local { idx = -1 } = findClickedObj(obj, mx, my)
-    if (idx != pushedIdx)
-      return ::RETCODE_HALT
-
-    if (bits & ::BITS_MOUSE_DBL_CLICK) {
-      if (getValue(obj) == -1)
-        selectItemByClick(obj, mx, my)
-      activateAction(obj)
-      return ::RETCODE_HALT
-    }
-
-    selectItemByClick(obj, mx, my)
     return ::RETCODE_HALT
   }
 
-  function onModalChange(obj, isModal) {
-    if (!isModal)
-      return
-    if (obj.isMouseCaptured())
-      obj.getScene().setProtectedMouseCapture(null)
-    if (obj.getIntProp(activatePushedIdxPID, -1) >= 0)
-      onActivateUnpushed(obj)
+  function onLMouse(obj, mx, my, is_up, bits) {
+    if (is_up)
+      return ::RETCODE_NOTHING
+
+    if (!is_up && (bits&::BITS_MOUSE_DBL_CLICK) && (bits&::BITS_MOUSE_BTN_L)) {
+      if (getValue(obj) == -1)
+        selectItemByClick(obj, mx, my)
+      if (findClickedObj(obj, mx, my))
+        activateAction(obj)
+      return ::RETCODE_HALT;
+    }
+
+    return selectItemByClick(obj, mx, my)
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, bits)
@@ -338,7 +292,7 @@ class gui_bhv.posNavigator
     }
     if (findClickedObj(obj, mx, my)?.idx == getValue(obj))
       return ::RETCODE_PROCESSED
-    return selectItemByClick(obj, mx, my) >= 0 ? ::RETCODE_HALT : ::RETCODE_NOTHING
+    return selectItemByClick(obj, mx, my)
   }
 
   function onShortcutLeft(obj, is_down)
@@ -371,30 +325,17 @@ class gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    if (!isShortcutsByHover(obj))
+    if (is_down || !isShortcutsByHover(obj))
       return ::RETCODE_NOTHING
 
     local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
-    if (is_down) {
-      if (hoveredIdx == null)
-        return ::RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
-      onActivatePushed(obj, hoveredIdx)
+    if (hoveredIdx == null)
+      return ::RETCODE_NOTHING
+    if (hoveredIdx == getSelectedValue(obj)) {
+      activateAction(obj)
       return ::RETCODE_HALT
     }
-
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
-    if (pushedIdx < 0)
-      return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
-    if (pushedIdx != hoveredIdx)
-      return ::RETCODE_HALT
-
-    if (!wasHoldStarted || needActionAfterHold(obj))
-      if (hoveredIdx == getSelectedValue(obj))
-        activateAction(obj)
-      else
-        selectItem(obj, hoveredIdx, hoveredObj, true, true)
+    selectItem(obj, hoveredIdx, hoveredObj, true, true)
     return ::RETCODE_HALT
   }
 
@@ -530,7 +471,7 @@ class gui_bhv.posNavigator
   {
     local pos = obj.getPos()
     local size = obj.getSize().map(@(v) ::max(0, v))
-    return getObjCentering(obj)
+    return centeringStrToArray(obj.getFinalProp("mouse-pointer-centering") ?? "")
       .map(@(pointerMul, a) a == axis
         ? ::clamp(point[a], pos[a], pos[a] + ::min(1.0, 0.5 + pointerMul) * size[a])
         : pos[a] + pointerMul*size[a])
@@ -617,46 +558,7 @@ class gui_bhv.posNavigator
     return true;
   }
 
-  function onActivatePushed(obj, childIdx) {
-    if (childIdx < 0 || obj.getIntProp(activatePushedIdxPID, -1) >= 0)
-      return
-    obj.setIntProp(activatePushedIdxPID, childIdx)
-    obj.setFloatProp(holdTimePID, 0.0)
-    obj.sendSceneEvent("pushed")
-  }
-
-  getHoldStartDelay = @(obj) 0.001 * (obj.getFinalProp(holdStartDelayPID) ?? DEF_HOLD_DELAY).tointeger()
-
-  function onActivateUnpushed(obj) {
-    obj.setIntProp(activatePushedIdxPID, -1)
-    ::del_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
-
-    local isHoldFulfilled = obj.sendSceneEvent("hold_stop")
-    return isHoldFulfilled && obj.getFloatProp(holdTimePID, 0.0) >= getHoldStartDelay(obj)
-  }
-
-  function onMouseHover(obj, isHover) {
-    if (!isHover && obj.getIntProp(activatePushedIdxPID, -1) >= 0)
-      onActivateUnpushed(obj)
-    return ::RETCODE_NOTHING;
-  }
-
-  function onTimer(obj, dt) {
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
-    if (pushedIdx < 0)
-      return
-
-    local holdTime = obj.getFloatProp(holdTimePID, 0.0)
-    local holdDelay = getHoldStartDelay(obj)
-    local needEvent = holdTime < holdDelay
-    holdTime += dt
-    obj.setFloatProp(holdTimePID, holdTime)
-    if (needEvent && holdTime >= holdDelay)
-      obj.sendSceneEvent("hold_start")
-  }
-
   onInsert = @(obj, child, index) markInteractive(child, true)
   isShortcutsByHover = @(obj) obj.getFinalProp("shortcut-on-hover") == "yes"
   isOnlyHover = @(obj) obj.getFinalProp("move-only-hover") == "yes"
-  needActionAfterHold = @(obj) obj.getFinalProp("need-action-after-hold") == "yes"
 }

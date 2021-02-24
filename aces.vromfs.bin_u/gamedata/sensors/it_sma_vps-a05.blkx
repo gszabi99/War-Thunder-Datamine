@@ -9,6 +9,7 @@
       "rcs": 1.0,
       "range": 18000.0,
       "rangeMax": 25000.0,
+      "backScatteringBandNum": 2,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 5.0,
@@ -39,14 +40,14 @@
     "search": {
       "groundClutter": false,
       "friendFoeId": true,
-      "absDopplerSpeed": true,
+      "absRelSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 500.0,
         "maxValue": 20000.0,
         "maxUnambiguousValue": 80000.0
       },
-      "dopplerSpeed": {
+      "relSpeed": {
         "presents": true,
         "minValue": 10.0,
         "maxValue": 1000.0,

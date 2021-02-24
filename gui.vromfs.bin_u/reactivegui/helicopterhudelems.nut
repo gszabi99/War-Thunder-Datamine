@@ -14,7 +14,7 @@ local {CannonMode, IsCannonEmpty, CannonSelected, CannonReloadTime, CannonCount,
         AlertColor, IsLaserDesignatorEnabled, TargetAge, IsInsideLaunchZoneDist, GunInDeadZone,
         FovYaw, FovPitch, IsSightLocked, RocketSightMode, RocketAimVisible,
         RocketAimX, RocketAimY, TATargetVisible, HasTargetTracker, IRCMState,
-        IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, CurrentTime, IsMfdEnabled, VerticalSpeed
+        IsFlrEmpty, Flares, DistanceToGround, CurrentTime, IsMfdEnabled, VerticalSpeed
 } = require("helicopterState.nut")
 
 local aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
@@ -273,23 +273,12 @@ local function getAACaption() {
 
 local function getFlaresCaption() {
   local texts = [::loc("HUD/FLARES_SHORT")," "]
-  if (Flares.mode.value & CountermeasureMode.PERIODIC_COUNTERMEASURE)
-    texts.append(::loc("HUD/COUNTERMEASURE_PERIODIC"))
-  if (Flares.mode.value == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
+  if (Flares.mode.value & FlaresMode.PERIODIC_FLARES)
+    texts.append(::loc("HUD/FLARE_PERIODIC"))
+  if (Flares.mode.value == (FlaresMode.PERIODIC_FLARES | FlaresMode.MLWS_SLAVED_FLARES))
     texts.append(::loc("HUD/INDICATION_MODE_SEPARATION"))
-  if (Flares.mode.value & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
-    texts.append(::loc("HUD/COUNTERMEASURE_MLWS"))
-  return "".join(texts)
-}
-
-local function getChaffsCaption() {
-  local texts = [::loc("HUD/CHAFFS_SHORT")," "]
-  if (Chaffs.mode.value & CountermeasureMode.PERIODIC_COUNTERMEASURE)
-    texts.append(::loc("HUD/COUNTERMEASURE_PERIODIC"))
-  if (Chaffs.mode.value == (CountermeasureMode.PERIODIC_COUNTERMEASURE | CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE))
-    texts.append(::loc("HUD/INDICATION_MODE_SEPARATION"))
-  if (Chaffs.mode.value & CountermeasureMode.MLWS_SLAVED_COUNTERMEASURE)
-    texts.append(::loc("HUD/COUNTERMEASURE_MLWS"))
+  if (Flares.mode.value & FlaresMode.MLWS_SLAVED_FLARES)
+    texts.append(::loc("HUD/FLARE_MLWS"))
   return "".join(texts)
 }
 
@@ -563,15 +552,6 @@ local textParamsMap = {
     valuesWatched = [Flares.count, Flares.seconds,
       IsFlrEmpty]
     alertWatched = [IsFlrEmpty]
-  },
-  [HelicopterParams.CHAFFS] = {
-    title = @() Chaffs.count.value <= 0 ? ::loc("HUD/CHAFFS_SHORT") : getChaffsCaption()
-    value = generateBulletsTextFunction(Chaffs.count, Chaffs.seconds)
-    selected = @() ""
-    titleWatched = [Chaffs.count, Chaffs.mode]
-    valuesWatched = [Chaffs.count, Chaffs.seconds,
-      IsChaffsEmpty]
-    alertWatched = [IsChaffsEmpty]
   },
   [HelicopterParams.IRCM] = {
     title = @() ::loc("HUD/IRCM_SHORT")

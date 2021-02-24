@@ -76,7 +76,7 @@ local function colorMyNameInText(msg)
 }
 
 local function newMessage(from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
-    important = false, needCensore = false) {
+    important = false, needCensore = false, isMyActionInfo = false) {
   local text = ""
   local clanTag = ""
   local uid = null
@@ -158,7 +158,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
     clanTag = clanTag
     userColor = userColor
     isMeSender = messageType == MESSAGE_TYPE.MY
-    isSystemSender = messageType == MESSAGE_TYPE.SYSTEM
+    isMyActionInfo = isMyActionInfo
 
     msgs = [msg]
     msgsSrc = [msgSrc]

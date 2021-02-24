@@ -9,7 +9,7 @@ local optionsUtils = require("scripts/options/optionsUtils.nut")
 local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local soundDevice = ::require_native("soundDevice")
-local { getBulletsListHeader } = require("scripts/weaponry/weaponryDescription.nut")
+local { getBulletsListHeader } = require("scripts/weaponry/weaponryVisual.nut")
 local { setUnitLastBullets,
         getOptionsBulletsList } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
@@ -18,7 +18,6 @@ local {bombNbr} = require("scripts/unit/unitStatus.nut")
 local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 local { checkUnitSpeechLangPackWatch } = require("scripts/options/optionsManager.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
 //
 
 
@@ -543,8 +542,6 @@ local isWaitMeasureEvent = false
       optionsUtils.fillBoolOption(descr, "enableSoundSpeed", ::OPTION_ENABLE_SOUND_SPEED); break;
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
       optionsUtils.fillBoolOption(descr, "pitchBlockerWhileBraking", ::OPTION_PITCH_BLOCKER_WHILE_BRACKING); break;
-    case ::USEROPT_COMMANDER_CAMERA_IN_VIEWS:
-      optionsUtils.fillBoolOption(descr, "commanderCameraInViews", ::OPTION_COMMANDER_CAMERA_IN_VIEWS); break;
 
     case ::USEROPT_VIEWTYPE:
       descr.id = "viewtype"
@@ -656,7 +653,7 @@ local isWaitMeasureEvent = false
           })
        }
        descr.value = find_in_array(descr.values, ::get_option_flares_series())
-       defaultValue = 4
+       defaultValue = 5
        break
 
     case ::USEROPT_FLARES_SERIES_PERIODS:
@@ -673,57 +670,6 @@ local isWaitMeasureEvent = false
           })
        }
        descr.value = find_in_array(descr.values, ::get_option_flares_series_periods())
-       defaultValue = 1
-       break
-
-    case ::USEROPT_CHAFFS_PERIODS:
-       descr.id = "chaffs_periods"
-       descr.values = [0.1,0.2,0.5,1.0]
-       descr.items = []
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
-         local text = time.secondsToString(descr.values[i], true, true, 2)
-         local tooltipLoc = "guiHints/chaffs_periods/periods"
-         descr.items.append({
-          text = text
-          tooltip = ::loc(tooltipLoc, { sec = descr.values[i] })
-          })
-       }
-       descr.value = find_in_array(descr.values, ::get_option_chaffs_periods())
-       defaultValue = 0.1
-       break
-
-    case ::USEROPT_CHAFFS_SERIES:
-       descr.id = "chaffs_series"
-       descr.items = []
-       descr.values = [1,2,3,4]
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
-          local text = descr.values[i].tostring()
-          local tooltipLoc = "guiHints/chaffs_periods/series"
-         descr.items.append({
-          text = text
-          tooltip = ::loc(tooltipLoc, { num = descr.values[i] })
-          })
-       }
-       descr.value = find_in_array(descr.values, ::get_option_chaffs_series())
-       defaultValue = 4
-       break
-
-    case ::USEROPT_CHAFFS_SERIES_PERIODS:
-       descr.id = "chaffs_series_periods"
-       descr.items = []
-       descr.values = [1,2,5,10]
-       for (local i = 0; i < descr.values.len(); ++i)
-       {
-          local text = time.secondsToString(descr.values[i], true, true, 2)
-          local tooltipLoc = "guiHints/chaffs_periods/series_periods"
-         descr.items.append({
-          text = text
-          tooltip = ::loc(tooltipLoc, { sec = descr.values[i] })
-          })
-       }
-       descr.value = find_in_array(descr.values, ::get_option_chaffs_series_periods())
        defaultValue = 1
        break
 
@@ -776,28 +722,36 @@ local isWaitMeasureEvent = false
 
     case ::USEROPT_AEROBATICS_SMOKE_TYPE:
       descr.id = "aerobatics_smoke_type"
-      descr.cb = "onTripleAerobaticsSmokeSelected"
+      descr.cb = "onTripleAerobaticsSmokeSelected";
+      descr.items = ["#options/aerobaticsSmokeWings1", "#options/aerobaticsSmokeWings2", "#options/aerobaticsSmokeWings3",
+                     "#options/aerobaticsSmokeWings4", "#options/aerobaticsSmokeWings5", "#options/aerobaticsSmokeWings6",
+                     "#options/aerobaticsSmokeWings7",
+                     "#options/aerobaticsSmokeCenter1", "#options/aerobaticsSmokeCenter2", "#options/aerobaticsSmokeCenter3",
+                     "#options/aerobaticsSmokeCenter4", "#options/aerobaticsSmokeCenter5", "#options/aerobaticsSmokeCenter6",
+                     "#options/aerobaticsSmokeCenter7"]
+      descr.values = [1, 2, 3, 4, 5, 6, 7,
+                      8, 9, 10, 11, 12, 13, 14]
 
-      descr.items = []
-      descr.values = []
-      descr.unlocks <- []
+      local localSmokeType = ::get_option_aerobatics_smoke_type();
 
-      local localSmokeType = ::get_option_aerobatics_smoke_type()
-      foreach(idx, inst in aeroSmokesList.value)
+      if (::has_feature("AerobaticTricolorSmoke")) // triple color
       {
-        if ((idx == ::TRICOLOR_INDEX - 1) && !::has_feature("AerobaticTricolorSmoke")) //not triple color
-          continue
-
-        local unlockId = inst?.unlockId ?? ""
-        if (unlockId != "" && !(::g_unlocks.getUnlockById(unlockId) && ::is_unlocked(-1, unlockId)))
-          continue
-
-        descr.items.append(::loc(inst?.locId ?? ""))
-        descr.values.append(inst.id)
-        descr.unlocks.append(unlockId)
+        descr.items.append("#options/aerobaticsSmokeTriple");
+        descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1);
       }
+      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1))
+        localSmokeType = 1;
 
-      descr.value = descr.values.findindex(@(v) v == localSmokeType) ?? 1
+      local unlockId = "aerobatics_smoke_winter" // temp hardcode for winter smoke, will be read from the config when the code for this is ready
+      if (::g_unlocks.getUnlockById(unlockId) && ::is_unlocked(-1, unlockId))
+      {
+        descr.items.append("#options/aerobaticsSmokeWinter");
+        descr.values.append(::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2);
+      }
+      else if (localSmokeType == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 2))
+        localSmokeType = 1;
+
+      descr.value = find_in_array(descr.values, localSmokeType);
       break
 
     case ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR:
@@ -3950,17 +3904,6 @@ local isWaitMeasureEvent = false
       defaultValue = false
       break
 
-    case ::USEROPT_PRELOADER_SETTINGS:
-      descr.id = "preloader_settings"
-      descr.controlType = optionControlType.BUTTON
-      descr.funcName <- "onPreloaderSettings"
-      descr.delayed <- true
-      descr.shortcut <- "R3"
-      descr.text <- ::loc("preloaderSettings/title")
-      descr.title = descr.text
-      descr.showTitle <- false
-      break
-
     default:
       local optionName = ::user_option_name_by_idx?[optionId] ?? ""
       ::dagor.assertf(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
@@ -4094,15 +4037,6 @@ local isWaitMeasureEvent = false
       break
     case ::USEROPT_FLARES_SERIES_PERIODS:
       ::set_option_flares_series_periods(descr.values[value])
-      break
-    case ::USEROPT_CHAFFS_PERIODS:
-      ::set_option_chaffs_periods(descr.values[value])
-      break
-    case ::USEROPT_CHAFFS_SERIES:
-      ::set_option_chaffs_series(descr.values[value])
-      break
-    case ::USEROPT_CHAFFS_SERIES_PERIODS:
-      ::set_option_chaffs_series_periods(descr.values[value])
       break
     case ::USEROPT_USE_PERFECT_RANGEFINDER:
       ::set_option_use_perfect_rangefinder(value ? 1 : 0)
@@ -4767,7 +4701,6 @@ local isWaitMeasureEvent = false
     case ::USEROPT_MAP_ZOOM_BY_LEVEL:
     case ::USEROPT_SHOW_COMPASS_IN_TANK_HUD:
     case ::USEROPT_PITCH_BLOCKER_WHILE_BRACKING:
-    case ::USEROPT_COMMANDER_CAMERA_IN_VIEWS:
     case ::USEROPT_HIDE_MOUSE_SPECTATOR:
     case ::USEROPT_FIX_GUN_IN_MOUSE_LOOK:
     case ::USEROPT_ENABLE_SOUND_SPEED:
@@ -5238,11 +5171,6 @@ local isWaitMeasureEvent = false
       case "vlist":
         elemTxt = create_option_vlistbox(optionData.id, optionData.items, optionData.value, optionData.cb, true)
         isVlist = true
-        break
-
-      case "button":
-        elemTxt = ::handyman.renderCached(("gui/commonParts/button"), optionData)
-        haveOptText = optionData?.showTitle ?? false
         break
     }
 

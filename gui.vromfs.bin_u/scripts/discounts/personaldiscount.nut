@@ -48,7 +48,7 @@ local getDiscountByPath = function(path)
   if (path.len() == 0)
     return 0
 
-  local method = getMethodByCategory?[path[0]]
+  local method = getMethodByCategory?[path[0]] ?? null
   if (typeof(method) == "function")
     return method(path)
   return 0

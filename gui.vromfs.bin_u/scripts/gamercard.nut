@@ -5,7 +5,6 @@ local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { hasBattlePass } = require("scripts/battlePass/seasonState.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/items/boosterEffect.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -96,12 +95,12 @@ local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/it
           local valStr = ::g_language.decimalFormat(val)
           local tooltipText = "\n".concat(::getWpPriceText(::colorize("activeTextColor", valStr), true),
             ::loc("mainmenu/warpoints"),
-            ::get_current_bonuses_text(boosterEffectType.WP))
+            ::get_current_bonuses_text(::BoosterEffectType.WP))
 
           local buttonObj = obj.getParent()
           buttonObj.tooltip = tooltipText
-          buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false)? "yes" : "no"
-          buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true)? "yes" : "no"
+          buttonObj.showBonusCommon = ::have_active_bonuses_by_effect_type(::BoosterEffectType.WP, false)? "yes" : "no"
+          buttonObj.showBonusPersonal = ::have_active_bonuses_by_effect_type(::BoosterEffectType.WP, true)? "yes" : "no"
 
           obj.setValue(valStr)
           break
@@ -109,11 +108,11 @@ local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/it
           local valStr = ::Balance(0,0,val).toStringWithParams({isFrpAlwaysShown = true})
           local tooltipText = "\n".concat(::colorize("activeTextColor", valStr),
             ::loc("currency/freeResearchPoints/desc"),
-            ::get_current_bonuses_text(boosterEffectType.RP))
+            ::get_current_bonuses_text(::BoosterEffectType.RP))
 
           obj.tooltip = tooltipText
-          obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false)? "yes" : "no"
-          obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true)? "yes" : "no"
+          obj.showBonusCommon = ::have_active_bonuses_by_effect_type(::BoosterEffectType.RP, false)? "yes" : "no"
+          obj.showBonusPersonal = ::have_active_bonuses_by_effect_type(::BoosterEffectType.RP, true)? "yes" : "no"
           break
         case "name":
           if (::u.isEmpty(val))

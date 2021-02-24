@@ -1,5 +1,5 @@
 local contentPreset = require("scripts/customization/contentPreset.nut")
-local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
+local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
 
 ::back_from_briefing <- ::gui_start_mainmenu
 

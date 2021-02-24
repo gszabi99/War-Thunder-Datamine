@@ -160,6 +160,8 @@
   "showFireDamageReport": true,
   "showDelayedDamageReport": true,
   "newDamageTimer": 100.0,
+  "seriousOffenderPriorityTimer": 30.0,
+  "criticalOffenderPriorityTimer": 90.0,
   "friendlyFireImmortalOnLandTime": 30.0,
   "readyToDieRepairTimeMult": 3.0,
   "bailoutReadyToDieTime": 15.0,
@@ -2025,7 +2027,6 @@
         "hudTankHideForestall": false,
         "lastOffenderTimer": 12.0,
         "seriousOffenderTimer": 30.0,
-        "criticalOffenderPriorityTimer": 75.0,
         "tankGunnerCameraFromSight": false,
         "canLoseControlsByStamina": true,
         "staminaIndication": true,
@@ -2091,7 +2092,6 @@
         "hudTankHideForestall": true,
         "lastOffenderTimer": 15.0,
         "seriousOffenderTimer": 60.0,
-        "criticalOffenderPriorityTimer": 120.0,
         "hudShowUpEnemyByHit": true,
         "hudShowUpVisibleEnemy": true,
         "tankGunnerCameraFromSight": false,
@@ -2158,7 +2158,6 @@
         "hudTankHideForestall": true,
         "lastOffenderTimer": 15.0,
         "seriousOffenderTimer": 80.0,
-        "criticalOffenderPriorityTimer": 150.0,
         "hudShowUpEnemyByHit": false,
         "hudShowUpVisibleEnemy": true,
         "tankGunnerCameraFromSight": true,
@@ -2661,8 +2660,7 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true,
-        "showAttentionMarkForAircraft": false
+        "allowTargetingWOMarkersTanksCons": true
       },
       "team": {
         "hudMarkers": 1,
@@ -2677,8 +2675,7 @@
         "hitSpawnTime": 5.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true,
-        "showAttentionMarkForAircraft": true
+        "allowTargetingWOMarkersTanksCons": true
       },
       "all": {
         "hudMarkers": 2,
@@ -2694,8 +2691,7 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true,
-        "showAttentionMarkForAircraft": true
+        "allowTargetingWOMarkersTanksCons": true
       },
       "team_air_sb": {
         "hudMarkers": 3,
@@ -2710,8 +2706,7 @@
         "hitSpawnTime": 0.0,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true,
-        "showAttentionMarkForAircraft": false
+        "allowTargetingWOMarkersTanksCons": true
       },
       "team_worldwar": {
         "hudMarkers": 4,
@@ -2728,8 +2723,7 @@
         "showNotTraceableDetectIndicators": false,
         "allowTargetingWOMarkersShips": true,
         "allowTargetingWOMarkersTanksPC": false,
-        "allowTargetingWOMarkersTanksCons": true,
-        "showAttentionMarkForAircraft": true
+        "allowTargetingWOMarkersTanksCons": true
       }
     },
     "hudAircraftMarkersMaxDist": {
@@ -3049,7 +3043,7 @@
         "crashDamagePlayers": false,
         "crashDamageBots": true,
         "simulateBattery": false,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
+        "shipBrokenFunnelMaxRedynessMult": 0.85,
         "shipBrokenEngineRedynessMult": 0.5,
         "shipBrokenEngineCooldown": 30.0,
         "shipBrokenTransmissionCooldown": 30.0,
@@ -3091,7 +3085,7 @@
         "crashDamagePlayers": true,
         "crashDamageBots": true,
         "simulateBattery": true,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
+        "shipBrokenFunnelMaxRedynessMult": 0.85,
         "shipBrokenEngineRedynessMult": 0.5,
         "shipBrokenEngineCooldown": 30.0,
         "shipBrokenTransmissionCooldown": 30.0,
@@ -3116,7 +3110,7 @@
         "bombShatterDamageScaleForAircraft": [0.5,0.55,0.6],
         "crashDamagePlayers": true,
         "crashDamageBots": true,
-        "shipBrokenFunnelMaxRedynessMult": 0.5,
+        "shipBrokenFunnelMaxRedynessMult": 0.6,
         "shipBrokenElevatorMult": 0.8,
         "shipDamagedElevatorMult": 0.9,
         "simulateBattery": true
@@ -3759,7 +3753,6 @@
     "arcadeEngineSmokeRelativeHealth": 0.75,
     "arcadePlayerHpMultiplier": 1.0,
     "reloadingCooldownTime": 10.0,
-    "waitReloadingWhileChangeCrewman": 4.0,
     "isUnlimitedBombsOnArcade": true,
     "isUnlimitedMissilesOnArcade": true,
     "resqueRadius": 200.0,
@@ -5349,66 +5342,6 @@
     },
     {
       "elevator_20": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_21": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_22": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_23": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_24": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_25": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_26": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_27": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_28": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_29": {
-        "my": "ship_elevator",
-        "enemy": "ship_elevator"
-      }
-    },
-    {
-      "elevator_30": {
         "my": "ship_elevator",
         "enemy": "ship_elevator"
       }
@@ -8850,126 +8783,6 @@
         "my": "plotting_room",
         "enemy": "plotting_room"
       }
-    },
-    {
-      "handling_room_01": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_02": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_03": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_04": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_05": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_06": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_07": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_08": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_09": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_10": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_11": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_12": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_13": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_14": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_15": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_16": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_17": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_18": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_19": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
-    },
-    {
-      "handling_room_20": {
-        "my": "handling_room",
-        "enemy": "handling_room"
-      }
     }
   ],
   "wodParams": {
@@ -9385,15 +9198,6 @@
       },
       {
         "p": "coal_bunker_"
-      },
-      {
-        "p": "plotting_room_"
-      },
-      {
-        "p": "rangefinder_"
-      },
-      {
-        "p": "handling_room_"
       },
       {
         "p": {
@@ -11469,270 +11273,6 @@
           "name": "wheel_l_04_",
           "modelNames": "t55e1"
         }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "ratel_20"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "ratel_90"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "eland_90_mk_7"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "eland_90_mk_7"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "eland_90_mk_7"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "eland_90_mk_7"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "ratel_zt3"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "ptl_02"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_04_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_04_",
-          "modelNames": "rooikat_za_35"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_01_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_01_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_02_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_02_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_03_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_03_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_r_04_",
-          "modelNames": "rooikat_mttd"
-        }
-      },
-      {
-        "p": {
-          "name": "wheel_l_04_",
-          "modelNames": "rooikat_mttd"
-        }
       }
     ],
     "crew": [
@@ -11791,9 +11331,6 @@
       },
       {
         "p": "rangefinder_"
-      },
-      {
-        "p": "handling_room_"
       },
       {
         "p": "countermeasure_"
@@ -13863,150 +13400,6 @@
       },
       {
         "incRE": "american_town_building_3_floors_a_"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_a_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_b_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_c_dp_09"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_07"
-      },
-      {
-        "excRE": "soviet_town_building_5_floors_d_dp_08"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_04"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_05"
-      },
-      {
-        "excRE": "soviet_town_building_9_floors_a_dp_06"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_a_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_b_dp_03"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_01"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_02"
-      },
-      {
-        "excRE": "soviet_town_building_store_c_dp_03"
       }
     ],
     "hideForMode1": [
@@ -15316,11 +14709,8 @@
   "shipsShootingTracking": {
     "lifeTime": 2.0,
     "minDrawDist": 3500.0,
-    "maxDrawDist": 10000.0,
     "minCaliber": 0.1,
-    "maxCaliber": 0.203,
-    "trackMinWidthK": 10.0,
-    "trackMaxWidthK": 50.0
+    "maxCaliber": 0.203
   },
   "highlights": [
     {
@@ -15422,8 +14812,7 @@
       "initialDistance": 2000.0,
       "targetHeight": 900.0,
       "targetDistance": 5000.0,
-      "transitionViscosity": 5.0,
-      "disableHud": true
+      "transitionViscosity": 5.0
     }
   },
   "depthAO": {

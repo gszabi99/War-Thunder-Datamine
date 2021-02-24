@@ -3,8 +3,6 @@ local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local statsd = require("statsd")
 local { activeUnlocks, getUnlockReward } = require("scripts/unlocks/userstatUnlocksState.nut")
-local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
-} = require("scripts/utils/genericTooltipTypes.nut")
 
 ::g_battle_tasks <- null
 
@@ -662,7 +660,7 @@ local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
           res.append({
             text = decorator.getName()
             isUnlocked = decorator.isUnlocked()
-            tooltipMarkup = DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+            tooltipMarkup = ::g_tooltip_type.DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
           })
       }
       else {
@@ -715,15 +713,15 @@ local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
   function getTooltipMarkupByModeType(config)
   {
     if (config.type == "char_unit_exist")
-      return UNIT.getMarkup(config.id, {showProgress=true})
+      return ::g_tooltip_type.UNIT.getMarkup(config.id, {showProgress=true})
 
     if (isBattleTask(config.id))
-      return BATTLE_TASK.getMarkup(config.id, {showProgress=true})
+      return ::g_tooltip_type.BATTLE_TASK.getMarkup(config.id, {showProgress=true})
 
     if (activeUnlocks.value?[config.id] != null)
-      return BATTLE_PASS_CHALLENGE.getMarkup(config.id, {showProgress=true})
+      return ::g_tooltip_type.BATTLE_PASS_CHALLENGE.getMarkup(config.id, {showProgress=true})
 
-    return UNLOCK.getMarkup(config.id, {showProgress=true})
+    return ::g_tooltip_type.UNLOCK.getMarkup(config.id, {showProgress=true})
   }
 
   function getRefreshTimeTextForTask(task)
@@ -870,7 +868,7 @@ local { DECORATION, UNIT, BATTLE_TASK, BATTLE_PASS_CHALLENGE, UNLOCK
       progressMaxValue = config?.maxVal
       needShowProgressBar = progressData?.show
       progressBarValue = progressBarValue.tointeger()
-      getTooltipId = (isPromo || isShortDescription) && isTaskBattleTask ? @() BATTLE_TASK.getTooltipId(id) : null
+      getTooltipId = (isPromo || isShortDescription) && isTaskBattleTask ? @() ::g_tooltip_type.BATTLE_TASK.getTooltipId(id) : null
       isShortDescription = isShortDescription
       shouldRefreshTimer = config?.shouldRefreshTimer ?? false
     }

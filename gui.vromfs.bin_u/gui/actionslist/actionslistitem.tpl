@@ -23,9 +23,7 @@ actionListItem {
     <<#iconRotation>>
       rotation:t = '<<iconRotation>>'
     <</iconRotation>>
-    background-image:t='<<icon>>';
-    color-factor:t='0'
-  }
+    background-image:t='<<icon>>'; }
   <</icon>>
 
   <<#haveWarning>>
@@ -37,18 +35,14 @@ actionListItem {
     text:t='<<text>>';
     <<#isLink>>
       isLink:t='yes';
-      underline {
-        color-factor:t='0'
-      }
+      underline{}
     <</isLink>>
-    color-factor:t='0'
   }
 
   <<#haveDiscount>>
   discount_notification {
     id:t='discount_image';
     type:t='line'
-    color-factor:t='0'
   }
   <</haveDiscount>>
 }

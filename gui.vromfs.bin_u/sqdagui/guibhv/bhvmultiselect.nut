@@ -1,6 +1,5 @@
 class gui_bhv.MultiSelect extends gui_bhv.posNavigator
 {
-  bhvId = "MultiSelect"
   valuePID = ::dagui_propid.add_name_id("bitValue")  //values by bits   chosen:yes;
   selectedPID = ::dagui_propid.add_name_id("_selected")    //only 1     selected:yes;
 
@@ -68,22 +67,11 @@ class gui_bhv.MultiSelect extends gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    local value = (isShortcutsByHover(obj) ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)) ?? -1
-    if (is_down) {
-      if (value < 0)
-        return ::RETCODE_NOTHING
-      ::set_script_gui_behaviour_events(bhvId, obj, ::EV_MOUSE_HOVER_CHANGE)
-      onActivatePushed(obj, value)
-      return ::RETCODE_HALT
-    }
+    if (is_down)
+      return ::RETCODE_NOTHING
 
-    local pushedIdx = obj.getIntProp(activatePushedIdxPID, -1)
-    if (pushedIdx < 0)
-      return ::RETCODE_HALT
-    local wasHoldStarted = onActivateUnpushed(obj)
-    if ((!wasHoldStarted || needActionAfterHold(obj)) && pushedIdx == value)
-      chooseItem(obj, value)
-
+    local value = isShortcutsByHover(obj) ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)
+    chooseItem(obj, value)
     return ::RETCODE_HALT
   }
 

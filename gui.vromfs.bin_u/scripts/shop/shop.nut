@@ -8,7 +8,6 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
 local { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell
 } = require("shopUnitCellFill.nut")
 local unitContextMenuState = require("scripts/unit/unitContextMenuState.nut")
-local { hideWaitIcon } = require("scripts/utils/delayedTooltip.nut")
 
 local lastUnitType = null
 
@@ -127,7 +126,9 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
     local blk = ::get_shop_blk()
 
     local totalCountries = blk.blockCount()
-    local selAir = ::getAircraftByName(selAirName)
+    local selAir = getAircraftByName(selAirName)
+    local selAirCountry = ::getUnitCountry(selAir)
+    local selAirType = ::get_es_unit_type(selAir)
     for(local c = 0; c < totalCountries; c++)  //country
     {
       local cblk = blk.getBlock(c)
@@ -169,7 +170,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
             local air = getAircraftByName(airBlk.getBlockName())
             if (air)
             {
-              selected = selected || air.name == selAirName
+              selected = selected || (::get_es_unit_type(air) == selAirType && ::getUnitCountry(air) == selAirCountry)
 
               if (!air.isVisibleInShop())
                 continue
@@ -192,7 +193,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
                 if (!("rank" in airData))
                   airData.rank <- air.rank
                 airData.airsGroup.append(air)
-                selected = selected || air.name == selAirName
+                selected = selected || (::get_es_unit_type(air) == selAirType && ::getUnitCountry(air) == selAirCountry)
                 hasSquadronUnits = hasSquadronUnits || air.isSquadronVehicle()
               }
               if (airData.airsGroup.len()==0)
@@ -1426,7 +1427,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onUnitActivate(obj)
   {
-    hideWaitIcon()
     onAircraftClick(obj)
   }
 
@@ -1444,7 +1444,6 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
   }
 
   function onUnitClick(obj) {
-    hideWaitIcon()
     actionsListOpenTime = ::dagor.getCurTime()
     onAircraftClick(obj)
   }

@@ -1,6 +1,7 @@
 local time = require("scripts/time.nut")
 local seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local wwTopLeaderboard = require("scripts/worldWar/leaderboards/wwTopLeaderboard.nut")
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
 local { getCurrenNotCompletedUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
@@ -30,9 +31,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   selMap = null
   mapsListObj = null
   mapsListNestObj = null
+  leaderBoardsObj = null
   collapsedChapters = []
   descHandlerWeak = null
-  topMenuHandlerWeak = null
 
   hasClanOperation = false
   hasRightsToQueueClan = false
@@ -51,16 +52,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   function initScreen()
   {
     mapsTbl = {}
+    leaderBoardsObj = scene.findObject("top_list")
     mapsListObj = scene.findObject("maps_list")
     mapsListNestObj = showSceneBtn("operation_list", isDeveloperMode)
-
-    topMenuHandlerWeak = ::gui_handlers.TopMenuButtonsHandler.create(
-      scene.findObject("topmenu_menu_panel"),
-      this,
-      ::g_ww_top_menu_operation_map,
-      scene.findObject("left_gc_panel_free_width")
-    )
-    registerSubHandler(topMenuHandlerWeak)
 
     foreach (timerObjId in [
         "ww_status_check_timer",  // periodic ww status updates check
@@ -76,6 +70,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     }
 
     reinitScreen()
+    updateRightPanel()
     ::enableHangarControls(true)
 
     if (needToOpenBattles)
@@ -278,6 +273,36 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     return true
   }
 
+  function fillTopList()
+  {
+    if (!::has_feature("WorldWarLeaderboards"))
+      return false
+
+    if (::get_gui_option_in_mode(::USEROPT_PS4_ONLY_LEADERBOARD, ::OPTIONS_MODE_GAMEPLAY) != true
+      || ::has_feature("ConsoleSeparateWWLeaderboards"))
+    {
+      local callback = ::Callback(
+        function(modesData) {
+          local seasonDay = wwLeaderboardData.getSeasonDay(modesData?.tables)
+          if (seasonDay)
+            wwTopLeaderboard.initTop(this, scene.findObject("top_daily_players"),
+              "ww_users", seasonDay)
+        }, this)
+      wwLeaderboardData.requestWwLeaderboardModes(
+        "ww_users",
+        @(modesData) callback(modesData))
+      wwTopLeaderboard.initTop(this, scene.findObject("top_global_players"), "ww_users")
+      wwTopLeaderboard.initTop(this, scene.findObject("top_global_managers"), "ww_users_manager")
+    }
+    wwTopLeaderboard.initTop(this, scene.findObject("top_global_clans"),   "ww_clans")
+    return true
+  }
+
+  function showTopListBlock(isVisible = false)
+  {
+    showSceneBtn("top_list", isVisible)
+  }
+
   getTrophyLocId = @(blk) blk?.locId ?? ("worldwar/" + blk.getBlockName())
   getTrophyDesc = @(blk) ::loc(getTrophyLocId(blk))
   getTrophyTooltip = @(blk, timeText) ::loc(getTrophyLocId(blk) + "/desc", {time = timeText})
@@ -362,7 +387,12 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     if (!::check_obj(mapObj) || isMapObjChapter(mapObj))
       return
 
-    onOperationListSwitch()
+    local countriesContainerObj = scene.findObject("countries_container")
+    if (!canEditMapCountries(countriesContainerObj))
+      return
+
+    ::move_mouse_on_child_by_value(countriesContainerObj)
+    updateButtons()
   }
 
   isMapObjChapter = @(obj) !!obj?.collapse_header
@@ -451,6 +481,35 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       onSelectedMapInvalidate()
   }
 
+  function onOpenLeaderboard(obj)
+  {
+    openLeaderboard(obj.lb_mode, obj?.is_day_lb == "yes")
+  }
+
+  function onOpenSelectedTopLeaderboard(obj)
+  {
+    local topsObj = scene.findObject("top_list")
+    if (!::check_obj(topsObj) || !topsObj.isFocused())
+      return
+
+    local val = topsObj.getValue()
+    if (val < 0)
+      return
+
+    local topObj = topsObj.getChild(val)
+    local btnObj = topObj?.findObject?("btn_open_leaderboard")
+    if (::check_obj(btnObj))
+      openLeaderboard(btnObj.lb_mode, btnObj?.is_day_lb == "yes")
+  }
+
+  function openLeaderboard(modeName, isDayLb)
+  {
+    ::gui_start_modal_wnd(::gui_handlers.WwLeaderboard, {
+      beginningMode = modeName
+      needDayOpen = isDayLb
+    })
+  }
+
   function updateWindow()
   {
     updateQueueElementsInList()
@@ -496,6 +555,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     local isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
     local isMyClanOperation = hasMap && hasClanOperation &&
       getMyClanOperation()?.data.map == selMap?.name
+
+    showSceneBtn("btn_operation_descr", hasMap)
+    showSceneBtn("btn_operation_list", ::has_feature("WWOperationsList"))
 
     nearestAvailableMapToBattle = getNearestMapToBattle()
     local needShowBeginMapWaitTime = !(nearestAvailableMapToBattle?.isActive?() ?? true)
@@ -684,9 +746,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   {
     isDeveloperMode = !isDeveloperMode
     showSceneBtn("operation_list", isDeveloperMode)
-    local countriesContainerObj = scene.findObject("countries_container")
-    local selObj = canEditMapCountries(countriesContainerObj) ? countriesContainerObj : null
-
+    local selObj = leaderBoardsObj
     if (isDeveloperMode)
     {
       fillMapsList()
@@ -694,6 +754,11 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     }
     updateWindow()
     ::move_mouse_on_child_by_value(selObj)
+  }
+
+  function onOperationDescr()
+  {
+    openOperationsListModal()
   }
 
   function onBattlesBtnClick(obj)
@@ -737,7 +802,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function openOperationsListByMap(map)
   {
-    ::gui_start_modal_wnd(::gui_handlers.WwOperationsListModal,
+    ::handlersManager.loadHandler(::gui_handlers.WwOperationsListModal,
       { map = map, isDescrOnly = !::has_feature("WWOperationsList") })
   }
 
@@ -950,6 +1015,14 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
         msgId = "trophy_list_list"
       }
 
+      { obj = ["btn_operation_list"]
+        msgId = "hint_btn_join_operation"
+      }
+
+      { obj = ["btn_operation_descr"]
+        msgId = "hint_btn_operation_descr"
+      }
+
       { obj = ["btn_join_queue"]
         msgId = "hint_btn_join_queue"
       }
@@ -966,12 +1039,13 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     local worldWarUrlBtnKey = ::get_gui_regional_blk()?.worldWarUrlBtnKey ?? ""
     local isVisibleBtn = !::u.isEmpty(worldWarUrlBtnKey)
-    local btnObj = showSceneBtn("ww_wiki", isVisibleBtn)
-    if (!isVisibleBtn || !btnObj?.isValid())
+    local btnObj = showSceneBtn("btn_ww_url", isVisibleBtn)
+    if (!isVisibleBtn || !::check_obj(btnObj))
       return
 
-    btnObj.link = ::loc($"url/wWarBtn/{worldWarUrlBtnKey}")
-    btnObj.findObject("ww_wiki_text").setValue(::loc($"worldwar/urlBtn/{worldWarUrlBtnKey}"))
+    btnObj.setValue(::loc("worldwar/urlBtn/" + worldWarUrlBtnKey))
+    btnObj.link = ::loc("url/wWarBtn/" + worldWarUrlBtnKey)
+    btnObj.findObject("btn_ww_url_text").setValue(::loc("worldwar/urlBtn/" + worldWarUrlBtnKey))
   }
 
   function updateLeftPanel()
@@ -979,6 +1053,11 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     local isTrophyListVisible = fillTrophyList()
     local isUnlocksVisible =  fillUnlocksList()
     showSceneBtn("panel_left", isTrophyListVisible || isUnlocksVisible)
+  }
+
+  function updateRightPanel() {
+    local isTopListVisible =  fillTopList()
+    showSceneBtn("panel_right", isTopListVisible)
   }
 
   function onTimerBeginMapWaitTime(obj, dt)

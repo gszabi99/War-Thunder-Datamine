@@ -25,7 +25,6 @@ local TRIGGER_TYPE = {
   TURRETS     = "turrets"
   SMOKE       = "smoke"
   FLARES      = "flares"
-  CHAFFS      = "chaffs"
   BOMBS       = "bombs"
   MINES       = "mines"
   TORPEDOES   = "torpedoes"
@@ -41,7 +40,6 @@ local WEAPON_TYPE = {
   TURRETS     = "turrets"
   SMOKE       = "smoke"
   FLARES      = "flares"    // Flares (countermeasure)
-  CHAFFS      = "chaffs"
   BOMBS       = "bombs"
   MINES       = "mines"
   TORPEDOES   = "torpedoes"
@@ -51,7 +49,7 @@ local WEAPON_TYPE = {
 }
 
 local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
-  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS ]
+  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
 
 local WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -191,8 +189,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
   local unitType = ::get_es_unit_type(unit)
   foreach (weapon in (block % "Weapon"))
   {
-    if (weapon?.dummy
-      || (weapon?.triggerGroup == "commander" && weapon?.bullets == null))
+    if (weapon?.dummy)
       continue
 
     if (!weapon?.blk)
@@ -216,8 +213,6 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
           currentTypeName = WEAPON_TYPE.AAM
         else if (weapon.trigger == TRIGGER_TYPE.FLARES)
           currentTypeName = WEAPON_TYPE.FLARES
-        else if (weapon.trigger == TRIGGER_TYPE.CHAFFS)
-          currentTypeName = WEAPON_TYPE.CHAFFS
         else
           currentTypeName = WEAPON_TYPE.ROCKETS
 
@@ -241,8 +236,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     else if (unitType == ::ES_UNIT_TYPE_TANK ||
       ::isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
-        TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES,
-        TRIGGER_TYPE.CHAFFS]))
+        TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES ]))
     { //not a turret
       currentTypeName = WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
@@ -289,7 +283,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
         }
 
 
-    local needBulletParams = !::isInArray(currentTypeName, [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES,WEAPON_TYPE.CHAFFS ])
+    local needBulletParams = !::isInArray(currentTypeName, [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES])
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
     {

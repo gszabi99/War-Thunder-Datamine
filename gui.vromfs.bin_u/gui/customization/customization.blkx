@@ -673,7 +673,6 @@
               "style": "min-width:@buttonWidth",
               "btnName": "X",
               "visualStyle": "purchase",
-              "skip-navigation": "yes",
               "buttonWink": [],
               "buttonGlance": [],
               "img": {
@@ -699,7 +698,6 @@
               "display": "hide",
               "visualStyle": "purchase",
               "btnName": "X",
-              "skip-navigation": "yes",
               "buttonWink": [],
               "buttonGlance": [],
               "ButtonImg": [],
@@ -725,7 +723,6 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "visualStyle": "secondary",
-              "skip-navigation": "yes",
               "class": "image",
               "buttonWink": [],
               "img": {
@@ -744,7 +741,6 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "visualStyle": "purchase",
-              "skip-navigation": "yes",
               "buttonWink": [],
               "buttonGlance": [],
               "ButtonImg": [],
@@ -763,7 +759,6 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "visualStyle": "secondary",
-              "skip-navigation": "yes",
               "class": "image",
               "buttonWink": [],
               "img": {
@@ -781,7 +776,6 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "visualStyle": "secondary",
-              "skip-navigation": "yes",
               "class": "image",
               "buttonWink": [],
               "img": {
@@ -797,7 +791,6 @@
               "showButtonImageOnConsole": "no",
               "text": "#mainmenu/btnAircraftInfo",
               "btnName": "LB",
-              "skip-navigation": "yes",
               "class": "image",
               "img": {
                 "background-image": "#ui/gameuiskin#btn_info.svg"
@@ -813,8 +806,6 @@
               "text": "#mainmenu/btnAircraftInfo",
               "hideText": "yes",
               "externalLink": "yes",
-              "btnName": "LB",
-              "skip-navigation": "yes",
               "img": {
                 "background-image": "#ui/gameuiskin#btn_info.svg"
               },
@@ -822,8 +813,7 @@
                 "text": "#mainmenu/btnAircraftInfo",
                 "css-hier-invalidate": "yes",
                 "underline": []
-              },
-              "ButtonImg": []
+              }
             }
           },
           {
@@ -834,10 +824,23 @@
               "display": "hide",
               "showButtonImageOnConsole": "no",
               "class": "image",
-              "btnName": "RB",
-              "skip-navigation": "yes",
+              "btnName": "LB",
               "img": {
                 "background-image": "#ui/gameuiskin#slot_preset.svg"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_weapons",
+              "text": "#mainmenu/btnWeapons",
+              "on_click": "onWeaponsInfo",
+              "showButtonImageOnConsole": "no",
+              "class": "image",
+              "btnName": "LT",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_weapons.svg"
               },
               "ButtonImg": []
             }
@@ -850,10 +853,26 @@
               "showButtonImageOnConsole": "no",
               "class": "image",
               "btnName": "L3",
-              "skip-navigation": "yes",
               "img": {
                 "id": "btn_testflight_image",
                 "background-image": "#ui/gameuiskin#slot_testflight.svg"
+              },
+              "ButtonImg": []
+            }
+          },
+          {
+            "Button_text": {
+              "id": "btn_dm_viewer",
+              "text": "#mainmenu/btn_dm_viewer_none",
+              "on_click": "onAirInfoToggleDMViewer",
+              "showButtonImageOnConsole": "no",
+              "style": "min-width:@buttonWidth",
+              "btnName": "RB",
+              "class": "image",
+              "display": "hide",
+              "img": {
+                "id": "btn_dm_viewer_icon",
+                "background-image": "#ui/gameuiskin#btn_dm_viewer_none.svg"
               },
               "ButtonImg": []
             }
@@ -867,7 +886,6 @@
               "_on_click": "onBtnDecoratorEdit",
               "display": "hide",
               "visualStyle": "secondary",
-              "skip-navigation": "yes",
               "buttonWink": [],
               "ButtonImg": []
             }
@@ -878,42 +896,22 @@
               "text": "#msgbox/btn_delete",
               "showButtonImageOnConsole": "no",
               "btnName": "X",
-              "skip-navigation": "yes",
               "_on_click": "onBtnDeleteDecal",
               "display": "hide",
               "ButtonImg": []
             }
           },
           {
-            "Button_text": [
-              {
-                "id": "btn_apply"
-              },
-              {
-                "text": "#mainmenu/btnApply"
-              },
-              {
-                "showButtonImageOnConsole": "no"
-              },
-              {
-                "btnName": "A"
-              },
-              {
-                "skip-navigation": "yes"
-              },
-              {
-                "_on_click": "onBtnAccept"
-              },
-              {
-                "display": "hide"
-              },
-              {
-                "skip-navigation": "yes"
-              },
-              {
-                "ButtonImg": []
-              }
-            ]
+            "Button_text": {
+              "id": "btn_apply",
+              "text": "#mainmenu/btnApply",
+              "showButtonImageOnConsole": "no",
+              "btnName": "A",
+              "_on_click": "onBtnAccept",
+              "display": "hide",
+              "skip-navigation": "yes",
+              "ButtonImg": []
+            }
           },
           {
             "Button_text": {
@@ -921,7 +919,6 @@
               "text": "#collection/go_to_collection",
               "showButtonImageOnConsole": "no",
               "btnName": "Y",
-              "skip-navigation": "yes",
               "_on_click": "onCollectionButtonClick",
               "display": "hide",
               "ButtonImg": []
@@ -933,7 +930,6 @@
               "text": "#mainmenu/btnBack",
               "showButtonImageOnConsole": "no",
               "btnName": "B",
-              "skip-navigation": "yes",
               "_on_click": "onBtnBack",
               "ButtonImg": []
             }

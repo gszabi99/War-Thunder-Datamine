@@ -1,5 +1,3 @@
-local { fillItemDescr } = require("scripts/items/itemVisual.nut")
-
 local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.CUSTOM
@@ -11,7 +9,7 @@ local class ItemInfoHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateHandlerData(item, shopDesc = false, preferMarkup = false, params = null)
   {
     scene.scrollToView(true)
-    fillItemDescr(item, scene, this, shopDesc, preferMarkup, params)
+    ::ItemsManager.fillItemDescr(item, scene, this, shopDesc, preferMarkup, params)
 
     if (item == null)
     {

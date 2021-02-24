@@ -88,7 +88,6 @@ class ::gui_handlers.ShopSearchWnd extends ::gui_handlers.BaseGuiHandlerWT
           armyName = ::colorize("fadedTextColor", unitType.getArmyLocName())
           unitPlates = isUseUnitPlates ? [] : null
           units      = isUseUnitPlates ? null : []
-          isTooltipByHold = ::show_console_buttons
         }
 
         foreach (u in unitsList)

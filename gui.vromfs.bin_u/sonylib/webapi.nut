@@ -315,12 +315,6 @@ local function psnMatchLeave(id, player) {
   local data = { players = [ player ] }
   return createRequest(matchesApi, webApiMethodPost, $"{id}/players/actions/remove", {}, data)
 }
-
-local function psnMatchReportResults(id, result) {
-  local data = {matchResults = {version = 1, competitiveResult = result}}
-  return createRequest(matchesApi, webApiMethodPost, $"{id}/results", {}, data)
-}
-
 const PSN_MATCH_LEAVE_REASON_QUIT = "QUIT"
 const PSN_MATCH_LEAVE_REASON_FINISHED = "FINISHED"
 const PSN_MATCH_LEAVE_REASON_DISCONNECTED = "DISCONNECTED"
@@ -336,7 +330,6 @@ local matches = {
   updateStatus = psnMatchUpdateStatus
   join = psnMatchJoin
   leave = psnMatchLeave
-  reportResults = psnMatchReportResults
   LeaveReason = PSN_LEAVE_MATCH_REASONS
 }
 
@@ -383,7 +376,6 @@ return {
   psnMatchCreate
   psnMatchJoin
   psnMatchLeave
-  psnMatchReportResults
   psnMatchUpdateStatus
   PSN_MATCH_LEAVE_REASON_DISCONNECTED
   PSN_MATCH_LEAVE_REASON_FINISHED

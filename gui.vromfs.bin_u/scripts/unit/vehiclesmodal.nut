@@ -274,8 +274,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitResearch(p)
   {
-    local prevUnitName = p?.prevUnitName
-    local unitName = p?.unitName
+    local prevUnitName = p?.prevUnitName ?? null
+    local unitName = p?.unitName ?? null
 
     if (prevUnitName && prevUnitName != unitName)
       checkUnitItemAndUpdate(::getAircraftByName(prevUnitName))
@@ -286,7 +286,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   function onEventUnitBought(p)
   {
     ::update_gamercards()
-    checkUnitItemAndUpdate(::getAircraftByName(p?.unitName))
+    checkUnitItemAndUpdate(::getAircraftByName(p?.unitName ?? null))
   }
 
   function onEventFlushSquadronExp(p)
@@ -296,12 +296,12 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventModificationPurchased(p)
   {
-    checkUnitItemAndUpdate(p?.unit)
+    checkUnitItemAndUpdate(p?.unit ?? null)
   }
 
   function onEventUnitRepaired(p)
   {
-    checkUnitItemAndUpdate(p?.unit)
+    checkUnitItemAndUpdate(p?.unit ?? null)
   }
 }
 

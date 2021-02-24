@@ -359,8 +359,13 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
       ::gui_start_open_trophy_rewards_list({ rewardsArray = ::trophyReward.processUserlogData(arr) })
   }
 
-  function openChest()
+  function onOpenChest(obj = null)
   {
+    if (!isValid()) //onOpenchest is delayed callback
+      return
+
+    sendOpenTrophyStatistic(obj)
+    disableSeenUserlogs([userlog.id])
     isOpened = true
     if (callItemsRoulette())
       useSingleAnimation = false
@@ -393,13 +398,10 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
   function updateButtons()
   {
     showSceneBtn("btn_open", !isOpened)
+    showSceneBtn("btn_nav_open", !isOpened)
+    showSceneBtn("btn_close", rouletteAnimationFinished || (isOpened && useSingleAnimation))
     showSceneBtn("open_chest_animation", !rouletteAnimationFinished)
     showSceneBtn("btn_rewards_list", isOpened && rouletteAnimationFinished && (rewardsArray.len() > 1 || haveItems))
-
-    if (isOpened)
-      scene.findObject("btn_nav_open").setValue(rouletteAnimationFinished || useSingleAnimation
-        ? ::loc("mainmenu/btnClose")
-        : ::loc("msgbox/btn_skip"))
 
     ::show_facebook_screenshot_button(scene, isOpened && rouletteAnimationFinished)
     updateExpTexts()
@@ -410,18 +412,16 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
     rouletteAnimationFinished = true
   }
 
-  function goBack(obj = null)
+  function goBack()
   {
     if (!isOpened)
-    {
-      openChest()
-      sendOpenTrophyStatistic(obj)
-      disableSeenUserlogs([userlog.id])
-    }
+      onOpenChest()
     else if (!rouletteAnimationFinished)
       stopRouletteSpinning()
     else
+    {
       base.goBack()
+    }
   }
 
   function updateUnitItem(curUnit = null, obj = null)

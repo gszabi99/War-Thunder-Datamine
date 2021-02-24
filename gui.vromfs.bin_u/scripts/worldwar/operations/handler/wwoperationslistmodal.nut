@@ -251,20 +251,21 @@ class ::gui_handlers.WwOperationsListModal extends ::gui_handlers.BaseGuiHandler
   function updateButtons()
   {
     ::showBtn("operation_join_block", selOperation, scene)
-
+    ::showBtn("operation_create_block", !selOperation, scene)
     if (!selOperation)
     {
       local isListEmpty = opListObj.getValue() < 0
       local collapsedChapterBtnObj = ::showBtn("btn_collapsed_chapter", !isListEmpty, scene)
-      if (!isListEmpty && collapsedChapterBtnObj != null)
+      if (!isListEmpty && ::check_obj(collapsedChapterBtnObj))
       {
         local rowObj = opListObj.getChild(opListObj.getValue())
-        if (rowObj?.isValid())
+        if (::check_obj(rowObj))
           collapsedChapterBtnObj.setValue(rowObj?.collapsed == "yes"
             ? ::loc("mainmenu/btnExpand")
             : ::loc("mainmenu/btnCollapse"))
       }
 
+      ::showBtn("btn_create_operation", map.isClanQueueAvaliable(), scene)
       local operationDescText = scene.findObject("operation_short_info_text")
       operationDescText.setValue(getOpGroup().getOperationsList().len() == 0
         ? ::loc("worldwar/msg/noActiveOperations")

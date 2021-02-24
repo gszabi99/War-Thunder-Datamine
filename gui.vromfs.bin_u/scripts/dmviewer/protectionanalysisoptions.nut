@@ -11,8 +11,6 @@ local { getBulletsList,
         getLastFakeBulletsIndex,
         getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { WEAPON, MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 
 local options = {
   types = []
@@ -28,7 +26,6 @@ local options = {
 local targetTypeToThreatTypes = {
   [::ES_UNIT_TYPE_AIRCRAFT]   = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
   [::ES_UNIT_TYPE_HELICOPTER] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
-  [::ES_UNIT_TYPE_TANK] = [ ::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_TANK, ::ES_UNIT_TYPE_HELICOPTER ],
   [::ES_UNIT_TYPE_SHIP] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
   [::ES_UNIT_TYPE_BOAT] = [ ::ES_UNIT_TYPE_SHIP, ::ES_UNIT_TYPE_BOAT ],
 }
@@ -225,7 +222,7 @@ options.addTypes({
       items = ::u.map(list, @(v) {
         text  = ::format("[%.1f] %s", v.br, ::getUnitName(v.id))
         image = ::image_for_air(v.unit)
-        addDiv = UNIT.getMarkup(v.id, { showLocalState = false })
+        addDiv = ::g_tooltip_type.UNIT.getMarkup(v.id, { showLocalState = false })
       })
       local targetUnitId = options.targetUnit.name
       local preferredUnitId = value?.name ?? targetUnitId
@@ -317,7 +314,7 @@ options.addTypes({
 
           items.append({
             text = bulletsList.items[i]
-            addDiv = MODIFICATION.getMarkup(unit.name, value,
+            addDiv = ::g_tooltip_type.MODIFICATION.getMarkup(unit.name, value,
               { hasPlayerInfo = false })
           })
         }
@@ -356,7 +353,7 @@ options.addTypes({
 
             items.append({
               text = ::g_string.utf8ToUpper(::loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
-              addDiv = WEAPON.getMarkup(unit.name, presetName, {
+              addDiv = ::g_tooltip_type.WEAPON.getMarkup(unit.name, presetName, {
                 hasPlayerInfo = false,
                 weaponBlkPath = weaponBlkPath,
                 shouldShowEffects = false

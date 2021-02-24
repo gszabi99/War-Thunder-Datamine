@@ -1,5 +1,4 @@
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
-local { fillItemDescr } = require("scripts/items/itemVisual.nut")
 
 class ::WarbondAward
 {
@@ -232,7 +231,7 @@ class ::WarbondAward
       return false
 
     descObj.scrollToView(true)
-    fillItemDescr(item, descObj, handler, true, true,
+    ::ItemsManager.fillItemDescr(item, descObj, handler, true, true,
                                  { descModifyFunc = addAmountTextToDesc.bindenv(this) })
     return true
   }

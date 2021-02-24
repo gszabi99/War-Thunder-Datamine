@@ -4,7 +4,6 @@ local { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId
 } = require("scripts/battlePass/unlocksRewardsState.nut")
 local { curSeasonChallengesByStage } = require("scripts/battlePass/challenges.nut")
 local { getStageByIndex } = require("scripts/unlocks/userstatUnlocksState.nut")
-local { BATTLE_PASS_CHALLENGE } = require("scripts/utils/genericTooltipTypes.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 5
 
@@ -69,7 +68,7 @@ local function getChallengeTooltipId(stage, stageChallenge) {
   if (challenge == null)
     return null
 
-  return BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
+  return ::g_tooltip_type.BATTLE_PASS_CHALLENGE.getTooltipId(challenge.id)
 }
 
 local function getStageViewData(stageData, idxOnPage) {

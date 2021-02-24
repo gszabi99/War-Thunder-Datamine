@@ -368,8 +368,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 150.0,
-        "armorThickness": 30.0,
+        "hp": 200.0,
+        "armorThickness": 20.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -400,9 +400,7 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
-        "armorEffectiveThicknessMax": 20.0,
-        "hp": 100.0,
-        "genericEffectiveThicknessMax": 20.0,
+        "hp": 300.0,
         "track_r_dm": [],
         "track_l_dm": [],
         "track_r_01_dm": [],
@@ -412,21 +410,33 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "pressureDamageMult": 1.0,
-        "driver_dm": [],
-        "loader_dm": [],
-        "loader_01_dm": [],
-        "loader_02_dm": [],
-        "gunner_dm": [],
-        "gunner_01_dm": [],
-        "gunner_02_dm": [],
-        "gunner_03_dm": [],
-        "commander_dm": [],
-        "machine_gunner_dm": [],
-        "machine_gunner_01_dm": [],
-        "machine_gunner_02_dm": [],
-        "machine_gunner_03_dm": [],
-        "machine_gunner_04_dm": []
+        "driver_dm": {
+          "genericDamageMult": 3.0
+        },
+        "loader_dm": {
+          "genericDamageMult": 3.0
+        },
+        "loader_01_dm": {
+          "genericDamageMult": 3.0
+        },
+        "loader_02_dm": {
+          "genericDamageMult": 3.0
+        },
+        "gunner_dm": {
+          "genericDamageMult": 3.0
+        },
+        "commander_dm": {
+          "genericDamageMult": 3.0
+        },
+        "machine_gunner_01_dm": {
+          "genericDamageMult": 3.0
+        },
+        "machine_gunner_02_dm": {
+          "genericDamageMult": 3.0
+        },
+        "machine_gunner_dm": {
+          "genericDamageMult": 3.0
+        }
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -1763,7 +1773,7 @@
   },
   {
     "gunConvergence": {
-      "defaultDistance": 800.0,
+      "distance": 800.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2645,6 +2655,18 @@
             "explosionEvent": "ammo_explosion",
             "wreckedPartId": 0,
             "autoLoad": true,
+            "ammo_turret_06_dm": {
+              "count": 1
+            },
+            "ammo_turret_07_dm": {
+              "count": 1
+            },
+            "ammo_turret_08_dm": {
+              "count": 1
+            },
+            "ammo_turret_09_dm": {
+              "count": 1
+            },
             "ammo_turret_10_dm": {
               "count": 1
             },
@@ -2665,18 +2687,6 @@
             },
             "ammo_turret_16_dm": {
               "count": 1
-            },
-            "ammo_turret_17_dm": {
-              "count": 1
-            },
-            "ammo_turret_18_dm": {
-              "count": 1
-            },
-            "ammo_turret_19_dm": {
-              "count": 1
-            },
-            "ammo_turret_20_dm": {
-              "count": 1
             }
           }
         },
@@ -2695,18 +2705,6 @@
               "count": 1
             },
             "ammo_turret_05_dm": {
-              "count": 1
-            },
-            "ammo_turret_06_dm": {
-              "count": 1
-            },
-            "ammo_turret_07_dm": {
-              "count": 1
-            },
-            "ammo_turret_08_dm": {
-              "count": 1
-            },
-            "ammo_turret_09_dm": {
               "count": 1
             },
             "ammo_body_01_dm": {
@@ -2767,6 +2765,18 @@
               "count": 1
             },
             "ammo_body_20_dm": {
+              "count": 1
+            },
+            "ammo_body_21_dm": {
+              "count": 1
+            },
+            "ammo_body_22_dm": {
+              "count": 1
+            },
+            "ammo_body_23_dm": {
+              "count": 1
+            },
+            "ammo_body_24_dm": {
               "count": 1
             }
           }

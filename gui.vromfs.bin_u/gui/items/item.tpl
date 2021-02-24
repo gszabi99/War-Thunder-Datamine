@@ -9,7 +9,6 @@ itemDiv {
   <</active>>
 
   enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
-  <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
 
   <<#today>>
   today:t='yes'
@@ -211,7 +210,6 @@ itemDiv {
     <<^isAllBought>>
     <<#price>>
     tdiv {
-      id:t='price'
       position:t='absolute'
       left:t='-1@itemPadding'
       top:t='ph -0.5@dIco -1@dp +1@itemPadding -h/2'
@@ -315,7 +313,7 @@ itemDiv {
 
 
 
-  <<^isTooltipByHold>>
+
   <<#tooltipId>>
   tooltipObj {
     id:t='tooltip_<<tooltipId>>'
@@ -326,6 +324,5 @@ itemDiv {
   title:t='$tooltipObj';
   tooltip-float:t='<<^tooltipFloat>>horizontal<</tooltipFloat>><<tooltipFloat>>'
   <</tooltipId>>
-  <</isTooltipByHold>>
 }
 <</items>>

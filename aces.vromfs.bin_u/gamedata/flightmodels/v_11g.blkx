@@ -1,7 +1,6 @@
 {
   "fmFile": "fm/v_11g.blk",
   "model": "v_11g",
-  "harmonizationSuffix": "_tomoe",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_attacker_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.149,
@@ -2474,14 +2473,14 @@
       "preset": {
         "name": "v_11g_250lbs",
         "blk": "gameData/FlightModels/weaponPresets/v_11g_250lbs.blk",
-        "reqModification": "b-25_sbc"
+        "reqModification": "b-25_lbc"
       }
     },
     {
       "preset": {
         "name": "v_11g_500lbs",
         "blk": "gameData/FlightModels/weaponPresets/v_11g_500lbs.blk",
-        "reqModification": "b-25_mbc"
+        "reqModification": "b-17_sbc"
       }
     }
   ],
@@ -2610,14 +2609,14 @@
       "reqModification": "bmg30_turret_belt_pack",
       "tier": 4
     },
-    "b-25_sbc": {
+    "b-17_sbc": {
       "modClass": "weapon",
       "tier": 1
     },
-    "b-25_mbc": {
+    "b-25_lbc": {
       "modClass": "weapon",
       "tier": 3,
-      "reqModification": "b-25_sbc"
+      "reqModification": "b-17_sbc"
     }
   },
   "user_skin": [
@@ -2642,23 +2641,6 @@
     {
       "replace_tex": {
         "from": "v_11g_n_dmg*"
-      }
-    }
-  ],
-  "default_skin_tomoe": [
-    {
-      "name": "v_11g_tomoe"
-    },
-    {
-      "replace_tex": {
-        "from": "v_11g_a*",
-        "to": "v_11g_a_tomoe*"
-      }
-    },
-    {
-      "replace_tex": {
-        "from": "v_11g_a_dmg*",
-        "to": "v_11g_a_tomoe_dmg*"
       }
     }
   ],
