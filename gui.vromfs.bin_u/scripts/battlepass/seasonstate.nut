@@ -76,7 +76,7 @@ local seasonLevel = ::Computed(@() levelExp.value.level)
 local maxSeasonLvl = ::Computed(@() ::max(basicUnlock.value?.meta.mainPrizeStage ?? 1,
   premiumUnlock.value?.meta.mainPrizeStage ?? 1))
 
-local loginUnlockId = ::Computed(@() $"battlepass_login_streak_{season.value}")
+local loginUnlockId = ::Computed(@() $"battlepass_login_streak_1")
 local loginUnlock = ::Computed(@() activeUnlocks.value?[loginUnlockId.value])
 local loginStreak = ::Computed(@() loginUnlock.value?.stage ?? 0)
 
