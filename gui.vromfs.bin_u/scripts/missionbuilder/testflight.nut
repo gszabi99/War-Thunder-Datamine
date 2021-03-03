@@ -1,5 +1,7 @@
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { hasFlares, bombNbr } = require("scripts/unit/unitStatus.nut")
+local { hasFlares, bombNbr, hasChaffs } = require("scripts/unit/unitStatus.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
 ::last_called_gui_testflight <- null
@@ -29,7 +31,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   multipleInstances = false
   wndGameMode = ::GM_TEST_FLIGHT
   wndOptionsMode = ::OPTIONS_MODE_TRAINING
-  applyAtClose = false
   afterCloseFunc = null
   shouldSkipUnitCheck = false
 
@@ -91,6 +92,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     checkBulletsRows()
     checkVehicleModificationRow()
     updateWeaponOptions()
+    updateTripleAerobaticsSmokeOptions()
   }
 
   function updateWeaponOptions() {
@@ -99,13 +101,13 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     checkBombSeriesRow()
     checkDepthChargeActivationTimeRow()
     updateTorpedoDiveDepth()
-    updateFlaresOptions()
+    updateCountermeasureOptions()
   }
 
-  function updateFlaresOptions() {
-    checkFlaresPeriodsRow()
-    checkFlaresSeriesRow()
-    checkFlaresSeriesPeriodsRow()
+  function updateCountermeasureOptions() {
+    checkCountermeasurePeriodsRow()
+    checkCountermeasureSeriesRow()
+    checkCountermeasureSeriesPeriodsRow()
   }
 
   function checkBulletsRows()
@@ -165,6 +167,15 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       skin_options.append([::USEROPT_USER_SKIN, "spinner"])
 
     options.extend(skin_options)
+
+    if (unit?.isAir())
+      options.append(
+        [::USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner"],
+        [::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner"]
+      )
+
     if (unit?.isAir() || unit?.isHelicopter?())
       options.append(
         [::USEROPT_GUN_TARGET_DISTANCE, "spinner"],
@@ -175,7 +186,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
         [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
         [::USEROPT_FLARES_SERIES, "spinner"],
         [::USEROPT_FLARES_SERIES_PERIODS, "spinner"],
-        [::USEROPT_FLARES_PERIODS, "spinner"]
+        [::USEROPT_FLARES_PERIODS, "spinner"],
+        [::USEROPT_CHAFFS_SERIES, "spinner"],
+        [::USEROPT_CHAFFS_SERIES_PERIODS, "spinner"],
+        [::USEROPT_CHAFFS_PERIODS, "spinner"]
       )
 
     if (unit?.isShipOrBoat())
@@ -349,6 +363,8 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       }, misBlk)
 
     ::mergeToBlk(::missionBuilderVehicleConfigForBlk, misBlk)
+
+    actionBarInfo.cacheActionDescs(::get_action_bar_unit_name())
 
     ::select_training_mission(misBlk)
     guiScene.performDelayed(this, ::gui_start_flight)
@@ -548,6 +564,16 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     updateWeaponOptions()
   }
 
+  function onTripleAerobaticsSmokeSelected(obj)
+  {
+    local option = get_option_by_id(obj?.id)
+    if (!option)
+      return
+
+    ::set_option(option.type, obj.getValue(), option)
+    updateTripleAerobaticsSmokeOptions()
+  }
+
   function setLastBulletsCache()
   {
     local bulletGroups = weaponsSelectorWeak ? weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
@@ -627,31 +653,37 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     updateOption(::USEROPT_BOMB_SERIES)
   }
 
-  function checkFlaresPeriodsRow()
+  function checkCountermeasurePeriodsRow()
   {
     local option = ::get_option(::USEROPT_FLARES_PERIODS)
-    if (!option)
-      return
+    if (option)
+      showOptionRow(option, hasFlares(unit))
 
-    showOptionRow(option, hasFlares(unit))
+    option = ::get_option(::USEROPT_CHAFFS_PERIODS)
+    if (option)
+      showOptionRow(option, hasChaffs(unit))
   }
 
-  function checkFlaresSeriesRow()
+  function checkCountermeasureSeriesRow()
   {
     local option = ::get_option(::USEROPT_FLARES_SERIES)
-    if (!option)
-      return
+    if (option)
+      showOptionRow(option, hasFlares(unit))
 
-    showOptionRow(option, hasFlares(unit))
+    option = ::get_option(::USEROPT_CHAFFS_SERIES)
+    if (option)
+      showOptionRow(option, hasChaffs(unit))
   }
 
-  function checkFlaresSeriesPeriodsRow()
+  function checkCountermeasureSeriesPeriodsRow()
   {
     local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
-    if (!option)
-      return
+    if (option)
+      showOptionRow(option, hasFlares(unit))
 
-    showOptionRow(option, hasFlares(unit))
+    option = ::get_option(::USEROPT_CHAFFS_SERIES_PERIODS)
+    if (option)
+      showOptionRow(option, hasChaffs(unit))
   }
 
   function checkDepthChargeActivationTimeRow()
@@ -662,6 +694,22 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
     showOptionRow(option, unit?.isDepthChargeAvailable?()
       && unit.getAvailableSecondaryWeapons().hasDepthCharges)
+  }
+
+  function updateTripleAerobaticsSmokeOptions()
+  {
+    local aerobaticsSmokeOptions = find_options_in_containers([
+      ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR,
+      ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR,
+      ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR
+    ])
+
+    if (!aerobaticsSmokeOptions.len())
+      return
+
+    local show = isTripleColorSmokeAvailable()
+    foreach(option in aerobaticsSmokeOptions)
+      showOptionRow(option, show)
   }
 
   function updateTorpedoDiveDepth() {
@@ -697,10 +745,10 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
   }
 
   function onEventModificationChanged(p) {
-    doWhenActiveOnce("updateFlaresOptions")
+    doWhenActiveOnce("updateCountermeasureOptions")
   }
 
   function onEventModificationPurchased(p) {
-    doWhenActiveOnce("updateFlaresOptions")
+    doWhenActiveOnce("updateCountermeasureOptions")
   }
 }

@@ -23,5 +23,5 @@ subscriptions.addListenersWithoutEnv({
 
 return {
   checkUnitSpeechLangPackWatch
-  isTripleColorSmokeAvailable = @() ::has_feature("AerobaticTricolorSmoke") && (::get_option_aerobatics_smoke_type() == (::MAX_AEROBATICS_SMOKE_INDEX * 2 + 1))
+  isTripleColorSmokeAvailable = @() ::has_feature("AerobaticTricolorSmoke") && (::get_option_aerobatics_smoke_type() == ::TRICOLOR_INDEX)
 }

@@ -1,0 +1,28 @@
+@const infoCircleSize: (18@sf/@pf) \ 1;
+@const infoBtnIconSize: (22@sf/@pf) \ 1;
+
+holdWaitPlace {
+  position:root;
+  input-transparent:yes;
+  order-popup:yes;
+}
+
+holdWaitIconBg, holdWaitIcon {
+  position:absolute;
+  pos:-w, 50%ph-50%h;
+  size:44@sf/@pf, 44@sf/@pf;
+  background-svg-size:44@sf/@pf, 44@sf/@pf;
+  input-transparent:yes;
+
+  background-color:#20808080;
+  background-image:#ui/gameuiskin#circular_progress_1.svg;
+}
+
+holdWaitIcon {
+  re-type:sector;
+  background-color:@white;
+  behavior:increment;
+  inc-target:sector-angle-2;
+  sector-angle-1:0;
+  inc-factor:514;
+}

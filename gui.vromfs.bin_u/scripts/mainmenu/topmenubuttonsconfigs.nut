@@ -28,6 +28,7 @@ local {
   checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
 
 local template = {
   id = ""
@@ -317,12 +318,12 @@ local list = {
   }
   MARKETPLACE = {
     text = @() "#mainmenu/marketplace"
-    onClickFunc = @(obj, handler) ::ItemsManager.goToMarketplace()
+    onClickFunc = @(obj, handler) goToMarketplace()
     link = ""
     isLink = @() true
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
-    isHidden = @(...) !::ItemsManager.isMarketplaceEnabled() || !::isInMenu()
+    isHidden = @(...) !isMarketplaceEnabled() || !::isInMenu()
   }
   COLLECTIONS = {
     text = @() "#mainmenu/btnCollections"

@@ -242,6 +242,13 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
   }
+//
+
+
+
+
+
+
 //-------------------------------------------------------
   {
     id = "ID_TANK_VIEW_HEADER"

@@ -54,11 +54,11 @@
     "explodeRadius": [0.5,1.0],
     "fuseDelayDist": 0.5,
     "relativeVelArmorShift": [200.0,1000.0],
-    "groundCollisionEffect": "big_ground_splash",
-    "groundFxScale": [0.9,1.1],
-    "waterFxScale": [0.9,1.1],
-    "ricochetEffect": "cannon_ricochet",
-    "waterCollisionEffect": "20_ap_water_splash",
+    "explosionEffect": "hit_106_132mm_dirt_ap",
+    "groundCollisionEffect": "hit_106_132mm_dirt_ap",
+    "ricochetEffect": "hit_106_132mm_metal_ap",
+    "waterCollisionEffect": "hit_106_132mm_water",
+    "explosionPatchRadius": 2.8,
     "stabilityRicochetModifier": [
       {
         "mod1": [0.0,0.05]
@@ -95,14 +95,80 @@
       "trail": "black"
     },
     "collisions": {
-      "steel": {
-        "fx": "old_ship_hit_ball"
+      "default": {
+        "fx": "hit_106_132mm_dirt_ap"
       },
-      "armor": {
-        "fx": "old_ship_hit_ball"
+      "horLandMesh": {
+        "fx": "hit_106_132mm_dirt_ap"
+      },
+      "soil": {
+        "fx": "hit_106_132mm_dirt_ap"
+      },
+      "dirt": {
+        "fx": "hit_106_132mm_dirt_ap"
+      },
+      "road": {
+        "fx": "hit_106_132mm_dirt_ap"
+      },
+      "roadSoil": {
+        "fx": "hit_106_132mm_dirt_ap"
+      },
+      "sand": {
+        "fx": "hit_106_132mm_sand_ap"
+      },
+      "duneSand": {
+        "fx": "hit_106_132mm_sand_ap"
+      },
+      "roadSand": {
+        "fx": "hit_106_132mm_sand_ap"
+      },
+      "quickSand": {
+        "fx": "hit_106_132mm_sand_ap"
+      },
+      "snow": {
+        "fx": "hit_106_132mm_snow_ap"
+      },
+      "ice": {
+        "fx": "hit_106_132mm_snow_ap"
+      },
+      "roadSnow": {
+        "fx": "hit_106_132mm_snow_ap"
+      },
+      "snowLower": {
+        "fx": "hit_106_132mm_snow_ap"
+      },
+      "glass": {
+        "fx": "hit_106_132mm_metal_ap"
       },
       "wood": {
-        "fx": "old_ship_hit_ball"
+        "fx": "hit_106_132mm_wood_ap"
+      },
+      "steel": {
+        "fx": "hit_106_132mm_metal_ap"
+      },
+      "metal": {
+        "fx": "hit_106_132mm_metal_ap"
+      },
+      "buildings": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "verLandMesh": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "concrete": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "rocks": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "rocksSlippery": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "fabric": {
+        "fx": "hit_106_132mm_stone_ap"
+      },
+      "stone_snow": {
+        "fx": "hit_106_132mm_snow_ap"
       }
     }
   }

@@ -1,7 +1,6 @@
-local { getDefaultBulletName } = require("scripts/weaponry/weaponryVisual.nut")
-local { isFakeBullet,
-        getBulletsSetData,
-        getBulletsIconView } = require("scripts/weaponry/bulletsInfo.nut")
+local { getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
+local { isFakeBullet, getBulletsSetData, getBulletsIconView } = require("scripts/weaponry/bulletsInfo.nut")
+local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 
 const LONG_ACTIONBAR_TEXT_LEN = 6;
 
@@ -163,7 +162,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
           return getBulletsIconView(data)
         }
       )
-      viewItem.tooltipId <- ::g_tooltip.getIdModification(unit.name, modifName, { isInHudActionBar = true })
+      viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
       viewItem.tooltipDelayed <- !canControl
     }
     else if (item.type == ::EII_ARTILLERY_TARGET)

@@ -1,6 +1,6 @@
 local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { getParametersByCrewId } = require("scripts/crew/crewSkillParameters.nut")
-local { getWeaponXrayDescText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponXrayDescText } = require("scripts/weaponry/weaponryDescription.nut")
 local { KGF_TO_NEWTON,
         getLastWeapon,
         isCaliberCannon,
@@ -563,6 +563,10 @@ const AFTERBURNER_CHAMBER = 3
     local angleValue = ::getTblValue("angle", params, null)
     if (angleValue != null)
       desc.append(::loc("armor_class/impact_angle") + ::nbsp + ::round(angleValue) + ::nbsp + ::loc("measureUnits/deg"))
+
+    local headingAngleValue = ::getTblValue("heading_angle", params, null)
+    if (headingAngleValue != null)
+      desc.append("headingAngle" + ::nbsp + ::round(headingAngleValue) + ::nbsp + ::loc("measureUnits/deg"))
 
     if (effectiveThickness)
     {

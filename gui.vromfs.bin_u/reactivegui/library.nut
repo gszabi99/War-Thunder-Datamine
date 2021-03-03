@@ -8,6 +8,14 @@ global enum Layers {
 }
 
 global const LINE_WIDTH = 1.6
+global const INVALID_ENTITY_ID = 0//::ecs.INVALID_ENTITY_ID
+
+local function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null){
+  local container = persistFunc(persistKey, @() {v=defVal})
+  local watch = observableInitArg==null ? Watched(container.v) : Watched(container.v, observableInitArg)
+  watch.subscribe(@(v) container.v=v)
+  return watch
+}
 
 ::cross_call <- class {
   path = null
@@ -32,3 +40,6 @@ global const LINE_WIDTH = 1.6
 }()
 
 ::str <- @(...) "".join(vargv)
+
+::mkWatched <- mkWatched //warning disable: -ident-hides-ident
+::log_for_user <- log_.dlog  //disable: -dlog-warn

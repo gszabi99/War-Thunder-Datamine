@@ -29,7 +29,7 @@ local ItemGenerator = class {
     exchange = itemDefDesc?.exchange ?? ""
     bundle   = itemDefDesc?.bundle ?? ""
     isPack   = ::isInArray(genType, [ "bundle", "delayedexchange" ])
-    tags     = itemDefDesc?.tags ?? null
+    tags     = itemDefDesc?.tags
     timestamp = itemDefDesc?.Timestamp ?? ""
     rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     local lifetimeModifierText = itemDefDesc?.lifetime_modifier
@@ -81,7 +81,7 @@ local ItemGenerator = class {
           foreach (itemdefId in itemBlk % paramName)
           {
             ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
-            local gen = collection?[itemdefId] ?? null
+            local gen = collection?[itemdefId]
             local additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
             _exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
               parsedRecipe = pr,

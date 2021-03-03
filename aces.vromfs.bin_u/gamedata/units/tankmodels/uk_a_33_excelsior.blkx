@@ -1170,7 +1170,7 @@
   },
   {
     "gunConvergence": {
-      "distance": 800.0,
+      "defaultDistance": 800.0,
       "vertical": true,
       "horizontal": true
     }
@@ -1208,7 +1208,16 @@
       "tracks": {
         "animationMultiplier": -0.7,
         "width": 0.65,
-        "height": 0.08
+        "height": 0.08,
+        "tracksTensionK": [7.0,11.0,1.0],
+        "trackMesh": "uk_cromwell_15_5_phys_track_line",
+        "trackLen": 0.1,
+        "trackCount": 125,
+        "trackFadeTime": 1.1,
+        "trackConnector": false,
+        "trackEmitSparks": true,
+        "trackMaxHeight": 1.15,
+        "trackStartOffset": 0.055
       },
       "mechanics": {
         "maxBrakeForce": 160000.0,
@@ -1247,7 +1256,25 @@
         "topGearRadius": 0.1,
         "defaultDampeningForce": [84000.0,84000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.315,
+        "wheel_l_drive": 0.315,
+        "wheel_r_front": 0.262,
+        "wheel_l_front": 0.262,
+        "wheel_r_01": 0.405,
+        "wheel_r_02": 0.405,
+        "wheel_r_03": 0.405,
+        "wheel_r_04": 0.405,
+        "wheel_r_05": 0.405,
+        "wheel_r_06": 0.405,
+        "wheel_r_07": 0.405,
+        "wheel_l_01": 0.405,
+        "wheel_l_02": 0.405,
+        "wheel_l_03": 0.405,
+        "wheel_l_04": 0.405,
+        "wheel_l_05": 0.405,
+        "wheel_l_06": 0.405,
+        "wheel_l_07": 0.405
       },
       "collisionProps": {
         "cls_turret": "convex_hull",
@@ -2065,8 +2092,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -2097,7 +2124,8 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 30.0,
-        "hp": 300.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 30.0,
         "track_r_dm": [],
         "track_l_dm": []
       },
@@ -2105,33 +2133,21 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        }
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",

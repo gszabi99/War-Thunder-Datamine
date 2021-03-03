@@ -4,7 +4,7 @@
   "mission_settings": {
     "player": {
       "army": 1,
-      "wing": "ct_armada"
+      "wing": "cnv_armada"
     },
     "player_teamB": {
       "army": 2
@@ -22,7 +22,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/templates/air_templates/jip/air_ct_convoys_template.blk",
+      "file": "gameData/missions/templates/enduring_confrontation/cnv_convoys_template.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
@@ -38,7 +38,45 @@
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "cnv_part_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "назначем 3 конвоя для команды А"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 3,
+            "var": "cnv_t1_max_convoys_num"
+          }
+        },
+        {
+          "comment": {
+            "value": "назначем 3 конвоя для команды Б"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 3,
+            "var": "cnv_t2_max_convoys_num"
+          }
+        }
+      ],
+      "else_actions": []
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -51,7 +89,7 @@
   "units": [
     {
       "squad": {
-        "name": "ct_t1_convoy_01_squad",
+        "name": "cnv_t1_convoy_01_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -60,23 +98,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_01_truck"
+            "squad_members": "cnv_t1_convoy_01_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_01_acar"
+            "squad_members": "cnv_t1_convoy_01_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_01_aaa"
+            "squad_members": "cnv_t1_convoy_01_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_01_tank"
+            "squad_members": "cnv_t1_convoy_01_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t1_convoy_02_squad",
+        "name": "cnv_t1_convoy_02_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -85,23 +123,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_02_truck"
+            "squad_members": "cnv_t1_convoy_02_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_02_acar"
+            "squad_members": "cnv_t1_convoy_02_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_02_aaa"
+            "squad_members": "cnv_t1_convoy_02_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_02_tank"
+            "squad_members": "cnv_t1_convoy_02_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_01_squad",
+        "name": "cnv_t2_convoy_01_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -110,23 +148,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_01_truck"
+            "squad_members": "cnv_t2_convoy_01_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_01_acar"
+            "squad_members": "cnv_t2_convoy_01_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_01_aaa"
+            "squad_members": "cnv_t2_convoy_01_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_01_tank"
+            "squad_members": "cnv_t2_convoy_01_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_all_convoys_squad",
+        "name": "cnv_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -135,17 +173,17 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_all_convoys_squad"
+            "squad_members": "cnv_t1_all_convoys_squad"
           },
           {
-            "squad_members": "ct_t2_all_convoys_squad"
+            "squad_members": "cnv_t2_all_convoys_squad"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_01_tank",
+        "name": "cnv_t1_convoy_01_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -182,7 +220,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_01_truck",
+        "name": "cnv_t1_convoy_01_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -219,7 +257,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_01_acar",
+        "name": "cnv_t1_convoy_01_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -256,7 +294,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_01_aaa",
+        "name": "cnv_t1_convoy_01_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -293,7 +331,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_02_tank",
+        "name": "cnv_t1_convoy_02_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -330,7 +368,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_02_truck",
+        "name": "cnv_t1_convoy_02_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -367,7 +405,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_02_acar",
+        "name": "cnv_t1_convoy_02_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -404,7 +442,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_02_aaa",
+        "name": "cnv_t1_convoy_02_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -441,7 +479,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_03_tank",
+        "name": "cnv_t1_convoy_03_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -478,7 +516,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_03_truck",
+        "name": "cnv_t1_convoy_03_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -515,7 +553,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_03_acar",
+        "name": "cnv_t1_convoy_03_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -552,7 +590,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_03_aaa",
+        "name": "cnv_t1_convoy_03_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -589,7 +627,7 @@
     },
     {
       "squad": {
-        "name": "ct_t1_convoy_03_squad",
+        "name": "cnv_t1_convoy_03_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -598,23 +636,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_03_truck"
+            "squad_members": "cnv_t1_convoy_03_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_03_acar"
+            "squad_members": "cnv_t1_convoy_03_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_03_aaa"
+            "squad_members": "cnv_t1_convoy_03_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_03_tank"
+            "squad_members": "cnv_t1_convoy_03_tank"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_01_tank",
+        "name": "cnv_t2_convoy_01_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -651,7 +689,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_01_truck",
+        "name": "cnv_t2_convoy_01_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -688,7 +726,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_01_acar",
+        "name": "cnv_t2_convoy_01_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -725,7 +763,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_01_aaa",
+        "name": "cnv_t2_convoy_01_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -762,7 +800,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_02_tank",
+        "name": "cnv_t2_convoy_02_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -799,7 +837,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_02_truck",
+        "name": "cnv_t2_convoy_02_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -836,7 +874,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_02_acar",
+        "name": "cnv_t2_convoy_02_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -873,7 +911,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_02_aaa",
+        "name": "cnv_t2_convoy_02_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -910,7 +948,7 @@
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_02_squad",
+        "name": "cnv_t2_convoy_02_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -919,23 +957,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_02_truck"
+            "squad_members": "cnv_t2_convoy_02_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_02_acar"
+            "squad_members": "cnv_t2_convoy_02_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_02_aaa"
+            "squad_members": "cnv_t2_convoy_02_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_02_tank"
+            "squad_members": "cnv_t2_convoy_02_tank"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_03_tank",
+        "name": "cnv_t2_convoy_03_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -972,7 +1010,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_03_truck",
+        "name": "cnv_t2_convoy_03_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1009,7 +1047,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_03_acar",
+        "name": "cnv_t2_convoy_03_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1046,7 +1084,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_03_aaa",
+        "name": "cnv_t2_convoy_03_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1083,7 +1121,7 @@
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_03_squad",
+        "name": "cnv_t2_convoy_03_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1092,23 +1130,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_03_truck"
+            "squad_members": "cnv_t2_convoy_03_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_03_acar"
+            "squad_members": "cnv_t2_convoy_03_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_03_aaa"
+            "squad_members": "cnv_t2_convoy_03_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_03_tank"
+            "squad_members": "cnv_t2_convoy_03_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t1_all_convoys_squad",
+        "name": "cnv_t1_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1117,20 +1155,20 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_01_squad"
+            "squad_members": "cnv_t1_convoy_01_squad"
           },
           {
-            "squad_members": "ct_t1_convoy_02_squad"
+            "squad_members": "cnv_t1_convoy_02_squad"
           },
           {
-            "squad_members": "ct_t1_convoy_03_squad"
+            "squad_members": "cnv_t1_convoy_03_squad"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t2_all_convoys_squad",
+        "name": "cnv_t2_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1139,13 +1177,13 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_01_squad"
+            "squad_members": "cnv_t2_convoy_01_squad"
           },
           {
-            "squad_members": "ct_t2_convoy_02_squad"
+            "squad_members": "cnv_t2_convoy_02_squad"
           },
           {
-            "squad_members": "ct_t2_convoy_03_squad"
+            "squad_members": "cnv_t2_convoy_03_squad"
           }
         ]
       }
@@ -1166,7 +1204,7 @@
     },
     {
       "armada": {
-        "name": "ct_armada",
+        "name": "cnv_armada",
         "tm": [
           [-0.793353,0.0,0.608761],
           [0.0,1.0,0.0],
@@ -1256,7 +1294,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_01_spawn": {
+    "cnv_t1_road_01_spawn": {
       "type": "Point",
       "tm": [
         [0.109923,0.0,-0.99394],
@@ -1267,7 +1305,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_02_spawn": {
+    "cnv_t1_road_02_spawn": {
       "type": "Point",
       "tm": [
         [0.988178,0.0,-0.153315],
@@ -1278,7 +1316,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_03_spawn": {
+    "cnv_t1_road_03_spawn": {
       "type": "Point",
       "tm": [
         [0.979513,0.0,0.20138],
@@ -1289,7 +1327,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_04_spawn": {
+    "cnv_t1_road_04_spawn": {
       "type": "Point",
       "tm": [
         [0.965005,0.0,-0.262231],
@@ -1300,7 +1338,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_05_spawn": {
+    "cnv_t1_road_05_spawn": {
       "type": "Point",
       "tm": [
         [0.978761,0.0,0.205005],
@@ -1311,7 +1349,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_06_spawn": {
+    "cnv_t1_road_06_spawn": {
       "type": "Point",
       "tm": [
         [0.917328,0.0,0.398133],
@@ -1322,7 +1360,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_07_spawn": {
+    "cnv_t1_road_07_spawn": {
       "type": "Point",
       "tm": [
         [0.996035,0.0,0.0889634],
@@ -1333,7 +1371,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_08_spawn": {
+    "cnv_t1_road_08_spawn": {
       "type": "Point",
       "tm": [
         [0.922079,0.0,0.387001],
@@ -1344,7 +1382,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_01_spawn": {
+    "cnv_t2_road_01_spawn": {
       "type": "Point",
       "tm": [
         [-0.642788,0.0,-0.766044],
@@ -1355,7 +1393,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_02_spawn": {
+    "cnv_t2_road_02_spawn": {
       "type": "Point",
       "tm": [
         [-0.977701,0.0,-0.210003],
@@ -1366,7 +1404,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_03_spawn": {
+    "cnv_t2_road_03_spawn": {
       "type": "Point",
       "tm": [
         [-0.999839,0.0,0.01794],
@@ -1377,7 +1415,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_04_spawn": {
+    "cnv_t2_road_04_spawn": {
       "type": "Point",
       "tm": [
         [-0.923181,0.0,-0.384366],
@@ -1388,7 +1426,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_05_spawn": {
+    "cnv_t2_road_05_spawn": {
       "type": "Point",
       "tm": [
         [-0.996031,0.0,-0.089003],
@@ -1399,7 +1437,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_06_spawn": {
+    "cnv_t2_road_06_spawn": {
       "type": "Point",
       "tm": [
         [-0.936539,0.0,-0.350562],
@@ -1410,7 +1448,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_07_spawn": {
+    "cnv_t2_road_07_spawn": {
       "type": "Point",
       "tm": [
         [-0.991445,0.0,0.130526],
@@ -1421,7 +1459,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_08_spawn": {
+    "cnv_t2_road_08_spawn": {
       "type": "Point",
       "tm": [
         [-0.996195,0.0,-0.0871559],
@@ -1456,7 +1494,7 @@
     }
   ],
   "wayPoints": {
-    "ct_t1_road_01": {
+    "cnv_t1_road_01": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -1477,7 +1515,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_01": {
+        "cnv_t1_road_01_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1493,7 +1531,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_02": {
+        "cnv_t1_road_01_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1509,7 +1547,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_03": {
+        "cnv_t1_road_01_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1525,7 +1563,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_04": {
+        "cnv_t1_road_01_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1541,7 +1579,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_05": {
+        "cnv_t1_road_01_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1557,7 +1595,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_06": {
+        "cnv_t1_road_01_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1573,7 +1611,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_07": {
+        "cnv_t1_road_01_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1589,7 +1627,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_08": {
+        "cnv_t1_road_01_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1605,7 +1643,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_09": {
+        "cnv_t1_road_01_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1621,7 +1659,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_10": {
+        "cnv_t1_road_01_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1637,7 +1675,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_11": {
+        "cnv_t1_road_01_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1653,7 +1691,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_12": {
+        "cnv_t1_road_01_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1669,7 +1707,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_13": {
+        "cnv_t1_road_01_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1685,7 +1723,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_14": {
+        "cnv_t1_road_01_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1701,7 +1739,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_15": {
+        "cnv_t1_road_01_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1717,7 +1755,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_16": {
+        "cnv_t1_road_01_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1733,7 +1771,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_17": {
+        "cnv_t1_road_01_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1749,7 +1787,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_18": {
+        "cnv_t1_road_01_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1765,7 +1803,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_19": {
+        "cnv_t1_road_01_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1781,7 +1819,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_20": {
+        "cnv_t1_road_01_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1797,7 +1835,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_21": {
+        "cnv_t1_road_01_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1813,7 +1851,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_01_wp_22": {
+        "cnv_t1_road_01_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1831,7 +1869,7 @@
         }
       }
     },
-    "ct_t1_road_02": {
+    "cnv_t1_road_02": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -1852,7 +1890,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_01": {
+        "cnv_t1_road_02_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1868,7 +1906,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_37": {
+        "cnv_t1_road_02_wp_37": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1884,7 +1922,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_02": {
+        "cnv_t1_road_02_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1900,7 +1938,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_03": {
+        "cnv_t1_road_02_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1916,7 +1954,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_04": {
+        "cnv_t1_road_02_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1932,7 +1970,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_05": {
+        "cnv_t1_road_02_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1948,7 +1986,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_06": {
+        "cnv_t1_road_02_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1964,7 +2002,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_07": {
+        "cnv_t1_road_02_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1980,7 +2018,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_08": {
+        "cnv_t1_road_02_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -1996,7 +2034,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_38": {
+        "cnv_t1_road_02_wp_38": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2012,7 +2050,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_09": {
+        "cnv_t1_road_02_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2028,7 +2066,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_10": {
+        "cnv_t1_road_02_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2044,7 +2082,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_11": {
+        "cnv_t1_road_02_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2060,7 +2098,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_12": {
+        "cnv_t1_road_02_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2076,7 +2114,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_13": {
+        "cnv_t1_road_02_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2092,7 +2130,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_14": {
+        "cnv_t1_road_02_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2108,7 +2146,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_39": {
+        "cnv_t1_road_02_wp_39": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2124,7 +2162,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_15": {
+        "cnv_t1_road_02_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2140,7 +2178,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_16": {
+        "cnv_t1_road_02_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2156,7 +2194,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_17": {
+        "cnv_t1_road_02_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2172,7 +2210,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_18": {
+        "cnv_t1_road_02_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2188,7 +2226,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_19": {
+        "cnv_t1_road_02_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2204,7 +2242,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_20": {
+        "cnv_t1_road_02_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2220,7 +2258,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_21": {
+        "cnv_t1_road_02_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2236,7 +2274,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_22": {
+        "cnv_t1_road_02_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2252,7 +2290,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_23": {
+        "cnv_t1_road_02_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2268,7 +2306,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_24": {
+        "cnv_t1_road_02_wp_24": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2284,7 +2322,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_25": {
+        "cnv_t1_road_02_wp_25": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2300,7 +2338,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_26": {
+        "cnv_t1_road_02_wp_26": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2316,7 +2354,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_27": {
+        "cnv_t1_road_02_wp_27": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2332,7 +2370,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_28": {
+        "cnv_t1_road_02_wp_28": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2348,7 +2386,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_29": {
+        "cnv_t1_road_02_wp_29": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2364,7 +2402,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_30": {
+        "cnv_t1_road_02_wp_30": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2380,7 +2418,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_31": {
+        "cnv_t1_road_02_wp_31": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2396,7 +2434,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_32": {
+        "cnv_t1_road_02_wp_32": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2412,7 +2450,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_33": {
+        "cnv_t1_road_02_wp_33": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2428,7 +2466,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_34": {
+        "cnv_t1_road_02_wp_34": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2444,7 +2482,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_35": {
+        "cnv_t1_road_02_wp_35": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2460,7 +2498,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_02_wp_36": {
+        "cnv_t1_road_02_wp_36": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2478,7 +2516,7 @@
         }
       }
     },
-    "ct_t1_road_03": {
+    "cnv_t1_road_03": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2499,7 +2537,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_01": {
+        "cnv_t1_road_03_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2515,7 +2553,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_02": {
+        "cnv_t1_road_03_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2531,7 +2569,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_03": {
+        "cnv_t1_road_03_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2547,7 +2585,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_04": {
+        "cnv_t1_road_03_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2563,7 +2601,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_05": {
+        "cnv_t1_road_03_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2579,7 +2617,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_06": {
+        "cnv_t1_road_03_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2595,7 +2633,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_07": {
+        "cnv_t1_road_03_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2611,7 +2649,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_08": {
+        "cnv_t1_road_03_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2627,7 +2665,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_09": {
+        "cnv_t1_road_03_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2643,7 +2681,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_10": {
+        "cnv_t1_road_03_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2659,7 +2697,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_11": {
+        "cnv_t1_road_03_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2675,7 +2713,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_12": {
+        "cnv_t1_road_03_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2691,7 +2729,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_13": {
+        "cnv_t1_road_03_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2707,7 +2745,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_14": {
+        "cnv_t1_road_03_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2723,7 +2761,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_15": {
+        "cnv_t1_road_03_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2739,7 +2777,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_16": {
+        "cnv_t1_road_03_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2755,7 +2793,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_17": {
+        "cnv_t1_road_03_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2771,7 +2809,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_18": {
+        "cnv_t1_road_03_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2787,7 +2825,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_19": {
+        "cnv_t1_road_03_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2805,7 +2843,7 @@
         }
       }
     },
-    "ct_t1_road_04": {
+    "cnv_t1_road_04": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2826,7 +2864,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_01": {
+        "cnv_t1_road_04_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2842,7 +2880,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_02": {
+        "cnv_t1_road_04_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2858,7 +2896,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_03": {
+        "cnv_t1_road_04_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2874,7 +2912,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_04": {
+        "cnv_t1_road_04_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2890,7 +2928,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_05": {
+        "cnv_t1_road_04_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2906,7 +2944,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_06": {
+        "cnv_t1_road_04_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2922,7 +2960,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_07": {
+        "cnv_t1_road_04_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2938,7 +2976,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_08": {
+        "cnv_t1_road_04_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2954,7 +2992,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_09": {
+        "cnv_t1_road_04_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2970,7 +3008,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_10": {
+        "cnv_t1_road_04_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2986,7 +3024,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_11": {
+        "cnv_t1_road_04_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3002,7 +3040,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_12": {
+        "cnv_t1_road_04_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3018,7 +3056,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_13": {
+        "cnv_t1_road_04_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3034,7 +3072,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_14": {
+        "cnv_t1_road_04_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3050,7 +3088,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_15": {
+        "cnv_t1_road_04_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3066,7 +3104,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_16": {
+        "cnv_t1_road_04_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3082,7 +3120,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_17": {
+        "cnv_t1_road_04_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3098,7 +3136,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_18": {
+        "cnv_t1_road_04_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3114,7 +3152,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_19": {
+        "cnv_t1_road_04_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3130,7 +3168,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_20": {
+        "cnv_t1_road_04_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3146,7 +3184,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_21": {
+        "cnv_t1_road_04_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3162,7 +3200,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_22": {
+        "cnv_t1_road_04_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3178,7 +3216,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_23": {
+        "cnv_t1_road_04_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3194,7 +3232,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_24": {
+        "cnv_t1_road_04_wp_24": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3210,7 +3248,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_25": {
+        "cnv_t1_road_04_wp_25": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3226,7 +3264,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_26": {
+        "cnv_t1_road_04_wp_26": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3244,7 +3282,7 @@
         }
       }
     },
-    "ct_t1_road_05": {
+    "cnv_t1_road_05": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3265,7 +3303,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_01": {
+        "cnv_t1_road_05_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3281,7 +3319,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_02": {
+        "cnv_t1_road_05_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3297,7 +3335,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_03": {
+        "cnv_t1_road_05_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3313,7 +3351,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_04": {
+        "cnv_t1_road_05_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3329,7 +3367,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_05": {
+        "cnv_t1_road_05_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3345,7 +3383,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_06": {
+        "cnv_t1_road_05_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3361,7 +3399,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_07": {
+        "cnv_t1_road_05_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3377,7 +3415,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_08": {
+        "cnv_t1_road_05_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3393,7 +3431,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_09": {
+        "cnv_t1_road_05_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3409,7 +3447,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_10": {
+        "cnv_t1_road_05_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3425,7 +3463,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_11": {
+        "cnv_t1_road_05_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3441,7 +3479,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_12": {
+        "cnv_t1_road_05_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3457,7 +3495,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_13": {
+        "cnv_t1_road_05_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3473,7 +3511,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_14": {
+        "cnv_t1_road_05_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3489,7 +3527,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_15": {
+        "cnv_t1_road_05_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3505,7 +3543,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_16": {
+        "cnv_t1_road_05_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3521,7 +3559,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_17": {
+        "cnv_t1_road_05_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3537,7 +3575,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_18": {
+        "cnv_t1_road_05_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3553,7 +3591,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_19": {
+        "cnv_t1_road_05_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3571,7 +3609,7 @@
         }
       }
     },
-    "ct_t1_road_06": {
+    "cnv_t1_road_06": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3592,7 +3630,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_01": {
+        "cnv_t1_road_06_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3608,7 +3646,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_02": {
+        "cnv_t1_road_06_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3624,7 +3662,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_03": {
+        "cnv_t1_road_06_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3640,7 +3678,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_04": {
+        "cnv_t1_road_06_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3656,7 +3694,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_05": {
+        "cnv_t1_road_06_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3672,7 +3710,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_06": {
+        "cnv_t1_road_06_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3688,7 +3726,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_07": {
+        "cnv_t1_road_06_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3704,7 +3742,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_08": {
+        "cnv_t1_road_06_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3720,7 +3758,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_09": {
+        "cnv_t1_road_06_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3736,7 +3774,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_10": {
+        "cnv_t1_road_06_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3752,7 +3790,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_11": {
+        "cnv_t1_road_06_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3768,7 +3806,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_12": {
+        "cnv_t1_road_06_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3784,7 +3822,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_13": {
+        "cnv_t1_road_06_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3800,7 +3838,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_14": {
+        "cnv_t1_road_06_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3816,7 +3854,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_15": {
+        "cnv_t1_road_06_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3834,7 +3872,7 @@
         }
       }
     },
-    "ct_t1_road_07": {
+    "cnv_t1_road_07": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3855,7 +3893,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_01": {
+        "cnv_t1_road_07_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3871,7 +3909,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_02": {
+        "cnv_t1_road_07_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3887,7 +3925,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_03": {
+        "cnv_t1_road_07_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3903,7 +3941,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_04": {
+        "cnv_t1_road_07_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3919,7 +3957,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_05": {
+        "cnv_t1_road_07_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3935,7 +3973,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_06": {
+        "cnv_t1_road_07_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3951,7 +3989,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_07": {
+        "cnv_t1_road_07_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3967,7 +4005,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_08": {
+        "cnv_t1_road_07_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3983,7 +4021,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_09": {
+        "cnv_t1_road_07_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3999,7 +4037,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_10": {
+        "cnv_t1_road_07_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4015,7 +4053,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_11": {
+        "cnv_t1_road_07_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4031,7 +4069,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_12": {
+        "cnv_t1_road_07_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4047,7 +4085,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_13": {
+        "cnv_t1_road_07_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4063,7 +4101,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_14": {
+        "cnv_t1_road_07_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4081,7 +4119,7 @@
         }
       }
     },
-    "ct_t1_road_08": {
+    "cnv_t1_road_08": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4102,7 +4140,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_01": {
+        "cnv_t1_road_08_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4118,7 +4156,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_02": {
+        "cnv_t1_road_08_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4134,7 +4172,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_03": {
+        "cnv_t1_road_08_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4150,7 +4188,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_04": {
+        "cnv_t1_road_08_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4166,7 +4204,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_05": {
+        "cnv_t1_road_08_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4182,7 +4220,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_06": {
+        "cnv_t1_road_08_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4198,7 +4236,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_07": {
+        "cnv_t1_road_08_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4214,7 +4252,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_08": {
+        "cnv_t1_road_08_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4230,7 +4268,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_09": {
+        "cnv_t1_road_08_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4246,7 +4284,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_10": {
+        "cnv_t1_road_08_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4262,7 +4300,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_11": {
+        "cnv_t1_road_08_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4278,7 +4316,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_12": {
+        "cnv_t1_road_08_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4294,7 +4332,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_13": {
+        "cnv_t1_road_08_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4310,7 +4348,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_14": {
+        "cnv_t1_road_08_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4326,7 +4364,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_15": {
+        "cnv_t1_road_08_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4342,7 +4380,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_16": {
+        "cnv_t1_road_08_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4358,7 +4396,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_17": {
+        "cnv_t1_road_08_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4374,7 +4412,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_18": {
+        "cnv_t1_road_08_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4390,7 +4428,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_19": {
+        "cnv_t1_road_08_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4406,7 +4444,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_20": {
+        "cnv_t1_road_08_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4422,7 +4460,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_21": {
+        "cnv_t1_road_08_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4438,7 +4476,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_22": {
+        "cnv_t1_road_08_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4454,7 +4492,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_23": {
+        "cnv_t1_road_08_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4472,7 +4510,7 @@
         }
       }
     },
-    "ct_t2_road_01": {
+    "cnv_t2_road_01": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4493,7 +4531,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_01": {
+        "cnv_t2_road_01_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4509,7 +4547,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_02": {
+        "cnv_t2_road_01_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4525,7 +4563,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_03": {
+        "cnv_t2_road_01_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4541,7 +4579,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_04": {
+        "cnv_t2_road_01_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4557,7 +4595,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_05": {
+        "cnv_t2_road_01_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4573,7 +4611,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_06": {
+        "cnv_t2_road_01_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4589,7 +4627,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_07": {
+        "cnv_t2_road_01_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4605,7 +4643,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_08": {
+        "cnv_t2_road_01_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4621,7 +4659,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_09": {
+        "cnv_t2_road_01_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4637,7 +4675,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_10": {
+        "cnv_t2_road_01_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4653,7 +4691,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_11": {
+        "cnv_t2_road_01_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4669,7 +4707,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_12": {
+        "cnv_t2_road_01_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4685,7 +4723,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_13": {
+        "cnv_t2_road_01_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4701,7 +4739,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_14": {
+        "cnv_t2_road_01_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4717,7 +4755,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_15": {
+        "cnv_t2_road_01_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4733,7 +4771,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_16": {
+        "cnv_t2_road_01_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4749,7 +4787,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_17": {
+        "cnv_t2_road_01_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4765,7 +4803,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_18": {
+        "cnv_t2_road_01_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4781,7 +4819,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_19": {
+        "cnv_t2_road_01_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4797,7 +4835,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_20": {
+        "cnv_t2_road_01_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4813,7 +4851,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_21": {
+        "cnv_t2_road_01_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4829,7 +4867,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_22": {
+        "cnv_t2_road_01_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4845,7 +4883,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_01_wp_23": {
+        "cnv_t2_road_01_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4863,7 +4901,7 @@
         }
       }
     },
-    "ct_t2_road_02": {
+    "cnv_t2_road_02": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4884,7 +4922,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_01": {
+        "cnv_t2_road_02_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4900,7 +4938,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_02": {
+        "cnv_t2_road_02_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4916,7 +4954,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_03": {
+        "cnv_t2_road_02_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4932,7 +4970,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_04": {
+        "cnv_t2_road_02_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4948,7 +4986,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_05": {
+        "cnv_t2_road_02_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4964,7 +5002,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_06": {
+        "cnv_t2_road_02_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4980,7 +5018,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_07": {
+        "cnv_t2_road_02_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -4996,7 +5034,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_08": {
+        "cnv_t2_road_02_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5012,7 +5050,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_09": {
+        "cnv_t2_road_02_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5028,7 +5066,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_10": {
+        "cnv_t2_road_02_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5044,7 +5082,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_11": {
+        "cnv_t2_road_02_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5060,7 +5098,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_12": {
+        "cnv_t2_road_02_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5076,7 +5114,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_13": {
+        "cnv_t2_road_02_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5092,7 +5130,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_14": {
+        "cnv_t2_road_02_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5108,7 +5146,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_15": {
+        "cnv_t2_road_02_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5124,7 +5162,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_16": {
+        "cnv_t2_road_02_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5140,7 +5178,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_02_wp_17": {
+        "cnv_t2_road_02_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5158,7 +5196,7 @@
         }
       }
     },
-    "ct_t2_road_03": {
+    "cnv_t2_road_03": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5179,7 +5217,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_01": {
+        "cnv_t2_road_03_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5195,7 +5233,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_02": {
+        "cnv_t2_road_03_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5211,7 +5249,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_03": {
+        "cnv_t2_road_03_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5227,7 +5265,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_04": {
+        "cnv_t2_road_03_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5243,7 +5281,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_05": {
+        "cnv_t2_road_03_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5259,7 +5297,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_06": {
+        "cnv_t2_road_03_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5275,7 +5313,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_07": {
+        "cnv_t2_road_03_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5291,7 +5329,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_08": {
+        "cnv_t2_road_03_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5307,7 +5345,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_09": {
+        "cnv_t2_road_03_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5323,7 +5361,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_10": {
+        "cnv_t2_road_03_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5339,7 +5377,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_11": {
+        "cnv_t2_road_03_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5355,7 +5393,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_12": {
+        "cnv_t2_road_03_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5371,7 +5409,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_13": {
+        "cnv_t2_road_03_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5387,7 +5425,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_14": {
+        "cnv_t2_road_03_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5403,7 +5441,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_15": {
+        "cnv_t2_road_03_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5419,7 +5457,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_03_wp_16": {
+        "cnv_t2_road_03_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5437,7 +5475,7 @@
         }
       }
     },
-    "ct_t2_road_04": {
+    "cnv_t2_road_04": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5458,7 +5496,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_01": {
+        "cnv_t2_road_04_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5474,7 +5512,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_02": {
+        "cnv_t2_road_04_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5490,7 +5528,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_03": {
+        "cnv_t2_road_04_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5506,7 +5544,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_04": {
+        "cnv_t2_road_04_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5522,7 +5560,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_05": {
+        "cnv_t2_road_04_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5538,7 +5576,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_06": {
+        "cnv_t2_road_04_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5554,7 +5592,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_07": {
+        "cnv_t2_road_04_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5570,7 +5608,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_08": {
+        "cnv_t2_road_04_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5586,7 +5624,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_09": {
+        "cnv_t2_road_04_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5602,7 +5640,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_10": {
+        "cnv_t2_road_04_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5618,7 +5656,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_11": {
+        "cnv_t2_road_04_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5634,7 +5672,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_12": {
+        "cnv_t2_road_04_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5650,7 +5688,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_13": {
+        "cnv_t2_road_04_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5666,7 +5704,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_14": {
+        "cnv_t2_road_04_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5682,7 +5720,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_15": {
+        "cnv_t2_road_04_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5698,7 +5736,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_16": {
+        "cnv_t2_road_04_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5714,7 +5752,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_17": {
+        "cnv_t2_road_04_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5730,7 +5768,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_18": {
+        "cnv_t2_road_04_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5746,7 +5784,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_19": {
+        "cnv_t2_road_04_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5762,7 +5800,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_20": {
+        "cnv_t2_road_04_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5778,7 +5816,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_21": {
+        "cnv_t2_road_04_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5794,7 +5832,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_22": {
+        "cnv_t2_road_04_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5810,7 +5848,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_04_wp_23": {
+        "cnv_t2_road_04_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5828,7 +5866,7 @@
         }
       }
     },
-    "ct_t2_road_05": {
+    "cnv_t2_road_05": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5849,7 +5887,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_01": {
+        "cnv_t2_road_05_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5865,7 +5903,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_02": {
+        "cnv_t2_road_05_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5881,7 +5919,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_03": {
+        "cnv_t2_road_05_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5897,7 +5935,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_04": {
+        "cnv_t2_road_05_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5913,7 +5951,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_05": {
+        "cnv_t2_road_05_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5929,7 +5967,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_06": {
+        "cnv_t2_road_05_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5945,7 +5983,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_07": {
+        "cnv_t2_road_05_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5961,7 +5999,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_08": {
+        "cnv_t2_road_05_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5977,7 +6015,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_09": {
+        "cnv_t2_road_05_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -5993,7 +6031,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_10": {
+        "cnv_t2_road_05_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6009,7 +6047,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_11": {
+        "cnv_t2_road_05_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6025,7 +6063,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_12": {
+        "cnv_t2_road_05_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6041,7 +6079,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_13": {
+        "cnv_t2_road_05_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6057,7 +6095,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_14": {
+        "cnv_t2_road_05_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6073,7 +6111,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_15": {
+        "cnv_t2_road_05_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6089,7 +6127,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_16": {
+        "cnv_t2_road_05_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6105,7 +6143,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_17": {
+        "cnv_t2_road_05_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6121,7 +6159,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_18": {
+        "cnv_t2_road_05_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6137,7 +6175,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_19": {
+        "cnv_t2_road_05_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6153,7 +6191,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_20": {
+        "cnv_t2_road_05_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6169,7 +6207,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_21": {
+        "cnv_t2_road_05_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6185,7 +6223,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_22": {
+        "cnv_t2_road_05_wp_22": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6201,7 +6239,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_23": {
+        "cnv_t2_road_05_wp_23": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6217,7 +6255,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_05_wp_24": {
+        "cnv_t2_road_05_wp_24": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6235,7 +6273,7 @@
         }
       }
     },
-    "ct_t2_road_06": {
+    "cnv_t2_road_06": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -6256,7 +6294,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_01": {
+        "cnv_t2_road_06_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6272,7 +6310,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_02": {
+        "cnv_t2_road_06_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6288,7 +6326,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_03": {
+        "cnv_t2_road_06_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6304,7 +6342,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_04": {
+        "cnv_t2_road_06_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6320,7 +6358,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_05": {
+        "cnv_t2_road_06_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6336,7 +6374,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_06": {
+        "cnv_t2_road_06_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6352,7 +6390,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_07": {
+        "cnv_t2_road_06_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6368,7 +6406,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_08": {
+        "cnv_t2_road_06_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6384,7 +6422,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_09": {
+        "cnv_t2_road_06_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6400,7 +6438,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_10": {
+        "cnv_t2_road_06_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6416,7 +6454,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_11": {
+        "cnv_t2_road_06_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6432,7 +6470,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_12": {
+        "cnv_t2_road_06_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6448,7 +6486,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_13": {
+        "cnv_t2_road_06_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6464,7 +6502,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_14": {
+        "cnv_t2_road_06_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6480,7 +6518,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_15": {
+        "cnv_t2_road_06_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6496,7 +6534,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_16": {
+        "cnv_t2_road_06_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6512,7 +6550,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_17": {
+        "cnv_t2_road_06_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6528,7 +6566,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_18": {
+        "cnv_t2_road_06_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6544,7 +6582,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_06_wp_19": {
+        "cnv_t2_road_06_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6562,7 +6600,7 @@
         }
       }
     },
-    "ct_t2_road_07": {
+    "cnv_t2_road_07": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -6583,7 +6621,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_01": {
+        "cnv_t2_road_07_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6599,7 +6637,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_02": {
+        "cnv_t2_road_07_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6615,7 +6653,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_03": {
+        "cnv_t2_road_07_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6631,7 +6669,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_04": {
+        "cnv_t2_road_07_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6647,7 +6685,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_05": {
+        "cnv_t2_road_07_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6663,7 +6701,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_06": {
+        "cnv_t2_road_07_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6679,7 +6717,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_07": {
+        "cnv_t2_road_07_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6695,7 +6733,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_08": {
+        "cnv_t2_road_07_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6711,7 +6749,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_09": {
+        "cnv_t2_road_07_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6727,7 +6765,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_10": {
+        "cnv_t2_road_07_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6743,7 +6781,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_11": {
+        "cnv_t2_road_07_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6759,7 +6797,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_12": {
+        "cnv_t2_road_07_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6775,7 +6813,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_13": {
+        "cnv_t2_road_07_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6791,7 +6829,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_14": {
+        "cnv_t2_road_07_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6807,7 +6845,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_15": {
+        "cnv_t2_road_07_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6823,7 +6861,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_16": {
+        "cnv_t2_road_07_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6839,7 +6877,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_07_wp_17": {
+        "cnv_t2_road_07_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6857,7 +6895,7 @@
         }
       }
     },
-    "ct_t2_road_08": {
+    "cnv_t2_road_08": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -6878,7 +6916,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_01": {
+        "cnv_t2_road_08_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6894,7 +6932,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_02": {
+        "cnv_t2_road_08_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6910,7 +6948,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_03": {
+        "cnv_t2_road_08_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6926,7 +6964,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_04": {
+        "cnv_t2_road_08_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6942,7 +6980,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_05": {
+        "cnv_t2_road_08_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6958,7 +6996,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_06": {
+        "cnv_t2_road_08_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6974,7 +7012,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_07": {
+        "cnv_t2_road_08_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -6990,7 +7028,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_08": {
+        "cnv_t2_road_08_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7006,7 +7044,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_09": {
+        "cnv_t2_road_08_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7022,7 +7060,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_10": {
+        "cnv_t2_road_08_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7038,7 +7076,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_11": {
+        "cnv_t2_road_08_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7054,7 +7092,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_12": {
+        "cnv_t2_road_08_wp_12": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7070,7 +7108,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_13": {
+        "cnv_t2_road_08_wp_13": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7086,7 +7124,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_14": {
+        "cnv_t2_road_08_wp_14": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7102,7 +7140,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_15": {
+        "cnv_t2_road_08_wp_15": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7118,7 +7156,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_16": {
+        "cnv_t2_road_08_wp_16": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7134,7 +7172,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_17": {
+        "cnv_t2_road_08_wp_17": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7150,7 +7188,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_18": {
+        "cnv_t2_road_08_wp_18": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7166,7 +7204,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_19": {
+        "cnv_t2_road_08_wp_19": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7182,7 +7220,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_20": {
+        "cnv_t2_road_08_wp_20": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -7198,7 +7236,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t2_road_08_wp_21": {
+        "cnv_t2_road_08_wp_21": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],

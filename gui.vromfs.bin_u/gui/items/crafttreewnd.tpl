@@ -40,6 +40,10 @@ root {
         moveX:t='linear'
         moveY:t='closest'
 
+        on_pushed:t='::gcb.delayedTooltipListPush'
+        on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+        on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+
         include "gui/items/craftTreeBody"
       }
     }

@@ -10,7 +10,7 @@ local function getEntitlementConfig(name)
   if (pblk?[name] == null)
     return null
 
-  foreach(param in ["entitlementGift", "aircraftGift", "unlockGift", "decalGift", "skinGift", "showEntAsGift"])
+  foreach(param in ["entitlementGift", "aircraftGift", "unlockGift", "decalGift", "attachableGift", "skinGift", "showEntAsGift"])
   {
     if (param in pblk[name])
       res[param] <- pblk[name] % param

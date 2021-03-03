@@ -4,6 +4,8 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
   sceneTplName = "gui/shop/shopCheckResearch"
   sceneNavBlkName = "gui/shop/shopNav.blk"
 
+  needHighlight = false
+
   static function open(params)
   {
     ::handlersManager.loadHandler(::gui_handlers.ShopViewWnd, params)
@@ -23,6 +25,21 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
           showTopPanel = false
         },
         "slotbar_place")
+  }
+
+  function fillAircraftsList(curName = "")
+  {
+    base.fillAircraftsList(needHighlight ? curAirName : curName)
+
+    if (!needHighlight)
+      return
+
+    needHighlight = false
+
+    if (::show_console_buttons)
+      ::move_mouse_on_child_by_value(scene.findObject("shop_items_list"))
+    else
+      highlightUnitsInTree([curAirName])
   }
 
   function onCloseShop()

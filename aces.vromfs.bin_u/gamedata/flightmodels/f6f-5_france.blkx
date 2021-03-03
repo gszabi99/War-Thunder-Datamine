@@ -20,12 +20,6 @@
   "fireParamsPreset": "600kph",
   "DamageParts": {
     "armor10": {
-      "cannon1_dm": {
-        "hp": 15.0
-      },
-      "cannon2_dm": {
-        "hp": 15.0
-      },
       "mgun1_dm": {
         "hp": 15.0
       },
@@ -36,6 +30,12 @@
         "hp": 15.0
       },
       "mgun4_dm": {
+        "hp": 15.0
+      },
+      "mgun5_dm": {
+        "hp": 15.0
+      },
+      "mgun6_dm": {
         "hp": 15.0
       }
     },
@@ -64,10 +64,15 @@
         "hp": 35.0
       }
     },
+    "armor8": {
+      "armor9_dm": {
+        "hp": 40.0
+      }
+    },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 71.5
+        "hp": 70.5
       }
     },
     "c_dural3": {
@@ -78,6 +83,10 @@
       "aileron_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 26.9
+      },
+      "elevator_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
       },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
@@ -112,10 +121,10 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 44.5
+        "hp": 82.4
       },
       "fuse_dm": {
-        "hp": 82.4
+        "hp": 44.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -155,9 +164,6 @@
       },
       "cover3_dm": {
         "hp": 19.5
-      },
-      "cover4_dm": {
-        "hp": 19.5
       }
     },
     "dural40": {
@@ -180,11 +186,6 @@
         "hp": 60.5
       }
     },
-    "dural5": {
-      "radar_dm": {
-        "hp": 35.0
-      }
-    },
     "glass38": {
       "armor1_dm": {
         "hp": 100.0
@@ -202,9 +203,6 @@
       }
     },
     "steel": {
-      "gear_c_dm": {
-        "hp": 39.5
-      },
       "gear_l_dm": {
         "hp": 60.5
       },
@@ -398,12 +396,7 @@
     },
     {
       "part": {
-        "name": "cannon1_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "cannon2_dm"
+        "name": "armor9_dm"
       }
     },
     {
@@ -422,9 +415,61 @@
       }
     },
     {
-      "part": {
-        "name": "cover4_dm"
-      }
+      "part": [
+        {
+          "name": "elevator_dm"
+        },
+        {
+          "onHit": {
+            "damage": 10.0,
+            "cut": 0.1
+          }
+        },
+        {
+          "onHit": {
+            "damage": 20.0,
+            "cut": 0.4
+          }
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.7
+          }
+        },
+        {
+          "onHit": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "cut": 1.0,
+            "nothing": 4.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        }
+      ]
     },
     {
       "part": [
@@ -1052,42 +1097,6 @@
     {
       "part": [
         {
-          "name": "gear_c_dm"
-        },
-        {
-          "onHit": {
-            "damage": 15.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 25.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 40.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
           "name": "gear_l_dm"
         },
         {
@@ -1179,6 +1188,16 @@
     },
     {
       "part": {
+        "name": "mgun5_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "mgun6_dm"
+      }
+    },
+    {
+      "part": {
         "name": "oil1_dm",
         "onHit": {
           "leak_oil": 0.95
@@ -1202,11 +1221,6 @@
     {
       "part": {
         "name": "pilot_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "radar_dm"
       }
     },
     {

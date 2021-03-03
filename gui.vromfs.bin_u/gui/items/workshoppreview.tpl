@@ -77,7 +77,7 @@ root {
             pattern { type:t='bright_texture' }
             buttonWink { _transp-timer:t='0' }
             buttonGlance {}
-
+            focus_border{}
             ButtonImg{}
             btnText { text:t = '#mainmenu/btnToWorkshop' }
           }

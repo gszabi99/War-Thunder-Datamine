@@ -15,6 +15,9 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { needLogoutAfterSession, startLogout } = require("scripts/login/logout.nut")
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
 local { canOpenPlayerReviewDialog, openPlayerReviewDialog } = require("scripts/social/psnMatches.nut")
+local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
+local { boosterEffectType, getBoostersEffects } = require("scripts/items/boosterEffect.nut")
+local { fillItemDescr, getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -626,7 +629,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (wager == null)
       return
     guiScene.replaceContent(obj, "gui/items/itemTooltip.blk", this)
-    ::ItemsManager.fillItemDescr(wager, obj, this)
+    fillItemDescr(wager, obj, this)
   }
 
   function showActiveWagerResultIcon(success)
@@ -1495,7 +1498,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       hasModItem = mod != null
       isCompleted = isCompleted
       unitTooltipId = ::g_tooltip.getIdUnit(unit.name, { boosterEffects = getBoostersTotalEffects() })
-      modTooltipId =  mod ? ::g_tooltip.getIdModification(unit.name, mod.name, { diffExp = diffExp }) : ""
+      modTooltipId =  mod ? MODIFICATION.getTooltipId(unit.name, mod.name, { diffExp = diffExp }) : ""
+      isTooltipByHold = ::show_console_buttons
     }
 
     local markup = ::handyman.renderCached("gui/debriefing/modificationProgress", view)
@@ -2688,6 +2692,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
     ::set_presence_to_player("replay")
     ::req_unlock_by_client("view_replay", false)
+    autosave_replay();
     ::on_view_replay("")
     isInProgress = true
   }
@@ -3188,7 +3193,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local textsList = []
     local activeBoosters = ::getTblValue("activeBoosters", ::debriefing_result, [])
     if (activeBoosters.len() > 0)
-      foreach(effectType in ::BoosterEffectType)
+      foreach(effectType in boosterEffectType)
       {
         local boostersArray = []
         foreach(idx, block in activeBoosters)
@@ -3199,7 +3204,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
         }
 
         if (boostersArray.len())
-          textsList.append(::ItemsManager.getActiveBoostersDescription(boostersArray, effectType))
+          textsList.append(getActiveBoostersDescription(boostersArray, effectType))
       }
     return ::g_string.implode(textsList, "\n\n")
   }
@@ -3214,7 +3219,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
       if (item)
         boostersArray.append(item)
     }
-    return ::ItemsManager.getBoostersEffects(boostersArray)
+    return getBoostersEffects(boostersArray)
   }
 
   function getInvetoryGiftActionData()

@@ -1,5 +1,5 @@
 local unitActions = require("scripts/unit/unitActions.nut")
-local { getModItemName } = require("scripts/weaponry/weaponryVisual.nut")
+local { getModItemName } = require("scripts/weaponry/weaponryDescription.nut")
 local { getWeaponByName } = require("scripts/weaponry/weaponryInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { getItemCost,

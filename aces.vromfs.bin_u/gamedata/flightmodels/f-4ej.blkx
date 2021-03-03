@@ -5235,10 +5235,15 @@
         "tier": 3,
         "reqModification": "us_500lb_mk82"
       },
-      "aircrafts_false_thermal_targets": {
+      "countermeasures_launcher_chaff_only": [],
+      "countermeasures_launcher_flare_only": [],
+      "countermeasures_launcher_chaff_priority": [],
+      "countermeasures_launcher_flare_priority": [],
+      "countermeasures_belt_pack": {
+        "modClass": "weapon",
         "turn_it_off": false,
         "invertEnableLogic": false,
-        "group": "mi-24_EVU",
+        "group": "countermeasures",
         "tier": 1,
         "effects": {
           "commonWeapons": [
@@ -5265,9 +5270,9 @@
             },
             {
               "Weapon": {
-                "trigger": "flares",
+                "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 30,
                 "external": true,
@@ -5276,9 +5281,9 @@
             },
             {
               "Weapon": {
-                "trigger": "flares",
+                "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare2",
                 "bullets": 30,
                 "external": true,
@@ -5287,9 +5292,9 @@
             },
             {
               "Weapon": {
-                "trigger": "flares",
+                "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare3",
                 "bullets": 15,
                 "external": true,
@@ -5298,9 +5303,9 @@
             },
             {
               "Weapon": {
-                "trigger": "flares",
+                "trigger": "countermeasures",
                 "startFx": "",
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
                 "emitter": "emtr_flare4",
                 "bullets": 15,
                 "external": true,
@@ -5311,7 +5316,7 @@
         }
       },
       "jp_jlau_3a": {
-        "prevModification": "aircrafts_false_thermal_targets",
+        "prevModification": "countermeasures_belt_pack",
         "tier": 2,
         "modClass": "weapon"
       },

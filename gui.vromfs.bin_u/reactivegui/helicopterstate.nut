@@ -132,6 +132,13 @@ local Flares = {
   selected = Watched(false)
 }
 
+local Chaffs = {
+  count = Watched(0)
+  seconds = Watched(-1)
+  mode = Watched(0)
+  selected = Watched(false)
+}
+
 local IsMachineGunEmpty = Watched(false)
 local IsCanAdditionalEmpty = Watched(false)
 local IsRktEmpty = Watched(false)
@@ -139,6 +146,7 @@ local IsAgmEmpty = Watched(false)
 local IsAamEmpty = Watched(false)
 local IsBmbEmpty = Watched(false)
 local IsFlrEmpty = Watched(false)
+local IsChaffsEmpty = Watched(false)
 
 local IsHighRateOfFire = Watched(false)
 
@@ -269,7 +277,7 @@ local helicopterState = {
 
   MachineGuns,
   CannonsAdditional,
-  Rockets, Agm, Aam, Bombs, Flares
+  Rockets, Agm, Aam, Bombs, Flares, Chaffs
 
   IsMachineGunEmpty,
   IsCanAdditionalEmpty,
@@ -278,6 +286,7 @@ local helicopterState = {
   IsAamEmpty,
   IsBmbEmpty,
   IsFlrEmpty,
+  IsChaffsEmpty,
 
   IsHighRateOfFire,
 
@@ -406,6 +415,12 @@ local helicopterState = {
   Flares.count.update(count)
   Flares.mode.update(mode)
   Flares.seconds.update(sec)
+}
+
+::interop.updateChaffs <- function(count, mode = 0, sec = -1) {
+  Chaffs.count.update(count)
+  Chaffs.mode.update(mode)
+  Chaffs.seconds.update(sec)
 }
 
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {

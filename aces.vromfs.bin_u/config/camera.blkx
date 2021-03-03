@@ -403,6 +403,11 @@
               "not": {
                 "isHelicopter": []
               }
+            },
+            {
+              "not": {
+                "hasOpticFPSGunner": []
+              }
             }
           ],
           "not": {
@@ -468,8 +473,11 @@
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
       "and": {
-        "hasOpticFPSGunner": [],
-        "isFlightModel": []
+        "isFlightModel": [],
+        "or": {
+          "hasOpticTurret": [],
+          "hasOpticATGM": []
+        }
       }
     }
   },
@@ -1265,13 +1273,13 @@
       "fov": 40.0
     },
     {
-      "zoomFov": 10.0
+      "zoomFov": 21.0
     },
     {
-      "gunFov": 30.0
+      "gunFov": 10.0
     },
     {
-      "transitionSpeed": 4.0
+      "transitionSpeed": 5.0
     },
     {
       "targetOffset": [500.0,2.0,0.0]
@@ -1292,22 +1300,16 @@
       "cameraFovSmoothing": 0.005
     },
     {
-      "startDofDist": 0.1
+      "isOrientationLocked": false
     },
     {
-      "maxDofDist": 10.0
+      "isOrientationLockedToNode": false
     },
     {
-      "maxDofEffect": 1.0
+      "allowViewControl": false
     },
     {
-      "useDof": true
-    },
-    {
-      "allowHeadControl": false
-    },
-    {
-      "useCockpitOffsets": false
+      "showModel": true
     },
     {
       "cameraOffsetElevatorUp": [-14.0,3.0,0.0]
@@ -1352,22 +1354,16 @@
       "useOffset": false
     },
     {
-      "clipType": "trace"
+      "clipType": "none"
     },
     {
-      "zoomToGun": false
+      "useCockpitZoom": false
     },
     {
-      "fovVertAnglesOffsetPart": 0.0
+      "overrideCockpitZoom": true
     },
     {
       "isMouseView": true
-    },
-    {
-      "isAimCamera": true
-    },
-    {
-      "cockpitOffsetsRange": [1.0,1.0]
     },
     {
       "cameraControlViewRadius": 5.0
@@ -1400,10 +1396,16 @@
       "targOffsMult": 0.0
     },
     {
-      "cameraShakeMultiplier": 0.8
+      "cameraShakeMultiplier": 0.05
     },
     {
       "cameraShakeMultiplierOnShooting": 0.2
+    },
+    {
+      "tiltShakeMultiplierForTanks": 0.0
+    },
+    {
+      "tiltShakeMultiplierForShips": 0.0
     },
     {
       "transitionFadeInTime": 0.12
@@ -1418,16 +1420,34 @@
       "trackGunDirection": true
     },
     {
-      "tiltShakeMultiplierForTanks": 0.0
-    },
-    {
-      "tiltShakeMultiplierForShips": 0.0
-    },
-    {
       "condition": {
         "not": {
           "isFlightModel": []
         }
+      }
+    },
+    {
+      "up": {
+        "angle": [0.0,-90.0],
+        "dist": 20.0
+      }
+    },
+    {
+      "down": {
+        "angle": [180.0,0.0],
+        "dist": 40.0
+      }
+    },
+    {
+      "left": {
+        "angle": [-110.0,0.0],
+        "dist": 20.0
+      }
+    },
+    {
+      "right": {
+        "angle": [110.0,0.0],
+        "dist": 20.0
       }
     }
   ],

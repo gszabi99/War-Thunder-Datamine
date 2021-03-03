@@ -96,7 +96,7 @@ local getActions = function(contact, params)
   local isMPLobby = params?.isMPLobby ?? false
   local canInviteToChatRoom = params?.canInviteToChatRoom ?? true
 
-  local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer() ?? null
+  local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer()
   local isInPsnBlockList = platformModule.isPlatformSony && contact.isInBlockGroup()
   local canInviteToSesson = (isXBoxOnePlayer == ::is_platform_xbox) && !isInPsnBlockList
 

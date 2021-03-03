@@ -59,7 +59,7 @@ local getUnlockView = @(entitlement) (entitlement?.unlockGift ?? []).map(functio
 })
 
 local function getDecoratorActionButtonsView(decorator, decoratorType) {
-  if (!decorator.canPreview())
+  if (!(decorator?.canPreview() ?? false))
     return []
 
   local gcb = globalCallbacks.DECORATOR_PREVIEW
@@ -148,6 +148,7 @@ local function getEntitlementView(entitlement, params = {}) {
   view.list.extend(getEntitlementGiftView(entitlement))
   view.list.extend(getUnlockView(entitlement))
   view.list.extend(getDecoratorGiftView(entitlement?.decalGift, ::g_decorator_type.DECALS, params))
+  view.list.extend(getDecoratorGiftView(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES, params))
   view.list.extend(getDecoratorGiftView(entitlement?.skinGift, ::g_decorator_type.SKINS, params))
   view.list.extend(getUnitsGiftView(entitlement, params))
   return ::handyman.renderCached(template, view)
@@ -210,6 +211,7 @@ local function getEntitlementLayerIcons(entitlement) {
   local layersArray = layerStyles.map(@(style) ::LayersIcon.getIconData(style))
 
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.decalGift, ::g_decorator_type.DECALS))
+  layersArray.extend(getDecoratorLayeredIcon(entitlement?.attachableGift, ::g_decorator_type.ATTACHABLES))
   layersArray.extend(getDecoratorLayeredIcon(entitlement?.skinGift, ::g_decorator_type.SKINS))
   layersArray.extend(getUnitLayeredIcon(entitlement?.aircraftGift))
 

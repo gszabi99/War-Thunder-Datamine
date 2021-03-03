@@ -2,6 +2,7 @@ local time = require("scripts/time.nut")
 local wwActionsWithUnitsList = require("scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 local wwTransportManager = require("scripts/worldWar/inOperation/wwTransportManager.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
+local { WW_MAP_TOOLTIP_TYPE_GROUP } = require("scripts/worldWar/wwGenericTooltipTypes.nut")
 
 class ::WwArmyView
 {
@@ -332,15 +333,8 @@ class ::WwArmyView
     return formation.getFormationID()
   }
 
-  function isFormation()
-  {
-    return "isFormation" in formation ? formation.isFormation() : false
-  }
-
-  function getTooltipId()
-  {
-    return ::g_tooltip_type.WW_MAP_TOOLTIP_TYPE_GROUP.getTooltipId(getClanId(), {})
-  }
+  isFormation    = @() formation?.isFormation() ?? false
+  getTooltipId   = @() WW_MAP_TOOLTIP_TYPE_GROUP.getTooltipId(getClanId(), {})
 
   function getArmyAlertText()
   {

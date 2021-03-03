@@ -1,3 +1,5 @@
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {
   ::gui_start_modal_wnd(
@@ -116,7 +118,7 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
               id = decalId
               image = decorType.getImage(decal)
               ratio = ::clamp(decorType.getRatio(decal), 1, 2)
-              tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decalId, decorType.unlockedItemType)
+              tooltipId = DECORATION.getTooltipId(decalId, decorType.unlockedItemType)
             })
           }
         }

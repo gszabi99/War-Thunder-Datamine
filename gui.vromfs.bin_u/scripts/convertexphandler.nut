@@ -596,7 +596,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitResearch(p)
   {
-    local newUnit = ::getAircraftByName(p?.unitName ?? null)
+    local newUnit = ::getAircraftByName(p?.unitName)
     if (newUnit == unit)
       return
     if (!newUnit || newUnit.shopCountry != country || ::get_es_unit_type(newUnit) != listType)

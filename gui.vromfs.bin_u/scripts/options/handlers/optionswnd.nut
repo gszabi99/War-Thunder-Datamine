@@ -4,9 +4,10 @@ local { fillSystemGuiOptions, onSystemGuiOptionChanged, onRestartClient
   } = require("scripts/options/systemOptions.nut")
 local fxOptions = require("scripts/options/fxOptions.nut")
 local { openAddRadioWnd } = require("scripts/options/handlers/addRadioWnd.nut")
+local preloaderOptionsModal = require("scripts/options/handlers/preloaderOptionsModal.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
-local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
 local { resetTutorialSkip } = require("scripts/tutorials/tutorialsData.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
@@ -25,11 +26,11 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
   function initScreen()
   {
-    backSceneFunc = backToMainScene
     if (!optGroups)
       base.goBack()
 
     base.initScreen()
+    setBreadcrumbGoBackParams(this)
 
     local view = { tabs = [] }
     local curOption = 0
@@ -56,6 +57,7 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
 
     showSceneBtn("btn_postfx_settings", !::is_compatibility_mode())
     showSceneBtn("btn_hdr_settings", ::is_hdr_enabled())
+    showSceneBtn("btn_preloader_settings", ::has_feature("LoadingBackgroundFilter"))
 
     local showWebUI = ::is_platform_pc && ::is_in_flight() && ::WebUI.get_port() != 0
     showSceneBtn("web_ui_button", showWebUI)
@@ -525,6 +527,11 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     applyFunc = fxOptions.openHdrSettings
     applyOptions()
     joinEchoChannel(false)
+  }
+
+  function onPreloaderSettings()
+  {
+    preloaderOptionsModal()
   }
 
   function onWebUiMap()

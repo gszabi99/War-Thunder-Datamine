@@ -159,6 +159,7 @@ tdiv {
 }
 
 timer {
-  id:t = 'weapons_timer';
-  timer_handler_func:t = 'onUpdateWeaponTooltip';
+  id:t = 'weapons_timer'
+  timer_handler_func:t = 'onUpdateWeaponTooltip'
+  timer_interval_msec:t='100'
 }

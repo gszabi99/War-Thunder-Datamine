@@ -1,5 +1,5 @@
 local { getRoleText } = require("scripts/unit/unitInfoTexts.nut")
-local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
 
 class ::WwUnit
 {

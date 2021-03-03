@@ -30,7 +30,7 @@ local function sendBqRecord(metric, itemId, result = null) {
   local sendStat = {}
 
   if (result != null) {
-    sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized ?? null
+    sendStat["isPlusAuthorized"] <- result?.isPlusAuthorized
     sendStat["action"] <- result?.action ?? BQ_DEFAULT_ACTION_ERROR
   }
 

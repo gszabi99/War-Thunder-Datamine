@@ -1,3 +1,5 @@
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+
 local CollectionsSet = class {
   id = "" //name of config blk. not unique
   uid = -1
@@ -57,7 +59,7 @@ local CollectionsSet = class {
         imgRatio = decoratorType.getRatio(decorator)
         imgClass = "smallMedals"
         focusBorder = true
-        tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
+        tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
       }
     }).bindenv(this))
 
@@ -73,7 +75,7 @@ local CollectionsSet = class {
       imgRatio = decoratorType.getRatio(prize)
       imgClass = "collectionPrize"
       focusBorder = true
-      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(prize.id, decoratorType.unlockedItemType, {
+      tooltipId = DECORATION.getTooltipId(prize.id, decoratorType.unlockedItemType, {
         additionalDescriptionMarkup = getCollectionViewForPrize()
       })
       topRightText = isUnlocked ? "" : $"{unlockedItemsCount}/{collectionItems.len()}"

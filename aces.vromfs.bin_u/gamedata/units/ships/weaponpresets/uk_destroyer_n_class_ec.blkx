@@ -777,9 +777,11 @@
       "breechDP": "auxiliary_caliber_gun_02_dm",
       "defaultYaw": 0.0,
       "defaultPitch": 0.0,
-      "speedYaw": 25.0,
-      "speedPitch": 25.0,
-      "bullets": 250,
+      "speedYaw": 8.0,
+      "speedPitch": 8.0,
+      "bullets": 200,
+      "useGunnerTargetingQuality": false,
+      "fireConeAngle": 1.0,
       "allowableDelta": 2.0,
       "ChainfireTime": 60.0,
       "DelayAfterShoot": 0.0,
@@ -802,6 +804,17 @@
         "barrel": "gun_barrel_13",
         "gunnerDm": "auxiliary_caliber_turret_02_dm"
       },
+      "limits": {
+        "yaw": [-180.0,180.0],
+        "pitch": [-7.0,80.0]
+      },
+      "limitsTable": {
+        "lim1": [-180.0,-160.0,12.0,80.0],
+        "lim2": [-160.0,-40.0,-7.0,80.0],
+        "lim3": [-40.0,40.0,40.0,80.0],
+        "lim4": [40.0,160.0,-7.0,80.0],
+        "lim5": [160.0,180.0,12.0,80.0]
+      },
       "gunStabilizer": {
         "hasVerticalGunFreeMode": true,
         "hasHorizontal": true,
@@ -818,17 +831,6 @@
             "row": [70.0,0.05]
           }
         ]
-      },
-      "limits": {
-        "yaw": [-180.0,180.0],
-        "pitch": [-7.0,80.0]
-      },
-      "limitsTable": {
-        "lim1": [-180.0,-160.0,12.0,80.0],
-        "lim2": [-160.0,-40.0,-7.0,80.0],
-        "lim3": [-40.0,40.0,40.0,80.0],
-        "lim4": [40.0,160.0,-7.0,80.0],
-        "lim5": [160.0,180.0,12.0,80.0]
       }
     }
   }

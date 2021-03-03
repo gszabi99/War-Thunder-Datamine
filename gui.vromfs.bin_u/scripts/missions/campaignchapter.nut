@@ -931,10 +931,7 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     updateWindow()
   }
 
-  function onFilterEditBoxActivate()
-  {
-    onStart()
-  }
+  onFilterEditBoxActivate =@() null
 
   function onFilterEditBoxChangeValue()
   {

@@ -4,7 +4,6 @@ local contentPreset = require("scripts/customization/contentPreset.nut")
 local soundDevice = ::require_native("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
-local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 //
 
@@ -19,7 +18,6 @@ local getSystemOptions = @() {
 
 local getMainOptions = function()
 {
-  local isTripleColorSmokeVisible = isTripleColorSmokeAvailable()
   local isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
     (::current_campaign_mission == "tutorial01")
   local curUnit = ::get_player_cur_unit()
@@ -44,6 +42,7 @@ local getMainOptions = function()
                                   && (!::is_platform_windows
                                       || ::getSystemConfigOption("video/mode") == "fullscreen") ],
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
+      [::USEROPT_PRELOADER_SETTINGS, "button", ::has_feature("LoadingBackgroundFilter") && !::is_in_flight()],
 
       ["options/header/commonBattleParameters"],
       [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
@@ -68,10 +67,9 @@ local getMainOptions = function()
       [::USEROPT_FLARES_SERIES, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_FLARES_PERIODS, "spinner", ! ::is_in_flight()],
-      [::USEROPT_AEROBATICS_SMOKE_TYPE, "spinner"],
-      [::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, "spinner", isTripleColorSmokeVisible],
-      [::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, "spinner", isTripleColorSmokeVisible],
-      [::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, "spinner", isTripleColorSmokeVisible],
+      [::USEROPT_CHAFFS_SERIES, "spinner", ! ::is_in_flight()],
+      [::USEROPT_CHAFFS_SERIES_PERIODS, "spinner", ! ::is_in_flight()],
+      [::USEROPT_CHAFFS_PERIODS, "spinner", ! ::is_in_flight()],
       [::USEROPT_SHOW_PILOT, "spinner"],
       [::USEROPT_AUTOPILOT_ON_BOMBVIEW, "spinner"],
       [::USEROPT_AUTOREARM_ON_AIRFIELD, "spinner"],
@@ -112,6 +110,9 @@ local getMainOptions = function()
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
+//
+
+
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],

@@ -402,8 +402,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -435,39 +435,21 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        }
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -1930,7 +1912,7 @@
     "gunConvergence": {
       "updateFromRangefinder": true,
       "minDistance": 200.0,
-      "distance": 1000.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2795,7 +2777,7 @@
     "cockpit": {
       "zoomOutFov": 9.217,
       "zoomInFov": 6.141,
-      "sightFov": 6.0,
+      "sightFov": 4.5,
       "sightName": "centauro",
       "openedCockpit": false,
       "headPos": [0.0,3.8,-8.8],
@@ -3327,7 +3309,7 @@
     "default_skin": {
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
-        "to": "uk_camo_standart_modern_light_stone*"
+        "to": "rsa_camo_dark_earth*"
       }
     }
   },
@@ -3350,6 +3332,17 @@
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
         "to": "rsa_camo_modern_three_color*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "rsa_camo_gray_earth_stone",
+      "nameLocId": "skin/rsa_camo_gray_earth_stone",
+      "descLocId": "skin/rsa_camo_gray_earth_stone/desc",
+      "replace_tex": {
+        "from": "uk_camo_very_dark_drab*",
+        "to": "rsa_camo_gray_earth_stone*"
       }
     }
   },

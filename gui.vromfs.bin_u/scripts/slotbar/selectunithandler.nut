@@ -578,6 +578,7 @@ local class SelectUnitHandler extends ::gui_handlers.BaseGuiHandlerWT
     local id = unit.name
     local markup = ::build_aircraft_item(id, unit, unitItemParams)
     guiScene.replaceContentFromText(objSlot, markup, markup.len(), this)
+    objSlot.tooltipId = ::g_tooltip.getIdUnit(unit.name, unitItemParams.tooltipParams)
     ::fill_unit_item_timers(objSlot.findObject(id), unit, unitItemParams)
   }
 

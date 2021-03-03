@@ -4,7 +4,7 @@ local stdMath = require("std/math.nut")
 local { getUnitRole, getUnitBasicRole, getRoleText, getUnitTooltipImage,
   getFullUnitRoleText, getShipMaterialTexts } = require("scripts/unit/unitInfoTexts.nut")
 local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
 local { isWeaponAux,
         getLastWeapon,
         getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")

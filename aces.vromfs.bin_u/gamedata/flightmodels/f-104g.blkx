@@ -5,6 +5,9 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
+  "haveCCIPForRocket": true,
+  "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
   "JetNozzlesAnim1": [0.3,0.5],
   "JetNozzlesAnim2": [0.5,1.0],
   "JetNozzlesAnim3": [1.0,0.0],
@@ -2380,10 +2383,15 @@
       "tier": 4,
       "reqModification": "us_750lb_m117a1"
     },
-    "aircrafts_false_thermal_targets": {
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "tier": 1,
       "effects": {
         "commonWeapons": [
@@ -2436,9 +2444,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
@@ -2447,9 +2455,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
@@ -2462,7 +2470,7 @@
     "us_aim_9b": {
       "tier": 2,
       "modClass": "weapon",
-      "prevModification": "aircrafts_false_thermal_targets"
+      "prevModification": "countermeasures_belt_pack"
     },
     "us_aim_9b_fgw_2": {
       "tier": 4,

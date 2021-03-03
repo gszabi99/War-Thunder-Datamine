@@ -211,3 +211,25 @@ imgUsercardMedal {
 imgUsercardMedal > img {
   size:@usercardMedalSize, @usercardMedalSize;
 }
+
+banImg {
+  size:1@cIco, 1@cIco;
+  position:absolute;
+  pos:50%ph-50%h, 50%ph-50%h;
+  background-image:#ui/gameuiskin#ban_icon.svg;
+  background-svg-size:1@cIco, 1@cIco;
+  display:hide;
+  enabled:no;
+}
+
+[selected=yes] banImg {
+  background-color:@checkboxBannedUncheckedColor;
+  display:show;
+  enabled:yes;
+}
+
+[banned=yes] banImg {
+  background-color:@checkBoxBannedCheckColor;
+  display:show;
+  enabled:yes;
+}

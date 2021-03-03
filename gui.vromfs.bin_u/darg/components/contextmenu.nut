@@ -6,7 +6,6 @@ local function contextMenu(x, y, width, actions, menu_style = style) {
   lastMenuIdx++
   local uid = "context_menu_{0}".subst(lastMenuIdx)
   local closeMenu = @() modalWindows.remove(uid)
-  local listItem = menu_style?.listItem ?? style.listItem
   local menuBgColor = menu_style?.menuBgColor ?? style.menuBgColor
   local closeHotkeys = menu_style?.closeHotkeys ?? [ ["Esc", closeMenu] ]
   local function defMenuCtor(){

@@ -6,6 +6,7 @@ local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local { getPrizeChanceConfig } = require("scripts/items/prizeChance.nut")
+local { MODIFICATION, SPARE } = require("scripts/weaponry/weaponryTooltips.nut")
 local { isLoadingBgUnlock } = require("scripts/loading/loadingBgData.nut")
 
 //prize - blk or table in format of trophy prizes from trophies.blk
@@ -987,7 +988,7 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
     icon2 = ::get_unit_country_icon(unit)
     title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
           + ::colorize("userlogColoredText", getModificationName(unit, modName))
-    tooltipId = ::g_tooltip.getIdModification(unitName, modName)
+    tooltipId = MODIFICATION.getTooltipId(unitName, modName)
   }
 }
 
@@ -1007,7 +1008,7 @@ PrizesView.getViewDataSpare <- function getViewDataSpare(unitName, count, params
     icon2 = ::get_unit_country_icon(unit)
     shopItemType = getUnitRole(unit)
     title = title
-    tooltipId = ::g_tooltip.getIdSpare(unitName)
+    tooltipId = SPARE.getTooltipId(unitName)
   }
 }
 

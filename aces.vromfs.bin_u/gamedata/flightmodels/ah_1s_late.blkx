@@ -1,5 +1,5 @@
 {
-  "model": "ah_1s",
+  "model": "ah_1s_late",
   "fmFile": "fm/ah_1s.blk",
   "viewDistKInSight": 2.0,
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
@@ -4178,151 +4178,7 @@
       "reqModification": "uh_1c_xm18",
       "tier": 4
     },
-    "heli_false_thermal_targets": {
-      "turn_it_off": false,
-      "tier": 1,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU",
-      "effects": {
-        "commonWeapons": [
-          {
-            "hideNodes": {
-              "node": "fuse3"
-            }
-          },
-          {
-            "Weapon": {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 25.0,
-              "speedPitch": 25.0,
-              "parkInDeadzone": false,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
-              },
-              "limits": {
-                "yaw": [-115.0,115.0],
-                "pitch": [-50.0,25.0]
-              }
-            }
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "gunner0"
-              },
-              {
-                "blk": "gameData/Weapons/cannonM197.blk"
-              },
-              {
-                "emitter": "flare1"
-              },
-              {
-                "flash": "flare1"
-              },
-              {
-                "turret": "turret1"
-              },
-              {
-                "shell": "emtr_shellrejection1"
-              },
-              {
-                "dm": "gunner1_dm"
-              },
-              {
-                "gunnerDm": "gunner1_dm"
-              },
-              {
-                "gunDm": "cannon1_dm"
-              },
-              {
-                "partsDP": "cannon1_dm"
-              },
-              {
-                "bullets": 750
-              },
-              {
-                "recoilOffset": 0.0
-              },
-              {
-                "rotationAnimScale": "gun_rotate_01:CRS"
-              },
-              {
-                "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "barrel": "gun_barrel1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              },
-              {
-                "limits": {
-                  "yaw": [-115.0,115.0],
-                  "pitch": [-50.0,25.0]
-                }
-              },
-              {
-                "limitsTable": {
-                  "lim1": [-115.0,-103.0,-50.0,15.0],
-                  "lim2": [-103.0,-75.0,-50.0,19.0],
-                  "lim3": [-75.0,-52.0,-50.0,24.0],
-                  "lim4": [-52.0,-35.0,-50.0,25.0],
-                  "lim5": [-35.0,-15.0,-50.0,23.0],
-                  "lim6": [-15.0,15.0,-50.0,20.0],
-                  "lim7": [15.0,35.0,-50.0,23.0],
-                  "lim8": [35.0,52.0,-50.0,25.0],
-                  "lim9": [52.0,75.0,-50.0,24.0],
-                  "lim10": [75.0,103.0,-50.0,19.0],
-                  "lim11": [103.0,115.0,-50.0,15.0]
-                }
-              }
-            ]
-          },
-          {
-            "Weapon": [
-              {
-                "trigger": "flares"
-              },
-              {
-                "startFx": ""
-              },
-              {
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
-              },
-              {
-                "emitter": "emtr_flare1"
-              },
-              {
-                "bullets": 30
-              },
-              {
-                "external": true
-              },
-              {
-                "separate": true
-              },
-              {
-                "startFx": ""
-              }
-            ]
-          }
-        ]
-      }
-    },
     "ah_1_m200_2": {
-      "reqModification": "heli_false_thermal_targets",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 2
@@ -4388,28 +4244,28 @@
   "default_skin_tomoe": [
     {
       "replace_tex": {
-        "from": "ah_1s_fuji_green_camo_c*",
-        "to": "ah_1s_fuji_shark_c_tomoe*"
+        "from": "ah_1s_late_camo_c*",
+        "to": "ah_1s_late_shark_c_tomoe*"
       }
     },
     {
       "replace_tex": {
-        "from": "ah_1s_fuji_green_camo_c_dmg*",
-        "to": "ah_1s_fuji_shark_c_tomoe_dmg*"
+        "from": "ah_1s_late_camo_c_dmg*",
+        "to": "ah_1s_late_shark_c_tomoe_dmg*"
       }
     }
   ],
   "default_skin": [
     {
       "replace_tex": {
-        "from": "ah_1s_fuji_green_camo_c*",
-        "to": "ah_1s_fuji_shark_c*"
+        "from": "ah_1s_late_camo_c*",
+        "to": "ah_1s_late_shark_c*"
       }
     },
     {
       "replace_tex": {
-        "from": "ah_1s_fuji_green_camo_c_dmg*",
-        "to": "ah_1s_fuji_shark_c_dmg*"
+        "from": "ah_1s_late_camo_c_dmg*",
+        "to": "ah_1s_late_shark_c_dmg*"
       }
     }
   ]

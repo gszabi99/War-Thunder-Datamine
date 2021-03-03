@@ -109,7 +109,7 @@ local function getChallengeView(config, paramsCfg = {}) {
   local { addTitle, titleIcon } = getConditionInTitleConfig(config)
   local headerCond = ::UnlockConditions.getHeaderCondition(unlockConfig.conditions)
 
-  local progressData = unlockConfig?.getProgressBarData() ?? null
+  local progressData = unlockConfig?.getProgressBarData()
   local progressBarValue = unlockConfig?.curVal != null && unlockConfig.curVal >= 0
     ? (unlockConfig.curVal.tofloat() / (unlockConfig?.maxVal ?? 1) * 1000)
     : 0

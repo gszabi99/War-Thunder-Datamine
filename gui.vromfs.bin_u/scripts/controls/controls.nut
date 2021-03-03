@@ -14,11 +14,11 @@ local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigP
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { isMultifuncMenuAvailable, isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC } = require("scripts/clientState/platform.nut")
-local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
 local { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
 local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local vehicleModel = require("vehicleModel")
 local { saveProfile } = require("scripts/clientState/saveProfile.nut")
+local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
 local PS4_CONTROLS_MODE_ACTIVATE = "ps4ControlsAdvancedModeActivated"
 
@@ -263,7 +263,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
 
   function initScreen()
   {
-    backSceneFunc = backToMainScene
+    setBreadcrumbGoBackParams(this)
     mainOptionsMode = ::get_gui_options_mode()
     ::set_gui_options_mode(::OPTIONS_MODE_GAMEPLAY)
 
@@ -1558,8 +1558,8 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
       return
 
     changeControlsMode = value
-    backSceneFunc = changeControlsMode ? ::gui_start_controls_console
-      : backToMainScene
+    if (value)
+      backSceneFunc = ::gui_start_controls_console
     ::switchControlsMode(value)
   }
 

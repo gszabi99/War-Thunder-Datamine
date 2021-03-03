@@ -68,8 +68,8 @@ local function openItemsWnd(owner, params = [])
   local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
 
   local curSheet = null
-  local sheetSearchId = params?[0] ?? null
-  local initSubsetId = params?[2] ?? null
+  local sheetSearchId = params?[0]
+  local initSubsetId = params?[2]
   if (sheetSearchId)
     curSheet = {searchId = sheetSearchId}
 
@@ -175,7 +175,9 @@ local openProfileSheetParams = {
       local country = unit.shopCountry
       local showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
         curAirName = unitName
-        forceUnitType = unit?.unitType })
+        forceUnitType = unit?.unitType
+        needHighlight = unitName != ""
+      })
 
       local acceptCallback = ::Callback( function() {
         ::switch_profile_country(country)

@@ -1,6 +1,6 @@
 local { addButtonConfig } = require("scripts/mainmenu/topMenuButtonsConfigs.nut")
-local { getOperationById, getMapByName
-} = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local { getOperationById,
+        getMapByName } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 local template = {
   category = -1
@@ -31,7 +31,11 @@ local list = {
   }
   WW_HANGAR = {
     text = "#worldWar/menu/quitToHangar"
-    onClickFunc = @(obj, handler) ::g_world_war.stopWar()
+    onClickFunc = function(obj, handler) {
+      ::g_world_war.stopWar()
+      if (!::ww_is_operation_loaded())
+        handler?.goBack()
+    }
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_FILTER_RENDER_ZONES = {
@@ -67,6 +71,31 @@ local list = {
     image = @() "#ui/gameuiskin#battles_closed"
     onChangeValueFunc = @(value) ::g_world_war.setDebugMode(value)
     isHidden = @(...) !::has_feature("worldWarMaster")
+  }
+  WW_LEADERBOARDS = {
+    text = "#mainmenu/titleLeaderboards"
+    onClickFunc = @(obj, handler) ::gui_start_modal_wnd(::gui_handlers.WwLeaderboard,
+      {beginningMode = "ww_clans"})
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
+  }
+  WW_SCENARIO_DESCR = {
+    text = "#worldwar/scenarioDescription"
+    onClickFunc = @(obj, handler) handler?.openOperationsListModal()
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
+  }
+  WW_OPERATION_LIST = {
+    text = "#worldwar/operationsList"
+    onClickFunc = @(obj, handler) handler?.onOperationListSwitch()
+    isHidden = @(...) !::has_feature("WWOperationsList")
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
+  }
+  WW_WIKI = {
+    onClickFunc = @(obj, handler) ::open_url_by_obj(obj)
+    isDelayed = false
+    link = ""
+    isLink = @() true
+    isFeatured = @() true
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
 }
 

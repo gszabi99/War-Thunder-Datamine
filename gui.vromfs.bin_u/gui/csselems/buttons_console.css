@@ -279,21 +279,6 @@ Button_text[selected=yes] {
   color: @buttonFontColorFocus;
 }
 
-buttonsNest > Button_text:focus,
-modSlotButtonsNest > Button_text:focus,
-craftBranchBody:focus > Button_text[selected=yes] {
-  background-color: @buttonColor;
-  color: @buttonFontColor;
-  border-color:@buttonBorderColor;
-}
-
-[show_console_buttons=yes] buttonsNest > Button_text:focus,
-[show_console_buttons=yes] modSlotButtonsNest > Button_text:focus {
-  background-color: @buttonColorFocus;
-  border-color:@buttonBorderColorFocus;
-  color: @buttonFontColorFocus;
-}
-
 Button_text:disabled,
 Button_text[inactiveColor=yes] {
   background-color: @buttonColorDisabled;
@@ -1024,9 +1009,10 @@ DummyButton[btnName=LSDown]            { accessKey:"J:L.Thumb.Down"; }
 
 Button_text[btnName=AB]                { accessKey:'J:A | J:RT | Space | Enter | NumEnter | J:B | Esc | Backspace'; }
 
-Button_text[btnName=A], DummyButton[btnName=A], mapStateBox[btnName=A]
+Button_text[btnName=A], DummyButton[btnName=A], dummy[btnName=A], mapStateBox[btnName=A]
                                         { accessKey:'J:A | J:RT | Space | Enter | NumEnter'; }
-[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A], [swap_ab=yes] mapStateBox[btnName=A]
+[swap_ab=yes] Button_text[btnName=A], [swap_ab=yes] DummyButton[btnName=A],
+[swap_ab=yes] dummy[btnName=A], [swap_ab=yes] mapStateBox[btnName=A]
                                         { accessKey:'J:B | J:RT | Space | Enter | NumEnter'; }
 
 Button_text[btnName=SpaceA]            { accessKey:'J:A | J:RT | Space'; }
@@ -2028,8 +2014,20 @@ Button_text.additional[hasIncreasedTopMargin] {
   margin-top:3@smallButtonMargin;
 }
 
-weaponry_item:hover > modSlotButtonsNest > Button_text.additional[canShow=yes],
-weaponry_item > modSlotButtonsNest:hover > Button_text.additional[canShow=yes],
+modSlotButtonsNest > Button_text,
+modSlotButtonsNest > dummy {
+  display:hide;
+  enable:no;
+}
+
+:hover > modSlotButtonsNest > Button_text.additional[canShow=yes],
+modSlotButtonsNest:hover > Button_text.additional[canShow=yes],
+:hover > modSlotButtonsNest > dummy[canShow=yes],
+modSlotButtonsNest:hover > dummy[canShow=yes] {
+  display:show;
+  enable:yes;
+}
+
 weapon_item_unit:hover > Button_text.additional[canShow=yes],
 Button_text.additional:hover[canShow=yes],
 weaponry_item > modSlotButtonsNest:hover,

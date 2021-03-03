@@ -45,6 +45,11 @@ root {
       on_click:t='onUnitClick'
       on_r_click:t='onUnitRightClick'
       on_activate:t='onUnitAction'
+
+      on_pushed:t='::gcb.delayedTooltipListPush'
+      on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+
       <<@unitsList>>
     }
 

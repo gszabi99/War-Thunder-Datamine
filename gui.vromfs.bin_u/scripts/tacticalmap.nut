@@ -1,4 +1,4 @@
-local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponShortTypeFromWpName } = require("scripts/weaponry/weaponryDescription.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 
 ::gui_start_tactical_map <- function gui_start_tactical_map(use_tactical_control = false)

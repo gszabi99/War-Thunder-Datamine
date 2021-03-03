@@ -16,14 +16,6 @@ local tostringfuncTbl = [
 ]
 local log = logLib(tostringfuncTbl)
 
-local function make_persists(persist, val){
-  ::assert(::type(val)=="table", "not a table value passed!")
-//  local ret = {}
-  foreach (k,v in val)
-    val[k]<-persist(k, @() v)
-  return val
-}
-
 /*
 //===== DARG specific methods=====
   this function create element that has internal basic stateFlags (S_HOVER S_ACTIVE S_DRAG)
@@ -177,7 +169,6 @@ local function mul_color(color, mult) {
 
 //darg helpers
 ::watchElemState <- watchElemState //warning disable: -ident-hides-ident
-::make_persists <- make_persists //warning disable: -ident-hides-ident
 ::NamedColor <- NamedColor //warning disable: -ident-hides-ident
 ::hdpx <- hdpx //warning disable: -ident-hides-ident
 ::mul_color <- mul_color //warning disable: -ident-hides-ident

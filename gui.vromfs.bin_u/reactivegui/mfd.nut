@@ -83,7 +83,7 @@ local function mfdHUD(colorStyle, isBackground) {
   return [
     mfdSightHud(colorStyle, isBackground)
     mkTws(rwrStyle)
-    radarComponent.mkRadarForMfd(sw(6), sh(6), getColor(isBackground))
+    radarComponent.mkRadarForMfd(getColor(isBackground))
   ]
 }
 

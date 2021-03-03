@@ -76,6 +76,18 @@ tdiv {
   <</isCategory>>
   <</isCollapsable>>
 
+  <<#isTooltipByHold>>
+  <<#tooltipId>>
+  tooltipId:t='<<tooltipId>>'
+  behavior = "button"
+  on_pushed = "::gcb.delayedTooltipPush"
+  on_hold_start = "::gcb.delayedTooltipHoldStart"
+  on_hold_stop = "::gcb.delayedTooltipHoldStop"
+  navigatorShortcuts = "SpaceA"
+  not-input-transparent:t='yes'
+  <</tooltipId>>
+  <</isTooltipByHold>>
+
   prizeNest {
     width:t='pw'
 
@@ -151,7 +163,7 @@ tdiv {
       padding:t='-1@slot_interval, -1@slot_vert_pad'
       pos:t='1@itemPadding, ph/2-h/2'; position:t='relative'
       rankUpList {
-        interactiveChildren:t='yes'
+        holdTooltipChildren:t='yes'
         <<@unitPlate>>
       }
     }
@@ -187,6 +199,7 @@ tdiv {
     <</emptyButton>>
     <</buttons>>
 
+    <<^isTooltipByHold>>
     <<#tooltipId>>
     tooltipObj {
       id:t='tooltip_<<tooltipId>>'
@@ -197,6 +210,7 @@ tdiv {
     title:t='$tooltipObj'
     tooltip-float:t='horizontal'
     <</tooltipId>>
+    <</isTooltipByHold>>
   }
   <<#commentText>>
   _newline{ size:t='0' }

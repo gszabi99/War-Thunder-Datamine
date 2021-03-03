@@ -164,13 +164,7 @@ enum SPECTATOR_CHAT_TAB {
     historyLog = []
 
     loadGameChat()
-    if (isMultiplayer)
-      setHotkeysToObjTooltips(scene.findObject("gamechat"), {
-        btn_activate  = { shortcuts = [ "ID_TOGGLE_CHAT_TEAM" ] }
-        btn_send      = { keys = [ "key/Enter" ] }
-        btn_cancel    = { keys = [ "key/Esc" ] }
-      })
-    else
+    if (!isMultiplayer)
       ::showBtnTable(scene, {
           btn_tab_chat  = false
           target_stats  = false
