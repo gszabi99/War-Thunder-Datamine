@@ -11,14 +11,6 @@ imgButton {
     tooltip:t='<<tooltipText>>'
   <</tooltipText>>
   <</tooltipId>>
-  <<#tooltipId>><<#isTooltipByHold>>
-    tooltipId:t='<<tooltipId>>'
-    on_pushed = "::gcb.delayedTooltipPush"
-    on_hold_start = "::gcb.delayedTooltipHoldStart"
-    on_hold_stop = "::gcb.delayedTooltipHoldStop"
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
-  <</isTooltipByHold>><</tooltipId>>
 
   <<#unlocked>> unlocked:t='yes'; <</unlocked>>
   <<#highlighted>> highlighted:t='yes' <</highlighted>>
@@ -142,7 +134,6 @@ imgButton {
   <</emptySlot>>
 
   <<#tooltipId>>
-  <<^isTooltipByHold>>
     tooltipObj {
       tooltipId:t='<<tooltipId>>'
       on_tooltip_open:t='onGenericTooltipOpen'
@@ -157,7 +148,6 @@ imgButton {
     }
     title:t='$tooltipObj';
     tooltip-float:t='horizontal';
-  <</isTooltipByHold>>
   <</tooltipId>>
 }
 <</buttons>>

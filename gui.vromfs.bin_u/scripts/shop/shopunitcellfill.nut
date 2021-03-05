@@ -49,7 +49,6 @@ local function initCell(cell, initData) {
   cell.id = $"unitCell_{id}"
   local cardObj = cell.findObject(prevId)
   cardObj.id = id
-  cardObj.title = ::show_console_buttons ? "" : "$tooltipObj"
   cardObj.findObject("mainActionButton").holderId = id
 }
 
@@ -108,8 +107,6 @@ local function updateCardStatus(obj, id, statusTbl) {
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
   obj.findObject("unitTooltip").tooltipId = tooltipId
-  if (::show_console_buttons)
-    obj.tooltipId = tooltipId
   setBool(showInObj(obj, "talisman", hasTalismanIcon), "incomplete", !isTalismanComplete)
   setBool(showInObj(obj, "inServiceMark", needInService), "mounted", isMounted)
   showInObj(obj, "weaponStatusIcon", weaponsStatus != "").weaponsStatus = weaponsStatus
@@ -177,15 +174,13 @@ local function updateCardStatus(obj, id, statusTbl) {
 }
 
 local function updateCellStatus(cell, statusTbl) {
-  local { isInactive = false, isVisible = true, tooltipId = "" } = statusTbl
+  local { isInactive = false, isVisible = true } = statusTbl
   setBool(cell, "inactive", isInactive)
   cell.enable(isVisible && !isInactive)
   cell.show(isVisible)
   if (!isVisible)
     return
 
-  if (::show_console_buttons)
-    cell.tooltipId = tooltipId
   local id = cell.holderId
   local cardObj = cell.findObject(id)
   updateCardStatus(cardObj, id, statusTbl)

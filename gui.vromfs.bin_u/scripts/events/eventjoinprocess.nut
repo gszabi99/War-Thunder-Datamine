@@ -2,7 +2,6 @@ local stdMath = require("std/math.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
-local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 ::EventJoinProcess <- class
 {
@@ -67,8 +66,7 @@ local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundM
         ::g_squad_manager.setReadyFlag()
       return remove()
     }
-    if (!antiCheat.showMsgboxIfEacInactive(event)||
-        !showMsgboxIfSoundModsNotAllowed(event))
+    if (!antiCheat.showMsgboxIfEacInactive(event))
       return remove()
     // Same as checkedNewFlight in gui_handlers.BaseGuiHandlerWT.
     ::queues.checkAndStart(

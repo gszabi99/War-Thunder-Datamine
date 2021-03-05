@@ -138,7 +138,6 @@ foreach (fn in [
                  "services/wwService.nut"
                  "operations/model/wwGlobalStatusType.nut"
                  "externalServices/worldWarTopMenuSectionsConfigs.nut"
-                 "externalServices/wwTopMenuOperationMapConfig.nut"
                  "externalServices/wwQueue.nut"
                  "externalServices/inviteWwOperation.nut"
                  "externalServices/inviteWwOperationBattle.nut"
@@ -209,6 +208,7 @@ foreach (fn in [
                ])
   ::g_script_reloader.loadOnce("scripts/worldWar/" + fn) // no need to includeOnce to correct reload this scripts pack runtime
 
+require("scripts/worldWar/wwGenericTooltipTypes.nut")
 foreach(bhvName, bhvClass in ::ww_gui_bhv)
   ::replace_script_gui_behaviour(bhvName, bhvClass)
 

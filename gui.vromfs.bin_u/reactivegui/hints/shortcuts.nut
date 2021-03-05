@@ -128,7 +128,7 @@ local shortcutByInputName = {
       children = [{
         size = [SIZE_TO_CONTENT, flex()]
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.leftKey, override)]
+        children = [getShortcut(shortcutConfig.elements?.leftKey ?? null, override)]
       },
       {
         size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
@@ -136,7 +136,7 @@ local shortcutByInputName = {
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = [
-          getShortcut(shortcutConfig.elements?.topKey, override),
+          getShortcut(shortcutConfig.elements?.topKey ?? null, override),
           needArrows
             ? {
                 size = sizeParam.gamepadButtonSize
@@ -145,12 +145,12 @@ local shortcutByInputName = {
                 children = shortcutConfig.arrows.map(@(arrow) arrowImg(arrow.direction, override))
               }
             : null,
-          getShortcut(shortcutConfig.elements?.downKey, override)]
+          getShortcut(shortcutConfig.elements?.downKey ?? null, override)]
       },
       {
         size = [SIZE_TO_CONTENT, flex()]
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
-        children = [getShortcut(shortcutConfig.elements?.rightKey, override)]
+        children = [getShortcut(shortcutConfig.elements?.rightKey ?? null, override)]
       }]
     }
   }

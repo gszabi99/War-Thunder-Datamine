@@ -1471,8 +1471,7 @@
           },
           {
             "page": {
-              "type": "radar",
-              "radarScale": 0.85
+              "type": "radar"
             }
           },
           {
@@ -1882,11 +1881,6 @@
     {
       "sensor": {
         "blk": "gameData/sensors/su_spo-150.blk"
-      }
-    },
-    {
-      "sensor": {
-        "blk": "gameData/sensors/su_l_370_2.blk"
       }
     },
     {
@@ -4849,7 +4843,7 @@
     "heli_screen_exhaust_device": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "tier": 1,
       "effects": {
         "enginesInfraRedBrightnessMult": 0.7,
@@ -4969,16 +4963,11 @@
         ]
       }
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
+    "MAW_system_heli_false_thermal_targets": {
       "reqModification": "heli_screen_exhaust_device",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "tier": 2,
       "effects": {
         "commonWeapons": [
@@ -5097,13 +5086,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare1"
@@ -5125,13 +5114,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare2"
@@ -5190,7 +5179,7 @@
     "2A42_ground_targets": [],
     "2A42_air_targets": [],
     "2A42_belt_pack": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "MAW_system_heli_false_thermal_targets",
       "tier": 3
     },
     "2A42_new_gun": {

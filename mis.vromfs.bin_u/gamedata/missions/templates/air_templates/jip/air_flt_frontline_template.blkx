@@ -843,7 +843,6 @@
               "scale": 2.0,
               "loopSpawn": true,
               "delay": [1.0,1.0],
-              "doNuclearExplosion": false,
               "target": "@flt_smoke_name",
               "radiusOffset": [0.0,0.0],
               "mustExist": false
@@ -859,7 +858,6 @@
               "scale": 2.0,
               "loopSpawn": true,
               "delay": [1.0,1.0],
-              "doNuclearExplosion": false,
               "target": "@flt_smoke_name",
               "radiusOffset": [0.0,0.0],
               "mustExist": true
@@ -949,7 +947,6 @@
             "scale": 1.0,
             "loopSpawn": true,
             "delay": [1.0,1.0],
-            "doNuclearExplosion": false,
             "target": "@flt_smoke_name",
             "radiusOffset": [0.0,0.0],
             "mustExist": false
@@ -1033,7 +1030,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t1_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_big_aaa_spots_num"
@@ -1047,7 +1044,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t1_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t1_big_aaa_spot_name"
               }
@@ -1431,7 +1428,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t2_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_big_aaa_spots_num"
@@ -1445,7 +1442,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t2_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t2_big_aaa_spot_name"
               }
@@ -1844,7 +1841,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t1_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_small_aaa_spots_num"
@@ -1858,7 +1855,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t1_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t1_small_aaa_spot_name"
               }
@@ -2242,7 +2239,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t2_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_small_aaa_spots_num"
@@ -2256,7 +2253,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t2_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t2_small_aaa_spot_name"
               }
@@ -2655,7 +2652,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t1_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_art_spots_num"
@@ -2669,7 +2666,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t1_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t1_art_spot_name"
               }
@@ -2934,7 +2931,7 @@
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
                 "object": "@flt_t1_art_spot_name",
-                "target": "lbt_battle_t2_battle_squad",
+                "target": "lbt_battles_t2_battle_squad",
                 "object_var_value": 0,
                 "compareCenters": false
               }
@@ -3163,7 +3160,7 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t2_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
                 "var_to_not_including": "flt_art_spots_num"
@@ -3177,7 +3174,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t2_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t2_art_spot_name"
               }
@@ -3442,7 +3439,7 @@
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
                 "object": "@flt_t2_art_spot_name",
-                "target": "lbt_battle_t1_battle_squad",
+                "target": "lbt_battles_t1_battle_squad",
                 "object_var_value": 0,
                 "compareCenters": false
               }
@@ -3675,23 +3672,10 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t1_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
-                "var_to_not_including": "flt_tank_spots_num",
-                "check_prev_value": "flt_tank_t1_prev_spot_idx"
-              }
-            },
-            {
-              "varSetInt": {
-                "value": 0,
-                "var": "flt_tank_t1_prev_spot_idx",
-                "input_var": "flt_t1_randomizer"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
+                "var_to_not_including": "flt_tank_spots_num"
               }
             },
             {
@@ -3702,7 +3686,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t1_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t1_tank_spot_name"
               }
@@ -3720,7 +3704,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t1_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t1_tank_road_name"
               }
@@ -3979,7 +3963,8 @@
               "object_var_comp_op": "equal",
               "func": "more",
               "value": 0,
-              "object": "@flt_t1_tank_name"
+              "object": "@flt_t1_tank_name",
+              "object_var_value": 0
             }
           },
           "actions": [
@@ -4003,18 +3988,11 @@
                 "object_type": "isInactive",
                 "target": "@flt_t1_tank_spot_name",
                 "randomObjectsCount": 1,
-                "isStealth": true,
-                "resetFormation": true,
-                "formation": {
-                  "formation_type": "rows",
-                  "formation_div": 3,
-                  "formation_step": [12.0,6.0],
-                  "formation_noise": [0.3,0.4]
-                }
+                "isStealth": true
               }
             },
             {
-              "__unitSetRoute": {
+              "unitSetRoute": {
                 "route": "@flt_t1_tank_road_name",
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
@@ -4030,7 +4008,7 @@
             },
             {
               "triggerEnable": {
-                "target": "flt_t1_tank_route_set"
+                "target": "flt_t1_tank_garbage_collect"
               }
             }
           ],
@@ -4038,64 +4016,6 @@
             "comment": {
               "value": "спавн не в правильном месте. пробуем пойти дальше по ротации"
             },
-            "triggerEnable": {
-              "target": "flt_t1_tank_garbage_collect"
-            }
-          }
-        },
-        "flt_t1_tank_route_set": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "unitDistanceBetween": {
-              "value": 50.0,
-              "math": "2D",
-              "object_type": "isActive",
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "target_type": "isAlive",
-              "target_marking": 0,
-              "check_objects": "any",
-              "check_targets": "any",
-              "object": "@flt_t1_tank_name",
-              "target": "@flt_t1_tank_spot_name",
-              "compareCenters": false
-            }
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@flt_t1_tank_name",
-              "movementTraceRI": true
-            },
-            "unitSetRoute": {
-              "route": "@flt_t1_tank_road_name",
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "teleportToStart": true,
-              "object": "@flt_t1_tank_name",
-              "useForTriggerFiltered": true,
-              "pos": "@flt_t1_tank_spot_name"
-            },
-            "triggerEnable": {
-              "target": "flt_t1_tank_garbage_collect"
-            }
-          },
-          "else_actions": {
             "triggerEnable": {
               "target": "flt_t1_tank_garbage_collect"
             }
@@ -4245,23 +4165,10 @@
             },
             {
               "varSetRandomInt": {
-                "var": "flt_t2_randomizer",
+                "var": "flt_randomizer",
                 "from": 1,
                 "to_not_including": 10,
-                "var_to_not_including": "flt_tank_spots_num",
-                "check_prev_value": "flt_t2_randomizer"
-              }
-            },
-            {
-              "varSetInt": {
-                "value": 0,
-                "var": "flt_t2_randomizer",
-                "input_var": "flt_t2_randomizer"
-              }
-            },
-            {
-              "comment": {
-                "value": ""
+                "var_to_not_including": "flt_tank_spots_num"
               }
             },
             {
@@ -4272,7 +4179,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t2_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t2_tank_spot_name"
               }
@@ -4290,7 +4197,7 @@
             },
             {
               "varAddString": {
-                "value": "@flt_t2_randomizer",
+                "value": "@flt_randomizer",
                 "digits": 2,
                 "var": "flt_t2_tank_road_name"
               }
@@ -4348,6 +4255,7 @@
                 "object_var_comp_op": "equal",
                 "object": "flt_t2_tanks_squad",
                 "target": "@flt_t2_tank_spot_name",
+                "object_var_value": 0,
                 "compareCenters": false
               }
             },
@@ -4365,6 +4273,7 @@
                 "object_var_comp_op": "equal",
                 "object": "all_players_squad",
                 "target": "@flt_t2_tank_spot_name",
+                "object_var_value": 0,
                 "compareCenters": false
               }
             }
@@ -4577,18 +4486,11 @@
                 "object_type": "isInactive",
                 "target": "@flt_t2_tank_spot_name",
                 "randomObjectsCount": 1,
-                "isStealth": true,
-                "resetFormation": true,
-                "formation": {
-                  "formation_type": "rows",
-                  "formation_div": 3,
-                  "formation_step": [12.0,6.0],
-                  "formation_noise": [0.3,0.4]
-                }
+                "isStealth": true
               }
             },
             {
-              "__unitSetRoute": {
+              "unitSetRoute": {
                 "route": "@flt_t2_tank_road_name",
                 "object_var_name": "",
                 "object_var_comp_op": "equal",
@@ -4604,7 +4506,7 @@
             },
             {
               "triggerEnable": {
-                "target": "flt_t2_tank_route_set"
+                "target": "flt_t2_tank_garbage_collect"
               }
             }
           ],
@@ -4612,64 +4514,6 @@
             "comment": {
               "value": "спавн не в правильном месте. пробуем пойти дальше по ротации"
             },
-            "triggerEnable": {
-              "target": "flt_t2_tank_garbage_collect"
-            }
-          }
-        },
-        "flt_t2_tank_route_set": {
-          "is_enabled": false,
-          "comments": "",
-          "props": {
-            "actionsType": "PERFORM_ONE_BY_ONE",
-            "conditionsType": "ALL",
-            "enableAfterComplete": false
-          },
-          "events": {
-            "periodicEvent": {
-              "time": 1.0
-            }
-          },
-          "conditions": {
-            "unitDistanceBetween": {
-              "value": 50.0,
-              "math": "2D",
-              "object_type": "isActive",
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "target_type": "isAlive",
-              "target_marking": 0,
-              "check_objects": "any",
-              "check_targets": "any",
-              "object": "@flt_t2_tank_name",
-              "target": "@flt_t2_tank_spot_name",
-              "compareCenters": false
-            }
-          },
-          "actions": {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@flt_t2_tank_name",
-              "movementTraceRI": true
-            },
-            "unitSetRoute": {
-              "route": "@flt_t2_tank_road_name",
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "teleportToStart": true,
-              "object": "@flt_t2_tank_name",
-              "useForTriggerFiltered": true,
-              "pos": "@flt_t2_tank_spot_name"
-            },
-            "triggerEnable": {
-              "target": "flt_t2_tank_garbage_collect"
-            }
-          },
-          "else_actions": {
             "triggerEnable": {
               "target": "flt_t2_tank_garbage_collect"
             }
@@ -8004,7 +7848,7 @@
     "flt_t2_initial_force": 0,
     "flt_t1_big_aaa_count": 0,
     "flt_t2_big_aaa_count": 0,
-    "flt_t1_randomizer": 0,
+    "flt_randomizer": 0,
     "flt_small_aaa_spots_num": 45,
     "flt_small_aaa_weight": 7,
     "flt_t1_small_aaa_count": 0,
@@ -8296,7 +8140,6 @@
     "flt_area_29_heat": -1,
     "flt_area_30_heat": -1,
     "flt_area_31_heat": -1,
-    "flt_t2_randomizer": 0,
     "flt_area_32_heat": -1,
     "flt_area_33_heat": -1,
     "flt_area_34_heat": -1,
@@ -8327,10 +8170,7 @@
     "flt_draw_cur_cell_left_skip_point": "",
     "flt_draw_cur_cell_bottom_skip_point": "",
     "flt_log_string": "",
-    "flt_army_A_width": 4,
-    "flt_cell_size": 8192.0,
-    "flt_tank_t1_prev_spot_idx": 0,
-    "flt_tank_t2_prev_spot_idx": 0
+    "flt_army_A_width": 4
   },
   "dialogs": [],
   "airfields": [],

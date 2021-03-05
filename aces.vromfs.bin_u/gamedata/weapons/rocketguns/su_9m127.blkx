@@ -110,6 +110,9 @@
       "waterCollisionEffect": "120-203_he_water_splash"
     },
     {
+      "waterFxScale": [1.1,1.2]
+    },
+    {
       "explosionPatchRadius": 3.4
     },
     {
@@ -248,6 +251,12 @@
       "maxSpeed": 600.0
     },
     {
+      "speedViscosity": 0.15
+    },
+    {
+      "timeToLive": 20.0
+    },
+    {
       "timeLife": 28.0
     },
     {
@@ -263,10 +272,31 @@
       "aiAirOnly": false
     },
     {
+      "aiHeatAim": false
+    },
+    {
+      "aiRadarAim": false
+    },
+    {
+      "aiLaserAim": false
+    },
+    {
+      "aiMaxAimAngle": 30.0
+    },
+    {
+      "aiSpeedViscosity": 3.0
+    },
+    {
+      "aiSpeedPrediction": 1.0
+    },
+    {
+      "aiAccelPrediction": 0.5
+    },
+    {
       "hasTracerTrail": true
     },
     {
-      "tracerTrailEmitter": [-0.5,0.0,0.0]
+      "tracerTrailEmitter": [0.1,-0.01,0.0]
     },
     {
       "amountPerTier": 6.0
@@ -286,11 +316,6 @@
           "mod2": [30.0,0.2]
         }
       ]
-    },
-    {
-      "pressureDamage": {
-        "damageType": "pressure"
-      }
     },
     {
       "damage": {
@@ -443,7 +468,7 @@
         "smokeEffect": "",
         "visual": {
           "traceFreq": 1,
-          "tracer": "152mmRed",
+          "tracer": "100mmRed",
           "trail": "noTrail"
         }
       }

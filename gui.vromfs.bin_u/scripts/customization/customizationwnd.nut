@@ -1,5 +1,4 @@
 local time = require("scripts/time.nut")
-local { acos } = require("math")
 local penalty = ::require_native("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
@@ -9,7 +8,6 @@ local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.n
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
 local { canBuyNotResearched,
         isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
-local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 
 local { isPlatformPC } = require("scripts/clientState/platform.nut")
 local { canUseIngameShop, getShopItemsTable } = require("scripts/onlineShop/entitlementsStore.nut")
@@ -429,7 +427,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       skinItems.append({
         text = text
         textStyle = skinList.items[i].textStyle
-        addDiv = DECORATION.getMarkup(decorator.id, ::UNLOCKABLE_SKIN, tooltipParams)
+        addDiv = ::g_tooltip_type.DECORATION.getMarkup(decorator.id, ::UNLOCKABLE_SKIN, tooltipParams)
         image  = image == "" ? null : image
         image2 = isUnlocked ? null : "#ui/gameuiskin#locked"
         imageNoMargin = !isUnlocked
@@ -475,7 +473,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::has_feature("SpendGold"))
       options.insert(0, ::USEROPT_TANK_SKIN_CONDITION)
 
-    local view = { isTooltipByHold = ::show_console_buttons, rows = [] }
+    local view = { rows = [] }
     foreach(optType in options)
     {
       local option = ::get_option(optType)
@@ -618,7 +616,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!access_Attachables)
       return
 
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = []}
+    local view = {buttons = []}
     for (local i = 0; i < ::g_decorator_type.ATTACHABLES.getMaxSlots(); i++)
     {
       local button = getViewButtonTable(i, ::g_decorator_type.ATTACHABLES)
@@ -646,7 +644,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateDecalSlots()
   {
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
+    local view = {buttons = []}
     for (local i = 0; i < ::g_decorator_type.DECALS.getMaxSlots(); i++)
     {
       local button = getViewButtonTable(i, ::g_decorator_type.DECALS)
@@ -701,7 +699,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       image = decoratorType.getImage(decorator)
       rarityColor = decorator?.isRare() ? decorator.getRarityColor() : null
       tooltipText = buttonTooltip
-      tooltipId = slot.isEmpty? null : DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
+      tooltipId = slot.isEmpty? null : ::g_tooltip_type.DECORATION.getTooltipId(decalId, decoratorType.unlockedItemType)
       tooltipOffset = "1@bw, 1@bh + 0.1@sf"
     }
   }
@@ -793,6 +791,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
           btn_info_online = !isInEditMode && !isDecoratorsListOpen && ::isUnitDescriptionValid(unit) && access_WikiOnline
           btn_sec_weapons    = !isInEditMode && !isDecoratorsListOpen &&
             needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
+          btn_weapons    = !isInEditMode && !isDecoratorsListOpen
 
           btn_decal_edit   = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
           btn_decal_delete = ::show_console_buttons && !isInEditMode && !isDecoratorsListOpen && !focusedSlot.isEmpty && focusedSlot.unlocked
@@ -806,6 +805,8 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
           previewed_decorator_div  = !isInEditMode && decoratorPreview
           previewed_decorator_unit = !isInEditMode && decoratorPreview && initialUnitId && initialUnitId != unit?.name
+
+          btn_dm_viewer = !isInEditMode && !isDecoratorsListOpen && ::dmViewer.canUse()
 
           decor_layout_presets = !isInEditMode && !isDecoratorsListOpen && isUnitOwn &&
             ::has_feature("CustomizationLayoutPresets") && usableSkinsCount > 1 &&
@@ -962,10 +963,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       labelObj.setValue(txtApplyDecorator + ::loc("ui/colon"))
 
       local params = { showAsTrophyContent = true }
-      local view = {
-        isTooltipByHold = ::show_console_buttons,
-        buttons = [ generateDecalButton("", decoratorPreview, currentType, params) ]
-      }
+      local view = { buttons = [ generateDecalButton("", decoratorPreview, currentType, params) ]}
       local slotsObj = obj.findObject("decorator_preview_div")
       local markup = ::handyman.renderCached("gui/commonParts/imageButton", view)
       guiScene.replaceContentFromText(slotsObj, markup, markup.len(), this)
@@ -1244,7 +1242,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!(categoryId in decoratorsData))
       return ""
 
-    local view = { isTooltipByHold = ::show_console_buttons, buttons = [] }
+    local view = { buttons = [] }
     foreach (decorator in decoratorsData[categoryId])
       view.buttons.append(generateDecalButton(curSlotDecalId, decorator, decoratorType))
 
@@ -1276,7 +1274,7 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       ratio = ::clamp(decoratorType.getRatio(decorator), 1, 2)
       unlocked = isUnlocked
       image = decoratorType.getImage(decorator)
-      tooltipId = DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
+      tooltipId = ::g_tooltip_type.DECORATION.getTooltipId(decorator.id, decoratorType.unlockedItemType)
       rarityColor = decorator.isRare() ? decorator.getRarityColor() : null
       leftBottomButtonCb = isCollectionItem(decorator) ? "onCollectionIconClick" : null
       leftBottomButtonImg = "#ui/gameuiskin#collection.svg"
@@ -1702,14 +1700,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local decorator = g_decorator.getDecorator(editableDecoratorId, currentType)
 
+    if (previewMode & PREVIEW_MODE.DECORATOR)
+      return setDecoratorInSlot(decorator)
+
     if (!save || !decorator)
     {
       currentType.exitEditMode(false, false, ::Callback(afterStopDecalEdition, this))
       return
     }
-
-    if (previewMode & PREVIEW_MODE.DECORATOR)
-      return setDecoratorInSlot(decorator)
 
     if (decorator.canBuyUnlock(unit))
       return askBuyDecoratorOnExitEditMode(decorator)
@@ -1733,14 +1731,14 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
                               ::hangar_save_current_attachables()
                             })
                         })(decorator), this)))
-      showFailedInstallPopup(decorator)
+      showFailedInstallPopup()
   }
 
   function askMarketplaceCouponActionOnExitEditMode(decorator)
   {
     if (!currentType.exitEditMode(true, false,
               ::Callback(@() askMarketplaceCouponAction(decorator), this)))
-      showFailedInstallPopup(decorator)
+      showFailedInstallPopup()
   }
 
   function askBuyDecorator(decorator, afterPurchDo = null)
@@ -1799,20 +1797,15 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   function setDecoratorInSlot(decorator)
   {
     if (!installDecorationOnUnit(decorator))
-      return showFailedInstallPopup(decorator)
+      return showFailedInstallPopup()
 
     if (currentType == ::g_decorator_type.DECALS)
       ::req_unlock_by_client("decal_applied", false)
   }
 
-  function showFailedInstallPopup(decorator)
+  function showFailedInstallPopup()
   {
-    local attachAngle = acos(::hangar_get_attachable_tm()[1].y) * 180.0 / PI
-    if (attachAngle >= decorator.maxSurfaceAngle)
-      ::g_popups.add("", ::loc("mainmenu/failedInstallAttachableAngle",
-        { angle = attachAngle.tointeger(), allowedAngle = decorator.maxSurfaceAngle }))
-    else
-      ::g_popups.add("", ::loc("mainmenu/failedInstallAttachable"))
+    ::g_popups.add("", ::loc("mainmenu/failedInstallAttachable"))
   }
 
   function afterStopDecalEdition()
@@ -2210,6 +2203,11 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
     decorLayoutPresets.open(unit, getSelectedBuiltinSkinId())
   }
 
+  function onWeaponsInfo(obj)
+  {
+    ::open_weapons_for_unit(unit)
+  }
+
   function onSecWeaponsInfo(obj)
   {
     weaponryPresetsModal.open({ unit = unit })
@@ -2374,6 +2372,12 @@ class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
         ::save_profile(true)
       }
     }
+  }
+
+  function onAirInfoToggleDMViewer(obj)
+  {
+    setDmgSkinMode(false)
+    ::dmViewer.toggle(obj.getValue())
   }
 
   function getCurrentFocusedType()

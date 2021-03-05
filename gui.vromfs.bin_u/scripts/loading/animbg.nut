@@ -2,7 +2,6 @@ local fileCheck = require("scripts/clientState/fileCheck.nut")
 local subscriptions = require("sqStdLibs/helpers/subscriptions.nut")
 local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local { getCurLoadingBgData, removeLoadingBgFromLists } = require("scripts/loading/loadingBgData.nut")
-local { isLoadingScreenBanned } = require("scripts/options/preloaderOptions.nut")
 
 const MODIFY_UNKNOWN = -1
 const MODIFY_NO_FILE = -2
@@ -56,13 +55,6 @@ local function load(animBgBlk = "", obj = null) {
   else
     if (::g_login.isLoggedIn() || lastBg=="") //no change bg during first load
     {
-      if (::has_feature("LoadingBackgroundFilter") && ::g_login.isProfileReceived() && ::havePremium())
-      {
-        local filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
-        if (filteredCurBgList.len() > 0)
-          curBgList = filteredCurBgList
-      }
-
       local sum = 0.0
       foreach(name, value in curBgList)
         sum += value

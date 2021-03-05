@@ -8,7 +8,8 @@
       "band": 9,
       "rcs": 1.0,
       "range": 20000.0,
-      "rangeMax": 20000.0,
+      "rangeMax": 32000.0,
+      "backScatteringBandNum": 0,
       "antenna": {
         "angleHalfSens": 1.5,
         "sideLobesSensitivity": -35.0
@@ -113,17 +114,17 @@
       "groundClutter": false,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 5.0,
-      "absDopplerSpeed": true,
+      "absRelSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 100.0,
         "maxValue": 20000.0,
         "maxUnambiguousValue": 126000.0
       },
-      "dopplerSpeed": {
+      "relSpeed": {
         "presents": true,
         "minValue": 15.0,
-        "maxValue": 600.0,
+        "maxValue": 1000.0,
         "signalWidthMin": 5.0,
         "width": 0.0
       }

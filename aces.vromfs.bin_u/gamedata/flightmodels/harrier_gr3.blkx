@@ -9,8 +9,6 @@
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
-  "is410SUM1Ils": true,
-  "havePointOfInterestDesignator": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -29,7 +27,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "assault",
+  "fightAiBehaviour": "fighter",
   "autopilotImpl": "Full",
   "fullAutopilotIndSpeedTransition": [180.0,220.0],
   "fullAutopilotVtolTransition": [0.7,0.3],
@@ -2093,27 +2091,14 @@
       "carb_temperature": [-10.0,60.0],
       "nozzle_angle": [0.0,-90.0]
     },
-    "multifunctionDisplays": [
-      {
-        "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
-          "page": {
-            "type": "map"
-          }
-        }
-      },
-      {
-        "display": {
-          "textureArea": [0.0,0.0,1.0,1.0],
-          "page": {
-            "type": "plane_ils",
-            "ilsSize": [0.28,0.28],
-            "ilsOffsetForce": 0.0,
-            "brightnessMult": 3.5
-          }
+    "multifunctionDisplays": {
+      "display": {
+        "textureArea": [0.0,0.0,0.5,0.5],
+        "page": {
+          "type": "map"
         }
       }
-    ],
+    },
     "parts_holes_dmg": {
       "part": "fuse"
     },
@@ -2482,15 +2467,10 @@
       "modClass": "weapon",
       "reqModification": "sea_hawk_2x1000lb"
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
+    "aircrafts_false_thermal_targets": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "tier": 1,
       "effects": {
         "commonWeapons": [
@@ -2529,9 +2509,9 @@
           },
           {
             "Weapon": {
-              "trigger": "countermeasures",
+              "trigger": "flares",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
@@ -2540,9 +2520,9 @@
           },
           {
             "Weapon": {
-              "trigger": "countermeasures",
+              "trigger": "flares",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,
@@ -2553,7 +2533,7 @@
       }
     },
     "us_aim_9g": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "aircrafts_false_thermal_targets",
       "tier": 2,
       "modClass": "weapon"
     }

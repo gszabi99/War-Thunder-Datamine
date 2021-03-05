@@ -70,7 +70,6 @@ frame {
           include "gui/commonParts/progressBar"
         }
         rankUpList {
-          holdTooltipChildren:t='yes'
           <<@unitItem>>
         }
         weaponsSelectorNest {

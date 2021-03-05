@@ -1,11 +1,8 @@
 local radarComponent = require("radarComponent.nut")
 local tws = require("tws.nut")
-local opticAtgmSight = require("opticAtgmSight.nut")
-local {OpticAtgmSightVisible, AtgmTrackerVisible, IsLaserDesignatorEnabled, LaserPoint} = require("planeState.nut")
 local {IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon} = require("twsState.nut")
 local {hudFontHgt, greenColor, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 local {safeAreaSizeHud} = require("style/screenState.nut")
-local agmAim = require("agmAim.nut")
 
 
 local style = {
@@ -75,34 +72,6 @@ local function mkRadar() {
     return null
 }
 
-local agmAimIndicator = @() {
-  watch = AtgmTrackerVisible
-  size = flex()
-  children = AtgmTrackerVisible.value ? [agmAim(style, @() style.color)] : []
-}
-
-local laserPoint = {
-  size = [ph(1), ph(1)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  color = style.color
-  fillColor = Color(0, 0, 0, 0)
-  commands = [
-    [VECTOR_ELLIPSE, 0, 0, 100, 100]
-  ]
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      translate = [LaserPoint[0], LaserPoint[1]]
-    }
-  }
-}
-
-local laserPointComponent = @() {
-  watch = IsLaserDesignatorEnabled
-  size = flex()
-  children = IsLaserDesignatorEnabled.value ? laserPoint : null
-}
-
 local function Root() {
   return {
     halign = ALIGN_LEFT
@@ -110,13 +79,10 @@ local function Root() {
     size = [sw(100), sh(100)]
     watch = [IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated,
       radarComponent.state.IsRadarVisible, radarComponent.state.IsRadar2Visible,
-      radarComponent.state.IsRadarHudVisible, OpticAtgmSightVisible]
+      radarComponent.state.IsRadarHudVisible]
     children = [
       mkRadar()
       mkTws(style)
-      OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
-      agmAimIndicator
-      laserPointComponent
     ]
   }
 }

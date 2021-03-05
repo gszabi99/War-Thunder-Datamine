@@ -110,7 +110,6 @@ local mUiStruct = [
       "jpegShots"
       "compatibilityMode"
       "enableHdr"
-      "enableVr"
     ]
   }
 ]
@@ -359,8 +358,6 @@ local function getAvailableLatencyModes()
     values.append("on")
   if (::is_low_latency_available(2))
     values.append("boost")
-  if (::is_low_latency_available(4))
-    values.append("experimental")
 
   return values;
 }
@@ -729,7 +726,7 @@ mSettings = {
     }
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
-    values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
+    values = ::is_opengl_driver() ? [ "none", "fxaa", "high_fxaa"] : [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
@@ -856,7 +853,7 @@ mSettings = {
     values = [ "low", "medium", "high", "ultrahigh" ]
   }
   giQuality = { widgetType="list" def="low" blk="graphics/giQuality" restart=false
-    values = [ "low", "medium", "high" ], isVisible = @() true
+    values = [ "low", "medium", "high" ], isVisible = @() !::is_opengl_driver()
   }
   dirtSubDiv = { widgetType="list" def="high" blk="graphics/dirtSubDiv" restart=false
     values = [ "high", "ultrahigh" ]
@@ -896,7 +893,6 @@ mSettings = {
     onChanged = "compatibilityModeClick"
   }
   enableHdr = { widgetType="checkbox" def=false blk="directx/enableHdr" restart=true enabled=@() ::is_hdr_available() }
-  enableVr = { widgetType="checkbox" def=false blk="video/vrMode" restart=true enabled=@() ::is_platform_windows }
   displacementQuality = { widgetType="slider" def=2 min=0 max=3 blk="graphics/displacementQuality" restart=false
   }
   contactShadowsQuality = { widgetType="slider" def=0 min=0 max=2 blk="graphics/contactShadowsQuality" restart=false

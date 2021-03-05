@@ -1,8 +1,32 @@
-local { getSkillValue } = require("scripts/crew/crewSkills.nut")
+local { getSkillCategories, getSkillValue, getSkillCategoryCrewLevel,
+  categoryHasNonGunnerSkills, getSkillCategoryMaxCrewLevel } = require("scripts/crew/crewSkills.nut")
 local { getSkillListParameterRowsView } = require("scripts/crew/crewSkillParameters.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 
 local function getSkillCategoryName(skillCategory) {
   return ::loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
+}
+
+/** @see slotInfoPanel.nut */
+local function getSkillCategoryView(crewData, unit) {
+  local unitType = unit?.unitType ?? unitTypes.INVALID
+  local crewUnitType = unitType.crewUnitType
+  local unitName = unit?.name ?? ""
+  local view = []
+  foreach (skillCategory in getSkillCategories())
+  {
+    local isSupported = (skillCategory.crewUnitTypeMask & (1 << crewUnitType)) != 0
+      && (unit.gunnersCount > 0 || categoryHasNonGunnerSkills(skillCategory))
+    if (!isSupported)
+      continue
+    view.append({
+      categoryName = getSkillCategoryName(skillCategory)
+      categoryTooltip = ::g_tooltip_type.SKILL_CATEGORY.getTooltipId(skillCategory.categoryName, unitName)
+      categoryValue = getSkillCategoryCrewLevel(crewData, unit, skillCategory, crewUnitType)
+      categoryMaxValue = getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType)
+    })
+  }
+  return view
 }
 
 local function getCategoryParameterRows(skillCategory, crewUnitType, crew, unit) {
@@ -52,6 +76,6 @@ local function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewD
 }
 
 return {
-  getSkillCategoryName
-  getSkillCategoryTooltipContent
+  getSkillCategoryView = getSkillCategoryView
+  getSkillCategoryTooltipContent = getSkillCategoryTooltipContent
 }

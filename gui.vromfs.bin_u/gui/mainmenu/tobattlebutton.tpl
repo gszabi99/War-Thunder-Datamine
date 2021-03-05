@@ -80,8 +80,6 @@ Button_text {
     style:t='text-shade-color: #55000000; color: #ffffff; text-shade:smooth:48; text-shade-x:0; text-shade-y:0;';
   }
 
-  focus_border{}
-
-  btnName:t='X'
+  btnName:t='X';
   ButtonImg{ id:t='to_battle_console_image' }
 }

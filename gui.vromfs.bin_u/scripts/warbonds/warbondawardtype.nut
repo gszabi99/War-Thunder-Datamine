@@ -1,5 +1,4 @@
 local { getPurchaseLimitWb } = require("scripts/warbonds/warbondShopState.nut")
-local { DECORATION, SPECIAL_TASK } = require("scripts/utils/genericTooltipTypes.nut")
 
 local enums = require("sqStdLibs/helpers/enums.nut")
 ::g_wb_award_type<- {
@@ -147,7 +146,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
       if (!unit)
         return ""
 
-      local blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
+      local blockFormat = "rankUpList { halign:t='center'; interactiveChildren:t='yes'; %s }"
       return ::format(blockFormat, ::build_aircraft_item(unit.name, unit, {
         hasActions = true,
         status = ::isUnitBought(unit) ? "owned" : "canBuy",
@@ -180,7 +179,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
     {
       return ::LayersIcon.getIconData(::g_decorator_type.SKINS.defaultStyle)
     }
-    getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
+    getTooltipId = @(blk, warbond) ::g_tooltip_type.DECORATION.getTooltipId(blk?.name ?? "",
                                                                             ::UNLOCKABLE_SKIN,
                                                                             {
                                                                               wbId = warbond.id,
@@ -210,7 +209,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         return ::LayersIcon.getIconData(null, ::g_decorator_type.DECALS.getImage(decorator))
       return ::LayersIcon.getIconData(::g_decorator_type.DECALS.defaultStyle)
     }
-    getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
+    getTooltipId = @(blk, warbond) ::g_tooltip_type.DECORATION.getTooltipId(blk?.name ?? "",
                                                                             ::UNLOCKABLE_DECAL,
                                                                             {
                                                                               wbId = warbond.id,
@@ -242,7 +241,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         return ::LayersIcon.getIconData(null, ::g_decorator_type.ATTACHABLES.getImage(decorator))
       return ::LayersIcon.getIconData(::g_decorator_type.ATTACHABLES.defaultStyle)
     }
-    getTooltipId = @(blk, warbond) DECORATION.getTooltipId(blk?.name ?? "",
+    getTooltipId = @(blk, warbond) ::g_tooltip_type.DECORATION.getTooltipId(blk?.name ?? "",
                                                                             ::UNLOCKABLE_ATTACHABLE,
                                                                             {
                                                                               wbId = warbond.id,
@@ -308,7 +307,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
         : hasIncreasingLimit() && (getPurchaseLimitWb(warbond) <= getBoughtCount(warbond, blk))
            ? "item/specialTasksPersonalUnlocks/limitRestriction"
            : ""
-    getTooltipId = @(blk, warbond) SPECIAL_TASK.getTooltipId(blk.name,
+    getTooltipId = @(blk, warbond) ::g_tooltip_type.SPECIAL_TASK.getTooltipId(blk.name,
                                                                               {
                                                                                 wbId = warbond.id,
                                                                                 wbListId = warbond.listId

@@ -8,7 +8,6 @@ local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { canStartPreviewScene } = require("scripts/customization/contentPreview.nut")
 local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
-local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -438,7 +437,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     local emptyListObj = scene.findObject("empty_items_list")
     if (::checkObj(emptyListObj))
     {
-      local adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && isMarketplaceEnabled()
+      local adviseMarketplace = curTab == itemsTab.INVENTORY && curSheet.isMarketplace && ::ItemsManager.isMarketplaceEnabled()
       local itemsInShop = curTab == itemsTab.SHOP? itemsList : curSheet.getItemsList(itemsTab.SHOP, curSubsetId)
       local adviseShop = ::has_feature("ItemsShop") && curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
 
@@ -574,12 +573,6 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     fillPage()
   }
 
-  function updateItemsList()
-  {
-    itemsListValid = false
-    applyFilters(false)
-  }
-
   function updateItemInfo()
   {
     local item = getCurItem()
@@ -697,17 +690,9 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onItemAction(buttonObj)
   {
-    local id = ::to_integer_safe(buttonObj?.holderId, -1)
-    local item = itemsList?[id]
+    local id = buttonObj?.holderId ?? "-1"
+    local item = ::getTblValue(id.tointeger(), itemsList)
     local obj = scene.findObject("shop_item_" + id)
-
-    // Need to change list object current index because of
-    // we can click on action button in non selected item
-    // and wrong item will be updated after main action
-    local listObj = getItemsListObj()
-    if (listObj.getValue() != id && id >= 0 && id < listObj.childrenCount())
-      listObj.setValue(id)
-
     doMainAction(item, obj)
   }
 
@@ -726,13 +711,10 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (item.canCraftOnlyInCraftTree() && curSheet?.getSet().getCraftTree() != null)
       openCraftTree(item)
     else
-    {
-      local updateFn = item?.needUpdateListAfterAction ? updateItemsList : updateItemInfo
       item.doMainAction(
-        ::Callback(@(result) updateFn(), this),
+        ::Callback(@(result) updateItemInfo(), this),
         this,
         { obj = obj })
-    }
 
     markItemSeen(item)
   }
@@ -788,7 +770,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onToMarketplaceButton(obj)
   {
-    goToMarketplace()
+    ::ItemsManager.goToMarketplace()
   }
 
   function goBack()
@@ -909,7 +891,10 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
   function updateInventoryItemsList()
   {
     if (curTab != itemsTab.SHOP)
-      updateItemsList()
+    {
+      itemsListValid = false
+      applyFilters(false)
+    }
   }
 
   function onItemsListFocusChange()

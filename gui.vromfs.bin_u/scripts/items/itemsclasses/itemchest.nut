@@ -167,7 +167,7 @@ class ::items_classes.Chest extends ItemExternal {
 
   function getHiddenTopPrizeParams()
   {
-    return getGenerator()?.hiddenTopPrizeParams
+    return getGenerator()?.hiddenTopPrizeParams ?? null
   }
 
   function isHiddenTopPrize(prize)

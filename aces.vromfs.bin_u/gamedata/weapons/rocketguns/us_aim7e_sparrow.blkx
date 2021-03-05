@@ -96,16 +96,25 @@
       "explosionEffect": "explosion_midair_big"
     },
     {
-      "groundCollisionEffect": "hit_133_160mm_dirt_he"
+      "defFxScale": [2.2,2.5]
     },
     {
-      "ricochetEffect": "hit_133_160mm_metal_ap"
+      "groundCollisionEffect": "art_ground_splash"
     },
     {
-      "waterCollisionEffect": "hit_133_160mm_water"
+      "groundFxScale": [1.5,1.7]
     },
     {
-      "explosionPatchRadius": 4.0
+      "ricochetEffect": "cannon_hit_apds"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.2,1.4]
+    },
+    {
+      "explosionPatchRadius": 5.0
     },
     {
       "fireEffect": "rocket_fire_light_huge"
@@ -138,13 +147,31 @@
       "explodeTreshold": 0.1
     },
     {
-      "guidanceSfx": ""
-    },
-    {
       "guidanceType": "radar"
     },
     {
+      "warmUpTime": 1.4
+    },
+    {
+      "workTime": 100.0
+    },
+    {
+      "uncageBeforeLaunch": true
+    },
+    {
+      "lockAfterLaunch": true
+    },
+    {
+      "lockTimeOut": 1.8
+    },
+    {
+      "guidanceSfx": ""
+    },
+    {
       "hasProximityFuse": true
+    },
+    {
+      "breakLockMaxTime": 5.0
     },
     {
       "explodeTreshold": 0.01
@@ -192,6 +219,9 @@
       "endSpeed": 1500.0
     },
     {
+      "speedViscosity": 0.2
+    },
+    {
       "timeLife": 40.0
     },
     {
@@ -227,80 +257,17 @@
     },
     {
       "collisions": {
-        "default": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "horLandMesh": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "soil": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "dirt": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "road": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "roadSoil": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "sand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "duneSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "roadSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "quickSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "snow": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "ice": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "roadSnow": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "snowLower": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "glass": {
-          "fx": "hit_133_160mm_metal_he"
-        },
-        "wood": {
-          "fx": "hit_133_160mm_wood_he"
-        },
         "steel": {
-          "fx": "hit_133_160mm_metal_he"
-        },
-        "metal": {
-          "fx": "hit_133_160mm_metal_he"
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [4.0,5.0]
         },
         "buildings": {
-          "fx": "hit_133_160mm_stone_he"
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         },
-        "verLandMesh": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "concrete": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "rocks": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "rocksSlippery": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "fabric": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "stone_snow": {
-          "fx": "hit_133_160mm_snow_he"
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         }
       }
     },
@@ -417,57 +384,51 @@
       }
     },
     {
-      "guidance": {
-        "warmUpTime": 1.4,
-        "workTime": 100.0,
-        "uncageBeforeLaunch": true,
-        "lockAfterLaunch": true,
-        "lockTimeOut": 1.8,
-        "breakLockMaxTime": 5.0,
-        "radarSeeker": {
-          "band": 8,
-          "sideLobesAttenuation": -20.0,
-          "lockAngleMax": 15.0,
-          "angleMax": 45.0,
-          "rateMax": 12.0,
-          "prolongationTimeMax": 1.0,
-          "designationSourceTypeMask": 2,
-          "transmitter": {
-            "power": 200.0,
-            "antenna": {
-              "angleHalfSens": 4.0,
-              "sideLobesSensitivity": -27.0
-            }
-          },
-          "receiver": {
-            "rcs": 2.0,
-            "range": 25000.0,
-            "rangeMax": 30000.0,
-            "antenna": {
-              "angleHalfSens": 10.0,
-              "sideLobesSensitivity": -16.0
-            }
-          },
-          "dopplerSpeed": {
-            "presents": true,
-            "minValue": -3000.0,
-            "maxValue": 3000.0,
-            "width": 10.0,
-            "signalWidthMin": 5.0,
-            "refWidth": 30.0,
-            "dopplerSpeedGateSearchRange": 300.0
+      "radarSeeker": {
+        "band": 8,
+        "sideLobesAttenuation": -20.0,
+        "lockAngleMax": 15.0,
+        "angleMax": 45.0,
+        "rateMax": 12.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 2,
+        "transmitter": {
+          "power": 200.0,
+          "antenna": {
+            "angleHalfSens": 4.0,
+            "sideLobesSensitivity": -27.0
           }
         },
-        "guidanceAutopilot": {
-          "timeOut": 1.8,
-          "propNavMult": 4.0,
-          "reqAccelMax": 15.0,
-          "baseIndSpeed": 1600.0,
-          "accelControlProp": 0.04,
-          "accelControlIntg": 0.02,
-          "accelControlIntgLim": 0.8,
-          "accelControlDiff": 0.002
+        "receiver": {
+          "rcs": 2.0,
+          "range": 25000.0,
+          "rangeMax": 30000.0,
+          "antenna": {
+            "angleHalfSens": 10.0,
+            "sideLobesSensitivity": -16.0
+          }
+        },
+        "dopplerSpeed": {
+          "presents": true,
+          "minValue": -3000.0,
+          "maxValue": 3000.0,
+          "width": 10.0,
+          "signalWidthMin": 5.0,
+          "refWidth": 30.0,
+          "dopplerSpeedGateSearchRange": 300.0
         }
+      }
+    },
+    {
+      "propNavGuidance": {
+        "timeOut": 1.8,
+        "propNavMult": 4.0,
+        "propNavAccelMax": 15.0,
+        "baseIndSpeed": 1600.0,
+        "accelControlProp": 0.04,
+        "accelControlIntg": 0.02,
+        "accelControlIntgLim": 0.8,
+        "accelControlDiff": 0.002
       }
     },
     {

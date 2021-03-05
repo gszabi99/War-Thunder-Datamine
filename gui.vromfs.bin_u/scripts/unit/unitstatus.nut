@@ -1,6 +1,6 @@
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { isWeaponAux, getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
+local { getWeaponInfoText} = require("scripts/weaponry/weaponryVisual.nut")
 
 local canBuyNotResearched = @(unit) unit.isVisibleInShop()
   && ::canResearchUnit(unit)
@@ -99,8 +99,7 @@ local function getBitStatus(unit, params = {})
 
 local availablePrimaryWeaponsMod = {}
 local defaultPrimaryWeaponsMod = {
-  flares = null,
-  chaffs = null
+  flares = null
 }
 
 local function isAvailablePrimaryWeapon(unit, weaponName) {
@@ -125,8 +124,6 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
         local weapBlk = blkFromPath(weap.blk)
         if (availableWeapons!=null && (weapBlk?.rocket.isFlare ?? false))
           availableWeapons.flares = modName
-        if (availableWeapons!=null && (weapBlk?.rocket.isChaff ?? false))
-          availableWeapons.chaffs = modName
       }
     }
 
@@ -143,14 +140,6 @@ local function hasFlares(unit) {
     || isAvailablePrimaryWeapon(unit, "flares")
 }
 
-local function hasChaffs(unit) {
-  if (unit == null)
-    return false
-
-  return unit.getAvailableSecondaryWeapons().hasChaffs
-    || isAvailablePrimaryWeapon(unit, "chaffs")
-}
-
 local function bombNbr(unit) {
   if (unit == null)
     return -1
@@ -163,7 +152,6 @@ return {
   isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
   getBitStatus                    = getBitStatus
   hasFlares                       = hasFlares
-  hasChaffs                       = hasChaffs
   bombNbr                         = bombNbr
   isUnitHaveSecondaryWeapons      = isUnitHaveSecondaryWeapons
 }

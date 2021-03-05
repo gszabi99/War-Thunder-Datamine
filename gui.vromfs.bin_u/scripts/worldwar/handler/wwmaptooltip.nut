@@ -1,6 +1,3 @@
-local { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY
-} = require("scripts/worldWar/wwGenericTooltipTypes.nut")
-
 global enum WW_MAP_TOOLTIP_TYPE
 {
   BATTLE,
@@ -228,10 +225,10 @@ class ::gui_handlers.wwMapTooltip extends ::gui_handlers.BaseGuiHandlerWT
   function getWWMapIdHoveredObjectId()
   {
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
-      return WW_MAP_TOOLTIP_TYPE_BATTLE.getTooltipId(specs.currentId, specs)
+      return ::g_tooltip_type.WW_MAP_TOOLTIP_TYPE_BATTLE.getTooltipId(specs.currentId, specs)
 
     if (specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
-      return WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(specs.currentId, specs)
+      return ::g_tooltip_type.WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(specs.currentId, specs)
 
     return ""
   }

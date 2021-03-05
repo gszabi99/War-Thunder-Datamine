@@ -62,14 +62,14 @@ local function defaultFrame(inputObj, group, sf) {
     rendObj = ROBJ_FRAME
     borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
     size = [flex(), SIZE_TO_CONTENT]
-    color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
+    color = (sf.value & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
       borderWidth = [0, 0, hdpx(1), 0]
       size = [flex(), SIZE_TO_CONTENT]
-      color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
+      color = (sf.value & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
 
       children = inputObj
@@ -113,6 +113,7 @@ local interactiveValidTypes = ["num","lat","integer","float"]
 
 local function textInput(text_state, options={}, handlers={}, frameCtor=defaultFrame) {
   local group = ::ElemGroup()
+  local stateFlags = ::Watched(0)
   local font = options?.font ?? Fonts.medium_text
   local colors = {}
   local inputType = options?.inputType
@@ -184,7 +185,7 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
 
       animations = [failAnim(text_state)]
 
-      watch = [text_state]
+      watch = [text_state, stateFlags]
       text = text_state.value
       title = options?.title
       inputType = inputType
@@ -213,15 +214,13 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
       onEscape = onEscape
       onImeFinish = handlers?.onImeFinish
 
+      onElemState = @(sf) stateFlags.update(sf)
+
       children = placeholder
     }
   }
 
-  local stateFlags = ::Watched(0)
-
-  return @() {
-    watch = [stateFlags]
-    onElemState = @(sf) stateFlags(sf)
+  return {
     margin = options?.margin ?? [sh(1), 0]
     padding = options?.padding ?? 0
 
@@ -235,7 +234,7 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
     animations = [failAnim(text_state)]
     valign = options?.valign ?? ALIGN_CENTER
 
-    children = frameCtor(inputObj, group, stateFlags.value)
+    children = frameCtor(inputObj, group, stateFlags)
   }
 }
 

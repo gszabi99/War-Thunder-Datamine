@@ -4668,16 +4668,11 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
+    "heli_false_thermal_targets": {
       "turn_it_off": false,
       "tier": 1,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "effects": {
         "commonWeapons": [
           {
@@ -4707,9 +4702,9 @@
           },
           {
             "Weapon": {
-              "trigger": "countermeasures",
+              "trigger": "flares",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare1",
               "dm": "flares1_dm",
               "bullets": 96,
@@ -4719,9 +4714,9 @@
           },
           {
             "Weapon": {
-              "trigger": "countermeasures",
+              "trigger": "flares",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
               "emitter": "emtr_flare2",
               "dm": "flares2_dm",
               "bullets": 96,
@@ -4734,7 +4729,7 @@
     },
     "stinger_aam": {
       "deactivationIsAllowed": false,
-      "reqModification": "countermeasures_belt_pack",
+      "reqModification": "heli_false_thermal_targets",
       "modClass": "weapon",
       "tier": 2
     },

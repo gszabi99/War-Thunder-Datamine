@@ -1899,7 +1899,7 @@
           {
             "Weapon": [
               {
-                "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                "blk": "gameData/Weapons/cannonGSh_23.blk"
               },
               {
                 "tier": {
@@ -1968,7 +1968,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2019,7 +2019,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2070,7 +2070,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2121,7 +2121,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2376,7 +2376,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2440,7 +2440,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2504,7 +2504,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -2568,7 +2568,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23.blk"
                 },
                 {
                   "tier": {
@@ -5342,7 +5342,7 @@
     "heli_screen_exhaust_device": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "tier": 1,
       "effects": {
         "enginesInfraRedBrightnessMult": 0.7,
@@ -5435,16 +5435,11 @@
         ]
       }
     },
-    "countermeasures_launcher_chaff_only": [],
-    "countermeasures_launcher_flare_only": [],
-    "countermeasures_launcher_chaff_priority": [],
-    "countermeasures_launcher_flare_priority": [],
-    "countermeasures_belt_pack": {
-      "modClass": "weapon",
+    "heli_false_thermal_targets": {
       "reqModification": "heli_screen_exhaust_device",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "tier": 2,
       "effects": {
         "commonWeapons": [
@@ -5533,13 +5528,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare1"
@@ -5561,13 +5556,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare2"
@@ -5590,12 +5585,11 @@
       }
     },
     "heli_counterMeasures": {
-      "modClass": "weapon",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "reqModification": "countermeasures_belt_pack",
+      "reqModification": "heli_false_thermal_targets",
       "tier": 3,
-      "group": "countermeasures",
+      "group": "mi-24_EVU",
       "effects": {
         "counterMeasures": {
           "counterMeasure": {
@@ -5683,13 +5677,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare1"
@@ -5711,13 +5705,13 @@
           {
             "Weapon": [
               {
-                "trigger": "countermeasures"
+                "trigger": "flares"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
               },
               {
                 "emitter": "emtr_flare2"

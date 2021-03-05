@@ -1,5 +1,3 @@
-local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
-
 ::dagui_propid.add_name_id("itemId")
 
 local branchIdPrefix = "branch_"
@@ -297,7 +295,6 @@ local getItemBlockView = ::kwarg(
             needShowHeader = false
             isShowItemIconInsteadItemType = true
             visibleResources = allowableResources
-            isTooltipByHold = ::show_console_buttons
           })
     }
 })
@@ -458,7 +455,7 @@ local bodyButtonsConfig = {
     link = ""
     isLink = true
     isFeatured = true
-    isHidden = @() !isMarketplaceEnabled()
+    isHidden = @() !::ItemsManager.isMarketplaceEnabled()
   }
 }
 local buttonViewParams = {
@@ -762,7 +759,6 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
       conectionsInRow = conectionsInRow
       textBlocks = textBlocks
       buttons = buttons
-      isTooltipByHold = ::show_console_buttons
     }
   }
 
@@ -916,7 +912,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function onToMarketplaceButton() {
-    goToMarketplace()
+    ::ItemsManager.goToMarketplace()
   }
 }
 

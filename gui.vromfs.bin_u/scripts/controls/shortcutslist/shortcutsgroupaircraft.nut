@@ -209,15 +209,6 @@ return [
     checkAssign = false
   }
   {
-    id = "sweep"
-    type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "ID_SWEEP_MODE"
-    checkAssign = false
-  }
-  {
     id = "ID_FLAPS"
     reqInMouseAim = false
     alternativeIds = [ "ID_FLAPS_DOWN", "ID_FLAPS_UP" ]
@@ -232,10 +223,6 @@ return [
   }
   {
     id = "ID_AIR_BRAKE"
-    reqInMouseAim = false
-  }
-  {
-    id = "ID_AIR_REVERSE"
     reqInMouseAim = false
   }
   {
@@ -341,10 +328,6 @@ return [
     checkAssign = false
   }
   {
-    id = "ID_AGM_LOCK"
-    checkAssign = false
-  }
-  {
     id = "ID_EXIT_SHOOTING_CYCLE_MODE"
     showFunc = @() ::has_feature("WeaponCycleTrigger")
     checkAssign = false
@@ -384,10 +367,6 @@ return [
   {
     id = "weapon_aim_pitch"
     type = CONTROL_TYPE.AXIS
-    checkAssign = false
-  }
-  {
-    id = "ID_TOGGLE_LASER_DESIGNATOR"
     checkAssign = false
   }
   {

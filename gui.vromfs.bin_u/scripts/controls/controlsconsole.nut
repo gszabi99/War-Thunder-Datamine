@@ -1,4 +1,4 @@
-local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local backToMainScene = require("scripts/mainmenu/backToMainScene.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console()
 {
@@ -17,7 +17,7 @@ class ::gui_handlers.ControlsConsole extends ::gui_handlers.GenericOptionsModal
 
   function initScreen()
   {
-    setBreadcrumbGoBackParams(this)
+    backSceneFunc = backToMainScene
     options = [
       [::USEROPT_INVERTY, "spinner"],
       [::USEROPT_INVERTY_TANK, "spinner", ::has_feature("Tanks")],

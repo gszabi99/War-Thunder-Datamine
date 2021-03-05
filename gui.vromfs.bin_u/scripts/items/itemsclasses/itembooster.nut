@@ -1,6 +1,5 @@
 local time = require("scripts/time.nut")
-local { boosterEffectType, getActiveBoostersArray } = require("scripts/items/boosterEffect.nut")
-local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+
 
 class ::items_classes.Booster extends ::BaseItem
 {
@@ -111,10 +110,10 @@ class ::items_classes.Booster extends ::BaseItem
         effectsArray.append(value)
     }
 
-    effectsArray.sort(@(a, b) a <=> b)
+    effectsArray.sort(::ItemsManager.sortEffectsArray)
     local effectsVal = getDiffEffect(effectsArray)
     effectsArray.append(effect.getValue(this))
-    effectsArray.sort(@(a, b) a <=> b)
+    effectsArray.sort(::ItemsManager.sortEffectsArray)
     local newEffectsVal = getDiffEffect(effectsArray)
 
     return newEffectsVal - effectsVal
@@ -439,8 +438,8 @@ class ::items_classes.Booster extends ::BaseItem
       local effectTypes = getEffectTypes()
       foreach(t in effectTypes)
       {
-        local usingBoostersArray = getActiveBoostersArray(t)
-        desc = $"{desc}\n\n{getActiveBoostersDescription(usingBoostersArray, t, this)}"
+        local usingBoostersArray = ::ItemsManager.getActiveBoostersArray(t)
+        desc += "\n\n" + ::ItemsManager.getActiveBoostersDescription(usingBoostersArray, t, this)
       }
     }
     return desc
@@ -515,7 +514,7 @@ class ::items_classes.Booster extends ::BaseItem
   function getEffectTypes()
   {
     local effectTypes = []
-    foreach (effectType in boosterEffectType)
+    foreach (effectType in ::BoosterEffectType)
     {
       if (effectType.checkBooster(this))
         effectTypes.append(effectType)
@@ -538,7 +537,7 @@ class ::items_classes.Booster extends ::BaseItem
   {
     if (item.iType != iType || item.personal != personal)
       return false
-    foreach (efType in boosterEffectType)
+    foreach (efType in ::BoosterEffectType)
       if ((efType.getValue(this) > 0) != (efType.getValue(item) > 0))
         return false
     return (eventConditions == item.eventConditions) || ::u.isEqual(eventConditions, item.eventConditions)
@@ -546,7 +545,7 @@ class ::items_classes.Booster extends ::BaseItem
 
   function updateStackParams(stackParams)
   {
-    foreach (efType in boosterEffectType)
+    foreach (efType in ::BoosterEffectType)
     {
       local value = efType.getValue(this)
       if (!value)
@@ -566,7 +565,7 @@ class ::items_classes.Booster extends ::BaseItem
   {
     local res = ::colorize("activeTextColor", ::loc("item/" + defaultLocId))
     local effects = []
-    foreach (efType in boosterEffectType)
+    foreach (efType in ::BoosterEffectType)
     {
       local valTbl = ::getTblValue(efType.name, stackParams)
       if (!valTbl || (!("min" in valTbl)))
@@ -617,7 +616,7 @@ class ::items_classes.FakeBooster extends ::items_classes.Booster
       return desc
 
     local bonusArray = []
-    foreach(effect in boosterEffectType)
+    foreach(effect in ::BoosterEffectType)
     {
       local value = ::get_squad_bonus_for_same_cyber_cafe(effect)
       if (value <= 0)
@@ -639,9 +638,9 @@ class ::items_classes.FakeBooster extends ::items_classes.Booster
   function getEffectDesc(colored = true, effectType = null)
   {
     local desc = ""
-    if (effectType == boosterEffectType.WP)
+    if (effectType == ::BoosterEffectType.WP)
       desc = getEffectText(wpRate, 0, colored)
-    else if (effectType == boosterEffectType.RP)
+    else if (effectType == ::BoosterEffectType.RP)
       desc = getEffectText(0, xpRate, colored)
     else
       desc = getEffectText(wpRate, xpRate, colored)

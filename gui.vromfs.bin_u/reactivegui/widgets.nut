@@ -15,7 +15,6 @@ local tankHud = require("tankHud.nut")
 local mfdHud = require("mfd.nut")
 local planeMfd = require("planeMfd.nut")
 local heliIlsHud = require("heliIls.nut")
-local planeIls = require("planeIls.nut")
 local changelog = require("changelog/changelog.ui.nut")
 
 local widgetsMap = {
@@ -32,7 +31,6 @@ local widgetsMap = {
     }
     else if (hudUnitType.isAir()) {
       ::gui_scene.addPanel(0, planeMfd)
-      ::gui_scene.addPanel(1, planeIls)
       return airHud
     }
     else if (hudUnitType.isTank())

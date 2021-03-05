@@ -50,8 +50,10 @@ local function secondsToTimeSimpleString(time) {
 
 local function roundTime(time){
   local t = (::type(time)=="table" && "seconds" in time) ? clone time : secondsToTime(time)
-  if (t.days > 0 || t.hours > 48)
+  if (t.days > 0 || t.hours > 24) {
     t.minutes = 0
+    t.seconds = 0
+  }
   if (t.minutes > 10 || t.hours > 1 || t.days > 0) {
     t.seconds = 0
   }

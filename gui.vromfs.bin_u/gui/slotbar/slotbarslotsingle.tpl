@@ -16,8 +16,6 @@ chosen:t='no'
 <</isSlotbarItem>>
 <</isInTable>>
 
-<<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
-
 shopItem {
   id:t='<<shopItemId>>'
   behavior:t='Timer'
@@ -28,12 +26,6 @@ shopItem {
   <<^isInTable>>
   isInTable:t='no'
   <</isInTable>>
-
-  <<#isTooltipByHold>>
-  tooltipId:t='<<tooltipId>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
-  <</isTooltipByHold>>
 
   <<#refuseOpenHoverMenu>>refuseOpenHoverMenu:t='yes'<</refuseOpenHoverMenu>>
 
@@ -195,7 +187,6 @@ shopItem {
   }
   <</bonusId>>
 
-  <<^isTooltipByHold>>
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
     on_tooltip_open:t='onGenericTooltipOpen'
@@ -205,7 +196,6 @@ shopItem {
 
   tooltip-float:t='horizontal'
   title:t='$tooltipObj'
-  <</isTooltipByHold>>
 
   focus_border {}
 

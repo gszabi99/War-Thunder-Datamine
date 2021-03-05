@@ -1,3 +1,4 @@
+local frp = require("std/frp.nut")
 local extWatched = require("reactiveGui/globals/extWatched.nut")
 
 local debugRowHeight = 14 /* Height of on-screen debug text (fps, build, etc) */
@@ -33,7 +34,7 @@ local function rw(percent) {
   return (percent / 100.0 * safeAreaSizeHud.value.size[0]).tointeger()
 }
 
-local function setOnVideoMode(...){
+frp.subscribe([resolution, mode], function(new_val){
   ::gui_scene.setInterval(0.5,
     function() {
       ::gui_scene.clearTimer(callee())
@@ -42,9 +43,7 @@ local function setOnVideoMode(...){
         safeAreaMenu = ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ]
       })
   })
-}
-foreach (w in [resolution, mode])
-  w.subscribe(setOnVideoMode)
+})
 
 return {
   safeAreaSizeHud = safeAreaSizeHud

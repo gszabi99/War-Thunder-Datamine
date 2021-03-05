@@ -96,16 +96,25 @@
       "explosionEffect": "explosion_midair_big"
     },
     {
-      "groundCollisionEffect": "hit_133_160mm_dirt_he"
+      "defFxScale": [2.2,2.5]
     },
     {
-      "ricochetEffect": "hit_133_160mm_metal_ap"
+      "groundCollisionEffect": "art_ground_splash"
     },
     {
-      "waterCollisionEffect": "hit_133_160mm_water"
+      "groundFxScale": [1.5,1.7]
     },
     {
-      "explosionPatchRadius": 4.0
+      "ricochetEffect": "cannon_hit_apds"
+    },
+    {
+      "waterCollisionEffect": "120-203_he_water_splash"
+    },
+    {
+      "waterFxScale": [1.2,1.4]
+    },
+    {
+      "explosionPatchRadius": 5.0
     },
     {
       "fireEffect": "rocket_fire_light_huge"
@@ -138,13 +147,28 @@
       "explodeTreshold": 0.1
     },
     {
-      "guidanceSfx": "alarm_spin_scan"
-    },
-    {
       "guidanceType": "ir"
     },
     {
+      "guidance": "ir"
+    },
+    {
+      "warmUpTime": 6.0
+    },
+    {
+      "workTime": 15.0
+    },
+    {
+      "uncageBeforeLaunch": true
+    },
+    {
+      "guidanceSfx": "alarm_spin_scan"
+    },
+    {
       "hasProximityFuse": true
+    },
+    {
+      "breakLockMaxTime": 3.0
     },
     {
       "explodeTreshold": 0.01
@@ -192,6 +216,9 @@
       "endSpeed": 1000.0
     },
     {
+      "speedViscosity": 0.2
+    },
+    {
       "timeLife": 54.0
     },
     {
@@ -230,80 +257,17 @@
     },
     {
       "collisions": {
-        "default": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "horLandMesh": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "soil": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "dirt": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "road": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "roadSoil": {
-          "fx": "hit_133_160mm_dirt_he"
-        },
-        "sand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "duneSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "roadSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "quickSand": {
-          "fx": "hit_133_160mm_sand_he"
-        },
-        "snow": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "ice": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "roadSnow": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "snowLower": {
-          "fx": "hit_133_160mm_snow_he"
-        },
-        "glass": {
-          "fx": "hit_133_160mm_metal_he"
-        },
-        "wood": {
-          "fx": "hit_133_160mm_wood_he"
-        },
         "steel": {
-          "fx": "hit_133_160mm_metal_he"
-        },
-        "metal": {
-          "fx": "hit_133_160mm_metal_he"
+          "fx": "cannon_hit_armor_cumulative",
+          "fxScale": [4.0,5.0]
         },
         "buildings": {
-          "fx": "hit_133_160mm_stone_he"
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         },
-        "verLandMesh": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "concrete": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "rocks": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "rocksSlippery": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "fabric": {
-          "fx": "hit_133_160mm_stone_he"
-        },
-        "stone_snow": {
-          "fx": "hit_133_160mm_snow_he"
+        "wood": {
+          "fx": "atgm_hit",
+          "fxScale": [2.2,2.5]
         }
       }
     },
@@ -420,33 +384,17 @@
       }
     },
     {
-      "guidance": {
-        "warmUpTime": 6.0,
-        "workTime": 15.0,
-        "uncageBeforeLaunch": true,
-        "breakLockMaxTime": 3.0,
-        "irSeeker": {
-          "rangeBand0": 5500.0,
-          "rangeBand2": 4000.0,
-          "rangeBand3": 4000.0,
-          "rangeMax": 7000.0,
-          "fov": 4.0,
-          "minAngleToSun": 20.0,
-          "lockAngleMax": 10.0,
-          "angleMax": 40.0,
-          "rateMax": 12.0,
-          "prolongationTimeMax": 1.0
-        },
-        "guidanceAutopilot": {
-          "timeOut": 0.5,
-          "propNavMult": 4.0,
-          "reqAccelMax": 15.0,
-          "baseIndSpeed": 1800.0,
-          "accelControlProp": 0.01,
-          "accelControlIntg": 0.005,
-          "accelControlIntgLim": 0.75,
-          "accelControlDiff": 0.002
-        }
+      "irSeeker": {
+        "rangeBand0": 5500.0,
+        "rangeBand2": 4000.0,
+        "rangeBand3": 4000.0,
+        "rangeMax": 7000.0,
+        "fov": 4.0,
+        "minAngleToSun": 20.0,
+        "lockAngleMax": 10.0,
+        "angleMax": 40.0,
+        "rateMax": 12.0,
+        "prolongationTimeMax": 1.0
       }
     },
     {
@@ -454,6 +402,18 @@
         "finsAoaHor": 0.18,
         "finsAoaVer": 0.18,
         "timeFire": 2.2
+      }
+    },
+    {
+      "propNavGuidance": {
+        "timeOut": 0.5,
+        "propNavMult": 4.0,
+        "propNavAccelMax": 15.0,
+        "baseIndSpeed": 1800.0,
+        "accelControlProp": 0.01,
+        "accelControlIntg": 0.005,
+        "accelControlIntgLim": 0.75,
+        "accelControlDiff": 0.002
       }
     },
     {
