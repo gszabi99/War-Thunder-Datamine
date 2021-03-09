@@ -99,6 +99,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
     { id="ID_AIR_BRAKE", filterShow = [globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL] }
     "ID_FLAPS"
     "ID_LOCK_TARGET"
+    "ID_TOGGLE_LASER_DESIGNATOR"
     "ID_NEXT_TARGET"
     "ID_PREV_TARGET"
     "ID_TACTICAL_MAP"

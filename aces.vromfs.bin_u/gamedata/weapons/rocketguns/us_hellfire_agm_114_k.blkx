@@ -64,12 +64,6 @@
       "guidanceType": "laser"
     },
     {
-      "guidance": "laser"
-    },
-    {
-      "breakLockMaxTime": 30.0
-    },
-    {
       "WdK": [0.1,0.1,0.1]
     },
     {
@@ -89,9 +83,6 @@
     },
     {
       "waterCollisionEffect": "120-203_he_water_splash"
-    },
-    {
-      "waterFxScale": [1.1,1.2]
     },
     {
       "explosionPatchRadius": 3.4
@@ -193,7 +184,7 @@
       "startSpeed": 100.0
     },
     {
-      "endSpeed": 900.0
+      "endSpeed": 0.0
     },
     {
       "maxSpeed": 475.0
@@ -226,12 +217,6 @@
       "shutterHit": 8.0
     },
     {
-      "speedViscosity": 0.2
-    },
-    {
-      "timeToLive": 40.0
-    },
-    {
       "advancedMissiles": false
     },
     {
@@ -242,27 +227,6 @@
     },
     {
       "aiAirOnly": false
-    },
-    {
-      "aiHeatAim": false
-    },
-    {
-      "aiRadarAim": false
-    },
-    {
-      "aiLaserAim": false
-    },
-    {
-      "aiMaxAimAngle": 30.0
-    },
-    {
-      "aiSpeedViscosity": 3.0
-    },
-    {
-      "aiSpeedPrediction": 1.0
-    },
-    {
-      "aiAccelPrediction": 0.5
     },
     {
       "amountPerTier": 4.0
@@ -284,7 +248,13 @@
       ]
     },
     {
+      "pressureDamage": {
+        "damageType": "pressure"
+      }
+    },
+    {
       "guidance": {
+        "permanentlyActivated": true,
         "inertialNavigation": true,
         "inertialNavigationDriftSpeed": 3.5,
         "flightTime0": [1000.0,2.5],
@@ -296,36 +266,33 @@
         "flightTime6": [7000.0,29.0],
         "flightTime7": [8000.0,36.0],
         "launchAngleMax": [20.0,40.0],
-        "launchDistanceRange": [1000.0,8000.0]
-      }
-    },
-    {
-      "laserSeeker": {
-        "range": 10000.0,
-        "rangeMax": 12000.0,
-        "fov": 5.0,
-        "lockAngleMax": 45.0,
-        "angleMax": 45.0,
-        "rateMax": 8.0,
-        "prolongationTimeMax": 1.0,
-        "filterAlpha": 0.85,
-        "filterBetta": 0.2
-      }
-    },
-    {
-      "propNavGuidance": {
-        "loftEnabled": true,
-        "loftElevation": 8.0,
-        "loftTargetElevation": -10.0,
-        "loftAngleToAccelMult": 10.0,
-        "loftTargetOmegaMax": 2.0,
-        "baseIndSpeed": 1200.0,
-        "omegaToAccelMult": 6.0,
-        "propNavAccelMax": 6.0,
-        "accelControlProp": 5.0,
-        "accelControlIntg": 0.5,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.5
+        "launchDistanceRange": [1000.0,8000.0],
+        "breakLockMaxTime": 30.0,
+        "laserSeeker": {
+          "range": 10000.0,
+          "rangeMax": 12000.0,
+          "fov": 5.0,
+          "lockAngleMax": 45.0,
+          "angleMax": 45.0,
+          "rateMax": 8.0,
+          "prolongationTimeMax": 1.0,
+          "filterAlpha": 0.85,
+          "filterBetta": 0.2
+        },
+        "guidanceAutopilot": {
+          "loftEnabled": true,
+          "loftElevation": 8.0,
+          "loftTargetElevation": -10.0,
+          "loftAngleToAccelMult": 10.0,
+          "loftTargetOmegaMax": 2.0,
+          "baseIndSpeed": 1200.0,
+          "omegaToAccelMult": 6.0,
+          "reqAccelMax": 6.0,
+          "accelControlProp": 5.0,
+          "accelControlIntg": 0.5,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.5
+        }
       }
     },
     {

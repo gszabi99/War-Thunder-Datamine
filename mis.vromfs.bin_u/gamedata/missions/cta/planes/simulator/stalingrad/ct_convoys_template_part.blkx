@@ -4,7 +4,7 @@
   "mission_settings": {
     "player": {
       "army": 1,
-      "wing": "ct_armada"
+      "wing": "cnv_armada"
     },
     "player_teamB": {
       "army": 2
@@ -22,7 +22,7 @@
   },
   "imports": {
     "import_record": {
-      "file": "gameData/missions/templates/air_templates/jip/air_ct_convoys_template.blk",
+      "file": "gameData/missions/templates/enduring_confrontation/cnv_convoys_template.blk",
       "importAreas": true,
       "importUnits": true,
       "importTriggers": true,
@@ -38,7 +38,45 @@
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "cnv_part_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "назначем 3 конвоя для команды А"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 3,
+            "var": "cnv_t1_max_convoys_num"
+          }
+        },
+        {
+          "comment": {
+            "value": "назначем 3 конвоя для команды Б"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 3,
+            "var": "cnv_t2_max_convoys_num"
+          }
+        }
+      ],
+      "else_actions": []
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -53,7 +91,7 @@
   "units": [
     {
       "squad": {
-        "name": "ct_t1_convoy_01_squad",
+        "name": "cnv_t1_convoy_01_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -62,23 +100,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_01_truck"
+            "squad_members": "cnv_t1_convoy_01_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_01_acar"
+            "squad_members": "cnv_t1_convoy_01_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_01_aaa"
+            "squad_members": "cnv_t1_convoy_01_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_01_tank"
+            "squad_members": "cnv_t1_convoy_01_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t1_convoy_02_squad",
+        "name": "cnv_t1_convoy_02_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -87,23 +125,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_02_truck"
+            "squad_members": "cnv_t1_convoy_02_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_02_acar"
+            "squad_members": "cnv_t1_convoy_02_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_02_aaa"
+            "squad_members": "cnv_t1_convoy_02_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_02_tank"
+            "squad_members": "cnv_t1_convoy_02_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_01_squad",
+        "name": "cnv_t2_convoy_01_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -112,23 +150,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_01_truck"
+            "squad_members": "cnv_t2_convoy_01_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_01_acar"
+            "squad_members": "cnv_t2_convoy_01_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_01_aaa"
+            "squad_members": "cnv_t2_convoy_01_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_01_tank"
+            "squad_members": "cnv_t2_convoy_01_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_all_convoys_squad",
+        "name": "cnv_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -137,17 +175,17 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_all_convoys_squad"
+            "squad_members": "cnv_t1_all_convoys_squad"
           },
           {
-            "squad_members": "ct_t2_all_convoys_squad"
+            "squad_members": "cnv_t2_all_convoys_squad"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_01_tank",
+        "name": "cnv_t1_convoy_01_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -184,7 +222,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_01_truck",
+        "name": "cnv_t1_convoy_01_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -221,7 +259,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_01_acar",
+        "name": "cnv_t1_convoy_01_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -258,7 +296,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_01_aaa",
+        "name": "cnv_t1_convoy_01_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -295,7 +333,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_02_tank",
+        "name": "cnv_t1_convoy_02_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -332,7 +370,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_02_truck",
+        "name": "cnv_t1_convoy_02_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -369,7 +407,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_02_acar",
+        "name": "cnv_t1_convoy_02_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -406,7 +444,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_02_aaa",
+        "name": "cnv_t1_convoy_02_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -443,7 +481,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t1_convoy_03_tank",
+        "name": "cnv_t1_convoy_03_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -480,7 +518,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_03_truck",
+        "name": "cnv_t1_convoy_03_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -517,7 +555,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t1_convoy_03_acar",
+        "name": "cnv_t1_convoy_03_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -554,7 +592,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t1_convoy_03_aaa",
+        "name": "cnv_t1_convoy_03_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -591,7 +629,7 @@
     },
     {
       "squad": {
-        "name": "ct_t1_convoy_03_squad",
+        "name": "cnv_t1_convoy_03_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -600,23 +638,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_03_truck"
+            "squad_members": "cnv_t1_convoy_03_truck"
           },
           {
-            "squad_members": "ct_t1_convoy_03_acar"
+            "squad_members": "cnv_t1_convoy_03_acar"
           },
           {
-            "squad_members": "ct_t1_convoy_03_aaa"
+            "squad_members": "cnv_t1_convoy_03_aaa"
           },
           {
-            "squad_members": "ct_t1_convoy_03_tank"
+            "squad_members": "cnv_t1_convoy_03_tank"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_01_tank",
+        "name": "cnv_t2_convoy_01_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -653,7 +691,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_01_truck",
+        "name": "cnv_t2_convoy_01_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -690,7 +728,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_01_acar",
+        "name": "cnv_t2_convoy_01_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -727,7 +765,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_01_aaa",
+        "name": "cnv_t2_convoy_01_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -764,7 +802,7 @@
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_02_tank",
+        "name": "cnv_t2_convoy_02_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -801,7 +839,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_02_truck",
+        "name": "cnv_t2_convoy_02_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -838,7 +876,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_02_acar",
+        "name": "cnv_t2_convoy_02_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -875,7 +913,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_02_aaa",
+        "name": "cnv_t2_convoy_02_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -912,7 +950,7 @@
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_02_squad",
+        "name": "cnv_t2_convoy_02_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -921,23 +959,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_02_truck"
+            "squad_members": "cnv_t2_convoy_02_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_02_acar"
+            "squad_members": "cnv_t2_convoy_02_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_02_aaa"
+            "squad_members": "cnv_t2_convoy_02_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_02_tank"
+            "squad_members": "cnv_t2_convoy_02_tank"
           }
         ]
       }
     },
     {
       "tracked_vehicles": {
-        "name": "ct_t2_convoy_03_tank",
+        "name": "cnv_t2_convoy_03_tank",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -974,7 +1012,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_03_truck",
+        "name": "cnv_t2_convoy_03_truck",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1011,7 +1049,7 @@
     },
     {
       "wheeled_vehicles": {
-        "name": "ct_t2_convoy_03_acar",
+        "name": "cnv_t2_convoy_03_acar",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1048,7 +1086,7 @@
     },
     {
       "air_defence": {
-        "name": "ct_t2_convoy_03_aaa",
+        "name": "cnv_t2_convoy_03_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1085,7 +1123,7 @@
     },
     {
       "squad": {
-        "name": "ct_t2_convoy_03_squad",
+        "name": "cnv_t2_convoy_03_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1094,23 +1132,23 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_03_truck"
+            "squad_members": "cnv_t2_convoy_03_truck"
           },
           {
-            "squad_members": "ct_t2_convoy_03_acar"
+            "squad_members": "cnv_t2_convoy_03_acar"
           },
           {
-            "squad_members": "ct_t2_convoy_03_aaa"
+            "squad_members": "cnv_t2_convoy_03_aaa"
           },
           {
-            "squad_members": "ct_t2_convoy_03_tank"
+            "squad_members": "cnv_t2_convoy_03_tank"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t1_all_convoys_squad",
+        "name": "cnv_t1_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1119,20 +1157,20 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t1_convoy_01_squad"
+            "squad_members": "cnv_t1_convoy_01_squad"
           },
           {
-            "squad_members": "ct_t1_convoy_02_squad"
+            "squad_members": "cnv_t1_convoy_02_squad"
           },
           {
-            "squad_members": "ct_t1_convoy_03_squad"
+            "squad_members": "cnv_t1_convoy_03_squad"
           }
         ]
       }
     },
     {
       "squad": {
-        "name": "ct_t2_all_convoys_squad",
+        "name": "cnv_t2_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
@@ -1141,13 +1179,13 @@
         ],
         "props": [
           {
-            "squad_members": "ct_t2_convoy_01_squad"
+            "squad_members": "cnv_t2_convoy_01_squad"
           },
           {
-            "squad_members": "ct_t2_convoy_02_squad"
+            "squad_members": "cnv_t2_convoy_02_squad"
           },
           {
-            "squad_members": "ct_t2_convoy_03_squad"
+            "squad_members": "cnv_t2_convoy_03_squad"
           }
         ]
       }
@@ -1168,7 +1206,7 @@
     },
     {
       "armada": {
-        "name": "ct_armada",
+        "name": "cnv_armada",
         "tm": [
           [-0.793353,0.0,0.608761],
           [0.0,1.0,0.0],
@@ -1247,7 +1285,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_01_start_point": {
+    "cnv_t1_road_01_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1258,7 +1296,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_01_spawn": {
+    "cnv_t1_road_01_spawn": {
       "type": "Point",
       "tm": [
         [-0.686218,0.0,0.727396],
@@ -1269,7 +1307,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_convoy_02_start_point": {
+    "cnv_t1_convoy_02_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1280,7 +1318,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_02_spawn": {
+    "cnv_t1_road_02_spawn": {
       "type": "Point",
       "tm": [
         [-0.90621,0.0,0.422829],
@@ -1291,7 +1329,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_02_start_point": {
+    "cnv_t1_road_02_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1302,7 +1340,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_03_spawn": {
+    "cnv_t1_road_03_spawn": {
       "type": "Point",
       "tm": [
         [-0.958025,0.0,0.286683],
@@ -1313,7 +1351,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_03_start_point": {
+    "cnv_t1_road_03_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1324,7 +1362,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_05_spawn": {
+    "cnv_t1_road_05_spawn": {
       "type": "Point",
       "tm": [
         [-0.953055,0.0,-0.302798],
@@ -1335,7 +1373,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_05_start_point": {
+    "cnv_t1_road_05_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1346,7 +1384,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_06_spawn": {
+    "cnv_t1_road_06_spawn": {
       "type": "Point",
       "tm": [
         [-0.950351,0.0,-0.311179],
@@ -1357,7 +1395,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_06_start_point": {
+    "cnv_t1_road_06_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1368,7 +1406,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_09_spawn": {
+    "cnv_t1_road_09_spawn": {
       "type": "Point",
       "tm": [
         [-0.951564,0.0,-0.307451],
@@ -1379,7 +1417,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_09_start_point": {
+    "cnv_t1_road_09_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1390,7 +1428,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_10_spawn": {
+    "cnv_t1_road_10_spawn": {
       "type": "Point",
       "tm": [
         [-0.741755,0.0,-0.67067],
@@ -1401,7 +1439,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_10_start_point": {
+    "cnv_t1_road_10_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1412,7 +1450,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_11_spawn": {
+    "cnv_t1_road_11_spawn": {
       "type": "Point",
       "tm": [
         [-0.840664,0.0,0.541557],
@@ -1423,7 +1461,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_11_start_point": {
+    "cnv_t1_road_11_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1434,7 +1472,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_01_end_point": {
+    "cnv_t1_road_01_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1445,7 +1483,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_02_end_point": {
+    "cnv_t1_road_02_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1456,7 +1494,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_01_spawn": {
+    "cnv_t2_road_01_spawn": {
       "type": "Point",
       "tm": [
         [0.330151,0.0,0.943928],
@@ -1467,7 +1505,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_01_start_point": {
+    "cnv_t2_road_01_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1478,7 +1516,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_02_spawn": {
+    "cnv_t2_road_02_spawn": {
       "type": "Point",
       "tm": [
         [0.789544,0.0,0.613695],
@@ -1489,7 +1527,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_02_start_point": {
+    "cnv_t2_road_02_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1500,7 +1538,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_01_end_point": {
+    "cnv_t2_road_01_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1511,7 +1549,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_02_end_point": {
+    "cnv_t2_road_02_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1522,7 +1560,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_04_start_point": {
+    "cnv_t1_road_04_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1533,7 +1571,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_04_spawn": {
+    "cnv_t1_road_04_spawn": {
       "type": "Point",
       "tm": [
         [-0.790287,0.0,-0.612737],
@@ -1544,7 +1582,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_03_end_point": {
+    "cnv_t1_road_03_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1555,7 +1593,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_04_end_point": {
+    "cnv_t1_road_04_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1566,7 +1604,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_05_end_point": {
+    "cnv_t1_road_05_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1577,7 +1615,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_07_start_point": {
+    "cnv_t1_road_07_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1588,7 +1626,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_07_spawn": {
+    "cnv_t1_road_07_spawn": {
       "type": "Point",
       "tm": [
         [-0.349247,0.0,-0.937031],
@@ -1599,7 +1637,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_08_start_point": {
+    "cnv_t1_road_08_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1610,7 +1648,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_08_spawn": {
+    "cnv_t1_road_08_spawn": {
       "type": "Point",
       "tm": [
         [-0.271075,0.0,0.962558],
@@ -1621,7 +1659,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_06_end_point": {
+    "cnv_t1_road_06_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1632,7 +1670,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_07_end_point": {
+    "cnv_t1_road_07_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1643,7 +1681,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_08_end_point": {
+    "cnv_t1_road_08_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1654,7 +1692,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_09_end_point": {
+    "cnv_t1_road_09_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1665,7 +1703,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_10_end_point": {
+    "cnv_t1_road_10_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1676,7 +1714,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t1_road_11_end_point": {
+    "cnv_t1_road_11_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1687,7 +1725,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_03_end_point": {
+    "cnv_t2_road_03_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1698,7 +1736,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_04_end_point": {
+    "cnv_t2_road_04_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1709,7 +1747,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_05_end_point": {
+    "cnv_t2_road_05_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1720,7 +1758,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_06_end_point": {
+    "cnv_t2_road_06_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1731,7 +1769,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_07_end_point": {
+    "cnv_t2_road_07_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1742,7 +1780,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_08_end_point": {
+    "cnv_t2_road_08_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1753,7 +1791,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_09_end_point": {
+    "cnv_t2_road_09_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1764,7 +1802,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_10_end_point": {
+    "cnv_t2_road_10_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1775,7 +1813,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_11_end_point": {
+    "cnv_t2_road_11_end_point": {
       "type": "Sphere",
       "tm": [
         [500.0,0.0,0.0],
@@ -1786,7 +1824,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_03_start_point": {
+    "cnv_t2_road_03_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1797,7 +1835,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_03_spawn": {
+    "cnv_t2_road_03_spawn": {
       "type": "Point",
       "tm": [
         [0.285548,0.0,0.958364],
@@ -1808,7 +1846,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_04_start_point": {
+    "cnv_t2_road_04_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1819,7 +1857,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_04_spawn": {
+    "cnv_t2_road_04_spawn": {
       "type": "Point",
       "tm": [
         [0.86036,0.0,0.509687],
@@ -1830,7 +1868,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_05_start_point": {
+    "cnv_t2_road_05_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1841,7 +1879,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_05_spawn": {
+    "cnv_t2_road_05_spawn": {
       "type": "Point",
       "tm": [
         [0.605479,0.0,0.795861],
@@ -1852,7 +1890,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_06_start_point": {
+    "cnv_t2_road_06_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1863,7 +1901,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_06_spawn": {
+    "cnv_t2_road_06_spawn": {
       "type": "Point",
       "tm": [
         [0.879416,0.0,-0.476053],
@@ -1874,7 +1912,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_07_start_point": {
+    "cnv_t2_road_07_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1885,7 +1923,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_07_spawn": {
+    "cnv_t2_road_07_spawn": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1896,7 +1934,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_08_start_point": {
+    "cnv_t2_road_08_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1907,7 +1945,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_08_spawn": {
+    "cnv_t2_road_08_spawn": {
       "type": "Point",
       "tm": [
         [0.885647,0.0,-0.46436],
@@ -1918,7 +1956,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_09_start_point": {
+    "cnv_t2_road_09_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1929,7 +1967,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_09_spawn": {
+    "cnv_t2_road_09_spawn": {
       "type": "Point",
       "tm": [
         [0.95522,0.0,-0.295897],
@@ -1940,7 +1978,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_10_start_point": {
+    "cnv_t2_road_10_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1951,7 +1989,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_10_spawn": {
+    "cnv_t2_road_10_spawn": {
       "type": "Point",
       "tm": [
         [0.257642,0.0,0.966241],
@@ -1962,7 +2000,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_11_start_point": {
+    "cnv_t2_road_11_start_point": {
       "type": "Point",
       "tm": [
         [1.0,0.0,0.0],
@@ -1973,7 +2011,7 @@
       "objLayer": 0,
       "props": []
     },
-    "ct_t2_road_11_spawn": {
+    "cnv_t2_road_11_spawn": {
       "type": "Point",
       "tm": [
         [-0.045188,0.0,-0.998978],
@@ -2019,7 +2057,7 @@
     }
   ],
   "wayPoints": {
-    "ct_t1_road_01": {
+    "cnv_t1_road_01": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2218,7 +2256,7 @@
         }
       }
     },
-    "ct_t1_road_02": {
+    "cnv_t1_road_02": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2561,7 +2599,7 @@
         }
       }
     },
-    "ct_t1_road_03": {
+    "cnv_t1_road_03": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2582,7 +2620,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_01": {
+        "cnv_t1_road_03_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2598,7 +2636,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_02": {
+        "cnv_t1_road_03_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2614,7 +2652,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_03": {
+        "cnv_t1_road_03_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2630,7 +2668,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_04": {
+        "cnv_t1_road_03_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2646,7 +2684,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_05": {
+        "cnv_t1_road_03_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2662,7 +2700,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_06": {
+        "cnv_t1_road_03_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2678,7 +2716,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_07": {
+        "cnv_t1_road_03_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2694,7 +2732,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_08": {
+        "cnv_t1_road_03_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2710,7 +2748,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_09": {
+        "cnv_t1_road_03_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2726,7 +2764,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_10": {
+        "cnv_t1_road_03_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2742,7 +2780,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_03_wp_11": {
+        "cnv_t1_road_03_wp_11": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2760,7 +2798,7 @@
         }
       }
     },
-    "ct_t1_road_04": {
+    "cnv_t1_road_04": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2781,7 +2819,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_01": {
+        "cnv_t1_road_04_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2797,7 +2835,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_02": {
+        "cnv_t1_road_04_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2813,7 +2851,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_03": {
+        "cnv_t1_road_04_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2829,7 +2867,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_04": {
+        "cnv_t1_road_04_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2845,7 +2883,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_05": {
+        "cnv_t1_road_04_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2861,7 +2899,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_06": {
+        "cnv_t1_road_04_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2877,7 +2915,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_07": {
+        "cnv_t1_road_04_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2893,7 +2931,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_08": {
+        "cnv_t1_road_04_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2909,7 +2947,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_09": {
+        "cnv_t1_road_04_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2925,7 +2963,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_04_wp_10": {
+        "cnv_t1_road_04_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2943,7 +2981,7 @@
         }
       }
     },
-    "ct_t1_road_05": {
+    "cnv_t1_road_05": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -2964,7 +3002,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_01": {
+        "cnv_t1_road_05_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2980,7 +3018,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_02": {
+        "cnv_t1_road_05_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -2996,7 +3034,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_03": {
+        "cnv_t1_road_05_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3012,7 +3050,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_04": {
+        "cnv_t1_road_05_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3028,7 +3066,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_05_wp_05": {
+        "cnv_t1_road_05_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3046,7 +3084,7 @@
         }
       }
     },
-    "ct_t1_road_06": {
+    "cnv_t1_road_06": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3067,7 +3105,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_01": {
+        "cnv_t1_road_06_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3083,7 +3121,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_02": {
+        "cnv_t1_road_06_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3099,7 +3137,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_03": {
+        "cnv_t1_road_06_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3115,7 +3153,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_04": {
+        "cnv_t1_road_06_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3131,7 +3169,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_06_wp_05": {
+        "cnv_t1_road_06_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3149,7 +3187,7 @@
         }
       }
     },
-    "ct_t1_road_07": {
+    "cnv_t1_road_07": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3170,7 +3208,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_01": {
+        "cnv_t1_road_07_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3186,7 +3224,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_02": {
+        "cnv_t1_road_07_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3202,7 +3240,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_03": {
+        "cnv_t1_road_07_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3218,7 +3256,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_04": {
+        "cnv_t1_road_07_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3234,7 +3272,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_05": {
+        "cnv_t1_road_07_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3250,7 +3288,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_06": {
+        "cnv_t1_road_07_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3266,7 +3304,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_07": {
+        "cnv_t1_road_07_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3282,7 +3320,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_08": {
+        "cnv_t1_road_07_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3298,7 +3336,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_09": {
+        "cnv_t1_road_07_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3314,7 +3352,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_07_wp_10": {
+        "cnv_t1_road_07_wp_10": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3332,7 +3370,7 @@
         }
       }
     },
-    "ct_t1_road_08": {
+    "cnv_t1_road_08": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3353,7 +3391,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_01": {
+        "cnv_t1_road_08_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3369,7 +3407,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_02": {
+        "cnv_t1_road_08_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3385,7 +3423,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_03": {
+        "cnv_t1_road_08_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3401,7 +3439,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_04": {
+        "cnv_t1_road_08_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3417,7 +3455,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_05": {
+        "cnv_t1_road_08_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3433,7 +3471,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_06": {
+        "cnv_t1_road_08_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3449,7 +3487,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_07": {
+        "cnv_t1_road_08_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3465,7 +3503,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_08": {
+        "cnv_t1_road_08_wp_08": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3481,7 +3519,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_08_wp_09": {
+        "cnv_t1_road_08_wp_09": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3499,7 +3537,7 @@
         }
       }
     },
-    "ct_t1_road_09": {
+    "cnv_t1_road_09": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3520,7 +3558,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_01": {
+        "cnv_t1_road_09_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3536,7 +3574,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_02": {
+        "cnv_t1_road_09_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3552,7 +3590,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_03": {
+        "cnv_t1_road_09_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3568,7 +3606,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_04": {
+        "cnv_t1_road_09_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3584,7 +3622,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_05": {
+        "cnv_t1_road_09_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3600,7 +3638,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_06": {
+        "cnv_t1_road_09_wp_06": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3616,7 +3654,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_09_wp_07": {
+        "cnv_t1_road_09_wp_07": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3634,7 +3672,7 @@
         }
       }
     },
-    "ct_t1_road_10": {
+    "cnv_t1_road_10": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3655,7 +3693,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_10_wp_01": {
+        "cnv_t1_road_10_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3671,7 +3709,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_10_wp_02": {
+        "cnv_t1_road_10_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3687,7 +3725,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_10_wp_03": {
+        "cnv_t1_road_10_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3703,7 +3741,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_10_wp_04": {
+        "cnv_t1_road_10_wp_04": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3719,7 +3757,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_10_wp_05": {
+        "cnv_t1_road_10_wp_05": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3737,7 +3775,7 @@
         }
       }
     },
-    "ct_t1_road_11": {
+    "cnv_t1_road_11": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3758,7 +3796,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_11_wp_01": {
+        "cnv_t1_road_11_wp_01": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3774,7 +3812,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_11_wp_02": {
+        "cnv_t1_road_11_wp_02": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3790,7 +3828,7 @@
             "canUsePathFinder": false
           }
         },
-        "ct_t1_road_11_wp_03": {
+        "cnv_t1_road_11_wp_03": {
           "type": "normal",
           "tm": [
             [1.0,0.0,0.0],
@@ -3808,7 +3846,7 @@
         }
       }
     },
-    "ct_t2_road_01": {
+    "cnv_t2_road_01": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -3943,7 +3981,7 @@
         }
       }
     },
-    "ct_t2_road_02": {
+    "cnv_t2_road_02": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4110,7 +4148,7 @@
         }
       }
     },
-    "ct_t2_road_03": {
+    "cnv_t2_road_03": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4245,7 +4283,7 @@
         }
       }
     },
-    "ct_t2_road_04": {
+    "cnv_t2_road_04": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4444,7 +4482,7 @@
         }
       }
     },
-    "ct_t2_road_05": {
+    "cnv_t2_road_05": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -4787,7 +4825,7 @@
         }
       }
     },
-    "ct_t2_road_06": {
+    "cnv_t2_road_06": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5162,7 +5200,7 @@
         }
       }
     },
-    "ct_t2_road_07": {
+    "cnv_t2_road_07": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5457,7 +5495,7 @@
         }
       }
     },
-    "ct_t2_road_08": {
+    "cnv_t2_road_08": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5656,7 +5694,7 @@
         }
       }
     },
-    "ct_t2_road_09": {
+    "cnv_t2_road_09": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5775,7 +5813,7 @@
         }
       }
     },
-    "ct_t2_road_10": {
+    "cnv_t2_road_10": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
@@ -5958,7 +5996,7 @@
         }
       }
     },
-    "ct_t2_road_11": {
+    "cnv_t2_road_11": {
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,

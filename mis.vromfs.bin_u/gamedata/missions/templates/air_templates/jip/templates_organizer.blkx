@@ -820,14 +820,14 @@
           },
           {
             "varCompareBool": {
-              "var_value": "ct_is_launch_alowed",
+              "var_value": "cnv_is_launch_alowed",
               "value": true,
               "comparasion_func": "equal"
             }
           },
           {
             "varCompareBool": {
-              "var_value": "ct_is_template_active",
+              "var_value": "cnv_is_template_active",
               "value": false,
               "comparasion_func": "equal"
             }
@@ -886,19 +886,7 @@
           {
             "varSetBool": {
               "value": true,
-              "var": "ct_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
-            }
-          },
-          {
-            "varSetRandomInt": {
-              "var": "ct_delay_timer",
-              "from": 10,
-              "to_not_including": 30
+              "var": "cnv_is_template_active"
             }
           },
           {
@@ -938,7 +926,7 @@
           },
           "triggerEnable": [
             {
-              "target": "ct_start"
+              "target": "cnv_start"
             },
             {
               "target": "to_template_03_ct_end"
@@ -962,7 +950,7 @@
         },
         "conditions": {
           "varCompareBool": {
-            "var_value": "ct_is_template_active",
+            "var_value": "cnv_is_template_active",
             "value": false,
             "comparasion_func": "equal"
           }
@@ -1580,7 +1568,7 @@
     "ft_is_launch_alowed": false,
     "bdt_is_launch_alowed": false,
     "bt_is_launch_alowed": false,
-    "ct_is_launch_alowed": false,
+    "cnv_is_launch_alowed": false,
     "at_is_launch_alowed": false,
     "ad_is_launch_alowed": false,
     "lbt_is_launch_alowed": false,

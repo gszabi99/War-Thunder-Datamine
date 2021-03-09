@@ -152,6 +152,7 @@ global enum itemType { //bit values for easy multitype search
   UNIVERSAL_SPARE = 0x00000080
   MOD_OVERDRIVE   = 0x00000100
   MOD_UPGRADE     = 0x00000200
+  SMOKE           = 0x00000400
 
   //external inventory
   VEHICLE         = 0x00010000
@@ -530,7 +531,6 @@ local isFullScriptsLoaded = false
     "artilleryMap.nut"
 
     "utils/genericTooltip.nut"
-    "utils/genericTooltipTypes.nut"
 
     "eulaWnd.nut"
     "countryChoiceWnd.nut"
@@ -696,6 +696,7 @@ local isFullScriptsLoaded = false
     "unlocks/battleTasksHandler.nut"
     "unlocks/battleTasksSelectNewTask.nut"
     "unlocks/favoriteUnlocksListView.nut"
+    "unlocks/unlockSmoke.nut"
 
     "onlineShop/onlineShopModel.nut"
     "onlineShop/onlineShop.nut"
@@ -904,6 +905,7 @@ local isFullScriptsLoaded = false
   require("scripts/controls/controlsPseudoAxes.nut")
   require("scripts/controls/mousePointerVisibility.nut")
   require("scripts/controls/controlsFootballNy2021Hack.nut")
+  require("scripts/utils/delayedTooltip.nut")
 
   if (platform.isPlatformXboxOne)
     require("scripts/global/xboxCallbacks.nut")

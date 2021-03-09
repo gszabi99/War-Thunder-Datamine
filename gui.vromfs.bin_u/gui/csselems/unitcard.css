@@ -82,6 +82,15 @@ rankUpList {
   input-transparent:yes;
 }
 
+rankUpList[holdTooltipChildren=yes], slotbarTable[holdTooltipChildren=yes] {
+  total-input-transparent:yes;
+  behavior:PosNavigator;
+  navigatorShortcuts:yes;
+  on_pushed:"::gcb.delayedTooltipListPush";
+  on_hold_start:"::gcb.delayedTooltipListHoldStart";
+  on_hold_stop:"::gcb.delayedTooltipListHoldStop";
+}
+
 unitCell {
   size:@shop_width, @shop_height;
   padding:@shop_interval, @shop_pad;
@@ -184,6 +193,12 @@ shopItem[group=yes] > slotPlate > topLine {
   background-position:42@dp, 0@dp, 2@dp, 0@dp;
 }
 
+shopTable[isShopItemsWide=1] > unitCell > shopItem[group=yes] > slotPlate > topLine {
+  background-image:#ui/gameuiskin#item_group_line_wide.svg;
+  background-svg-size:64@dp, 6@dp;
+  background-position:61@dp, 0@dp, 2@dp, 0@dp;
+}
+
 shopItem > slotPlate > middleBg {
   size:pw, fh;
   pos:0, 1@slotTopLineHeight - 1@slotBorderSize;
@@ -205,6 +220,12 @@ shopItem[group=yes] > slotPlate > middleBg {
   background-image:#ui/gameuiskin#item_group_bg.svg;
   background-svg-size:45@dp, 10@dp;
   background-position:42@dp, 7@dp, 2@dp, 2@dp;
+}
+
+shopTable[isShopItemsWide=1] > unitCell > shopItem[group=yes] > slotPlate > middleBg {
+  background-image:#ui/gameuiskin#item_group_bg_wide.svg;
+  background-svg-size:64@dp, 10@dp;
+  background-position:61@dp, 7@dp, 2@dp, 2@dp;
 }
 
 groupFrame {
@@ -689,13 +710,18 @@ shopItem[isElite=no] > eliteIcon {
 
 recentlyReleasedIcon {
   size:50@sf/@pf, 50@sf/@pf;
+  pos:-1@dp, -1@dp;
   position:absolute;
   background-image:#ui/gameuiskin#item_new;
   background-color:@white;
   input-transparent:yes;
 }
 
-[isRecentlyReleased=no] > recentlyReleasedIcon {
+shopItem[group=yes] > recentlyReleasedIcon {
+  pos:-1@dp, -5@dp;
+}
+
+shopItem[isRecentlyReleased=no] > recentlyReleasedIcon {
   display:hide;
 }
 

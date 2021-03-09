@@ -7,7 +7,6 @@
       "rcs": 3.0,
       "range": 12000.0,
       "rangeMax": 12000.0,
-      "backScatteringBandNum": 0,
       "antenna": {
         "azimuth": {
           "angleHalfSens": 1.5,
@@ -25,7 +24,6 @@
       "rcs": 3.0,
       "range": 10000.0,
       "rangeMax": 10000.0,
-      "backScatteringBandNum": 0,
       "antenna": {
         "angleHalfSens": 1.5,
         "sideLobesSensitivity": -35.0
@@ -98,13 +96,13 @@
   "signals": {
     "search": {
       "groundClutter": false,
-      "absRelSpeed": true,
+      "absDopplerSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 1000.0,
         "maxValue": 12000.0
       },
-      "relSpeed": {
+      "dopplerSpeed": {
         "presents": true,
         "minValue": 15.0,
         "maxValue": 1000.0,
@@ -116,19 +114,20 @@
       "groundClutter": false,
       "angularAccuracy": 0.06,
       "distanceAccuracy": 5.0,
-      "absRelSpeed": true,
+      "absDopplerSpeed": true,
       "track": true,
       "distance": {
         "presents": true,
         "minValue": 100.0,
         "maxValue": 10000.0
       },
-      "relSpeed": {
+      "dopplerSpeed": {
         "presents": true,
         "minValue": 15.0,
         "maxValue": 1000.0,
         "signalWidthMin": 5.0,
-        "width": 0.0
+        "width": 0.0,
+        "leakMult": 0.05
       }
     }
   },

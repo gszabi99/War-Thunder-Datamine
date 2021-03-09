@@ -136,10 +136,7 @@
           "createSecondaryShatters": false
         },
         "turret_01_bottom_dm": {
-          "armorThickness": 80.0,
-          "cumulativeArmorQuality": 0.1,
-          "armorEffectiveThicknessMax": 255.0,
-          "genericArmorQuality": 1.73
+          "armorThickness": 80.0
         }
       },
       "hull": {
@@ -296,15 +293,15 @@
         },
         "turret_01_top_dm": {
           "armorThickness": 125.0,
-          "genericArmorQuality": 0.7,
-          "cumulativeArmorQuality": 1.9,
+          "genericArmorQuality": 1.0,
+          "cumulativeArmorQuality": 1.02,
           "createSecondaryShatters": false
         }
       },
       "turret": {
-        "armorClass": "CHA_tank",
+        "armorClass": "CHA_tank_modern",
         "composite_armor_turret_03_dm": {
-          "armorClass": "CHA_tank"
+          "armorClass": "CHA_tank_modern"
         },
         "turret_back_dm": {
           "armorThickness": 50.0,
@@ -387,13 +384,13 @@
         "cumulativeProtectionEquivalent": 450.0,
         "hp": 250.0,
         "armorThickness": 85.0,
-        "genericArmorQuality": 0.57,
+        "genericArmorQuality": 0.75,
         "cumulativeArmorQuality": 2.0,
         "genericDamageMult": 3.0,
         "stopChanceOnDeadPart": 0.0,
         "hidableInViewer": true,
         "hidableInXrayViewer": true,
-        "cumulativeEffectiveThicknessMax": 200.0,
+        "armorEffectiveThicknessMax": 450.0,
         "ex_era_hull_01_dm": [],
         "ex_era_hull_02_dm": [],
         "ex_era_hull_03_dm": [],
@@ -416,27 +413,7 @@
         "ex_era_hull_20_dm": [],
         "ex_era_hull_21_dm": [],
         "ex_era_hull_22_dm": [],
-        "ex_era_hull_23_dm": []
-      },
-      "side_turret_era": {
-        "armorClass": "ERA_FY_4",
-        "kineticProtectionEquivalent": 50.0,
-        "cumulativeProtectionEquivalent": 350.0,
-        "hp": 250.0,
-        "armorThickness": 85.0,
-        "genericDamageMult": 3.0,
-        "genericArmorQuality": 0.75,
-        "cumulativeArmorQuality": 3.0,
-        "stopChanceOnDeadPart": 0.0,
-        "hidableInViewer": true,
-        "hidableInXrayViewer": true,
-        "armorEffectiveThicknessMax": 600.0,
-        "ex_era_turret_01_dm": [],
-        "ex_era_turret_02_dm": [],
-        "ex_era_turret_03_dm": [],
-        "ex_era_turret_04_dm": [],
-        "ex_era_turret_05_dm": [],
-        "ex_era_turret_06_dm": [],
+        "ex_era_hull_23_dm": [],
         "ex_era_turret_07_dm": [],
         "ex_era_turret_08_dm": [],
         "ex_era_turret_09_dm": [],
@@ -453,6 +430,26 @@
         "ex_era_turret_20_dm": [],
         "ex_era_turret_21_dm": [],
         "ex_era_turret_22_dm": []
+      },
+      "side_turret_era": {
+        "armorClass": "ERA_FY_4",
+        "kineticProtectionEquivalent": 50.0,
+        "cumulativeProtectionEquivalent": 350.0,
+        "hp": 250.0,
+        "armorThickness": 85.0,
+        "genericDamageMult": 3.0,
+        "genericArmorQuality": 0.75,
+        "cumulativeArmorQuality": 3.0,
+        "stopChanceOnDeadPart": 0.0,
+        "hidableInViewer": true,
+        "hidableInXrayViewer": true,
+        "armorEffectiveThicknessMax": 450.0,
+        "ex_era_turret_01_dm": [],
+        "ex_era_turret_02_dm": [],
+        "ex_era_turret_03_dm": [],
+        "ex_era_turret_04_dm": [],
+        "ex_era_turret_05_dm": [],
+        "ex_era_turret_06_dm": []
       },
       "body_side_screens": {
         "armorClass": "t_90_rubber_fabric_screens",
@@ -643,8 +640,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
-        "armorThickness": 25.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -690,55 +687,30 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 30.0,
-        "hp": 300.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 30.0,
         "track_r_dm": [],
         "track_l_dm": []
       },
       "crew": {
         "armorClass": "steel_tankman",
         "hp": 40.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_03_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_03_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_04_dm": {
-          "genericDamageMult": 3.0
-        }
+        "genericDamageMult": 3.0,
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -2145,7 +2117,7 @@
     "gunConvergence": {
       "updateFromRangefinder": true,
       "minDistance": 200.0,
-      "distance": 1000.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }

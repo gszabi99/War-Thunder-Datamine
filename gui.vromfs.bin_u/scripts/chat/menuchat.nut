@@ -1376,10 +1376,10 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function addRoomMsg(roomId, from, msg, privateMsg = false, myPrivate = false, overlaySystemColor = null,
-    important=false, isMyActionInfo = false)
+    important = false)
   {
     local mBlock = menuChatRoom.newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor,
-      important, !::g_chat.isRoomSquad(roomId), isMyActionInfo)
+      important, !::g_chat.isRoomSquad(roomId))
     if (!mBlock)
       return
 
@@ -1409,8 +1409,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
           if (roomId != ""
               && (roomData.type.needCountAsImportant || mBlock.important)
-              && !mBlock.isMeSender
-              && !mBlock.isMyActionInfo
+              && !(mBlock.isMeSender || mBlock.isSystemSender)
               && (!::last_chat_scene_show || curRoom != roomData)
              )
           {
@@ -2017,12 +2016,12 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::gchat_raw_command("kick " + ::gchat_escape_target(curRoom.id) + " " + ::gchat_escape_target(playerName))
   }
 
-  function squadMsg(msg, isMyActionInfo = false)
+  function squadMsg(msg)
   {
     local sRoom = ::g_chat.getMySquadRoomId()
-    addRoomMsg(sRoom, "", msg, false, false, null, false, isMyActionInfo)
+    addRoomMsg(sRoom, "", msg)
     if (curRoom && curRoom.id != sRoom)
-      addRoomMsg(curRoom.id, "", msg, false, false, null, false, isMyActionInfo)
+      addRoomMsg(curRoom.id, "", msg)
   }
 
   function leaveSquadRoom()
@@ -2113,7 +2112,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateReadyButton()
     if (::g_squad_manager.isInSquad())
-      squadMsg(::loc(::g_squad_manager.isMeReady() ? "squad/change_to_ready" : "squad/change_to_not_ready"), true)
+      squadMsg(::loc(::g_squad_manager.isMeReady() ? "squad/change_to_ready" : "squad/change_to_not_ready"))
   }
 
   function onEventQueueChangeState(params)
@@ -2132,7 +2131,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local contact = ::getContact(uid)
     if (contact != null)
-       squadMsg(format(::loc("squad/invited_player"), contact.name), ::g_squad_manager.isSquadLeader())
+       squadMsg(format(::loc("squad/invited_player"), contact.name))
   }
 
   function checkValidAndSpamMessage(msg, room = null, isPrivate = false)

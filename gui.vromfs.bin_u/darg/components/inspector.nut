@@ -1,13 +1,13 @@
 local string = require("string")
 local utf8 = require_optional("utf8")
 local clipboard = require("darg.clipboard")
-
+local {DONT_CHECK_NESTED} = require("frp")
 
 local shown          = persist("shown", @() ::Watched(false))
 local wndHalign      = persist("wndHalign", @() ::Watched(ALIGN_RIGHT))
 local pickerActive   = persist("pickerActive", @() ::Watched(false))
 local highlight      = persist("highlight", @() ::Watched(null))
-local pickedList     = persist("pickedList", @() ::Watched([]))
+local pickedList     = persist("pickedList", @() ::Watched([], DONT_CHECK_NESTED))
 local viewIdx        = persist("viewIdx", @() ::Watched(0))
 
 local curData        = ::Computed(@() pickedList.value?[viewIdx.value])

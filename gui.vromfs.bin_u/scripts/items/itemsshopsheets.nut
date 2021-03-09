@@ -203,6 +203,12 @@ shopSheets.addSheets({
     sortId = sortId++
     isAllowedForTab = isOnlyExtInventory
   }
+  SMOKE = {
+    locId = "itemTypes/aerobatic_smoke"
+    typeMask = itemType.SMOKE
+    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP
+    sortId = sortId++
+  }
   OTHER = {
     locId = "attachables/category/other"
     typeMask = itemType.WARBONDS | itemType.ENTITLEMENT | itemType.INTERNAL_ITEM

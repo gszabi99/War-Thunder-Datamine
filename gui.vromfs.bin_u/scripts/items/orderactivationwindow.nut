@@ -16,7 +16,7 @@ class ::gui_handlers.OrderActivationWindow extends ::gui_handlers.ItemsList
   function initScreen() {
     base.initScreen()
     showSceneBtn("tabs_list", false)
-    scene.findObject("bc_back_button").setValue(::loc("mainmenu/btnBack"))
+    scene.findObject("back_scene_name").setValue(::loc("mainmenu/btnBack"))
     scene.findObject("bc_shop_header").setValue(::loc("flightmenu/btnActivateOrder"))
   }
 

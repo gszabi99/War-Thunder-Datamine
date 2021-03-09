@@ -109,9 +109,6 @@
       "waterCollisionEffect": "120-203_he_water_splash"
     },
     {
-      "waterFxScale": [1.1,1.2]
-    },
-    {
       "explosionPatchRadius": 3.4
     },
     {
@@ -145,28 +142,13 @@
       "explodeTreshold": 0.1
     },
     {
-      "guidanceType": "ir"
-    },
-    {
-      "guidance": "ir"
-    },
-    {
-      "warmUpTime": 5.0
-    },
-    {
-      "workTime": 60.0
-    },
-    {
-      "uncageBeforeLaunch": false
-    },
-    {
       "guidanceSfx": "alarm_con_scan"
     },
     {
-      "hasProximityFuse": true
+      "guidanceType": "ir"
     },
     {
-      "breakLockMaxTime": 5.0
+      "hasProximityFuse": true
     },
     {
       "explodeTreshold": 0.01
@@ -212,9 +194,6 @@
     },
     {
       "endSpeed": 1000.0
-    },
-    {
-      "speedViscosity": 0.2
     },
     {
       "timeLife": 13.0
@@ -362,6 +341,9 @@
             }
           }
         ],
+        "shatterDamage": {
+          "breachConeAngle": 45.0
+        },
         "explosive": {
           "radius": 0.15,
           "offset": 0.9
@@ -385,32 +367,36 @@
       }
     },
     {
-      "irSeeker": {
-        "rangeBand0": 6000.0,
-        "rangeBand1": 4000.0,
-        "rangeBand2": 5000.0,
-        "rangeBand3": 0.0,
-        "rangeMax": 11000.0,
-        "fov": 2.0,
-        "arretAngles": [0.0,-8.0],
-        "gateWidth": 0.7,
-        "bandMaskToReject": 4,
-        "minAngleToSun": 5.0,
-        "lockAngleMax": 38.0,
-        "angleMax": 38.0,
-        "rateMax": 12.0,
-        "prolongationTimeMax": 3.0
-      }
-    },
-    {
-      "propNavGuidance": {
-        "timeOut": 0.5,
-        "baseIndSpeed": 2000.0,
-        "propNavMult": 4.0,
-        "accelControlProp": 0.016,
-        "accelControlIntg": 0.0028,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.0015
+      "guidance": {
+        "warmUpTime": 5.0,
+        "workTime": 60.0,
+        "uncageBeforeLaunch": false,
+        "breakLockMaxTime": 5.0,
+        "irSeeker": {
+          "rangeBand0": 6000.0,
+          "rangeBand1": 4000.0,
+          "rangeBand2": 5000.0,
+          "rangeBand3": 0.0,
+          "rangeMax": 11000.0,
+          "fov": 2.0,
+          "arretAngles": [0.0,-8.0],
+          "gateWidth": 0.7,
+          "bandMaskToReject": 4,
+          "minAngleToSun": 5.0,
+          "lockAngleMax": 38.0,
+          "angleMax": 38.0,
+          "rateMax": 12.0,
+          "prolongationTimeMax": 3.0
+        },
+        "guidanceAutopilot": {
+          "timeOut": 0.5,
+          "baseIndSpeed": 2000.0,
+          "propNavMult": 4.0,
+          "accelControlProp": 0.016,
+          "accelControlIntg": 0.0028,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.0015
+        }
       }
     },
     {

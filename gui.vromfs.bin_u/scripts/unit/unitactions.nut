@@ -52,7 +52,7 @@ local function flushSquadronExp(unit, params = {})
   if (!unit)
     return
 
-  local afterDoneFunc = params?.afterDoneFunc ?? null
+  local afterDoneFunc = params?.afterDoneFunc
   ::scene_msg_box("ask_flush_squadron_exp",
     null,
     ::loc("squadronExp/invest/needMoneyQuestion",

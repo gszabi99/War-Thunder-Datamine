@@ -1243,9 +1243,16 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       res.desc = ::loc("award/"+id+"/desc", "")
       if (id == "money_back")
       {
-        local unitName = ::getTblValue("unit", config)
+        local unitName = config?.unit
         if (unitName)
-          res.desc += ((res.desc == "")? "":"\n") + ::loc("award/money_back/unit", { unitName = ::getUnitName(unitName)})
+          res.desc = "".concat(res.desc, (res.desc == "")? "" : "\n",
+            ::loc("award/money_back/unit", { unitName = ::getUnitName(unitName)}))
+      }
+      if (config?.isAerobaticSmoke)
+      {
+        res.name = ::ItemsManager.smokeItems.value.findvalue(@(inst) inst.id = config.unlockId)
+            ?.getDescriptionTitle() ?? ""
+        res.image = "#ui/gameuiskin#item_type_aerobatic_smoke"
       }
       break
 

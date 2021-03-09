@@ -83,6 +83,12 @@ root {
                   smallFont:t='yes'
                   on_click:t='onUnitClick'
 
+                  <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
+                  total-input-transparent:t='yes'
+                  on_pushed:t='::gcb.delayedTooltipPush'
+                  on_hold_start:t='::gcb.delayedTooltipHoldStart'
+                  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+
                   img {
                     pos:t='20%w, ph/2-h/2'
                     position:t='relative'
@@ -114,6 +120,7 @@ root {
                     <</canBuy>>
                     <</isUsable>>
                   }
+                  <<^isTooltipByHold>>
                   tooltipObj {
                     tooltipId:t='<<tooltipId>>'
                     on_tooltip_open:t='onGenericTooltipOpen'
@@ -121,6 +128,7 @@ root {
                     display:t='hide'
                   }
                   title:t='$tooltipObj'
+                  <</isTooltipByHold>>
                 }
                 <</units>>
 
@@ -134,6 +142,10 @@ root {
                   navigatorShortcuts:t='active'
                   on_select:t='onUnitClick'
                   move-only-hover:t='yes'
+
+                  on_pushed:t='::gcb.delayedTooltipListPush'
+                  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+                  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
 
                   <<@plateMarkup>>
                 }

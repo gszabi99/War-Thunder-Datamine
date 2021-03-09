@@ -11,6 +11,10 @@
   enable:t='no'
   <</isHidden>>
 
+  <<#tooltip>>
+  tooltip:t='<<tooltip>>'
+  <</tooltip>>
+
   <<#isSelected>>
   selected:t='yes'
   <</isSelected>>

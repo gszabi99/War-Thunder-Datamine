@@ -5,7 +5,7 @@ local respawnBases = require("scripts/respawn/respawnBases.nut")
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
-local { getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { getLastWeapon,
         setLastWeapon,
         isWeaponEnabled,
@@ -19,9 +19,11 @@ local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { hasFlares , bombNbr } = require("scripts/unit/unitStatus.nut")
+local { hasFlares , bombNbr, hasChaffs, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
 local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
+local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
+local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -69,7 +71,27 @@ enum ESwitchSpectatorTarget
     user_option = ::USEROPT_FLARES_SERIES, isShowForRandomUnit =false },
   {id = "flares_series_periods", hint = "options/flares_series_periods",
     user_option = ::USEROPT_FLARES_SERIES_PERIODS, isShowForRandomUnit =false },
+  {id = "chaffs_periods",        hint = "options/chaffs_periods",
+    user_option = ::USEROPT_CHAFFS_PERIODS, isShowForRandomUnit =false },
+  {id = "chaffs_series",         hint = "options/chaffs_series",
+    user_option = ::USEROPT_CHAFFS_SERIES, isShowForRandomUnit =false },
+  {id = "chaffs_series_periods", hint = "options/chaffs_series_periods",
+    user_option = ::USEROPT_CHAFFS_SERIES_PERIODS, isShowForRandomUnit =false },
+  {id = "countermeasures_periods",        hint = "options/countermeasures_periods",
+    user_option = ::USEROPT_COUNTERMEASURES_PERIODS, isShowForRandomUnit =false },
+  {id = "countermeasures_series_periods", hint = "options/countermeasures_series_periods",
+    user_option = ::USEROPT_COUNTERMEASURES_SERIES_PERIODS, isShowForRandomUnit =false },
+  {id = "countermeasures_series",         hint = "options/countermeasures_series",
+    user_option = ::USEROPT_COUNTERMEASURES_SERIES, isShowForRandomUnit =false },
   {id = "respawn_base",hint = "options/respawn_base",        cb = "onRespawnbaseOptionUpdate", use_margin_top = true},
+  {id = "smoke_type", hint = "options/aerobatics_smoke_type",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_TYPE, cb = "onSmokeTypeUpdate", isSmokeType = true},
+  {id = "smoke_left_color", hint = "options/aerobatics_smoke_left_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, isSmokeColor = true},
+  {id = "smoke_right_color", hint = "options/aerobatics_smoke_right_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, isSmokeColor = true},
+  {id = "smoke_tail_color", hint = "options/aerobatics_smoke_tail_color",
+    user_option = ::USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, isSmokeColor = true},
 ]
 
 ::gui_start_respawn <- function gui_start_respawn(is_match_start = false)
@@ -864,6 +886,12 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     return 0
   }
 
+  function onSmokeTypeUpdate(obj)
+  {
+    checkReady(obj)
+    showTripleSmokeOptions(isTripleColorSmokeAvailable())
+  }
+
   function onRespawnbaseOptionUpdate(obj)
   {
     if (!isRespawn)
@@ -1024,7 +1052,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     {
       if (!canChangeAircraft && i != selIndex)
         continue
-      local tooltipObjMarkup = ::g_tooltip_type.DECORATION.getMarkup(skinsData.decorators[i].id, ::UNLOCKABLE_SKIN)
+      local tooltipObjMarkup = DECORATION.getMarkup(skinsData.decorators[i].id, ::UNLOCKABLE_SKIN)
       data.append(::build_option_blk(item.text, item.image || "", i == selIndex, true,
         item.textStyle, false, "", tooltipObjMarkup))
     }
@@ -1210,6 +1238,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     showOptionRow(rocketDescr.id,
       aircraft && rocket && unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
 
+    //flares
     local flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
     local flarePeriodsObj = scene.findObject(flaresPeriodsDescr.id)
     if (needUpdateOptionItems && ::check_obj(flarePeriodsObj))
@@ -1245,6 +1274,80 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
     }
     showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && hasFlares(unit))
+
+    //chaffs
+    local chaffsPeriodsDescr = ::get_option(::USEROPT_CHAFFS_PERIODS)
+    local chaffPeriodsObj = scene.findObject(chaffsPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(chaffPeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in chaffsPeriodsDescr.items)
+        if (canChangeAircraft || idx == chaffsPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == chaffsPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(chaffPeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(chaffsPeriodsDescr.id, aircraft && hasChaffs(unit))
+
+    local chaffsSeriesDescr = ::get_option(::USEROPT_CHAFFS_SERIES)
+    local chaffSeriesObj = scene.findObject(chaffsSeriesDescr.id)
+    if (needUpdateOptionItems && ::check_obj(chaffSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in chaffsSeriesDescr.items)
+        if (canChangeAircraft || idx == chaffsSeriesDescr.value)
+          markup += build_option_blk(item.text, "", idx == chaffsSeriesDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(chaffSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(chaffsSeriesDescr.id, aircraft && hasChaffs(unit))
+
+    local chaffsSeriesPeriodsDescr = ::get_option(::USEROPT_CHAFFS_SERIES_PERIODS)
+    local chaffSeriesPeriodsObj = scene.findObject(chaffsSeriesPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(chaffSeriesPeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in chaffsSeriesPeriodsDescr.items)
+        if (canChangeAircraft || idx == chaffsSeriesPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == chaffsSeriesPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(chaffSeriesPeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(chaffsSeriesPeriodsDescr.id, aircraft && hasChaffs(unit))
+
+    //countermeasures
+    local countermeasuresPeriodsDescr = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
+    local countermeasurePeriodsObj = scene.findObject(countermeasuresPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasurePeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresPeriodsDescr.items)
+        if (canChangeAircraft || idx == countermeasuresPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasurePeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresPeriodsDescr.id, aircraft && hasCountermeasures(unit))
+
+    local countermeasuresSeriesPeriodsDescr = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    local countermeasureSeriesPeriodsObj = scene.findObject(countermeasuresSeriesPeriodsDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasureSeriesPeriodsObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresSeriesPeriodsDescr.items)
+        if (canChangeAircraft || idx == countermeasuresSeriesPeriodsDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasureSeriesPeriodsObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresSeriesPeriodsDescr.id, aircraft && hasCountermeasures(unit))
+
+    local countermeasuresSeriesDescr = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
+    local countermeasureSeriesObj = scene.findObject(countermeasuresSeriesDescr.id)
+    if (needUpdateOptionItems && ::check_obj(countermeasureSeriesObj))
+    {
+      local markup = ""
+      foreach (idx, item in countermeasuresSeriesDescr.items)
+        if (canChangeAircraft || idx == countermeasuresSeriesDescr.value)
+          markup += build_option_blk(item.text, "", idx == countermeasuresSeriesDescr.value, true, "", false, item.tooltip)
+      guiScene.replaceContentFromText(countermeasureSeriesObj, markup, markup.len(), this)
+    }
+    showOptionRow(countermeasuresSeriesDescr.id, aircraft && hasCountermeasures(unit))
   }
 
   function updateOptionImpl(option)
@@ -1259,6 +1362,44 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       guiScene.replaceContentFromText(obj, markup, markup.len(), this)
     } else
       obj.setValue(option.value)
+  }
+
+  function fillSmokeOptions()
+  {
+    foreach (option in ::respawn_options)
+      if (option?.isSmokeColor || option?.isSmokeType)
+      {
+        local optionObj = scene.findObject(option.id)
+        if (!optionObj?.isValid())
+          continue
+        local optionDescr = ::get_option(option.user_option)
+        local data = ""
+        foreach (idx, item in optionDescr.items)
+          if (canChangeAircraft || idx == optionDescr.value)
+            data += build_option_blk(item, "", idx == optionDescr.value)
+        guiScene.replaceContentFromText(optionObj, data, data.len(), this)
+      }
+  }
+
+  function showTripleSmokeOptions(show)
+  {
+    foreach (option in ::respawn_options)
+      if (option?.isSmokeColor)
+        showOptionRow(option.id, show)
+  }
+
+  function updateSmokeOptions()
+  {
+    if (!getCurSlotUnit()?.isAir())
+    {
+      showOptionRow("smoke_type", false)
+      showTripleSmokeOptions(false)
+      return
+    }
+
+    fillSmokeOptions()
+    showOptionRow("smoke_type", true)
+    showTripleSmokeOptions(isTripleColorSmokeAvailable())
   }
 
   function updateOtherOptions()
@@ -1321,6 +1462,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     updateOtherOptions()
     updateSkin()
     updateUserSkins()
+    updateSmokeOptions()
     isFirstUnitOptionsInSession = false
     updateLeftPanelBlock()
   }
@@ -2279,16 +2421,11 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     lastSpectatorTargetName = name
 
     local title = ::get_spectator_target_title()
-    local text = name + " " + title
+    local text = $"{name} {title}"
 
-    local color = "teamBlueColor"
-    local players = ::get_mplayers_list(GET_MPLAYERS_LIST, true)
-    foreach(p in players)
-      if (::g_string.startsWith(name, ::g_string.implode([ p.clanTag, p.name ], " ")))
-      {
-        color = ::get_mplayer_color(p)
-        break
-      }
+    local targetId = ::get_spectator_target_id()
+    local player = ::get_mplayers_list(GET_MPLAYERS_LIST, true).findvalue(@(p) p.id == targetId)
+    local color = player != null ? ::get_mplayer_color(player) : "teamBlueColor"
 
     scene.findObject("spectator_name").setValue(::colorize(color, text))
   }

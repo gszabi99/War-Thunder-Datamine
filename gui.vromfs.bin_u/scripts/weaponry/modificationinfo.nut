@@ -2,8 +2,14 @@ local { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
 
+local isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
+  @(req) !::shop_is_modification_purchased(unit.name, req)) == null
+
 local function canBuyMod(unit, mod)
 {
+  if (!isReqModificationsUnlocked(unit, mod))
+    return false
+
   local status = ::shop_get_module_research_status(unit.name, mod.name)
   if (status & ::ES_ITEM_STATUS_CAN_BUY)
     return true
@@ -83,15 +89,44 @@ local function getModificationByName(unit, modName)
   return null
 }
 
+local function getModificationBulletsGroup(modifName)
+{
+  local blk = ::get_modifications_blk()
+  local modification = blk?.modifications?[modifName]
+  if (modification)
+  {
+    if (!modification?.group)
+      return "" //new_gun etc. - not a bullets list
+    if (modification?.effects)
+      foreach (effectType, effect in modification.effects)
+      {
+        if (effectType == "additiveBulletMod")
+        {
+          local underscore = modification.group.indexof("_")
+          if (underscore)
+            return modification.group.slice(0, underscore)
+        }
+        if (effectType == "bulletMod" || effectType == "additiveBulletMod")
+          return modification.group
+      }
+  }
+  else if (modifName.len()>8 && modifName.slice(modifName.len()-8)=="_default")
+    return modifName.slice(0, modifName.len()-8)
+
+  return ""
+}
+
 return {
-  canBuyMod               = canBuyMod
-  isModResearched         = isModResearched
-  isModClassPremium       = isModClassPremium
-  isModClassExpendable    = isModClassExpendable
-  canResearchMod          = canResearchMod
-  findAnyNotResearchedMod = findAnyNotResearchedMod
-  isModAvailableOrFree    = isModAvailableOrFree
-  isModUpgradeable        = isModUpgradeable
-  hasActiveOverdrive      = hasActiveOverdrive
-  getModificationByName   = getModificationByName
+  canBuyMod
+  isModResearched
+  isModClassPremium
+  isModClassExpendable
+  canResearchMod
+  findAnyNotResearchedMod
+  isModAvailableOrFree
+  isModUpgradeable
+  hasActiveOverdrive
+  getModificationByName
+  getModificationBulletsGroup
+  isReqModificationsUnlocked
 }

@@ -241,6 +241,23 @@ local function arrayByRows(arr, columns) {
   return res
 }
 
+/*
+**Chunk a single array into multiple arrays, each containing count or fewer items.
+*/
+
+local function chunk(list, count) {
+  if (count == null || count < 1) return []
+  local result = []
+  local i = 0
+  local length = list.len()
+  while (i < length) {
+    local n = i + count
+    result.append(list.slice(i, n))
+    i = n
+  }
+  return result
+}
+
 return {
   invert
   tablesCombine
@@ -254,4 +271,5 @@ return {
   reversed_enumerate
   unique
   arrayByRows
+  chunk
 }

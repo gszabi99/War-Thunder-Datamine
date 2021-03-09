@@ -16,6 +16,7 @@ local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.
 local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -471,7 +472,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 
     local curGameMode = ::game_mode_manager.getCurrentGameMode()
     local event = ::game_mode_manager.getGameModeEvent(curGameMode)
-    if (!antiCheat.showMsgboxIfEacInactive(event))
+    if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
 
     if (!isCrossPlayEventAvailable(event))

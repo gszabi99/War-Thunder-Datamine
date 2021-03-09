@@ -4189,11 +4189,16 @@
         "reqModification": "uh_1c_xm18",
         "tier": 4
       },
-      "heli_false_thermal_targets": {
+      "countermeasures_launcher_chaff_only": [],
+      "countermeasures_launcher_flare_only": [],
+      "countermeasures_launcher_chaff_priority": [],
+      "countermeasures_launcher_flare_priority": [],
+      "countermeasures_belt_pack": {
+        "modClass": "weapon",
         "turn_it_off": false,
         "tier": 1,
         "invertEnableLogic": false,
-        "group": "mi-24_EVU",
+        "group": "countermeasures",
         "effects": {
           "commonWeapons": [
             {
@@ -4304,13 +4309,13 @@
             {
               "Weapon": [
                 {
-                  "trigger": "flares"
+                  "trigger": "countermeasures"
                 },
                 {
                   "startFx": ""
                 },
                 {
-                  "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
+                  "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
                 },
                 {
                   "emitter": "emtr_flare1"
@@ -4333,7 +4338,6 @@
         }
       },
       "ah_1_m200_2": {
-        "reqModification": "heli_false_thermal_targets",
         "deactivationIsAllowed": false,
         "modClass": "weapon",
         "tier": 2

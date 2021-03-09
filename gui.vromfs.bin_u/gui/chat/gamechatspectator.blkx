@@ -53,11 +53,19 @@
             "size": "pw, ph",
             "hoverButton": {
               "id": "btn_activate",
-              "text": "#chat/help/spectator",
-              "tooltip": "#chat/help/spectator",
               "_on_click": "onChatIngameRequestActivate",
               "isTextBtn": "yes",
-              "style": "margin:0; width:pw;"
+              "style": "margin:0; width:pw;",
+              "not-input-transparent": "yes",
+              "total-input-transparent": "yes",
+              "overflow": "hidden",
+              "chatHint": {
+                "behaviour": "BhvHint",
+                "pos": "0, 0.5ph-0.5h",
+                "position": "relative",
+                "auto-scroll": "medium",
+                "value": "chat/help/spectator"
+              }
             }
           }
         },

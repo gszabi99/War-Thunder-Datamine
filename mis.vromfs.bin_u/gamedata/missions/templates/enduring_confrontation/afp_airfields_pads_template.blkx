@@ -1,0 +1,3106 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/air_skyscraper_city.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "afp_generation": {
+      "isCategory": true,
+      "is_enabled": true,
+      "afp_generation_start": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "обнуляем текущий индекс филда"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "прибавляем к максимальному числу аэродромов 1 для рандомизатора"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "afp_field_max_count"
+            }
+          },
+          {
+            "comment": {
+              "value": "говорим что все dummy бессмертны"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "afp_all_dummies_squad",
+              "targetableByAi": false,
+              "isImmortal": true,
+              "stealthRadius": 0.0,
+              "calmDetection": true
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаме ротацию генерации аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "afp_generation_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 60.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "afp_generation_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_cur_airfield_num",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "afp_field_max_count"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "количество активных аэродромов меньше чем количество максимальных"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "выбираем случайный индекс аэродрома"
+            }
+          },
+          {
+            "__varSetRandomInt": {
+              "var": "afp_generation_cur_airfield_num",
+              "from": 1,
+              "to_not_including": 10,
+              "var_to_not_including": "afp_field_max_count",
+              "check_prev_value": "afp_generation_prev_random_value"
+            }
+          },
+          {
+            "comment": {
+              "value": "запоминаем выпавшее знач6ение, чтобы в следующий цикл оно не повторилось"
+            }
+          },
+          {
+            "__varSetInt": {
+              "value": 0,
+              "var": "afp_generation_prev_random_value",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем индекс"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_index_check"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "аэродромы сгенерировались"
+            }
+          },
+          {
+            "comment": {
+              "value": "переходим в режим паузы"
+            }
+          },
+          {
+            "__triggerEnable": {
+              "target": "afp_generation_restart"
+            }
+          },
+          {
+            "triggerDisable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        ]
+      },
+      "afp_generation_index_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_cur_airfield_num",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "afp_field_max_count"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс текущего аэродрмоа меньше максимального количества аэродромов"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_base_",
+              "var": "afp_generation_field_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_field_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя dummy"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_dummy_",
+              "var": "afp_generation_dummy_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_dummy_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_zone_",
+              "var": "afp_generation_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_zone_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем существуют ли такие объекты"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_exist_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "индекс аэродрома вышел за пределы. перезапускаем генерацию"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": [
+          {
+            "objectExists": {
+              "target": "@afp_generation_field_name",
+              "type": "objectGroup"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@afp_generation_dummy_name",
+              "type": "unit"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@afp_generation_zone_name",
+              "type": "area"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "все сущности существуют, можно создавать аэродром"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя зоны (защита от дураков)"
+            }
+          },
+          {
+            "getOwnArea": {
+              "name": "@afp_generation_dummy_name",
+              "template": "flt_area_",
+              "out_var": "afp_generation_own_zone_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится армия зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "afp_generation_own_zone_army_var_name",
+              "input_var": "afp_generation_own_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "afp_generation_own_zone_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем индекс армии зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_own_zone_army_value",
+              "input_var": "@afp_generation_own_zone_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится армия аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_army_",
+              "var": "afp_generation_field_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_generation_cur_airfield_num",
+              "digits": 2,
+              "var": "afp_generation_field_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем значение армии аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_check_army"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "какой-либо из сущностей не существует. рестартим генерацию"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_check_army": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@afp_generation_field_army_var_name",
+            "value": 1,
+            "comparasion_func": "equal",
+            "var_value_other": "afp_generation_own_zone_army_value"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "армии совпадают"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя переменной, хранящей в себе активность аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_state_",
+              "var": "afp_generation_state_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_generation_cur_airfield_num",
+              "digits": 2,
+              "var": "afp_generation_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем состояние"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_state_value",
+              "input_var": "@afp_generation_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя переменной, хранящей в себе тип аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_type_",
+              "var": "afp_generation_type_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_generation_cur_airfield_num",
+              "digits": 2,
+              "var": "afp_generation_type_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем тип"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@afp_generation_type_var_name",
+              "var": "afp_generation_type_value"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем состояние аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_active_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "армии не совпадают. рестартим генерацию"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_active_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_state_value",
+            "value": 0,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "состояние аэродрома меньше нуля - он не активен"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя переменной, хранящей в себе армию аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_army_",
+              "var": "afp_generation_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_army_var_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_army_value",
+              "input_var": "@afp_generation_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя переменной, хранящей в себе тип аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_position_",
+              "var": "afp_generation_position_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_position_var_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем тип аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "afp_generation_position_value",
+              "input_var": "@afp_generation_position_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя зоны, в которой находится аэродром"
+            }
+          },
+          {
+            "getOwnArea": {
+              "name": "@afp_generation_dummy_name",
+              "template": "flt_area_",
+              "out_var": "afp_generation_parent_zone_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем имя переменной, где хранится армия зоны"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "afp_generation_parent_zone_name",
+              "var": "afp_generation_parent_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "afp_generation_parent_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем армию зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_parent_army_value",
+              "input_var": "@afp_generation_parent_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем с какой армией мы работаем"
+            }
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "afp_generation_army_0_check"
+              },
+              {
+                "target": "afp_generation_army_1_check"
+              },
+              {
+                "target": "afp_generation_army_2_check"
+              }
+            ]
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "аэродром уже активен"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_army_0_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_army_value",
+            "value": 0,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "нулевая армия"
+            }
+          },
+          {
+            "triggerDisable": [
+              {
+                "target": "afp_generation_army_1_check"
+              },
+              {
+                "target": "afp_generation_army_2_check"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "не создаем такого аэродрома. возвращаемся в ротацию генерации"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "afp_generation_army_1_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_army_value",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "аэродром находится в нужной зоне и его армия равна 1"
+            }
+          },
+          {
+            "triggerDisable": [
+              {
+                "target": "afp_generation_army_0_check"
+              },
+              {
+                "target": "afp_generation_army_2_check"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "проверяем можно ли поставить ближний аэродром"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_t1_zone_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_army_2_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_army_value",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "вторая армия"
+            }
+          },
+          {
+            "triggerDisable": [
+              {
+                "target": "afp_generation_army_0_check"
+              },
+              {
+                "target": "afp_generation_army_1_check"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": "проверяем количество близких аэродромов для армии 2"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_t2_zone_army_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerEnable": {
+            "target": "afp_generation_rotator"
+          }
+        }
+      },
+      "afp_generation_army_01": {
+        "isCategory": true,
+        "is_enabled": true,
+        "afp_generation_t1_zone_army_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "@afp_generation_parent_army_var_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "afp_generation_army_value"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "армия равна 1 и зона равна 1"
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем  можно-ли поставить ближний аэродром"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_t1_near_check"
+              }
+            }
+          ],
+          "else_actions": [
+            {
+              "comment": {
+                "value": "армия равна 1 но зона не равна 1"
+              }
+            },
+            {
+              "comment": {
+                "value": "покаа перезапускаем ротацию, потмо добавить логику"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_rotator"
+              }
+            }
+          ]
+        },
+        "afp_generation_t1_near_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_cur_near_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t1_max_near_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t1_cur_near_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 1,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 1
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество ближних аэродромов максимально. пробуем средний"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_t1_middle_check"
+            }
+          }
+        },
+        "afp_generation_t1_middle_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_cur_middle_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t1_max_middle_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t1_cur_middle_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 1,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 1
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество средних аэродромов максимально. пробуем дальний"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_t1_far_check"
+            }
+          }
+        },
+        "afp_generation_t1_far_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_cur_far_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t1_max_far_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t1_cur_far_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 1,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 1
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество дальних аэродромов максимально. возвращаемся в ротацию"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        },
+        "afp_generation_t1_pad_spawn_set": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [],
+          "actions": [
+            {
+              "comment": {
+                "value": "создаем пустой спавн команды 2"
+              }
+            },
+            {
+              "missionMarkAsRespawnPoint": {
+                "loc_name": "@afp_generation_field_name",
+                "spawnEffect": false,
+                "isStrictSpawn": false,
+                "isAirfield": true,
+                "isUnit": false,
+                "radius": -1.0,
+                "useExisting": false,
+                "canSpawnOnNeutral": false,
+                "removeAreas": false,
+                "showOnMap": true,
+                "isIndividual": false,
+                "onlyOnePlayerPerSpawnPoint": false,
+                "resetStrictSpawnIndex": false,
+                "replaceAreas": true,
+                "forceCreate": false,
+                "target": "@afp_generation_field_name",
+                "team": "B",
+                "tags": {
+                  "none_can_spawn": true
+                }
+              }
+            },
+            {
+              "comment": {
+                "value": "назначаем спавн на площадку"
+              }
+            },
+            {
+              "missionMarkAsRespawnPoint": {
+                "loc_name": "@afp_generation_field_name",
+                "spawnEffect": false,
+                "isStrictSpawn": false,
+                "isAirfield": true,
+                "isUnit": false,
+                "radius": -1.0,
+                "useExisting": true,
+                "canSpawnOnNeutral": false,
+                "removeAreas": false,
+                "showOnMap": true,
+                "isIndividual": false,
+                "onlyOnePlayerPerSpawnPoint": false,
+                "resetStrictSpawnIndex": false,
+                "replaceAreas": true,
+                "forceCreate": false,
+                "target": "@afp_generation_field_name",
+                "team": "A",
+                "tags": {
+                  "type_bomber": false,
+                  "type_fighter": false,
+                  "type_assault": false,
+                  "none_can_spawn": false,
+                  "helicopter": true,
+                  "type_attack_helicopter": true,
+                  "type_utility_helicopter": true,
+                  "tank": false,
+                  "artillery": false,
+                  "aaa": false
+                }
+              }
+            },
+            {
+              "comment": {
+                "value": "идем дальше по циклу"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_rotator"
+              }
+            }
+          ],
+          "else_actions": []
+        }
+      },
+      "afp_generation_army_02": {
+        "isCategory": true,
+        "is_enabled": true,
+        "afp_generation_t2_zone_army_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "@afp_generation_parent_army_var_name",
+              "value": 0,
+              "comparasion_func": "equal",
+              "var_value_other": "afp_generation_army_value"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "армия равна 2 и зона равна 2"
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем  можно-ли поставить ближний аэродром"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_t2_near_check"
+              }
+            }
+          ],
+          "else_actions": [
+            {
+              "comment": {
+                "value": "армия равна 2 но зона не равна 2"
+              }
+            },
+            {
+              "comment": {
+                "value": "покаа перезапускаем ротацию, потмо добавить логику"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_rotator"
+              }
+            }
+          ]
+        },
+        "afp_generation_t2_near_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_cur_near_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t2_max_near_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t2_cur_near_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 2,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 2
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество ближних аэродромов максимально. пробуем средний"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_t2_middle_check"
+            }
+          }
+        },
+        "afp_generation_t2_middle_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_cur_middle_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t2_max_middle_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t2_cur_middle_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 2,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 2
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество средних аэродромов максимально. пробуем дальний"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_t2_far_check"
+            }
+          }
+        },
+        "afp_generation_t2_far_check": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_cur_far_count",
+              "value": 0,
+              "comparasion_func": "less",
+              "var_value_other": "afp_field_t2_max_far_count"
+            }
+          },
+          "actions": [
+            {
+              "comment": {
+                "value": "можно разместить еще один ближний"
+              }
+            },
+            {
+              "varModify": {
+                "operator": "add",
+                "value": 1.0,
+                "var": "afp_field_t2_cur_far_count"
+              }
+            },
+            {
+              "comment": {
+                "value": "пробуждаем аэродром"
+              }
+            },
+            {
+              "unitWakeUp": {
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "comment": {
+                "value": "меняем армию"
+              }
+            },
+            {
+              "objectGroupSetAirfield": {
+                "army": 2,
+                "target": "@afp_generation_field_name"
+              }
+            },
+            {
+              "unitSetProperties": {
+                "object_marking": 0,
+                "object_var_name": "",
+                "object_var_comp_op": "equal",
+                "object_var_value": 0,
+                "object": "@afp_generation_dummy_name",
+                "army": 2
+              }
+            },
+            {
+              "comment": {
+                "value": "проверяем включено-ли обнаружение"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_scout_enabled_check"
+              }
+            }
+          ],
+          "else_actions": {
+            "comment": {
+              "value": "количество дальних аэродромов максимально. возвращаемся в ротацию"
+            },
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        },
+        "afp_generation_t2_pad_spawn_set": {
+          "is_enabled": false,
+          "comments": "",
+          "props": {
+            "actionsType": "PERFORM_ONE_BY_ONE",
+            "conditionsType": "ALL",
+            "enableAfterComplete": false
+          },
+          "events": {
+            "periodicEvent": {
+              "time": 0.1
+            }
+          },
+          "conditions": [],
+          "actions": [
+            {
+              "comment": {
+                "value": "создаем пустой спавн команды 1"
+              }
+            },
+            {
+              "missionMarkAsRespawnPoint": {
+                "loc_name": "@afp_generation_field_name",
+                "spawnEffect": false,
+                "isStrictSpawn": false,
+                "isAirfield": true,
+                "isUnit": false,
+                "radius": -1.0,
+                "useExisting": false,
+                "canSpawnOnNeutral": false,
+                "removeAreas": false,
+                "showOnMap": true,
+                "isIndividual": false,
+                "onlyOnePlayerPerSpawnPoint": false,
+                "resetStrictSpawnIndex": false,
+                "replaceAreas": true,
+                "forceCreate": false,
+                "target": "@afp_generation_field_name",
+                "team": "A",
+                "tags": {
+                  "none_can_spawn": true
+                }
+              }
+            },
+            {
+              "comment": {
+                "value": "назначаем спавн на площадку"
+              }
+            },
+            {
+              "missionMarkAsRespawnPoint": {
+                "loc_name": "@afp_generation_field_name",
+                "spawnEffect": false,
+                "isStrictSpawn": false,
+                "isAirfield": true,
+                "isUnit": false,
+                "radius": -1.0,
+                "useExisting": true,
+                "canSpawnOnNeutral": false,
+                "removeAreas": false,
+                "showOnMap": true,
+                "isIndividual": false,
+                "onlyOnePlayerPerSpawnPoint": false,
+                "resetStrictSpawnIndex": false,
+                "replaceAreas": true,
+                "forceCreate": false,
+                "target": "@afp_generation_field_name",
+                "team": "B",
+                "tags": {
+                  "type_bomber": false,
+                  "type_fighter": false,
+                  "type_assault": false,
+                  "none_can_spawn": false,
+                  "helicopter": true,
+                  "type_attack_helicopter": true,
+                  "type_utility_helicopter": true,
+                  "tank": false,
+                  "artillery": false,
+                  "aaa": false
+                }
+              }
+            },
+            {
+              "comment": {
+                "value": "идем дальше по циклу"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "afp_generation_rotator"
+              }
+            }
+          ],
+          "else_actions": []
+        }
+      },
+      "afp_generation_scout_enabled_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "afp_enable_scout",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "аэродромы надо обнаруживать"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем состояние в 0"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@afp_generation_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_rotator"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "аэродромы не надо обнаруживать"
+            }
+          },
+          {
+            "airfieldSetVisibility": {
+              "target": "@afp_generation_field_name",
+              "team": "Both"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем аэродрому состояние 1"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "@afp_generation_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем тип, чтобы корректно назначить спавн"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_generation_type_check"
+            }
+          }
+        ]
+      },
+      "afp_generation_type_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "afp_generation_type_value",
+            "value": "airfield",
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "это ародром"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "это площадка. проверяем армию"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_pad_spawn_army_check"
+          }
+        }
+      },
+      "afp_generation_pad_spawn_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_generation_army_value",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "армия 1. назначаем спавн"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_t1_pad_spawn_set"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "армия 2. назначаем спавн"
+          },
+          "triggerEnable": {
+            "target": "afp_generation_t2_pad_spawn_set"
+          }
+        }
+      }
+    },
+    "afp_capturing": {
+      "isCategory": true,
+      "is_enabled": true,
+      "afp_capture_start": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "обнуляем текущий индекс филда"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_capture_cur_airfield_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаме ротацию генерации аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "afp_capture_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": [
+          {
+            "comment": {
+              "value": "обнуляем текущий индекс филда"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_capture_cur_airfield_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "запускаме ротацию генерации аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "afp_capture_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_capture_cur_airfield_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "afp_field_max_count"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "индекс меньше чем количество максимальных"
+            }
+          },
+          {
+            "comment": {
+              "value": "увеличиваем индекс"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "afp_capture_cur_airfield_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_base_",
+              "var": "afp_capture_field_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_field_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя dummy"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_dummy_",
+              "var": "afp_capture_dummy_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_dummy_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "заполняем имя зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_zone_",
+              "var": "afp_capture_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_zone_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем существуют ли такие объекты"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_exist_check"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "новый цикл"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_restart"
+          }
+        }
+      },
+      "afp_capture_exist_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "objectExists": {
+              "target": "@afp_capture_field_name",
+              "type": "objectGroup"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@afp_capture_dummy_name",
+              "type": "unit"
+            }
+          },
+          {
+            "objectExists": {
+              "target": "@afp_capture_zone_name",
+              "type": "area"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "все сущности существуют, можно создавать аэродром"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем зону"
+            }
+          },
+          {
+            "getOwnArea": {
+              "name": "@afp_capture_dummy_name",
+              "template": "flt_area_",
+              "out_var": "afp_capture_own_zone_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится армия зоны"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "afp_capture_own_zone_army_var_name",
+              "input_var": "afp_capture_own_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "afp_capture_own_zone_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем индекс армии зоны"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_capture_own_zone_army_value",
+              "input_var": "@afp_capture_own_zone_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится армия аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_army_",
+              "var": "afp_capture_field_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_field_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, где хранится тип аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_type_",
+              "var": "afp_capture_type_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_type_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем тип"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@afp_capture_type_var_name",
+              "var": "afp_capture_type_value"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем значение армии аэродрома"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_check_army"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "какой-либо из сущностей не существует. рестартим генерацию"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
+          }
+        }
+      },
+      "afp_capture_check_army": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "@afp_capture_field_army_var_name",
+            "value": 1,
+            "comparasion_func": "notEqual",
+            "var_value_other": "afp_capture_own_zone_army_value"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "армия аэродрома и зоны не совпадает"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_fields_num_t1_check"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "армии совпадают. идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
+          }
+        }
+      },
+      "afp_capture_fields_num_t1_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_capture_own_zone_army_value",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем армию 1"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "@afp_capture_field_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "меняем армию"
+            }
+          },
+          {
+            "airfieldSetVisibility": {
+              "target": "@afp_capture_field_name",
+              "team": "None"
+            }
+          },
+          {
+            "objectGroupSetAirfield": {
+              "army": 1,
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@afp_capture_dummy_name",
+              "army": 1
+            }
+          },
+          {
+            "comment": {
+              "value": "можно создавать филды армии 1"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_fields_num_t1_wakeup"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "проверим армию 2"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_fields_num_t2_check"
+          }
+        }
+      },
+      "afp_capture_fields_num_t1_wakeup": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_near_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_middle_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_far_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "пробуждаем аэродром"
+            }
+          },
+          {
+            "unitWakeUp": {
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "можно создавать филды армии 1"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_scout_enabled_check"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "прячем аэродром"
+            }
+          },
+          {
+            "unitPutToSleep": {
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверим армию 2"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_fields_num_t2_check"
+            }
+          }
+        ]
+      },
+      "afp_capture_fields_num_t2_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_capture_own_zone_army_value",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем армию 2"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "@afp_capture_field_army_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "меняем армию"
+            }
+          },
+          {
+            "airfieldSetVisibility": {
+              "target": "@afp_capture_field_name",
+              "team": "None"
+            }
+          },
+          {
+            "objectGroupSetAirfield": {
+              "army": 2,
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@afp_capture_dummy_name",
+              "army": 2
+            }
+          },
+          {
+            "comment": {
+              "value": "можно создавать филды армии 2"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_fields_num_t2_wakeup"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "нельзя создавать филдов. идем дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
+          }
+        }
+      },
+      "afp_capture_fields_num_t2_wakeup": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_near_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_middle_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_far_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "пробуждаем аэродром"
+            }
+          },
+          {
+            "unitWakeUp": {
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "можно создавать филды армии 2"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_scout_enabled_check"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "прячем аэродром"
+            }
+          },
+          {
+            "unitPutToSleep": {
+              "target": "@afp_capture_field_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "нельзя создавать филдов. идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ]
+      },
+      "afp_capture_scout_enabled_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "afp_enable_scout",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "аэродромы надо обнаруживать"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной с состоянием аэродрома"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_state_",
+              "var": "afp_capture_field_state_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_field_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем состояние в 0"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "@afp_capture_field_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "аэродромы не надо обнаруживать"
+            }
+          },
+          {
+            "airfieldSetVisibility": {
+              "target": "@afp_capture_field_name",
+              "team": "Both"
+            }
+          },
+          {
+            "comment": {
+              "value": "выставляем аэродрому состояние 1"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "@afp_capture_field_state_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем тип, чтобы корректно назначить спавн"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_type_check"
+            }
+          }
+        ]
+      },
+      "afp_capture_type_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "afp_capture_type_value",
+            "value": "airfield",
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "это ародром"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "это площадка. проверяем армию"
+          },
+          "triggerEnable": {
+            "target": "afp_capture_pad_spawn_army_check"
+          }
+        }
+      },
+      "afp_capture_pad_spawn_army_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "afp_capture_own_zone_army_value",
+            "value": 1,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "отключаем спавн команды 2"
+            }
+          },
+          {
+            "missionMarkAsRespawnPoint": {
+              "loc_name": "@afp_capture_field_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": true,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "target": "@afp_capture_field_name",
+              "team": "B",
+              "tags": {
+                "none_can_spawn": true
+              }
+            }
+          },
+          {
+            "comment": {
+              "value": "армия 1. назначаем спавн"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_t1_pad_spawn_set"
+            }
+          }
+        ],
+        "else_actions": [
+          {
+            "comment": {
+              "value": "отключаем спавн команды 1"
+            }
+          },
+          {
+            "missionMarkAsRespawnPoint": {
+              "loc_name": "@afp_capture_field_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": true,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "target": "@afp_capture_field_name",
+              "team": "A",
+              "tags": {
+                "none_can_spawn": true
+              }
+            }
+          },
+          {
+            "comment": {
+              "value": "армия 2. назначаем спавн"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_t2_pad_spawn_set"
+            }
+          }
+        ]
+      },
+      "afp_capture_t1_pad_spawn_set": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_near_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_middle_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t1_max_far_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем спавн  команды 1"
+            }
+          },
+          {
+            "missionMarkAsRespawnPoint": {
+              "loc_name": "@afp_capture_field_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": true,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "target": "@afp_capture_field_name",
+              "team": "A",
+              "tags": {
+                "type_bomber": false,
+                "type_fighter": false,
+                "type_assault": false,
+                "none_can_spawn": false,
+                "helicopter": true,
+                "type_attack_helicopter": true,
+                "type_utility_helicopter": true,
+                "tank": false,
+                "artillery": false,
+                "aaa": false
+              }
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
+          }
+        }
+      },
+      "afp_capture_t2_pad_spawn_set": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_near_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_middle_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "afp_field_t2_max_far_count",
+              "value": 0,
+              "comparasion_func": "more"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "назначаем спавн  команды 2"
+            }
+          },
+          {
+            "missionMarkAsRespawnPoint": {
+              "loc_name": "@afp_capture_field_name",
+              "spawnEffect": false,
+              "isStrictSpawn": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "radius": -1.0,
+              "useExisting": true,
+              "canSpawnOnNeutral": false,
+              "removeAreas": false,
+              "showOnMap": true,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "resetStrictSpawnIndex": false,
+              "replaceAreas": true,
+              "forceCreate": false,
+              "target": "@afp_capture_field_name",
+              "team": "B",
+              "tags": {
+                "type_bomber": false,
+                "type_fighter": false,
+                "type_assault": false,
+                "none_can_spawn": false,
+                "helicopter": true,
+                "type_attack_helicopter": true,
+                "type_utility_helicopter": true,
+                "tank": false,
+                "artillery": false,
+                "aaa": false
+              }
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "afp_capture_rotator"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "afp_capture_rotator"
+          }
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "afp_enable_scout": false,
+    "afp_field_max_count": 12,
+    "afp_field_cur_count": 0,
+    "afp_field_state_01": 0,
+    "afp_field_state_02": 0,
+    "afp_field_state_03": 0,
+    "afp_field_state_04": 0,
+    "afp_field_state_05": 0,
+    "afp_field_state_06": 0,
+    "afp_field_state_07": 0,
+    "afp_field_state_08": 0,
+    "afp_field_state_09": 0,
+    "afp_field_state_10": 0,
+    "afp_field_state_11": 0,
+    "afp_field_state_12": 0,
+    "afp_field_state_13": 0,
+    "afp_field_state_14": 0,
+    "afp_field_state_15": 0,
+    "afp_field_state_16": 0,
+    "afp_field_state_17": 0,
+    "afp_field_state_18": 0,
+    "afp_field_type_01": "",
+    "afp_field_type_02": "",
+    "afp_field_type_03": "",
+    "afp_field_type_04": "",
+    "afp_field_type_05": "",
+    "afp_field_type_06": "",
+    "afp_field_type_07": "",
+    "afp_field_type_08": "",
+    "afp_field_type_09": "",
+    "afp_field_type_10": "",
+    "afp_field_type_11": "",
+    "afp_field_type_12": "",
+    "afp_field_type_13": "",
+    "afp_field_type_14": "",
+    "afp_field_type_15": "",
+    "afp_field_type_16": "",
+    "afp_field_type_17": "",
+    "afp_field_type_18": "",
+    "afp_field_position_01": "",
+    "afp_field_position_02": "",
+    "afp_field_position_03": "",
+    "afp_field_position_04": "",
+    "afp_field_position_05": "",
+    "afp_field_position_06": "",
+    "afp_field_position_07": "",
+    "afp_field_position_08": "",
+    "afp_field_position_09": "",
+    "afp_field_position_10": "",
+    "afp_field_position_11": "",
+    "afp_field_position_12": "",
+    "afp_field_position_13": "",
+    "afp_field_position_14": "",
+    "afp_field_position_15": "",
+    "afp_field_position_16": "",
+    "afp_field_position_17": "",
+    "afp_field_position_18": "",
+    "afp_field_army_01": 0,
+    "afp_field_army_02": 0,
+    "afp_field_army_03": 0,
+    "afp_field_army_04": 0,
+    "afp_field_army_05": 0,
+    "afp_field_army_06": 0,
+    "afp_field_army_07": 0,
+    "afp_field_army_08": 0,
+    "afp_field_army_09": 0,
+    "afp_field_army_10": 0,
+    "afp_field_army_11": 0,
+    "afp_field_army_12": 0,
+    "afp_field_army_13": 0,
+    "afp_field_army_14": 0,
+    "afp_field_army_15": 0,
+    "afp_field_army_16": 0,
+    "afp_field_army_17": 0,
+    "afp_field_army_18": 0,
+    "afp_generation_cur_airfield_num": 0,
+    "afp_generation_prev_random_value": 0,
+    "afp_generation_field_name": "",
+    "afp_generation_dummy_name": "",
+    "afp_generation_zone_name": "",
+    "afp_generation_state_var_name": "",
+    "afp_generation_state_value": 0,
+    "afp_generation_type_var_name": "",
+    "afp_generation_type_value": "",
+    "afp_generation_army_var_name": "",
+    "afp_generation_army_value": 0,
+    "afp_generation_position_var_name": "",
+    "afp_generation_position_value": "",
+    "afp_generation_parent_zone_name": "",
+    "afp_generation_parent_army_var_name": "",
+    "afp_generation_parent_army_value": 0,
+    "afp_field_t1_cur_near_count": 0,
+    "afp_field_t1_max_near_count": 0,
+    "afp_field_t1_cur_middle_count": 0,
+    "afp_field_t1_max_middle_count": 0,
+    "afp_field_t1_cur_far_count": 0,
+    "afp_field_t1_max_far_count": 0,
+    "afp_field_t2_cur_near_count": 0,
+    "afp_field_t2_max_near_count": 0,
+    "afp_field_t2_cur_middle_count": 0,
+    "afp_field_t2_max_middle_count": 0,
+    "afp_field_t2_cur_far_count": 0,
+    "afp_field_t2_max_far_count": 0,
+    "afp_capture_cur_airfield_idx": 0,
+    "afp_capture_field_name": "",
+    "afp_capture_dummy_name": "",
+    "afp_capture_zone_name": "",
+    "afp_capture_own_zone_name": "",
+    "afp_capture_own_zone_army_var_name": "",
+    "afp_capture_own_zone_army_value": 0,
+    "afp_capture_field_army_var_name": "",
+    "afp_capture_field_army_value": 0,
+    "afp_capture_field_state_var_name": "",
+    "afp_generation_own_zone_name": "",
+    "afp_generation_own_zone_army_var_name": "",
+    "afp_generation_own_zone_army_value": 0,
+    "afp_generation_field_army_var_name": "",
+    "afp_capture_type_var_name": "",
+    "afp_capture_type_value": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

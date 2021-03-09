@@ -8,6 +8,7 @@ local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId, userstatRewardTitleLocId
 } = require("scripts/userstat/userstatItemsRewards.nut")
 local { autoConsumeItems } = require("scripts/items/autoConsumeItems.nut")
+local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 
 global enum MARK_RECIPE {
   NONE
@@ -532,7 +533,7 @@ local ExchangeRecipes = class {
 
     //Suggest to buy not enough item on marketplace
     local requiredItem = null
-    if (::ItemsManager.isMarketplaceEnabled() && recipes.len() == 1)
+    if (isMarketplaceEnabled() && recipes.len() == 1)
       foreach (c in recipes[0].components)
         if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity)
         {

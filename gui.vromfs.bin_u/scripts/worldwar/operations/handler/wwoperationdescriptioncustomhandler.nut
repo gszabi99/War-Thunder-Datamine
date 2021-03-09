@@ -76,7 +76,9 @@ class ::gui_handlers.WwOperationDescriptionCustomHandler extends ::gui_handlers.
     local descObj = scene.findObject("item_desc")
     local itemDescHeight = ::checkObj(descObj) ? descObj.getSize()[1] : 0
     local startDataObj = scene.findObject("operation_start_date")
-    local statusTextHeight = ::checkObj(startDataObj) ? 2*startDataObj.getSize()[1] : 0
+    local operationDescText = scene.findObject("operation_short_info_text")
+    local statusTextHeight = (::checkObj(startDataObj) ? startDataObj.getSize()[1] : 0)
+      + (::checkObj(operationDescText) ? operationDescText.getSize()[1] : 0)
 
     local maxHeight = guiScene.calcString("ph-2@blockInterval", mapNestObj) - itemDescHeight - statusTextHeight
     local minSize = maxHeight

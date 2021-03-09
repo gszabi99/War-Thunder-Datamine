@@ -8,16 +8,19 @@ local { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
 local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
-local { getWeaponInfoText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponInfoText } = require("scripts/weaponry/weaponryDescription.nut")
 local { isWeaponAux,
         getLastWeapon,
         getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { isModResearched,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { isModResearched, getModificationByName
+} = require("scripts/weaponry/modificationInfo.nut")
 local { getCrewUnlockTimeByUnit } = require("scripts/crew/crewInfo.nut")
+local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local { boosterEffectType, getActiveBoostersArray,
+  getBoostersEffects } = require("scripts/items/boosterEffect.nut")
+local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -179,7 +182,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 {
   return unit.marketplaceItemdefId != null
     && !::isUnitBought(unit)
-    && ::ItemsManager.isMarketplaceEnabled()
+    && isMarketplaceEnabled()
     && (::ItemsManager.findItemById(unit.marketplaceItemdefId)?.hasLink() ?? false)
 }
 
@@ -741,11 +744,10 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
   local req = unit.needBuyToOpenNextInTier[tier-1]
   foreach(mod in unit.modifications)
-    if (("tier" in mod) && mod.tier == tier &&
-        !::wp_get_modification_cost_gold(unit.name, mod.name) &&
-        getModificationBulletsGroup(mod.name) == "" &&
-        isModResearched(unit, mod)
-       )
+    if (("tier" in mod) && mod.tier == tier
+      && isModificationInTree(unit, mod)
+      && isModResearched(unit, mod)
+    )
       req--
   return max(req, 0)
 }
@@ -1104,7 +1106,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local expCur = ::getUnitExp(air)
 
   local isSecondaryModsValid = ::check_unit_mods_update(air)
-                            && ::check_secondary_weapon_mods_recount(air)
+    && ::check_secondary_weapon_mods_recount(air)
 
   local obj = holderObj.findObject("aircraft-name")
   if (::checkObj(obj))
@@ -1543,7 +1545,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     local hasPremium  = ::havePremium()
     local hasTalisman = special || ::shop_is_modification_enabled(air.name, "premExpMul")
     local boosterEffects = ::getTblValue("boosterEffects", params,
-      ::ItemsManager.getBoostersEffects(::ItemsManager.getActiveBoostersArray()))
+      getBoostersEffects(getActiveBoostersArray()))
 
     local wpMuls = air.getWpRewardMulList(difficulty)
     if (showAsRent)
@@ -1565,7 +1567,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         noBonus       = 1.0
         premAccBonus  = hasPremium  ? ((rBlk?.xpMultiplier ?? 1.0) - 1.0)    : 0.0
         premModBonus  = hasTalisman ? ((rBlk?.goldPlaneExpMul ?? 1.0) - 1.0) : 0.0
-        boosterBonus  = ::getTblValue(::BoosterEffectType.RP.name, boosterEffects, 0) / 100.0
+        boosterBonus  = ::getTblValue(boosterEffectType.RP.name, boosterEffects, 0) / 100.0
       }
       wp = {
         obj           = wpRewardObj
@@ -1576,7 +1578,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
         noBonus       = 1.0
         premAccBonus  = hasPremium ? ((wBlk?.wpMultiplier ?? 1.0) - 1.0) : 0.0
         premModBonus  = 0.0
-        boosterBonus  = ::getTblValue(::BoosterEffectType.WP.name, boosterEffects, 0) / 100.0
+        boosterBonus  = ::getTblValue(boosterEffectType.WP.name, boosterEffects, 0) / 100.0
       }
     }
 

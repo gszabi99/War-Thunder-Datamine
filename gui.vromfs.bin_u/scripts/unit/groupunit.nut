@@ -1,3 +1,5 @@
+local { UNIT_GROUP } = require("scripts/utils/genericTooltipTypes.nut")
+
 local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
   local params = {
     status = "owned"
@@ -5,7 +7,7 @@ local function getGroupUnitMarkUp(name, unit, group, overrideParams = {}) {
     isLocalState = false
     needMultiLineName = true
     tooltipParams = { showLocalState = false }
-    tooltipId = ::g_tooltip_type.UNIT_GROUP.getTooltipId(group)
+    tooltipId = UNIT_GROUP.getTooltipId(group)
   }.__update(overrideParams)
 
   if (group != null)

@@ -1794,7 +1794,7 @@
             {
               "Weapon": [
                 {
-                  "blk": "gameData/Weapons/cannonGSh_23.blk"
+                  "blk": "gameData/Weapons/cannonGSh_23L.blk"
                 },
                 {
                   "tier": {
@@ -4351,10 +4351,15 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "maw_countermeasures_launcher_chaff_only": [],
+    "maw_countermeasures_launcher_flare_only": [],
+    "maw_countermeasures_launcher_chaff_priority": [],
+    "maw_countermeasures_launcher_flare_priority": [],
     "MAW_system_heli_false_thermal_targets": {
+      "modClass": "weapon",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "tier": 1,
       "effects": {
         "commonWeapons": [
@@ -4454,9 +4459,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 64,
               "external": true,
@@ -4465,9 +4470,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 64,
               "external": true,

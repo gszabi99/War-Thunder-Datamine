@@ -18,6 +18,12 @@
     "haveCCRPForBombs": true
   },
   {
+    "isBuccaneerIls": true
+  },
+  {
+    "havePointOfInterestDesignator": true
+  },
+  {
     "gearSinkRangeLR": 0.4
   },
   {
@@ -2473,69 +2479,82 @@
         "g_meter_min": [-5.0,10.0],
         "g_meter_max": [-5.0,10.0]
       },
-      "multifunctionDisplays": {
-        "display": {
-          "textureArea": [0.0,0.0,1.0,1.0],
-          "isNotDisplay": true,
-          "page": {
-            "type": "devices",
-            "speed_slider": {
-              "arrowTex": "uk_gauge_comb_speed_slider_c",
-              "position": [683.0,128.0],
-              "arrowTexCoord": [0.5,0.0,1.0,1.0],
-              "size": [1366.0,256.0],
-              "notDrawBackground": true,
-              "ranges": [
-                {
-                  "limits": [0.0,148.16,0.0,-0.006]
-                },
-                {
-                  "limits": [148.16,185.2,-0.006,-0.035]
-                },
-                {
-                  "limits": [185.2,370.4,-0.035,-0.178]
-                },
-                {
-                  "limits": [370.4,555.6,-0.178,-0.267]
-                },
-                {
-                  "limits": [555.6,740.8,-0.267,-0.338]
-                },
-                {
-                  "limits": [740.8,926.0,-0.338,-0.396]
-                },
-                {
-                  "limits": [926.0,1111.2,-0.396,-0.444]
-                },
-                {
-                  "limits": [1111.2,1296.4,-0.444,-0.492]
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "isNotDisplay": true,
+            "page": {
+              "type": "devices",
+              "speed_slider": {
+                "arrowTex": "uk_gauge_comb_speed_slider_c",
+                "position": [683.0,128.0],
+                "arrowTexCoord": [0.5,0.0,1.0,1.0],
+                "size": [1366.0,256.0],
+                "notDrawBackground": true,
+                "ranges": [
+                  {
+                    "limits": [0.0,148.16,0.0,-0.006]
+                  },
+                  {
+                    "limits": [148.16,185.2,-0.006,-0.035]
+                  },
+                  {
+                    "limits": [185.2,370.4,-0.035,-0.178]
+                  },
+                  {
+                    "limits": [370.4,555.6,-0.178,-0.267]
+                  },
+                  {
+                    "limits": [555.6,740.8,-0.267,-0.338]
+                  },
+                  {
+                    "limits": [740.8,926.0,-0.338,-0.396]
+                  },
+                  {
+                    "limits": [926.0,1111.2,-0.396,-0.444]
+                  },
+                  {
+                    "limits": [1111.2,1296.4,-0.444,-0.492]
+                  }
+                ]
+              },
+              "mach_slider": {
+                "arrowTex": "uk_gauge_comb_mach_slider_c",
+                "position": [683.0,384.0],
+                "arrowTexCoord": [0.0,0.0,0.4,1.0],
+                "size": [1366.0,256.0],
+                "notDrawBackground": true,
+                "parentDevId": 0,
+                "ranges": {
+                  "limits": [0.3,2.8,0.093,0.99]
                 }
-              ]
-            },
-            "mach_slider": {
-              "arrowTex": "uk_gauge_comb_mach_slider_c",
-              "position": [683.0,384.0],
-              "arrowTexCoord": [0.0,0.0,0.4,1.0],
-              "size": [1366.0,256.0],
-              "notDrawBackground": true,
-              "parentDevId": 0,
-              "ranges": {
-                "limits": [0.3,2.8,0.093,0.99]
-              }
-            },
-            "aviahorizon_pitch": {
-              "arrowTex": "uk_gauge_aviahorizon_type_f4_slider_c",
-              "position": [683.0,768.0],
-              "arrowTexCoord": [0.0,0.35,2.0,0.65],
-              "size": [1366.0,512.0],
-              "notDrawBackground": true,
-              "ranges": {
-                "limits": [-90.0,90.0,0.25,-0.25]
+              },
+              "aviahorizon_pitch": {
+                "arrowTex": "uk_gauge_aviahorizon_type_f4_slider_c",
+                "position": [683.0,768.0],
+                "arrowTexCoord": [0.0,0.35,2.0,0.65],
+                "size": [1366.0,512.0],
+                "notDrawBackground": true,
+                "ranges": {
+                  "limits": [-90.0,90.0,0.25,-0.25]
+                }
               }
             }
           }
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "page": {
+              "type": "plane_ils",
+              "ilsSize": [0.28,0.28],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5
+            }
+          }
         }
-      },
+      ],
       "parts_holes_dmg": {
         "part": "fuse"
       },
@@ -2874,7 +2893,7 @@
             "reqModification": "uk_matra_7"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "weaponConfig": {
@@ -3722,7 +3741,7 @@
         "preset": {
           "name": "buccaneer_s2_500lb_bombs_ltc",
           "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc.blk",
-          "reqModification": "aircrafts_false_thermal_targets",
+          "reqModification": "countermeasures_belt_pack",
           "weaponConfig": {
             "Weapon": [
               {
@@ -3762,7 +3781,7 @@
         "preset": {
           "name": "buccaneer_s2_1000lb_bombs_ltc",
           "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc.blk",
-          "reqModification": "aircrafts_false_thermal_targets",
+          "reqModification": "countermeasures_belt_pack",
           "weaponConfig": {
             "Weapon": [
               {
@@ -3797,7 +3816,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_rp3_mk12"
@@ -3856,7 +3875,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "fj_4b_agm_12b"
@@ -3914,7 +3933,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc_1000lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -4000,7 +4019,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc_1000lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -4088,7 +4107,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc_1000lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -4183,7 +4202,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc_1000lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -4279,7 +4298,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_ltc_1000lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -4295,7 +4314,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_ltc_500lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_rp3_mk12"
@@ -4660,7 +4679,7 @@
         "preset": {
           "name": "buccaneer_s2_ltc_500lb",
           "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_ltc_500lb.blk",
-          "reqModification": "aircrafts_false_thermal_targets"
+          "reqModification": "countermeasures_belt_pack"
         }
       },
       {
@@ -4679,7 +4698,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_agm_12_ltc_500lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "fj_4b_agm_12b"
@@ -4873,7 +4892,7 @@
         "preset": {
           "name": "buccaneer_s2_500lb_bombs_ltc_500lb",
           "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_500lb_bombs_ltc_500lb.blk",
-          "reqModification": "aircrafts_false_thermal_targets",
+          "reqModification": "countermeasures_belt_pack",
           "weaponConfig": [
             {
               "Weapon": [
@@ -5161,7 +5180,7 @@
             "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc_500lb.blk"
           },
           {
-            "reqModification": "aircrafts_false_thermal_targets"
+            "reqModification": "countermeasures_belt_pack"
           },
           {
             "reqModification": "uk_mk_10_1000lb"
@@ -5491,12 +5510,17 @@
         "tier": 4,
         "modClass": "weapon"
       },
-      "aircrafts_false_thermal_targets": {
+      "countermeasures_launcher_chaff_only": [],
+      "countermeasures_launcher_flare_only": [],
+      "countermeasures_launcher_chaff_priority": [],
+      "countermeasures_launcher_flare_priority": [],
+      "countermeasures_belt_pack": {
+        "group": "countermeasures",
         "modClass": "weapon",
         "tier": 1
       },
       "us_aim_9b": {
-        "reqModification": "aircrafts_false_thermal_targets",
+        "reqModification": "countermeasures_belt_pack",
         "tier": 3,
         "modClass": "weapon"
       }

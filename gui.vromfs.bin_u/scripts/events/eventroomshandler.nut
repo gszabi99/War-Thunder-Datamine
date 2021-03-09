@@ -5,6 +5,7 @@ local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUp
 local { checkDiffTutorial } = require("scripts/tutorials/tutorialsData.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -757,7 +758,8 @@ class ::gui_handlers.EventRoomsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function onCreateRoom()
   {
-    if (!antiCheat.showMsgboxIfEacInactive(event))
+    if (!antiCheat.showMsgboxIfEacInactive(event)||
+        !showMsgboxIfSoundModsNotAllowed(event))
       return
 
     local diffCode = ::events.getEventDiffCode(event)

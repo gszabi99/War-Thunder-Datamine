@@ -4,6 +4,7 @@ local { getPlayerName } = require("scripts/clientState/platform.nut")
 local { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.nut")
 local base64 = ::require_native("base64")
 local DataBlock = require("DataBlock")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 /*
 SessionLobby API
@@ -2590,6 +2591,8 @@ SessionLobby.rpcJoinBattle <- function rpcJoinBattle(params)
     return "already in session"
   if (!antiCheat.showMsgboxIfEacInactive({enableEAC = true}))
     return "EAC is not active"
+  if (!showMsgboxIfSoundModsNotAllowed({allowSoundMods = false}))
+    return "sound mods not allowed"
 
   dagor.debug("join to battle with id " + battleId)
   SessionLobby.joinBattle(battleId)
@@ -2681,7 +2684,7 @@ SessionLobby.checkSessionInvite <- function checkSessionInvite()
 
   local applyInvite = function() {
     local event = ::events.getEvent(inviteData?.attribs.game_mode_name)
-    if (!antiCheat.showMsgboxIfEacInactive(event))
+    if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
       return
 
     sendResp({})

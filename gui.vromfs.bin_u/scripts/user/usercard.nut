@@ -12,6 +12,8 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local popupFilter = require("scripts/popups/popupFilter.nut")
+local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
+local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
 
 local getAirsStatsFromBlk = function (blk)
 {
@@ -222,6 +224,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
   isFilterVisible = false
   maxUtypeNameWidth = 0
   maxCountryNameWidth = 0
+
+  ribbonsRowLength = 3
 
   function initScreen()
   {
@@ -616,18 +620,43 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     local medalsList = ::get_country_medals(countryId, player)
     showSceneBtn("medals_empty", !medalsList.len())
 
-    local view = { items = [] }
-    foreach (id in medalsList)
-      view.items.append({
-        id = id
-        tag = "imgUsercardMedal"
-        unlocked = true
-        image = ::get_image_for_unlockable_medal(id)
-        tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = isOwnStats, needTitle = false })
-      })
+    local view = {
+      ribbons = getRibbonsView(medalsList.filter(@(id) hasMedalRibbonImg(id)))
+      medals = getMedalsView(medalsList.filter(@(id) !hasMedalRibbonImg(id)))
+    }
 
-    local markup = ::handyman.renderCached("gui/commonParts/imgFrame", view)
+    local markup = ::handyman.renderCached("gui/profile/profileRibbons", view)
     guiScene.replaceContentFromText(nestObj, markup, markup.len(), this)
+  }
+
+  function getRibbonsView(medalsList)
+  {
+    return medalsList.len() > 0 ? {
+      flowAlign = medalsList.len() > ribbonsRowLength ? "center" : "left"
+      items = medalsList.map((@(id) {
+        tag = "imgUsercardRibbon"
+        image = getMedalRibbonImg(id)
+      }.__merge(getBaseConfigMedal(id))).bindenv(this))
+    } : null
+  }
+
+  function getMedalsView(medalsList)
+  {
+    return medalsList.len() > 0 ? {
+      items = medalsList.map((@(id) {
+        tag = "imgUsercardMedal"
+        image = ::get_image_for_unlockable_medal(id)
+      }.__merge(getBaseConfigMedal(id))).bindenv(this))
+    } : null
+  }
+
+  function getBaseConfigMedal(id)
+  {
+    return {
+      id = id
+      unlocked = true
+      tooltipId = ::g_tooltip.getIdUnlock(id, { showLocalState = isOwnStats, needTitle = false })
+    }
   }
 
   function fillTitlesBlock(pl)
@@ -974,7 +1003,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     for(local idx = fromIdx; idx <= toIdx; idx++)
     {
       local airData = airStatsList[idx]
-      local unitTooltipId = ::g_tooltip_type.UNIT.getTooltipId(airData.name)
+      local unitTooltipId = UNIT.getTooltipId(airData.name)
 
       local rowName = "row_"+idx
       local rowData = [

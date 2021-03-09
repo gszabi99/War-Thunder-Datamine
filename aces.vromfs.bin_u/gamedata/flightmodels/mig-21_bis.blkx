@@ -2116,7 +2116,7 @@
     "headPosOnShooting": [3.55,0.78,0.0],
     "mirror": true,
     "mirrorPos": [-3.855,0.98,0.0],
-    "mirrorNorm": [-0.934,-0.358,0.0],
+    "mirrorNorm": [-0.956,-0.26,0.0],
     "mirrorNode": "blister3",
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
@@ -4213,11 +4213,16 @@
     "new_compressor_jet": {
       "tier": 1
     },
-    "aircrafts_false_thermal_targets": {
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
       "prevModification": "mi_24_fab_250",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "tier": 2,
       "effects": {
         "commonWeapons": [
@@ -4242,9 +4247,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 32,
               "external": true,
@@ -4253,9 +4258,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 32,
               "external": true,
@@ -4269,7 +4274,7 @@
     "ns23_air_targets": [],
     "ns23_stealth": [],
     "ns23_belt_pack": {
-      "prevModification": "aircrafts_false_thermal_targets",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 3
     },
     "ns23_new_gun": {

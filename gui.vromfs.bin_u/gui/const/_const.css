@@ -39,8 +39,10 @@
 @const profileMedalSizeBig: (256@sf/@pf $max 256) \ 1;
 @const profileMedalSizeList: (90@sf/@pf) \ 1;
 @const profileUnlockIconSize: (100*@sf/@pf_outdated) \ 1;
-@const usercardMedalRibbonW: (100@sf/@pf) \ 1;
-@const usercardMedalSize: (90@sf/@pf) \ 1;
+@const usercardMedalRibbonW: (90@sf/@pf) \ 1;
+@const usercardMedalSize: (80@sf/@pf) \ 1;
+@const usercardRibbonW: (182@sf/@pf) \ 1;
+@const usercardRibbonH: (78@sf/@pf) \ 1;
 @const avatarButtonSize: 1@profileUnlockIconSize + 2@blockInterval;
 @const debriefingUnlockIconSize: 75@sf/@pf;
 @const unlockStageIconSize: 32*@sf/@pf_outdated;
@@ -172,6 +174,7 @@
 @const shop_height:   (1@shopAirHeight + 2@shop_pad + 6*@sf/@pf_outdated)\1;
 @const shop_h_extra_first: 0.02@scrn_tgt;
 @const shop_h_extra_last: 0.02@scrn_tgt;
+@const is_shop_items_wide: @shop_width\(180@dp) $min 1;
 
 @const lines_pad: (1@shop_pad - 3*@sf/@pf_outdated) / 1;
 @const lines_shop_interval: (1@shop_interval - 2*@sf/@pf_outdated) /1;

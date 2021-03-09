@@ -363,8 +363,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -395,7 +395,9 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
-        "hp": 300.0,
+        "armorEffectiveThicknessMax": 20.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 20.0,
         "track_r_dm": [],
         "track_l_dm": [],
         "track_r_01_dm": [],
@@ -405,33 +407,21 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        }
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -1794,7 +1784,7 @@
   },
   {
     "gunConvergence": {
-      "distance": 800.0,
+      "defaultDistance": 800.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2038,7 +2028,17 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.68,
-        "height": 0.04
+        "height": 0.08,
+        "tracksTensionK": [6.5,8.0,3.0],
+        "trackMesh": "uk_centurion_24_phys_track_line",
+        "trackLen": 0.1397,
+        "trackCount": 108,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.17,
+        "trackMaxHeight": 1.4,
+        "trackEmitSparks": true,
+        "trackStartOffset": 0.16
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -2093,7 +2093,21 @@
         "topGearRadius": 0.1,
         "defaultDampeningForce": [173840.0,173840.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.38,
+        "wheel_l_drive": 0.38,
+        "wheel_r_01": 0.4,
+        "wheel_r_02": 0.4,
+        "wheel_r_03": 0.4,
+        "wheel_r_04": 0.4,
+        "wheel_r_05": 0.4,
+        "wheel_r_06": 0.4,
+        "wheel_l_01": 0.4,
+        "wheel_l_02": 0.4,
+        "wheel_l_03": 0.4,
+        "wheel_l_04": 0.4,
+        "wheel_l_05": 0.4,
+        "wheel_l_06": 0.4
       }
     }
   },

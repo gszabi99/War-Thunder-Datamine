@@ -1,7 +1,10 @@
 local protectionAnalysis = require("scripts/dmViewer/protectionAnalysis.nut")
-local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
-local { getSkillCategoryView } = require("scripts/crew/crewSkillsView.nut")
+local { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
+} = require("scripts/crew/crewSkills.nut")
+local { getSkillCategoryName } = require("scripts/crew/crewSkillsView.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { slotInfoPanelButtons } = require("scripts/slotInfoPanel/slotInfoPanelButtons.nut")
+local { SKILL_CATEGORY } = require("scripts/utils/genericTooltipTypes.nut")
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 
@@ -18,6 +21,27 @@ const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
     configSavePath = SLOT_INFO_CFG_SAVE_PATH + "/" + configSaveId
   }
   return ::handlersManager.loadHandler(::gui_handlers.SlotInfoPanel, params)
+}
+
+local function getSkillCategoryView(crewData, unit) {
+  local unitType = unit?.unitType ?? unitTypes.INVALID
+  local crewUnitType = unitType.crewUnitType
+  local unitName = unit?.name ?? ""
+  local view = []
+  foreach (skillCategory in getSkillCategories())
+  {
+    local isSupported = (skillCategory.crewUnitTypeMask & (1 << crewUnitType)) != 0
+      && (unit.gunnersCount > 0 || categoryHasNonGunnerSkills(skillCategory))
+    if (!isSupported)
+      continue
+    view.append({
+      categoryName = getSkillCategoryName(skillCategory)
+      categoryTooltip = SKILL_CATEGORY.getTooltipId(skillCategory.categoryName, unitName)
+      categoryValue = getSkillCategoryCrewLevel(crewData, unit, skillCategory, crewUnitType)
+      categoryMaxValue = getSkillCategoryMaxCrewLevel(skillCategory, crewUnitType)
+    })
+  }
+  return view
 }
 
 class ::gui_handlers.SlotInfoPanel extends ::gui_handlers.BaseGuiHandlerWT

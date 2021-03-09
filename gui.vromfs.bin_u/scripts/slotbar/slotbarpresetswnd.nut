@@ -1,3 +1,5 @@
+local { markupTooltipHoldChild } = require("scripts/utils/delayedTooltip.nut")
+
 ::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null)
 {
   return ::handlersManager.loadHandler(::gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
@@ -120,9 +122,10 @@ class ::gui_handlers.ChooseSlotbarPreset extends ::gui_handlers.BaseGuiHandlerWT
         unitsMarkupList.append(::build_aircraft_item(unitId, unit, params))
         unitItems.append({ id = unitId, unit = unit, params = params })
       }
-      markupList.append(
-        "slotbarPresetsTable { size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval'; {2} }"
-          .subst(perRow, ::ceil(filteredUnits.len().tofloat() / perRow).tointeger(), " ".join(unitsMarkupList)))
+      local sizeStr = "size:t='{0}@slot_width, {1}@slot_height + {1}*2@slot_interval';".subst(
+        perRow, ::ceil(filteredUnits.len().tofloat() / perRow).tointeger())
+      markupList.append("slotbarPresetsTable { {0} {1} {2} }"
+        .subst(sizeStr, ::show_console_buttons ? markupTooltipHoldChild : "", " ".join(unitsMarkupList)))
 
       if (!preset.enabled)
         markupList.append("textarea{ text:t='{0}' padding:t='0, 8*@sf/@pf_outdated' } "

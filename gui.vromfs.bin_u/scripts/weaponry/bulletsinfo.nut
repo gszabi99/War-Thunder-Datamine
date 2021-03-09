@@ -10,9 +10,9 @@ local { WEAPON_TYPE,
         getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
-local { isModResearched,
-        isModAvailableOrFree,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { isModResearched, isModAvailableOrFree, getModificationByName,
+  getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
+local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -51,33 +51,6 @@ const BULLETS_CALIBER_QUANTITY = 4
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 
-local function getModificationBulletsGroup(modifName)
-{
-  local blk = ::get_modifications_blk()
-  local modification = blk?.modifications?[modifName]
-  if (modification)
-  {
-    if (!modification?.group)
-      return "" //new_gun etc. - not a bullets list
-    if (modification?.effects)
-      foreach (effectType, effect in modification.effects)
-      {
-        if (effectType == "additiveBulletMod")
-        {
-          local underscore = modification.group.indexof("_")
-          if (underscore)
-            return modification.group.slice(0, underscore)
-        }
-        if (effectType == "bulletMod" || effectType == "additiveBulletMod")
-          return modification.group
-      }
-  }
-  else if (modifName.len()>8 && modifName.slice(modifName.len()-8)=="_default")
-    return modifName.slice(0, modifName.len()-8)
-
-  return ""
-}
-
 local function isBullets(item)
 {
   return (("isDefaultForGroup" in item) && (item.isDefaultForGroup >= 0))
@@ -92,11 +65,10 @@ local function isWeaponTierAvailable(unit, tierNum)
   {
     local reqMods = unit.needBuyToOpenNextInTier[tierNum-2]
     foreach(mod in unit.modifications)
-      if(mod.tier == (tierNum-1) &&
-         isModResearched(unit, mod) &&
-         getModificationBulletsGroup(mod.name) == "" &&
-         !::wp_get_modification_cost_gold(unit.name, mod.name)
-        )
+      if(mod.tier == (tierNum-1)
+        && isModificationInTree(unit, mod)
+        && isModResearched(unit, mod)
+      )
         reqMods--
 
     isAvailable = reqMods <= 0
@@ -202,14 +174,22 @@ local function getBulletsSetData(air, modifName, noModList = null)
   }
 
   local wpList = []
+  local triggerList = []
   local primaryList = getPrimaryWeaponsList(air)
   foreach(primaryMod in primaryList)
   {
     local primaryBlk = getCommonWeaponsBlk(airBlk, primaryMod)
     if (primaryBlk)
+    {
       foreach (weapon in (primaryBlk % "Weapon"))
+      {
         if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+        {
           wpList.append(weapon.blk)
+          triggerList.append(weapon.trigger)
+        }
+      }
+    }
   }
 
   if (airBlk?.weapon_presets && !noModList) //not for fake bullets
@@ -221,13 +201,18 @@ local function getBulletsSetData(air, modifName, noModList = null)
           continue
         foreach (weapon in (pBlk % "Weapon"))
           if (weapon?.blk && !weapon?.dummy && !::isInArray(weapon.blk, wpList))
+          {
             wpList.append(weapon.blk)
+            triggerList.append(weapon.trigger)
+          }
       }
 
   local bulSetForIconParam = null
   local fakeBulletsSets = []
+  local index = -1
   foreach (wBlkName in wpList)
   {
+    index++
     local wBlk = blkFromPath(wBlkName)
     if (::u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
       continue
@@ -247,7 +232,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
     local bulletsModBlk = wBlk?[getModificationBulletsEffect(modifName)]
     local bulletsBlk = bulletsModBlk ? bulletsModBlk : wBlk
     local bulletsList = bulletsBlk % "bullet"
-    local weaponType = WEAPON_TYPE.GUNS
+    local weaponType = triggerList[index] == "countermeasures" ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
     if (!bulletsList.len())
     {
       bulletsList = bulletsBlk % "rocket"
@@ -256,6 +241,8 @@ local function getBulletsSetData(air, modifName, noModList = null)
         local rocket = bulletsList[0]
         if (rocket?.smokeShell == true)
           weaponType = WEAPON_TYPE.SMOKE
+        else if ((rocket?.isFlare == true) || (rocket?.isChaff == true))
+            weaponType = WEAPON_TYPE.COUNTERMEASURES
         else if (rocket?.smokeShell == false)
            weaponType = WEAPON_TYPE.FLARES
         else if (rocket?.operated || rocket?.guidanceType)
@@ -265,7 +252,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
       }
     }
 
-    local isBulletBelt = weaponType == WEAPON_TYPE.GUNS &&
+    local isBulletBelt = (weaponType == WEAPON_TYPE.GUNS || weaponType == WEAPON_TYPE.COUNTERMEASURES)  &&
       (wBlk?.isBulletBelt != false ||
         ((wBlk?.bulletsCartridge ?? 0) > 1 && !wBlk?.useSingleIconForBullet))
 
@@ -274,6 +261,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
       local paramsBlk = ::u.isDataBlock(b?.rocket) ? b.rocket : b
       if (!res)
         if (paramsBlk?.caliber)
+        {
           res = { caliber = 1000.0 * paramsBlk.caliber,
                   bullets = [],
                   isBulletBelt = isBulletBelt
@@ -283,6 +271,7 @@ local function getBulletsSetData(air, modifName, noModList = null)
                   weaponBlkName = wBlkName
                   maxToRespawn = mod?.maxToRespawn ?? 0
                 }
+        }
         else
           continue
 
@@ -700,7 +689,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
       shortDescr = ::loc(locId + "/name/short", "")
     if (shortDescr == "")
       shortDescr = ::loc(locId + "/name")
-    if (set?.bulletNames?[0]
+    if (set?.bulletNames?[0] && set.weaponType != WEAPON_TYPE.COUNTERMEASURES
       && (set.weaponType != WEAPON_TYPE.GUNS || !set.isBulletBelt ||
       (isCaliberCannon(caliber) && air.unitType.canUseSeveralBulletsForGun)))
     {
@@ -762,7 +751,9 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
 
   if (ammo_pack_len)
     res.desc = shortDescr + "\n"
-  if (set.bullets.len() > 1)
+  if (set.weaponType == WEAPON_TYPE.COUNTERMEASURES)
+    res.desc += "countermeasures/desc" + "\n\n"
+  else if (set.bullets.len() > 1)
     res.desc += format(::loc("caliber_" + set.caliber + "/desc"), setText) + "\n\n"
   res.desc += annotation
   return res
@@ -1469,6 +1460,9 @@ local function addBulletsParamToDesc(descTbl, unit, item)
   else
     descTbl.bulletActions <- [{ visual = getBulletsIconData(bulletsSet) }]
 
+  if (bulletsSet.weaponType == WEAPON_TYPE.COUNTERMEASURES)
+    return
+
   local searchName = getBulletsSearchName(unit, modName)
   local useDefaultBullet = searchName != modName
   local bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
@@ -1518,7 +1512,6 @@ local function getUnitLastBullets(unit)
 
 return {
   BULLET_TYPE                           = BULLET_TYPE
-  getModificationBulletsGroup           = getModificationBulletsGroup
   isFakeBullet                          = isFakeBullet
   setUnitLastBullets                    = setUnitLastBullets
   getBulletsItemsList                   = getBulletsItemsList

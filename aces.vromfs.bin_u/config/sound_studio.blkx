@@ -18,6 +18,7 @@
   "banksExtension": ".bank",
   "defGame": "master",
   "waitForMenuMusic": true,
+  "useOneshotForAirGunSound": true,
   "minShotStep": 0.08,
   "maxAltFallBullets": 20.0,
   "maxSpeedFallBullets": 50.0,
@@ -338,10 +339,10 @@
       "name": "musicmenu"
     },
     "radio": {
-      "name": "radio"
+      "name": "dialogs/crew_common"
     },
     "dialogs": {
-      "name": "dialogs"
+      "name": "dialogs/dialogs"
     },
     "voice_out": [],
     "voice_in": [],
@@ -420,6 +421,7 @@
     "eventBulletHitCockpitMetal": "bullethit_cockpit_metal",
     "eventBulletHitCockpitGlass": "bullethit_cockpit_glass",
     "eventBulletHitUnit": "bullethit_unit",
+    "eventBulletHitPlane": "bullethit_plane",
     "eventBulletHitTankMgun": "hit_mgun",
     "eventBulletHitTankMgunCockpit": "hit_mgun_interior",
     "eventBulletHitTankMgunUnpierce": "hit_mgun",
@@ -610,7 +612,8 @@
     "eventWaveHitBoat": "collision_wave_boat",
     "eventWaveHitShip": "collision_wave_ship",
     "shipSizeThreshold": 20.0,
-    "eventNuclearStrike": "explosions_far"
+    "eventNuclearStrike": "explosions_far",
+    "shockImpulseThreshold": 1.0
   },
   "explosions": {
     "path": "aircraft/explosions",
@@ -8814,6 +8817,7 @@
         "he_grenade_tank": "loadBulletHighExpl",
         "heat_tank": "loadBulletCumulative",
         "heat_fs_tank": "loadBulletCumulative",
+        "heat_fs_rocket": "loadBulletCumulative",
         "practice_tank": "loadBulletCumulative",
         "heat_grenade_tank": "loadBulletCumulative",
         "apcr_tank": "loadBulletSubCaliber",

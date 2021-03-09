@@ -1038,25 +1038,13 @@
         "tags": {
           "free": true
         },
-        "weaponConfig": [
-          {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small"
-            }
-          },
-          {
-            "Weapon": {
-              "blk": "gameData/Weapons/cannonGSh_23.blk",
-              "tier": {
-                "amountPerTier": 1.0,
-                "idx": 5,
-                "iconType": "doublebarreled_box"
-              }
-            }
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+            "amountPerTier": 7.0,
+            "iconType": "nar_ap_small"
           }
-        ]
+        }
       }
     },
     {
@@ -1304,11 +1292,16 @@
     "new_heli_cover": [],
     "heli_flak_jacket": [],
     "heli_structure": [],
-    "heli_false_thermal_targets": {
+    "countermeasures_launcher_chaff_only": [],
+    "countermeasures_launcher_flare_only": [],
+    "countermeasures_launcher_chaff_priority": [],
+    "countermeasures_launcher_flare_priority": [],
+    "countermeasures_belt_pack": {
+      "modClass": "weapon",
       "turn_it_off": false,
       "tier": 1,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "effects": {
         "commonWeapons": [
           {
@@ -1338,9 +1331,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 16,
               "external": true,
@@ -1349,9 +1342,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 16,
               "external": true,

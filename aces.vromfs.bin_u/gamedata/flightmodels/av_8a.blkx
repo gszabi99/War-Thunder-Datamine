@@ -10,6 +10,8 @@
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
+  "is410SUM1Ils": true,
+  "havePointOfInterestDesignator": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -28,7 +30,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "autopilotImpl": "Full",
   "fullAutopilotIndSpeedTransition": [180.0,220.0],
   "fullAutopilotVtolTransition": [0.7,0.3],
@@ -2092,14 +2094,27 @@
       "carb_temperature": [-10.0,60.0],
       "nozzle_angle": [0.0,-90.0]
     },
-    "multifunctionDisplays": {
-      "display": {
-        "textureArea": [0.0,0.0,0.5,0.5],
-        "page": {
-          "type": "map"
+    "multifunctionDisplays": [
+      {
+        "display": {
+          "textureArea": [0.0,0.0,0.5,0.5],
+          "page": {
+            "type": "map"
+          }
+        }
+      },
+      {
+        "display": {
+          "textureArea": [0.0,0.0,1.0,1.0],
+          "page": {
+            "type": "plane_ils",
+            "ilsSize": [0.28,0.28],
+            "ilsOffsetForce": 0.0,
+            "brightnessMult": 3.5
+          }
         }
       }
-    },
+    ],
     "parts_holes_dmg": {
       "part": "fuse"
     },

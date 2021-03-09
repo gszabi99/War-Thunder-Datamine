@@ -1,5 +1,4 @@
 local wwQueuesData = require("scripts/worldWar/operations/model/wwQueuesData.nut")
-local clustersModule = require("scripts/clusterSelect.nut")
 local slotbarWidget = require("scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 local { setCurPreset } = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local WwHelpSlotbarGroupsModal = require("scripts/worldWar/handler/WwHelpSlotbarGroupsModal.nut")
@@ -495,7 +494,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
     showSceneBtn("operation_loading_wait_anim", battle.isValid() && !isOperationBattleLoaded && !battle.isFinished())
 
-    updateClusters()
     if (!battle.isValid() || !isOperationBattleLoaded || battle.isFinished())
     {
       showSceneBtn("battle_info", battle.isFinished())
@@ -618,7 +616,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   {
     local isViewBattleList = currViewMode == WW_BATTLE_VIEW_MODES.BATTLE_LIST
     showSceneBtn("btn_battles_filters", hasBattleFilter && isViewBattleList)
-    showSceneBtn("cluster_select_button", isViewBattleList)
     showSceneBtn("goto_global_battles_btn", isViewBattleList)
     showSceneBtn("invite_squads_button",
       hasSquadsInviteButton && ::g_world_war.isSquadsInviteEnable())
@@ -853,14 +850,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
     }
   }
 
-  function onOpenClusterSelect(obj)
-  {
-    ::queues.checkAndStart(
-      ::Callback(@() clustersModule.createClusterSelectMenu(obj, "bottom"), this),
-      null,
-      "isCanChangeCluster")
-  }
-
   function onOpenSquadsListModal(obj)
   {
     ::gui_handlers.WwMyClanSquadInviteModal.open(
@@ -881,16 +870,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
   {
     reinitBattlesList()
     updateButtons()
-  }
-
-  function onEventClusterChange(params)
-  {
-    updateClusters()
-  }
-
-  function updateClusters()
-  {
-    clustersModule.updateClusters(scene.findObject("cluster_select_button_text"))
   }
 
   function goBack()
@@ -1319,9 +1298,6 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       },
       { obj = ["team_unit_info_0"] },
       { obj = ["team_unit_info_1"] },
-      { obj = ["cluster_select_button"]
-        msgId = "hint_cluster_select_button"
-      },
       { obj = ["invite_squads_button"]
         msgId = "hint_invite_squads_button"
       },

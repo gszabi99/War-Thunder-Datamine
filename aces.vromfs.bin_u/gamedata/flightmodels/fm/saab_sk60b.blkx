@@ -606,7 +606,11 @@
       "hasMagnetoControl": false,
       "hasRadiatorControl": false,
       "hasOilRadiatorControl": false,
-      "hasCommonRadiator": true
+      "hasCommonRadiator": true,
+      "hasVtolControl": false,
+      "dvVtol": 0.5,
+      "dvThrustRev": 0.5,
+      "hasThrustReverseControl": true
     },
     "Temperature": {
       "OilRadiatorAuto": true,
@@ -766,18 +770,50 @@
   },
   "Engine0": {
     "Type": 0,
-    "Position": [-2.0,0.0,0.7],
-    "Direction": [-0.0,0.572939],
     "Main": {
       "FuelSystemNum": 0
+    },
+    "Nozzle0": {
+      "Position": [-2.0,0.0,0.7],
+      "Direction": [-0.0,0.0],
+      "Direction2": [0.0,90.0],
+      "ThrustRatio": 1.0,
+      "ThrustMax": 2147440000.0,
+      "AileronsToThrustDeflection": [-0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [-0.0,0.0,0.0],
+      "RudderToThrustDeflection": [-0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,170.0],
+      "ReverseToThrustDeflection": [0.0,170.0],
+      "AileronsToThrust": [0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,-0.5],
+      "FlapsToThrust": [0.0,1.0,1.0,1.0],
+      "ReverseToThrust": [0.0,-0.5]
     }
   },
   "Engine1": {
     "Type": 0,
-    "Position": [-2.0,0.0,-0.7],
-    "Direction": [-0.0,0.572939],
     "Main": {
       "FuelSystemNum": 0
+    },
+    "Nozzle0": {
+      "Position": [-2.0,0.0,-0.7],
+      "Direction": [-0.0,0.0],
+      "Direction2": [0.0,-90.0],
+      "ThrustRatio": 1.0,
+      "ThrustMax": 2147440000.0,
+      "AileronsToThrustDeflection": [-0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [-0.0,0.0,0.0],
+      "RudderToThrustDeflection": [-0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,170.0],
+      "ReverseToThrustDeflection": [0.0,170.0],
+      "AileronsToThrust": [0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,-0.5],
+      "FlapsToThrust": [0.0,1.0,1.0,1.0],
+      "ReverseToThrust": [0.0,-0.5]
     }
   },
   "Mass": {

@@ -2,6 +2,7 @@ local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local stdMath = require("std/math.nut")
+local { UNLOCK } = require("scripts/utils/genericTooltipTypes.nut")
 
 class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -36,7 +37,7 @@ class ::gui_handlers.ChooseTitle extends ::gui_handlers.BaseGuiHandlerWT
         name = name
         text = locText
         lowerText = ::g_string.utf8ToLower(locText)
-        tooltipId = ::g_tooltip_type.UNLOCK.getTooltipId(name)
+        tooltipId = UNLOCK.getTooltipId(name)
         isSelected = name == curTitle
         unseenIcon = hasUnseen && bhvUnseen.makeConfigStr(SEEN.TITLES, name)
       }

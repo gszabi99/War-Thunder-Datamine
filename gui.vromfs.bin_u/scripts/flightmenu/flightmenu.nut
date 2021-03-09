@@ -15,6 +15,7 @@ local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInit
 class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/flightMenu/flightMenu.blk"
+  handlerLocId = "flightmenu"
   shouldBlurSceneBg = true
   keepLoaded = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU

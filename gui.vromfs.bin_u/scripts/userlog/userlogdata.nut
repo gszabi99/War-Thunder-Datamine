@@ -629,6 +629,7 @@ local logNameByType = {
       time = ::get_user_log_time_sec(i)
       enabled = !blk?.disabled
       roomId = blk?.roomId
+      isAerobaticSmoke = unlock?.isAerobaticSmoke ?? false
     }
 
     for (local j = 0, c = blk.body.paramCount(); j < c; j++)

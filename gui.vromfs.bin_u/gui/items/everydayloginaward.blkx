@@ -14,8 +14,7 @@
         "activeText": {
           "id": "award_type_title",
           "caption": "yes"
-        },
-        "Button_close": []
+        }
       },
       "tdiv": {
         "width": "7@itemWidth",
@@ -462,7 +461,8 @@
                     },
                     {
                       "rankUpList": {
-                        "id": "reward_aircrafts"
+                        "id": "reward_aircrafts",
+                        "holdTooltipChildren": "yes"
                       }
                     },
                     {
@@ -497,7 +497,8 @@
                     },
                     {
                       "rankUpList": {
-                        "id": "periodic_reward_aircrafts"
+                        "id": "periodic_reward_aircrafts",
+                        "holdTooltipChildren": "yes"
                       }
                     }
                   ]
@@ -536,7 +537,7 @@
                     "pos": "50%pw-50%w, 0",
                     "position": "absolute",
                     "style": "size:1@bigButtonWidth, 1@buttonHeight;",
-                    "on_click": "onOpenChest",
+                    "on_click": "goBack",
                     "css-hier-invalidate": "yes",
                     "btnName": "X",
                     "pattern": [],
@@ -664,28 +665,21 @@
             }
           }
         ],
-        "navRight": [
-          {
-            "Button_text": {
-              "id": "btn_nav_open",
-              "text": "#items/getReward",
-              "btnName": "X",
-              "on_click": "onOpenChest",
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
-              "id": "btn_close",
-              "display": "hide",
-              "text": "#mainmenu/btnClose",
-              "btnName": "EnterX",
-              "_on_click": "goBack",
-              "ButtonImg": []
-            }
+        "navRight": {
+          "Button_text": {
+            "id": "btn_nav_open",
+            "text": "#items/getReward",
+            "btnName": "EnterX",
+            "on_click": "goBack",
+            "ButtonImg": []
           }
-        ]
+        }
       }
     }
+  },
+  "dummy": {
+    "on_click": "goBack",
+    "behaviour": "accesskey",
+    "btnName": "B"
   }
 }

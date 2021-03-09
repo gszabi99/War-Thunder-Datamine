@@ -30,7 +30,9 @@ local defaultAvailableWeapons = {
   hasDepthCharges = false
   hasMines = false
   hasFlares = false
+  hasChaffs = false
   hasTorpedoes = false
+  hasCountermeasures = false
 }
 
 local Unit = class
@@ -593,6 +595,8 @@ local Unit = class
 
             if (weap?.trigger == "mines")
               availableWeapons.hasMines = true
+            else if (weap?.trigger == "countermeasures")
+              availableWeapons.hasCountermeasures = true
 
             local weapBlk = blkFromPath(weap.blk)
             if (weapBlk?.bomb)
@@ -606,6 +610,8 @@ local Unit = class
               availableWeapons.hasDepthCharges = true
             if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
               availableWeapons.hasFlares = true
+            if (weapBlk?.rocket && weapBlk.rocket?.isChaff)
+              availableWeapons.hasChaffs = true
             if (weapBlk?.torpedo != null)
               availableWeapons.hasTorpedoes = true
 

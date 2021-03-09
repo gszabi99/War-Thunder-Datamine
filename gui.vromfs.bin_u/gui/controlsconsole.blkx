@@ -1,6 +1,7 @@
 {
   "root": {
     "type": "big",
+    "bgrStyle": "fullScreenWnd",
     "blur": [],
     "blur_foreground": [],
     "frame": {
@@ -10,12 +11,27 @@
       "position": "absolute",
       "class": "wndNav",
       "type": "big",
+      "fullScreenSize": "yes",
       "frame_header": {
-        "activeText": {
-          "caption": "yes",
-          "text": "#mainmenu/btnControls"
+        "Breadcrumb": {
+          "Button_text": {
+            "_on_click": "goBack",
+            "visualStyle": "noBgr",
+            "img": [],
+            "btnText": {
+              "id": "back_scene_name"
+            },
+            "text": {
+              "text": " | "
+            },
+            "textareaNoTab": {
+              "text": "#mainmenu/btnControls"
+            }
+          }
         },
-        "Button_close": []
+        "Button_close": {
+          "id": "btn_back"
+        }
       },
       "container": {
         "optionsBox": {

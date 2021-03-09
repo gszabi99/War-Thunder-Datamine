@@ -1,12 +1,12 @@
-local SecondsUpdater = require("sqDagui/timer/secondsUpdater.nut")
 local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
 local stdMath = require("std/math.nut")
-local { openUrl } = require("scripts/onlineShop/url.nut")
 local { shouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
-
+local { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
+local { boosterEffectType }= require("scripts/items/boosterEffect.nut")
 local seenList = require("scripts/seen/seenList.nut")
+
 local seenInventory = seenList.get(SEEN.INVENTORY)
 local seenItems = seenList.get(SEEN.ITEMS_SHOP)
 local OUT_OF_DATE_DAYS_ITEMS_SHOP = 28
@@ -21,48 +21,6 @@ local OUT_OF_DATE_DAYS_INVENTORY = 0
 
   getInventoryList(typeMask = itemType.ALL) - get items list by type mask
 */
-
-::BoosterEffectType <- class
-{
-  static RP = {
-    name = "xpRate"
-    currencyMark = ::loc("currency/researchPoints/sign/colored")
-    abbreviation = "xp"
-    checkBooster = function(booster)
-    {
-      return ::getTblValue("xpRate", booster, 0) != 0
-    }
-    getValue = function(booster)
-    {
-      return ::getTblValue("xpRate", booster, 0)
-    }
-    getText = function(value, colored = false, showEmpty = true)
-    {
-      if (value == 0 && !showEmpty)
-        return ""
-      return ::Cost().setRp(value).toStringWithParams({isColored = colored})
-    }
-  }
-  static WP = {
-    name = "wpRate"
-    currencyMark = ::loc("warpoints/short/colored")
-    abbreviation = "wp"
-    checkBooster = function(booster)
-    {
-      return ::getTblValue("wpRate", booster, 0) != 0
-    }
-    getValue = function(booster)
-    {
-      return ::getTblValue("wpRate", booster, 0)
-    }
-    getText = function(value, colored = false, showEmpty = true)
-    {
-      if (value == 0 && !showEmpty)
-        return ""
-      return ::Cost(value).toStringWithParams({isWpAlwaysShown = true, isColored = colored})
-    }
-  }
-}
 
 ::FAKE_ITEM_CYBER_CAFE_BOOSTER_UID <- -1
 
@@ -91,6 +49,7 @@ foreach (fn in [
                  "itemUniversalSpare.nut"
                  "itemModOverdrive.nut"
                  "itemModUpgrade.nut"
+                 "itemSmoke.nut"
 
                  //external inventory items
                  "itemVehicle.nut"
@@ -111,6 +70,7 @@ foreach (fn in [
                  "itemRentedUnit.nut"
                ])
   ::g_script_reloader.loadOnce("scripts/items/itemsClasses/" + fn)
+
 
 ::ItemsManager <- {
   itemsList = []
@@ -149,6 +109,9 @@ foreach (fn in [
 
   refreshBoostersTask = -1
   boostersTaskUpdateFlightTime = -1
+  smokeItems = ::Computed(@()
+    buyableSmokesList.value.map(@(blk) ::ItemsManager.createItem(itemType.SMOKE, blk)))
+
 
   //!!!BEGIN added only for debug
   dbgTrophiesListInternal = []
@@ -207,7 +170,7 @@ foreach (fn in [
   }
 }
 
-ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
+::ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
 {
   local curLevel = ::get_cyber_cafe_level()
   if (curLevel == genericItemsForCyberCafeLevel)
@@ -225,8 +188,8 @@ ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
       iconStyle = "cybercafebonus"
       locId = "item/FakeBoosterForNetCafeLevel"
       rateBoosterParams = {
-        xpRate = ::floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(BoosterEffectType.RP, level) + 0.5)
-        wpRate = ::floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(BoosterEffectType.WP, level) + 0.5)
+        xpRate = ::floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.RP, level) + 0.5)
+        wpRate = ::floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.WP, level) + 0.5)
       }
     }
     fakeItemsList["FakeBoosterForNetCafeLevel" + (i || "")] <- ::build_blk_from_container(table)
@@ -237,8 +200,8 @@ ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
     local table = {
       type = itemType.FAKE_BOOSTER
       rateBoosterParams = {
-        xpRate = ::floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(BoosterEffectType.RP, i) + 0.5)
-        wpRate = ::floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(BoosterEffectType.WP, i) + 0.5)
+        xpRate = ::floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.RP, i) + 0.5)
+        wpRate = ::floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.WP, i) + 0.5)
       }
     }
     fakeItemsList["FakeBoosterForSquadFromSameCafe" + i] <- ::build_blk_from_container(table)
@@ -255,7 +218,7 @@ ItemsManager.fillFakeItemsList <- function fillFakeItemsList()
 /////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------SHOP ITEMS----------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
-ItemsManager._checkUpdateList <- function _checkUpdateList()
+::ItemsManager._checkUpdateList <- function _checkUpdateList()
 {
   local hasChanges = checkShopItemsUpdate()
   if (checkItemDefsUpdate())
@@ -280,7 +243,7 @@ ItemsManager._checkUpdateList <- function _checkUpdateList()
     ::dagor.assertf(false, "Items shop: found duplicate items id = \n" + ::g_string.implode(duplicatesId, ", "))
 }
 
-ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
+::ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
 {
   if (!_reqUpdateList)
     return false
@@ -327,10 +290,13 @@ ItemsManager.checkShopItemsUpdate <- function checkShopItemsUpdate()
     }
 
   dbgLoadedItemsInternalCount = itemsListInternal.len()
+
+  itemsListInternal.extend(smokeItems.value)
+
   return true
 }
 
-ItemsManager.checkItemDefsUpdate <- function checkItemDefsUpdate()
+::ItemsManager.checkItemDefsUpdate <- function checkItemDefsUpdate()
 {
   if (!_reqUpdateItemDefsList)
     return false
@@ -365,7 +331,7 @@ ItemsManager.checkItemDefsUpdate <- function checkItemDefsUpdate()
   return true
 }
 
-ItemsManager.onEventEntitlementsUpdatedFromOnlineShop <- function onEventEntitlementsUpdatedFromOnlineShop(params)
+::ItemsManager.onEventEntitlementsUpdatedFromOnlineShop <- function onEventEntitlementsUpdatedFromOnlineShop(params)
 {
   local curLevel = ::get_cyber_cafe_level()
   if (genericItemsForCyberCafeLevel != curLevel)
@@ -375,7 +341,7 @@ ItemsManager.onEventEntitlementsUpdatedFromOnlineShop <- function onEventEntitle
   }
 }
 
-ItemsManager.initItemsClasses <- function initItemsClasses()
+::ItemsManager.initItemsClasses <- function initItemsClasses()
 {
   foreach(name, itemClass in ::items_classes)
   {
@@ -390,30 +356,30 @@ ItemsManager.initItemsClasses <- function initItemsClasses()
 }
 ::ItemsManager.initItemsClasses() //init classes right after scripts load.
 
-ItemsManager.createItem <- function createItem(itemType, blk, inventoryBlk = null, slotData = null)
+::ItemsManager.createItem <- function createItem(itemType, blk, inventoryBlk = null, slotData = null)
 {
   local iClass = (itemType in itemTypeClasses)? itemTypeClasses[itemType] : ::BaseItem
   return iClass(blk, inventoryBlk, slotData)
 }
 
-ItemsManager.getItemClass <- function getItemClass(itemType)
+::ItemsManager.getItemClass <- function getItemClass(itemType)
 {
   return (itemType in itemTypeClasses)? itemTypeClasses[itemType] : ::BaseItem
 }
 
-ItemsManager.getItemsList <- function getItemsList(typeMask = itemType.ALL, filterFunc = null)
+::ItemsManager.getItemsList <- function getItemsList(typeMask = itemType.ALL, filterFunc = null)
 {
   _checkUpdateList()
   return _getItemsFromList(itemsList, typeMask, filterFunc)
 }
 
-ItemsManager.getShopList <- function getShopList(typeMask = itemType.INVENTORY_ALL, filterFunc = null)
+::ItemsManager.getShopList <- function getShopList(typeMask = itemType.INVENTORY_ALL, filterFunc = null)
 {
   _checkUpdateList()
   return _getItemsFromList(itemsList, typeMask, filterFunc, "shopFilterMask")
 }
 
-ItemsManager.isItemVisible <- function isItemVisible(item, shopTab)
+::ItemsManager.isItemVisible <- function isItemVisible(item, shopTab)
 {
   return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || ::has_feature("devItemShop"))
       && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop
@@ -421,7 +387,7 @@ ItemsManager.isItemVisible <- function isItemVisible(item, shopTab)
     : false
 }
 
-ItemsManager.getShopVisibleSeenIds <- function getShopVisibleSeenIds()
+::ItemsManager.getShopVisibleSeenIds <- function getShopVisibleSeenIds()
 {
   if (!shopVisibleSeenIds)
     shopVisibleSeenIds = getShopList(checkItemsMaskFeatures(itemType.INVENTORY_ALL),
@@ -429,7 +395,7 @@ ItemsManager.getShopVisibleSeenIds <- function getShopVisibleSeenIds()
   return shopVisibleSeenIds
 }
 
-ItemsManager.findItemById <- function findItemById(id, typeMask = itemType.ALL)
+::ItemsManager.findItemById <- function findItemById(id, typeMask = itemType.ALL)
 {
   _checkUpdateList()
   local item = shopItemById?[id] ?? itemsByItemdefId?[id]
@@ -438,17 +404,17 @@ ItemsManager.findItemById <- function findItemById(id, typeMask = itemType.ALL)
   return item
 }
 
-ItemsManager.isItemdefId <- function isItemdefId(id)
+::ItemsManager.isItemdefId <- function isItemdefId(id)
 {
   return typeof id == "integer"
 }
 
-ItemsManager.requestItemsByItemdefIds <- function requestItemsByItemdefIds(itemdefIdsList)
+::ItemsManager.requestItemsByItemdefIds <- function requestItemsByItemdefIds(itemdefIdsList)
 {
   inventoryClient.requestItemdefsByIds(itemdefIdsList)
 }
 
-ItemsManager.getItemOrRecipeBundleById <- function getItemOrRecipeBundleById(id)
+::ItemsManager.getItemOrRecipeBundleById <- function getItemOrRecipeBundleById(id)
 {
   local item = findItemById(id)
   if (item || !ItemGenerators.get(id))
@@ -465,19 +431,7 @@ ItemsManager.getItemOrRecipeBundleById <- function getItemOrRecipeBundleById(id)
   return item
 }
 
-ItemsManager.isMarketplaceEnabled <- function isMarketplaceEnabled()
-{
-  return ::has_feature("Marketplace") && ::has_feature("AllowExternalLink") &&
-    inventoryClient.getMarketplaceBaseUrl() != null
-}
-
-ItemsManager.goToMarketplace <- function goToMarketplace()
-{
-  if (isMarketplaceEnabled())
-    openUrl(inventoryClient.getMarketplaceBaseUrl(), false, false, "marketplace")
-}
-
-ItemsManager.markItemsListUpdate <- function markItemsListUpdate()
+::ItemsManager.markItemsListUpdate <- function markItemsListUpdate()
 {
   _reqUpdateList = true
   shopVisibleSeenIds = null
@@ -486,7 +440,9 @@ ItemsManager.markItemsListUpdate <- function markItemsListUpdate()
   ::broadcastEvent("ItemsShopUpdate")
 }
 
-ItemsManager.markItemsDefsListUpdate <- function markItemsDefsListUpdate()
+::ItemsManager.smokeItems.subscribe(@(p) ::ItemsManager.markItemsListUpdate())
+
+::ItemsManager.markItemsDefsListUpdate <- function markItemsDefsListUpdate()
 {
   _reqUpdateItemDefsList = true
   shopVisibleSeenIds = null
@@ -495,7 +451,7 @@ ItemsManager.markItemsDefsListUpdate <- function markItemsDefsListUpdate()
 }
 
 local lastItemDefsUpdatedelayedCall = 0
-ItemsManager.markItemsDefsListUpdateDelayed <- function markItemsDefsListUpdateDelayed()
+::ItemsManager.markItemsDefsListUpdateDelayed <- function markItemsDefsListUpdateDelayed()
 {
   if (_reqUpdateItemDefsList)
     return
@@ -510,7 +466,7 @@ ItemsManager.markItemsDefsListUpdateDelayed <- function markItemsDefsListUpdateD
   }.bindenv(this))
 }
 
-ItemsManager.onEventItemDefChanged <- function onEventItemDefChanged(p)
+::ItemsManager.onEventItemDefChanged <- function onEventItemDefChanged(p)
 {
   markItemsDefsListUpdateDelayed()
 }
@@ -521,7 +477,7 @@ ItemsManager.onEventItemDefChanged <- function onEventItemDefChanged(p)
 /////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------INVENTORY ITEMS-----------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
-ItemsManager.getInventoryItemType <- function getInventoryItemType(blkType)
+::ItemsManager.getInventoryItemType <- function getInventoryItemType(blkType)
 {
   if (typeof(blkType) == "string") {
     switch (blkType)
@@ -563,7 +519,7 @@ ItemsManager.getInventoryItemType <- function getInventoryItemType(blkType)
   return itemType.UNKNOWN
 }
 
-ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
+::ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
 {
   if (!_needInventoryUpdate)
     return
@@ -691,21 +647,21 @@ ItemsManager._checkInventoryUpdate <- function _checkInventoryUpdate()
   extInventoryUpdateTime = ::dagor.getCurTime()
 }
 
-ItemsManager.getInventoryList <- function getInventoryList(typeMask = itemType.ALL, filterFunc = null)
+::ItemsManager.getInventoryList <- function getInventoryList(typeMask = itemType.ALL, filterFunc = null)
 {
   _checkInventoryUpdate()
   checkAutoConsume()
   return _getItemsFromList(inventory, typeMask, filterFunc)
 }
 
-ItemsManager.getInventoryListByShopMask <- function getInventoryListByShopMask(typeMask, filterFunc = null)
+::ItemsManager.getInventoryListByShopMask <- function getInventoryListByShopMask(typeMask, filterFunc = null)
 {
   _checkInventoryUpdate()
   checkAutoConsume()
   return _getItemsFromList(inventory, typeMask, filterFunc, "shopFilterMask")
 }
 
-ItemsManager.getInventoryVisibleSeenIds <- function getInventoryVisibleSeenIds()
+::ItemsManager.getInventoryVisibleSeenIds <- function getInventoryVisibleSeenIds()
 {
   if (!inventoryVisibleSeenIds)
   {
@@ -717,12 +673,12 @@ ItemsManager.getInventoryVisibleSeenIds <- function getInventoryVisibleSeenIds()
   return inventoryVisibleSeenIds
 }
 
-ItemsManager.getInventoryItemById <- @(id) ::u.search(getInventoryList(), @(item) item.id == id)
+::ItemsManager.getInventoryItemById <- @(id) ::u.search(getInventoryList(), @(item) item.id == id)
 
-ItemsManager.getInventoryItemByCraftedFrom <- @(uid) ::u.search(getInventoryList(),
+::ItemsManager.getInventoryItemByCraftedFrom <- @(uid) ::u.search(getInventoryList(),
   @(item) item.isCraftResult() && item.craftedFrom == uid)
 
-ItemsManager.markInventoryUpdate <- function markInventoryUpdate()
+::ItemsManager.markInventoryUpdate <- function markInventoryUpdate()
 {
   if (_needInventoryUpdate)
     return
@@ -739,7 +695,7 @@ ItemsManager.markInventoryUpdate <- function markInventoryUpdate()
 }
 
 local lastInventoryUpdateDelayedCall = 0
-ItemsManager.markInventoryUpdateDelayed <- function markInventoryUpdateDelayed()
+::ItemsManager.markInventoryUpdateDelayed <- function markInventoryUpdateDelayed()
 {
   if (_needInventoryUpdate)
     return
@@ -754,18 +710,18 @@ ItemsManager.markInventoryUpdateDelayed <- function markInventoryUpdateDelayed()
   }.bindenv(this))
 }
 
-ItemsManager.onItemsLoaded <- function onItemsLoaded()
+::ItemsManager.onItemsLoaded <- function onItemsLoaded()
 {
   isInventoryInternalUpdated = true
   markInventoryUpdate()
 }
 
-ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) {
+::ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) {
   shouldCheckAutoConsume(true)
   _reqUpdateList = true
 }
 
-ItemsManager.onEventSignOut <- function onEventSignOut(p)
+::ItemsManager.onEventSignOut <- function onEventSignOut(p)
 {
   isInventoryFullUpdated = false
   isInventoryInternalUpdated = false
@@ -776,7 +732,7 @@ ItemsManager.onEventSignOut <- function onEventSignOut(p)
 //---------------------------------ITEM UTILS----------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-ItemsManager.checkItemsMaskFeatures <- function checkItemsMaskFeatures(itemsMask) //return itemss mask only of available features
+::ItemsManager.checkItemsMaskFeatures <- function checkItemsMaskFeatures(itemsMask) //return itemss mask only of available features
 {
   foreach(iType, feature in itemTypeFeatures)
     if ((itemsMask & iType) && !::has_feature(feature))
@@ -784,7 +740,7 @@ ItemsManager.checkItemsMaskFeatures <- function checkItemsMaskFeatures(itemsMask
   return itemsMask
 }
 
-ItemsManager._getItemsFromList <- function _getItemsFromList(list, typeMask, filterFunc = null, itemMaskProperty = "iType")
+::ItemsManager._getItemsFromList <- function _getItemsFromList(list, typeMask, filterFunc = null, itemMaskProperty = "iType")
 {
   if (typeMask == itemType.ALL && !filterFunc)
     return list
@@ -797,165 +753,8 @@ ItemsManager._getItemsFromList <- function _getItemsFromList(list, typeMask, fil
   return res
 }
 
-ItemsManager.fillItemDescr <- function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null)
-{
-  handler = handler || ::get_cur_base_gui_handler()
-  item = item?.getSubstitutionItem() ?? item
-
-  local obj = holderObj.findObject("item_name")
-  if (::checkObj(obj))
-    obj.setValue(item? item.getDescriptionTitle() : "")
-
-  local addDescObj = holderObj.findObject("item_desc_under_title")
-  if (::checkObj(addDescObj))
-    addDescObj.setValue(item?.getDescriptionUnderTitle?() ?? "")
-
-  local helpObj = holderObj.findObject("item_type_help")
-  if (::checkObj(helpObj))
-  {
-    local helpText = item && item?.getItemTypeDescription? item.getItemTypeDescription() : ""
-    helpObj.tooltip = helpText
-    helpObj.show(shopDesc && helpText != "")
-  }
-
-  local isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
-  obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
-  if (::checkObj(obj))
-  {
-    local desc = ""
-    if (item)
-    {
-      if (item?.getShortItemTypeDescription)
-        desc = item.getShortItemTypeDescription()
-      local descText = preferMarkup ? item.getLongDescription() : item.getDescription()
-      if (descText.len() > 0)
-        desc += (desc.len() ? "\n\n" : "") + descText
-      local itemLimitsDesc = item?.getLimitsDescription ? item.getLimitsDescription() : ""
-      if (itemLimitsDesc.len() > 0)
-        desc += (desc.len() ? "\n" : "") + itemLimitsDesc
-    }
-    if ("descModifyFunc" in params) {
-      desc = params.descModifyFunc(desc)
-      params.rawdelete("descModifyFunc")
-    }
-
-    local warbondId = ::getTblValue("wbId", params)
-    if (warbondId)
-    {
-      local warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
-      local award = warbond? warbond.getAwardById(item.id) : null
-      if (award)
-        desc = award.addAmountTextToDesc(desc)
-    }
-
-    obj.setValue(desc)
-  }
-
-  obj = holderObj.findObject("item_desc_div")
-  if (::checkObj(obj))
-  {
-    local longdescMarkup = (preferMarkup && item?.getLongDescriptionMarkup)
-      ? item.getLongDescriptionMarkup((params ?? {}).__merge({ shopDesc = shopDesc })) : ""
-
-    obj.show(longdescMarkup != "")
-    if (longdescMarkup != "")
-      obj.getScene().replaceContentFromText(obj, longdescMarkup, longdescMarkup.len(), handler)
-  }
-
-  obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc_under_div" : "item_desc")
-  if (::checkObj(obj))
-    obj.setValue("")
-
-  ::ItemsManager.fillItemTableInfo(item, holderObj)
-
-  obj = holderObj.findObject("item_icon")
-  obj.show(item != null)
-  if (item)
-  {
-    local iconSetParams = {
-      bigPicture = item?.allowBigPicture || false
-      addItemName = !shopDesc
-    }
-    item.setIcon(obj, iconSetParams)
-  }
-
-  if (item && item?.getDescTimers)
-    foreach(timerData in item.getDescTimers())
-    {
-      if (!timerData.needTimer.call(item))
-        continue
-
-      local timerObj = holderObj.findObject(timerData.id)
-      local tData = timerData
-      if (::check_obj(timerObj))
-        SecondsUpdater(timerObj, function(tObj, params)
-        {
-          tObj.setValue(tData.getText.call(item))
-          return !tData.needTimer.call(item)
-        })
-    }
-}
-
-ItemsManager.fillItemTableInfo <- function fillItemTableInfo(item, holderObj)
-{
-  if (!::check_obj(holderObj))
-    return
-
-  local hasItemAdditionalDescTable = ::ItemsManager.fillItemTable(item, holderObj)
-
-  local obj = holderObj.findObject("item_desc_above_table")
-  local text = item?.getDescriptionAboveTable() ?? ""
-  if (::check_obj(obj))
-    obj.setValue(text)
-  hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
-
-  obj = holderObj.findObject("item_desc_under_table")
-  text = item?.getDescriptionUnderTable() ?? ""
-  if (::check_obj(obj))
-    obj.setValue(text)
-  hasItemAdditionalDescTable = hasItemAdditionalDescTable || text != ""
-
-  ::showBtn("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
-}
-
-ItemsManager.fillItemTable <- function fillItemTable(item, holderObj)
-{
-  local containerObj = holderObj.findObject("item_table_container")
-  if (!::checkObj(containerObj))
-    return false
-
-  local tableData = item && item?.getTableData ? item.getTableData() : null
-  local show = tableData != null
-  containerObj.show(show)
-
-  if (show)
-    holderObj.getScene().replaceContentFromText(containerObj, tableData, tableData.len(), this)
-  return show
-}
-
-ItemsManager.getActiveBoostersArray <- function getActiveBoostersArray(effectType = null)
-{
-  local res = []
-  local total = ::get_current_booster_count(INVALID_USER_ID)
-  local bonusType = effectType ? effectType.name : null
-  for (local i = 0; i < total; i++)
-  {
-    local uid = ::get_current_booster_uid(INVALID_USER_ID, i)
-    local item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
-    if (!item || (bonusType && item[bonusType] == 0) || !item.isActive(true))
-      continue
-
-    res.append(item)
-  }
-
-  if (res.len())
-    registerBoosterUpdateTimer(res)
-
-  return res
-}
-
 //just update gamercards atm.
-ItemsManager.registerBoosterUpdateTimer <- function registerBoosterUpdateTimer(boostersList)
+::ItemsManager.registerBoosterUpdateTimer <- function registerBoosterUpdateTimer(boostersList)
 {
   if (!::is_in_flight())
     return
@@ -990,250 +789,48 @@ ItemsManager.registerBoosterUpdateTimer <- function registerBoosterUpdateTimer(b
                                                    )
 }
 
-ItemsManager._onBoosterExpiredInFlight <- function _onBoosterExpiredInFlight(dt = 0)
+::ItemsManager._onBoosterExpiredInFlight <- function _onBoosterExpiredInFlight(dt = 0)
 {
   removeRefreshBoostersTask()
   if (::is_in_flight())
     ::update_gamercards()
 }
 
-ItemsManager.removeRefreshBoostersTask <- function removeRefreshBoostersTask()
+::ItemsManager.removeRefreshBoostersTask <- function removeRefreshBoostersTask()
 {
   if (refreshBoostersTask >= 0)
     ::periodic_task_unregister(refreshBoostersTask)
   refreshBoostersTask = -1
 }
 
-ItemsManager.refreshExtInventory <- function refreshExtInventory()
+::ItemsManager.refreshExtInventory <- function refreshExtInventory()
 {
   inventoryClient.refreshItems()
 }
 
-ItemsManager.forceRefreshExtInventory <- function forceRefreshExtInventory()
-{
-  itemsByItemdefId = {}
-  inventoryClient.forceRefreshItemDefs()
-}
+::ItemsManager.onEventExtInventoryChanged    <- @(p) markInventoryUpdateDelayed()
+::ItemsManager.onEventSendingItemsChanged    <- @(p) markInventoryUpdateDelayed()
 
-ItemsManager.onEventExtInventoryChanged    <- @(p) markInventoryUpdateDelayed()
-ItemsManager.onEventSendingItemsChanged    <- @(p) markInventoryUpdateDelayed()
-
-ItemsManager.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
+::ItemsManager.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
 {
   if (!::is_in_flight())
     removeRefreshBoostersTask()
 }
 
-ItemsManager.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p)
+::ItemsManager.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(p)
 {
-  forceRefreshExtInventory()
+  itemsByItemdefId = {}
+  inventoryClient.forceRefreshItemDefs()
 }
 
-/**
- * Returns structure table of boosters.
- * This structure looks like this:
- * {
- *   <sort_order> = {
- *     publick = [array of public boosters]
- *     personal = [array of personal boosters]
- *   }
- *  maxSortOrder = <maximum sort_order>
- * }
- * Public and personal arrays of boosters sorted by effect type
- */
-ItemsManager.sortBoosters <- function sortBoosters(boosters, effectType)
-{
-  local res = {
-    maxSortOrder = 0
-  }
-  foreach(booster in boosters)
-  {
-    res.maxSortOrder = ::max(::getTblValue("maxSortOrder", res, 0), booster.sortOrder)
-    if (!::getTblValue(booster.sortOrder, res))
-      res[booster.sortOrder] <- {
-        personal = [],
-        public = [],
-      }
-
-    if (booster.personal)
-      res[booster.sortOrder].personal.append(booster)
-    else
-      res[booster.sortOrder].public.append(booster)
-  }
-
-  for (local i = 0; i <= res.maxSortOrder; i++)
-    if (i in res && res[i].len())
-      foreach (arr in res[i])
-        ::ItemsManager.sortByParam(arr, effectType.name)
-  return res
-}
-
-/**
- * Summs effects of passed boosters and returns table in format:
- * {
- *   <BoosterEffectType.name> = <value in percent>
- * }
- */
-ItemsManager.getBoostersEffects <- function getBoostersEffects(boosters)
-{
-  local result = {}
-  foreach (effectType in ::BoosterEffectType)
-  {
-    result[effectType.name] <- 0
-    local sortedBoosters = ::ItemsManager.sortBoosters(boosters, effectType)
-    for (local i = 0; i <= sortedBoosters.maxSortOrder; i++)
-    {
-      if (!(i in sortedBoosters))
-        continue
-      result[effectType.name] += ::calc_public_boost(::ItemsManager.getBoostersEffectsArray(sortedBoosters[i].public, effectType))
-                              + ::calc_personal_boost(::ItemsManager.getBoostersEffectsArray(sortedBoosters[i].personal, effectType))
-    }
-  }
-  return result
-}
-
-ItemsManager.getBoostersEffectsArray <- function getBoostersEffectsArray(itemsArray, effectType)
-{
-  local res = []
-  foreach(item in itemsArray)
-    res.append(item[effectType.name])
-  return res
-}
-
-ItemsManager.getActiveBoostersDescription <- function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null)
-{
-  if (!boostersArray || boostersArray.len() == 0)
-    return ""
-
-  local getColoredNumByType = (@(effectType) function(num) {
-    return ::colorize("activeTextColor", "+" + num.tointeger() + "%") + effectType.currencyMark
-  })(effectType)
-
-  local separateBoosters = []
-
-  local itemsArray = []
-  foreach(booster in boostersArray)
-  {
-    if (booster.showBoosterInSeparateList)
-      separateBoosters.append(booster.getName() + ::loc("ui/colon") + booster.getEffectDesc(true, effectType))
-    else
-      itemsArray.append(booster)
-  }
-  if (separateBoosters.len())
-    separateBoosters.append("\n")
-
-  local sortedItemsTable = ::ItemsManager.sortBoosters(itemsArray, effectType)
-  local detailedDescription = []
-  for (local i = 0; i <= sortedItemsTable.maxSortOrder; i++)
-  {
-    local arraysList = ::getTblValue(i, sortedItemsTable)
-    if (!arraysList || arraysList.len() == 0)
-      continue
-
-    local personalTotal = arraysList.personal.len() == 0
-                          ? 0
-                          : ::calc_personal_boost(::ItemsManager.getBoostersEffectsArray(arraysList.personal, effectType))
-
-    local publicTotal = arraysList.public.len() == 0
-                        ? 0
-                        : ::calc_public_boost(::ItemsManager.getBoostersEffectsArray(arraysList.public, effectType))
-
-    local isBothBoosterTypesAvailable = personalTotal != 0 && publicTotal != 0
-
-    local header = ""
-    local detailedArray = []
-    local insertedSubHeader = false
-
-    foreach(j, arrayName in ["personal", "public"])
-    {
-      local arr = arraysList[arrayName]
-      if (arr.len() == 0)
-        continue
-
-      local personal = arr[0].personal
-      local boostNum = personal? personalTotal : publicTotal
-
-      header = ::loc("mainmenu/boosterType/common")
-      if (arr[0].eventConditions)
-        header = ::UnlockConditions.getConditionsText(arr[0].eventConditions, null, null, { inlineText = true })
-
-      local subHeader = "* " + ::loc("mainmenu/booster/" + arrayName)
-      if (isBothBoosterTypesAvailable)
-      {
-        subHeader += ::loc("ui/colon")
-        subHeader += getColoredNumByType(boostNum)
-      }
-
-      detailedArray.append(subHeader)
-
-      local effectsArray = []
-      foreach(idx, item in arr)
-      {
-        local effOld = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
-        effectsArray.append(item[effectType.name])
-        local effNew = personal? ::calc_personal_boost(effectsArray) : ::calc_public_boost(effectsArray)
-
-        local string = arr.len() == 1? "" : (idx+1) + ") "
-        string += item.getEffectDesc(false) + ::loc("ui/comma")
-        string += ::loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(::format("%.02f", effNew - effOld).tofloat())})
-        string += (idx == arr.len()-1? ::loc("ui/dot") : ::loc("ui/semicolon"))
-
-        if (selectedItem != null && selectedItem.id == item.id)
-          string = ::colorize("userlogColoredText", string)
-
-        detailedArray.append(string)
-      }
-
-      if (!insertedSubHeader)
-      {
-        local totalBonus = publicTotal + personalTotal
-        header += ::loc("ui/colon") + getColoredNumByType(totalBonus)
-        detailedArray.insert(0, header)
-        insertedSubHeader = true
-      }
-    }
-    detailedDescription.append(::g_string.implode(detailedArray, "\n"))
-  }
-
-  local description = ::loc("mainmenu/boostersTooltip", effectType) + ::loc("ui/colon") + "\n"
-  return description + ::g_string.implode(separateBoosters, "\n") + ::g_string.implode(detailedDescription, "\n\n")
-}
-
-ItemsManager.hasActiveBoosters <- function hasActiveBoosters(effectType, personal)
-{
-  local items = ::ItemsManager.getInventoryList(itemType.BOOSTER, (@(effectType, personal) function (item) {
-    return item.isActive(true) && effectType.checkBooster(item) && item.personal == personal
-  })(effectType, personal))
-  return items.len() != 0
-}
-
-ItemsManager.sortEffectsArray <- function sortEffectsArray(a, b)
-{
-  if (a != b)
-    return a > b? -1 : 1
-  return 0
-}
-
-ItemsManager.sortByParam <- function sortByParam(arr, param)
-{
-  local sortByBonus = (@(param) function(a, b) {
-    if (a[param] != b[param])
-      return a[param] > b[param]? -1 : 1
-    return 0
-  })(param)
-
-  arr.sort(sortByBonus)
-  return arr
-}
-
-ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL)
+::ItemsManager.findItemByUid <- function findItemByUid(uid, filterType = itemType.ALL)
 {
   local itemsArray = ::ItemsManager.getInventoryList(filterType)
   local res = u.search(itemsArray, @(item) ::isInArray(uid, item.uids) )
   return res
 }
 
-ItemsManager.collectUserlogItemdefs <- function collectUserlogItemdefs()
+::ItemsManager.collectUserlogItemdefs <- function collectUserlogItemdefs()
 {
   for(local i = 0; i < ::get_user_logs_count(); i++)
   {
@@ -1245,15 +842,15 @@ ItemsManager.collectUserlogItemdefs <- function collectUserlogItemdefs()
   }
 }
 
-ItemsManager.isEnabled <- function isEnabled()
+::ItemsManager.isEnabled <- function isEnabled()
 {
   local checkNewbie = !::my_stats.isMeNewbie()
     || seenInventory.hasSeen()
     || inventory.len() > 0
-  return ::has_feature("Items") && checkNewbie && ::isInMenu()
+  return ::has_feature("Items") && checkNewbie
 }
 
-ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeenList = null)
+::ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeenList = null)
 {
   return function(item1, item2)
   {
@@ -1270,7 +867,7 @@ ItemsManager.getItemsSortComparator <- function getItemsSortComparator(itemsSeen
   }
 }
 
-ItemsManager.getRawInventoryItemAmount <- function getRawInventoryItemAmount(itemdefid)
+::ItemsManager.getRawInventoryItemAmount <- function getRawInventoryItemAmount(itemdefid)
 {
   return rawInventoryItemAmountsByItemdefId?[itemdefid] ?? 0
 }

@@ -1032,7 +1032,7 @@
     ]
   },
   "gunConvergence": {
-    "distance": 800.0,
+    "defaultDistance": 800.0,
     "vertical": true,
     "horizontal": true
   },
@@ -1644,6 +1644,9 @@
       },
       "turret_01_top_dm": {
         "armorThickness": 75.0
+      },
+      "turret_03_side_dm": {
+        "armorThickness": 25.0
       }
     },
     "mask": {
@@ -1761,55 +1764,30 @@
     "tracks": {
       "armorClass": "tank_traks",
       "armorThickness": 30.0,
-      "hp": 300.0,
+      "hp": 100.0,
+      "genericEffectiveThicknessMax": 30.0,
       "track_r_dm": [],
       "track_l_dm": []
     },
     "crew": {
       "armorClass": "steel_tankman",
       "hp": 40.0,
-      "driver_dm": {
-        "genericDamageMult": 3.0
-      },
-      "loader_dm": {
-        "genericDamageMult": 3.0
-      },
-      "loader_01_dm": {
-        "genericDamageMult": 3.0
-      },
-      "loader_02_dm": {
-        "genericDamageMult": 3.0
-      },
-      "gunner_dm": {
-        "genericDamageMult": 3.0
-      },
-      "gunner_01_dm": {
-        "genericDamageMult": 3.0
-      },
-      "gunner_02_dm": {
-        "genericDamageMult": 3.0
-      },
-      "gunner_03_dm": {
-        "genericDamageMult": 3.0
-      },
-      "commander_dm": {
-        "genericDamageMult": 3.0
-      },
-      "machine_gunner_dm": {
-        "genericDamageMult": 3.0
-      },
-      "machine_gunner_01_dm": {
-        "genericDamageMult": 3.0
-      },
-      "machine_gunner_02_dm": {
-        "genericDamageMult": 3.0
-      },
-      "machine_gunner_03_dm": {
-        "genericDamageMult": 3.0
-      },
-      "machine_gunner_04_dm": {
-        "genericDamageMult": 3.0
-      }
+      "genericDamageMult": 3.0,
+      "pressureDamageMult": 1.0,
+      "driver_dm": [],
+      "loader_dm": [],
+      "loader_01_dm": [],
+      "loader_02_dm": [],
+      "gunner_dm": [],
+      "gunner_01_dm": [],
+      "gunner_02_dm": [],
+      "gunner_03_dm": [],
+      "commander_dm": [],
+      "machine_gunner_dm": [],
+      "machine_gunner_01_dm": [],
+      "machine_gunner_02_dm": [],
+      "machine_gunner_03_dm": [],
+      "machine_gunner_04_dm": []
     },
     "equipment_body_turret": {
       "armorClass": "tank_structural_steel",
@@ -2314,8 +2292,16 @@
     },
     "tracks": {
       "animationMultiplier": 0.58,
-      "height": 0.05,
-      "width": 0.6
+      "height": 0.07,
+      "width": 0.7,
+      "fricSideRot": [5.0,0.0,0.7,0.3],
+      "fricFrontal": [1.0,0.8],
+      "tracksTensionK": [3.0,10.0,2.0],
+      "trackMesh": "ussr_kv_wide_phys_track_line",
+      "trackLen": 0.155,
+      "trackCount": 90,
+      "trackFadeTime": 1.2,
+      "trackMaxHeight": 1.32
     },
     "collisionProps": {
       "cls_turret_01": "convex_hull",
@@ -2358,8 +2344,9 @@
     "suspension": {
       "suspensionOffsets": [-0.15,-0.115,0.14],
       "defaultGearRadius": 0.305,
-      "topGearRadius": 0.15,
+      "topGearRadius": 0.19,
       "defaultDampeningForce": [150000.0,150000.0],
+      "frontBackGearRadius": 0.332,
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15
     }

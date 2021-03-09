@@ -13,7 +13,7 @@
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
   "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
@@ -2322,6 +2322,13 @@
         "name": "etendard_4m_as20",
         "blk": "gameData/FlightModels/weaponPresets/etendard_4m_as20.blk",
         "reqModification": "nord_as_20"
+      }
+    },
+    {
+      "preset": {
+        "name": "etendard_4m_as30",
+        "blk": "gameData/FlightModels/weaponPresets/etendard_4m_as30.blk",
+        "reqModification": "nord_as_30"
       }
     },
     {
@@ -6434,6 +6441,11 @@
     "nord_as_20": {
       "prevModification": "us_1000lb_mk83",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "nord_as_30": {
+      "prevModification": "nord_as_20",
+      "tier": 4,
       "modClass": "weapon"
     },
     "fr_matra_sneb": {

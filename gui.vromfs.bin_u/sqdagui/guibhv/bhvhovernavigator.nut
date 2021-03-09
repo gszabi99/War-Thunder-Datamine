@@ -6,6 +6,8 @@ setValue only move mouse to child
 */
 
 class ::gui_bhv.HoverNavigator extends ::gui_bhv.posNavigator {
+  bhvId = "HoverNavigator"
+
   function onAttach(obj)
   {
     markChildrenInteractive(obj, true)

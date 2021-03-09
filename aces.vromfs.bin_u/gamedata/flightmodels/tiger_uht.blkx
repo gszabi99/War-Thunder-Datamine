@@ -2597,11 +2597,16 @@
     "new_heli_cover": [],
     "heli_flak_jacket": [],
     "heli_structure": [],
+    "maw_countermeasures_launcher_chaff_only": [],
+    "maw_countermeasures_launcher_flare_only": [],
+    "maw_countermeasures_launcher_chaff_priority": [],
+    "maw_countermeasures_launcher_flare_priority": [],
     "MAW_system_heli_false_thermal_targets": {
+      "modClass": "weapon",
       "turn_it_off": false,
       "tier": 1,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "effects": {
         "commonWeapons": [
           {
@@ -2631,9 +2636,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
@@ -2645,9 +2650,9 @@
           },
           {
             "Weapon": {
-              "trigger": "flares",
+              "trigger": "countermeasures",
               "startFx": "",
-              "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk",
               "emitter": "emtr_flare2",
               "bullets": 30,
               "external": true,

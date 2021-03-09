@@ -1,6 +1,11 @@
 <<#itemBlock>>
   itemBlock {
   <<#hasComponent>>hasComponent:t='yes'<</hasComponent>>
+  <<#isTooltipByHold>>
+    <<#items>>
+    tooltipId:t='<<tooltipId>>'
+    <</items>>
+  <</isTooltipByHold>>
   <<#isDisabled>>isDisabled:t='yes'<</isDisabled>>
     <<#itemId>>itemId:t='<<itemId>>'<</itemId>>
     <<#blockPos>>

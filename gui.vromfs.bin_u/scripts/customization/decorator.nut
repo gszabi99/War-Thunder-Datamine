@@ -3,6 +3,7 @@ local itemRarity = require("scripts/items/itemRarity.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
 local skinLocations = require("scripts/customization/skinLocations.nut")
 local stdMath = require("std/math.nut")
+local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
 
 ::Decorator <- class
 {
@@ -34,6 +35,7 @@ local stdMath = require("std/math.nut")
 
   cost = null
   forceShowInCustomization = null
+  maxSurfaceAngle = 180
 
   isToStringForDebug = true
 
@@ -60,6 +62,7 @@ local stdMath = require("std/math.nut")
 
     cost = decoratorType.getCost(id)
     forceShowInCustomization = ::getTblValue("forceShowInCustomization", blk, false)
+    maxSurfaceAngle = blk?.maxSurfaceAngle ?? 180
 
     tex = blk ? ::get_decal_tex(blk, 1) : id
     aspect_ratio = blk ? decoratorType.getRatio(blk) : 1
@@ -87,7 +90,7 @@ local stdMath = require("std/math.nut")
 
     rarity  = itemRarity.get(blk?.item_quality, blk?.name_color)
 
-    if (blk?.marketplaceItemdefId != null && ::ItemsManager.isMarketplaceEnabled())
+    if (blk?.marketplaceItemdefId != null && isMarketplaceEnabled())
     {
       couponItemdefId = blk.marketplaceItemdefId
 

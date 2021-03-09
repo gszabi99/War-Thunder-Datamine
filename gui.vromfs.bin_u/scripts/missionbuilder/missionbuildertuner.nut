@@ -1,6 +1,6 @@
 local { getLastWeapon, isWeaponVisible } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText,
-        getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+        getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { AMMO,
         getAmmoCost,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")

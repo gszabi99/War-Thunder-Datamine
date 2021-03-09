@@ -11,6 +11,7 @@ class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/worldWar/worldWarMap.blk"
   operationStringTpl = "gui/worldWar/operationString"
+  handlerLocId = "mainmenu/operationsMap"
 
   UPDATE_ARMY_STRENGHT_DELAY = 60000
 

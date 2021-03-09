@@ -44,7 +44,8 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function updateHandler(checkDefShow = false)
   {
     recentItems = ::g_recent_items.getRecentItems()
-    local isVisible = (!checkDefShow || defShow) && recentItems.len() > 0 && ::ItemsManager.isEnabled()
+    local isVisible = (!checkDefShow || defShow) && recentItems.len() > 0
+      && ::ItemsManager.isEnabled() && ::isInMenu()
     ::show_obj(scene, isVisible)
     wasShown = isVisible
     if (!isVisible)

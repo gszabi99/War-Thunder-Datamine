@@ -1,4 +1,6 @@
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
+local { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
+
 local wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
     getTooltipContent = function(id, params)
@@ -102,4 +104,4 @@ local wwTooltipTypes = {
   }
 }
 
-::g_tooltip_type.addTooltipType(wwTooltipTypes)
+return addTooltipTypes(wwTooltipTypes)

@@ -13,6 +13,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getUnitShopPriceText } = require("scripts/shop/unitCardPkg.nut")
 local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 local { isDiffUnlocked } = require("scripts/tutorials/tutorialsData.nut")
+local { RANDOM_UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 
 /*
 if need - put commented in array above
@@ -242,6 +243,7 @@ if need - put commented in array above
       hasTalismanIcon     = isLocalState && (special || ::shop_is_modification_enabled(air.name, "premExpMul"))
       itemButtons         = ::handyman.renderCached("gui/slotbar/slotbarItemButtons", itemButtonsView)
       tooltipId           = ::g_tooltip.getIdUnit(air.name, params?.tooltipParams)
+      isTooltipByHold     = ::show_console_buttons
       bottomButton        = ::handyman.renderCached("gui/slotbar/slotbarItemBottomButton", bottomButtonView)
       extraInfoBlock      = ::handyman.renderCached("gui/slotbar/slotExtraInfoBlock", extraInfoView)
       refuseOpenHoverMenu = !hasActions
@@ -260,7 +262,7 @@ if need - put commented in array above
       resView.isElite = false
       resView.unitRarity = ""
       resView.unitRankText = ""
-      resView.tooltipId = ::g_tooltip_type.RANDOM_UNIT.getTooltipId(air.name, {groupName = groupName})
+      resView.tooltipId = RANDOM_UNIT.getTooltipId(air.name, {groupName = groupName})
     }
 
     res = ::handyman.renderCached("gui/slotbar/slotbarSlotSingle", resView)
@@ -455,6 +457,7 @@ if need - put commented in array above
       bonusId             = id
       primaryUnitId       = nextAir.name
       tooltipId           = ::g_tooltip.getIdUnit(nextAir.name, params?.tooltipParams)
+      isTooltipByHold     = ::show_console_buttons
       bottomButton        = ::handyman.renderCached("gui/slotbar/slotbarItemBottomButton", bottomButtonView)
       hasFullGroupBlock   = params?.fullGroupBlock ?? true
       fullGroupBlockId    = "td_" + id
@@ -486,6 +489,7 @@ if need - put commented in array above
       isItemDisabled      = bitStatus == bit_unit_status.disabled
       needMultiLineName   = params?.needMultiLineName
       tooltipId           = params?.tooltipId ?? ""
+      isTooltipByHold     = ::show_console_buttons
       bottomLineText      = params?.bottomLineText
     })
     res = ::handyman.renderCached("gui/slotbar/slotbarSlotFake", fakeSlotView)

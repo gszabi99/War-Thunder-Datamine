@@ -4,6 +4,10 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
+  "haveCCIPForRocket": true,
+  "haveCCIPForBombs": true,
+  "haveCCIPForGun": true,
+  "ilsLCOSS": true,
   "JetNozzlesAnim1": [0.3,0.5],
   "JetNozzlesAnim2": [0.5,1.0],
   "JetNozzlesAnim3": [1.0,0.0],
@@ -1862,15 +1866,30 @@
       }
     },
     {
-      "multifunctionDisplays": {
-        "display": {
-          "textureArea": [0.0,0.5,0.5,1.0],
-          "page": {
-            "type": "radar_b_round",
-            "radarScale": 1.0
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.6,0.5,1.15],
+            "page": {
+              "type": "radar_b_round",
+              "radarScale": 1.1,
+              "radarColor": "#ff731bff"
+            }
+          }
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "page": {
+              "type": "plane_ils",
+              "ilsSize": [0.15,0.15],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5,
+              "ilsColor": "#ca1e0ac8"
+            }
           }
         }
-      }
+      ]
     },
     {
       "parts_holes_dmg": {

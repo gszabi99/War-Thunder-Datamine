@@ -158,6 +158,12 @@
       },
       {
         "replace_tex": {
+          "from": "flag_poland_01_c*",
+          "to": "flag_uk_01_c_tomoe*"
+        }
+      },
+      {
+        "replace_tex": {
           "from": "flag_japan_01_c*",
           "to": "flag_japan_01_c_tomoe*"
         }
@@ -214,12 +220,6 @@
         "replace_tex": {
           "from": "flag_germany_05_c*",
           "to": "flag_germany_01_c_tomoe*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "germany_flag_decal*",
-          "to": "germany_harm_flag_decal*"
         }
       },
       {
@@ -1676,6 +1676,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
+        "genericDamageMult": 0.5,
         "compartment_01_dm": {
           "hp": 4088.0
         },
@@ -1711,50 +1712,51 @@
         }
       },
       "cover": {
-        "fireParamsPreset": "ship_cover_cruiser",
-        "stopChanceOnDeadPart": 0.6,
+        "stopChanceOnDeadPart": 0.7,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 20.0,
+        "armorThickness": 25.4,
         "hidableInViewer": true,
+        "genericDamageMult": 0.5,
         "cover_01_dm": {
-          "hp": 4500.0
+          "hp": 8000.0
         },
         "cover_02_dm": {
-          "hp": 4500.0
+          "hp": 8000.0
         },
         "cover_03_dm": {
-          "hp": 3478.0
+          "hp": 5218.0
         },
         "cover_04_dm": {
-          "hp": 4500.0
+          "hp": 8000.0
         },
         "cover_05_dm": {
-          "hp": 4337.0
+          "hp": 6506.0
         },
         "cover_06_dm": {
-          "hp": 4500.0
+          "hp": 8000.0
         },
         "cover_07_dm": {
-          "hp": 4500.0
+          "hp": 7952.0
         },
         "cover_08_dm": {
-          "hp": 4500.0
+          "hp": 7961.0
         },
         "cover_09_dm": {
-          "hp": 4500.0
+          "hp": 8000.0
         }
       },
       "superstructures": {
-        "stopChanceOnDeadPart": 0.7,
+        "stopChanceOnDeadPart": 0.8,
         "fireParamsPreset": "ship_superstructure",
         "armorClass": "ship_structural_steel",
         "armorThickness": 8.0,
-        "oneSided": true,
+        "oneSided": false,
+        "genericDamageMult": 0.5,
         "superstructure_back_dm": {
-          "hp": 3331.0
+          "hp": 5000.0
         },
         "superstructure_top_dm": {
-          "hp": 4327.0
+          "hp": 5000.0
         }
       },
       "hull_construction": {
@@ -1762,79 +1764,80 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 16.0,
         "fireDamageMult": 0.1,
+        "genericDamageMult": 0.1,
         "mid_bottom_dm": {
           "hp": 20000.0
         }
       },
       "bulkheads": {
-        "stopChanceOnDeadPart": 0.7,
+        "stopChanceOnDeadPart": 0.5,
         "armorClass": "ship_structural_steel",
         "armorThickness": 16.0,
         "fireDamageMult": 0.1,
         "bulkhead_01_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_02_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_03_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_04_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_05_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_06_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_07_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_08_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_09_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_10_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_11_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_12_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_13_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_14_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_15_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_16_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_17_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_18_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_19_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         },
         "bulkhead_20_dm": {
-          "hp": 1500.0
+          "hp": 8000.0
         }
       },
       "masts": {
         "armorClass": "ship_structural_steel",
-        "armorThickness": 15.0
+        "armorThickness": 30.0
       },
       "engine": {
         "fireParamsPreset": "cruier_engine",
@@ -1842,24 +1845,16 @@
         "armorThickness": 10.0,
         "fireProtectionHp": 6.0,
         "engine_room_01_dm": {
-          "armorThrough": 500.0,
+          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_02_dm": {
-          "armorThrough": 500.0,
+          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_03_dm": {
-          "armorThrough": 500.0,
+          "armorThrough": 250.0,
           "hp": 2500.0
-        },
-        "funnel_01_dm": {
-          "shatterDamageMult": 1.2,
-          "hp": 800.0
-        },
-        "funnel_02_dm": {
-          "shatterDamageMult": 1.2,
-          "hp": 719.0
         },
         "transmission_01_dm": {
           "secondaryShatterDamageMult": 0.1,
@@ -1868,6 +1863,19 @@
         "transmission_02_dm": {
           "secondaryShatterDamageMult": 0.1,
           "hp": 1000.0
+        }
+      },
+      "funnels": {
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 7.0,
+        "genericDamageMult": 0.3,
+        "explosionDamageMult": 1.5,
+        "fireDamageMult": 0.1,
+        "funnel_01_dm": {
+          "hp": 2500.0
+        },
+        "funnel_02_dm": {
+          "hp": 2500.0
         }
       },
       "steering_gear": {
@@ -1883,8 +1891,6 @@
         "armorClass": "ships_oil_fuel_tank",
         "armorThickness": 10.0,
         "stopChanceOnDeadPart": 0.5,
-        "fireParamsPreset": "ship_fuel_tank",
-        "fireProtectionHp": 30.0,
         "fuel_tank_01_dm": {
           "hp": 7000.0
         },
@@ -1910,7 +1916,6 @@
       "coal_bunkers": {
         "armorClass": "ships_coal_bunker",
         "armorThickness": 10.0,
-        "fireParamsPreset": "ship_coal_bunker",
         "stopChanceOnDeadPart": 0.05,
         "fireProtectionHp": 30.0
       },
@@ -2368,6 +2373,7 @@
         "fireParamsPreset": "ship_turrets",
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
+        "fireDamageMult": 1.5,
         "oneSided": true,
         "main_caliber_turret_01_dm": {
           "hp": 750.0
@@ -2383,7 +2389,7 @@
         }
       },
       "turrets_aux_caliber": {
-        "fireParamsPreset": "ship_turrets",
+        "fireParamsPreset": "ship_aux_turrets",
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0,
         "oneSided": true,
@@ -2411,7 +2417,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 6.0,
         "oneSided": true,
-        "fireDamageMult": 2.0,
+        "fireDamageMult": 1.5,
         "aa_turret_01_dm": {
           "hp": 100.0
         },
@@ -2628,52 +2634,55 @@
         "fireProtectionHp": 15.0
       },
       "ammo_storages_shells": {
-        "fireDamageMult": 0.8,
-        "explosionDamageMult": 0.8,
-        "shatterDamageMult": 0.8,
-        "secondaryShatterDamageMult": 0.5,
+        "fireDamageMult": 0.75,
+        "explosionDamageMult": 0.75,
+        "shatterDamageMult": 0.75,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 25.4,
+        "fireParamsPreset": "ship_ammo_fire_total",
+        "armorThickness": 7.0,
         "oneSided": true,
-        "fireProtectionHp": 15.0,
+        "fireProtectionHp": 10.0,
+        "armorThrough": 250.0,
         "ammunition_storage_shells_01_dm": {
-          "hp": 4500.0
+          "hp": 5000.0
         },
         "ammunition_storage_shells_02_dm": {
-          "hp": 4500.0
+          "hp": 5000.0
         },
         "ammunition_storage_shells_03_dm": {
-          "hp": 4500.0
+          "hp": 5000.0
         },
         "ammunition_storage_shells_04_dm": {
-          "hp": 4500.0
+          "hp": 5000.0
         }
       },
       "ammo_storages_charges": {
         "armorClass": "ship_structural_steel",
-        "fireParamsPreset": "ship_ammo_fire",
         "armorThickness": 3.0,
         "oneSided": true,
+        "explosionDamageMult": 0.75,
         "fireProtectionHp": 10.0,
+        "armorThrough": 250.0,
         "ammunition_storage_charges_01_dm": {
-          "hp": 2000.0
+          "hp": 4500.0
         },
         "ammunition_storage_charges_02_dm": {
-          "hp": 2000.0
+          "hp": 4500.0
         },
         "ammunition_storage_charges_03_dm": {
-          "hp": 2500.0
+          "hp": 4500.0
         },
         "ammunition_storage_charges_04_dm": {
-          "hp": 2452.0
+          "hp": 4500.0
         }
       },
       "ammo_storages_auxiliary": {
         "armorClass": "ship_structural_steel",
         "fireParamsPreset": "ship_ammo_fire_aux",
-        "armorThickness": 15.0,
+        "armorThickness": 3.0,
         "oneSided": true,
-        "fireProtectionHp": 10.0,
+        "fireProtectionHp": 12.0,
+        "armorThrough": 200.0,
         "ammunition_storage_aux_01_dm": {
           "hp": 1000.0
         },
@@ -2707,38 +2716,26 @@
       },
       "ammo_first_stage": {
         "armorClass": "ship_structural_steel",
-        "fireParamsPreset": "ship_ammo_fire",
+        "fireParamsPreset": "ship_ammo_fire_aux",
         "oneSided": true,
-        "armorThickness": 25.4,
+        "armorThickness": 7.0,
         "fireProtectionHp": 10.0,
         "ammo_turret_01_dm": {
-          "hp": 1000.0
+          "hp": 1186.0
         },
         "ammo_turret_02_dm": {
-          "hp": 1000.0
+          "hp": 1186.0
         },
         "ammo_turret_03_dm": {
-          "hp": 1000.0
+          "hp": 1186.0
         },
         "ammo_turret_04_dm": {
-          "hp": 1000.0
+          "hp": 1186.0
         },
         "ammo_turret_05_dm": {
           "hp": 1186.0
         },
         "ammo_turret_06_dm": {
-          "hp": 1186.0
-        },
-        "ammo_turret_07_dm": {
-          "hp": 1186.0
-        },
-        "ammo_turret_08_dm": {
-          "hp": 1186.0
-        },
-        "ammo_turret_09_dm": {
-          "hp": 1186.0
-        },
-        "ammo_turret_10_dm": {
           "hp": 1186.0
         }
       },
@@ -2801,6 +2798,7 @@
       },
       "elevators": {
         "armorClass": "ship_structural_steel",
+        "fireParamsPreset": "ship_cruiser_barbettes",
         "armorThickness": 10.0,
         "fireDamageMult": 1.5,
         "fireProtectionHp": 5.0,
@@ -2902,12 +2900,12 @@
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 61
+        "crew": 62
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 61
+        "crew": 62
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
@@ -2922,7 +2920,7 @@
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 106
+        "crew": 104
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
@@ -3045,22 +3043,22 @@
         "crew": 8
       },
       "sailor32": {
-        "dmPart": "ammunition_storage_charges_01_dm",
+        "dmPart": "ammunition_storage_shells_01_dm",
         "role": "sailor",
         "crew": 20
       },
       "sailor33": {
-        "dmPart": "ammunition_storage_charges_02_dm",
+        "dmPart": "ammunition_storage_shells_02_dm",
         "role": "sailor",
         "crew": 20
       },
       "sailor34": {
-        "dmPart": "ammunition_storage_charges_03_dm",
+        "dmPart": "ammunition_storage_shells_03_dm",
         "role": "sailor",
         "crew": 20
       },
       "sailor35": {
-        "dmPart": "ammunition_storage_charges_04_dm",
+        "dmPart": "ammunition_storage_shells_04_dm",
         "role": "sailor",
         "crew": 20
       },
@@ -3147,23 +3145,25 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
-              "expl": 1.0,
+              "expl": 0.6,
+              "fire": 0.61,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "fire",
-              "fire": 1.0,
-              "damage": 300.0,
+              "expl": 0.99,
+              "damage": 50.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.11,
-              "damage": 300.0,
+              "fire": 0.85,
+              "expl": 0.95,
+              "damage": 1000.0,
               "fHitCritical": false
             }
           }
@@ -3180,16 +3180,16 @@
           {
             "onHit": {
               "damageType": "fire",
-              "fire": 1.0,
-              "damage": 150.0,
+              "fire": 0.95,
+              "damage": 75.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.33,
-              "damage": 400.0,
+              "fire": 0.67,
+              "damage": 1500.0,
               "fHitCritical": false
             }
           }
@@ -3199,23 +3199,15 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
-              "fire": 1.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "fire": 1.0,
-              "damage": 200.0,
+              "expl": 0.76,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "fire",
-              "fire": 1.0,
-              "damage": 50.0,
+              "fire": 0.95,
+              "damage": 75.0,
               "fHitCritical": false
             }
           },
@@ -3223,7 +3215,7 @@
             "onHit": {
               "damageType": "shatter",
               "fire": 0.5,
-              "damage": 50.0,
+              "damage": 100.0,
               "fHitCritical": false
             }
           }
@@ -3233,24 +3225,23 @@
         "ammunition_first_stage": [
           {
             "onKill": {
-              "fire": 1.0,
+              "expl": 1.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "fire",
-              "fire": 1.0,
-              "damage": 200.0,
+              "fire": 0.85,
+              "damage": 50.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "expl": 0.11,
-              "fire": 1.0,
-              "damage": 300.0,
+              "expl": 0.89,
+              "damage": 400.0,
               "fHitCritical": false
             }
           }
@@ -3267,7 +3258,7 @@
           {
             "onHit": {
               "damageType": "fire",
-              "damage": 150.0,
+              "damage": 50.0,
               "expl": 0.1
             }
           },
@@ -3282,18 +3273,47 @@
         ]
       },
       {
-        "ammunition_torpedoes": [
+        "handling_room": [
           {
             "onKill": {
-              "nothing": 0.9,
-              "expl": 0.1,
+              "expl": 0.25,
+              "fire": 0.26,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.5,
+              "expl": 0.8,
+              "damage": 450.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
               "damageType": "explosion",
-              "expl": 0.05,
+              "fire": 0.56,
+              "expl": 0.89,
+              "damage": 350.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "ammunition_torpedoes": [
+          {
+            "onKill": {
+              "expl": 0.03,
+              "nothing": 0.04,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.85,
               "damage": 400.0,
               "fHitCritical": false
             }
@@ -3301,8 +3321,8 @@
           {
             "onHit": {
               "damageType": "fire",
-              "expl": 0.1,
-              "damage": 250.0,
+              "expl": 0.9,
+              "damage": 50.0,
               "fHitCritical": false
             }
           }
@@ -3319,7 +3339,7 @@
           {
             "onHit": {
               "damageType": "fire",
-              "damage": 100.0,
+              "damage": 50.0,
               "expl": 0.1
             }
           },
@@ -3328,307 +3348,6 @@
               "damageType": "explosion",
               "expl": 0.15,
               "damage": 250.0,
-              "fHitCritical": false
-            }
-          }
-        ]
-      },
-      {
-        "part": {
-          "name": "ammo_turret_01_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_02_dm",
-          "onKill": {
-            "main_caliber_turret_02_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_03_dm",
-          "onKill": {
-            "main_caliber_turret_03_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_04_dm",
-          "onKill": {
-            "main_caliber_turret_04_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_05_dm",
-          "onKill": {
-            "main_caliber_turret_05_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_06_dm",
-          "onKill": {
-            "main_caliber_turret_06_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_07_dm",
-          "onKill": {
-            "main_caliber_turret_07_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_08_dm",
-          "onKill": {
-            "main_caliber_turret_08_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_09_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_09_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_10_dm",
-          "onKill": {
-            "main_caliber_turret_10_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_11_dm",
-          "onKill": {
-            "main_caliber_turret_11_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_12_dm",
-          "onKill": {
-            "main_caliber_turret_12_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_13_dm",
-          "onKill": {
-            "main_caliber_turret_13_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_14_dm",
-          "onKill": {
-            "main_caliber_turret_14_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammo_turret_15_dm",
-          "onKill": {
-            "main_caliber_turret_15_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_01_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_02_dm",
-          "onKill": {
-            "main_caliber_turret_02_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_03_dm",
-          "onKill": {
-            "main_caliber_turret_03_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_04_dm",
-          "onKill": {
-            "main_caliber_turret_04_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_05_dm",
-          "onKill": {
-            "main_caliber_turret_05_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_06_dm",
-          "onKill": {
-            "main_caliber_turret_06_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_07_dm",
-          "onKill": {
-            "main_caliber_turret_07_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_08_dm",
-          "onKill": {
-            "main_caliber_turret_08_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_09_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_09_dm",
-          "onKill": {
-            "main_caliber_turret_01_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_10_dm",
-          "onKill": {
-            "main_caliber_turret_10_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_11_dm",
-          "onKill": {
-            "main_caliber_turret_11_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_12_dm",
-          "onKill": {
-            "main_caliber_turret_12_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_13_dm",
-          "onKill": {
-            "main_caliber_turret_13_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_14_dm",
-          "onKill": {
-            "main_caliber_turret_14_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": {
-          "name": "ammunition_storage_charges_15_dm",
-          "onKill": {
-            "main_caliber_turret_15_dm": 1.0
-          }
-        }
-      },
-      {
-        "part": [
-          {
-            "name": "fuel_tank_dm"
-          },
-          {
-            "name": "fuel_tank_01_dm"
-          },
-          {
-            "name": "fuel_tank_02_dm"
-          },
-          {
-            "name": "fuel_tank_03_dm"
-          },
-          {
-            "name": "fuel_tank_04_dm"
-          },
-          {
-            "name": "fuel_tank_05_dm"
-          },
-          {
-            "name": "fuel_tank_06_dm"
-          },
-          {
-            "name": "fuel_tank_07_dm"
-          },
-          {
-            "name": "fuel_tank_08_dm"
-          },
-          {
-            "name": "fuel_tank_09_dm"
-          },
-          {
-            "name": "fuel_tank_10_dm"
-          },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "fire": 0.05,
-              "damage": 400.0,
               "fHitCritical": false
             }
           }
@@ -3656,7 +3375,8 @@
           },
           {
             "onKill": {
-              "fire": 0.2,
+              "fire": 0.69,
+              "nothing": 0.7,
               "fHitCritical": false
             }
           }
@@ -3732,63 +3452,16 @@
           },
           {
             "onHit": {
-              "damageType": "explosion",
-              "fire": 0.05,
-              "damage": 300.0,
-              "fHitCritical": false
+              "damageType": "fire",
+              "fire": 0.9,
+              "damage": 75.0
             }
           },
           {
             "onHit": {
-              "damageType": "shatter",
-              "fire": 0.0005,
-              "damage": 25.0,
-              "fHitCritical": false
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "cover_01_dm"
-          },
-          {
-            "name": "cover_02_dm"
-          },
-          {
-            "name": "cover_03_dm"
-          },
-          {
-            "name": "cover_04_dm"
-          },
-          {
-            "name": "cover_05_dm"
-          },
-          {
-            "name": "cover_06_dm"
-          },
-          {
-            "name": "cover_07_dm"
-          },
-          {
-            "name": "cover_08_dm"
-          },
-          {
-            "name": "cover_09_dm"
-          },
-          {
-            "name": "cover_10_dm"
-          },
-          {
-            "name": "cover_11_dm"
-          },
-          {
-            "onHit": {
               "damageType": "explosion",
-              "fire": 0.03,
-              "damage": 300.0,
-              "fHitCritical": false
+              "fire": 0.75,
+              "damage": 450.0
             }
           }
         ]
@@ -3816,17 +3489,16 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "fire": 0.06,
+              "fire": 0.75,
               "damage": 350.0,
               "fHitCritical": false
             }
           },
           {
             "onHit": {
-              "damageType": "shatter",
-              "fire": 0.0001,
-              "damage": 25.0,
-              "fHitCritical": false
+              "damageType": "fire",
+              "fire": 0.75,
+              "damage": 50.0
             }
           }
         ]
@@ -3879,9 +3551,179 @@
             "name": "main_caliber_turret_15_dm"
           },
           {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.85,
+              "damage": 50.0
+            }
+          },
+          {
             "onKill": {
-              "nothing": 0.75,
-              "fire": 0.25
+              "fire": 0.3,
+              "nothing": 0.31
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "auxiliary_caliber_turret_01_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_02_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_03_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_04_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_05_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_06_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_07_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_08_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_09_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_10_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_11_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_12_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_13_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_14_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_15_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_16_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_17_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_18_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_19_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_20_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_21_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_22_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_23_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_24_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_25_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_26_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_27_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_28_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_29_dm"
+          },
+          {
+            "name": "auxiliary_caliber_turret_30_dm"
+          },
+          {
+            "onKill": {
+              "fire": 0.3,
+              "nothing": 0.31
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "elevator_01_dm"
+          },
+          {
+            "name": "elevator_02_dm"
+          },
+          {
+            "name": "elevator_03_dm"
+          },
+          {
+            "name": "elevator_04_dm"
+          },
+          {
+            "name": "elevator_05_dm"
+          },
+          {
+            "name": "elevator_06_dm"
+          },
+          {
+            "name": "elevator_07_dm"
+          },
+          {
+            "name": "elevator_08_dm"
+          },
+          {
+            "name": "elevator_09_dm"
+          },
+          {
+            "name": "elevator_10_dm"
+          },
+          {
+            "name": "elevator_11_dm"
+          },
+          {
+            "name": "elevator_12_dm"
+          },
+          {
+            "name": "elevator_13_dm"
+          },
+          {
+            "name": "elevator_14_dm"
+          },
+          {
+            "name": "elevator_15_dm"
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 0.85,
+              "damage": 50.0
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "fire": 1.0,
+              "damage": 400.0
             }
           }
         ]
@@ -8525,7 +8367,27 @@
           "fx": {
             "name": "ship_explosion_large_second",
             "scale": 0.5,
-            "centerDmgPart": false
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ready_use_ammo_fire",
+          "fx": {
+            "name": "ship_fire",
+            "scale": 0.3,
+            "centerDmgPart": true
+          }
+        }
+      },
+      {
+        "event": {
+          "name": "ready_use_ammo_explosion",
+          "fx": {
+            "name": "ship_explosion_large_second",
+            "scale": 0.3,
+            "centerDmgPart": true
           }
         }
       },
@@ -9067,458 +8929,202 @@
   },
   {
     "ammoStowages": {
-      "ammo1": [
-        {
-          "weaponTrigger": "gunner0"
-        },
-        {
-          "replenishmentDelay": 3.0
-        },
-        {
-          "replenishmentTime": 5.0
-        },
-        {
-          "removeLoadedAmmo": true
-        },
-        {
-          "explosionEvent": "ammo_explosion_1"
-        },
-        {
-          "fireEvent": "ammo_fire_1"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "elevator": "elevator_01_dm"
-        },
-        {
-          "dstrElevatorDisablesShooting": false
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [50.0,2.0],
-              "p3": [500.0,5.0],
-              "p4": [1000.0,5.0],
-              "p5": [2500.0,5.0],
-              "p6": [5000.0,6.0],
-              "p7": [7500.0,6.0],
-              "p8": [10000.0,7.0],
-              "p9": [15000.0,8.0],
-              "p10": [20000.0,8.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.2],
-              "p2": [50.0,10.0],
-              "p3": [100.0,15.0],
-              "p4": [500.0,15.0],
-              "p5": [1000.0,16.0],
-              "p6": [2500.0,17.0],
-              "p7": [5000.0,17.0],
-              "p8": [7500.0,18.0],
-              "p9": [10000.0,19.0],
-              "p10": [15000.0,20.0],
-              "p11": [20000.0,20.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,3.0],
-              "p3": [100.0,4.0],
-              "p4": [500.0,5.0],
-              "p5": [1000.0,7.5],
-              "p6": [5000.0,15.0],
-              "p7": [7500.0,20.0],
-              "p8": [10000.0,20.0],
-              "p9": [20000.0,20.0]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,300.0],
-              "p3": [500.0,500.0],
-              "p4": [1000.0,1000.0],
-              "p5": [2000.0,1300.0],
-              "p6": [3000.0,1500.0],
-              "p7": [4000.0,1900.0],
-              "p8": [5000.0,2300.0],
-              "p9": [10000.0,3500.0],
-              "p10": [20000.0,8000.0]
-            }
+      "ammo1": {
+        "weaponTrigger": "gunner0",
+        "explosionEvent": "ammo_explosion_1",
+        "fireEvent": "ammo_fire_1",
+        "fireParamsPreset": "ship_ammo_fire_total",
+        "elevator": "elevator_01_dm",
+        "dstrElevatorDisablesShooting": false,
+        "splashRadiusConstraint": 10.0,
+        "splashDamageConstraint": 4000.0,
+        "shatterRadiusConstraint": 10.0,
+        "gunpowderMassToSplashParams": {
+          "gunpowderMassToInnerRadius": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,4.0],
+            "p3": [10000.0,6.0]
+          },
+          "gunpowderMassToOuterRadius": {
+            "p1": [100.0,2.0],
+            "p2": [1000.0,7.0],
+            "p3": [10000.0,10.0]
+          },
+          "gunpowderMassToPenetration": {
+            "p1": [100.0,5.0],
+            "p2": [1000.0,10.0],
+            "p3": [5000.0,18.0]
+          },
+          "gunpowderMassToDamage": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,1500.0],
+            "p3": [5000.0,3000.0],
+            "p4": [10000.0,4000.0]
           }
         },
-        {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "ammo_turret_01_dm": {
-              "count": 18
-            }
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_01_dm": {
+            "count": 540
           }
         },
-        {
-          "shells": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "damageEffect": "ammunition_storage_shells",
-            "ammunition_storage_shells_01_dm": {
-              "count": 522
-            }
-          }
-        },
-        {
-          "charges": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": false,
-            "damageEffect": "ammunition_storage_charges",
-            "ammunition_storage_charges_01_dm": {
-              "count": 540
-            }
+        "charges": {
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_01_dm": {
+            "count": 540
           }
         }
-      ],
-      "ammo2": [
-        {
-          "weaponTrigger": "gunner1"
-        },
-        {
-          "replenishmentDelay": 3.0
-        },
-        {
-          "replenishmentTime": 5.0
-        },
-        {
-          "removeLoadedAmmo": true
-        },
-        {
-          "explosionEvent": "ammo_explosion_1"
-        },
-        {
-          "fireEvent": "ammo_fire_1"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "elevator": "elevator_02_dm"
-        },
-        {
-          "dstrElevatorDisablesShooting": false
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [50.0,2.0],
-              "p3": [500.0,5.0],
-              "p4": [1000.0,5.0],
-              "p5": [2500.0,5.0],
-              "p6": [5000.0,6.0],
-              "p7": [7500.0,6.0],
-              "p8": [10000.0,7.0],
-              "p9": [15000.0,8.0],
-              "p10": [20000.0,8.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.2],
-              "p2": [50.0,10.0],
-              "p3": [100.0,15.0],
-              "p4": [500.0,15.0],
-              "p5": [1000.0,16.0],
-              "p6": [2500.0,17.0],
-              "p7": [5000.0,17.0],
-              "p8": [7500.0,18.0],
-              "p9": [10000.0,19.0],
-              "p10": [15000.0,20.0],
-              "p11": [20000.0,20.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,3.0],
-              "p3": [100.0,4.0],
-              "p4": [500.0,5.0],
-              "p5": [1000.0,7.5],
-              "p6": [5000.0,15.0],
-              "p7": [7500.0,20.0],
-              "p8": [10000.0,20.0],
-              "p9": [20000.0,20.0]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,300.0],
-              "p3": [500.0,500.0],
-              "p4": [1000.0,1000.0],
-              "p5": [2000.0,1300.0],
-              "p6": [3000.0,1500.0],
-              "p7": [4000.0,1900.0],
-              "p8": [5000.0,2300.0],
-              "p9": [10000.0,3500.0],
-              "p10": [20000.0,8000.0]
-            }
+      },
+      "ammo2": {
+        "weaponTrigger": "gunner1",
+        "explosionEvent": "ammo_explosion_1",
+        "fireEvent": "ammo_fire_1",
+        "fireParamsPreset": "ship_ammo_fire_total",
+        "elevator": "elevator_02_dm",
+        "dstrElevatorDisablesShooting": false,
+        "splashRadiusConstraint": 10.0,
+        "splashDamageConstraint": 4000.0,
+        "shatterRadiusConstraint": 10.0,
+        "gunpowderMassToSplashParams": {
+          "gunpowderMassToInnerRadius": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,4.0],
+            "p3": [10000.0,6.0]
+          },
+          "gunpowderMassToOuterRadius": {
+            "p1": [100.0,2.0],
+            "p2": [1000.0,7.0],
+            "p3": [10000.0,10.0]
+          },
+          "gunpowderMassToPenetration": {
+            "p1": [100.0,5.0],
+            "p2": [1000.0,10.0],
+            "p3": [5000.0,18.0]
+          },
+          "gunpowderMassToDamage": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,1500.0],
+            "p3": [5000.0,3000.0],
+            "p4": [10000.0,4000.0]
           }
         },
-        {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "ammo_turret_02_dm": {
-              "count": 18
-            }
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_02_dm": {
+            "count": 540
           }
         },
-        {
-          "shells": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "damageEffect": "ammunition_storage_shells",
-            "ammunition_storage_shells_02_dm": {
-              "count": 522
-            }
-          }
-        },
-        {
-          "charges": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": false,
-            "damageEffect": "ammunition_storage_charges",
-            "ammunition_storage_charges_02_dm": {
-              "count": 540
-            }
+        "charges": {
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_02_dm": {
+            "count": 540
           }
         }
-      ],
-      "ammo3": [
-        {
-          "weaponTrigger": "gunner2"
-        },
-        {
-          "replenishmentDelay": 3.0
-        },
-        {
-          "replenishmentTime": 5.0
-        },
-        {
-          "removeLoadedAmmo": true
-        },
-        {
-          "explosionEvent": "ammo_explosion_4"
-        },
-        {
-          "fireEvent": "ammo_fire_4"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "elevator": "elevator_03_dm"
-        },
-        {
-          "dstrElevatorDisablesShooting": false
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [50.0,2.0],
-              "p3": [500.0,5.0],
-              "p4": [1000.0,5.0],
-              "p5": [2500.0,5.0],
-              "p6": [5000.0,6.0],
-              "p7": [7500.0,6.0],
-              "p8": [10000.0,7.0],
-              "p9": [15000.0,8.0],
-              "p10": [20000.0,8.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.2],
-              "p2": [50.0,10.0],
-              "p3": [100.0,15.0],
-              "p4": [500.0,15.0],
-              "p5": [1000.0,16.0],
-              "p6": [2500.0,17.0],
-              "p7": [5000.0,17.0],
-              "p8": [7500.0,18.0],
-              "p9": [10000.0,19.0],
-              "p10": [15000.0,20.0],
-              "p11": [20000.0,20.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,3.0],
-              "p3": [100.0,4.0],
-              "p4": [500.0,5.0],
-              "p5": [1000.0,7.5],
-              "p6": [5000.0,15.0],
-              "p7": [7500.0,20.0],
-              "p8": [10000.0,20.0],
-              "p9": [20000.0,20.0]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,300.0],
-              "p3": [500.0,500.0],
-              "p4": [1000.0,1000.0],
-              "p5": [2000.0,1300.0],
-              "p6": [3000.0,1500.0],
-              "p7": [4000.0,1900.0],
-              "p8": [5000.0,2300.0],
-              "p9": [10000.0,3500.0],
-              "p10": [20000.0,8000.0]
-            }
+      },
+      "ammo3": {
+        "weaponTrigger": "gunner2",
+        "explosionEvent": "ammo_explosion_4",
+        "fireEvent": "ammo_fire_4",
+        "fireParamsPreset": "ship_ammo_fire_total",
+        "elevator": "elevator_03_dm",
+        "dstrElevatorDisablesShooting": false,
+        "splashRadiusConstraint": 10.0,
+        "splashDamageConstraint": 4000.0,
+        "shatterRadiusConstraint": 10.0,
+        "gunpowderMassToSplashParams": {
+          "gunpowderMassToInnerRadius": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,4.0],
+            "p3": [10000.0,6.0]
+          },
+          "gunpowderMassToOuterRadius": {
+            "p1": [100.0,2.0],
+            "p2": [1000.0,7.0],
+            "p3": [10000.0,10.0]
+          },
+          "gunpowderMassToPenetration": {
+            "p1": [100.0,5.0],
+            "p2": [1000.0,10.0],
+            "p3": [5000.0,18.0]
+          },
+          "gunpowderMassToDamage": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,1500.0],
+            "p3": [5000.0,3000.0],
+            "p4": [10000.0,4000.0]
           }
         },
-        {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "ammo_turret_03_dm": {
-              "count": 18
-            }
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_03_dm": {
+            "count": 540
           }
         },
-        {
-          "shells": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "damageEffect": "ammunition_storage_shells",
-            "ammunition_storage_shells_03_dm": {
-              "count": 522
-            }
-          }
-        },
-        {
-          "charges": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": false,
-            "damageEffect": "ammunition_storage_charges",
-            "ammunition_storage_charges_03_dm": {
-              "count": 540
-            }
+        "charges": {
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_03_dm": {
+            "count": 540
           }
         }
-      ],
-      "ammo4": [
-        {
-          "weaponTrigger": "gunner3"
-        },
-        {
-          "replenishmentDelay": 3.0
-        },
-        {
-          "replenishmentTime": 5.0
-        },
-        {
-          "removeLoadedAmmo": true
-        },
-        {
-          "explosionEvent": "ammo_explosion_4"
-        },
-        {
-          "fireEvent": "ammo_fire_4"
-        },
-        {
-          "fireParamsPreset": "ship_ammo_fire"
-        },
-        {
-          "elevator": "elevator_04_dm"
-        },
-        {
-          "dstrElevatorDisablesShooting": false
-        },
-        {
-          "gunpowderMassToSplashParams": {
-            "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [50.0,2.0],
-              "p3": [500.0,5.0],
-              "p4": [1000.0,5.0],
-              "p5": [2500.0,5.0],
-              "p6": [5000.0,6.0],
-              "p7": [7500.0,6.0],
-              "p8": [10000.0,7.0],
-              "p9": [15000.0,8.0],
-              "p10": [20000.0,8.0]
-            },
-            "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.2],
-              "p2": [50.0,10.0],
-              "p3": [100.0,15.0],
-              "p4": [500.0,15.0],
-              "p5": [1000.0,16.0],
-              "p6": [2500.0,17.0],
-              "p7": [5000.0,17.0],
-              "p8": [7500.0,18.0],
-              "p9": [10000.0,19.0],
-              "p10": [15000.0,20.0],
-              "p11": [20000.0,20.0]
-            },
-            "gunpowderMassToPenetration": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,3.0],
-              "p3": [100.0,4.0],
-              "p4": [500.0,5.0],
-              "p5": [1000.0,7.5],
-              "p6": [5000.0,15.0],
-              "p7": [7500.0,20.0],
-              "p8": [10000.0,20.0],
-              "p9": [20000.0,20.0]
-            },
-            "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [50.0,300.0],
-              "p3": [500.0,500.0],
-              "p4": [1000.0,1000.0],
-              "p5": [2000.0,1300.0],
-              "p6": [3000.0,1500.0],
-              "p7": [4000.0,1900.0],
-              "p8": [5000.0,2300.0],
-              "p9": [10000.0,3500.0],
-              "p10": [20000.0,8000.0]
-            }
+      },
+      "ammo4": {
+        "weaponTrigger": "gunner3",
+        "explosionEvent": "ammo_explosion_4",
+        "fireEvent": "ammo_fire_4",
+        "fireParamsPreset": "ship_ammo_fire_total",
+        "elevator": "elevator_04_dm",
+        "dstrElevatorDisablesShooting": false,
+        "splashRadiusConstraint": 10.0,
+        "splashDamageConstraint": 4000.0,
+        "shatterRadiusConstraint": 10.0,
+        "gunpowderMassToSplashParams": {
+          "gunpowderMassToInnerRadius": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,4.0],
+            "p3": [10000.0,6.0]
+          },
+          "gunpowderMassToOuterRadius": {
+            "p1": [100.0,2.0],
+            "p2": [1000.0,7.0],
+            "p3": [10000.0,10.0]
+          },
+          "gunpowderMassToPenetration": {
+            "p1": [100.0,5.0],
+            "p2": [1000.0,10.0],
+            "p3": [5000.0,18.0]
+          },
+          "gunpowderMassToDamage": {
+            "p1": [100.0,1.0],
+            "p2": [1000.0,1500.0],
+            "p3": [5000.0,3000.0],
+            "p4": [10000.0,4000.0]
           }
         },
-        {
-          "shells": {
-            "firstStage": true,
-            "fatalFire": false,
-            "fatalExplosion": false,
-            "damageEffect": "ammunition_first_stage",
-            "ammo_turret_04_dm": {
-              "count": 18
-            }
+        "shells": {
+          "fatalFire": false,
+          "fatalExplosion": false,
+          "damageEffect": "ammunition_storage_shells",
+          "ammunition_storage_shells_04_dm": {
+            "count": 540
           }
         },
-        {
-          "shells": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": true,
-            "fatalExplosion": true,
-            "damageEffect": "ammunition_storage_shells",
-            "ammunition_storage_shells_04_dm": {
-              "count": 522
-            }
-          }
-        },
-        {
-          "charges": {
-            "reloadTimeMult": 1.25,
-            "fatalFire": false,
-            "damageEffect": "ammunition_storage_charges",
-            "ammunition_storage_charges_04_dm": {
-              "count": 540
-            }
+        "charges": {
+          "fatalFire": true,
+          "damageEffect": "ammunition_storage_charges",
+          "ammunition_storage_charges_04_dm": {
+            "count": 540
           }
         }
-      ],
+      },
       "ammo5": [
         {
           "weaponTrigger": "gunner4"
@@ -9545,7 +9151,7 @@
           "fireEvent": "ammo_aux_fire_2"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_05_dm"
@@ -9554,43 +9160,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_05_dm": {
+            "ammo_turret_01_dm": {
               "count": 30
             }
           }
@@ -9631,7 +9238,7 @@
           "fireEvent": "ammo_aux_fire_2"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_06_dm"
@@ -9640,43 +9247,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_06_dm": {
+            "ammo_turret_02_dm": {
               "count": 30
             }
           }
@@ -9717,7 +9325,7 @@
           "fireEvent": "ammo_aux_fire_2"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_07_dm"
@@ -9726,43 +9334,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_07_dm": {
+            "ammo_turret_03_dm": {
               "count": 30
             }
           }
@@ -9803,7 +9412,7 @@
           "fireEvent": "ammo_aux_fire_2"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_08_dm"
@@ -9812,43 +9421,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_08_dm": {
+            "ammo_turret_04_dm": {
               "count": 30
             }
           }
@@ -9889,7 +9499,7 @@
           "fireEvent": "ammo_aux_fire_3"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_09_dm"
@@ -9898,43 +9508,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_09_dm": {
+            "ammo_turret_05_dm": {
               "count": 30
             }
           }
@@ -9975,7 +9586,7 @@
           "fireEvent": "ammo_aux_fire_3"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
         },
         {
           "elevator": "elevator_10_dm"
@@ -9984,43 +9595,44 @@
           "dstrElevatorDisablesShooting": false
         },
         {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
+        },
+        {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
         {
           "shells": {
             "firstStage": true,
+            "fireEvent": "ready_use_ammo_fire",
+            "explosionEvent": "ready_use_ammo_explosion",
             "damageEffect": "ammunition_first_stage",
-            "ammo_turret_10_dm": {
+            "ammo_turret_06_dm": {
               "count": 30
             }
           }
@@ -10061,38 +9673,37 @@
           "fireEvent": "ammo_aux_fire_2"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
+        },
+        {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
         },
         {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
@@ -10131,38 +9742,37 @@
           "fireEvent": "ammo_aux_fire_3"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
+        },
+        {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
         },
         {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
@@ -10201,38 +9811,37 @@
           "fireEvent": "ammo_aux_fire_3"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
+        },
+        {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
         },
         {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },
@@ -10271,38 +9880,37 @@
           "fireEvent": "ammo_aux_fire_3"
         },
         {
-          "fireParamsPreset": "ship_ammo_fire"
+          "fireParamsPreset": "ship_ammo_fire_aux"
+        },
+        {
+          "splashRadiusConstraint": 10.0
+        },
+        {
+          "splashDamageConstraint": 3000.0
+        },
+        {
+          "shatterRadiusConstraint": 10.0
         },
         {
           "gunpowderMassToSplashParams": {
             "gunpowderMassToInnerRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,1.0],
-              "p3": [1000.0,3.0],
-              "p4": [5000.0,6.0],
-              "p5": [20000.0,15.0]
+              "p1": [100.0,1.0],
+              "p2": [10000.0,5.0]
             },
             "gunpowderMassToOuterRadius": {
-              "p1": [0.01,0.1],
-              "p2": [500.0,5.0],
-              "p3": [1000.0,7.0],
-              "p4": [5000.0,15.0],
-              "p5": [20000.0,30.0]
+              "p1": [100.0,2.0],
+              "p2": [10000.0,10.0]
             },
             "gunpowderMassToPenetration": {
-              "p1": [0.2,0.5],
-              "p3": [2500.0,5.0],
-              "p4": [4000.0,7.1],
-              "p5": [15000.0,25.4]
+              "p1": [100.0,10.0],
+              "p2": [500.0,15.0],
+              "p3": [2000.0,20.0],
+              "p4": [5000.0,20.0]
             },
             "gunpowderMassToDamage": {
-              "p1": [0.2,1.0],
-              "p2": [500.0,1000.0],
-              "p3": [1000.0,2000.0],
-              "p4": [3000.0,3000.0],
-              "p5": [5000.0,4000.0],
-              "p6": [10000.0,5000.0],
-              "p7": [20000.0,10000.0]
+              "p1": [100.0,1000.0],
+              "p2": [5000.0,2000.0],
+              "p3": [10000.0,3000.0]
             }
           }
         },

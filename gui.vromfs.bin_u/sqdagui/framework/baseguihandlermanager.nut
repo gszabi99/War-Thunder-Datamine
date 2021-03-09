@@ -772,17 +772,18 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     return data && data.startFunc
   }
 
-  function setLastBaseHandlerStartFunc(startFunc, guiScene = null)
+  function setLastBaseHandlerStartFunc(startFunc, guiScene = null, handlerLocId = null)
   {
     if (!guiScene)
       guiScene = ::get_gui_scene()
     local data = findLastBaseHandlerStartData(guiScene)
     if (!data)
     {
-      data = { guiScene = guiScene, startFunc = null }
+      data = { guiScene, startFunc = null, handlerLocId}
       lastBaseHandlerStartData.append(data)
     }
     data.startFunc = startFunc
+    data.handlerLocId = handlerLocId
   }
 
   function setLastBaseHandlerStartFuncByHandler(handlerClass, params)
@@ -791,7 +792,7 @@ global const PERSISTENT_DATA_PARAMS = "PERSISTENT_DATA_PARAMS"
     setLastBaseHandlerStartFunc(function() {
                                  local hClass = ::gui_handlers?[handlerClassName] ?? handlerClass
                                  ::handlersManager.loadHandler(hClass, params)
-                               })
+                               }, null, handlerClass?.handlerLocId)
   }
 
   function destroyPrevHandlerAndLoadNew(handlerClass, params, needDestroyIfAlreadyOnTop = false)

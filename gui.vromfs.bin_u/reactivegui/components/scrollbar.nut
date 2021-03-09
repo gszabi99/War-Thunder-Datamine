@@ -15,13 +15,13 @@ local styling = {
       return class {
         rendObj = ROBJ_SOLID
         color = colors.menu.scrollbarBgColor
+        opacity = 1
         _width = ::fpx(8)
         _height = ::fpx(8)
       }
     } else {
       return class {
-        rendObj = ROBJ_SOLID
-        color = 0
+        opacity = 0
         _width = ::fpx(8)
         _height = ::fpx(8)
       }

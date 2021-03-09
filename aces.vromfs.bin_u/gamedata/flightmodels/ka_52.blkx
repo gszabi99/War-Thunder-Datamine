@@ -1471,7 +1471,8 @@
           },
           {
             "page": {
-              "type": "radar"
+              "type": "radar",
+              "radarScale": 0.85
             }
           },
           {
@@ -1881,6 +1882,11 @@
     {
       "sensor": {
         "blk": "gameData/sensors/su_spo-150.blk"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/su_l_370_2.blk"
       }
     },
     {
@@ -4843,7 +4849,7 @@
     "heli_screen_exhaust_device": {
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "tier": 1,
       "effects": {
         "enginesInfraRedBrightnessMult": 0.7,
@@ -4963,11 +4969,16 @@
         ]
       }
     },
+    "maw_countermeasures_launcher_chaff_only": [],
+    "maw_countermeasures_launcher_flare_only": [],
+    "maw_countermeasures_launcher_chaff_priority": [],
+    "maw_countermeasures_launcher_flare_priority": [],
     "MAW_system_heli_false_thermal_targets": {
+      "modClass": "weapon",
       "reqModification": "heli_screen_exhaust_device",
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU",
+      "group": "countermeasures",
       "tier": 2,
       "effects": {
         "commonWeapons": [
@@ -5086,13 +5097,13 @@
           {
             "Weapon": [
               {
-                "trigger": "flares"
+                "trigger": "countermeasures"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
               },
               {
                 "emitter": "emtr_flare1"
@@ -5114,13 +5125,13 @@
           {
             "Weapon": [
               {
-                "trigger": "flares"
+                "trigger": "countermeasures"
               },
               {
                 "startFx": ""
               },
               {
-                "blk": "gameData/Weapons/rocketGuns/flare_launcher.blk"
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
               },
               {
                 "emitter": "emtr_flare2"

@@ -1,372 +1,14 @@
-local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local time = require("scripts/time.nut")
-local stdMath = require("std/math.nut")
-local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
 local modUpgradeElem = require("scripts/weaponry/elems/modUpgradeElem.nut")
-local { countMeasure } = require("scripts/options/optionsMeasureUnits.nut")
-local { getByCurBundle,
-        canResearchItem,
-        canBeResearched,
-        getItemUnlockCost,
-        getBundleCurItem,
-        isCanBeDisabled,
-        isModInResearch,
-        getDiscountPath,
-        getItemStatusTbl,
-        getRepairCostCoef,
-        isResearchableItem,
-        countWeaponsUpgrade,
-        getItemUpgradesList,
-        getItemUpgradesStatus } = require("scripts/weaponry/itemInfo.nut")
-local { isBullets,
-        isFakeBullet,
-        buildPiercingData,
-        getBulletsSetData,
-        getBulletsIconItem,
-        getBulletsIconView,
-        getModificationInfo,
-        getModificationName,
-        addBulletsParamToDesc,
-        isWeaponTierAvailable,
-        isBulletsGroupActiveByMod,
-        getModificationBulletsGroup } = require("scripts/weaponry/bulletsInfo.nut")
-local { WEAPON_TYPE,
-        TRIGGER_TYPE,
-        CONSUMABLE_TYPES,
-        WEAPON_TEXT_PARAMS,
-        getLastWeapon,
-        getUnitWeaponry,
-        isWeaponEnabled,
-        isCaliberCannon,
-        addWeaponsFromBlk,
-        getCommonWeaponsBlk,
-        getLastPrimaryWeapon,
-        getWeaponExtendedInfo,
-        getPrimaryWeaponsList } = require("scripts/weaponry/weaponryInfo.nut")
-
+local { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
+  getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
+} = require("scripts/weaponry/itemInfo.nut")
+local { isBullets, isFakeBullet, getBulletsSetData, getBulletsIconItem, getBulletsIconView
+} = require("scripts/weaponry/bulletsInfo.nut")
 local { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
-local { isModResearched } = require("scripts/weaponry/modificationInfo.nut")
+local { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
+local { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("scripts/weaponry/weaponryTooltips.nut")
 
 ::dagui_propid.add_name_id("_iconBulletName")
-
-local function getTextNoWeapons(unit, isPrimary)
-{
-  return isPrimary ? ::loc("weapon/noPrimaryWeapon") : (unit.isAir() || unit.isHelicopter()) ?
-    ::loc("weapon/noSecondaryWeapon") : ::loc("weapon/noAdditionalWeapon")
-}
-
-local function getReloadTimeByCaliber(caliber, ediff = null)
-{
-  local diff = ::get_difficulty_by_ediff(ediff ?? ::get_current_ediff())
-  if (diff != ::g_difficulty.ARCADE)
-    return null
-  return ::reload_cooldown_time?[caliber]
-}
-
-local function getWeaponInfoText(unit, p = WEAPON_TEXT_PARAMS)
-{
-  local text = ""
-  unit = typeof(unit) == "string" ? ::getAircraftByName(unit) : unit
-  if (!unit)
-    return text
-
-  local weapons = getUnitWeaponry(unit, p)
-  if (weapons == null)
-    return text
-
-  p = WEAPON_TEXT_PARAMS.__merge(p)
-  local unitType = ::get_es_unit_type(unit)
-  if (::u.isEmpty(weapons) && p.needTextWhenNoWeapons)
-    text += getTextNoWeapons(unit, p.isPrimary)
-  local stackableWeapons = [WEAPON_TYPE.TURRETS]
-  foreach (index, weaponType in WEAPON_TYPE)
-  {
-    if (!(weaponType in weapons))
-      continue
-
-    local triggers = weapons[weaponType]
-    triggers.sort(@(a, b) b.caliber <=> a.caliber)
-
-    if (::isInArray(weaponType, stackableWeapons))
-    {  //merge stackable in one
-      for(local i=0; i<triggers.len(); i++)
-      {
-        triggers[i][weaponType] <- 1
-        local sameIdx = -1
-        for(local j=0; j<i; j++)
-          if (triggers[i].len() == triggers[j].len())
-          {
-            local same = true
-            foreach(wName, w in triggers[j])
-              if (!(wName in triggers[i]) ||
-                  ((typeof(w) == "table") && triggers[i][wName].num!=w.num))
-              {
-                same = false
-                break
-              }
-            if (same)
-            {
-              sameIdx = j
-              break
-            }
-          }
-        if (sameIdx>=0)
-        {
-          triggers[sameIdx][weaponType]++
-          foreach(wName, w in triggers[i])
-            if (typeof(w) == "table")
-              triggers[sameIdx][wName].ammo += w.ammo
-          triggers.remove(i)
-          i--
-        }
-      }
-    }
-
-    local isShortDesc = p.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
-    local weapTypeCount = 0; //for shortDesc only
-    foreach (trigger in triggers)
-    {
-      local tText = ""
-      foreach (weaponName, weapon in trigger)
-        if (typeof(weapon) == "table")
-        {
-          if (tText != "" && weapTypeCount==0)
-            tText += p.newLine
-
-          if (::isInArray(weaponType, CONSUMABLE_TYPES))
-          {
-            if (isShortDesc)
-            {
-              tText += ::loc($"weapons/{weaponName}/short")
-              if (weapon.ammo > 1)
-                tText += " " + ::format(::loc("weapons/counter/right/short"), weapon.ammo)
-            }
-            else
-            {
-              tText += ::loc($"weapons/{weaponName}") + ::format(::loc("weapons/counter"), weapon.ammo)
-              if (weaponType == "torpedoes" && p.isPrimary != null &&
-                  ::isInArray(unitType, [::ES_UNIT_TYPE_AIRCRAFT, ::ES_UNIT_TYPE_HELICOPTER])) // torpedoes drop for unit only
-              {
-                if (weapon.dropSpeedRange)
-                {
-                  local speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                  local speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-                  tText += "\n"+::format( ::loc("weapons/drop_speed_range"),
-                    "{0} {1}".subst(speedKmph, ::loc("ui/parentheses", { text = speedMps })) )
-                }
-                if (weapon.dropHeightRange)
-                  tText += "\n"+::format(::loc("weapons/drop_height_range"),
-                    countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]))
-              }
-              if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ::ES_UNIT_TYPE_TANK)
-                tText += getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, p.newLine + ::nbsp + ::nbsp + ::nbsp + ::nbsp)
-            }
-          }
-          else
-          {
-            if (isShortDesc)
-              weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger)? 0 : weapon.num
-            else
-            {
-              tText += ::loc($"weapons/{weaponName}")
-              if (weapon.num > 1)
-                tText += ::format(::loc("weapons/counter"), weapon.num)
-
-              if (weapon.ammo > 0)
-                tText += " (" + ::loc("shop/ammo") + ::loc("ui/colon") + weapon.ammo + ")"
-
-              if (!unit.unitType.canUseSeveralBulletsForGun)
-              {
-                local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
-                if (rTime)
-                {
-                  if (p.isLocalState)
-                  {
-                    local difficulty = ::get_difficulty_by_ediff(p.ediff ?? ::get_current_ediff())
-                    local key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
-                    local speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
-                    if (speedK)
-                      rTime = stdMath.round_by_value(rTime / speedK, 1.0).tointeger()
-                  }
-                  tText += " " + ::loc("bullet_properties/cooldown") + " " + time.secondsToString(rTime, true, true)
-                }
-              }
-            }
-          }
-        }
-
-      if (isShortDesc)
-        weapTypeCount += (TRIGGER_TYPE.TURRETS in trigger)? trigger[TRIGGER_TYPE.TURRETS] : 0
-      else
-      {
-        if (TRIGGER_TYPE.TURRETS in trigger) // && !unit.unitType.canUseSeveralBulletsForGun)
-        {
-          if(trigger[TRIGGER_TYPE.TURRETS] > 1)
-            tText = ::format(::loc("weapons/turret_number"), trigger[TRIGGER_TYPE.TURRETS]) + tText
-          else
-            tText = ::g_string.utf8ToUpper(::loc("weapons_types/turrets"), 1) + ::loc("ui/colon") + tText
-        }
-      }
-
-      if (tText!="")
-        text += ((text!="")? p.newLine : "") + tText
-    }
-    if (weapTypeCount>0)
-    {
-      if (text!="") text += p.newLine
-      if (isShortDesc)
-        text += ::loc("weapons_types/" + weaponType) + ::nbsp + ::format(::loc("weapons/counter/right/short"), weapTypeCount)
-      else
-        text += ::loc("weapons_types/" + weaponType) + ::format(::loc("weapons/counter"), weapTypeCount)
-    }
-  }
-
-  if (text=="" && p.needTextWhenNoWeapons)
-    text = getTextNoWeapons(unit, p.isPrimary)
-
-  return text
-}
-
-local function getWeaponNameText(unit, isPrimary = null, weaponPreset=-1, newLine=", ")
-{
-  return getWeaponInfoText(unit,
-    { isPrimary = isPrimary, weaponPreset = weaponPreset, newLine = newLine, detail = INFO_DETAIL.SHORT })
-}
-
-
-local function getWeaponXrayDescText(weaponBlk, unit, ediff)
-{
-  local weaponsBlk = ::DataBlock()
-  weaponsBlk["Weapon"] = weaponBlk
-  local weaponTypes = addWeaponsFromBlk({}, weaponsBlk, unit)
-  foreach (weaponType, weaponTypeList in weaponTypes)
-    foreach (weapons in weaponTypeList)
-      foreach (weapon in weapons)
-        if (::u.isTable(weapon))
-          return getWeaponExtendedInfo(weapon, weaponType, unit, ediff, "\n")
-  return ""
-}
-
-
-local function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff)
-{
-  local unitBlk = ::get_full_unit_blk(unit.name)
-  local primaryWeapon = getLastPrimaryWeapon(unit)
-  local secondaryWeapon = getLastWeapon(unit.name)
-
-  local primaryBlk = getCommonWeaponsBlk(unitBlk, primaryWeapon)
-  local weaponTypes = {}
-  if (primaryBlk)
-    weaponTypes = addWeaponsFromBlk(weaponTypes, primaryBlk, unit)
-  if (unitBlk?.weapon_presets)
-    foreach (wp in (unitBlk.weapon_presets % "preset"))
-      if (wp.name == secondaryWeapon)
-      {
-        local wpBlk = blkFromPath(wp.blk)
-        weaponTypes = addWeaponsFromBlk(weaponTypes, wpBlk, unit)
-        break
-      }
-
-  if (weaponTypes?[triggerGroup])
-    foreach (weapons in weaponTypes[triggerGroup])
-      foreach (weaponName, weapon in weapons)
-        if (::u.isTable(weapon))
-          return "".concat(
-            ::loc($"weapons/{weaponName}"),
-            ::format(::loc("weapons/counter"), weapon.ammo),
-            getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(::nbsp))
-          )
-  return ""
-}
-
-// return short desc of unit.weapons[weaponPresetNo], like M\C\B\T
-local function getWeaponShortType(unit, weaponPresetNo=0)
-{
-  if (typeof(unit) == "string")
-    unit = ::getAircraftByName(unit)
-
-  if (!unit)
-    return ""
-
-  local textArr = []
-  if (unit.weapons[weaponPresetNo].frontGun)
-    textArr.append(::loc("weapons_types/short/guns"))
-  if (unit.weapons[weaponPresetNo].cannon)
-    textArr.append(::loc("weapons_types/short/cannons"))
-  if (unit.weapons[weaponPresetNo].bomb)
-    textArr.append(::loc("weapons_types/short/bombs"))
-  if (unit.weapons[weaponPresetNo].rocket)
-    textArr.append(::loc("weapons_types/short/rockets"))
-  if (unit.weapons[weaponPresetNo].torpedo)
-    textArr.append(::loc("weapons_types/short/torpedoes"))
-
-  return ::loc("weapons_types/short/separator").join(textArr)
-}
-
-local function getWeaponShortTypeFromWpName(wpName, unit = null)
-{
-  if (!wpName || typeof(wpName) != "string")
-    return ""
-
-  if (typeof(unit) == "string")
-    unit = ::getAircraftByName(unit)
-
-  if (!unit)
-    return ""
-
-  for (local i = 0; i < unit.weapons.len(); ++i)
-  {
-    if (wpName == unit.weapons[i].name)
-      return getWeaponShortType(unit, i)
-  }
-
-  return ""
-}
-
-local function getDefaultBulletName(unit)
-{
-  if (!("modifications" in unit))
-    return ""
-
-  local ignoreGroups = [null, ""]
-  for (local modifNo = 0; modifNo < unit.modifications.len(); modifNo++)
-  {
-    local modif = unit.modifications[modifNo]
-    local modifName = modif.name;
-
-    local groupName = getModificationBulletsGroup(modifName);
-    if (::isInArray(groupName, ignoreGroups))
-      continue
-
-    local bData = getBulletsSetData(unit, modifName)
-    if (!bData || bData?.useDefaultBullet)
-      return groupName + "_default"
-
-    ignoreGroups.append(groupName)
-  }
-  return ""
-}
-
-local function getBulletsListHeader(unit, bulletsList)
-{
-  local locId = ""
-  if (bulletsList.weaponType == WEAPON_TYPE.ROCKETS)
-    locId = "modification/_rockets"
-  else if (::isInArray(bulletsList.weaponType, [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM ]))
-    locId = "modification/_missiles"
-  else if (bulletsList.weaponType == WEAPON_TYPE.FLARES)
-    locId = "modification/_flares"
-  else if (bulletsList.weaponType == WEAPON_TYPE.SMOKE)
-    locId = "modification/_smoke_screen"
-  else if (bulletsList.weaponType == WEAPON_TYPE.GUNS)
-  {
-    if (unit.unitType.canUseSeveralBulletsForGun)
-      locId = isCaliberCannon(bulletsList.caliber)? "modification/_tank_gun_pack" : "modification/_tank_minigun_pack"
-    else
-      locId = bulletsList.isTurretBelt ? "modification/_turret_belt_pack/short" : "modification/_belt_pack/short"
-  }
-  return ::format(::loc(locId), bulletsList.caliber.tostring())
-}
 
 local function getBulletsCountText(curVal, maxVal, unallocated, guns)
 {
@@ -379,30 +21,6 @@ local function getBulletsCountText(curVal, maxVal, unallocated, guns)
     : "activeTextColor"
   local valText = ::colorize(valColor, guns * curVal)
   return ::format("%s/%s%s", valText, (guns * maxVal).tostring(), restText)
-}
-
-local function getModItemName(unit, item, limitedName = true)
-{
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
-}
-
-//include spawn score cost
-local function getFullItemCostText(unit, item, spawnScoreOnly = false)
-{
-  local res = ""
-  local wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
-  local misRules = ::g_mis_custom_state.getCurMissionRules()
-
-  if ((!::is_in_flight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)
-    res = wType.getCost(unit, item).tostring()
-
-  if (::is_in_flight() && misRules.isScoreRespawnEnabled)
-  {
-    local scoreCostText = wType.getScoreCostText(unit, item)
-    if (scoreCostText.len())
-      res += (res.len() ? ", " : "") + scoreCostText
-  }
-  return res
 }
 
 local function getStatusIcon(unit, item)
@@ -434,6 +52,12 @@ getItemImage = function(unit, item)
   return ""
 }
 
+local getTooltipId = @(unitName, mod, params)
+  mod.type == weaponsItem.weapon ? WEAPON.getTooltipId(unitName, mod.name, params)
+    : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
+    : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name)
+    : MODIFICATION.getTooltipId(unitName, mod.name)
+
 local function getWeaponItemViewParams(id, unit, item, params = {})
 {
   local res = {
@@ -442,7 +66,6 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     posX                      = params?.posX ?? 0
     posY                      = params?.posY ?? 0
     hideStatus                = item?.hideStatus ?? params?.hideStatus ?? false
-    useGenericTooltip         = params?.useGenericTooltip ?? true
     needSliderButtons         = params?.needSliderButtons ?? false
     wideItemWithSlider        = params?.wideItemWithSlider ?? false
     modUpgradeIcon            = ::has_feature("ItemModUpgrade") ?
@@ -466,7 +89,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     modUpgradeStatus          = ""
     nameText                  = ""
     nameTextWithPrice         = ""
-    genericTooltipId          = ""
+    tooltipId                 = ""
     iconBulletName            = ""
     itemImg                   = ""
     discountText              = ""
@@ -495,6 +118,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
+    isTooltipByHold           = params?.isTooltipByHold ?? ::show_console_buttons
   }
 
   local isOwn = ::isUnitUsable(unit)
@@ -507,19 +131,8 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
       visualItem.type <- weaponsItem.bundle
   }
   res.nameText = getModItemName(unit, visualItem, params?.limitedName ?? true)
+  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params)
   local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
-  if (res.useGenericTooltip)
-  {
-    local genericTooltipId = ""
-    if (item.type == weaponsItem.modification)
-      genericTooltipId = ::g_tooltip_type.MODIFICATION.getTooltipId(unit.name, item.name)
-    else if (item.type == weaponsItem.weapon)
-      genericTooltipId = ::g_tooltip_type.WEAPON.getTooltipId(unit.name, item.name, params)
-    else if (item.type == weaponsItem.spare)
-      genericTooltipId = ::g_tooltip_type.SPARE.getTooltipId(unit.name)
-
-    res.genericTooltipId = genericTooltipId
-  }
   local bIcoItem = getBulletsIconItem(unit, visualItem)
   if (bIcoItem)
   {
@@ -713,15 +326,15 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
   local id = itemObj?.id ?? ""
   local viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({showButtons = showButtons}))
+  local { isTooltipByHold, tooltipId, actionBtnCanShow } = viewParams
 
   itemObj.findObject("name").setValue(viewParams.nameText)
 
-  if (viewParams.useGenericTooltip)
-  {
-    local tooltipObj = itemObj.findObject($"tooltip_{id}")
-    if (::check_obj(tooltipObj))
-      tooltipObj.tooltipId = viewParams.genericTooltipId
-  }
+  if (isTooltipByHold)
+    itemObj.tooltipId = tooltipId
+  local tooltipObj = itemObj.findObject(isTooltipByHold ? "centralBlock" : $"tooltip_{id}")
+  if (::check_obj(tooltipObj))
+    tooltipObj.tooltipId = tooltipId
 
   if (viewParams.iconBulletName != "")
   {
@@ -840,11 +453,17 @@ local function updateModItem(unit, item, itemObj, showButtons, handler, params =
 
   modUpgradeElem.setValueToObj(itemObj.findObject("mod_upgrade_icon"), unit.name, item.name)
 
+  if (isTooltipByHold) {
+    local dummyBtn = itemObj.findObject("actionHoldDummy")
+    if (dummyBtn?.isValid())
+      dummyBtn.canShow = showButtons && actionBtnCanShow == "yes" ? "no" : "yes"
+  }
+
   if (!showButtons)
     return
 
   local actionBtn = itemObj.findObject("actionBtn")
-  actionBtn.canShow = viewParams.actionBtnCanShow
+  actionBtn.canShow = actionBtnCanShow
   actionBtn.setValue(viewParams.actionBtnText)
 
   local altBtn = itemObj.findObject("altActionBtn")
@@ -925,261 +544,6 @@ local function createModBundle(id, unit, itemsList, itemsType, holderObj, handle
   return bundleItem
 }
 
-local function getReqModsText(unit, item)
-{
-  local reqText = ""
-  foreach(rp in ["reqWeapon", "reqModification"])
-      if (rp in item)
-        foreach (req in item[rp])
-          if (rp == "reqWeapon" && !::shop_is_weapon_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
-          else
-          if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getModificationName(unit, req)
-  return reqText
-}
-
-local function getReqTextWorldWarArmy(unit, item)
-{
-  local text = ""
-  local misRules = ::g_mis_custom_state.getCurMissionRules()
-  if (!misRules.needCheckWeaponsAllowed(unit))
-    return text
-
-  local isEnabledByMission = misRules.isUnitWeaponAllowed(unit, item)
-  local isEnabledForUnit = isWeaponEnabled(unit, item)
-  if (!isEnabledByMission)
-    text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsDisabled") + "</color>"
-  else if (isEnabledByMission && !isEnabledForUnit)
-    text = "<color=@badTextColor>" + ::loc("worldwar/weaponry/inArmyIsEnabled/weaponRequired") + "</color>"
-  else if (isEnabledByMission && isEnabledForUnit)
-    text = "<color=@goodTextColor>" + ::loc("worldwar/weaponry/inArmyIsEnabled") + "</color>"
-
-  return text
-}
-
-local function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null){return null}
-getItemDescTbl = function(unit, item, params = null, effect = null, updateEffectFunc = null)
-{
-  local res = { name = "", desc = "", delayed = false }
-  local needShowWWSecondaryWeapons = item.type==weaponsItem.weapon && ::is_in_flight() &&
-    ::g_mis_custom_state.getCurMissionRules().isWorldWar
-
-  if (item.type==weaponsItem.bundle)
-    return getByCurBundle(unit, item,
-      function(unit, item) {
-        return getItemDescTbl(unit, item, params, effect, updateEffectFunc)
-      }, res)
-
-  local name = "<color=@activeTextColor>" + getModItemName(unit, item, false) + "</color>"
-  local desc = ""
-  local addDesc = ""
-  local reqText = ""
-  local curTier = "tier" in item? item.tier : 1
-  local statusTbl = getItemStatusTbl(unit, item)
-  local currentPrice = statusTbl.showPrice ? getFullItemCostText(unit, item) : ""
-
-  local hasPlayerInfo = params?.hasPlayerInfo ?? true
-  if (hasPlayerInfo
-    && !isWeaponTierAvailable(unit, curTier) && curTier > 1
-    && !needShowWWSecondaryWeapons)
-  {
-    local reqMods = ::getNextTierModsCount(unit, curTier - 1)
-    if(reqMods > 0)
-      reqText = ::loc("weaponry/unlockModTierReq",
-                      { tier = ::roman_numerals[curTier], amount = reqMods.tostring() })
-    else
-      reqText = ::loc("weaponry/unlockTier/reqPrevTiers")
-    reqText = "<color=@badTextColor>" + reqText + "</color>"
-    res.reqText <- reqText
-
-    if(!(params?.canDisplayInfo ?? true))
-    {
-      res.delayed = true
-      return res
-    }
-  }
-
-  if (item.type==weaponsItem.weapon)
-  {
-    name = ""
-    desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = item.name,
-      detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
-
-    if((item.rocket || item.bomb) &&
-      (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED)
-    {
-      buildPiercingData({
-        bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, item.name, true, true),
-        descTbl = res})
-    }
-
-    if (effect)
-      addDesc = weaponryEffects.getDesc(unit, effect)
-    if (!effect && updateEffectFunc)
-      res.delayed = ::calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
-        updateEffectFunc, null) ?? true
-  }
-  else if (item.type==weaponsItem.primaryWeapon)
-  {
-    name = ""
-    desc = getWeaponInfoText(unit, { isPrimary = true, weaponPreset = item.name,
-      detail = params?.detail ?? INFO_DETAIL.EXTENDED, weaponsFilterFunc = params?.weaponsFilterFunc })
-    local upgradesList = getItemUpgradesList(item)
-    if(upgradesList)
-    {
-      local upgradesCount = countWeaponsUpgrade(unit, item)
-      if (upgradesCount?[1])
-        addDesc = "\n" + ::loc("weaponry/weaponsUpgradeInstalled",
-                               { current = upgradesCount[0], total = upgradesCount[1] })
-      foreach(arr in upgradesList)
-        foreach(upgrade in arr)
-        {
-          if(upgrade == null)
-            continue
-          addDesc += "\n" + (::shop_is_modification_enabled(unit.name, upgrade) ?"<color=@goodTextColor>" : "<color=@commonTextColor>") + getModificationName(unit, upgrade) + "</color>"
-        }
-    }
-  }
-  else if (item.type==weaponsItem.modification || item.type==weaponsItem.expendables)
-  {
-    if (effect)
-    {
-      desc = getModificationInfo(unit, item.name).desc;
-      addDesc = weaponryEffects.getDesc(unit, effect);
-    }
-    else
-    {
-      local info = getModificationInfo(unit, item.name, false, false, this, updateEffectFunc)
-      desc = info.desc
-      res.delayed = info.delayed
-    }
-
-    addBulletsParamToDesc(res, unit, item)
-  }
-  else if (item.type==weaponsItem.spare)
-    desc = ::loc("spare/"+item.name + "/desc")
-
-  if (hasPlayerInfo && statusTbl.unlocked && currentPrice != "")
-  {
-    local amountText = ::getAmountAndMaxAmountText(statusTbl.amount, statusTbl.maxAmount, statusTbl.showMaxAmount)
-    if (amountText != "")
-    {
-      local color = statusTbl.amount < statusTbl.amountWarningValue ? "badTextColor" : ""
-      res.amountText <- ::colorize(color, ::loc("options/count") + ::loc("ui/colon") + amountText)
-
-      if (::is_in_flight() && item.type==weaponsItem.weapon)
-      {
-        local respLeft = ::g_mis_custom_state.getCurMissionRules().getUnitWeaponRespawnsLeft(unit, item)
-        if (respLeft >= 0)
-          res.amountText += ::loc("ui/colon") + ::loc("respawn/leftRespawns", { num = respLeft })
-      }
-    }
-    if (statusTbl.showMaxAmount && statusTbl.amount < statusTbl.amountWarningValue)
-      res.warningText <- ::loc("weapons/restock_advice")
-  }
-  else if (params?.isInHudActionBar)
-  {
-    local modData = ::u.search(::get_action_bar_items(),
-      @(itemData) itemData?.modificationName == item.name)
-    if (modData)
-      res.amountText <- ::ActionBar.getModAmountText(modData, true)
-  }
-
-  if (statusTbl.discountType != "")
-  {
-    local discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
-    if (discount > 0 && statusTbl.showPrice)
-    {
-      local cost = "cost" in item? item.cost : 0
-      local costGold = "costGold" in item? item.costGold : 0
-      local priceText = ::Cost(cost, costGold).getUncoloredText()
-      if (priceText != "")
-        res.noDiscountPrice <- "<color=@oldPrice>" + priceText + "</color>"
-      if (currentPrice != "")
-        currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
-    }
-  }
-
-  local repairCostCoef = getRepairCostCoef(item)
-  if (repairCostCoef)
-  {
-    local avgRepairMul = ::get_warpoints_blk()?.avgRepairMul ?? 1.0
-    local egdCode = ::get_current_shop_difficulty().egdCode
-    local rCost = ::wp_get_repair_cost_by_mode(unit.name, egdCode, false)
-    local avgCost = (rCost * repairCostCoef * avgRepairMul).tointeger()
-    if (avgCost)
-      addDesc += "\n" + ::loc("shop/avg_repair_cost") + ::nbsp
-        + (avgCost > 0? "+" : "")
-        + ::Cost(avgCost).toStringWithParams({isWpAlwaysShown = true, isColored = false})
-  }
-
-  if (hasPlayerInfo)
-  {
-    if (!statusTbl.amount && !needShowWWSecondaryWeapons)
-    {
-      local reqMods = getReqModsText(unit, item)
-      if(reqMods != "")
-        reqText += (reqText==""? "" : "\n") + reqMods
-    }
-    if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item))
-      reqText += ((reqText=="")?"":"\n") + ::loc("msg/weaponSelectRequired")
-    reqText = reqText!=""? ("<color=@badTextColor>" + reqText + "</color>") : ""
-
-    if (needShowWWSecondaryWeapons)
-      reqText = getReqTextWorldWarArmy(unit, item)
-  }
-  res.reqText <- reqText
-
-  if (currentPrice != "")
-    res.currentPrice <- currentPrice
-  res.name = name
-  res.desc = desc
-  res.addDesc <- addDesc
-  return res
-}
-
-local function updateWeaponTooltip(obj, unit, item, handler, params={}, effect=null){}
-updateWeaponTooltip = function(obj, unit, item, handler, params={}, effect=null)
-{
-  local descTbl = getItemDescTbl(unit, item, params, effect,
-    function(effect, ...) {
-      if (::checkObj(obj) && obj.isVisible())
-        updateWeaponTooltip(obj, unit, item, handler, params, effect)
-    })
-
-  local curExp = ::shop_get_module_exp(unit.name, item.name)
-  local is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
-  local is_researching = isModInResearch(unit, item)
-  local is_paused = canBeResearched(unit, item, true) && curExp > 0
-
-  if (is_researching || is_paused || !is_researched)
-  {
-    if ((("reqExp" in item) && item.reqExp > curExp) || is_paused)
-    {
-      local expText = ""
-      if (is_researching || is_paused)
-        expText = ::loc("currency/researchPoints/name") + ::loc("ui/colon") +
-          ::colorize("activeTextColor",
-            ::Cost().setRp(curExp).toStringWithParams({isRpAlwaysShown = true}) +
-            ::loc("ui/slash") + ::Cost().setRp(item.reqExp).tostring())
-      else
-        expText = ::loc("shop/required_rp") + " " + "<color=@activeTextColor>" +
-          ::Cost().setRp(item.reqExp).tostring() + "</color>"
-
-      local diffExp = ::Cost().setRp(::getTblValue("diffExp", params, 0)).tostring()
-      if (diffExp.len())
-        expText += " (+" + diffExp + ")"
-      descTbl.expText <- expText
-    }
-  }
-  else if (params?.hasPlayerInfo ?? true)
-    descTbl.showPrice <- ("currentPrice" in descTbl) || ("noDiscountPrice" in descTbl)
-
-  local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"), descTbl)
-  obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
-}
-
 local function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
 {
   local show = bulGroup != null && bulletsManager != null && bulletsManager.canChangeBulletsCount()
@@ -1220,87 +584,11 @@ local function updateItemBulletsSlider(itemObj, bulletsManager, bulGroup)
   }
 }
 
-local function updateSpareType(spare)
-{
-  if (!("type" in spare))
-    spare.type <- weaponsItem.spare
-}
-
-local function updateModType(unit, mod)
-{
-  if ("type" in mod)
-    return
-
-  local name = mod.name
-  local primaryWeaponsNames = getPrimaryWeaponsList(unit)
-  foreach(modName in primaryWeaponsNames)
-    if (modName == name)
-    {
-      mod.type <- weaponsItem.primaryWeapon
-      return
-    }
-
-  mod.type <- weaponsItem.modification
-  return
-}
-
-local function getTierDescTbl(unit, weaponry, presetName, tierId)
-{
-  local amountPerTier = weaponry.tiers?[tierId.tostring()].amountPerTier ?? weaponry.amountPerTier ?? 0
-  local isBlock = amountPerTier > 1
-  local header = ::loc($"weapons/{weaponry.name}")
-  local desc = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = presetName,
-    detail = INFO_DETAIL.EXTENDED, weaponsFilterFunc = (@(path, blk) path == weaponry.blk) })
-  if (::isInArray(weaponry.tType, CONSUMABLE_TYPES))
-    header = isBlock ?
-      "".concat(header, ::format(::loc("weapons/counter"), amountPerTier)) : header
-  else if (weaponry.ammo > 0)
-    header = "".concat(header, " (", ::loc("shop/ammo"), ::loc("ui/colon"),
-      isBlock && !weaponry.isGun ? amountPerTier : weaponry.ammo, ")")
-
-  // Need to replace header with new one contains right weapons amount calculated per tier
-  local descArr = desc.split(WEAPON_TEXT_PARAMS.newLine)
-  descArr[0] = header
-  local res = { desc = descArr.reduce(@(a, b) "".concat(a, WEAPON_TEXT_PARAMS.newLine, b))}
-  if(::isInArray(weaponry.tType, [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]))
-    buildPiercingData({
-      bullet_parameters = ::calculate_tank_bullet_parameters(unit.name, weaponry.blk, true, false),
-      descTbl = res})
-
-  if (weaponry?.addWeaponry != null)
-  {
-    local addDescBlock = getTierDescTbl(unit, weaponry.addWeaponry, presetName, tierId)
-    res.desc = $"{res.desc}\n{addDescBlock.desc}"
-    if ("bulletParams" in addDescBlock)
-    {
-      if (!("bulletParams" in res))
-        res.bulletParams <- []
-      res.bulletParams.extend(addDescBlock.bulletParams)
-    }
-  }
-  return res
-}
-
 return {
-  getWeaponInfoText               = getWeaponInfoText
-  getWeaponNameText               = getWeaponNameText
-  getWeaponXrayDescText           = getWeaponXrayDescText
-  getWeaponDescTextByTriggerGroup = getWeaponDescTextByTriggerGroup
-  getWeaponShortTypeFromWpName    = getWeaponShortTypeFromWpName
-  getDefaultBulletName            = getDefaultBulletName
-  getBulletsListHeader            = getBulletsListHeader
-  getBulletsCountText             = getBulletsCountText
-  getModItemName                  = getModItemName
   getWeaponItemViewParams         = getWeaponItemViewParams
   updateModItem                   = updateModItem
   createModItemLayout             = createModItemLayout
   createModItem                   = createModItem
   createModBundle                 = createModBundle
-  getReqModsText                  = getReqModsText
-  getItemDescTbl                  = getItemDescTbl
-  updateWeaponTooltip             = updateWeaponTooltip
   updateItemBulletsSlider         = updateItemBulletsSlider
-  updateSpareType                 = updateSpareType
-  updateModType                   = updateModType
-  getTierDescTbl                  = getTierDescTbl
 }

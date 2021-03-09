@@ -1,0 +1,59 @@
+{
+  "bombGun": true,
+  "preset_cost": 300,
+  "bullets": 1,
+  "shotFreq": 10.0,
+  "external": true,
+  "sound": "weapon.bombgun",
+  "mesh": "fr_nuclear_bomb_an_52",
+  "tags": {
+    "antiTankBomb": true,
+    "antiShipBomb": true
+  },
+  "bomb": {
+    "mass": 907.2,
+    "mass_lbs": 2000.0,
+    "explosiveType": "amatol",
+    "explosiveMass": 0.01,
+    "bombType": "he_bomb",
+    "bombName": "an_m66a2",
+    "dragCx": 0.0793,
+    "caliber": 0.591,
+    "length": 2.357,
+    "distFromCmToStab": 1.3,
+    "sound": "weapon.bomb_big",
+    "explosionFx": "bomb_expl_1000kg",
+    "explosionPatchRadius": 17.0,
+    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.0,
+    "explodeHitPower": 2500.0,
+    "explodeArmorPower": 250.0,
+    "explodeRadius": [16.0,40.0],
+    "explosionPatchHeightScale": 0.1,
+    "rendinstDamageRadius": 80.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 150.0,
+    "shutterAmount": 3000,
+    "shutterArmorPower": 15.0,
+    "shutterHit": 15.0,
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

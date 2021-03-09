@@ -2,6 +2,8 @@ local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { is_bit_set } = require("std/math.nut")
+local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
+} = require("scripts/utils/genericTooltipTypes.nut")
 
 ::g_unlock_view <- {
   function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
@@ -244,10 +246,10 @@ g_unlock_view.fillUnlockConditions <- function fillUnlockConditions(unlockConfig
     {
       local decorator = ::g_decorator.getDecoratorById(unlockConfig.names[i])
       if (decorator)
-        hiddenContent += ::g_tooltip_type.DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+        hiddenContent += DECORATION.getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
     }
     else if(unlock)
-      hiddenContent += ::g_tooltip_type.UNLOCK.getMarkup(unlock.id, {showProgress=true})
+      hiddenContent += UNLOCK.getMarkup(unlock.id, {showProgress=true})
 
     hiddenContent += "}"
   }
@@ -281,7 +283,7 @@ g_unlock_view.fillReward <- function fillReward(unlockConfig, unlockObj)
   if( ! ::checkObj(rewardObj))
     return
   local rewardText = ""
-  local tooltipId = ::g_tooltip_type.REWARD_TOOLTIP.getTooltipId(id)
+  local tooltipId = REWARD_TOOLTIP.getTooltipId(id)
   local unlockType = unlockConfig.unlockType
   if(::isInArray(unlockType, [::UNLOCKABLE_DECAL, ::UNLOCKABLE_MEDAL, ::UNLOCKABLE_SKIN]))
   {
@@ -334,7 +336,7 @@ g_unlock_view.fillStages <- function fillStages(unlockConfig, unlockObj, context
       .subst({
         image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
         parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
-        tooltip = ::g_tooltip_type.UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
+        tooltip = UNLOCK_SHORT.getMarkup(unlockConfig.id, {stage=i})
       })
   }
   unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)

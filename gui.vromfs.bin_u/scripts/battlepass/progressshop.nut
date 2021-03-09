@@ -10,6 +10,8 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
 
   goods = null
 
+  hasBuyImprovedBattlePass = false
+
   function initScreen() {
     if (battlePassShopConfig.value == null)
       return goBack()
@@ -58,15 +60,19 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   function updateRowsView() {
+    local hasBuyImprovedPass = hasBuyImprovedBattlePass
     local rowsView = goods
       .filter(@(g) !g.cost.isZero() && (!g.hasBattlePassUnlock || g.battlePassUnlock != null))
-      .map(@(g, idx) {
-        rowName = g.rowIdx
-        rowEven = (idx%2 == 0) ? "yes" :"no"
-        amount = g.name
-        savingText = g.valueText
-        cost = $"{g.isBought ? ::loc("check_mark/green") : ""} {g.cost.tostring()}"
-        isDisabled = g.isBought
+      .map(function(g, idx) {
+        local isRealyBought = g.isBought && (!hasBuyImprovedPass || g.isImprovedBattlePass)
+        return {
+          rowName = g.rowIdx
+          rowEven = (idx%2 == 0) ? "yes" :"no"
+          amount = g.name
+          savingText = g.valueText
+          cost = $"{isRealyBought ? ::loc("check_mark/green") : ""} {g.cost.tostring()}"
+          isDisabled = g.isDisabled
+        }
       })
     guiScene.setUpdatesEnabled(false, false)
 
@@ -152,10 +158,15 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local name = ""
     local valueText = ""
     local isBought = false
+    local isDisabled = false
     local cost = ::Cost()
     local { additionalTrophyItems, battlePassUnlock } = goodsConfig
     local additionalTrophyItem = getAdditionalTrophyItemForBuy(additionalTrophyItems)
-    if (additionalTrophyItem != null) {
+    local isBattlePassConfig = battlePassUnlock != null
+    if (isBattlePassConfig)
+      additionalTrophyItem = additionalTrophyItem ?? additionalTrophyItems?[0]
+    local hasAdditionalTrophyItem = additionalTrophyItem != null
+    if (hasAdditionalTrophyItem) {
       local topPrize = additionalTrophyItem.getTopPrize()
       name = ::PrizesView.getPrizeTypeName(topPrize, false)
       valueText = ::PrizesView.getPrizeText(topPrize, false)
@@ -164,15 +175,23 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (battlePassUnlock != null) {
       name = ::loc("battlePass")
       isBought = isGoodsBought(goodsConfig)
+      isDisabled = isBought
+      if (hasAdditionalTrophyItem)
+        isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
       cost = cost + ::get_unlock_cost(battlePassUnlock.id)
     }
+    local isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem
+    if (isImprovedBattlePass)
+      hasBuyImprovedBattlePass = isBought
 
-    return goodsConfig.__update({ // warning disable: -unwanted-modification
-      name = name
-      valueText = valueText
-      isBought = isBought
-      cost = cost
-      additionalTrophyItem = additionalTrophyItem
+    return goodsConfig.__merge({
+      name
+      valueText
+      isBought
+      cost
+      additionalTrophyItem
+      isImprovedBattlePass
+      isDisabled
     })
   }
 

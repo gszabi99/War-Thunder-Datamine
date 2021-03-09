@@ -20,9 +20,9 @@
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
     "caliber": 0.152,
-    "length": 1.53,
-    "explosiveType": "hta",
-    "explosiveMass": 3.1,
+    "length": 1.17,
+    "explosiveType": "comp_b",
+    "explosiveMass": 3.13,
     "distFromCmToStab": 0.01,
     "distanceFuse": false,
     "operated": true,
@@ -36,7 +36,6 @@
     "groundCollisionEffect": "explosion_midair_small",
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
-    "waterFxScale": [1.1,1.2],
     "explosionPatchRadius": 3.4,
     "fireEffect": "rocket_fire_short_doubleside",
     "smokeEffect": "",
@@ -71,20 +70,11 @@
     "startSpeed": 100.0,
     "endSpeed": 0.0,
     "maxSpeed": 329.0,
-    "speedViscosity": 0.2,
-    "timeToLive": 20.0,
     "lifeTime": 30.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "aiHeatAim": false,
-    "aiRadarAim": false,
-    "aiLaserAim": false,
-    "aiMaxAimAngle": 30.0,
-    "aiSpeedViscosity": 3.0,
-    "aiSpeedPrediction": 1.0,
-    "aiAccelPrediction": 0.5,
     "hasTracerTrail": true,
     "tracerTrailEmitter": [0.0,0.0,0.0],
     "amountPerTier": 4.0,
@@ -100,6 +90,9 @@
         "mod2": [30.0,0.2]
       }
     ],
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "damage": {
       "shatter": [
         {
@@ -196,6 +189,9 @@
           }
         }
       ],
+      "shatterDamage": {
+        "breachConeAngle": 45.0
+      },
       "explosive": {
         "radius": 0.15,
         "offset": 0.9
@@ -230,6 +226,7 @@
     },
     "tracerTrail": {
       "smokeEffect": "",
+      "hazeEffect": "",
       "visual": {
         "traceFreq": 1,
         "tracer": "100mmRed",

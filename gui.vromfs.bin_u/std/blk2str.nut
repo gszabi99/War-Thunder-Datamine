@@ -32,9 +32,9 @@ local function blkParamsToString(info, indent=0){
   return res
 }
 local function datablockToAst(info, params = {}, result = null){
-  result = result ?? []
+  result = result!=null ? [].extend(result) : []
   local recursionLevel = params?.recursionLevel ?? 6
-  local printFn = @(v, indent) ::type(v)=="array" ? result.extend(v) : result.append([v, indent])
+  local printFn = @(v, indent) ::type(v)=="array" ? result.extend(v) : result.append([v, indent]) // warning disable: -unwanted-modification
   local blockName = (info.getBlockName()!="") ? $"{info.getBlockName()} " : ""
   local indent = params?.indent ?? 0
   if (blockName!="null ") {

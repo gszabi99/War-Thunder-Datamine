@@ -59,7 +59,6 @@
           "navigatorShortcuts": "noSelect",
           "moveX": "closest",
           "moveY": "linear",
-          "on_select": "updateDependingButtons",
           "tdiv": {
             "id": "bg_elems",
             "position": "absolute",
@@ -113,57 +112,18 @@
             }
           }
         ],
-        "navRight": [
-          {
-            "textarea": {
-              "id": "no_action_text",
-              "text": "#mainmenu/nextResearch/title",
-              "display": "hide"
-            }
-          },
-          {
-            "Button_text": {
-              "id": "btn_nav_research",
-              "display": "hide",
-              "text": "#weaponry/research",
-              "_on_click": "doCurrentItemAction",
-              "css-hier-invalidate": "yes",
-              "btnName": "A",
-              "visualStyle": "secondary",
-              "buttonWink": [],
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
-              "id": "btn_buy_mod",
-              "display": "hide",
-              "_on_click": "doCurrentItemAction",
-              "hideText": "yes",
-              "btnName": "A",
-              "visualStyle": "purchase",
-              "buttonWink": [],
-              "buttonGlance": [],
-              "textarea": {
-                "id": "btn_buy_mod_text",
-                "class": "buttonText"
-              },
-              "ButtonImg": []
-            }
-          },
-          {
-            "Button_text": {
-              "id": "btn_exit",
-              "display": "show",
-              "text": "#mainmenu/finish",
-              "_on_click": "goBack",
-              "btnName": "B",
-              "visualStyle": "secondary",
-              "buttonWink": [],
-              "ButtonImg": []
-            }
+        "navRight": {
+          "Button_text": {
+            "id": "btn_exit",
+            "display": "show",
+            "text": "#mainmenu/finish",
+            "_on_click": "goBack",
+            "btnName": "B",
+            "visualStyle": "secondary",
+            "buttonWink": [],
+            "ButtonImg": []
           }
-        ]
+        }
       },
       "Button_close": {
         "id": "close_alt_btn",

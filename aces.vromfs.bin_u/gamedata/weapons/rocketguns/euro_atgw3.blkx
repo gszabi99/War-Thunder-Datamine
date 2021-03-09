@@ -40,7 +40,6 @@
     "groundCollisionEffect": "explosion_midair_small",
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
-    "waterFxScale": [1.1,1.2],
     "explosionPatchRadius": 3.4,
     "fireEffect": "rocket_fire_short",
     "smokeEffect": "",
@@ -49,13 +48,8 @@
     "maxDistance": 7000.0,
     "minDistance": 30.0,
     "distanceFuse": false,
-    "guidanceType": "ir",
-    "guidance": "ir",
-    "warmUpTime": 1.0,
-    "workTime": 1800.0,
-    "uncageBeforeLaunch": true,
     "guidanceSfx": "alarm_con_scan",
-    "breakLockMaxTime": 2.0,
+    "guidanceType": "ir",
     "hitPowerMult": 1.0,
     "nearHitPower": [1.0,50.0],
     "midHitPower": [0.9,400.0],
@@ -73,19 +67,11 @@
     "startSpeed": 50.0,
     "endSpeed": 0.0,
     "maxSpeed": 290.0,
-    "speedViscosity": 0.2,
     "timeLife": 30.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "aiHeatAim": false,
-    "aiRadarAim": false,
-    "aiLaserAim": false,
-    "aiMaxAimAngle": 30.0,
-    "aiSpeedViscosity": 3.0,
-    "aiSpeedPrediction": 1.0,
-    "aiAccelPrediction": 0.5,
     "machMax": 0.9,
     "loadFactorMax": 6.0,
     "rangeMax": 7000.0,
@@ -104,6 +90,9 @@
         "mod2": [30.0,0.2]
       }
     ],
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
     "collisions": {
       "steel": {
         "fx": "explosion_midair_small"
@@ -221,47 +210,57 @@
           }
         }
       ],
+      "shatterDamage": {
+        "breachConeAngle": 45.0
+      },
       "explosive": {
         "radius": 0.15,
         "offset": 0.9
       }
     },
-    "irSeeker": {
-      "visibilityType": "infraRed",
-      "rangeBand0": 20000.0,
-      "rangeBand1": 20000.0,
-      "rangeMax": 20000.0,
-      "fov": 0.1,
-      "gateWidth": 0.1,
-      "minAngleToSun": 1.0,
-      "lockAngleMax": 45.0,
-      "angleMax": 45.0,
-      "rateMax": 6.0,
-      "prolongationTimeMax": 1.0,
-      "designationSourceTypeMask": 1,
-      "groundVehiclesAsTarget": true
+    "guidance": {
+      "warmUpTime": 1.0,
+      "acquisitionTime": 0.1,
+      "workTime": 3600.0,
+      "uncageBeforeLaunch": true,
+      "breakLockMaxTime": 2.0,
+      "irSeeker": {
+        "visibilityType": "infraRed",
+        "rangeBand0": 20000.0,
+        "rangeBand1": 20000.0,
+        "rangeMax": 20000.0,
+        "fov": 0.1,
+        "gateWidth": 0.1,
+        "minAngleToSun": 1.0,
+        "lockAngleMax": 45.0,
+        "angleMax": 45.0,
+        "rateMax": 6.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 1,
+        "groundVehiclesAsTarget": true
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.5,
+        "elevationAdd": 2.0,
+        "angleToAccelMult": 0.0,
+        "omegaToAccelMult": 6.0,
+        "loftEnabled": true,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -10.0,
+        "loftAngleToAccelMult": 10.0,
+        "loftTargetOmegaMax": 2.0,
+        "reqAccelMax": 6.0,
+        "baseIndSpeed": 1200.0,
+        "accelControlProp": 5.0,
+        "accelControlIntg": 0.5,
+        "accelControlIntgLim": 0.5,
+        "accelControlDiff": 0.5
+      }
     },
     "arcadeProp": {
       "finsAoaHor": 0.2,
       "finsAoaVer": 0.2,
       "timeFire": 3.0
-    },
-    "propNavGuidance": {
-      "timeOut": 0.5,
-      "elevationAdd": 2.0,
-      "angleToAccelMult": 0.0,
-      "omegaToAccelMult": 6.0,
-      "loftEnabled": true,
-      "loftElevation": 5.0,
-      "loftTargetElevation": -10.0,
-      "loftAngleToAccelMult": 10.0,
-      "loftTargetOmegaMax": 2.0,
-      "reqAccelMax": 6.0,
-      "baseIndSpeed": 1200.0,
-      "accelControlProp": 5.0,
-      "accelControlIntg": 0.5,
-      "accelControlIntgLim": 0.5,
-      "accelControlDiff": 0.5
     },
     "cumulativeDamage": {
       "armorPower": 1000.0,
@@ -271,6 +270,7 @@
     },
     "tracerTrail": {
       "smokeEffect": "",
+      "hazeEffect": "",
       "visual": {
         "traceFreq": 1,
         "tracer": "100mmRed",

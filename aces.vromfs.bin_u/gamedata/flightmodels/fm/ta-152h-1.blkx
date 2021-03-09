@@ -14,13 +14,13 @@
   "ElevatorSens": 0.385,
   "AileronSens": 0.18,
   "RudderSensMultipler1": [0.0,1.0],
-  "RudderSensMultipler2": [0.25,1.0],
+  "RudderSensMultipler2": [0.12,1.0],
   "RudderSensMultipler3": [1.0,1.0],
   "ElevatorSensMultipler1": [0.0,1.0],
-  "ElevatorSensMultipler2": [0.25,1.0],
+  "ElevatorSensMultipler2": [0.12,1.0],
   "ElevatorSensMultipler3": [1.0,1.0],
   "AileronSensMultipler1": [0.0,0.1],
-  "AileronSensMultipler2": [0.3,1.0],
+  "AileronSensMultipler2": [0.22,1.0],
   "AileronSensMultipler3": [1.0,1.0],
   "ElevatorSensCl": 0.0,
   "GearActuatorSpeed": 0.125,
@@ -54,6 +54,8 @@
   "ElevonPitchAngleSens": 0.0,
   "VSlats": [150.0,200.0],
   "FlapsToSlats": [0.0,0.0,0.0,0.0],
+  "WingWaveMassRel": 0.25,
+  "WingSpringDampJointMult": [0.5,0.005],
   "Vne": 870.0,
   "VneControl": 850.0,
   "VneMach": 0.81,
@@ -65,8 +67,11 @@
   "ArcadeRollCorrectionMultiplier": 1.0,
   "RollLeveling": true,
   "ArcadeMaxRollCoeff": 1.0,
-  "ArcadeYawMutilpliers": [1.1,4.0,0.8],
-  "ArcadePitchModificators": [0.0,1.0,1.0],
+  "ArcadeYawModificators": [1.1,4.0],
+  "ArcadePitchModificators": [0.0,1.0],
+  "ArcadeRudderSensMultiplier": 0.8,
+  "ArcadeElevatorSensMultiplier": 1.0,
+  "ArcadeAileronSensMultiplier": 1.0,
   "AileronMaxDv": 20.0,
   "ElevatorMaxDv": 20.0,
   "RudderMaxDv": 20.0,
@@ -94,7 +99,9 @@
     "hasWheelBrakeControl": true,
     "hasLockGearControl": true,
     "bHasBoosterSwitcher": false,
-    "hasChutes": false
+    "hasChutes": false,
+    "hasParkingBrake": true,
+    "hasLightsControl": false
   },
   "FlyByWire": [],
   "MouseAim": {
@@ -118,11 +125,11 @@
     "FocusOffset": -0.28,
     "WingVertPos": 0.3,
     "AlphaShift": 0.0,
-    "FlapsShift": [0.02,0.0],
+    "FlapsShift": [0.04,0.0],
     "AirbrakesShift": [0.0,0.0],
-    "GearFocusShift": [0.05,0.0],
+    "GearFocusShift": [0.03,0.0],
     "ElevonFocusShift": [0.0,0.0],
-    "GearShift": -0.37,
+    "GearShift": -0.24,
     "WingInFocus": 0.6,
     "WingMidFocus": 1.88,
     "WingOutFocus": 6.7,
@@ -154,7 +161,7 @@
     "chuteCx": 0.0,
     "OswaldsEfficiencyNumber": 0.96,
     "lineClCoeff": 0.08,
-    "AfterCritParabAngle": 2.1,
+    "AfterCritParabAngle": 2.3,
     "AfterCritDeclineCoeff": 0.03,
     "AfterCritMaxDistanceAngle": 90.0,
     "CxAfterCoeff": 0.01,
@@ -243,7 +250,7 @@
       "Flaps": 0.58,
       "FlapsPolarBlending": 1.0,
       "FlapsAnimation": 1.0,
-      "Stab": -3.0,
+      "Stab": -2.0,
       "Slats": 0.0
     },
     "NoFlaps": {
@@ -255,12 +262,12 @@
       "CdMin": 0.0066
     },
     "FullFlaps": {
-      "Cl0": 1.15,
-      "alphaCritHigh": 16.0,
-      "alphaCritLow": -19.0,
-      "ClCritHigh": 2.0,
-      "ClCritLow": -0.25,
-      "CdMin": 0.12
+      "Cl0": 1.05,
+      "alphaCritHigh": 17.0,
+      "alphaCritLow": -16.0,
+      "ClCritHigh": 2.2,
+      "ClCritLow": -0.22,
+      "CdMin": 0.14
     },
     "Fuselage": {
       "OswaldsEfficiencyNumber": 0.75,
@@ -423,7 +430,6 @@
     "External": false,
     "Booster": false,
     "Main": {
-      "ExtinguisherNum": 0,
       "Type": "Inline",
       "Cylinders": 12,
       "Mass": 940.0,
@@ -484,7 +490,11 @@
       "hasMagnetoControl": true,
       "hasRadiatorControl": true,
       "hasOilRadiatorControl": false,
-      "hasCommonRadiator": true
+      "hasCommonRadiator": true,
+      "hasVtolControl": false,
+      "dvVtol": 0.2,
+      "vtolToThrottleLim": [0.0,1.1,1.0,1.1],
+      "iasToVtolLim": [0.0,1.0,0.0,1.0]
     },
     "Temperature": {
       "OilRadiatorAuto": true,
@@ -616,7 +626,7 @@
       "RPM4": 3249.0,
       "ATA4": 1.65,
       "ExactAltitudes": true,
-      "CompressorOmegaFactorSq": 1.0,
+      "CompressorOmegaFactorSq": 0.0,
       "CompressorPressureAtRPM0": 0.15,
       "Altitude0": 2600.0,
       "AfterburnerBoostMul0": 1.0,
@@ -699,14 +709,34 @@
         "fromSuperchargerRPM": 0.0,
         "toSuperchargerRPM": 0.0
       }
+    },
+    "FireExtinguisher": {
+      "Num": 0,
+      "UseTime": 0.0,
+      "Power": 0.0,
+      "Automatic": false
     }
   },
   "Engine0": {
     "Type": 0,
-    "Position": [2.0,-0.1,0.0],
-    "Direction": [-0.0,0.0],
     "Main": {
       "FuelSystemNum": 0
+    },
+    "Nozzle0": {
+      "Position": [2.0,-0.1,0.0],
+      "Direction": [-0.0,0.0],
+      "Direction2": [-90.0,-0.0],
+      "ThrustRatio": 1.0,
+      "ThrustMax": 2147440000.0,
+      "AileronsToThrustDeflection": [0.0,0.0,0.0],
+      "ElevatorToThrustDeflection": [0.0,0.0,0.0],
+      "RudderToThrustDeflection": [0.0,0.0,0.0],
+      "VtolToThrustDeflection": [0.0,0.0],
+      "AileronsToThrust": [0.0,0.0,0.0],
+      "ElevatorToThrust": [0.0,0.0,0.0],
+      "RudderToThrust": [0.0,0.0,0.0],
+      "VtolToThrust": [0.0,0.0],
+      "FlapsToThrust": [0.0,1.0,1.0,1.0]
     }
   },
   "PropellerType0": {
@@ -859,6 +889,7 @@
     "MaxNitro": 168.0,
     "OilMass": 55.0,
     "AdvancedMass": true,
+    "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
     "Takeoff": 5717.0,
     "CenterOfGravity": [0.0,0.0,0.0],
@@ -974,22 +1005,44 @@
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "UseCenterOfGravity": true,
-    "RetractableCentralGear": true,
-    "CenterGearType": "SelfSteering",
-    "CenterGearBrakes": false,
-    "FullBrakeSlidingFrictionMult": 0.6,
-    "FrontalSpringsHeight": 0.5,
-    "TailSpringsHeight": 0.05,
-    "FrontalSpringsCoeff": 340000.0,
-    "TailSpringsCoeff": 400000.0,
     "HasWheels": true,
-    "LeftWheelRadius": 1.35,
-    "RightWheelRadius": 1.35,
-    "CenterWheelRadius": 0.19,
     "Height": 1.8,
     "Pitch": 13.0,
     "WaterSpeedPropCheckVal": [0.1,0.1],
     "WaterWaveHeightForCheck": [0.0,100.0],
-    "WaterRudderSpeedRange": [8.33333,13.8889]
+    "WaterRudderSpeedRange": [8.33333,13.8889],
+    "StrutL": {
+      "SpringHeight": 0.5,
+      "SpringCoeff": 340000.0,
+      "WheelRadus": 0.37,
+      "Retractable": true,
+      "LeftBrake": true,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": 0.6,
+      "WaterFriction": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutR": {
+      "SpringHeight": 0.5,
+      "SpringCoeff": 340000.0,
+      "WheelRadus": 0.37,
+      "Retractable": true,
+      "LeftBrake": false,
+      "RightBrake": true,
+      "FullBrakeSlidingFrictionMult": 0.6,
+      "WaterFriction": 1.0,
+      "SteerType": "Fixed"
+    },
+    "StrutC": {
+      "SpringHeight": 0.05,
+      "SpringCoeff": 400000.0,
+      "WheelRadus": 0.19,
+      "Retractable": true,
+      "LeftBrake": false,
+      "RightBrake": false,
+      "FullBrakeSlidingFrictionMult": 0.6,
+      "WaterFriction": 1.0,
+      "SteerType": "SelfSteering"
+    }
   }
 }

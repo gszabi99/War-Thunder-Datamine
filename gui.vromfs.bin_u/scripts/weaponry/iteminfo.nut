@@ -8,10 +8,8 @@ local { getLastWeapon,
         isWeaponEnabled,
         isWeaponUnlocked,
         getLastPrimaryWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { canBuyMod,
-        canResearchMod,
-        isModUpgradeable,
-        getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
+  getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 
 local function getItemAmount(unit, item)
 {
@@ -102,7 +100,7 @@ local function getItemStatusTbl(unit, item)
       {
         res.equipped = res.amount && ::shop_is_modification_enabled(unit.name, item.name)
         res.goldUnlockable = !res.unlocked && ::has_feature("SpendGold")
-          && canBeResearched(unit, item, false)
+          && isReqModificationsUnlocked(unit, item) && canBeResearched(unit, item, false)
         if (item.type == weaponsItem.expendables)
           res.showPrice = !res.amount || canBuyMod(unit, item)
         else

@@ -426,8 +426,6 @@ UnlockConditions.loadMainProgressCondition <- function loadMainProgressCondition
     res.level <- blk?.level ?? 0
   else if (modeType == "char_resources_count")
     res.resourceType <- blk?.resourceType
-  else if (modeType == "captures")
-    res.recaptureOnly <- blk?.recaptureOnly ?? false
 
   res.multiplier <- getMultipliersTable(blk)
   return res
@@ -892,8 +890,6 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
     textId = "conditions/char_resources_count/" + ::getTblValue("resourceType", condition, "")
   else if (modeType == "amountDamagesZone")
     textId = "debriefing/Damage"
-  else if (modeType == "captures" && condition?.recaptureOnly)
-    textId = "conditions/recaptures"
 
   if ("locEnding" in params)
     res = ::loc(textId + params.locEnding, textParams)

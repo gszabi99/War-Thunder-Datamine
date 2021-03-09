@@ -4,11 +4,13 @@ local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtil
 local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
-local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryVisual.nut")
+local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { getVideoModes } = require("scripts/options/systemOptions.nut")
 local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
 } = require("scripts/userstat/userstat.nut")
+
+require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
 ::callstack <- dagor.debug_dump_stack
 

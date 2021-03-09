@@ -2,6 +2,7 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 
 class ::g_invites_classes.SessionRoom extends ::BaseInvite
 {
@@ -163,7 +164,8 @@ class ::g_invites_classes.SessionRoom extends ::BaseInvite
 
     local room = ::g_mroom_info.get(roomId).getFullRoomData()
     local event = room ? ::SessionLobby.getRoomEvent(room) : null
-    if (event != null && !antiCheat.showMsgboxIfEacInactive(event))
+    if (event != null && (!antiCheat.showMsgboxIfEacInactive(event)||
+                          !showMsgboxIfSoundModsNotAllowed(event)))
       return
 
     local canJoin = ignoreCheckSquad

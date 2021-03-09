@@ -19,37 +19,42 @@ local weaponsStatusNameByStatusCode = {
 }
 
 local TRIGGER_TYPE = {
-  MACHINE_GUN = "machine gun"
-  CANNON      = "cannon"
-  ADD_GUN     = "additional gun"
-  TURRETS     = "turrets"
-  SMOKE       = "smoke"
-  FLARES      = "flares"
-  BOMBS       = "bombs"
-  MINES       = "mines"
-  TORPEDOES   = "torpedoes"
-  ROCKETS     = "rockets"
-  AAM         = "aam"
-  AGM         = "agm"
-  ATGM        = "atgm"
+  MACHINE_GUN     = "machine gun"
+  CANNON          = "cannon"
+  ADD_GUN         = "additional gun"
+  TURRETS         = "turrets"
+  SMOKE           = "smoke"
+  FLARES          = "flares"
+  CHAFFS          = "chaffs"
+  COUNTERMEASURES = "countermeasures"
+  BOMBS           = "bombs"
+  MINES           = "mines"
+  TORPEDOES       = "torpedoes"
+  ROCKETS         = "rockets"
+  AAM             = "aam"
+  AGM             = "agm"
+  ATGM            = "atgm"
 }
 
 local WEAPON_TYPE = {
-  GUNS        = "guns"
-  CANNONS     = "cannons"
-  TURRETS     = "turrets"
-  SMOKE       = "smoke"
-  FLARES      = "flares"    // Flares (countermeasure)
-  BOMBS       = "bombs"
-  MINES       = "mines"
-  TORPEDOES   = "torpedoes"
-  ROCKETS     = "rockets"   // Rockets
-  AAM         = "aam"       // Air-to-Air Missiles
-  AGM         = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
+  GUNS            = "guns"
+  CANNONS         = "cannons"
+  TURRETS         = "turrets"
+  SMOKE           = "smoke"
+  FLARES          = "flares"    // Flares (countermeasure)
+  CHAFFS          = "chaffs"
+  COUNTERMEASURES = "countermeasures"
+  BOMBS           = "bombs"
+  MINES           = "mines"
+  TORPEDOES       = "torpedoes"
+  ROCKETS         = "rockets"   // Rockets
+  AAM             = "aam"       // Air-to-Air Missiles
+  AGM             = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
 }
 
 local CONSUMABLE_TYPES = [ WEAPON_TYPE.AAM, WEAPON_TYPE.AGM, WEAPON_TYPE.ROCKETS,
-  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES ]
+  WEAPON_TYPE.TORPEDOES, WEAPON_TYPE.BOMBS, WEAPON_TYPE.MINES, WEAPON_TYPE.SMOKE,
+  WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES]
 
 local WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -189,7 +194,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
   local unitType = ::get_es_unit_type(unit)
   foreach (weapon in (block % "Weapon"))
   {
-    if (weapon?.dummy)
+    if (weapon?.dummy
+      || (weapon?.triggerGroup == "commander" && weapon?.bullets == null))
       continue
 
     if (!weapon?.blk)
@@ -213,6 +219,10 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
           currentTypeName = WEAPON_TYPE.AAM
         else if (weapon.trigger == TRIGGER_TYPE.FLARES)
           currentTypeName = WEAPON_TYPE.FLARES
+        else if (weapon.trigger == TRIGGER_TYPE.CHAFFS)
+          currentTypeName = WEAPON_TYPE.CHAFFS
+        else if (weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES)
+          currentTypeName = WEAPON_TYPE.COUNTERMEASURES
         else
           currentTypeName = WEAPON_TYPE.ROCKETS
 
@@ -236,7 +246,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
     else if (unitType == ::ES_UNIT_TYPE_TANK ||
       ::isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
-        TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES ]))
+        TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
+        TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
     { //not a turret
       currentTypeName = WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
@@ -283,7 +294,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
         }
 
 
-    local needBulletParams = !::isInArray(currentTypeName, [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES])
+    local needBulletParams = !::isInArray(currentTypeName,
+      [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
 
     if (needBulletParams && weaponTag.len() && weaponBlk?[weaponTag])
     {
@@ -319,25 +331,28 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
           if ((itemBlk?.rangeMax ?? 0) != 0)
             item.launchRange <- itemBlk.rangeMax
 
-          if (itemBlk?.irSeeker != null)
-          {
-            local rangeRearAspect = itemBlk.irSeeker?.rangeBand0 ?? 0
-            local rangeAllAspect  = itemBlk.irSeeker?.rangeBand1 ?? 0
-            if (currentTypeName == WEAPON_TYPE.AAM)
+          if (itemBlk?.guidance != null)
+            if (itemBlk.guidance?.irSeeker != null)
             {
-              item.seekerRangeRearAspect <- rangeRearAspect
-              item.seekerRangeAllAspect  <- rangeAllAspect
-              if (rangeRearAspect > 0 || rangeAllAspect > 0)
-                item.allAspect <- rangeAllAspect * 1.0 >= 0.2 * rangeRearAspect
+              if (itemBlk.guidance.irSeeker?.visibilityType == "optic")
+                item.guidanceType = "tv"
+              local rangeRearAspect = itemBlk.guidance.irSeeker?.rangeBand0 ?? 0
+              local rangeAllAspect  = itemBlk.guidance.irSeeker?.rangeBand1 ?? 0
+              if (currentTypeName == WEAPON_TYPE.AAM)
+              {
+                item.seekerRangeRearAspect <- rangeRearAspect
+                item.seekerRangeAllAspect  <- rangeAllAspect
+                if (rangeRearAspect > 0 || rangeAllAspect > 0)
+                  item.allAspect <- rangeAllAspect * 1.0 >= 0.2 * rangeRearAspect
+              }
+              else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false))
+              {
+                if (rangeRearAspect > 0 || rangeAllAspect > 0)
+                  item.seekerRange <- ::min(rangeRearAspect, rangeAllAspect)
+              }
+              if (itemBlk?.guidanceType == "ir" && (itemBlk.guidance.irSeeker?.bandMaskToReject ?? 0) != 0)
+                item.seekerECCM <- true
             }
-            else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.irSeeker?.groundVehiclesAsTarget ?? false))
-            {
-              if (rangeRearAspect > 0 || rangeAllAspect > 0)
-                item.seekerRange <- ::min(rangeRearAspect, rangeAllAspect)
-            }
-            if (itemBlk?.guidanceType == "ir" && (itemBlk.irSeeker?.bandMaskToReject ?? 0) != 0)
-              item.seekerECCM <- true
-          }
         }
         if (currentTypeName == WEAPON_TYPE.AAM)
         {
@@ -363,10 +378,13 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
       }
     }
 
-    if(isTurret && weapon.turret)
+    if(isTurret)
     {
-      local turretInfo = weapon.turret
-      item.turret = ::u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
+      if(weapon.turret)
+      {
+        local turretInfo = weapon.turret
+        item.turret = ::u.isDataBlock(turretInfo) ? turretInfo.head : turretInfo
+      }
     }
 
     if (!(currentTypeName in weapons))

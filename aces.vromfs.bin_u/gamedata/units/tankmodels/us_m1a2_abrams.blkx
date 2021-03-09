@@ -193,7 +193,7 @@
         "armorClass": "leopard_2a5_turret_nera",
         "composite_armor_hull_01_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.17,
+          "cumulativeArmorQuality": 1.3,
           "genericArmorQuality": 0.48
         },
         "composite_armor_turret_01_dm": {
@@ -203,14 +203,12 @@
         },
         "composite_armor_turret_02_dm": {
           "armorThickness": 800.0,
-          "armorEffectiveThicknessMax": 800.0,
-          "cumulativeArmorQuality": 1.2,
+          "cumulativeArmorQuality": 1.3,
           "genericArmorQuality": 0.75
         },
         "composite_armor_turret_03_dm": {
           "armorThickness": 300.0,
-          "genericThicknessEquivalentMax": 130.0,
-          "cumulativeArmorQuality": 0.75,
+          "cumulativeArmorQuality": 0.85,
           "genericArmorQuality": 0.3
         },
         "composite_armor_turret_04_dm": {
@@ -221,8 +219,7 @@
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 300.0,
-          "genericThicknessEquivalentMax": 130.0,
-          "cumulativeArmorQuality": 0.5,
+          "cumulativeArmorQuality": 0.6,
           "genericArmorQuality": 0.215
         },
         "composite_armor_turret_06_dm": {
@@ -592,10 +589,19 @@
         "ex_decor_l_04_dm": [],
         "ex_decor_r_04_dm": []
       },
+      "body_side_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 100.0,
+        "armorThickness": 4.0,
+        "createSecondaryShatters": false,
+        "ex_armor_r_10_dm": [],
+        "ex_armor_l_10_dm": []
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
         "armorThickness": 20.0,
+        "wheel_support_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -635,8 +641,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
-        "armorThickness": 25.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -682,7 +688,8 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 30.0,
-        "hp": 300.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 30.0,
         "track_r_dm": [],
         "track_l_dm": []
       },
@@ -690,39 +697,21 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        }
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -2343,7 +2332,7 @@
     "gunConvergence": {
       "updateFromRangefinder": true,
       "minDistance": 200.0,
-      "distance": 1000.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }

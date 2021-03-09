@@ -84,24 +84,25 @@ global enum HelicopterParams
   AAM = 10,
   BOMBS = 11,
   FLARES = 12,
-  IRCM = 13,
-  RATE_OF_FIRE = 14,
-  OIL_1 = 15,
-  OIL_2 = 16,
-  OIL_3 = 17,
-  WATER_1 = 18,
-  WATER_2 = 19,
-  WATER_3 = 20,
-  ENGINE_1 = 21,
-  ENGINE_2 = 22,
-  ENGINE_3 = 23,
-  TRANSMISSION_1 = 24,
-  TRANSMISSION_2 = 25,
-  TRANSMISSION_3 = 26,
-  TRANSMISSION_4 = 27,
-  TRANSMISSION_5 = 28,
-  TRANSMISSION_6 = 29,
-  FUEL = 30
+  CHAFFS = 13,
+  IRCM = 14,
+  RATE_OF_FIRE = 15,
+  OIL_1 = 16,
+  OIL_2 = 17,
+  OIL_3 = 18,
+  WATER_1 = 19,
+  WATER_2 = 20,
+  WATER_3 = 21,
+  ENGINE_1 = 22,
+  ENGINE_2 = 23,
+  ENGINE_3 = 24,
+  TRANSMISSION_1 = 25,
+  TRANSMISSION_2 = 26,
+  TRANSMISSION_3 = 27,
+  TRANSMISSION_4 = 28,
+  TRANSMISSION_5 = 29,
+  TRANSMISSION_6 = 30,
+  FUEL = 31
 };
 
 global enum TemperatureState
@@ -131,10 +132,10 @@ global enum RadarViewMode
   MODE_COUNT = 2
 };
 
-global enum FlaresMode
+global enum CountermeasureMode
 {
-  PERIODIC_FLARES    = 1,
-  MLWS_SLAVED_FLARES = 2
+  PERIODIC_COUNTERMEASURE    = 1,
+  MLWS_SLAVED_COUNTERMEASURE = 2
 };
 
 global enum WeaponMode

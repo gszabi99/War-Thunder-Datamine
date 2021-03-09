@@ -5,6 +5,7 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.215,
   "gearSinkRangeC": 0.065,
+  "gyroscopicSightOverSensors": true,
   "type": "typeFighter",
   "paratrooper": "usa_para",
   "advancedInstructor": true,
@@ -23,7 +24,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1200kph",
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "DamageParts": {
     "armor10": {
       "mgun1_dm": {
@@ -2616,6 +2617,12 @@
       }
     }
   ],
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/us_an_apg_30.blk",
+      "dmPart": "radar_dm"
+    }
+  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -2895,8 +2902,20 @@
     },
     {
       "replace_tex": {
+        "from": "f_84f_n*",
+        "to": "f_84f_tomoe_n*"
+      }
+    },
+    {
+      "replace_tex": {
         "from": "f_84f_c_dmg*",
         "to": "f_84f_c_tomoe_dmg*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "f_84f_n_dmg*",
+        "to": "f_84f_tomoe_n_dmg*"
       }
     }
   ],

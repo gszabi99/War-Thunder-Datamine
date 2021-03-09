@@ -193,7 +193,7 @@
         "armorClass": "leopard_2a5_turret_nera",
         "composite_armor_hull_01_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.08,
+          "cumulativeArmorQuality": 1.1,
           "genericArmorQuality": 0.41
         },
         "composite_armor_turret_01_dm": {
@@ -203,34 +203,32 @@
         },
         "composite_armor_turret_02_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.3,
-          "genericArmorQuality": 0.58
+          "cumulativeArmorQuality": 1.5,
+          "genericArmorQuality": 0.65
         },
         "composite_armor_turret_03_dm": {
           "armorThickness": 360.0,
-          "cumulativeArmorQuality": 1.33,
-          "genericArmorQuality": 0.61
+          "cumulativeArmorQuality": 1.5,
+          "genericArmorQuality": 0.65
         },
         "composite_armor_turret_04_dm": {
           "armorThickness": 300.0,
-          "armorEffectiveThicknessMax": 600.0,
-          "cumulativeArmorQuality": 1.75,
-          "genericArmorQuality": 0.55
+          "cumulativeArmorQuality": 1.9,
+          "genericArmorQuality": 0.72
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 300.0,
-          "armorEffectiveThicknessMax": 600.0,
           "cumulativeArmorQuality": 2.0,
-          "genericArmorQuality": 0.45
+          "genericArmorQuality": 0.74
         },
         "composite_armor_turret_06_dm": {
           "armorThickness": 350.0,
-          "cumulativeArmorQuality": 1.0,
+          "cumulativeArmorQuality": 1.18,
           "genericArmorQuality": 0.11
         },
         "composite_armor_turret_07_dm": {
           "armorThickness": 350.0,
-          "cumulativeArmorQuality": 1.0,
+          "cumulativeArmorQuality": 1.2,
           "genericArmorQuality": 0.11
         }
       },
@@ -329,8 +327,7 @@
         },
         "turret_02_front_dm": {
           "armorThickness": 31.75,
-          "createSecondaryShatters": false,
-          "cumulativeArmorQuality": 0.1
+          "createSecondaryShatters": false
         },
         "turret_03_bottom_dm": {
           "armorThickness": 31.75
@@ -588,10 +585,19 @@
         "ex_decor_l_01_dm": [],
         "ex_decor_r_01_dm": []
       },
+      "body_side_screens": {
+        "armorClass": "t_90_rubber_fabric_screens",
+        "hp": 100.0,
+        "armorThickness": 4.0,
+        "createSecondaryShatters": false,
+        "ex_armor_r_08_dm": [],
+        "ex_armor_l_08_dm": []
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 300.0,
         "armorThickness": 20.0,
+        "wheel_support_dm": [],
         "wheel_r_01_dm": [],
         "wheel_r_02_dm": [],
         "wheel_r_03_dm": [],
@@ -628,8 +634,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 250.0,
-        "armorThickness": 25.0,
+        "hp": 200.0,
+        "armorThickness": 35.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -675,7 +681,8 @@
       "tracks": {
         "armorClass": "tank_traks",
         "armorThickness": 30.0,
-        "hp": 300.0,
+        "hp": 100.0,
+        "genericEffectiveThicknessMax": 30.0,
         "track_r_dm": [],
         "track_l_dm": []
       },
@@ -683,39 +690,21 @@
         "armorClass": "steel_tankman",
         "hp": 40.0,
         "genericDamageMult": 3.0,
-        "driver_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "loader_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "gunner_02_dm": {
-          "genericDamageMult": 3.0
-        },
-        "commander_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_01_dm": {
-          "genericDamageMult": 3.0
-        },
-        "machine_gunner_02_dm": {
-          "genericDamageMult": 3.0
-        }
+        "pressureDamageMult": 1.0,
+        "driver_dm": [],
+        "loader_dm": [],
+        "loader_01_dm": [],
+        "loader_02_dm": [],
+        "gunner_dm": [],
+        "gunner_01_dm": [],
+        "gunner_02_dm": [],
+        "gunner_03_dm": [],
+        "commander_dm": [],
+        "machine_gunner_dm": [],
+        "machine_gunner_01_dm": [],
+        "machine_gunner_02_dm": [],
+        "machine_gunner_03_dm": [],
+        "machine_gunner_04_dm": []
       },
       "equipment_body_turret": {
         "armorClass": "tank_structural_steel",
@@ -1021,6 +1010,111 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       }
+    }
+  },
+  {
+    "MetaParts": {
+      "closed_fightning_compartment": [
+        {
+          "part": "loader_dm"
+        },
+        {
+          "part": "gunner_dm"
+        },
+        {
+          "part": "commander_dm"
+        },
+        {
+          "part": "machine_gunner_dm"
+        },
+        {
+          "part": "gunner_01_dm"
+        },
+        {
+          "part": "gunner_02_dm"
+        },
+        {
+          "part": "loader_01_dm"
+        },
+        {
+          "part": "loader_02_dm"
+        },
+        {
+          "part": "cannon_breech_dm"
+        },
+        {
+          "part": "radio_station_dm"
+        },
+        {
+          "part": "drive_turret_v_dm"
+        },
+        {
+          "part": "drive_turret_h_dm"
+        },
+        {
+          "part": "drive_turret_v_01_dm"
+        },
+        {
+          "part": "drive_turret_h_01_dm"
+        },
+        {
+          "part": "drive_turret_v_02_dm"
+        },
+        {
+          "part": "drive_turret_h_02_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 1.0,
+            "pressure": true
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "shatter",
+            "conditionDamage": 1.0,
+            "pressure": true
+          }
+        }
+      ],
+      "closed_control_compartment": [
+        {
+          "part": "driver_dm"
+        },
+        {
+          "part": "drive_turret_v_dm"
+        },
+        {
+          "part": "drive_turret_h_dm"
+        },
+        {
+          "part": "drive_turret_v_01_dm"
+        },
+        {
+          "part": "drive_turret_h_01_dm"
+        },
+        {
+          "part": "drive_turret_v_02_dm"
+        },
+        {
+          "part": "drive_turret_h_02_dm"
+        },
+        {
+          "effect": {
+            "conditionDamageType": "explosion",
+            "conditionDamage": 1.0,
+            "pressure": true
+          }
+        },
+        {
+          "effect": {
+            "conditionDamageType": "shatter",
+            "conditionDamage": 1.0,
+            "pressure": true
+          }
+        }
+      ]
     }
   },
   {
@@ -2335,7 +2429,7 @@
     "gunConvergence": {
       "updateFromRangefinder": true,
       "minDistance": 200.0,
-      "distance": 1000.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }

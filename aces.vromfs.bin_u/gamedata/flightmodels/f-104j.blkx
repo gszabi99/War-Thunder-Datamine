@@ -8,6 +8,7 @@
   "JetNozzlesAnim1": [0.3,0.5],
   "JetNozzlesAnim2": [0.5,1.0],
   "JetNozzlesAnim3": [1.0,0.0],
+  "ilsLCOSS": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -1863,15 +1864,30 @@
       }
     },
     {
-      "multifunctionDisplays": {
-        "display": {
-          "textureArea": [0.0,0.5,0.5,1.0],
-          "page": {
-            "type": "radar_b_round",
-            "radarScale": 1.0
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.6,0.5,1.15],
+            "page": {
+              "type": "radar_b_round",
+              "radarScale": 1.1,
+              "radarColor": "#ff731bff"
+            }
+          }
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "page": {
+              "type": "plane_ils",
+              "ilsSize": [0.15,0.15],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5,
+              "ilsColor": "#ca1e0ac8"
+            }
           }
         }
-      }
+      ]
     },
     {
       "parts_holes_dmg": {
@@ -2030,6 +2046,38 @@
           }
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f-104j_aim_9p",
+        "blk": "gameData/FlightModels/weaponPresets/f-104j_aim_9p.blk",
+        "reqModification": "us_aim_9p"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f-104j_rl_7_hydra_247_aim_9p"
+        },
+        {
+          "blk": "gameData/FlightModels/weaponPresets/f-104j_rl_7_hydra_247_aim_9p.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_rl_7"
+        },
+        {
+          "reqModification": "us_aim_9p"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
+              "amountPerTier": 7.0,
+              "iconType": "nar_ap_small"
+            }
+          }
+        }
+      ]
     }
   ],
   "turbulence": {
@@ -2136,11 +2184,16 @@
     },
     "us_aim_9b": {
       "reqModification": "us_2_75_in_ffar_rl_7",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9e": {
       "reqModification": "us_aim_9b",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_9p": {
+      "reqModification": "us_aim_9e",
       "tier": 4,
       "modClass": "weapon"
     }

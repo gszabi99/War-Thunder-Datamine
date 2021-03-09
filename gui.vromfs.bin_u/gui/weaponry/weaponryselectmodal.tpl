@@ -32,6 +32,9 @@ popup_menu {
       moveY:t='linear'
 
       on_activate:t = 'onChangeValue'
+      on_pushed:t='::gcb.delayedTooltipListPush'
+      on_hold_start:t='::gcb.delayedTooltipListHoldStart'
+      on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
 
       value:t='<<value>>'
 

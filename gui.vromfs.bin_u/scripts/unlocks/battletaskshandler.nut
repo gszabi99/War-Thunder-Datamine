@@ -361,6 +361,9 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     updateButtons(config)
     hideTaskWidget(config)
+
+    guiScene.applyPendingChanges(false)
+    ::move_mouse_on_obj(obj.getChild(val))
   }
 
   function preparePlaybackForConfig(config, useDefault = false)

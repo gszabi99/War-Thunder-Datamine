@@ -1,0 +1,59 @@
+{
+  "hasQualityModels": true,
+  "useBotForAi": false,
+  "timeToFire": 20.0,
+  "timeToSmoke": 23.0,
+  "hasExpl": false,
+  "exhaustFx": "ps_exhaust",
+  "expClass": "exp_ship",
+  "collidesTorpedo": false,
+  "collidesAircraft": false,
+  "model": "mooring_buoy",
+  "subclass": "warShip",
+  "dynCollisionGeom": true,
+  "moveType": "ship",
+  "maxFwdSpeed": 80.0,
+  "maxRevSpeed": 5.0,
+  "maxAngSpeed": 15.0,
+  "maxAccel": 20.0,
+  "maxDecel": 5.0,
+  "maxAngAccel": 15.0,
+  "maxAngAccel0": 2.0,
+  "maxAngAccelV": 15.0,
+  "groundNormSmoothViscosity": 0.1,
+  "customUpdateDiv": 5,
+  "SoundMove": "models.Ship",
+  "tailStartOffset": 0.0,
+  "DamageParts": {
+    "armor10": {
+      "body_dm": {
+        "hp": 6.0
+      }
+    }
+  },
+  "class_tags": {
+    "pacific": true,
+    "mediterran": true,
+    "westernfront": true
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body_dm",
+      "onHit": {
+        "smoke": 0.01,
+        "fire": 0.01
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "sound": {
+    "path": "sounds/engines",
+    "pathStudio": "aircraft/engines",
+    "engine": "boat"
+  },
+  "winch": {
+    "pos": [0.0,1.1,0.0]
+  }
+}

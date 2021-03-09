@@ -5,6 +5,7 @@ local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { hasBattlePass } = require("scripts/battlePass/seasonState.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/items/boosterEffect.nut")
 
 ::fill_gamer_card <- function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene=true)
 {
@@ -95,12 +96,12 @@ local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
           local valStr = ::g_language.decimalFormat(val)
           local tooltipText = "\n".concat(::getWpPriceText(::colorize("activeTextColor", valStr), true),
             ::loc("mainmenu/warpoints"),
-            ::get_current_bonuses_text(::BoosterEffectType.WP))
+            ::get_current_bonuses_text(boosterEffectType.WP))
 
           local buttonObj = obj.getParent()
           buttonObj.tooltip = tooltipText
-          buttonObj.showBonusCommon = ::have_active_bonuses_by_effect_type(::BoosterEffectType.WP, false)? "yes" : "no"
-          buttonObj.showBonusPersonal = ::have_active_bonuses_by_effect_type(::BoosterEffectType.WP, true)? "yes" : "no"
+          buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false)? "yes" : "no"
+          buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true)? "yes" : "no"
 
           obj.setValue(valStr)
           break
@@ -108,11 +109,11 @@ local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
           local valStr = ::Balance(0,0,val).toStringWithParams({isFrpAlwaysShown = true})
           local tooltipText = "\n".concat(::colorize("activeTextColor", valStr),
             ::loc("currency/freeResearchPoints/desc"),
-            ::get_current_bonuses_text(::BoosterEffectType.RP))
+            ::get_current_bonuses_text(boosterEffectType.RP))
 
           obj.tooltip = tooltipText
-          obj.showBonusCommon = ::have_active_bonuses_by_effect_type(::BoosterEffectType.RP, false)? "yes" : "no"
-          obj.showBonusPersonal = ::have_active_bonuses_by_effect_type(::BoosterEffectType.RP, true)? "yes" : "no"
+          obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false)? "yes" : "no"
+          obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true)? "yes" : "no"
           break
         case "name":
           if (::u.isEmpty(val))
@@ -226,7 +227,8 @@ local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
                              gc_dropdown_premium_button = featureEnablePremiumPurchase
                              gc_dropdown_shop_eagles_button = canSpendGold
                              gc_free_exp = ::has_feature("SpendGold") && ::has_feature("SpendFreeRP")
-                             gc_items_shop_button = ::ItemsManager.isEnabled() && ::has_feature("ItemsShop")
+                             gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
+                               && ::has_feature("ItemsShop")
                              gc_online_shop_button = ::has_feature("OnlineShopPacks")
                              gc_clanAlert = ::g_clans.getUnseenCandidatesCount() > 0
                              gc_invites_btn = !::is_platform_xbox || ::has_feature("XboxCrossConsoleInteraction")

@@ -5,6 +5,7 @@
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
+  "is410SUM1Ils": true,
   "gearSinkRangeLR": 0.204,
   "gearSinkRangeC": 0.308,
   "JetNozzlesAnim1": [0.3,0.5],
@@ -29,7 +30,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "1700kph",
-  "fightAiBehaviour": "fighter",
+  "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
   "DamageParts": {
     "armor10": {
@@ -2105,14 +2106,27 @@
       }
     },
     {
-      "multifunctionDisplays": {
-        "display": {
-          "textureArea": [0.0,0.0,0.5,0.5],
-          "page": {
-            "type": "map"
+      "multifunctionDisplays": [
+        {
+          "display": {
+            "textureArea": [0.0,0.0,0.5,0.5],
+            "page": {
+              "type": "map"
+            }
+          }
+        },
+        {
+          "display": {
+            "textureArea": [0.0,0.0,1.0,1.0],
+            "page": {
+              "type": "plane_ils",
+              "ilsSize": [0.24,0.28],
+              "ilsOffsetForce": 0.0,
+              "brightnessMult": 3.5
+            }
           }
         }
-      }
+      ]
     },
     {
       "parts_holes_dmg": {
