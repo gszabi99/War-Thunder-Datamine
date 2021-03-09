@@ -1,8 +1,13 @@
-local { maxSeasonLvl, hasBattlePass, battlePassShopConfig } = require("scripts/battlePass/seasonState.nut")
+local { maxSeasonLvl, hasBattlePass, battlePassShopConfig, season } = require("scripts/battlePass/seasonState.nut")
 local { refreshUserstatUnlocks, isUserstatMissingData
 } = require("scripts/userstat/userstat.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+
+local seasonShopConfig = ::Computed(@() {
+  purchaseWndItems = battlePassShopConfig.value ?? []
+  seasonId = season.value
+})
 
 local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.MODAL
@@ -13,7 +18,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   hasBuyImprovedBattlePass = false
 
   function initScreen() {
-    if (battlePassShopConfig.value == null)
+    if (seasonShopConfig.value.purchaseWndItems.len() == 0)
       return goBack()
 
     updateWindow()
@@ -28,15 +33,15 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local contentObj = rootObj.findObject("wnd_content")
     contentObj.flow = "vertical"
 
-    contentObj.setValue(stashBhvValueConfig([{
-      watch = battlePassShopConfig
+    rootObj.setValue(stashBhvValueConfig([{
+      watch = seasonShopConfig
       updateFunc = ::Callback(@(obj, shopConfig) updateContent(shopConfig), this)
     }]))
   }
 
   function updateContent(shopConfig) {
     goods = []
-    foreach (idx, config in (shopConfig ?? [])) {
+    foreach (idx, config in shopConfig.purchaseWndItems) {
       local { battlePassUnlock = "", additionalTrophy = [] } = config
       local passUnlock = ::g_unlocks.getUnlockById(battlePassUnlock)
       local additionalTrophyItems = additionalTrophy.map(@(itemId) ::ItemsManager.findItemById(
@@ -47,6 +52,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         battlePassUnlock = passUnlock
         hasBattlePassUnlock = battlePassUnlock != ""
         rowIdx = idx
+        seasonId = shopConfig.seasonId
       })
 
       goods.append(goodsConfig)
@@ -160,7 +166,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local isBought = false
     local isDisabled = false
     local cost = ::Cost()
-    local { additionalTrophyItems, battlePassUnlock } = goodsConfig
+    local { additionalTrophyItems, battlePassUnlock, seasonId } = goodsConfig
     local additionalTrophyItem = getAdditionalTrophyItemForBuy(additionalTrophyItems)
     local isBattlePassConfig = battlePassUnlock != null
     if (isBattlePassConfig)
@@ -172,15 +178,18 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       valueText = ::PrizesView.getPrizeText(topPrize, false)
       cost = cost + additionalTrophyItem.getCost()
     }
+    local isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem
     if (battlePassUnlock != null) {
-      name = ::loc("battlePass")
+      local prizeLocId = isImprovedBattlePass ? "battlePass/improvedBattlePassName" : "battlePass/name"
+      name = ::loc(prizeLocId, { name = ::loc($"battlePass/seasonName/{seasonId}") })
       isBought = isGoodsBought(goodsConfig)
       isDisabled = isBought
-      if (hasAdditionalTrophyItem)
+      if (hasAdditionalTrophyItem) {
         isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
+        valueText = ::loc("ui/parentheses", { text = valueText })
+      }
       cost = cost + ::get_unlock_cost(battlePassUnlock.id)
     }
-    local isImprovedBattlePass = isBattlePassConfig && hasAdditionalTrophyItem
     if (isImprovedBattlePass)
       hasBuyImprovedBattlePass = isBought
 

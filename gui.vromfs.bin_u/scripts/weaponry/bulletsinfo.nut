@@ -752,7 +752,7 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
   if (ammo_pack_len)
     res.desc = shortDescr + "\n"
   if (set.weaponType == WEAPON_TYPE.COUNTERMEASURES)
-    res.desc += "countermeasures/desc" + "\n\n"
+    res.desc += ::loc("countermeasures/desc") + "\n\n"
   else if (set.bullets.len() > 1)
     res.desc += format(::loc("caliber_" + set.caliber + "/desc"), setText) + "\n\n"
   res.desc += annotation

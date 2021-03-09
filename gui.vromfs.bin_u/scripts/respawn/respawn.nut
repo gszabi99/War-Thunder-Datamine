@@ -19,7 +19,7 @@ local { AMMO,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { setColoredDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
-local { hasFlares , bombNbr, hasChaffs, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
+local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
 local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nut")
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
@@ -65,18 +65,6 @@ enum ESwitchSpectatorTarget
     isVisible = @() !get_option_torpedo_dive_depth_auto() },
   {id = "fuel",        hint = "options/fuel_amount",
     user_option = ::USEROPT_LOAD_FUEL_AMOUNT, isShowForRandomUnit =false },
-  {id = "flares_periods",        hint = "options/flares_periods",
-    user_option = ::USEROPT_FLARES_PERIODS, isShowForRandomUnit =false },
-  {id = "flares_series",         hint = "options/flares_series",
-    user_option = ::USEROPT_FLARES_SERIES, isShowForRandomUnit =false },
-  {id = "flares_series_periods", hint = "options/flares_series_periods",
-    user_option = ::USEROPT_FLARES_SERIES_PERIODS, isShowForRandomUnit =false },
-  {id = "chaffs_periods",        hint = "options/chaffs_periods",
-    user_option = ::USEROPT_CHAFFS_PERIODS, isShowForRandomUnit =false },
-  {id = "chaffs_series",         hint = "options/chaffs_series",
-    user_option = ::USEROPT_CHAFFS_SERIES, isShowForRandomUnit =false },
-  {id = "chaffs_series_periods", hint = "options/chaffs_series_periods",
-    user_option = ::USEROPT_CHAFFS_SERIES_PERIODS, isShowForRandomUnit =false },
   {id = "countermeasures_periods",        hint = "options/countermeasures_periods",
     user_option = ::USEROPT_COUNTERMEASURES_PERIODS, isShowForRandomUnit =false },
   {id = "countermeasures_series_periods", hint = "options/countermeasures_series_periods",
@@ -1237,80 +1225,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     }
     showOptionRow(rocketDescr.id,
       aircraft && rocket && unit.getAvailableSecondaryWeapons().hasRocketDistanceFuse)
-
-    //flares
-    local flaresPeriodsDescr = ::get_option(::USEROPT_FLARES_PERIODS)
-    local flarePeriodsObj = scene.findObject(flaresPeriodsDescr.id)
-    if (needUpdateOptionItems && ::check_obj(flarePeriodsObj))
-    {
-      local markup = ""
-      foreach (idx, item in flaresPeriodsDescr.items)
-        if (canChangeAircraft || idx == flaresPeriodsDescr.value)
-          markup += build_option_blk(item.text, "", idx == flaresPeriodsDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(flarePeriodsObj, markup, markup.len(), this)
-    }
-    showOptionRow(flaresPeriodsDescr.id, aircraft && hasFlares(unit))
-
-    local flaresSeriesDescr = ::get_option(::USEROPT_FLARES_SERIES)
-    local flareSeriesObj = scene.findObject(flaresSeriesDescr.id)
-    if (needUpdateOptionItems && ::check_obj(flareSeriesObj))
-    {
-      local markup = ""
-      foreach (idx, item in flaresSeriesDescr.items)
-        if (canChangeAircraft || idx == flaresSeriesDescr.value)
-          markup += build_option_blk(item.text, "", idx == flaresSeriesDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(flareSeriesObj, markup, markup.len(), this)
-    }
-    showOptionRow(flaresSeriesDescr.id, aircraft && hasFlares(unit))
-
-    local flaresSeriesPeriodsDescr = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
-    local flareSeriesPeriodsObj = scene.findObject(flaresSeriesPeriodsDescr.id)
-    if (needUpdateOptionItems && ::check_obj(flareSeriesPeriodsObj))
-    {
-      local markup = ""
-      foreach (idx, item in flaresSeriesPeriodsDescr.items)
-        if (canChangeAircraft || idx == flaresSeriesPeriodsDescr.value)
-          markup += build_option_blk(item.text, "", idx == flaresSeriesPeriodsDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(flareSeriesPeriodsObj, markup, markup.len(), this)
-    }
-    showOptionRow(flaresSeriesPeriodsDescr.id, aircraft && hasFlares(unit))
-
-    //chaffs
-    local chaffsPeriodsDescr = ::get_option(::USEROPT_CHAFFS_PERIODS)
-    local chaffPeriodsObj = scene.findObject(chaffsPeriodsDescr.id)
-    if (needUpdateOptionItems && ::check_obj(chaffPeriodsObj))
-    {
-      local markup = ""
-      foreach (idx, item in chaffsPeriodsDescr.items)
-        if (canChangeAircraft || idx == chaffsPeriodsDescr.value)
-          markup += build_option_blk(item.text, "", idx == chaffsPeriodsDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(chaffPeriodsObj, markup, markup.len(), this)
-    }
-    showOptionRow(chaffsPeriodsDescr.id, aircraft && hasChaffs(unit))
-
-    local chaffsSeriesDescr = ::get_option(::USEROPT_CHAFFS_SERIES)
-    local chaffSeriesObj = scene.findObject(chaffsSeriesDescr.id)
-    if (needUpdateOptionItems && ::check_obj(chaffSeriesObj))
-    {
-      local markup = ""
-      foreach (idx, item in chaffsSeriesDescr.items)
-        if (canChangeAircraft || idx == chaffsSeriesDescr.value)
-          markup += build_option_blk(item.text, "", idx == chaffsSeriesDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(chaffSeriesObj, markup, markup.len(), this)
-    }
-    showOptionRow(chaffsSeriesDescr.id, aircraft && hasChaffs(unit))
-
-    local chaffsSeriesPeriodsDescr = ::get_option(::USEROPT_CHAFFS_SERIES_PERIODS)
-    local chaffSeriesPeriodsObj = scene.findObject(chaffsSeriesPeriodsDescr.id)
-    if (needUpdateOptionItems && ::check_obj(chaffSeriesPeriodsObj))
-    {
-      local markup = ""
-      foreach (idx, item in chaffsSeriesPeriodsDescr.items)
-        if (canChangeAircraft || idx == chaffsSeriesPeriodsDescr.value)
-          markup += build_option_blk(item.text, "", idx == chaffsSeriesPeriodsDescr.value, true, "", false, item.tooltip)
-      guiScene.replaceContentFromText(chaffSeriesPeriodsObj, markup, markup.len(), this)
-    }
-    showOptionRow(chaffsSeriesPeriodsDescr.id, aircraft && hasChaffs(unit))
 
     //countermeasures
     local countermeasuresPeriodsDescr = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)

@@ -29,7 +29,8 @@ local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
   local handlerParams = { curTab = curTab }
   if (params != null)
     handlerParams = ::inherit_table(handlerParams, params)
-  ::handlersManager.loadHandler(::gui_handlers.ItemsList, handlerParams)
+  ::get_cur_gui_scene().performDelayed({},
+    @() ::handlersManager.loadHandler(::gui_handlers.ItemsList, handlerParams))
 }
 
 class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT

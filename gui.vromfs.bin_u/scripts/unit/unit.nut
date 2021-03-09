@@ -29,8 +29,6 @@ local defaultAvailableWeapons = {
   bombsNbr = -1
   hasDepthCharges = false
   hasMines = false
-  hasFlares = false
-  hasChaffs = false
   hasTorpedoes = false
   hasCountermeasures = false
 }
@@ -608,10 +606,6 @@ local Unit = class
               availableWeapons.hasRocketDistanceFuse = true
             if (weapBlk?.bomb.isDepthCharge)
               availableWeapons.hasDepthCharges = true
-            if (weapBlk?.rocket && weapBlk.rocket?.isFlare)
-              availableWeapons.hasFlares = true
-            if (weapBlk?.rocket && weapBlk.rocket?.isChaff)
-              availableWeapons.hasChaffs = true
             if (weapBlk?.torpedo != null)
               availableWeapons.hasTorpedoes = true
 

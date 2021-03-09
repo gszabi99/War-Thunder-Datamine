@@ -1,5 +1,5 @@
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { hasFlares, bombNbr, hasChaffs, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
+local { bombNbr, hasCountermeasures } = require("scripts/unit/unitStatus.nut")
 local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local actionBarInfo = require("scripts/hud/hudActionBarInfo.nut")
 
@@ -184,12 +184,6 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
         [::USEROPT_BOMB_SERIES, "spinner"],
         [::USEROPT_ROCKET_FUSE_DIST, "spinner"],
         [::USEROPT_LOAD_FUEL_AMOUNT, "spinner"],
-        [::USEROPT_FLARES_SERIES, "spinner"],
-        [::USEROPT_FLARES_SERIES_PERIODS, "spinner"],
-        [::USEROPT_FLARES_PERIODS, "spinner"],
-        [::USEROPT_CHAFFS_SERIES, "spinner"],
-        [::USEROPT_CHAFFS_SERIES_PERIODS, "spinner"],
-        [::USEROPT_CHAFFS_PERIODS, "spinner"],
         [::USEROPT_COUNTERMEASURES_SERIES_PERIODS, "spinner"],
         [::USEROPT_COUNTERMEASURES_PERIODS, "spinner"],
         [::USEROPT_COUNTERMEASURES_SERIES, "spinner"]
@@ -658,45 +652,21 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
 
   function checkCountermeasurePeriodsRow()
   {
-    local option = ::get_option(::USEROPT_FLARES_PERIODS)
-    if (option)
-      showOptionRow(option, hasFlares(unit))
-
-    option = ::get_option(::USEROPT_CHAFFS_PERIODS)
-    if (option)
-      showOptionRow(option, hasChaffs(unit))
-
-    option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesRow()
   {
-    local option = ::get_option(::USEROPT_FLARES_SERIES)
-    if (option)
-      showOptionRow(option, hasFlares(unit))
-
-    option = ::get_option(::USEROPT_CHAFFS_SERIES)
-    if (option)
-      showOptionRow(option, hasChaffs(unit))
-
-    option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }
 
   function checkCountermeasureSeriesPeriodsRow()
   {
-    local option = ::get_option(::USEROPT_FLARES_SERIES_PERIODS)
-    if (option)
-      showOptionRow(option, hasFlares(unit))
-
-    option = ::get_option(::USEROPT_CHAFFS_SERIES_PERIODS)
-    if (option)
-      showOptionRow(option, hasChaffs(unit))
-
-    option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
+    local option = ::get_option(::USEROPT_COUNTERMEASURES_SERIES_PERIODS)
     if (option)
       showOptionRow(option, hasCountermeasures(unit))
   }

@@ -29,7 +29,10 @@ actionListItem {
   <</icon>>
 
   <<#haveWarning>>
-  warning_icon { id:t='warning_icon' }
+  warning_icon {
+    id:t='warning_icon'
+    color-factor:t='0'
+  }
   <</haveWarning>>
 
   text {

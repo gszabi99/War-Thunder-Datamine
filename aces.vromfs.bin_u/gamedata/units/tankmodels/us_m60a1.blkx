@@ -1148,21 +1148,6 @@
   },
   {
     "VehiclePhys": {
-      "tracks": {
-        "animationMultiplier": 0.71,
-        "height": 0.095,
-        "width": 0.55,
-        "tracksTensionK": [6.5,8.0,2.0],
-        "trackMesh": "us_t97_phys_track_line",
-        "trackLen": 0.176,
-        "trackCount": 81,
-        "trackFadeTime": 1.1,
-        "trackConnector": true,
-        "trackEmitSparks": false,
-        "trackMaxHeight": 1.4,
-        "trackStartOffset": 0.238,
-        "trackMaxSinking": 0.17
-      },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
         "cls_turret_02": "convex_hull",
@@ -1197,12 +1182,12 @@
         "wheel_l_drive": 0.292,
         "wheel_r_front": 0.35,
         "wheel_l_front": 0.35,
-        "wheel_l_top_01": 0.255,
-        "wheel_l_top_02": 0.255,
-        "wheel_l_top_03": 0.255,
-        "wheel_r_top_01": 0.255,
-        "wheel_r_top_02": 0.255,
-        "wheel_r_top_03": 0.255
+        "wheel_l_top_01": 0.175,
+        "wheel_l_top_02": 0.185,
+        "wheel_l_top_03": 0.185,
+        "wheel_r_top_01": 0.175,
+        "wheel_r_top_02": 0.185,
+        "wheel_r_top_03": 0.185
       },
       "Mass": {
         "Empty": 47400.0,
@@ -1213,6 +1198,20 @@
         "CenterOfGravityClampY": [0.0,0.7],
         "AdvancedMass": false,
         "trackMass": 2500.0
+      },
+      "tracks": {
+        "animationMultiplier": 0.71,
+        "height": 0.095,
+        "width": 0.55,
+        "tracksTensionK": [6.5,10.0,3.0],
+        "trackMesh": "us_t142_phys_track_line",
+        "trackLen": 0.176,
+        "trackCount": 81,
+        "trackFadeTime": 1.1,
+        "trackConnector": true,
+        "trackEmitSparks": false,
+        "trackMaxHeight": 1.55,
+        "trackStartOffset": 0.4
       },
       "mechanics": {
         "maxBrakeForce": 200000.0,

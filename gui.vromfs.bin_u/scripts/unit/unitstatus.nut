@@ -138,23 +138,6 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }
 
-
-local function hasFlares(unit) {
-  if (unit == null)
-    return false
-
-  return unit.getAvailableSecondaryWeapons().hasFlares
-    || isAvailablePrimaryWeapon(unit, "flares")
-}
-
-local function hasChaffs(unit) {
-  if (unit == null)
-    return false
-
-  return unit.getAvailableSecondaryWeapons().hasChaffs
-    || isAvailablePrimaryWeapon(unit, "chaffs")
-}
-
 local function hasCountermeasures(unit) {
   if (unit == null)
     return false
@@ -174,8 +157,6 @@ return {
   canBuyNotResearched             = canBuyNotResearched
   isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
   getBitStatus                    = getBitStatus
-  hasFlares                       = hasFlares
-  hasChaffs                       = hasChaffs
   hasCountermeasures              = hasCountermeasures
   bombNbr                         = bombNbr
   isUnitHaveSecondaryWeapons      = isUnitHaveSecondaryWeapons

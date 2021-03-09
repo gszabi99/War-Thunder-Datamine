@@ -39,6 +39,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -158,9 +161,6 @@
         "turret_01_bottom_dm": {
           "armorThickness": 20.0
         },
-        "turret_06_bottom_dm": {
-          "armorThickness": 5.0
-        },
         "turret_01_back_dm": {
           "armorThickness": 45.0
         },
@@ -195,6 +195,9 @@
         "turret_05_bottom_dm": {
           "armorThickness": 35.0
         },
+        "turret_08_bottom_dm": {
+          "armorThickness": 20.0
+        },
         "turret_front_dm": {
           "armorThickness": 35.0,
           "createSecondaryShatters": false
@@ -225,6 +228,12 @@
           "armorThickness": 35.0,
           "createSecondaryShatters": false
         },
+        "turret_07_side_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_08_side_dm": {
+          "armorThickness": 20.0
+        },
         "turret_07_top_dm": {
           "armorThickness": 20.0
         },
@@ -236,21 +245,43 @@
         },
         "composite_armor_turret_05_dm": {
           "armorThickness": 35.0
+        },
+        "ex_decor_l_02_dm": {
+          "armorThickness": 20.0
+        },
+        "ex_decor_02_dm": {
+          "armorThickness": 20.0
+        },
+        "ex_decor_03_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_04_bottom_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_06_bottom_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_back_dm": {
+          "armorThickness": 20.0
         }
       },
       "composite_armor_interior": {
         "armorClass": "leopard_2a5_turret_nera",
-        "genericArmorQuality": 0.65,
-        "cumulativeArmorQuality": 0.4,
+        "genericArmorQuality": 0.45,
         "createSecondaryShatters": false,
         "variableThickness": true,
+        "turret_05_top_dm": {
+          "armorThickness": 400.0,
+          "cumulativeArmorQuality": 0.43
+        },
         "turret_05_front_dm": {
           "armorThickness": 400.0,
-          "cumulativeArmorQuality": 1.2
+          "cumulativeArmorQuality": 0.43
         },
         "turret_06_back_dm": {
-          "armorThickness": 400.0,
-          "cumulativeArmorQuality": 1.2
+          "armorThickness": 300.0,
+          "cumulativeArmorQuality": 0.43,
+          "genericArmorQuality": 0.43
         }
       },
       "turret": {
@@ -268,9 +299,6 @@
         "turret_bottom_dm": {
           "armorThickness": 20.0
         },
-        "turret_back_dm": {
-          "armorThickness": 5.0
-        },
         "turret_04_back_dm": {
           "armorThickness": 5.0
         },
@@ -280,21 +308,12 @@
         "ex_armor_01_dm": {
           "armorThickness": 89.0
         },
-        "turret_04_bottom_dm": {
-          "armorThickness": 5.0
-        },
         "turret_06_front_dm": {
           "armorThickness": 120.0,
           "armorClass": "CHA_tank_modern",
           "armorEffectiveThicknessMax": 120.0
         },
         "turret_06_top_dm": {
-          "armorThickness": 45.0
-        },
-        "turret_07_side_dm": {
-          "armorThickness": 45.0
-        },
-        "turret_08_bottom_dm": {
           "armorThickness": 45.0
         }
       },
@@ -307,15 +326,6 @@
         "ex_armor_turret_r_01_dm": [],
         "ex_armor_turret_l_01_dm": [],
         "ex_armor_turret_l_02_dm": []
-      },
-      "hull_front_composite_armor": {
-        "armorClass": "leopard_2a5_turret_nera",
-        "turret_05_top_dm": {
-          "armorThickness": 400.0,
-          "cumulativeArmorQuality": 1.0,
-          "genericArmorQuality": 0.59,
-          "createSecondaryShatters": false
-        }
       },
       "inner_armor": {
         "armorClass": "RHA_tank_modern",
@@ -374,14 +384,11 @@
         "ex_decor_r_05_dm": [],
         "ex_decor_r_12_dm": [],
         "ex_decor_l_01_dm": [],
-        "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
         "ex_decor_r_03_dm": [],
         "ex_decor_l_07_dm": [],
         "ex_decor_l_13_dm": [],
-        "turret_03_bottom_dm": [],
-        "ex_decor_02_dm": [],
-        "ex_decor_03_dm": []
+        "turret_03_bottom_dm": []
       },
       "body_shields_armor": {
         "armorClass": "RHA_tank",
@@ -397,6 +404,23 @@
         "ex_armor_body_l_02_dm": [],
         "ex_armor_body_l_03_dm": []
       },
+      "composite_armor": {
+        "armorClass": "hull_side_special_armor",
+        "genericArmorQuality": 0.2,
+        "cumulativeArmorQuality": 0.2,
+        "createSecondaryShatters": false,
+        "variableThickness": true,
+        "gun_mask_01_dm": {
+          "armorThickness": 100.0,
+          "variableThickness": true,
+          "armorEffectiveThicknessMax": 200.0
+        },
+        "gun_mask_02_dm": {
+          "armorThickness": 50.0,
+          "variableThickness": true,
+          "armorEffectiveThicknessMax": 200.0
+        }
+      },
       "mask": {
         "armorClass": "CHA_tank",
         "hp": 10000.0,
@@ -404,17 +428,11 @@
           "armorThickness": 50.0
         },
         "turret_02_front_dm": {
-          "armorThickness": 152.0
+          "armorThickness": 30.0
         },
         "gun_mask_dm": {
           "armorThickness": 10.0,
           "armorClass": "RHA_tank"
-        },
-        "gun_mask_01_dm": {
-          "armorThickness": 100.0
-        },
-        "gun_mask_02_dm": {
-          "armorThickness": 50.0
         },
         "gun_mask_03_dm": {
           "armorThickness": 100.0
@@ -921,8 +939,7 @@
             },
             {
               "layer": {
-                "dmPart": "turret_05_top_dm",
-                "xrayTextThickness": [280.0,520.0]
+                "dmPart": "turret_05_top_dm"
               }
             },
             {
@@ -2032,6 +2049,15 @@
         "dmPart": "commander_dm",
         "role": "commander"
       }
+    }
+  },
+  {
+    "gunConvergence": {
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
+      "vertical": true,
+      "horizontal": true
     }
   },
   {

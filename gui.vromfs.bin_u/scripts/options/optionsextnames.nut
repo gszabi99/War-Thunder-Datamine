@@ -165,12 +165,6 @@ local user_option_names = [
     "USEROPT_BOMB_ACTIVATION_TIME",
     "USEROPT_BOMB_SERIES",
     "USEROPT_DEPTHCHARGE_ACTIVATION_TIME",
-    "USEROPT_FLARES_PERIODS", // how much time between every flares
-    "USEROPT_FLARES_SERIES", // how many flares in a series
-    "USEROPT_FLARES_SERIES_PERIODS", // how many time between every series
-    "USEROPT_CHAFFS_PERIODS", // how much time between every chaffs
-    "USEROPT_CHAFFS_SERIES", // how many chaffs in a series
-    "USEROPT_CHAFFS_SERIES_PERIODS", // how many time between every series
     "USEROPT_COUNTERMEASURES_SERIES",
     "USEROPT_COUNTERMEASURES_SERIES_PERIODS",
     "USEROPT_COUNTERMEASURES_PERIODS",

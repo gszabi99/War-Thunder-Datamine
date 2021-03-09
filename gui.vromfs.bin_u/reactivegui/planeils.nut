@@ -692,7 +692,7 @@ local buccaneerSpeed = @() {
   ]
 }
 
-local DistToTargetBuc = Computed(@() cvt(DistToTarget.value, 0, 19312.1, -90, 250).tointeger())
+local DistToTargetBuc = Computed(@() cvt(TimeBeforeBombRelease.value, 0, 10.0, -90, 250).tointeger())
 local BucDistMarkVis = Computed(@() TargetPosValid.value && BombingMode.value)
 local buccaneerCCRP = @() {
   watch = [BucDistMarkVis, DistToTargetBuc]
@@ -826,7 +826,7 @@ local SUMVerticalSpeed = @() {
 local flyDirectionSUM = @() {
   watch = IlsColor
   size = [pw(10), ph(10)]
-  pos = [pw(50), ph(30)]
+  pos = [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -839,6 +839,7 @@ local flyDirectionSUM = @() {
 }
 
 local SUMAltValue = Computed(@() clamp(Altitude.value * metrToFeet, 0, 4995).tointeger())
+local SUNAltThousands = Computed(@() SUMAltValue.value > 1000 ? $"{SUMAltValue.value / 1000}" : "")
 local SUMAltVis = Computed(@() Altitude.value * metrToFeet < 4995)
 local SUMAltitude = @() {
   watch = SUMAltVis
@@ -852,7 +853,7 @@ local SUMAltitude = @() {
       color = IlsColor.value
       fontSize = 60
       font = Fonts.hud
-      text = SUMAltValue.value.tostring()
+      text = string.format("R%s.%03d", SUNAltThousands.value, SUMAltValue.value % 1000)
     }
   ] : null
 }
@@ -950,7 +951,7 @@ local function pitchSum(height) {
 
   return {
     size = [pw(40), ph(50)]
-    pos = [pw(30), ph(30)]
+    pos = [pw(30), ph(40)]
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
