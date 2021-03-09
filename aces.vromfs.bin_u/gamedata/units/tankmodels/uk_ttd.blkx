@@ -182,6 +182,10 @@
         "turret_04_top_dm": {
           "armorThickness": 30.0
         },
+        "turret_06_top_dm": {
+          "armorThickness": 20.0,
+          "variableThickness": true
+        },
         "turret_08_top_dm": {
           "armorThickness": 80.0,
           "variableThickness": true
@@ -267,16 +271,17 @@
       },
       "composite_armor_interior": {
         "armorClass": "leopard_2a5_turret_nera",
-        "genericArmorQuality": 0.45,
         "createSecondaryShatters": false,
         "variableThickness": true,
         "turret_05_top_dm": {
           "armorThickness": 400.0,
-          "cumulativeArmorQuality": 0.43
+          "cumulativeArmorQuality": 0.68,
+          "genericArmorQuality": 0.39
         },
         "turret_05_front_dm": {
           "armorThickness": 400.0,
-          "cumulativeArmorQuality": 0.43
+          "cumulativeArmorQuality": 0.6,
+          "genericArmorQuality": 0.45
         },
         "turret_06_back_dm": {
           "armorThickness": 300.0,
@@ -312,9 +317,6 @@
           "armorThickness": 120.0,
           "armorClass": "CHA_tank_modern",
           "armorEffectiveThicknessMax": 120.0
-        },
-        "turret_06_top_dm": {
-          "armorThickness": 45.0
         }
       },
       "turret_shields": {
@@ -529,12 +531,7 @@
         "wheel_l_top_02_dm": [],
         "wheel_l_top_03_dm": [],
         "wheel_l_top_04_dm": [],
-        "wheel_support_dm": [],
-        "submodule": {
-          "armorClass": "tank_traks",
-          "armorThickness": 20.0,
-          "hp": 200.0
-        }
+        "wheel_support_dm": []
       },
       "gun": {
         "armorClass": "tank_barrel",
