@@ -133112,7 +133112,7 @@
               "tag": "type_bomber"
             },
             {
-              "tag": "type_assault"
+              "tag": "type_strike_aircraft"
             }
           ]
         }
@@ -133160,7 +133160,7 @@
               "tag": "type_bomber"
             },
             {
-              "tag": "type_assault"
+              "tag": "type_strike_aircraft"
             }
           ]
         }
@@ -133208,7 +133208,7 @@
               "tag": "type_bomber"
             },
             {
-              "tag": "type_assault"
+              "tag": "type_strike_aircraft"
             }
           ]
         }
@@ -158646,10 +158646,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "exp_bomber"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "exp_bomber"
+            },
+            {
+              "unitClass": "exp_assault"
+            }
+          ]
         }
       ]
     }
@@ -158684,10 +158691,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "exp_bomber"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "exp_bomber"
+            },
+            {
+              "unitClass": "exp_assault"
+            }
+          ]
         }
       ]
     }
@@ -158721,10 +158735,17 @@
           }
         },
         {
-          "condition": {
-            "type": "targetUnitClass",
-            "unitClass": "exp_bomber"
-          }
+          "condition": [
+            {
+              "type": "targetUnitClass"
+            },
+            {
+              "unitClass": "exp_bomber"
+            },
+            {
+              "unitClass": "exp_assault"
+            }
+          ]
         }
       ]
     }
@@ -160771,7 +160792,7 @@
         {
           "condition": {
             "type": "playerTag",
-            "tag": "type_assault"
+            "tag": "type_strike_aircraft"
           }
         },
         {
@@ -160885,7 +160906,7 @@
         {
           "condition": {
             "type": "playerTag",
-            "tag": "type_assault"
+            "tag": "type_strike_aircraft"
           }
         },
         {
