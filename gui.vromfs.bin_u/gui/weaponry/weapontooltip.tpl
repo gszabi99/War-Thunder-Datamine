@@ -1,5 +1,8 @@
 tdiv {
   flow:t='vertical'
+  <<#bulletAnimation>>
+  width:t='1@bulletAnimationWidth + 2@bulletAnimationPadding'
+  <</bulletAnimation>>
   textareaNoTab {
     text:t='<<name>>'
   }
@@ -9,31 +12,43 @@ tdiv {
   tooltipDesc {
     text:t='<<desc>>'
   }
-  table {
+  <<#bulletAnimation>>
+  tdiv {
+    pos:t='-1@blockInterval, 1@blockInterval'
+    position:t='relative'
+    width:t='pw + 2@blockInterval'
+    background-color:t='@black'
+    movie {
+      size:t='1@bulletAnimationWidth ,1@bulletAnimationHeight'
+      pos:t='0.5pw-0.5w, 0'
+      position:t='relative'
+      movie-load='<<bulletAnimation>>'
+      movie-autoStart:t='yes'
+      movie-loop:t='yes'
+    }
+  }
+  <</bulletAnimation>>
+  tdiv {
     pos:t='0, @blockInterval'
     position:t='relative'
-    allAlignLeft:t="yes"
-    class:t='noPad'
     smallFont:t='yes'
     <<#bulletActions>>
-    tr {
-      td {
-        padding-right:t='@blockInterval'
-        modIcon{
-          size:t='@modIcoSize, @modIcoSize'
-          ignoreStatus:t='yes'
-          wallpaper{
-            pattern{type:t='bright_texture';}
-          }
-          tdiv{
-            size:t='pw-9@sf/@pf, ph-9@sf/@pf'
-            pos:t='50%pw-50%w, 50%ph-50%h'
-            position:t='absolute'
-            <<@visual>>
-          }
+    tdiv {
+      padding-right:t='@blockInterval'
+      modIcon{
+        size:t='@modIcoSize, @modIcoSize'
+        ignoreStatus:t='yes'
+        wallpaper{
+          pattern{type:t='bright_texture';}
+        }
+        tdiv{
+          size:t='pw-9@sf/@pf, ph-9@sf/@pf'
+          pos:t='50%pw-50%w, 50%ph-50%h'
+          position:t='absolute'
+          <<@visual>>
         }
       }
-      td { text { text:t='<<text>>'; valign:t='center' } }
+      text { text:t='<<text>>'; valign:t='center' }
     }
     <</bulletActions>>
   }
