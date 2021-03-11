@@ -169,6 +169,9 @@
         "turret_03_front_dm": {
           "armorThickness": 35.0
         },
+        "turret_04_front_dm": {
+          "armorThickness": 35.0
+        },
         "turret_02_back_dm": {
           "armorThickness": 15.0
         },
@@ -212,7 +215,8 @@
           "armorThickness": 35.0
         },
         "turret_01_front_dm": {
-          "armorThickness": 40.0
+          "armorThickness": 40.0,
+          "variableThickness": true
         },
         "turret_02_top_dm": {
           "armorThickness": 20.0
@@ -246,15 +250,16 @@
           "hidableInXrayViewer": true
         },
         "composite_armor_turret_04_dm": {
-          "armorThickness": 0.0,
-          "hidableInXrayViewer": true
+          "armorClass": "spaced_armor_air",
+          "armorThickness": 80.0
         },
         "composite_armor_turret_05_dm": {
           "armorClass": "spaced_armor_air",
           "armorThickness": 80.0
         },
         "turret_04_side_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 15.0,
+          "variableThickness": true
         },
         "turret_04_top_dm": {
           "armorThickness": 35.0
@@ -805,12 +810,24 @@
       {
         "armorArrayHullFront": {
           "xrayDmPart": "composite_armor_turret_04_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "turret_side_dm"
+          "titleLoc": "spaced_armor",
+          "armorArrayText": [
+            {
+              "layer": {
+                "dmPart": "turret_01_front_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "composite_armor_turret_04_dm"
+              }
+            },
+            {
+              "layer": {
+                "dmPart": "turret_04_front_dm"
+              }
             }
-          }
+          ]
         }
       },
       {
@@ -896,7 +913,7 @@
             },
             {
               "layer": {
-                "dmPart": "turret_01_back_dm"
+                "dmPart": "turret_04_top_dm"
               }
             }
           ]

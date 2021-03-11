@@ -2279,6 +2279,9 @@
           "role": "tank_gunner"
         },
         {
+          "substitute": "machine_gunner"
+        },
+        {
           "substitute": "commander"
         },
         {
@@ -2286,6 +2289,9 @@
         },
         {
           "substitute": "loader_02"
+        },
+        {
+          "substitute": "loader_03"
         }
       ],
       "driver": [
@@ -2296,6 +2302,9 @@
           "role": "driver"
         },
         {
+          "substitute": "machine_gunner"
+        },
+        {
           "substitute": "commander"
         },
         {
@@ -2303,21 +2312,61 @@
         },
         {
           "substitute": "loader_02"
+        },
+        {
+          "substitute": "loader_03"
         }
       ],
       "commander": {
         "dmPart": "commander_dm",
-        "role": "commander"
+        "role": "commander",
+        "substitute": "machine_gunner"
       },
-      "loader_01": {
-        "dmPart": "loader_01_dm",
-        "role": "loader",
-        "substitute": "commander"
-      },
-      "loader_02": {
-        "dmPart": "loader_02_dm",
-        "role": "loader",
-        "substitute": "commander"
+      "loader_01": [
+        {
+          "dmPart": "loader_dm"
+        },
+        {
+          "role": "loader"
+        },
+        {
+          "substitute": "machine_gunner"
+        },
+        {
+          "substitute": "commander"
+        }
+      ],
+      "loader_02": [
+        {
+          "dmPart": "loader_01_dm"
+        },
+        {
+          "role": "loader"
+        },
+        {
+          "substitute": "machine_gunner"
+        },
+        {
+          "substitute": "commander"
+        }
+      ],
+      "loader_03": [
+        {
+          "dmPart": "loader_02_dm"
+        },
+        {
+          "role": "loader"
+        },
+        {
+          "substitute": "machine_gunner"
+        },
+        {
+          "substitute": "commander"
+        }
+      ],
+      "machine_gunner": {
+        "dmPart": "machine_gunner_dm",
+        "role": "radio_gunner"
       }
     }
   },

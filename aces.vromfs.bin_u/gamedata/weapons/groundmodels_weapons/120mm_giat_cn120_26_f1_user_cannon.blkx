@@ -49,6 +49,7 @@
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "bulletName": "120mm_occ_120_g1",
     "onHitChanceMultExplFuel": 0.3,
     "relativeVelHitShift": [300.0,1000.0],
@@ -81,7 +82,7 @@
     },
     "damage": {
       "explosive": {
-        "radius": 0.3,
+        "radius": 0.15,
         "offset": 0.2
       },
       "shatter": [
@@ -282,6 +283,7 @@
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/heat_fs.ivf",
       "bulletName": "120mm_occ_120_g1",
       "onHitChanceMultExplFuel": 0.3,
       "relativeVelHitShift": [300.0,1000.0],
@@ -314,7 +316,7 @@
       },
       "damage": {
         "explosive": {
-          "radius": 0.3,
+          "radius": 0.15,
           "offset": 0.2
         },
         "shatter": [
@@ -503,8 +505,8 @@
       "caliber": 0.12,
       "damageCaliber": 0.026,
       "ballisticCaliber": 0.026,
-      "speed": 1650.0,
-      "Cx": 0.33,
+      "speed": 1780.0,
+      "Cx": 0.41,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -516,6 +518,7 @@
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_ofl_120_g1",
       "hitPowerMult": 800.0,
       "onHitChanceMultExplFuel": 0.1,
@@ -551,17 +554,6 @@
       "hitpower": {
         "HitPower0m": [1.0,1000.0],
         "HitPower10000m": [0.8,10000.0]
-      },
-      "armorpower": {
-        "ArmorPower0m": [394.0,10.0],
-        "ArmorPower100m": [393.0,100.0],
-        "ArmorPower500m": [388.0,500.0],
-        "ArmorPower1000m": [382.0,1000.0],
-        "ArmorPower1500m": [376.0,1500.0],
-        "ArmorPower2000m": [370.0,2000.0],
-        "ArmorPower3000m": [357.0,3000.0],
-        "ArmorPower10000m": [10.0,10000.0],
-        "ArmorPower20000m": [0.0,20000.0]
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -645,6 +637,17 @@
         "stone_snow": {
           "fx": "hit_106_132mm_snow_ap"
         }
+      },
+      "armorpower": {
+        "ArmorPower0m": [425.0,10.0],
+        "ArmorPower100m": [423.0,100.0],
+        "ArmorPower500m": [417.0,500.0],
+        "ArmorPower1000m": [410.0,1000.0],
+        "ArmorPower1500m": [404.0,1500.0],
+        "ArmorPower2000m": [396.0,2000.0],
+        "ArmorPower3000m": [357.0,3000.0],
+        "ArmorPower10000m": [5.0,10000.0],
+        "ArmorPower20000m": [0.0,20000.0]
       }
     }
   },
@@ -668,6 +671,7 @@
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
       "bulletName": "120mm_ofl_120_f1",
       "hitPowerMult": 800.0,
       "onHitChanceMultExplFuel": 0.1,

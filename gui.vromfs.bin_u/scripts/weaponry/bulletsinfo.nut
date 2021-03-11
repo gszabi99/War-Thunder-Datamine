@@ -1443,7 +1443,7 @@ local function addBulletsParamToDesc(descTbl, unit, item)
   local isBelt = bulletsSet?.isBulletBelt ?? true
   if (bIconParam && !isBelt)
   {
-    descTbl.bulletAnimation <- ::is_version_equals_or_newer("2.5.0.9") ? bulletsSet?.bulletAnimation : null
+    descTbl.bulletAnimation <- ::is_version_equals_or_newer("2.5.0.17") ? bulletsSet?.bulletAnimation : null
     descTbl.bulletActions <- []
     local setClone = clone bulletsSet
     foreach(p in ["armor", "damage"])

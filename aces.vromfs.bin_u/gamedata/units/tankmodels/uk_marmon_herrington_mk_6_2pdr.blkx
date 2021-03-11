@@ -1970,14 +1970,37 @@
   {
     "tank_crew": {
       "changeTimeMult": 1.0,
-      "gunner": {
-        "dmPart": "gunner_dm",
-        "role": "tank_gunner",
-        "substitute": "commander"
-      },
-      "driver": {
-        "dmPart": "driver_dm",
-        "role": "driver",
+      "gunner": [
+        {
+          "dmPart": "gunner_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "substitute": "commander"
+        },
+        {
+          "substitute": "loader"
+        }
+      ],
+      "driver": [
+        {
+          "dmPart": "driver_dm"
+        },
+        {
+          "role": "driver"
+        },
+        {
+          "substitute": "commander"
+        },
+        {
+          "substitute": "loader"
+        }
+      ],
+      "loader": {
+        "dmPart": "loader_dm",
+        "role": "loader",
         "substitute": "commander"
       },
       "commander": {
@@ -2172,10 +2195,13 @@
             "trigger": "gunner2"
           },
           {
-            "triggerGroup": "coaxial"
+            "triggerGroup": "machinegun"
           },
           {
-            "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk"
+            "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk"
+          },
+          {
+            "useEmitter": true
           },
           {
             "emitter": "bone_gun_barrel_01"
@@ -2196,7 +2222,7 @@
             "speedYaw": 5.5
           },
           {
-            "speedPitch": 4.0
+            "speedPitch": 20.0
           },
           {
             "fireConeAngle": 1.0
@@ -2208,13 +2234,13 @@
             "fireConeAngle": 15.0
           },
           {
-            "ChainfireTime": 3.0
+            "ChainfireTime": 0.5
           },
           {
-            "DelayAfterShoot": 3.0
+            "DelayAfterShoot": 2.0
           },
           {
-            "accuracyAir": 0.0
+            "accuracyAir": 1.5
           },
           {
             "accuracyGnd": 0.0
@@ -2261,10 +2287,13 @@
             "trigger": "gunner2"
           },
           {
-            "triggerGroup": "coaxial"
+            "triggerGroup": "machinegun"
           },
           {
-            "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk"
+            "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk"
+          },
+          {
+            "useEmitter": true
           },
           {
             "emitter": "bone_gun_barrel_02"
@@ -2285,7 +2314,7 @@
             "speedYaw": 5.5
           },
           {
-            "speedPitch": 4.0
+            "speedPitch": 20.0
           },
           {
             "fireConeAngle": 1.0
@@ -2297,13 +2326,13 @@
             "fireConeAngle": 15.0
           },
           {
-            "ChainfireTime": 3.0
+            "ChainfireTime": 0.5
           },
           {
-            "DelayAfterShoot": 3.0
+            "DelayAfterShoot": 2.0
           },
           {
-            "accuracyAir": 0.0
+            "accuracyAir": 1.5
           },
           {
             "accuracyGnd": 0.0
@@ -3274,10 +3303,13 @@
                   "trigger": "gunner2"
                 },
                 {
-                  "triggerGroup": "coaxial"
+                  "triggerGroup": "machinegun"
                 },
                 {
-                  "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk"
+                  "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk"
+                },
+                {
+                  "useEmitter": true
                 },
                 {
                   "emitter": "bone_gun_barrel_01"
@@ -3298,7 +3330,7 @@
                   "speedYaw": 5.5
                 },
                 {
-                  "speedPitch": 4.0
+                  "speedPitch": 20.0
                 },
                 {
                   "fireConeAngle": 1.0
@@ -3310,13 +3342,13 @@
                   "fireConeAngle": 15.0
                 },
                 {
-                  "ChainfireTime": 3.0
+                  "ChainfireTime": 0.5
                 },
                 {
-                  "DelayAfterShoot": 3.0
+                  "DelayAfterShoot": 2.0
                 },
                 {
-                  "accuracyAir": 0.0
+                  "accuracyAir": 1.5
                 },
                 {
                   "accuracyGnd": 0.0
@@ -3363,10 +3395,13 @@
                   "trigger": "gunner2"
                 },
                 {
-                  "triggerGroup": "coaxial"
+                  "triggerGroup": "machinegun"
                 },
                 {
-                  "blk": "gameData/Weapons/groundModels_weapons/7_92mm_BESA_user_machinegun.blk"
+                  "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk"
+                },
+                {
+                  "useEmitter": true
                 },
                 {
                   "emitter": "bone_gun_barrel_02"
@@ -3387,7 +3422,7 @@
                   "speedYaw": 5.5
                 },
                 {
-                  "speedPitch": 4.0
+                  "speedPitch": 20.0
                 },
                 {
                   "fireConeAngle": 1.0
@@ -3399,13 +3434,13 @@
                   "fireConeAngle": 15.0
                 },
                 {
-                  "ChainfireTime": 3.0
+                  "ChainfireTime": 0.5
                 },
                 {
-                  "DelayAfterShoot": 3.0
+                  "DelayAfterShoot": 2.0
                 },
                 {
-                  "accuracyAir": 0.0
+                  "accuracyAir": 1.5
                 },
                 {
                   "accuracyGnd": 0.0

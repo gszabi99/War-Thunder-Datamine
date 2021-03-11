@@ -51,6 +51,7 @@
     "cumulativeSecondaryShattersPreset": "atgm",
     "explodeOnRendinst": true,
     "fresnel": [0.23,0.1,2.0],
+    "shellAnimation": "video/shells_animations/atgm.ivf",
     "bulletName": "127mm_swift",
     "mass": 26.0,
     "caliber": 0.127,
@@ -90,6 +91,7 @@
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/atgm.ivf",
       "maxDeltaAngle": 0.03,
       "dragCx": 0.027,
       "length": 1.15,
@@ -257,6 +259,7 @@
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/atgm.ivf",
       "bulletName": "127mm_swift",
       "mass": 26.0,
       "caliber": 0.127,
@@ -296,6 +299,7 @@
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
         "fresnel": [0.23,0.1,2.0],
+        "shellAnimation": "video/shells_animations/atgm.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -464,6 +468,7 @@
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
       "fresnel": [0.23,0.1,2.0],
+      "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
       "bulletName": "127mm_ingwe",
       "mass": 28.5,
       "caliber": 0.127,
@@ -503,6 +508,7 @@
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
         "fresnel": [0.23,0.1,2.0],
+        "shellAnimation": "video/shells_animations/atgm.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -553,6 +559,8 @@
         "endSpeed": 220.0,
         "price": 3000.0,
         "mesh": "zt3a2_ingwe_rocket_deployed",
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [-0.5,0.0,0.0],
         "stabilityRicochetModifier": [
           {
             "mod1": [0.0,0.0]
@@ -653,6 +661,14 @@
           "distance": 7.5,
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
+        },
+        "tracerTrail": {
+          "smokeEffect": "",
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "152mmRed",
+            "trail": "noTrail"
+          }
         }
       }
     }
