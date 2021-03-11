@@ -130,7 +130,7 @@
           }
         },
         {
-          "varModify": {
+          "__varModify": {
             "operator": "divAB",
             "value": 2.0,
             "var": "cnv_move_check_distance"
@@ -723,16 +723,6 @@
         "conditions": [],
         "actions": [
           {
-            "unitSetIndication": {
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "set": false,
-              "target": "@cnv_t1_generate_check_convoy_var_name"
-            }
-          },
-          {
             "comment": {
               "value": "начинаем спавн конвоя"
             }
@@ -864,7 +854,7 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "object": "@cnv_t1_generate_cur_status_squad_name",
-              "stealthRadius": 3500.0
+              "stealthRadius": 1500.0
             }
           },
           {
@@ -1312,6 +1302,21 @@
           {
             "triggerEnable": {
               "target": "cnv_t1_generate_delay_calc"
+            }
+          },
+          {
+            "comment": {
+              "value": "включаем видимость"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@cnv_t1_generate_cur_status_squad_name",
+              "stealthRadius": 15000.0
             }
           }
         ]
@@ -2353,16 +2358,6 @@
         "conditions": [],
         "actions": [
           {
-            "unitSetIndication": {
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "set": false,
-              "target": "@cnv_t2_generate_check_convoy_var_name"
-            }
-          },
-          {
             "comment": {
               "value": "начинаем спавн конвоя"
             }
@@ -2494,7 +2489,7 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "object": "@cnv_t2_generate_cur_status_squad_name",
-              "stealthRadius": 3500.0
+              "stealthRadius": 1500.0
             }
           },
           {
@@ -2947,6 +2942,21 @@
           {
             "triggerEnable": {
               "target": "cnv_t2_generate_delay_calc"
+            }
+          },
+          {
+            "comment": {
+              "value": "включаем видимость"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@cnv_t2_generate_cur_status_squad_name",
+              "stealthRadius": 15000.0
             }
           }
         ]
@@ -3736,16 +3746,6 @@
           }
         },
         "conditions": {
-          "unitWhenCountMatches": {
-            "object_type": "isUnitVar",
-            "object_marking": 0,
-            "object_var_name": "cnv_state",
-            "object_var_comp_op": "equal",
-            "func": "more",
-            "value": 0,
-            "object": "@cnv_t1_detect_convoy_name",
-            "object_var_value": 1
-          },
           "varCompareBool": {
             "var_value": "@cnv_t1_detect_is_spawned_var_name",
             "value": true,
@@ -4148,6 +4148,10 @@
             "var_value": "cnv_enable_objectives",
             "value": true,
             "comparasion_func": "equal"
+          },
+          "objectExists": {
+            "target": "@cnv_t1_detect_convoy_name",
+            "type": "unit"
           }
         },
         "actions": [
@@ -4180,7 +4184,14 @@
             }
           }
         ],
-        "else_actions": []
+        "else_actions": {
+          "comment": {
+            "value": "что-то пошло не так"
+          },
+          "triggerDisable": {
+            "target": "cnv_t1_objective_set"
+          }
+        }
       }
     },
     "cnv_t2_detect_routine": {
@@ -4656,7 +4667,6 @@
             "object": "@cnv_t2_detect_convoy_name",
             "target": "t1_players_squad",
             "var": "cnv_t2_detect_calculated_range",
-            "object_var_value": 0,
             "compareCenters": false
           },
           "varCompareBool": {
@@ -4864,6 +4874,10 @@
             "var_value": "cnv_enable_objectives",
             "value": true,
             "comparasion_func": "equal"
+          },
+          "objectExists": {
+            "target": "@cnv_t2_detect_convoy_name",
+            "type": "unit"
           }
         },
         "actions": [
@@ -4896,7 +4910,14 @@
             }
           }
         ],
-        "else_actions": []
+        "else_actions": {
+          "comment": {
+            "value": "что-то пошло не так"
+          },
+          "triggerDisable": {
+            "target": "cnv_t2_objective_set"
+          }
+        }
       }
     },
     "cnv_objectives": {
