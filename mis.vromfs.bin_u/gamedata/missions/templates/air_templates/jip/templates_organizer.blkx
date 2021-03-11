@@ -12,11 +12,11 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "timeLimit": 240
+      "timeLimit": 240,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -336,7 +336,7 @@
         },
         {
           "triggerActivate": {
-            "target": "to_template_03_ct_check",
+            "target": "to_template_03_at_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -344,7 +344,7 @@
         },
         {
           "triggerActivate": {
-            "target": "to_template_04_at_check",
+            "target": "to_template_04_ad_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -352,15 +352,7 @@
         },
         {
           "triggerActivate": {
-            "target": "to_template_05_ad_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "to_template_08_sbt_check",
+            "target": "to_template_07_sbt_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -794,10 +786,10 @@
         "else_actions": []
       }
     },
-    "03 - land convoys": {
+    "03 - assaults": {
       "isCategory": true,
       "is_enabled": true,
-      "to_template_03_ct_check": {
+      "to_template_03_at_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -815,177 +807,6 @@
             "varCompareInt": {
               "var_value": "to_randomizer",
               "value": 3,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
-              "var_value": "cnv_is_launch_alowed",
-              "value": true,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
-              "var_value": "cnv_is_template_active",
-              "value": false,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_03_ct_end"
-            }
-          }
-        ],
-        "actions": {
-          "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
-          },
-          "triggerEnable": {
-            "target": "to_template_03_ct_choose"
-          }
-        },
-        "else_actions": []
-      },
-      "to_template_03_ct_choose": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
-          },
-          {
-            "comment": {
-              "value": "ставим флаг, что шаблон запустился"
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "cnv_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "to_template_03_ct_run"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
-          }
-        }
-      },
-      "to_template_03_ct_run": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": [],
-        "actions": {
-          "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
-          },
-          "triggerEnable": [
-            {
-              "target": "cnv_start"
-            },
-            {
-              "target": "to_template_03_ct_end"
-            }
-          ]
-        },
-        "else_actions": []
-      },
-      "to_template_03_ct_end": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "cnv_is_template_active",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
-        "actions": {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "to_cur_launched_templates"
-          }
-        },
-        "else_actions": []
-      }
-    },
-    "04 - assaults": {
-      "isCategory": true,
-      "is_enabled": true,
-      "to_template_04_at_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 5.0
-          }
-        },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "to_randomizer",
-              "value": 4,
               "comparasion_func": "equal"
             }
           },
@@ -1013,7 +834,7 @@
           {
             "triggerStatus": {
               "status": "disabled",
-              "target": "to_template_04_at_end"
+              "target": "to_template_03_at_end"
             }
           }
         ],
@@ -1027,12 +848,12 @@
             "input_var": "to_army"
           },
           "triggerEnable": {
-            "target": "to_template_04_at_choose"
+            "target": "to_template_03_at_choose"
           }
         },
         "else_actions": []
       },
-      "to_template_04_at_choose": {
+      "to_template_03_at_choose": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1084,7 +905,7 @@
           },
           {
             "triggerEnable": {
-              "target": "to_template_04_at_run"
+              "target": "to_template_03_at_run"
             }
           }
         ],
@@ -1094,7 +915,7 @@
           }
         }
       },
-      "to_template_04_at_run": {
+      "to_template_03_at_run": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1131,14 +952,14 @@
                 "target": "at_start"
               },
               {
-                "target": "to_template_04_at_end"
+                "target": "to_template_03_at_end"
               }
             ]
           }
         ],
         "else_actions": []
       },
-      "to_template_04_at_end": {
+      "to_template_03_at_end": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1168,10 +989,10 @@
         "else_actions": []
       }
     },
-    "05-07 - air domination": {
+    "04-06 - air domination": {
       "isCategory": true,
       "is_enabled": true,
-      "to_template_05_ad_check": {
+      "to_template_04_ad_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1188,14 +1009,14 @@
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 4,
+              "value": 3,
               "comparasion_func": "more"
             }
           },
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 8,
+              "value": 7,
               "comparasion_func": "less"
             }
           },
@@ -1223,7 +1044,7 @@
           {
             "triggerStatus": {
               "status": "disabled",
-              "target": "to_template_05_ad_end"
+              "target": "to_template_04_ad_end"
             }
           }
         ],
@@ -1232,12 +1053,12 @@
             "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
           },
           "triggerEnable": {
-            "target": "to_template_05_ad_choose"
+            "target": "to_template_04_ad_choose"
           }
         },
         "else_actions": []
       },
-      "to_template_05_ad_choose": {
+      "to_template_04_ad_choose": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1289,7 +1110,7 @@
           },
           {
             "triggerEnable": {
-              "target": "to_template_05_ad_run"
+              "target": "to_template_04_ad_run"
             }
           }
         ],
@@ -1299,7 +1120,7 @@
           }
         }
       },
-      "to_template_05_ad_run": {
+      "to_template_04_ad_run": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1322,13 +1143,13 @@
               "target": "ad_start"
             },
             {
-              "target": "to_template_05_ad_end"
+              "target": "to_template_04_ad_end"
             }
           ]
         },
         "else_actions": []
       },
-      "to_template_05_ad_end": {
+      "to_template_04_ad_end": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1358,10 +1179,10 @@
         "else_actions": []
       }
     },
-    "08 - sea_bombers": {
+    "07 - sea_bombers": {
       "isCategory": true,
       "is_enabled": true,
-      "to_template_08_sbt_check": {
+      "to_template_07_sbt_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1378,7 +1199,7 @@
           {
             "varCompareInt": {
               "var_value": "to_randomizer",
-              "value": 8,
+              "value": 7,
               "comparasion_func": "equal"
             }
           },
@@ -1406,7 +1227,7 @@
           {
             "triggerStatus": {
               "status": "disabled",
-              "target": "to_template_08_sbt_end"
+              "target": "to_template_07_sbt_end"
             }
           }
         ],
@@ -1420,12 +1241,12 @@
             "input_var": "to_army"
           },
           "triggerEnable": {
-            "target": "to_template_08_sbt_choose"
+            "target": "to_template_07_sbt_choose"
           }
         },
         "else_actions": []
       },
-      "to_template_08_sbt_choose": {
+      "to_template_07_sbt_choose": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1487,7 +1308,7 @@
           },
           {
             "triggerEnable": {
-              "target": "to_template_08_sbt_run"
+              "target": "to_template_07_sbt_run"
             }
           }
         ],
@@ -1497,7 +1318,7 @@
           }
         }
       },
-      "to_template_08_sbt_run": {
+      "to_template_07_sbt_run": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1516,12 +1337,12 @@
             "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
           },
           "triggerEnable": {
-            "target": "to_template_08_sbt_end"
+            "target": "to_template_07_sbt_end"
           }
         },
         "else_actions": []
       },
-      "to_template_08_sbt_end": {
+      "to_template_07_sbt_end": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -1557,7 +1378,7 @@
     "is_enabled": true
   },
   "variables": {
-    "to_templates_quantity": 9,
+    "to_templates_quantity": 8,
     "to_cur_launched_templates": 0,
     "to_max_templates_to_launch": 3,
     "to_randomizer": 0,
@@ -1568,7 +1389,6 @@
     "ft_is_launch_alowed": false,
     "bdt_is_launch_alowed": false,
     "bt_is_launch_alowed": false,
-    "cnv_is_launch_alowed": false,
     "at_is_launch_alowed": false,
     "ad_is_launch_alowed": false,
     "lbt_is_launch_alowed": false,
