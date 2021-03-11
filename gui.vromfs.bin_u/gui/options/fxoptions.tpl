@@ -39,6 +39,14 @@ tdiv {
           ButtonImg {}
         }
       }
+      navRight {
+        Button_text {
+          text:t='#mainmenu/btnOk';
+          _on_click:t='goBack'
+          btnName:t='B'
+          ButtonImg {}
+        }
+      }
     }
   }
 }

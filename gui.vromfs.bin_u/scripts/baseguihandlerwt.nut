@@ -343,7 +343,6 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
     if (rootHandlerWeak)
       return rootHandlerWeak.onShowHud(show)
 
-    guiScene.showCursor(show);
     if (!::check_obj(scene))
       return
 

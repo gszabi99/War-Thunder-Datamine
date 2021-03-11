@@ -2,7 +2,8 @@
 // because it leads to external resource.
 
 td {
-  cellType:t='left';
+  max-width:t='0.65@onlineShopWidth'
+  overflow:t='hidden'
 
   textarea {
     id:t='amount';
@@ -11,9 +12,12 @@ td {
     min-width:t='0.13@sf';
     text:t='<<amount>>';
     valign:t='center';
+    auto-scroll:t='medium'
   }
 }
+<<#savingText>>
 td {
+  padding-left:t='@optPad'
   activeText {
     id:t='discount';
     text:t='<<savingText>>';
@@ -21,6 +25,7 @@ td {
     valign:t='center'
   }
 }
+<</savingText>>
 td {
   textarea {
     id:t='cost';

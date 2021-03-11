@@ -286,6 +286,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       saveAircraftOptions()
 
       ::gui_start_builder()
+      applyFunc = null
     }
     applyOptions()
   }
@@ -325,6 +326,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
           }
           else
             startTestFlight()
+          applyFunc = null
         }
         applyOptions()
       }, this)
@@ -495,6 +497,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
       {
         unit = crewUnit
         updateAircraft()
+        applyFunc = null
       },
       this)
 

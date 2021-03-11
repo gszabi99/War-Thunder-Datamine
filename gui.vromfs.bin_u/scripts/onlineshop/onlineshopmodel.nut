@@ -138,8 +138,12 @@ OnlineShopModel.searchEntitlement <- function searchEntitlement(searchRequest)
   if (!searchRequest || typeof searchRequest != "table")
     return result
 
-  foreach (name, ib in getPriceBlk())
+  local priceBlk = getPriceBlk()
+  local numBlocks = priceBlk.blockCount()
+  for (local i = 0; i < numBlocks; i++)
   {
+    local ib = priceBlk.getBlock(i)
+    local name = ib.getBlockName()
     if (ib?.hideWhenUnbought && !::has_entitlement(name))
       continue
     if ("unitName" in searchRequest)

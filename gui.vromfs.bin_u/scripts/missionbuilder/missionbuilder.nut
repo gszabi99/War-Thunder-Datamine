@@ -316,6 +316,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
     guiScene.performDelayed(this, function()
       {
+        if (!isValid())
+          return
         foreach(o in [::USEROPT_TIME, ::USEROPT_WEATHER, ::USEROPT_DYN_SURROUND])
           setRandomOpt(o)
 
@@ -323,6 +325,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
         guiScene.performDelayed(this, function()
           {
+            if (!isValid())
+              return
             can_generate_missions = true
 
             setRandomOpt(::USEROPT_DMP_MAP)
@@ -410,10 +414,12 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function onLayoutChange(obj)
   {
-    guiScene.performDelayed(this, (@(obj) function() {
+    guiScene.performDelayed(this, function() {
+      if (!isValid())
+        return
       updateOptionDescr(obj, update_dynamic_layout)
       updateOptionDescr(obj, update_dynamic_sector)
-    })(obj))
+    })
   }
 
   function onMissionChange(obj)
@@ -423,16 +429,20 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
 
   function onSectorChange(obj)
   {
-    guiScene.performDelayed(this, (@(obj) function() {
+    guiScene.performDelayed(this, function() {
+      if (!isValid())
+        return
       updateOptionDescr(obj, update_dynamic_sector)
-    })(obj))
+    })
   }
 
   function onYearChange(obj)
   {
-    guiScene.performDelayed(this, (@(obj) function() {
+    guiScene.performDelayed(this, function() {
+      if (!isValid())
+        return
       updateOptionDescr(obj, update_dynamic_sector)
-    })(obj))
+    })
   }
 
   function onRandom(obj)

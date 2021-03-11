@@ -74,8 +74,7 @@ local BattlePassShopWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
         return {
           rowName = g.rowIdx
           rowEven = (idx%2 == 0) ? "yes" :"no"
-          amount = g.name
-          savingText = g.valueText
+          amount = $"{g.name} {g.valueText}"
           cost = $"{isRealyBought ? ::loc("check_mark/green") : ""} {g.cost.tostring()}"
           isDisabled = g.isDisabled
         }

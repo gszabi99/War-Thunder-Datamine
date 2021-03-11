@@ -2446,7 +2446,6 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     if (!isSceneActive())
       return
 
-    guiScene.showCursor(show);
     if (!::checkObj(scene))
       return
 
