@@ -272,6 +272,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   ShowDropChanceInTrophy = false
 
   FpsCounterOverride = false
+  BulletAnimation = true
 })
 
 local override = ::Watched({})

@@ -1439,7 +1439,8 @@ local function addBulletsParamToDesc(descTbl, unit, item)
   if (!bulletsSet)
     return
 
-  if (bulletsSet?.bulletAnimation != null && ::dd_file_exist(bulletsSet.bulletAnimation))
+  if (::has_feature("BulletAnimation") && bulletsSet?.bulletAnimation != null
+      && ::dd_file_exist(bulletsSet.bulletAnimation))
     descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
   local bIconParam = bulletsSet?.bIconParam
   local isBelt = bulletsSet?.isBulletBelt ?? true
