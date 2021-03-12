@@ -207,7 +207,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       showAction = inMenu && (canBuyIngame || canBuyOnline || forceShowBuyButton)
       isLink     = !canUseIngameShop() && canBuyOnline
       if (canBuyOnline)
-        actionFunc = @() OnlineShopModel.showGoods({ unitName = unit.name }, "unit_context_menu")
+        actionFunc = @() OnlineShopModel.showUnitGoods(unit.name, "unit_context_menu")
       else
         actionFunc = @() ::buyUnit(unit)
     }

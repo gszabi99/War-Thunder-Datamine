@@ -1439,12 +1439,12 @@ local function addBulletsParamToDesc(descTbl, unit, item)
   if (!bulletsSet)
     return
 
+  if (bulletsSet?.bulletAnimation != null && ::dd_file_exist(bulletsSet.bulletAnimation))
+    descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
   local bIconParam = bulletsSet?.bIconParam
   local isBelt = bulletsSet?.isBulletBelt ?? true
   if (bIconParam && !isBelt)
   {
-    if (bulletsSet?.bulletAnimation != null && ::dd_file_exist(bulletsSet.bulletAnimation))
-      descTbl.bulletAnimation <- bulletsSet?.bulletAnimation
     descTbl.bulletActions <- []
     local setClone = clone bulletsSet
     foreach(p in ["armor", "damage"])

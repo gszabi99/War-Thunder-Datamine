@@ -175,7 +175,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 {
   return !::isUnitBought(unit) && ::isUnitGift(unit) && unit.isVisibleInShop()
     && !::canBuyUnitOnMarketplace(unit)
-    && ::OnlineShopModel.searchEntitlement({unitName = unit.name}).len() > 0
+    && ::OnlineShopModel.searchEntitlementsByUnit(unit.name).len() > 0
 }
 
 ::canBuyUnitOnMarketplace <- function canBuyUnitOnMarketplace(unit)
@@ -1192,9 +1192,13 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   }
 
   //count unit ratings
+  local showBr = !air.hideBrForVehicle
   local battleRating = air.getBattleRating(ediff)
-  holderObj.findObject("aircraft-battle_rating-header").setValue(::loc("shop/battle_rating") + ::loc("ui/colon"))
-  holderObj.findObject("aircraft-battle_rating").setValue(format("%.1f", battleRating))
+  local brObj = ::showBtn("aircraft-battle_rating", showBr, holderObj)
+  if (showBr) {
+    brObj.findObject("aircraft-battle_rating-header").setValue($"{::loc("shop/battle_rating")}{::loc("ui/colon")}")
+    brObj.findObject("aircraft-battle_rating-value").setValue(format("%.1f", air.getBattleRating(ediff)))
+  }
 
   local meetObj = holderObj.findObject("aircraft-chance_to_met_tr")
   if (::checkObj(meetObj))

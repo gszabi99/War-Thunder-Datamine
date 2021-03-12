@@ -804,7 +804,8 @@ if need - put commented in array above
 ::get_unit_rank_text <- function get_unit_rank_text(unit, crew = null, showBR = false, ediff = -1)
 {
   local isInFlight = ::is_in_flight()
-  if (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar)
+  if ((unit?.hideBrForVehicle ?? false) ||
+      (isInFlight && ::g_mis_custom_state.getCurMissionRules().isWorldWar))
     return ""
 
   local reserveText = ::g_string.stripTags(::loc("shop/reserve"))

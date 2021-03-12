@@ -3,7 +3,6 @@ local scrollableData = require("daRg/components/scrollableData.nut")
 local hudLog = require("components/hudLog.nut")
 local teamColors = require("style/teamColors.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")
-local hudState = require("hudState.nut")
 
 local logEntryComponent = function (log_entry) {
   return function () {
@@ -20,11 +19,7 @@ local logEntryComponent = function (log_entry) {
   }
 }
 
-
-local battleLogVisible = ::Watched(hudState.cursorVisible.value)
-hudState.cursorVisible.subscribe(@(v) battleLogVisible(v))
 local logBox = hudLog({
-  visibleState = battleLogVisible
   logComponent = scrollableData.make(state.log)
   messageComponent = logEntryComponent
 })

@@ -101,7 +101,7 @@ local function buy(unit, metric)
     return
 
   if (::canBuyUnitOnline(unit))
-    ::OnlineShopModel.showGoods({ unitName = unit.name }, metric)
+    ::OnlineShopModel.showUnitGoods(unit.name, metric)
   else
     ::buyUnit(unit)
 }

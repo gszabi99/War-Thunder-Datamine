@@ -1396,11 +1396,11 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   local res = []
   local medalsList = profileData?.unlocks?.medal ?? []
-  local unlocks = ::g_unlocks.getUnlocksByType("medal")
-  foreach(id, cb in unlocks)
+  local unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
+  foreach (cb in unlocks)
     if (cb?.country == countryId)
-      if ((!profileData && ::is_unlocked_scripted(::UNLOCKABLE_MEDAL, id)) || (medalsList?[id] ?? 0) > 0)
-        res.append(id)
+      if ((!profileData && ::is_unlocked_scripted(::UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
+        res.append(cb.id)
   return res
 }
 

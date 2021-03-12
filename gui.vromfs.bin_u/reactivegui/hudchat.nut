@@ -1,5 +1,4 @@
 local colors = require("style/colors.nut")
-local transition = require("style/hudTransition.nut")
 local teamColors = require("style/teamColors.nut")
 local chatBase = require("daRg/components/chat.nut")
 local textInput =  require("components/textInput.nut")
@@ -182,22 +181,10 @@ local messageComponent = @(message) function() {
   }
 }
 
-
-local inputEnabled = state.inputEnabled
-local cursorVisible = hudState.cursorVisible
-local chatLogVisible = keepref(::Computed(@() inputEnabled.value || cursorVisible.value))
-local isVisible = ::Watched(chatLogVisible.value)
-chatLogVisible.subscribe(@(v) isVisible(v))
-local onInputTriggered = @(new_val) isVisible(new_val || hudState.cursorVisible.value)
-
 local logBox = hudLog({
-  visibleState = isVisible
   logComponent = chat
   messageComponent = messageComponent
-  onAttach = function (elem) { state.inputEnabled.subscribe(onInputTriggered) }
-  onDetach = function (elem) { state.inputEnabled.unsubscribe(onInputTriggered) }
 })
-
 
 local onInputToggle = function (enable) {
   if (enable)
@@ -209,7 +196,6 @@ local onInputToggle = function (enable) {
 local bottomPanel = @() {
   size = [flex(), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
-  opacity = state.inputEnabled.value ? 1.0 : 0.0
 
   children = [
     inputField
@@ -217,6 +203,7 @@ local bottomPanel = @() {
   ]
 
   onAttach = function (elem) {
+    state.inputChatVisible(true)
     state.inputEnabled.subscribe(onInputToggle)
     if (state.inputEnabled.value)
       ::gui_scene.setInterval(0.1,
@@ -226,10 +213,10 @@ local bottomPanel = @() {
         })
    }
    onDetach = function (elem) {
+     state.inputChatVisible(false)
      state.inputEnabled.unsubscribe(onInputToggle)
      ::set_kb_focus(null)
    }
-   transitions = [transition()]
 }
 
 

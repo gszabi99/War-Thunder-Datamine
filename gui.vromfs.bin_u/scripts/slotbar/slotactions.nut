@@ -66,7 +66,7 @@ local function slotMainAction(unit, params = MAIN_FUNC_PARAMS)
   if (unit.isUsable() && !::isUnitInSlotbar(unit))
     return unitActions.take(unit, params.onTakeParams)
   if (::canBuyUnitOnline(unit))
-    return ::OnlineShopModel.showGoods({unitName = unit.name}, "slot_action")
+    return ::OnlineShopModel.showUnitGoods(unit.name, "slot_action")
   if (::canBuyUnit(unit))
     return unitActions.buy(unit, "slotAction")
 

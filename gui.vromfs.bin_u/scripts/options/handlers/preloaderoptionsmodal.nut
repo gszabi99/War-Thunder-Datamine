@@ -152,7 +152,7 @@ local class PreloaderOptionsModal extends ::gui_handlers.BaseGuiHandlerWT
     for (local i = 0; i < numItems; i++) {
       local itemObj = itemsListObj.getChild(i)
       local titleStr = itemObj.findObject($"txt_{itemObj.id}").getValue()
-      local isVisible = titleStr.contains(searchStr)
+      local isVisible = ::g_string.utf8ToLower(titleStr).contains(searchStr)
       itemObj.show(isVisible)
       itemObj.enable(isVisible)
       isFound = isFound || isVisible

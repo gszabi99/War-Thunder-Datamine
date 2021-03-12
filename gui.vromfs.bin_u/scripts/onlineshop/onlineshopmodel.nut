@@ -6,16 +6,12 @@ local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 /*
  * Search in price.blk:
- * Search parapm is a table of request fields
- * Return an array of entitlements names
- * The result of search will satisfy each condition
- * in request (using && statement)
- * Supported conditions:
- *  - unitName
+ * Search param is a name of a unit
+ * Return an array of entitlement names
  *
  * API:
  *
- *  showGoods(searchRequest)
+ *  showUnitGoods(unitName)
  *    Find goods and open it in store
  *    ---
  *    This function should be moved to onlineShop handler,
@@ -26,26 +22,26 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 ::OnlineShopModel <- {
   priceBlk = null
   purchaseDataCache = {}
+  searchEntitlementsCache = null
   entitlemetsUpdaterWeak = null
   callbackReturnFunc = null
+
+  onEventProfileUpdated = @(_) searchEntitlementsCache = null
 }
 
 /*API methods*/
-OnlineShopModel.showGoods <- function showGoods(searchRequest, requestOrigin)
+OnlineShopModel.showUnitGoods <- function showUnitGoods(unitName, requestOrigin)
 {
   if (!::has_feature("OnlineShopPacks"))
     return ::showInfoMsgBox(::loc("msgbox/notAvailbleYet"))
 
-  if (searchRequest?.unitName)
-  {
-    local customUrl = ::loc("url/custom_purchase/unit", searchRequest, "")
-    if (customUrl.len())
-      return openShopUrl(customUrl)
-  }
+  local customUrl = ::loc("url/custom_purchase/unit", { unitName }, "")
+  if (customUrl.len())
+    return openShopUrl(customUrl)
 
   __assyncActionWrap(function ()
     {
-      local searchResult = searchEntitlement(searchRequest)
+      local searchResult = searchEntitlementsByUnit(unitName)
       foreach (goodsName in searchResult)
       {
         local bundleId = getBundleId(goodsName)
@@ -78,6 +74,7 @@ OnlineShopModel.showGoods <- function showGoods(searchRequest, requestOrigin)
 OnlineShopModel.invalidatePriceBlk <- function invalidatePriceBlk()
 {
   priceBlk = null
+  searchEntitlementsCache = null
   purchaseDataCache.clear()
 }
 
@@ -132,26 +129,30 @@ OnlineShopModel.isEntitlement <- function isEntitlement(name)
   return false
 }
 
-OnlineShopModel.searchEntitlement <- function searchEntitlement(searchRequest)
+OnlineShopModel.searchEntitlementsByUnit <- function searchEntitlementsByUnit(unitName)
 {
-  local result = []
-  if (!searchRequest || typeof searchRequest != "table")
-    return result
+  if (searchEntitlementsCache)
+    return searchEntitlementsCache?[unitName] ?? []
 
+  searchEntitlementsCache = {}
   local priceBlk = getPriceBlk()
   local numBlocks = priceBlk.blockCount()
   for (local i = 0; i < numBlocks; i++)
   {
     local ib = priceBlk.getBlock(i)
-    local name = ib.getBlockName()
-    if (ib?.hideWhenUnbought && !::has_entitlement(name))
+    local entitlementName = ib.getBlockName()
+    if (ib?.hideWhenUnbought && !::has_entitlement(entitlementName))
       continue
-    if ("unitName" in searchRequest)
-      foreach (unitName in ib % "aircraftGift")
-        if (unitName == searchRequest.unitName)
-          result.append(name)
+
+    foreach (name in ib % "aircraftGift")
+    {
+      if (name not in searchEntitlementsCache)
+        searchEntitlementsCache[name] <- []
+
+      searchEntitlementsCache[name].append(entitlementName)
+    }
   }
-  return result
+  return searchEntitlementsCache?[unitName] ?? []
 }
 
 OnlineShopModel.getCustomPurchaseLink <- function getCustomPurchaseLink(goodsName)

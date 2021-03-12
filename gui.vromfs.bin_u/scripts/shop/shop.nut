@@ -1699,9 +1699,7 @@ class ::gui_handlers.ShopMenuHandler extends ::gui_handlers.GenericOptions
 
   function onOpenOnlineShop(obj)
   {
-    OnlineShopModel.showGoods({
-      unitName = getCurAircraft().name
-    }, "shop")
+    OnlineShopModel.showUnitGoods(getCurAircraft().name, "shop")
   }
 
   function onBuy()

@@ -6,6 +6,7 @@ local hudChatState = persist("hudChatState", @() {
 
   log = Watched([])
   input = Watched("")
+  lastInputTime = Watched(0)
   inputChatVisible = Watched(false)
   modeId = Watched(0)
 
@@ -31,21 +32,22 @@ local hudChatState = persist("hudChatState", @() {
 
 
 ::interop.mpChatClear <- function () {
-  hudChatState.log.update([])
+  hudChatState.log([])
 }
 
 
 ::interop.mpChatModeChange <- function (new_mode_id) {
-  hudChatState.modeId.update(new_mode_id)
+  hudChatState.modeId(new_mode_id)
 }
 
 
 ::interop.hudChatInputEnableUpdate <- function (enable) {
-  hudChatState.inputEnabled.update(enable)
+  hudChatState.inputEnabled(enable)
 }
 
 
 ::interop.mpChatInputChanged <- function (new_chat_input_text) {
+  hudChatState.lastInputTime(::get_mission_time())
 }
 
 

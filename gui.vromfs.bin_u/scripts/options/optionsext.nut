@@ -733,17 +733,17 @@ local isWaitMeasureEvent = false
       descr.unlocks <- []
 
       local localSmokeType = ::get_option_aerobatics_smoke_type()
-      foreach(idx, inst in aeroSmokesList.value)
+      foreach(inst in aeroSmokesList.value)
       {
-        if ((idx == ::TRICOLOR_INDEX - 1) && !::has_feature("AerobaticTricolorSmoke")) //not triple color
+        local { id, unlockId = "", locId = "" } = inst
+        if ((id == ::TRICOLOR_INDEX) && !::has_feature("AerobaticTricolorSmoke")) //not triple color
           continue
 
-        local unlockId = inst?.unlockId ?? ""
         if (unlockId != "" && !(::g_unlocks.getUnlockById(unlockId) && ::is_unlocked(-1, unlockId)))
           continue
 
-        descr.items.append(::loc(inst?.locId ?? ""))
-        descr.values.append(inst.id)
+        descr.items.append(::loc(locId))
+        descr.values.append(id)
         descr.unlocks.append(unlockId)
       }
 
