@@ -1910,72 +1910,6 @@
     }
   },
   {
-    "VehiclePhys": {
-      "Mass": {
-        "Empty": 10650.0,
-        "Fuel": 200.0,
-        "TakeOff": 10850.0,
-        "momentOfInertia": [1.4,2.5,2.5],
-        "CenterOfGravity": [0.4,0.5,0.0],
-        "CenterOfGravityClampY": [0.0,0.7],
-        "AdvancedMass": true,
-        "trackMass": 500.0
-      },
-      "tracks": {
-        "animationMultiplier": 0.5,
-        "height": 0.02,
-        "width": 0.25
-      },
-      "collisionProps": {
-        "cls_turret": "convex_hull",
-        "cls_body": "convex_hull"
-      },
-      "engine": {
-        "horsePowers": 165.0,
-        "maxRPM": 2300.0,
-        "minRPM": 700.0
-      },
-      "mechanics": {
-        "maxBrakeForce": 50000.0,
-        "driveGearRadius": 0.3165,
-        "mainGearRatio": 1.084,
-        "sideGearRatio": 4.3,
-        "gearRatios": [
-          {
-            "ratio": -11.2
-          },
-          {
-            "ratio": 0.0
-          },
-          {
-            "ratio": 13.95
-          },
-          {
-            "ratio": 6.5
-          },
-          {
-            "ratio": 3.3
-          },
-          {
-            "ratio": 1.8
-          },
-          {
-            "ratio": 1.38
-          }
-        ]
-      },
-      "suspension": {
-        "suspensionOffsets": [-0.1,-0.13,0.07],
-        "defaultGearRadius": 0.385,
-        "topGearRadius": 0.1,
-        "frontBackGearRadius": 0.2515,
-        "defaultDampeningForce": [40000.0,40000.0],
-        "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
-      }
-    }
-  },
-  {
     "PhysSys": {
       "find": "^bone_suspension_(._\\d\\d)$",
       "points": {
@@ -2561,6 +2495,72 @@
       },
       "37mm_sw_kan_APDS": [],
       "37mm_sw_kan_APDS_ammo_pack": []
+    }
+  },
+  {
+    "VehiclePhys": {
+      "Mass": {
+        "Empty": 10300.0,
+        "Fuel": 200.0,
+        "TakeOff": 10500.0,
+        "momentOfInertia": [1.4,2.5,2.5],
+        "CenterOfGravity": [0.4,0.5,0.0],
+        "CenterOfGravityClampY": [0.0,0.7],
+        "AdvancedMass": true,
+        "trackMass": 500.0
+      },
+      "tracks": {
+        "animationMultiplier": 0.5,
+        "height": 0.02,
+        "width": 0.25
+      },
+      "collisionProps": {
+        "cls_turret": "convex_hull",
+        "cls_body": "convex_hull"
+      },
+      "engine": {
+        "horsePowers": 146.0,
+        "maxRPM": 2300.0,
+        "minRPM": 700.0
+      },
+      "mechanics": {
+        "maxBrakeForce": 50000.0,
+        "driveGearRadius": 0.3165,
+        "mainGearRatio": 1.084,
+        "sideGearRatio": 4.3,
+        "gearRatios": [
+          {
+            "ratio": -11.2
+          },
+          {
+            "ratio": 0.0
+          },
+          {
+            "ratio": 13.95
+          },
+          {
+            "ratio": 6.5
+          },
+          {
+            "ratio": 3.3
+          },
+          {
+            "ratio": 1.8
+          },
+          {
+            "ratio": 1.38
+          }
+        ]
+      },
+      "suspension": {
+        "suspensionOffsets": [-0.1,-0.13,0.07],
+        "defaultGearRadius": 0.385,
+        "topGearRadius": 0.1,
+        "frontBackGearRadius": 0.2515,
+        "defaultDampeningForce": [40000.0,40000.0],
+        "dampeningRelaxationRatio": 0.4,
+        "dampeningCompressionRatio": 0.15
+      }
     }
   },
   {

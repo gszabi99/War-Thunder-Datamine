@@ -851,6 +851,15 @@
               "teleportToStart": false,
               "object": "@cr_t1_carrier_squad_name"
             }
+          },
+          {
+            "unitSetFormation": {
+              "formation_type": "rows",
+              "formation_div": 2,
+              "formation_step": [12.0,4.0],
+              "formation_noise": [0.3,0.2],
+              "object": "@cr_t1_carrier_squad_name"
+            }
           }
         ],
         "else_actions": []
@@ -989,6 +998,15 @@
               "object_var_comp_op": "equal",
               "route": "@cr_t2_carrier_route_name",
               "teleportToStart": false,
+              "object": "@cr_t2_carrier_squad_name"
+            }
+          },
+          {
+            "unitSetFormation": {
+              "formation_type": "rows",
+              "formation_div": 2,
+              "formation_step": [12.0,4.0],
+              "formation_noise": [0.3,0.2],
               "object": "@cr_t2_carrier_squad_name"
             }
           }
@@ -1566,6 +1584,7 @@
             "object": "@cr_t2_carrier_name",
             "target": "t1_players_squad",
             "var": "cr_t1_detection_range",
+            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -1867,7 +1886,7 @@
           },
           {
             "wait": {
-              "time": 6.0
+              "time": 20.0
             }
           },
           {
@@ -1932,7 +1951,7 @@
           },
           {
             "wait": {
-              "time": 6.0
+              "time": 20.0
             }
           },
           {
