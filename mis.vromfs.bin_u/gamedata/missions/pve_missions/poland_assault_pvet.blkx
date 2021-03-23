@@ -328,6 +328,17 @@
       "conditions": [],
       "actions": [
         {
+          "__unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player_sq",
+            "cannotShoot": true,
+            "cannotMove": true
+          }
+        },
+        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "",
             "spawnEffect": false,
@@ -349,36 +360,6 @@
             "tags": {
               "tank": true
             }
-          }
-        },
-        {
-          "missionMarkAsCaptureZone": {
-            "army": 2,
-            "timeMultiplier": 1.0,
-            "disableZone": false,
-            "name_for_respawn_base": "",
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
-            "target": "stage1_capzone",
-            "playAirfieldSound": false,
-            "canCaptureByGM": true,
-            "captureNoPenalty": true,
-            "markUnitPreset": "tank_decal",
-            "zoneDefenders": []
-          }
-        },
-        {
-          "missionBattleArea": {
-            "air": false,
-            "ground": true,
-            "mapArea": true,
-            "airMapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "area": "battlearea_stage1",
-            "newGridHorizontalCellCount": 0
           }
         },
         {
@@ -417,208 +398,12 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "init__player_spawned"
-            },
-            {
-              "target": "init__disable_controls"
-            }
-          ]
+          "triggerEnable": {
+            "target": "stage1__init"
+          }
         }
       ],
       "else_actions": []
-    },
-    "init__disable_controls": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [],
-      "actions": {
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player_sq",
-          "cannotShoot": true,
-          "cannotMove": true
-        }
-      },
-      "else_actions": []
-    },
-    "init__player_spawned": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isActive",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object": "player_01",
-          "force_check_delayed": true
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "init__waiting_players"
-        }
-      },
-      "else_actions": []
-    },
-    "init__waiting_players": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ANY",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenStatus": {
-          "object_type": "isActive",
-          "check_objects": "any",
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target_type": "isAlive",
-          "check_period": 1.0,
-          "object": "player_04",
-          "force_check_delayed": true
-        },
-        "varCompareInt": {
-          "var_value": "mis_init_spwn_timer_1",
-          "value": 0,
-          "comparasion_func": "notMore"
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "init__ready_timer"
-        },
-        "triggerDisable": {
-          "target": "init__waiting_players"
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/duel_waiting_for_players",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "var_name": "mis_init_spwn_timer_1"
-        },
-        "varModify": {
-          "operator": "add",
-          "value": -1.0,
-          "var": "mis_init_spwn_timer_1"
-        }
-      }
-    },
-    "init__ready_timer": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "varCompareInt": {
-          "var_value": "mis_init_spwn_timer_2",
-          "value": 0,
-          "comparasion_func": "notMore"
-        }
-      },
-      "actions": {
-        "playHint": {
-          "hintType": "standard",
-          "name": "",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": 1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
-        "triggerEnable": {
-          "target": "stage1__init"
-        },
-        "triggerDisable": [
-          {
-            "target": "init__ready_timer"
-          },
-          {
-            "target": "init__disable_controls"
-          }
-        ]
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "standard",
-          "name": "hints/mission_starts_in",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "var_name": "mis_init_spwn_timer_2"
-        },
-        "varModify": {
-          "operator": "add",
-          "value": -1.0,
-          "var": "mis_init_spwn_timer_2"
-        }
-      }
     },
     "stage1__init": {
       "is_enabled": false,
@@ -630,20 +415,22 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 0.0
+          "time": 1.0
         }
       },
       "conditions": [],
       "actions": [
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player_sq",
-            "cannotShoot": false,
-            "cannotMove": false
+          "missionBattleArea": {
+            "air": false,
+            "ground": true,
+            "mapArea": true,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "battlearea_stage1",
+            "newGridHorizontalCellCount": 0
           }
         },
         {
@@ -698,6 +485,21 @@
           }
         },
         {
+          "__playHint": {
+            "hintType": "standard",
+            "name": "hints/duel_waiting_for_players",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "stage1__update_indicator"
@@ -723,15 +525,39 @@
       },
       "events": {
         "timeExpires": {
-          "time": 1.0
+          "time": 5.0
         }
       },
       "conditions": [],
       "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player_sq",
+          "cannotShoot": false,
+          "cannotMove": false
+        },
         "moAddMissionObjective": {
           "target": "assault_pvet_stage1_capture",
           "object_var_comp_op": "equal",
           "object_var_name": ""
+        },
+        "missionMarkAsCaptureZone": {
+          "army": 2,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "showBorderOnMap": false,
+          "borderWidthCoef": 1.0,
+          "borderTransparencyCoef": 1.0,
+          "target": "stage1_capzone",
+          "playAirfieldSound": false,
+          "canCaptureByGM": true,
+          "captureNoPenalty": true,
+          "markUnitPreset": "tank_decal",
+          "zoneDefenders": []
         },
         "missionSetTargetsIndicator": [
           {
@@ -767,7 +593,20 @@
           {
             "target": "ai_tank_stage1_sq"
           }
-        ]
+        ],
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": 1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
       },
       "else_actions": []
     },
@@ -896,16 +735,6 @@
           "status": 2,
           "object_var_comp_op": "equal",
           "object_var_name": ""
-        },
-        "missionMarkAsRearmZone": {
-          "army": 1,
-          "area_name": "stage1_capzone",
-          "enabled": true,
-          "restoreWhenNoAmmoLeft": false,
-          "hideMarkers": true,
-          "repair_tags": {
-            "none_can_spawn": true
-          }
         },
         "triggerDisable": {
           "target": "stage1__update_indicator"
@@ -1346,16 +1175,6 @@
         ],
         "triggerDisable": {
           "target": "stage2__update_indicator"
-        },
-        "missionMarkAsRearmZone": {
-          "army": 1,
-          "area_name": "stage3_defend",
-          "enabled": true,
-          "restoreWhenNoAmmoLeft": false,
-          "hideMarkers": true,
-          "repair_tags": {
-            "none_can_spawn": true
-          }
         },
         "moSetObjectiveStatus": {
           "target": "assault_pvet_stage2_eliminate",
@@ -2426,9 +2245,7 @@
     "stage3_n_waves": 12,
     "stage3_take_pos_timer": 30,
     "stage3_wave_interval": 7,
-    "stage3_wv_intrvl": 0,
-    "mis_init_spwn_timer_1": 5,
-    "mis_init_spwn_timer_2": 10
+    "stage3_wv_intrvl": 0
   },
   "dialogs": [],
   "airfields": [],
@@ -2487,7 +2304,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2526,7 +2343,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2565,7 +2382,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2604,7 +2421,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2643,7 +2460,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2682,7 +2499,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2721,7 +2538,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2760,7 +2577,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2799,7 +2616,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2838,7 +2655,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2877,7 +2694,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -2916,7 +2733,7 @@
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
         "weapons": "ussr_at_gun_53k_default",
-        "bullets0": "45mm_ussr_HE",
+        "bullets0": "",
         "bullets1": "",
         "bullets2": "",
         "bullets3": "",
@@ -10570,7 +10387,7 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [2718.81,-104977.0,2165.66],
+      "pos": [2718.81,-29986.7,2165.66],
       "ht": 2.0
     }
   }

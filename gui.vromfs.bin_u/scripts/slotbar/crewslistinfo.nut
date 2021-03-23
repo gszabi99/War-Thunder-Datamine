@@ -37,7 +37,6 @@ local function getMyCrewUnitsState(country = null) {
 
 addListenersWithoutEnv({
   CrewsListChanged = @(p) unitsStateCached = null
-  CrewsListInvalidate = @(p) unitsStateCached = null
 }, ::g_listener_priority.CONFIG_VALIDATION)
 
 return {

@@ -29,7 +29,6 @@ g_crews_list.invalidate <- function invalidate(needForceInvalidate = false)
   if (needForceInvalidate || !::SessionLobby.isSlotbarOverrided())
   {
     crewsList = [] //do not broke previously received crewsList if someone use link on it
-    ::broadcastEvent("CrewsListInvalidate")
     return true
   }
   return false
