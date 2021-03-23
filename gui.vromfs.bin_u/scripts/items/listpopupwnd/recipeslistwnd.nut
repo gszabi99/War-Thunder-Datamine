@@ -18,6 +18,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
   alignObj = null
   align = "bottom"
   needMarkRecipes = false
+  showRecipeAsProduct = false
 
   function getSceneTplView()
   {
@@ -33,7 +34,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
     local maxRecipeLen = 1
     foreach(r in recipesList)
-      maxRecipeLen = ::max(maxRecipeLen, r.visibleComponents.len())
+      maxRecipeLen = ::max(maxRecipeLen, r.getVisibleMarkupComponents())
 
     local recipeWidthPx = maxRecipeLen * ::to_pixels("0.5@itemWidth")
     local recipeHeightPx = ::to_pixels("0.5@itemHeight")
@@ -46,7 +47,7 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     local columnWidth = 0
     foreach(i, recipe in recipesList)
     {
-      columnWidth = ::max(columnWidth, recipe.visibleComponents.len())
+      columnWidth = ::max(columnWidth, recipe.getVisibleMarkupComponents())
       if ((i + 1) % (rows + 1))
         continue
       itemsInRow += columnWidth
@@ -56,12 +57,13 @@ class ::gui_handlers.RecipesListWnd extends ::gui_handlers.BaseGuiHandlerWT
     itemsInRow += columnWidth
 
     local res = {
-      maxRecipeLen = maxRecipeLen
+      maxRecipeLen
       recipesList = recipesList
-      columns = columns
-      rows = rows
+      columns
+      rows
       itemsInRow = ::max(itemsInRow, MIN_ITEMS_IN_ROW)
-      hasMarkers = hasMarkers
+      hasMarkers
+      showRecipeAsProduct = showRecipeAsProduct
     }
 
     foreach(key in ["headerText", "buttonText"])

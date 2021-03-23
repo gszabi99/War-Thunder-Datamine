@@ -438,8 +438,7 @@
               "delay": 1.0,
               "offset": [0.0,0.0,0.0],
               "object": "@cr_t1_carrier_name",
-              "target": "@cr_t1_carrier_spawn_name",
-              "resetFormation": true
+              "target": "@cr_t1_carrier_spawn_name"
             }
           },
           {
@@ -453,8 +452,8 @@
               "resetFormation": true,
               "formation": {
                 "formation_type": "rows",
-                "formation_div": 1,
-                "formation_step": [26.0,4.0],
+                "formation_div": 2,
+                "formation_step": [12.0,3.0],
                 "formation_noise": [0.3,0.2]
               }
             }
@@ -593,8 +592,7 @@
               "delay": 1.0,
               "offset": [0.0,0.0,0.0],
               "object": "@cr_t2_carrier_name",
-              "target": "@cr_t2_carrier_spawn_name",
-              "resetFormation": true
+              "target": "@cr_t2_carrier_spawn_name"
             }
           },
           {
@@ -608,8 +606,8 @@
               "resetFormation": true,
               "formation": {
                 "formation_type": "rows",
-                "formation_div": 1,
-                "formation_step": [26.0,4.0],
+                "formation_div": 2,
+                "formation_step": [12.0,3.0],
                 "formation_noise": [0.3,0.2]
               }
             }
@@ -1352,12 +1350,7 @@
             "time": 10.0
           }
         },
-        "conditions": {
-          "misObjStatus": {
-            "target": "cr_t2_detect_carrier_quest",
-            "status": "inProgress"
-          }
-        },
+        "conditions": [],
         "actions": [
           {
             "comment": {
@@ -1396,11 +1389,7 @@
             }
           }
         ],
-        "else_actions": {
-          "triggerDisable": {
-            "target": "cr_t1_detection_rotator"
-          }
-        }
+        "else_actions": []
       },
       "cr_t2_detection_rotator": {
         "is_enabled": false,
@@ -1415,12 +1404,7 @@
             "time": 10.0
           }
         },
-        "conditions": {
-          "misObjStatus": {
-            "target": "cr_t1_detect_carrier_quest",
-            "status": "inProgress"
-          }
-        },
+        "conditions": [],
         "actions": [
           {
             "comment": {
@@ -1459,11 +1443,7 @@
             }
           }
         ],
-        "else_actions": {
-          "triggerDisable": {
-            "target": "cr_t2_detection_rotator"
-          }
-        }
+        "else_actions": []
       },
       "cr_t1_detection_players_distance_check": {
         "is_enabled": false,
@@ -1493,6 +1473,7 @@
             "object": "@cr_t1_carrier_name",
             "target": "t2_players_squad",
             "var": "cr_t2_detection_range",
+            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -1566,6 +1547,7 @@
             "object": "@cr_t2_carrier_name",
             "target": "t1_players_squad",
             "var": "cr_t1_detection_range",
+            "object_var_value": 0,
             "compareCenters": false
           }
         },
@@ -1751,25 +1733,16 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
-              "value": "разрешен квест на нахождение авика"
-            }
+        "actions": {
+          "comment": {
+            "value": "разрешен квест на нахождение авика"
           },
-          {
-            "comment": {
-              "value": "даем квест команде Б"
-            }
-          },
-          {
-            "moAddMissionObjective": {
-              "target": "cr_t2_detect_carrier_quest",
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            }
+          "moAddMissionObjective": {
+            "target": "cr_t1_detect_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
-        ],
+        },
         "else_actions": {
           "triggerDisable": {
             "target": "cr_t1_detection_quest_start_check"
@@ -1796,25 +1769,16 @@
             "comparasion_func": "equal"
           }
         },
-        "actions": [
-          {
-            "comment": {
-              "value": "разрешен квест на нахождение авика"
-            }
+        "actions": {
+          "comment": {
+            "value": "разрешен квест на нахождение авика"
           },
-          {
-            "comment": {
-              "value": "даем квест команде А"
-            }
-          },
-          {
-            "moAddMissionObjective": {
-              "target": "cr_t1_detect_carrier_quest",
-              "object_var_comp_op": "equal",
-              "object_var_name": ""
-            }
+          "moAddMissionObjective": {
+            "target": "cr_t2_detect_carrier_quest",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
-        ],
+        },
         "else_actions": {
           "triggerDisable": {
             "target": "cr_t2_detection_quest_start_check"
@@ -1839,10 +1803,6 @@
             "var_value": "cr_detection_quest_is_on",
             "value": true,
             "comparasion_func": "equal"
-          },
-          "misObjStatus": {
-            "target": "cr_t1_detect_carrier_quest",
-            "status": "inProgress"
           }
         },
         "actions": [
@@ -1867,7 +1827,7 @@
           },
           {
             "wait": {
-              "time": 6.0
+              "time": 20.0
             }
           },
           {
@@ -1904,10 +1864,6 @@
             "var_value": "cr_detection_quest_is_on",
             "value": true,
             "comparasion_func": "equal"
-          },
-          "misObjStatus": {
-            "target": "cr_t2_detect_carrier_quest",
-            "status": "inProgress"
           }
         },
         "actions": [
@@ -1932,7 +1888,7 @@
           },
           {
             "wait": {
-              "time": 6.0
+              "time": 20.0
             }
           },
           {
@@ -1997,7 +1953,7 @@
           },
           {
             "triggerEnable": {
-              "target": "cr_t2_dead_quest_end_check"
+              "target": "cr_t1_dead_quest_end_check"
             }
           }
         ],
@@ -2045,7 +2001,7 @@
           },
           {
             "triggerEnable": {
-              "target": "cr_t1_dead_quest_end_check"
+              "target": "cr_t2_dead_quest_end_check"
             }
           }
         ],
@@ -2161,7 +2117,7 @@
               "object_var_name": "",
               "extendedEnding": true,
               "team": "A",
-              "unit_or_area": "@cr_t2_carrier_name",
+              "unit_or_area": "@cr_t1_carrier_name",
               "object_type": "any"
             }
           },
@@ -2224,7 +2180,7 @@
               "object_var_name": "",
               "extendedEnding": true,
               "team": "B",
-              "unit_or_area": "@cr_t1_carrier_name",
+              "unit_or_area": "@cr_t2_carrier_name",
               "object_type": "any"
             }
           },
@@ -2314,8 +2270,8 @@
     "cr_t2_carrier_route_name": "",
     "cr_t1_carrier_name": "",
     "cr_t2_carrier_name": "",
-    "cr_t1_carrier_respawn_time": 600,
-    "cr_t2_carrier_respawn_time": 600,
+    "cr_t1_carrier_respawn_time": 60,
+    "cr_t2_carrier_respawn_time": 60,
     "cr_is_detect_on": false,
     "cr_t1_detection_range": 0.0,
     "cr_t2_detection_range": 0.0,

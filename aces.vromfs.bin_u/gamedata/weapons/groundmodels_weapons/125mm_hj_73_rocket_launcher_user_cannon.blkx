@@ -712,7 +712,7 @@
           "stabilityReductionAfterPenetration": 0.01
         },
         {
-          "bulletType": "atgm_tank"
+          "bulletType": "atgm_tandem_tank"
         },
         {
           "cumulativeSecondaryShattersPreset": "atgm"
@@ -724,7 +724,7 @@
           "fresnel": [0.23,0.1,2.0]
         },
         {
-          "shellAnimation": "video/shells_animations/atgm.ivf"
+          "shellAnimation": "video/shells_animations/atgm_tandem.ivf"
         },
         {
           "maxDeltaAngle": 0.03
@@ -817,7 +817,7 @@
           "hitPower": 260.0
         },
         {
-          "fuseDelayDist": 0.2
+          "fuseDelayDist": 0.4
         },
         {
           "relativeVelHitShift": [300.0,1000.0]
@@ -883,6 +883,11 @@
         {
           "pressureDamage": {
             "damageType": "pressure"
+          }
+        },
+        {
+          "kineticDamage": {
+            "damageType": "tandemPrecharge"
           }
         },
         {
