@@ -3551,8 +3551,9 @@
     "numReserved": 20,
     "onePointNumber": 1,
     "farPlane": 6000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fire",
+    "soundEnableDistance": 200.0
   },
   "major_fuel_fire_ground": {
     "fx": "fire_fuel_cmps_fx",
@@ -3560,8 +3561,9 @@
     "numReserved": 20,
     "onePointNumber": 1,
     "farPlane": 6000.0,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "fire",
+    "soundEnableDistance": 200.0
   },
   "explosion_plane": {
     "fx": "explosion_midair_fuel_massive_cmps_fx",
@@ -3571,9 +3573,8 @@
     "groundSpotAtTime": 0.0,
     "numInstances": 20,
     "numReserved": 3,
-    "sfxPath": "tanks/explosions_tanks",
-    "sfxPathStudio": "ground/explosions",
-    "sfxEvent": "destroy",
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "wreck_explosion",
     "soundEnableDistance": 5000.0
   },
   "explosion_plane_pieces": {
@@ -3581,16 +3582,18 @@
     "lifeTime": 20.0,
     "numInstances": 30,
     "numReserved": 10,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/explosions",
+    "sfxEvent": "parts_explosion",
+    "soundEnableDistance": 5000.0
   },
   "wrecked_pieces": {
     "fx": "smoke_wrecked_pieces_cmps_fx",
     "alphaHeightRange": [50.0,300.0],
     "numInstances": 70,
     "numReserved": 20,
-    "sfxPath": "sounds/effects",
-    "sfxPathStudio": "aircraft/effects"
+    "sfxPathStudio": "aircraft/effects",
+    "sfxEvent": "plane_pieces",
+    "soundEnableDistance": 700.0
   },
   "wrecked_smoke": {
     "fx": "smoke_minor_engine_cmps_fx",
@@ -5394,7 +5397,7 @@
     "onePointNumber": 4,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_air_small",
+    "sfxEvent": "misl_explosion_small",
     "soundEnableDistance": 5000.0
   },
   "explosion_midair_small": {
@@ -5405,7 +5408,7 @@
     "onePointNumber": 4,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_air",
+    "sfxEvent": "misl_explosion_mid",
     "soundEnableDistance": 5000.0
   },
   "explosion_midair_medium": {
@@ -5416,7 +5419,7 @@
     "onePointNumber": 2,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "explosion_air",
+    "sfxEvent": "misl_explosion_mid",
     "soundEnableDistance": 5000.0
   },
   "explosion_midair_big": {
@@ -5427,7 +5430,7 @@
     "onePointNumber": 2,
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/explosions",
-    "sfxEvent": "heavy_explosion_air",
+    "sfxEvent": "misl_explosion_ground",
     "soundEnableDistance": 5000.0
   },
   "explosion_art": {
