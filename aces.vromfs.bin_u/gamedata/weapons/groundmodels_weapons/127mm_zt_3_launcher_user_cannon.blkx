@@ -143,6 +143,8 @@
       "endSpeed": 240.0,
       "price": 3000.0,
       "mesh": "zt3a1_swift_rocket_deployed",
+      "hasTracerTrail": true,
+      "tracerTrailEmitter": [-0.5,0.0,0.0],
       "stabilityRicochetModifier": [
         {
           "mod1": [0.0,0.0]
@@ -243,6 +245,14 @@
         "distance": 7.5,
         "damage": 600.0,
         "onHitChanceMultFire": 25.0
+      },
+      "tracerTrail": {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "152mmRed",
+          "trail": "noTrail"
+        }
       }
     }
   },
@@ -351,6 +361,8 @@
         "endSpeed": 240.0,
         "price": 3000.0,
         "mesh": "zt3a1_swift_rocket_deployed",
+        "hasTracerTrail": true,
+        "tracerTrailEmitter": [-0.5,0.0,0.0],
         "stabilityRicochetModifier": [
           {
             "mod1": [0.0,0.0]
@@ -451,6 +463,14 @@
           "distance": 7.5,
           "damage": 600.0,
           "onHitChanceMultFire": 25.0
+        },
+        "tracerTrail": {
+          "smokeEffect": "",
+          "visual": {
+            "traceFreq": 1,
+            "tracer": "152mmRed",
+            "trail": "noTrail"
+          }
         }
       }
     }
@@ -504,11 +524,11 @@
         "stabilityCaliberToArmorThreshold": 100.0,
         "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.01,
-        "bulletType": "atgm_tank",
+        "bulletType": "atgm_tandem_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
         "fresnel": [0.23,0.1,2.0],
-        "shellAnimation": "video/shells_animations/atgm.ivf",
+        "shellAnimation": "video/shells_animations/atgm_tandem.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -551,7 +571,7 @@
         "explodeTreshold": 0.01,
         "rendinstDamageRadius": 5.0,
         "hitPower": 260.0,
-        "fuseDelayDist": 0.2,
+        "fuseDelayDist": 0.4,
         "statType": "",
         "advancedMissiles": false,
         "useStartSpeed": true,
@@ -574,6 +594,9 @@
         ],
         "pressureDamage": {
           "damageType": "pressure"
+        },
+        "kineticDamage": {
+          "damageType": "tandemPrecharge"
         },
         "collisions": {
           "default": {

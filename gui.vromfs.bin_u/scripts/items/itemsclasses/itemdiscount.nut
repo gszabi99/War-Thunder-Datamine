@@ -280,15 +280,15 @@ class ::items_classes.Discount extends ::BaseItem
       return getName(colored)
 
     local itemData = discountDescriptionDataItems[0]
-    local discountType = $"item/discount/{itemData?.type ?? ""}"
-    if (itemData?.aircraftName != null)
-      discountType = $"{itemData.aircraftName}_shop"
-    else if (itemData?.countryName != null)
-      discountType = itemData.countryName
+    local discountType = ""
+    if (::getTblValue("aircraftName", itemData))
+      discountType = ::loc(itemData.aircraftName + "_shop")
+    else if (::getTblValue("countryName", itemData))
+      discountType = ::loc(itemData.countryName)
 
     local discountValue = _getDataItemDiscountText(itemData)
 
-    return $"{::loc(discountType, "")}{::loc("ui/colon")}{discountValue}"
+    return discountType + ::loc("ui/colon") + discountValue
   }
 
   function getStackName(stackParams)
