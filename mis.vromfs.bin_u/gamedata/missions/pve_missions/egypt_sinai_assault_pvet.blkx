@@ -119,6 +119,180 @@
     "atmosphere": {
       "pressure": 760.0,
       "temperature": 15.0
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "safearea_stage1"
+              },
+              {
+                "point": "stage1_capzone"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "stage3_direction_01"
+              },
+              {
+                "point": "stage3_defend"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "stage3_direction_02"
+              },
+              {
+                "point": "stage3_defend"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "stage3_direction_03"
+              },
+              {
+                "point": "stage3_defend"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "stage1_capzone"
+              },
+              {
+                "point": "stage2_eliminate"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "stage2_eliminate"
+              },
+              {
+                "point": "stage3_defend"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "player",
+              "target": "safearea_stage1"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "enemy",
+              "target": "stage1_capzone"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "stage2_eliminate"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "player",
+              "target": "stage3_defend"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "stage3_direction_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "stage3_direction_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "enemy",
+              "target": "stage3_direction_03"
+            }
+          },
+          {
+            "battleArea": {
+              "target": "briefing_battleArea"
+            }
+          }
+        ]
+      }
     }
   },
   "imports": {
@@ -154,17 +328,6 @@
       "conditions": [],
       "actions": [
         {
-          "__unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player_sq",
-            "cannotShoot": true,
-            "cannotMove": true
-          }
-        },
-        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "",
             "spawnEffect": false,
@@ -186,6 +349,36 @@
             "tags": {
               "tank": true
             }
+          }
+        },
+        {
+          "missionMarkAsCaptureZone": {
+            "army": 2,
+            "timeMultiplier": 1.0,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "showBorderOnMap": false,
+            "borderWidthCoef": 1.0,
+            "borderTransparencyCoef": 1.0,
+            "target": "stage1_capzone",
+            "playAirfieldSound": false,
+            "canCaptureByGM": true,
+            "captureNoPenalty": true,
+            "markUnitPreset": "tank_decal",
+            "zoneDefenders": []
+          }
+        },
+        {
+          "missionBattleArea": {
+            "air": false,
+            "ground": true,
+            "mapArea": true,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "battlearea_stage1",
+            "newGridHorizontalCellCount": 0
           }
         },
         {
@@ -224,14 +417,46 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "stage1__init"
-          }
+          "triggerEnable": [
+            {
+              "target": "init__player_spawned"
+            },
+            {
+              "target": "init__disable_controls"
+            }
+          ]
         }
       ],
       "else_actions": []
     },
-    "stage1__init": {
+    "init__disable_controls": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player_sq",
+          "cannotShoot": true,
+          "cannotMove": true
+        }
+      },
+      "else_actions": []
+    },
+    "init__player_spawned": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -244,19 +469,181 @@
           "time": 1.0
         }
       },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isActive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "player_01",
+          "force_check_delayed": true
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "init__waiting_players"
+        }
+      },
+      "else_actions": []
+    },
+    "init__waiting_players": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isActive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "player_04",
+          "force_check_delayed": true
+        },
+        "varCompareInt": {
+          "var_value": "mis_init_spwn_timer_1",
+          "value": 0,
+          "comparasion_func": "notMore"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "init__ready_timer"
+        },
+        "triggerDisable": {
+          "target": "init__waiting_players"
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/duel_waiting_for_players",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "var_name": "mis_init_spwn_timer_1"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "mis_init_spwn_timer_1"
+        }
+      }
+    },
+    "init__ready_timer": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "mis_init_spwn_timer_2",
+          "value": 0,
+          "comparasion_func": "notMore"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": 1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        },
+        "triggerEnable": {
+          "target": "stage1__init"
+        },
+        "triggerDisable": [
+          {
+            "target": "init__ready_timer"
+          },
+          {
+            "target": "init__disable_controls"
+          }
+        ]
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/mission_starts_in",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "var_name": "mis_init_spwn_timer_2"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": -1.0,
+          "var": "mis_init_spwn_timer_2"
+        }
+      }
+    },
+    "stage1__init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
       "conditions": [],
       "actions": [
         {
-          "missionBattleArea": {
-            "air": false,
-            "ground": true,
-            "mapArea": true,
-            "airMapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "area": "battlearea_stage1",
-            "newGridHorizontalCellCount": 0
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player_sq",
+            "cannotShoot": false,
+            "cannotMove": false
           }
         },
         {
@@ -311,21 +698,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "standard",
-            "name": "hints/duel_waiting_for_players",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "stage1__update_indicator"
@@ -351,39 +723,15 @@
       },
       "events": {
         "timeExpires": {
-          "time": 3.0
+          "time": 1.0
         }
       },
       "conditions": [],
       "actions": {
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "player_sq",
-          "cannotShoot": false,
-          "cannotMove": false
-        },
         "moAddMissionObjective": {
           "target": "assault_pvet_stage1_capture",
           "object_var_comp_op": "equal",
           "object_var_name": ""
-        },
-        "missionMarkAsCaptureZone": {
-          "army": 2,
-          "timeMultiplier": 1.0,
-          "disableZone": false,
-          "name_for_respawn_base": "",
-          "showBorderOnMap": false,
-          "borderWidthCoef": 1.0,
-          "borderTransparencyCoef": 1.0,
-          "target": "stage1_capzone",
-          "playAirfieldSound": false,
-          "canCaptureByGM": true,
-          "captureNoPenalty": true,
-          "markUnitPreset": "tank_decal",
-          "zoneDefenders": []
         },
         "missionSetTargetsIndicator": [
           {
@@ -419,20 +767,7 @@
           {
             "target": "ai_tank_stage1_sq"
           }
-        ],
-        "playHint": {
-          "hintType": "standard",
-          "name": "",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": 1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        }
+        ]
       },
       "else_actions": []
     },
@@ -561,6 +896,16 @@
           "status": 2,
           "object_var_comp_op": "equal",
           "object_var_name": ""
+        },
+        "missionMarkAsRearmZone": {
+          "army": 1,
+          "area_name": "stage1_capzone",
+          "enabled": true,
+          "restoreWhenNoAmmoLeft": false,
+          "hideMarkers": true,
+          "repair_tags": {
+            "none_can_spawn": true
+          }
         },
         "triggerDisable": {
           "target": "stage1__update_indicator"
@@ -996,14 +1341,24 @@
             "target": "ai_tank_mov_stage2_sq"
           }
         ],
-        "triggerDisable": {
-          "target": "stage2__update_indicator"
-        },
         "moSetObjectiveStatus": {
           "target": "assault_pvet_stage2_eliminate",
           "status": 2,
           "object_var_comp_op": "equal",
           "object_var_name": ""
+        },
+        "missionMarkAsRearmZone": {
+          "army": 1,
+          "area_name": "stage3_defend",
+          "enabled": true,
+          "restoreWhenNoAmmoLeft": false,
+          "hideMarkers": true,
+          "repair_tags": {
+            "none_can_spawn": true
+          }
+        },
+        "triggerDisable": {
+          "target": "stage2__update_indicator"
         },
         "triggerEnable": {
           "target": "stage3__init"
@@ -2059,9 +2414,11 @@
     "stage3_rnd_dir": 0,
     "stage3_wakedup": 0,
     "stage3_n_waves": 12,
-    "stage3_take_pos_timer": 30,
+    "stage3_take_pos_timer": 60,
     "stage3_wave_interval": 7,
-    "stage3_wv_intrvl": 0
+    "stage3_wv_intrvl": 0,
+    "mis_init_spwn_timer_1": 5,
+    "mis_init_spwn_timer_2": 10
   },
   "dialogs": [],
   "airfields": [],
@@ -9967,6 +10324,17 @@
       ],
       "objLayer": 0,
       "props": []
+    },
+    "briefing_battleArea": {
+      "type": "Box",
+      "tm": [
+        [1444.68,0.0,0.0],
+        [0.0,232.983,0.0],
+        [0.0,0.0,3220.67],
+        [1989.75,632.4,2559.45]
+      ],
+      "objLayer": 0,
+      "props": []
     }
   },
   "objLayers": [
@@ -10346,15 +10714,15 @@
   },
   "__viewPoints": {
     "viewpt_01": {
-      "pos": [1778.7,-44934.9,120.55],
+      "pos": [1778.7,-74930.9,120.55],
       "ht": 2.0
     },
     "viewpt_02": {
-      "pos": [1262.25,-44944.2,3673.32],
+      "pos": [1262.25,-74941.2,3673.32],
       "ht": 1.5
     },
     "viewpt_03": {
-      "pos": [2132.35,-44943.1,1278.35],
+      "pos": [2132.35,-74940.1,1278.35],
       "ht": 1.5
     }
   }

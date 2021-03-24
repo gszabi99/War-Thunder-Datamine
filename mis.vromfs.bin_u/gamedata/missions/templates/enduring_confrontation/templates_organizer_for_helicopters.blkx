@@ -311,15 +311,7 @@
         },
         {
           "triggerActivate": {
-            "target": "to_template_01_cnv_check",
-            "activate_type": "checkConidtions",
-            "check_trigger_status": false,
-            "after_activation": "disable"
-          }
-        },
-        {
-          "triggerActivate": {
-            "target": "to_template_02_at_check",
+            "target": "to_template_01_at_check",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
@@ -357,181 +349,10 @@
         }
       }
     },
-    "01 - land convoys": {
-      "isCategory": true,
-      "is_enabled": true,
-      "to_template_01_cnv_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 5.0
-          }
-        },
-        "conditions": [
-          {
-            "varCompareInt": {
-              "var_value": "to_randomizer",
-              "value": 3,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
-              "var_value": "cnv_is_launch_alowed",
-              "value": true,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareBool": {
-              "var_value": "cnv_is_template_active",
-              "value": false,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
-            "triggerStatus": {
-              "status": "disabled",
-              "target": "to_template_01_cnv_end"
-            }
-          }
-        ],
-        "actions": {
-          "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
-          },
-          "triggerEnable": {
-            "target": "to_template_01_cnv_choose"
-          }
-        },
-        "else_actions": []
-      },
-      "to_template_01_cnv_choose": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ANY",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": [],
-        "actions": [
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "to_cur_launched_templates"
-            }
-          },
-          {
-            "comment": {
-              "value": "ставим флаг, что шаблон запустился"
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "cnv_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "to_template_01_cnv_run"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
-          }
-        }
-      },
-      "to_template_01_cnv_run": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": [],
-        "actions": {
-          "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
-          },
-          "triggerEnable": [
-            {
-              "target": "cnv_start"
-            },
-            {
-              "target": "to_template_01_cnv_end"
-            }
-          ]
-        },
-        "else_actions": []
-      },
-      "to_template_01_cnv_end": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "cnv_is_template_active",
-            "value": false,
-            "comparasion_func": "equal"
-          }
-        },
-        "actions": {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "to_cur_launched_templates"
-          }
-        },
-        "else_actions": []
-      }
-    },
     "02 - assaults": {
       "isCategory": true,
       "is_enabled": true,
-      "to_template_02_at_check": {
+      "to_template_01_at_check": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -576,7 +397,7 @@
           {
             "triggerStatus": {
               "status": "disabled",
-              "target": "to_template_02_at_end"
+              "target": "to_template_01_at_end"
             }
           }
         ],
@@ -590,12 +411,12 @@
             "input_var": "to_army"
           },
           "triggerEnable": {
-            "target": "to_template_02_at_choose"
+            "target": "to_template_01_at_choose"
           }
         },
         "else_actions": []
       },
-      "to_template_02_at_choose": {
+      "to_template_01_at_choose": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -647,7 +468,7 @@
           },
           {
             "triggerEnable": {
-              "target": "to_template_02_at_run"
+              "target": "to_template_01_at_run"
             }
           }
         ],
@@ -657,7 +478,7 @@
           }
         }
       },
-      "to_template_02_at_run": {
+      "to_template_01_at_run": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -694,14 +515,14 @@
                 "target": "at_start"
               },
               {
-                "target": "to_template_02_at_end"
+                "target": "to_template_01_at_end"
               }
             ]
           }
         ],
         "else_actions": []
       },
-      "to_template_02_at_end": {
+      "to_template_01_at_end": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -744,7 +565,6 @@
     "to_army": 0,
     "to_last_army": -1,
     "to_force_template_idx": 0,
-    "cnv_is_launch_alowed": false,
     "at_is_launch_alowed": false,
     "to_last_randomizer": 0,
     "to_delay_timer": 240
