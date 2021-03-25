@@ -63,16 +63,14 @@ local ItemGenerator = class {
       local localizationPresetName = tags?.customLocalizationPreset
       local effectOnStartCraftPresetName = tags?.effectOnStartCraft
       local allowableComponents = getAllowableRecipeComponents()
-      local showRecipeAsProduct = tags?.showRecipeAsProduct
       _exchangeRecipes = ::u.map(parsedRecipes, @(parsedRecipe) ExchangeRecipes({
-         parsedRecipe
-         generatorId
+         parsedRecipe = parsedRecipe,
+         generatorId = generatorId
          craftTime = generatorCraftTime
-         isDisassemble
-         localizationPresetName
-         effectOnStartCraftPresetName
-         allowableComponents
-         showRecipeAsProduct
+         isDisassemble = isDisassemble
+         localizationPresetName = localizationPresetName
+         effectOnStartCraftPresetName = effectOnStartCraftPresetName
+         allowableComponents = allowableComponents
       }))
 
       // Adding additional recipes
@@ -86,7 +84,7 @@ local ItemGenerator = class {
             local gen = collection?[itemdefId]
             local additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
             _exchangeRecipes.extend(::u.map(additionalParsedRecipes, @(pr) ExchangeRecipes({
-              parsedRecipe = pr
+              parsedRecipe = pr,
               generatorId = gen.id
               craftTime = gen.getCraftTime()
               isFake = paramName != "trueRecipe"
@@ -94,7 +92,6 @@ local ItemGenerator = class {
               localizationPresetName = gen?.tags?.customLocalizationPreset ?? localizationPresetName
               effectOnStartCraftPresetName = gen?.tags?.effectOnStartCraft
               allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
-              showRecipeAsProduct = gen?.tags?.showRecipeAsProduct
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0
           }

@@ -1112,8 +1112,8 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t1_trucks_to_spawn",
-              "from": 4,
-              "to_not_including": 7
+              "from": 3,
+              "to_not_including": 6
             }
           },
           {
@@ -1165,15 +1165,15 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t1_tanks_to_spawn",
-              "from": 4,
-              "to_not_including": 7
+              "from": 2,
+              "to_not_including": 5
             }
           },
           {
             "varSetRandomInt": {
               "var": "cnv_t1_acars_to_spawn",
               "from": 2,
-              "to_not_including": 7
+              "to_not_including": 4
             }
           },
           {
@@ -1185,8 +1185,8 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t1_aaa_to_spawn",
-              "from": 2,
-              "to_not_including": 5
+              "from": 1,
+              "to_not_including": 4
             }
           },
           {
@@ -2752,8 +2752,8 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t2_trucks_to_spawn",
-              "from": 4,
-              "to_not_including": 7
+              "from": 3,
+              "to_not_including": 6
             }
           },
           {
@@ -2805,15 +2805,15 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t2_tanks_to_spawn",
-              "from": 4,
-              "to_not_including": 7
+              "from": 2,
+              "to_not_including": 5
             }
           },
           {
             "varSetRandomInt": {
               "var": "cnv_t2_acars_to_spawn",
               "from": 2,
-              "to_not_including": 7
+              "to_not_including": 5
             }
           },
           {
@@ -2825,8 +2825,8 @@
           {
             "varSetRandomInt": {
               "var": "cnv_t2_aaa_to_spawn",
-              "from": 2,
-              "to_not_including": 5
+              "from": 1,
+              "to_not_including": 4
             }
           },
           {
@@ -5575,7 +5575,7 @@
           },
           {
             "wait": {
-              "time": 1.0
+              "time": 3.0
             }
           },
           {
@@ -5600,7 +5600,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 3.0
           }
         },
         "conditions": {
@@ -5803,7 +5803,7 @@
           },
           {
             "wait": {
-              "time": 1.0
+              "time": 3.0
             }
           },
           {
@@ -5828,7 +5828,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 3.0
           }
         },
         "conditions": {
@@ -5912,7 +5912,7 @@
           },
           {
             "wait": {
-              "time": 1.0
+              "time": 3.0
             }
           },
           {
@@ -5960,7 +5960,7 @@
           },
           {
             "wait": {
-              "time": 1.0
+              "time": 3.0
             }
           },
           {
@@ -6124,6 +6124,10 @@
           }
         },
         "conditions": {
+          "objectExists": {
+            "target": "@cnv_t1_move_convoy_name",
+            "type": "squad"
+          },
           "unitWhenCountMatches": {
             "object_type": "isActive",
             "object_marking": 0,
@@ -6927,6 +6931,23 @@
             }
           },
           {
+            "comment": {
+              "value": "уменьшаем количество активных конвоев"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "cnv_t1_num_active_convoys"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
             "wait": {
               "time": 10.0
             }
@@ -6947,6 +6968,16 @@
             "varSetString": {
               "value": "",
               "var": "@cnv_t1_move_convoy_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "cnv_t1_move_rotator"
             }
           }
         ],
@@ -7156,6 +7187,10 @@
           }
         },
         "conditions": {
+          "objectExists": {
+            "target": "@cnv_t2_move_convoy_name",
+            "type": "squad"
+          },
           "unitWhenCountMatches": {
             "object_type": "isActive",
             "object_marking": 0,
@@ -7959,6 +7994,23 @@
             }
           },
           {
+            "comment": {
+              "value": "уменьшаем количество активных конвоев"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "cnv_t2_num_active_convoys"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
             "wait": {
               "time": 10.0
             }
@@ -7979,6 +8031,16 @@
             "varSetString": {
               "value": "",
               "var": "@cnv_t2_move_convoy_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "cnv_t2_move_rotator"
             }
           }
         ],
@@ -8447,6 +8509,16 @@
           },
           {
             "comment": {
+              "value": ""
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
+            }
+          },
+          {
+            "comment": {
               "value": "стираем имя конвоя"
             }
           },
@@ -8860,6 +8932,16 @@
                 "target": "cnv_t1_kill_activity_check"
               }
             ]
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
+            }
           },
           {
             "comment": {

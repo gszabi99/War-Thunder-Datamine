@@ -29,7 +29,7 @@
       "stabilityReductionAfterPenetration": 0.01
     },
     {
-      "bulletType": "atgm_tandem_tank"
+      "bulletType": "atgm_tank"
     },
     {
       "cumulativeSecondaryShattersPreset": "atgm"
@@ -41,7 +41,7 @@
       "fresnel": [0.23,0.1,2.0]
     },
     {
-      "shellAnimation": "video/shells_animations/atgm_tandem.ivf"
+      "shellAnimation": "video/shells_animations/atgm.ivf"
     },
     {
       "caliber": 0.13
@@ -200,12 +200,6 @@
       "endSmokeViscosity": 0.05
     },
     {
-      "hitPower": 260.0
-    },
-    {
-      "fuseDelayDist": 0.4
-    },
-    {
       "spawnExplosionFx": false
     },
     {
@@ -299,11 +293,6 @@
     {
       "pressureDamage": {
         "damageType": "pressure"
-      }
-    },
-    {
-      "kineticDamage": {
-        "damageType": "tandemPrecharge"
       }
     },
     {
@@ -402,112 +391,13 @@
               "countPortion": 0.1
             }
           }
-        ]
-      }
-    },
-    {
-      "shatterDamage": {
-        "breachConeAngle": 45.0
-      }
-    },
-    {
-      "damage": {
-        "damage": {
-          "explosive": {
-            "radius": 0.15,
-            "offset": 0.2
-          },
-          "shatter": [
-            {
-              "useRealShatters": true
-            },
-            {
-              "countPortion": 0.22
-            },
-            {
-              "segment": {
-                "radiusScale": 0.15,
-                "penetrationScale": 2.0,
-                "damageScale": 1.0,
-                "angles": [0.0,29.0],
-                "countPortion": 0.04,
-                "onHitChanceMultFire": 10.0
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [30.0,69.0],
-                "countPortion": 0.235
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 0.25,
-                "penetrationScale": 1.7,
-                "damageScale": 1.5,
-                "angles": [70.0,110.0],
-                "countPortion": 0.075,
-                "onHitChanceMultFire": 50.0
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [111.0,180.0],
-                "countPortion": 0.15
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [181.0,249.0],
-                "countPortion": 0.15
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 0.25,
-                "penetrationScale": 1.7,
-                "damageScale": 1.5,
-                "angles": [250.0,290.0],
-                "countPortion": 0.075,
-                "onHitChanceMultFire": 50.0
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [291.0,329.0],
-                "countPortion": 0.235
-              }
-            },
-            {
-              "segment": {
-                "radiusScale": 0.15,
-                "penetrationScale": 2.0,
-                "damageScale": 1.0,
-                "angles": [330.0,359.0],
-                "countPortion": 0.04,
-                "onHitChanceMultFire": 10.0
-              }
-            }
-          ]
-        },
+        ],
         "shatterDamage": {
           "breachConeAngle": 45.0
         },
         "explosive": {
           "radius": 0.15,
-          "offset": 0.2
+          "offset": 0.9
         }
       }
     },
@@ -552,12 +442,6 @@
         "distance": 5.0,
         "damage": 900.0,
         "onHitChanceMultFire": 15.0
-      }
-    },
-    {
-      "armorpower": {
-        "ArmorPower0m": [50.0,10.0],
-        "ArmorPower10000m": [50.0,10000.0]
       }
     },
     {

@@ -145,6 +145,17 @@ local openProfileSheetParams = {
       return openLink(handler, params)
     }
     items = function(handler, params, obj) { return openItemsWnd(handler, params) }
+    consume_item = function(handler, params, obj) {
+      local itemId = params?[0]
+      if (itemId == null)
+        return
+      local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+      if (!(item?.canConsume() ?? false))
+        return
+
+      item?.consume(@(...) null, { needConsumeImpl = params?[1] == "needConsumeImpl" })
+      handler.goBack()
+    }
     squad_contacts = function(handler, params, obj) { return ::open_search_squad_player() }
     world_war = function(handler, params, obj) { ::g_world_war.openMainWnd(params?[0] == "openMainMenu") }
     content_pack = function(handler, params, obj)
@@ -228,6 +239,13 @@ local openProfileSheetParams = {
     content_pack = function(params)
     {
       return ::has_feature("Packages") && !::have_package(::getTblValue(0, params, ""))
+    }
+    consume_item = function(params) {
+      local itemId = params?[0]
+      if (itemId == null)
+        return false
+      local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+      return item?.canConsume() ?? false
     }
   }
 
