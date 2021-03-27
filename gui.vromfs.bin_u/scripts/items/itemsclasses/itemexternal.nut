@@ -464,7 +464,7 @@ local ItemExternal = class extends ::BaseItem
     if (!uids || !uids.len() || !metaBlk || !canConsume() || !(params?.canConsume ?? true))
       return false
 
-    if (shouldAutoConsume || (params?.needConsumeImpl ?? false))
+    if (shouldAutoConsume)
     {
       consumeImpl(cb, params)
       return true

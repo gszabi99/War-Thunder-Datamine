@@ -15,9 +15,7 @@
   [PERSISTENT_DATA_PARAMS] = ["config"]
 
   config = null
-  iconLayer = @"iconLayer {
-    {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
-    background-image:t='{image}'; background-svg-size:t='{size}'; {props} }"
+  iconLayer = "iconLayer { %s size:t='%s'; pos:t='%s,%s'; position:t='%s'; background-image:t='%s' %s}"
   layersCfgParams = {
     x = {
       formatValue = "%.2fpw",
@@ -102,8 +100,7 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null
   {
     ratio = (ratio && ratio > 0) ? ratio : 1.0
     local size = (ratio == 1.0)? "ph, ph" : (ratio > 1.0)? format("ph, %.2fph", 1/ratio) : format("%.2fph, ph", ratio)
-    data = iconLayer.subst({ id = "id:t='iconLayer0'", size, posX ="(pw-w)/2", posY = "(ph-h)/2",
-      pos = "absolute", image, props = "" })
+    data = ::format(iconLayer, "id:t='iconLayer0'", size, "(pw-w)/2", "(ph-h)/2", "absolute", image, "")
   }
 
   return data
@@ -111,8 +108,7 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image=null, ratio=null
 
 LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size)
 {
-  return iconLayer.subst({ id = "id:t='iconLayer0'", size, posX = "(pw-w)/2", posY = "(ph-h)/2",
-    pos = "absolute", image, props = "" })
+  return ::format(iconLayer, "id:t='iconLayer0'", size, "(pw-w)/2", "(ph-h)/2", "absolute", image, "")
 }
 
 LayersIcon.findLayerCfg <- function findLayerCfg(id)
@@ -165,9 +161,12 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
     if (key in layerCfg)
       props += ::format("%s:t='%s';", key, layerCfg[key])
 
-  return iconLayer.subst({id, size = $"{baseParams.width}, {baseParams.height}",
-    posX = baseParams.posX + offsetX, posY = baseParams.posY + offsetY,
-    pos = baseParams.position, image = img, props = $"{props} {insertLayers}" })
+  return format(iconLayer, id,
+                           baseParams.width + ", " + baseParams.height,
+                           baseParams.posX + offsetX, baseParams.posY + offsetY,
+                           baseParams.position,
+                           img,
+                           props + " " + insertLayers)
 }
 
 // For icon customization it is much easier to use replaceIcon() with iconParams, or getIconData() with iconParams.

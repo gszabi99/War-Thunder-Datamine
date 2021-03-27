@@ -17,7 +17,6 @@ class ::items_classes.Discount extends ::BaseItem
   isSpecialOffer = false
   specialOfferImage = null
   specialOfferImageRatio = null
-  needHideTextOnIcon = false
   //params which must be equal to stack items
   static stackBases =    ["category", "type", "aircraftName"]
   //params which can can be different in stack but still need for stack description
@@ -35,7 +34,6 @@ class ::items_classes.Discount extends ::BaseItem
     shouldAutoConsume = shouldAutoConsume || isSpecialOffer
     specialOfferImage = blk?.specialOfferImage
     specialOfferImageRatio = blk?.specialOfferImageRatio
-    needHideTextOnIcon = blk?.needHideTextOnIcon ?? false
   }
 
   function _initPersonalDiscountParams(blk)
@@ -282,15 +280,15 @@ class ::items_classes.Discount extends ::BaseItem
       return getName(colored)
 
     local itemData = discountDescriptionDataItems[0]
-    local discountType = $"item/discount/{itemData?.type ?? ""}"
-    if (itemData?.aircraftName != null)
-      discountType = $"{itemData.aircraftName}_shop"
-    else if (itemData?.countryName != null)
-      discountType = itemData.countryName
+    local discountType = ""
+    if (::getTblValue("aircraftName", itemData))
+      discountType = ::loc(itemData.aircraftName + "_shop")
+    else if (::getTblValue("countryName", itemData))
+      discountType = ::loc(itemData.countryName)
 
     local discountValue = _getDataItemDiscountText(itemData)
 
-    return $"{::loc(discountType, "")}{::loc("ui/colon")}{discountValue}"
+    return discountType + ::loc("ui/colon") + discountValue
   }
 
   function getStackName(stackParams)
@@ -303,7 +301,7 @@ class ::items_classes.Discount extends ::BaseItem
   function getIcon(addItemName = true)
   {
     local layers = ::LayersIcon.getIconData(iconStyle + "_shop", defaultIcon, 1.0, defaultIconStyle)
-    if (addItemName && !needHideTextOnIcon)
+    if (addItemName)
       layers += _getTextLayer()
     return layers
   }
