@@ -152,12 +152,23 @@
       },
       "rocket": {
         "hasProximityFuse": true,
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "secondaryShattersPreset": "ap_rocket",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "sam_tank",
+        "slopeEffectPreset": "ap",
+        "fresnel": [0.23,0.1,2.0],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/sam.ivf",
         "caliber": 0.076,
         "mass": 42.0,
         "explosiveType": "a_ix_2",
         "explosiveMass": 3.0,
         "massEnd": 18.5,
-        "bulletType": "atgm_tank",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.01,
         "length": 1.8,
@@ -221,6 +232,11 @@
           "detectGroundUnits": false,
           "detectGround": false,
           "minimalAltitude": 25.0
+        },
+        "stabilityRicochetModifier": {
+          "mod1": [0.0,0.5],
+          "mod2": [20.0,0.6],
+          "mod3": [30.0,1.0]
         },
         "collisions": {
           "default": {
