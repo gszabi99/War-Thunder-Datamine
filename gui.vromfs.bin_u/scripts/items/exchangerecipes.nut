@@ -62,7 +62,6 @@ local ExchangeRecipes = class {
   reqItems = null
   visibleComponents = null
   allowableComponents = null
-  showRecipeAsProduct = null
 
   constructor(params)
   {
@@ -74,7 +73,6 @@ local ExchangeRecipes = class {
     localizationPresetName = params?.localizationPresetName
     effectOnStartCraftPresetName = params?.effectOnStartCraftPresetName ?? ""
     allowableComponents = params?.allowableComponents
-    showRecipeAsProduct = params?.showRecipeAsProduct
 
     local parsedRecipe = params.parsedRecipe
     initedComponents = parsedRecipe.components
@@ -223,40 +221,27 @@ local ExchangeRecipes = class {
       {time = ::loc("icon/hourglass") + " " + time.secondsToString(craftTime, true, true)})
   }
 
-  getItemMarkupParams = @() {
-     contentIcon = false
-     hasTimer = false
-     addItemName = false
-     showPrice = false
-     showAction = false
-     shouldHideAdditionalAmmount = true
-  }
-
   function getIconedMarkup()
   {
     local itemsViewData = []
-    if (showRecipeAsProduct != null) {
-      local item = ItemsManager.findItemById(showRecipeAsProduct.tointeger())
+    foreach (component in visibleComponents)
+    {
+      local item = ItemsManager.findItemById(component.itemdefId)
       if (item)
-        itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
-          count = -1
+        itemsViewData.append(item.getViewData({
+          count = getComponentQuantityText(component, { needColoredText = false })
+          overlayAmountTextColor = getComponentQuantityColor(component)
+          contentIcon = false
+          hasTimer = false
+          addItemName = false
+          showPrice = false
+          showAction = false
+          shouldHideAdditionalAmmount = true
           craftTimerText = item.getAdditionalTextInAmmount(false)
-      })))
-    } else
-      foreach (component in visibleComponents)
-      {
-        local item = ItemsManager.findItemById(component.itemdefId)
-        if (item)
-          itemsViewData.append(item.getViewData(getItemMarkupParams().__update({
-            count = getComponentQuantityText(component, { needColoredText = false })
-            overlayAmountTextColor = getComponentQuantityColor(component)
-            craftTimerText = item.getAdditionalTextInAmmount(false)
-          })))
-      }
+        }))
+    }
     return ::handyman.renderCached("gui/items/item", { items = itemsViewData })
   }
-
-  getVisibleMarkupComponents = @() showRecipeAsProduct != null ? 1 : visibleComponents.len()
 
   function getMarkIcon()
   {

@@ -87,6 +87,9 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     if (blk?.pollId && isPollVoted(blk.pollId))
       return null
 
+    if (!::g_promo.isVisibleByAction(blk))
+      return null
+
     local viewType = blk?.viewType ?? POPUP_VIEW_TYPES.NEVER
     local viewDay = ::loadLocalByAccount("popup/" + (blk?.saveId ?? popupId), 0)
     local canShow = (viewType == POPUP_VIEW_TYPES.EVERY_SESSION)
