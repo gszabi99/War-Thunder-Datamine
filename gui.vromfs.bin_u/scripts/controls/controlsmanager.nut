@@ -161,6 +161,8 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
     // Send controls to C++ client
     ::set_current_controls(curPreset, ::g_controls_manager.getShortcutGroupMap())
 
+    clearGuiOptions()
+
     isControlsCommitPerformed = false
   }
 
@@ -233,7 +235,6 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
         if (oType in ::getroottable())
           ::set_option(::getroottable()[oType], value)
     ::set_gui_options_mode(mainOptionsMode)
-    clearGuiOptions()
   }
 
   // While controls reloaded on PS4 from uncrorrect blk when mission started
