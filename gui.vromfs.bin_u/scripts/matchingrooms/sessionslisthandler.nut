@@ -304,9 +304,13 @@ class ::gui_handlers.SessionsList extends ::gui_handlers.GenericOptions
     }
 
     local columnsOrder = getColumnsList()
+    local deletedArr = []
     foreach (id, data in _roomsMarkUpData.columns)
       if (!::isInArray(id, columnsOrder))
-        delete _roomsMarkUpData.columns[id]
+        deletedArr.append(id)
+
+    foreach (id in deletedArr)
+      delete _roomsMarkUpData.columns[id]
 
     if (::checkObj(sessionsListObj))
       ::count_width_for_mptable(sessionsListObj, _roomsMarkUpData.columns)

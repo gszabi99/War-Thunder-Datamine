@@ -4,7 +4,7 @@ local time = require("scripts/time.nut")
 local stdMath = require("std/math.nut")
 local { getUnitRoleIcon, getUnitTooltipImage, getFullUnitRoleText,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText,
-  getUnitRarity } = require("scripts/unit/unitInfoTexts.nut")
+  getUnitRarity, getUnitRequireUnlockText } = require("scripts/unit/unitInfoTexts.nut")
 local unitStatus = require("scripts/unit/unitStatus.nut")
 local countMeasure = require("scripts/options/optionsMeasureUnits.nut").countMeasure
 local { getCrewPoints } = require("scripts/crew/crewSkills.nut")
@@ -499,16 +499,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
       return ::loc("mainmenu/needBuyPreviousVehicle")
     return ::loc("msgbox/need_unlock_prev_unit/purchase", {name = ::colorize("userlogColoredText", ::getUnitName(::getPrevUnit(unit), true))})
   }
-  else if (unit.reqUnlock && !::is_unlocked_scripted(-1, unit.reqUnlock))
-  {
-    local unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
-    local conditions = ::build_conditions_config(unlockBlk)
-
-    return ::loc("mainmenu/needUnlock") + "\n" + ::build_unlock_desc(conditions,
-      { showProgress = true
-        showValueForBitList = true
-      }).text
-  }
+  else if (unitStatus.isRequireUnlockForUnit(unit))
+    return getUnitRequireUnlockText(unit)
   else if (!special && !isSquadronVehicle && !::canBuyUnit(unit) && ::canResearchUnit(unit))
     return ::loc(::isUnitInResearch(unit) ? "mainmenu/needResearch/researching" : "mainmenu/needResearch")
 
@@ -1074,6 +1066,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local isInFlight = ::is_in_flight()
 
   local showLocalState   = ::getTblValue("showLocalState", params, true)
+  local needCrewModificators = params?.needCrewModificators ?? false
 
   local getEdiffFunc = ::getTblValue("getCurrentEdiff", handler)
   local ediff = getEdiffFunc ? getEdiffFunc.call(handler) : ::get_current_ediff()
@@ -1285,10 +1278,11 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local showReferenceText = false
   foreach(item in ::getTblValue(unitType, modCharacteristics, {}))
   {
-    local characteristicArr = ::getCharacteristicActualValue(air, [item.id, item.id2], item.prepareTextFunc, difficulty.crewSkillName, showLocalState)
+    local characteristicArr = ::getCharacteristicActualValue(air, [item.id, item.id2],
+      item.prepareTextFunc, difficulty.crewSkillName, showLocalState || needCrewModificators)
     holderObj.findObject("aircraft-" + item.id).setValue(characteristicArr[0])
 
-    if (!showLocalState)
+    if (!showLocalState && !needCrewModificators)
       continue
 
     local wmodObj = holderObj.findObject("aircraft-weaponmod-" + item.id)
@@ -1376,7 +1370,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   else
     thrustToWeightRatioObject.show(false)
 
-  local modificators = showLocalState ? "modificators" : "modificatorsBase"
+  local modificators = (showLocalState || needCrewModificators) ? "modificators" : "modificatorsBase"
   if (air.isTank() && air[modificators])
   {
     local currentParams = air[modificators][difficulty.crewSkillName]
@@ -1645,17 +1639,17 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 
     if (!freeRepairsUnlimited)
     {
-      local hours = showLocalState ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
+      local hours = showLocalState || needCrewModificators ? ::shop_get_full_repair_time_by_mode(air.name, egdCode)
         : ::getTblValue("repairTimeHrs" + ::get_name_by_gamemode(egdCode, true), air, 0)
       local repairTimeText = time.hoursToString(hours, false)
-      local label = ::loc(showLocalState && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
+      local label = ::loc((showLocalState || needCrewModificators) && crew ? "shop/full_repair_time_crew" : "shop/full_repair_time")
       holderObj.findObject("aircraft-full_repair_time_crew-tr").show(true)
       holderObj.findObject("aircraft-full_repair_time_crew-tr").tooltip = label
       holderObj.findObject("aircraft-full_repair_time_label").setValue(label)
       holderObj.findObject("aircraft-full_repair_time_crew").setValue(repairTimeText)
 
       local freeRepairs = showAsRent ? 0
-        : showLocalState ? air.freeRepairs - shop_get_free_repairs_used(air.name)
+        : (showLocalState || needCrewModificators) ? air.freeRepairs - shop_get_free_repairs_used(air.name)
         : air.freeRepairs
       local showFreeRepairs = freeRepairs > 0
       holderObj.findObject("aircraft-free_repairs-tr").show(showFreeRepairs)

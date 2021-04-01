@@ -536,7 +536,7 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventInventoryUpdate(p)
   {
-    updateInventoryItemsList()
+    doWhenActiveOnce("updateInventoryItemsList")
   }
 
   function onEventUnitBought(params)
@@ -895,8 +895,8 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventProfileUpdated(p)
   {
-    updateWarbondsBalance()
-    updateInventoryItemsList()
+    doWhenActiveOnce("updateWarbondsBalance")
+    doWhenActiveOnce("updateInventoryItemsList")
   }
 
   //dependence by blk

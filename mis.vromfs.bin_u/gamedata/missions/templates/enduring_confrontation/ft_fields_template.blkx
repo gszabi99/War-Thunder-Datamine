@@ -209,6 +209,7 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "radius": -1.0,
+            "ignoreTeamsOnReuse": false,
             "target": "ft_t1_backup_air_zone_01",
             "team": "A",
             "tags": {
@@ -233,6 +234,7 @@
             "canSpawnOnNeutral": false,
             "showOnMap": true,
             "radius": -1.0,
+            "ignoreTeamsOnReuse": false,
             "target": "ft_t2_backup_air_zone_01",
             "team": "B",
             "tags": {
@@ -508,7 +510,9 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "periodicEvent": {
+            "time": 0.0
+          }
         },
         "conditions": [],
         "actions": [
@@ -543,7 +547,7 @@
           {
             "varModify": {
               "operator": "add",
-              "value": 1.0,
+              "value": 0.0,
               "var": "ft_t1_max_airfields_count",
               "use_variable": true,
               "var_value": "ft_t1_max_far_airfields_count"
@@ -552,7 +556,7 @@
           {
             "varModify": {
               "operator": "add",
-              "value": 1.0,
+              "value": 0.0,
               "var": "ft_t1_max_airfields_count",
               "use_variable": true,
               "var_value": "ft_t1_max_mid_airfields_count"
@@ -561,7 +565,7 @@
           {
             "varModify": {
               "operator": "add",
-              "value": 1.0,
+              "value": 0.0,
               "var": "ft_t1_max_airfields_count",
               "use_variable": true,
               "var_value": "ft_t1_max_near_airfields_count"
@@ -1718,6 +1722,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t1_airfield_name",
               "team": "A",
               "separate_fuel_time": true,
@@ -2139,7 +2144,9 @@
           "enableAfterComplete": false
         },
         "events": {
-          "initMission": []
+          "periodicEvent": {
+            "time": 0.0
+          }
         },
         "conditions": [],
         "actions": [
@@ -3342,6 +3349,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t2_airfield_name",
               "team": "B",
               "separate_fuel_time": true,
@@ -3797,6 +3805,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t1_airfield_name",
               "team": "A",
               "separate_fuel_time": true,
@@ -3847,6 +3856,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t1_airfield_name",
               "team": "A",
               "separate_fuel_time": true,
@@ -3919,6 +3929,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t2_airfield_name",
               "team": "B",
               "separate_fuel_time": true,
@@ -3969,6 +3980,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_generate_t2_airfield_name",
               "team": "B",
               "separate_fuel_time": true,
@@ -11826,6 +11838,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_damage_t1_airfield_name",
               "team": "A",
               "separate_fuel_time": true,
@@ -11874,6 +11887,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_damage_t1_airfield_name",
               "team": "A",
               "separate_fuel_time": true,
@@ -12812,6 +12826,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_damage_t2_airfield_name",
               "team": "B",
               "separate_fuel_time": true,
@@ -12860,6 +12875,7 @@
               "resetStrictSpawnIndex": false,
               "replaceAreas": true,
               "forceCreate": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@ft_damage_t2_airfield_name",
               "team": "B",
               "separate_fuel_time": true,

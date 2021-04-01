@@ -704,10 +704,10 @@ local lastInventoryUpdateDelayedCall = 0
     return
 
   lastInventoryUpdateDelayedCall = ::dagor.getCurTime()
-  ::handlersManager.doDelayed(function() {
+  ::g_delayed_actions.add(function() {
     lastInventoryUpdateDelayedCall = 0
     markInventoryUpdate()
-  }.bindenv(this))
+  }.bindenv(this), 200)
 }
 
 ::ItemsManager.onItemsLoaded <- function onItemsLoaded()

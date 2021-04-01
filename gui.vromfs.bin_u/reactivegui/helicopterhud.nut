@@ -8,7 +8,7 @@ local {GunOverheatState, IsCannonEmpty, IndicatorsVisible,
       CurrentTime, TATargetX, TATargetY, MainMask, SightMask,
       IsAgmEmpty, AtgmTrackerRadius, IsATGMOutOfTrackerSector, NoLosToATGM,
       GunDirectionX, GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode, IsPilotHudVisible,
-      IsLaserDesignatorEnabled, Agm, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
+      IsWeaponHudVisible, IsLaserDesignatorEnabled, Agm, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
       HudColor, AlertColor, IsMfdEnabled, IsMachineGunEmpty} = require("helicopterState.nut")
 local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
@@ -470,6 +470,18 @@ local function pilotHud(elemStyle, isBackground) {
   }
 }
 
+local function weaponHud(elemStyle, isBackground) {
+  return @(){
+    watch = IsWeaponHudVisible
+    children = IsWeaponHudVisible.value
+    ? [
+      aamAim(elemStyle, @() getColor(isBackground))
+      agmAim(elemStyle, @() getColor(isBackground))
+    ]
+    : null
+  }
+}
+
 local rwrPic = Picture("!ui/gameuiskin#rwr_stby_icon")
 local function mkTws(colorStyle){
   local twsPosY = IsTwsActivated.value ? sh(50) : safeAreaSizeHud.value.size[1] * 0.05
@@ -536,6 +548,7 @@ local function helicopterHUDs(colorStyle, isBackground) {
     helicopterSightHud(hudStyle, isBackground)
     gunnerHud(hudStyle, isBackground)
     pilotHud(hudStyle, isBackground)
+    weaponHud(hudStyle, isBackground)
     mkTws(rwrStyle)
     radar
   ]

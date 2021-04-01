@@ -65,14 +65,26 @@
           }
         },
         {
+          "varSetBool": {
+            "value": false,
+            "var": "disableAirfields",
+            "fromDescriptor": "disableAirfields"
+          }
+        },
+        {
           "comment": {
             "value": "check the parameter from the descriptor"
           }
         },
         {
-          "triggerEnable": {
-            "target": "air_spawn_force_check"
-          }
+          "triggerEnable": [
+            {
+              "target": "air_spawn_force_check"
+            },
+            {
+              "target": "helipad_start"
+            }
+          ]
         }
       ]
     },
@@ -947,13 +959,6 @@
         "conditions": [],
         "actions": [
           {
-            "varSetBool": {
-              "value": false,
-              "var": "disableAirfields",
-              "fromDescriptor": "disableAirfields"
-            }
-          },
-          {
             "varSetString": {
               "value": "t1_airfield_aaa_squad",
               "var": "t1_airfield_aa_str"
@@ -1019,46 +1024,6 @@
             "target": "airfields_spawn"
           }
         }
-      },
-      "airfields_exist_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": []
-        },
-        "conditions": [
-          {
-            "objectExists": {
-              "target": "@t1_airfield_str",
-              "type": "objectGroup"
-            }
-          },
-          {
-            "objectExists": {
-              "target": "@t2_airfield_str",
-              "type": "objectGroup"
-            }
-          }
-        ],
-        "actions": {
-          "unitWakeUp": [
-            {
-              "target": "@t1_airfield_str"
-            },
-            {
-              "target": "@t2_airfield_str"
-            }
-          ],
-          "triggerEnable": {
-            "target": "airfields_spawn"
-          }
-        },
-        "else_actions": []
       },
       "airfields_hide": {
         "is_enabled": false,
@@ -1207,7 +1172,7 @@
       "isCategory": true,
       "is_enabled": true,
       "helipad_start": {
-        "is_enabled": true,
+        "is_enabled": false,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1244,9 +1209,14 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "helipad_check_exist"
-            }
+            "triggerEnable": [
+              {
+                "target": "helipad_check_exist"
+              },
+              {
+                "target": "helipad_defence_exist"
+              }
+            ]
           }
         ],
         "else_actions": []
@@ -1303,6 +1273,39 @@
               "target": "@t2_helipad_farspawn"
             }
           ],
+          "triggerEnable": {
+            "target": "helipad_disable_check"
+          }
+        },
+        "else_actions": []
+      },
+      "helipad_disable_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": []
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "disableAirfields",
+            "value": true,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "helipads not allowed"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "helipads allowed"
+          },
           "triggerEnable": [
             {
               "target": "helipad_farspawn_init"
@@ -1311,8 +1314,7 @@
               "target": "helipad_init"
             }
           ]
-        },
-        "else_actions": []
+        }
       },
       "helipad_farspawn_init": {
         "is_enabled": false,
@@ -1537,7 +1539,7 @@
         "else_actions": []
       },
       "helipad_defence_exist": {
-        "is_enabled": true,
+        "is_enabled": false,
         "comments": "",
         "props": {
           "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1591,6 +1593,11 @@
           "gameWhenDifficulty": {
             "difficulty": "arcade",
             "is": "notEqual"
+          },
+          "varCompareBool": {
+            "var_value": "disableAirfields",
+            "value": false,
+            "comparasion_func": "equal"
           }
         },
         "actions": [

@@ -3,7 +3,7 @@ local Callback = callback.Callback
 local selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
 local { getWeaponsStatusName, checkUnitWeapons } = require("scripts/weaponry/weaponryInfo.nut")
 local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.nut")
-local { getBitStatus } = require("scripts/unit/unitStatus.nut")
+local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatus.nut")
 local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 
@@ -90,6 +90,8 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   customViewCountryData = null
   slotbarBehavior = null
   needFullSlotBlock = false
+  showAlwaysFullSlotbar = false
+  needCheckUnitUnlock = false
 
   static function create(params)
   {
@@ -222,9 +224,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   {
     local res = []
     local country = getForcedCountry()
-    local needNewSlot = !::g_crews_list.isSlotbarOverrided && showNewSlot
+    local needNewSlot = !::g_crews_list.isCrewListOverrided && showNewSlot
     local needShowLockedSlots = missionRules == null || missionRules.needShowLockedSlots
-    local needEmptySlot = !::g_crews_list.isSlotbarOverrided && needShowLockedSlots && showEmptySlot
+    local needEmptySlot = !::g_crews_list.isCrewListOverrided && needShowLockedSlots && showEmptySlot
 
     local crewsListFull = ::g_crews_list.get()
     for(local c = 0; c < crewsListFull.len(); c++)
@@ -258,7 +260,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
         local unitName = unit?.name || ""
         local isUnitEnabledByRandomGroups = !missionRules || missionRules.isUnitEnabledByRandomGroups(unitName)
-        local isUnlocked = ::isUnitUnlocked(this, unit, c, crewIdInCountry, country, true)
+        local isUnlocked = (!needCheckUnitUnlock || !isRequireUnlockForUnit(unit)) && ::isUnitUnlocked(this, unit, c, crewIdInCountry, country, true)
         local status = bit_unit_status.empty
         local isUnitForcedVisible = missionRules && missionRules.isUnitForcedVisible(unitName)
         local isUnitForcedHiden = missionRules && missionRules.isUnitForcedHiden(unitName)
@@ -415,7 +417,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     local crewsConfig = gatherVisibleCrewsConfig()
     selectedCrewData = calcSelectedCrewData(crewsConfig)
 
-    local isFullSlotbar = crewsConfig.len() > 1
+    local isFullSlotbar = crewsConfig.len() > 1 || showAlwaysFullSlotbar
     local hasCountryTopBar = isFullSlotbar && showTopPanel && !singleCountry
     if (hasCountryTopBar)
       ::initSlotbarTopBar(scene, true) //show autorefill checkboxes
@@ -453,7 +455,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         : ::loc(country)
       countriesView.countries.append({
         countryIdx = countryData.id
-        country = country
+        country = customViewCountryData?[country].locId ?? country
         tooltipText = tooltipText
         countryIcon = ::get_country_icon(
           customViewCountryData?[country].icon ?? country, false, !cUnlocked || !cEnabled)
@@ -464,7 +466,15 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
     local countriesNestObj = scene.findObject("header_countries")
     local prevCountriesNestValue = countriesNestObj.getValue()
-    if (!countriesNestObj.childrenCount())
+    local countriesObjsCount = countriesNestObj.childrenCount()
+    local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
+    if (!needUpdateCountriesMarkup)
+      for (local i = 0;i < countriesObjsCount; i++) {
+         needUpdateCountriesMarkup = countriesView.countries.findindex(@(v) v.country == countriesNestObj.getChild(i)?.countryId) == null
+         if (needUpdateCountriesMarkup)
+           break
+      }
+    if (needUpdateCountriesMarkup)
     {
       local countriesData = ::handyman.renderCached("gui/slotbar/slotbarCountryItem", countriesView)
       guiScene.replaceContentFromText(countriesNestObj, countriesData, countriesData.len(), this)
@@ -1066,7 +1076,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
     if (!(curSlotCountryId in ::g_crews_list.get())
         || ::g_crews_list.get()[curSlotCountryId].country != ::get_profile_country_sq()
-        || curSlotIdInCountry != ::selected_crews[curSlotCountryId] || getCurSlotUnit() == null)
+        || curSlotIdInCountry != ::selected_crews?[curSlotCountryId] || getCurSlotUnit() == null)
       updateSlotbarImpl()
     else if (selectedCrewData && selectedCrewData?.unit != get_show_aircraft())
       refreshAll()
@@ -1176,7 +1186,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateCrews(unitSlots = null)
   {
-    if (::g_crews_list.isSlotbarOverrided)
+    if (::g_crews_list.isCrewListOverrided)
       return
 
     unitSlots = unitSlots || getSlotsData()
@@ -1272,13 +1282,13 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       }
 
       local isVisualDisabled = crewData?.isVisualDisabled ?? false
-      local isLocalState = crewData?.isLocalState ?? true
+      local isLocalState = !::g_crews_list.isCrewListOverrided && (crewData?.isLocalState ?? true)
       local airParams = {
         emptyText      = isVisualDisabled ? "" : emptyText,
         crewImage      = "#ui/gameuiskin#slotbar_crew_free_" + ::g_string.slice(countryData.country, 8)
         status         = getUnitItemStatusText(crewData.status),
         inactive       = ::show_console_buttons && crewData.status == bit_unit_status.locked && ::is_in_flight(),
-        hasActions     = hasActions
+        hasActions     = hasActions && !::g_crews_list.isCrewListOverrided
         toBattle       = toBattle
         mainActionFunc = ::SessionLobby.canChangeCrewUnits() ? "onSlotChangeAircraft" : ""
         mainActionText = "" // "#multiplayer/changeAircraft"
@@ -1295,8 +1305,10 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         curSlotIdInCountry = crew.idInCountry
         curSlotCountryId = crew.idCountry
         unlocked = crewData.isUnlocked
-        tooltipParams = { needCrewInfo = ::has_feature("CrewInfo") && !::g_crews_list.isSlotbarOverrided
+        tooltipParams = { needCrewInfo = ::has_feature("CrewInfo") && !::g_crews_list.isCrewListOverrided
           showLocalState = isLocalState
+          needCrewModificators = true
+          needShopInfo = needCheckUnitUnlock
           crewId = crew?.id}
         missionRules = missionRules
         forceCrewInfoUnit = unitForSpecType
@@ -1325,7 +1337,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   function getDefaultDblClickFunc()
   {
     return ::Callback(function(crew) {
-      if (::g_crews_list.isSlotbarOverrided)
+      if (::g_crews_list.isCrewListOverrided)
         return
       local unit = getCrewUnit(crew)
       if (unit)
@@ -1339,12 +1351,12 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function defaultOnSlotActivateFunc(crew)
   {
-    if (hasActions)
+    if (hasActions && !::g_crews_list.isCrewListOverrided)
       openUnitActionsList(getCurrentCrewSlot())
   }
 
   function updateWeaponryData(unitSlots = null) {
-    if (::g_crews_list.isSlotbarOverrided)
+    if (::g_crews_list.isCrewListOverrided)
       return
 
     unitSlots = unitSlots ?? getSlotsData()

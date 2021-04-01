@@ -111,10 +111,10 @@ class ::items_classes.Booster extends ::BaseItem
         effectsArray.append(value)
     }
 
-    effectsArray.sort(@(a, b) a <=> b)
+    effectsArray.sort(@(a, b) b <=> a)
     local effectsVal = getDiffEffect(effectsArray)
     effectsArray.append(effect.getValue(this))
-    effectsArray.sort(@(a, b) a <=> b)
+    effectsArray.sort(@(a, b) b <=> a)
     local newEffectsVal = getDiffEffect(effectsArray)
 
     return newEffectsVal - effectsVal

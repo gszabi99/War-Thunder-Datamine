@@ -1,0 +1,57 @@
+{
+  "bombGun": true,
+  "preset_cost": 50,
+  "shotFreq": 10.0,
+  "sound": "weapon.bombgun",
+  "mesh": "toon_fab_100sv",
+  "tags": {
+    "antiTankBomb": true
+  },
+  "bomb": {
+    "mass": 103.5,
+    "explosiveType": "tnt",
+    "explosiveMass": 36.02,
+    "bombType": "he_bomb",
+    "bombName": "fab100_43",
+    "caliber": 0.273,
+    "length": 1.033,
+    "distFromCmToStab": 0.4,
+    "dragCx": 0.04,
+    "sound": "weapon.bomb_mid",
+    "explosionFx": "bomb_expl_100kg",
+    "explosionPatchRadius": 5.0,
+    "waterExplosionEffect": "bigesplashxplosion_fx",
+    "hitPowerMult": 1.0,
+    "nearHitPower": [1.0,50.0],
+    "midHitPower": [0.9,400.0],
+    "farHitPower": [0.1,1000.0],
+    "endHitPower": [0.01,1500.0],
+    "relativeVelHitShift": [300.0,1000.0],
+    "nearArmorPower": [10.0,50.0],
+    "midArmorPower": [7.0,400.0],
+    "farArmorPower": [0.2,700.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.0,
+    "explodeHitPower": 200.0,
+    "explodeArmorPower": 75.0,
+    "explodeRadius": [2.0,6.0],
+    "rendinstDamageRadius": 20.0,
+    "shutterDamage": true,
+    "shutterDamageRadius": 45.0,
+    "shutterAmount": 3000,
+    "shutterArmorPower": 12.0,
+    "shutterHit": 12.0,
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "DamageParts": {
+      "body": {
+        "hp": 35.0,
+        "armorClass": "tank_structural_steel",
+        "armorThickness": 5.0,
+        "explosionArmorQuality": 45.0,
+        "shatterArmorQuality": 45.0
+      }
+    }
+  }
+}

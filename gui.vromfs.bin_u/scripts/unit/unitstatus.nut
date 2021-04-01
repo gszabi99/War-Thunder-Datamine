@@ -153,11 +153,14 @@ local function bombNbr(unit) {
   return unit.getAvailableSecondaryWeapons().bombsNbr
 }
 
+local isRequireUnlockForUnit = @(unit) unit.reqUnlock && !::is_unlocked_scripted(-1, unit.reqUnlock)
+
 return {
-  canBuyNotResearched             = canBuyNotResearched
-  isShipWithoutPurshasedTorpedoes = isShipWithoutPurshasedTorpedoes
-  getBitStatus                    = getBitStatus
-  hasCountermeasures              = hasCountermeasures
-  bombNbr                         = bombNbr
-  isUnitHaveSecondaryWeapons      = isUnitHaveSecondaryWeapons
+  canBuyNotResearched
+  isShipWithoutPurshasedTorpedoes
+  getBitStatus
+  hasCountermeasures
+  bombNbr
+  isUnitHaveSecondaryWeapons
+  isRequireUnlockForUnit
 }

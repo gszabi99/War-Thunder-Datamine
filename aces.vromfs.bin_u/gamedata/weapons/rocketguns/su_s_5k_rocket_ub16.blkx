@@ -75,6 +75,64 @@
     "pressureDamage": {
       "damageType": "pressure"
     },
+    "damage": {
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.4
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [0.0,74.0],
+            "countPortion": 0.3
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.5,
+            "angles": [75.0,100.0],
+            "countPortion": 0.05
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [101.0,260.0],
+            "countPortion": 0.3
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.5,
+            "angles": [261.0,285.0],
+            "countPortion": 0.05
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [286.0,359.0],
+            "countPortion": 0.3
+          }
+        }
+      ]
+    },
+    "shatterDamage": {
+      "breachConeAngle": 45.0
+    },
     "collisions": {
       "steel": {
         "fx": "explosion_midair_tiny"

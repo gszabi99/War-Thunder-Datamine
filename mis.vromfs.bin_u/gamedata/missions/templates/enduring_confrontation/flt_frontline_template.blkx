@@ -7695,11 +7695,48 @@
           },
           {
             "triggerEnable": {
-              "target": "flt_state_rotator"
+              "target": "flt_mode_select"
             }
           }
         ],
         "else_actions": []
+      },
+      "flt_mode_select": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareBool": {
+            "var_value": "flt_mirrior_start",
+            "value": false,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "обычная генерация"
+          },
+          "triggerEnable": {
+            "target": "flt_state_rotator"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "зеркальная генерация (для четного количества ячеек)"
+          },
+          "triggerEnable": {
+            "target": "flt_state_mirror_rotator"
+          }
+        }
       },
       "flt_state_rotator": {
         "is_enabled": false,
@@ -8113,6 +8150,344 @@
             "target": "flt_state_check_col"
           }
         }
+      },
+      "flt_state_mirror_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_state_cur_row",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_zones_in_row_real"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "проверили что не  вышли за пределы"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_state_cur_row"
+            }
+          },
+          {
+            "comment": {
+              "value": "поставили счетчик внутри строки в 0"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "flt_state_cur_col"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем строки"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "flt_state_mirror_check_col"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "вышли за пределы массива. выставляем флаг окончания"
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "flt_state_in_progress"
+          }
+        }
+      },
+      "flt_state_mirror_check_col": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "flt_state_cur_col",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "flt_zones_in_col_real"
+          }
+        },
+        "actions": [
+          {
+            "comment": {
+              "value": "в пределах строки"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_state_cur_col"
+            }
+          },
+          {
+            "comment": {
+              "value": "получаем номер ячейки"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "flt_state_cur_cell"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменной, хранящей состояние ячейки"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "flt_state_cell_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@flt_state_cur_cell",
+              "digits": 2,
+              "var": "flt_state_cell_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "flt_state_cell_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "создаем имя переменно, хранящей тип состояния"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "flt_state_type_var"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@flt_state_cur_cell",
+              "digits": 2,
+              "var": "flt_state_type_var"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_type",
+              "digits": 0,
+              "var": "flt_state_type_var"
+            }
+          },
+          {
+            "comment": {
+              "value": "проверяем армию А"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "flt_state_mirror_check_army_A"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "вышли за пределы строки. продолжаем цикл"
+          },
+          "triggerEnable": {
+            "target": "flt_state_mirror_rotator"
+          }
+        }
+      },
+      "flt_state_mirror_check_army_A": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "flt_state_cur_col",
+              "value": 4,
+              "comparasion_func": "notMore",
+              "var_value_other": "flt_army_A_width"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "@flt_state_cell_name",
+              "value": 0,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "ячейка безусловно принадлежит команде А"
+            }
+          },
+          {
+            "comment": {
+              "value": "присваиваем нужный стейт"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 1,
+              "var": "@flt_state_cell_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "говорим, что state - армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "army",
+              "var": "@flt_state_type_var"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по цикул"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "flt_state_mirror_check_col"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "вне диапазона. проверяем армию Б"
+          },
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_army_B"
+          }
+        }
+      },
+      "flt_state_mirror_check_army_B": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "flt_state_cur_col",
+              "value": 4,
+              "comparasion_func": "more",
+              "var_value_other": "flt_army_A_width"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "@flt_state_cell_name",
+              "value": 0,
+              "comparasion_func": "less"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "comment": {
+              "value": "ячейка безусловно принадлежит команде B"
+            }
+          },
+          {
+            "comment": {
+              "value": "присваиваем нужный стейт"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 2,
+              "var": "@flt_state_cell_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "говорим, что state - армия"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "army",
+              "var": "@flt_state_type_var"
+            }
+          },
+          {
+            "comment": {
+              "value": "идем дальше по циклу"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "flt_state_mirror_check_col"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": "дальше по циклу"
+          },
+          "triggerEnable": {
+            "target": "flt_state_mirror_check_col"
+          }
+        }
       }
     },
     "flt_heat": {
@@ -8278,6 +8653,21 @@
     "flt_area_47_state": -1,
     "flt_area_48_state": -1,
     "flt_area_49_state": -1,
+    "flt_area_50_state": -1,
+    "flt_area_51_state": -1,
+    "flt_area_52_state": -1,
+    "flt_area_53_state": -1,
+    "flt_area_54_state": -1,
+    "flt_area_55_state": -1,
+    "flt_area_56_state": -1,
+    "flt_area_57_state": -1,
+    "flt_area_58_state": -1,
+    "flt_area_59_state": -1,
+    "flt_area_60_state": -1,
+    "flt_area_61_state": -1,
+    "flt_area_62_state": -1,
+    "flt_area_63_state": -1,
+    "flt_area_64_state": -1,
     "flt_area_01_type": "empty",
     "flt_area_02_type": "empty",
     "flt_area_03_type": "empty",
@@ -8327,6 +8717,21 @@
     "flt_area_47_type": "empty",
     "flt_area_48_type": "empty",
     "flt_area_49_type": "empty",
+    "flt_area_50_type": "empty",
+    "flt_area_51_type": "empty",
+    "flt_area_52_type": "empty",
+    "flt_area_53_type": "empty",
+    "flt_area_54_type": "empty",
+    "flt_area_55_type": "empty",
+    "flt_area_56_type": "empty",
+    "flt_area_57_type": "empty",
+    "flt_area_58_type": "empty",
+    "flt_area_59_type": "empty",
+    "flt_area_60_type": "empty",
+    "flt_area_61_type": "empty",
+    "flt_area_62_type": "empty",
+    "flt_area_63_type": "empty",
+    "flt_area_64_type": "empty",
     "flt_draw_frontline_idx": 0,
     "flt_draw_next_frontline_idx": 0,
     "flt_draw_frontline_idx_name": "",
@@ -8394,6 +8799,7 @@
     "flt_draw_cur_state_type_value": "",
     "flt_draw_check_state_type_var": "",
     "flt_draw_check_state_type_value": "",
+    "flt_t2_randomizer": 0,
     "flt_area_01_heat": -1,
     "flt_area_02_heat": -1,
     "flt_area_03_heat": -1,
@@ -8425,7 +8831,6 @@
     "flt_area_29_heat": -1,
     "flt_area_30_heat": -1,
     "flt_area_31_heat": -1,
-    "flt_t2_randomizer": 0,
     "flt_area_32_heat": -1,
     "flt_area_33_heat": -1,
     "flt_area_34_heat": -1,
@@ -8444,6 +8849,21 @@
     "flt_area_47_heat": -1,
     "flt_area_48_heat": -1,
     "flt_area_49_heat": -1,
+    "flt_area_50_heat": -1,
+    "flt_area_51_heat": -1,
+    "flt_area_52_heat": -1,
+    "flt_area_53_heat": -1,
+    "flt_area_54_heat": -1,
+    "flt_area_55_heat": -1,
+    "flt_area_56_heat": -1,
+    "flt_area_57_heat": -1,
+    "flt_area_58_heat": -1,
+    "flt_area_59_heat": -1,
+    "flt_area_60_heat": -1,
+    "flt_area_61_heat": -1,
+    "flt_area_62_heat": -1,
+    "flt_area_63_heat": -1,
+    "flt_area_64_heat": -1,
     "flt_start_cell": 0,
     "flt_offset": 0,
     "flt_zones_in_col_real": 7,
@@ -8460,7 +8880,8 @@
     "flt_cell_size": 8192.0,
     "flt_tank_t1_prev_spot_idx": 0,
     "flt_tank_t2_prev_spot_idx": 0,
-    "flt_game_mode": "pvp"
+    "flt_game_mode": "pvp",
+    "flt_mirrior_start": false
   },
   "dialogs": [],
   "airfields": [],

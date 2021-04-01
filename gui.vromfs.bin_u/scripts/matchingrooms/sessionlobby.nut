@@ -5,6 +5,8 @@ local { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.
 local base64 = ::require_native("base64")
 local DataBlock = require("DataBlock")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,
+  updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
 
 /*
 SessionLobby API
@@ -212,7 +214,7 @@ local allowed_mission_settings = { //only this settings are allowed in room
     "spectator", "isReady", "isInLobbySession", "team", "countryData", "myState",
     "isSpectatorSelectLocked", "crsSetTeamTo", "curEdiff",
     "needJoinSessionAfterMyInfoApply", "isLeavingLobbySession", "_syncedMyInfo",
-    "playersInfo", "overrideSlotbar", "overrrideSlotbarMissionName", "lastEventName, isReadyInSetStateRoom"
+    "playersInfo", "lastEventName, isReadyInSetStateRoom"
   ]
 
   settings = {}
@@ -226,9 +228,6 @@ local allowed_mission_settings = { //only this settings are allowed in room
   lastEventName = ""
   roomUpdated = false
   password = ""
-
-  overrideSlotbar = null
-  overrrideSlotbarMissionName = "" //recalc slotbar only on mission change
 
   members = []
   memberDefaults = {
@@ -442,7 +441,7 @@ SessionLobby.prepareSettings <- function prepareSettings(missionSettings)
 
   //validate Countries
   local countriesType = ::getTblValue("countriesType", missionSettings, misCountries.ALL)
-  local fullCountriesList = ::g_crews_list.getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
+  local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
     fullCountriesList = clone ::shopCountriesList
   foreach(name in ["country_allies", "country_axis"])
@@ -533,7 +532,7 @@ SessionLobby.setSettings <- function setSettings(_settings, notify = false, chec
 
   UpdateCrsSettings()
   UpdatePlayersInfo()
-  updateOverrideSlotbar()
+  updateOverrideSlotbar(getMissionName(true))
 
   curEdiff = calcEdiff(settings)
 
@@ -1009,11 +1008,7 @@ SessionLobby.resetParams <- function resetParams()
   needJoinSessionAfterMyInfoApply = false
   isLeavingLobbySession = false
   playersInfo.clear()
-  if (overrideSlotbar != null) {
-    overrideSlotbar = null
-    ::broadcastEvent("OverrideSlotbarChanged")
-  }
-  overrrideSlotbarMissionName = ""
+  resetSlotbarOverrided()
   ::g_user_presence.setPresence({in_game_ex = null})
 }
 
@@ -2738,34 +2733,6 @@ SessionLobby.canJoinSession <- function canJoinSession()
   if (hasSessionInLobby())
     return !isLeavingLobbySession
   return isRoomInSession
-}
-
-SessionLobby.updateOverrideSlotbar <- function updateOverrideSlotbar()
-{
-  local missionName = getMissionName(true)
-  if (missionName == overrrideSlotbarMissionName)
-    return
-  overrrideSlotbarMissionName = missionName
-
-  local newOverrideSlotbar = ::g_crews_list.calcSlotbarOverrideByMissionName(missionName)
-  if (::u.isEqual(overrideSlotbar, newOverrideSlotbar))
-    return
-
-  overrideSlotbar = newOverrideSlotbar
-  ::broadcastEvent("OverrideSlotbarChanged")
-}
-
-
-SessionLobby.isSlotbarOverrided <- function isSlotbarOverrided(room = null)
-{
-  return getSlotbarOverrideData(room) != null
-}
-
-SessionLobby.getSlotbarOverrideData <- function getSlotbarOverrideData(room = null)
-{
-  if (!room || getMissionName(true, room) == overrrideSlotbarMissionName)
-    return overrideSlotbar
-  return ::g_crews_list.calcSlotbarOverrideByMissionName(getMissionName(true, room))
 }
 
 SessionLobby.tryJoinSession <- function tryJoinSession(needLeaveRoomOnError = false)

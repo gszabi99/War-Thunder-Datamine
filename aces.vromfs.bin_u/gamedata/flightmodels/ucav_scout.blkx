@@ -1,0 +1,617 @@
+{
+  "model": "uav_scout",
+  "fmFile": "fm/ucav_scout.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "tpsCameraOffset": [12.0,-3.0,0.0],
+  "mustHaveCockpit": false,
+  "haveOpticTurret": true,
+  "type": "typeFighter",
+  "paratrooper": "usa_para",
+  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
+  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "fireParamsPreset": "2200kph",
+  "fightAiBehaviour": "fighter",
+  "autopilotImpl": "FBW",
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress",
+  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "DamageParts": {
+    "armor_engine_light": {
+      "engine1_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 49.5
+      }
+    },
+    "c_dural3": {
+      "elevon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
+      },
+      "elevon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 14.5
+      }
+    },
+    "c_wood30": {
+      "wing1_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      },
+      "wing1_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      },
+      "wing2_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      },
+      "wing2_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      },
+      "wing_l_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      },
+      "wing_r_dm": {
+        "genericDamageMult": 0.5,
+        "hp": 19.5
+      }
+    },
+    "c_wood40": {
+      "fuse_dm": {
+        "hp": 44.5
+      }
+    },
+    "dural": {
+      "cover1_dm": {
+        "hp": 19.5
+      }
+    },
+    "dural40": {
+      "spar1_l_dm": {
+        "hp": 19.5
+      },
+      "spar1_r_dm": {
+        "hp": 19.5
+      },
+      "spar2_l_dm": {
+        "hp": 19.5
+      },
+      "spar2_r_dm": {
+        "hp": 19.5
+      },
+      "spar_l_dm": {
+        "hp": 19.5
+      },
+      "spar_r_dm": {
+        "hp": 19.5
+      }
+    },
+    "protected_controls": {
+      "wingcontrol_dm": {
+        "hp": 39.5
+      },
+      "wingcontrol_l_dm": {
+        "hp": 39.5
+      },
+      "wingcontrol_r_dm": {
+        "hp": 39.5
+      }
+    },
+    "steel_cooling_sys_light": {
+      "oil1_dm": {
+        "hp": 9.5
+      }
+    },
+    "steel_tank_light": {
+      "tank1_dm": {
+        "hp": 24.5
+      },
+      "tank2_dm": {
+        "hp": 24.5
+      }
+    }
+  },
+  "DamageEffects": [
+    {
+      "part": {
+        "name": "cover1_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "elevon_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "elevon_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "engine1_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "fuse_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "oil1_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar1_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar1_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar2_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar2_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "spar_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "tank1_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "tank2_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing1_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing1_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing2_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing2_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wing_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wingcontrol_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wingcontrol_l_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    },
+    {
+      "part": {
+        "name": "wingcontrol_r_dm",
+        "onKill": {
+          "expl": 1.0
+        }
+      }
+    }
+  ],
+  "effects": {
+    "waterExplosionEffect": "water_explosion_plane",
+    "landExplosionEffect": "20_37_ap_hit_ground",
+    "landCrashFireEffect": "ground_splash",
+    "landCrashSmokeEffect": "",
+    "explosionEffect": "",
+    "explosionPiecesEffect": "",
+    "cutPartEffect": ""
+  },
+  "Params": {
+    "Range": 1086.3101
+  },
+  "Sound": {
+    "Engine": "engine_uav",
+    "gun": "gun_default"
+  },
+  "cockpit": {
+    "sightInFov": 21.5,
+    "sightOutFov": 16.5,
+    "sightFov": 1.1
+  },
+  "gunnerOpticFps": {
+    "pos": [0.1,-0.1,0.0],
+    "head": "optic1_turret",
+    "crosshairPreset": "test_crosshair",
+    "angularLimits": [-250.0,250.0,-90.0,20.0]
+  },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [1024,768],
+      "noiseFactor": 0.05
+    },
+    "pilotThermal": {
+      "resolution": [1024,768],
+      "noiseFactor": 0.05
+    },
+    "virtualThermal": {
+      "resolution": [1024,768],
+      "noiseFactor": 0.05
+    },
+    "tpsThermal": {
+      "resolution": [1024,768],
+      "noiseFactor": 0.05
+    }
+  },
+  "commonWeapons": {
+    "Weapon": {
+      "dummy": true,
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "emitter": "optic1_gun",
+      "parkInDeadzone": false,
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 25.0,
+      "speedPitch": 25.0,
+      "aimForOperatedShell": true,
+      "turret": {
+        "head": "optic1_turret",
+        "gun": "optic1_gun",
+        "playerControllable": false,
+        "mainTurret": true
+      },
+      "limits": {
+        "yaw": [-250.0,250.0],
+        "pitch": [-90.0,20.0]
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ucav_scout_default",
+      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+    }
+  },
+  "jetwash": {
+    "radius": 10.0,
+    "minDist": 50.0,
+    "timeToLive": 45.0,
+    "maxPower": 6.0,
+    "maxSegments": 50
+  },
+  "turbulence": {
+    "segmentlength": 100.0,
+    "startSpeed": 28.0,
+    "maxSpeed": 140.0,
+    "maxPower": 6.0,
+    "initialRadius": 12.0,
+    "radiusSpeed": 2.0
+  },
+  "fireParams": {
+    "engineExtinguishFireSpeed": [578.0,622.0],
+    "engineExtinguishFireSpeedChance": [0.01,0.1],
+    "fireDamagePowerRel": 0.05,
+    "nonExtinguishFireTime": 5.0
+  },
+  "arcadeOverride": {
+    "maxSpeedMultiplier": 1.01,
+    "wepOverspeed": 1.05
+  },
+  "wiki": {
+    "general": {
+      "length": 9.665,
+      "wingspan": 11.3665,
+      "wingArea": 21.94,
+      "emptyWeight": 3305.0,
+      "normalWeight": 3840.0,
+      "maxTakeoffWeight": 4212.0,
+      "powerPlantType": 0,
+      "powerMaxWep": 1260.0,
+      "powerMaxMil": 1070.0
+    },
+    "performance": {
+      "table": {
+        "rpmWep": 3000.0,
+        "manifoldPressureWep": 1.47,
+        "airSpeedWep0": [0.0,480.0],
+        "airSpeedWep1": [3800.0,560.0],
+        "climbRateWep0": [0.0,9.8],
+        "climbRateWep1": [3300.0,10.6],
+        "climbTimeWep0": [2000.0,152.764],
+        "climbTimeWep1": [4000.0,303.07],
+        "climbTimeWep2": [6000.0,508.062],
+        "climbTimeWep3": [8000.0,881.811],
+        "turnTimeWep": [1000.0,21.0],
+        "rpmMil": 2600.0,
+        "manifoldPressureMil": 1.29,
+        "airSpeedMil0": [0.0,460.0],
+        "airSpeedMil1": [3600.0,528.0],
+        "climbRateMil0": [0.0,7.5],
+        "climbRateMil1": [3200.0,8.0],
+        "climbTimeMil0": [2000.0,186.783],
+        "climbTimeMil1": [4000.0,374.269],
+        "climbTimeMil2": [6000.0,648.512],
+        "climbTimeMil3": [8000.0,1245.79],
+        "turnTimeMil": [1000.0,22.7],
+        "takeoffDistance": 524.248,
+        "ceiling": 9200.0,
+        "rollRate": 127.0,
+        "wingLoading": 175.0,
+        "powerToWeightRatio": 0.31
+      },
+      "plot": {
+        "airSpeedWep0": [0.0,480.0],
+        "airSpeedWep1": [3900.0,566.0],
+        "airSpeedWep2": [7200.0,533.0],
+        "airSpeedWep3": [9200.0,485.0],
+        "climbRateWep0": [0.0,9.8],
+        "climbRateWep1": [3200.0,10.6],
+        "climbRateWep2": [9200.0,-1.8],
+        "airSpeedMil0": [0.0,460.0],
+        "airSpeedMil1": [3700.0,533.0],
+        "airSpeedMil2": [6000.0,513.0],
+        "airSpeedMil3": [8400.0,464.0],
+        "climbRateMil0": [0.0,7.5],
+        "climbRateMil1": [3100.0,8.0],
+        "climbRateMil2": [8400.0,-1.9]
+      }
+    }
+  },
+  "balanceData": {
+    "accSpd": 1.6654,
+    "climbSpeed": 10.6,
+    "maxSpeed": 163.61,
+    "turnTime": 22.8833
+  },
+  "modifications": {
+    "g_suit": {
+      "tier": 1,
+      "effects": {
+        "gForceTolerationMult": 0.001
+      }
+    }
+  },
+  "user_skin": [
+    {
+      "name": "p_35a"
+    },
+    {
+      "replace_tex": {
+        "from": "p_35a_c*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "p_35a_c_dmg*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "p_35a_n*"
+      }
+    },
+    {
+      "replace_tex": {
+        "from": "p_35a_n_dmg*"
+      }
+    }
+  ],
+  "warhead": {
+    "mass": 3.0,
+    "explosiveType": "a_ix_2",
+    "explosiveMass": 1.4,
+    "explosionFx": "hit_106_132mm_metal_he",
+    "explosionEffect": "hit_106_132mm_metal_he",
+    "groundCollisionEffect": "hit_106_132mm_dirt_he",
+    "ricochetEffect": "hit_106_132mm_metal_ap",
+    "waterCollisionEffect": "hit_106_132mm_water",
+    "explosionPatchRadius": 3.5,
+    "cumulativeDamage": {
+      "armorPower": 700.0,
+      "distance": 6.5,
+      "damage": 600.0,
+      "onHitChanceMultFire": 25.0
+    },
+    "collisions": {
+      "default": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "horLandMesh": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "soil": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "dirt": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "road": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "roadSoil": {
+        "fx": "hit_106_132mm_dirt_he"
+      },
+      "sand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "duneSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "roadSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "quickSand": {
+        "fx": "hit_106_132mm_sand_he"
+      },
+      "snow": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "ice": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "roadSnow": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "snowLower": {
+        "fx": "hit_106_132mm_snow_he"
+      },
+      "glass": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "wood": {
+        "fx": "hit_106_132mm_wood_he"
+      },
+      "steel": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "metal": {
+        "fx": "hit_106_132mm_metal_he"
+      },
+      "buildings": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "verLandMesh": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "concrete": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "rocks": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "rocksSlippery": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "fabric": {
+        "fx": "hit_106_132mm_stone_he"
+      },
+      "stone_snow": {
+        "fx": "hit_106_132mm_snow_he"
+      }
+    }
+  },
+  "cutting": {
+    "emtr_break_wing1_l_from": [-0.0725679,0.0100818,0.233173],
+    "emtr_break_wing1_l_to": [-0.0725679,0.0100818,0.310681],
+    "emtr_break_wing2_l_from": [-0.0725679,0.0100818,0.426941],
+    "emtr_break_wing2_l_to": [-0.0725679,0.0100818,0.618358],
+    "emtr_break_wing1_r_from": [-0.0726432,0.0100818,-0.233624],
+    "emtr_break_wing1_r_to": [-0.0726432,0.0100818,-0.310974],
+    "emtr_break_wing2_r_from": [-0.0726432,0.0100818,-0.426999],
+    "emtr_break_wing2_r_to": [-0.0726432,0.0100818,-0.618393],
+    "emtr_break_wing_tail": [-0.536209,0.0,0.0],
+    "finCut": false
+  }
+}

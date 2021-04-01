@@ -1,4 +1,5 @@
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
+local { appendOnce } = require("sqStdLibs/helpers/u.nut")
 
 local DEFAULT_BRANCH_CONFIG = {
   locId = ""
@@ -64,6 +65,12 @@ local function getReqItemsArray(reqItems) {
   }
 }
 
+local function addItemConfigToTree(treeRows, bodyIdx, posX, posY, itemConfig) {
+  if (treeRows[bodyIdx][posY][posX] == null)
+    treeRows[bodyIdx][posY][posX] = []
+  appendOnce(itemConfig, treeRows[bodyIdx][posY][posX], true, @(arrValue, value) arrValue.id == value.id)
+}
+
 local function generateRows(branchBlk, treeRows, treeBlk)
 {
   local branchItems = {}
@@ -115,13 +122,16 @@ local function generateRows(branchBlk, treeRows, treeBlk)
       showResources = iBlk?.showResources ?? false
       reqItems = (iBlk % "reqItem").map(@(itemId)itemId.tointeger())
       reqItemForDisplaying = []
+      reqItemExistsForDisplaying = []
       reqItemForIdentification = []
       reqItemForCrafting = []
       arrows = []
       hasItemBackground = hasItemBackground
     }
 
-    foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying", "reqItemForIdentification"]) {
+    foreach (reqListId in ["reqItemForCrafting", "reqItemForDisplaying",
+      "reqItemExistsForDisplaying", "reqItemForIdentification"])
+    {
       local reqItems = getReqItemsArray(iBlk % reqListId)
       itemsIdList.__update(reqItems.fullItemsIdList)
       itemConfig[reqListId] = reqItems.itemsIdArray
@@ -131,8 +141,8 @@ local function generateRows(branchBlk, treeRows, treeBlk)
     local posY = itemConfig.posXY.y.tointeger()
     minPosX = ::min(minPosX ?? posX, posX)
     maxPosX = ::max(maxPosX ?? posX, posX)
-    if (itemConfig.showResources && resourcesInColumn?[posX] == null)
-      resourcesInColumn[posX] <- 1
+    if (itemConfig.showResources && resourcesInColumn?[posX-1] == null)
+      resourcesInColumn[posX-1] <- 1
 
     foreach(reqItemId in itemConfig.reqItems) {
       if (branchItems?[reqItemId] != null) {
@@ -152,7 +162,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
 
     branchItems[id] <- itemConfig
     itemsIdList[id] <- true
-    treeRows[bodyIdx][posY-1][posX-1] = itemConfig
+    addItemConfigToTree(treeRows, bodyIdx, posX-1, posY-1, itemConfig)
   }
 
   local searchReqForItems = clone notFoundReqForItems
@@ -167,7 +177,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
 
       branchItems[itemConfig.id] = itemConfig
       itemsIdList[itemConfig.id] <- true
-      treeRows[bodyIdx][itemConfig.posXY.y-1][itemConfig.posXY.x-1] = itemConfig
+      addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x-1, itemConfig.posXY.y-1, itemConfig)
     }
     notFoundReqForItems.rawdelete(reqItemId)
   }
@@ -189,7 +199,7 @@ local function generateRows(branchBlk, treeRows, treeBlk)
         itemConfig.arrows[arrowIdx].isOutMultipleArrow = true
         branchItems[itemId] = itemConfig
         itemsIdList[itemId] <- true
-        treeRows[bodyIdx][itemConfig.posXY.y-1][itemConfig.posXY.x-1] = itemConfig
+        addItemConfigToTree(treeRows, bodyIdx, itemConfig.posXY.x-1, itemConfig.posXY.y-1, itemConfig)
       }
     }
   }
@@ -263,14 +273,10 @@ local function generateTreeConfig(blk)
   local bodyItemsTitles = blk % "bodyItemsTitle"
   local bodyTiledBackImage = blk % "bodyTiledBackImage"
   local allowableResources = blk % "allowableResources"
-  local resourcesInColumn = {}
-  local availableBranchByColumns = {}
   local hasHeaderItems = false
   local bodiesConfig = []
   foreach (idx, branch in branches) {
-     availableBranchByColumns[branch.minPosX-1] <- true
      craftTreeItemsList.__update(branch.itemsIdList)
-     resourcesInColumn.__update(branch.resourcesInColumn)
      hasHeaderItems = hasHeaderItems || branch.headerItems.len() > 0
 
      local bodyIdx = branch.bodyIdx
@@ -288,6 +294,8 @@ local function generateTreeConfig(blk)
          bodyTitlesCount = bodyTitle != "" ? 1 : 0
          treeColumnsCount = 0
          textBlocks = []
+         availableBranchByColumns = {}
+         resourcesInColumn = {}
          button = null
        })
 
@@ -301,19 +309,11 @@ local function generateTreeConfig(blk)
      curBodyConfig.hasBranchesTitles = hasBranchesTitlesInBody || hasBranchTitle
      curBodyConfig.treeColumnsCount += branch.itemsCountX
      curBodyConfig.textBlocks.extend(branch.textBlocks)
+     curBodyConfig.availableBranchByColumns[branch.minPosX-1] <- true
+     curBodyConfig.resourcesInColumn.__update(branch.resourcesInColumn)
      curBodyConfig.button = branch.buttonBlk != null
        ? ::buildTableFromBlk(branch.buttonBlk)
        : curBodyConfig.button
-  }
-  local paramsForPosByColumns = array(
-    bodiesConfig.reduce(@(res, value) ::max(res, value.treeColumnsCount), 0), null)
-  local resourcesCount = 0
-  local countBranchs = 0
-  foreach(idx, column in paramsForPosByColumns) {
-    countBranchs += availableBranchByColumns?[idx] != null && idx > 0 ? 1 : 0
-    paramsForPosByColumns[idx] = { countBranchs = countBranchs,
-      prevResourcesCount = resourcesCount }
-    resourcesCount += (resourcesInColumn?[idx+1] ?? 0)
   }
 
   local craftTreeItemsIdArray = craftTreeItemsList.keys()
@@ -331,7 +331,6 @@ local function generateTreeConfig(blk)
     reqFeaturesArr = blk?.reqFeature != null ? (blk.reqFeature).split(",") : []
     baseEfficiency = blk?.baseEfficiency.tointeger() ?? 0
     craftResult = craftResult
-    paramsForPosByColumns = paramsForPosByColumns
     hasHeaderItems = hasHeaderItems
     bodiesConfig = bodiesConfig
     isShowHeaderPlace = bodiesConfig.len() == 1

@@ -1,0 +1,2183 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "armada_01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "ht_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetString": {
+            "value": "ht_t1_hunter",
+            "var": "ht_t1_hunter_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ht_t2_hunter",
+            "var": "ht_t2_hunter_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "@ht_t1_hunter_name"
+            },
+            {
+              "target": "@ht_t2_hunter_name"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "@ht_t1_hunter_name"
+            },
+            {
+              "object": "@ht_t2_hunter_name"
+            },
+            {
+              "targetableByAi": false
+            },
+            {
+              "stealthRadius": 4500.0
+            },
+            {
+              "calmDetection": true
+            },
+            {
+              "accuracy": 1.0
+            },
+            {
+              "effShootingRate": 0.3
+            }
+          ]
+        },
+        {
+          "varSetRandomInt": {
+            "var": "ht_last_army",
+            "from": 1,
+            "to_not_including": 3
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим что скрипт селфрестартится"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "ht_self_restart"
+          }
+        },
+        {
+          "comment": {
+            "value": "модифицируем время сбегания "
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "ht_chase_time",
+            "use_variable": true,
+            "var_value": "ht_shoot_time"
+          }
+        },
+        {
+          "comment": {
+            "value": "говорим имя сквада зениток, защищающих аэродром"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ft_t1_aaa_squad",
+            "var": "ht_t1_airfield_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ft_t2_aaa_squad",
+            "var": "ht_t2_airfield_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем основной скрипт"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "ht_start"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "ht_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "all_players_squad",
+          "type": "squad"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "выставляем дефолтное значение для задержек"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "ht_t1_delay_timer"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "ht_t1_delay_timer",
+            "use_variable": true,
+            "var_value": "ht_t1_initial_delay_timer"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "ht_t2_delay_timer"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "ht_t2_delay_timer",
+            "use_variable": true,
+            "var_value": "ht_t2_initial_delay_timer"
+          }
+        },
+        {
+          "comment": {
+            "value": "немного рандомайзим время появления охотников"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "ht_delay_randomizer",
+            "from": 0,
+            "to_not_including": 10
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "ht_t1_delay_timer",
+            "use_variable": true,
+            "var_value": "ht_delay_randomizer"
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "ht_delay_randomizer",
+            "from": 0,
+            "to_not_including": 90
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "ht_t2_delay_timer",
+            "use_variable": true,
+            "var_value": "ht_delay_randomizer"
+          }
+        },
+        {
+          "comment": {
+            "value": "запускаем скрипт"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "ht_t1_delayed_start"
+            },
+            {
+              "target": "ht_t2_delayed_start"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "ht_t1_delayed_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "ht_t1_delay_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "ht_t1_active",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "время подошло нужному значению "
+          }
+        },
+        {
+          "comment": {
+            "value": "и охотники команды А не запущены"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "ht_t1_start"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "охотники команды А еще запущены"
+        }
+      }
+    },
+    "ht_t1_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "ht_army_zero_both",
+          "value": 2,
+          "comparasion_func": "notEqual"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "скрипт запускается не только для армии 2"
+        },
+        "triggerEnable": {
+          "target": "ht_t1_check_team_alive"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t2_delayed_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "ht_t2_delay_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "ht_t2_active",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "время подошло нужному значению "
+          }
+        },
+        {
+          "comment": {
+            "value": "и охотники команды А не запущены"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "ht_t2_start"
+          }
+        }
+      ],
+      "else_actions": {
+        "comment": {
+          "value": "охотники команды А еще запущены"
+        }
+      }
+    },
+    "ht_t2_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "ht_army_zero_both",
+          "value": 1,
+          "comparasion_func": "notEqual"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "скрипт запускается не только для армии 1"
+        },
+        "triggerEnable": {
+          "target": "ht_t2_check_team_alive"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_spawn_check": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ht_t1_check_team_alive": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "func": "more",
+            "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_players_squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активных игроков в команде 2 больше 3 - на них можно охотиться"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_check_distance": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 10000.0,
+            "math": "notNear2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_players_squad",
+            "target": "all_players_squad",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом никого нет. проверяем есть ли аэродром рядом"
+          },
+          "unitMark": {
+            "target_marking": 1,
+            "target": "t2_players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_airfield_exist_jip"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "ht_t1_hunter_clearing"
+          }
+        }
+      },
+      "ht_t1_check_airfield_exist_jip": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ht_t2_airfield_name",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "аэродром найден. проверяем дистанцию"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_airfield_distance"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "не найден джиповский аэродром. пробуем найти BfD"
+          },
+          "varSetString": {
+            "value": "t2_def_aaa_squad",
+            "var": "ht_t2_airfield_name"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_airfield_exist_bfd"
+          }
+        }
+      },
+      "ht_t1_check_airfield_exist_bfd": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ht_t2_airfield_name",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "найден аэродром BfD проверяем дистанцию"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_airfield_distance"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "не найден аэродром. не спавним хантеров"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_hunter_clearing"
+          }
+        }
+      },
+      "ht_t1_check_airfield_distance": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 3500.0,
+            "math": "notNear2D",
+            "object_type": "isMarked",
+            "object_marking": 1,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t2_players_squad",
+            "target": "@ht_t2_airfield_name",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "аэродромных зениток тоже рядом нет"
+          },
+          "varSetString": {
+            "value": "",
+            "var": "ht_t2_player_name"
+          },
+          "unitGetRandomNameFromSquad": {
+            "string_var": "ht_t2_player_name",
+            "check_objects": "any",
+            "object_marking": 2,
+            "squad": "t2_players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "t2_players_squad"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_activate"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "аэродром близко. не спавним хантеров"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_hunter_clearing"
+          }
+        }
+      },
+      "ht_t1_check_activate": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "ht_t2_player_name",
+            "value": "",
+            "comparasion_func": "notEqual"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "имя игрока не пустое"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_check_player_height"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "имя игрока пустое. собираем мусор"
+          },
+          "triggerEnable": {
+            "target": "ht_t1_hunter_clearing"
+          }
+        }
+      },
+      "ht_t1_check_player_height": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenStatus": {
+              "object_type": "isInAir",
+              "check_objects": "any",
+              "object_marking": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@ht_t2_player_name"
+            }
+          },
+          {
+            "unitWhenReachHeight": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "check_objects": "all",
+              "value": 500.0,
+              "comparasion_func": "more",
+              "absolute_value": false,
+              "object": "@ht_t2_player_name"
+            }
+          },
+          {
+            "unitWhenReachHeight": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "check_objects": "all",
+              "value": 4000.0,
+              "comparasion_func": "less",
+              "absolute_value": false,
+              "object": "@ht_t2_player_name"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "проверили, что игрок в высотах от 500 до 4000"
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "ht_t1_active"
+          },
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [0.0,4000.0,-7000.0],
+            "object": "@ht_t1_hunter_name",
+            "target": "@ht_t2_player_name",
+            "resetFormation": true
+          },
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@ht_t1_hunter_name",
+            "target": "@ht_t2_player_name"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "realisticAI": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t1_hunter_name",
+            "targetableByAi": false
+          },
+          "triggerEnable": [
+            {
+              "target": "ht_t1_hunter_retreat"
+            },
+            {
+              "target": "ht_t1_hunter_start_shoot"
+            },
+            {
+              "target": "ht_t1_hunter_dead"
+            },
+            {
+              "target": "ht_t1_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t1_hunter_near"
+            },
+            {
+              "target": "ht_t1_hunter_lost_target"
+            }
+          ]
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "ht_t1_hunter_clearing"
+          }
+        }
+      },
+      "ht_t2_check_team_alive": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "func": "more",
+            "value": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_players_squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "активных игроков в команде 1 больше 3 - на них можно охотиться"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_distance"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_check_distance": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 10000.0,
+            "math": "notNear2D",
+            "object_type": "isActive",
+            "object_marking": 0,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_players_squad",
+            "target": "all_players_squad",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "рядом никого нет. проверяем есть ли аэродром рядом"
+          },
+          "unitMark": {
+            "target_marking": 1,
+            "target": "t1_players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_airfield_exist_jip"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "ht_t2_hunter_clearing"
+          }
+        }
+      },
+      "ht_t2_check_airfield_exist_jip": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ht_t1_airfield_name",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "аэродром найден. проверяем дистанцию"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_airfield_distance"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "не найден джиповский аэродром. пробуем найти BfD"
+          },
+          "varSetString": {
+            "value": "t1_def_aaa_squad",
+            "var": "ht_t1_airfield_name"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_airfield_exist_bfd"
+          }
+        }
+      },
+      "ht_t2_check_airfield_exist_bfd": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@ht_t1_airfield_name",
+            "type": "squad"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "найден аэродром BfD проверяем дистанцию"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_airfield_distance"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "не найден аэродром или далеко. не спавним хантеров"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_hunter_clearing"
+          }
+        }
+      },
+      "ht_t2_check_airfield_distance": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 3500.0,
+            "math": "notNear2D",
+            "object_type": "isMarked",
+            "object_marking": 1,
+            "target_type": "isActive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "all",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "t1_players_squad",
+            "target": "@ht_t1_airfield_name",
+            "compareCenters": false,
+            "check_all_units": true
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "аэродромных зениток тоже рядом нет"
+          },
+          "varSetString": {
+            "value": "",
+            "var": "ht_t1_player_name"
+          },
+          "unitGetRandomNameFromSquad": {
+            "string_var": "ht_t1_player_name",
+            "check_objects": "any",
+            "object_marking": 2,
+            "squad": "t1_players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "t1_players_squad"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_activate"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "аэродром далеко. не спавним хантеров"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_hunter_clearing"
+          }
+        }
+      },
+      "ht_t2_check_activate": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "varCompareString": {
+            "var_value": "ht_t1_player_name",
+            "value": "",
+            "comparasion_func": "notEqual"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "имя игрока не пустое"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_check_player_height"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "имя игрока пустое. собираем мусор"
+          },
+          "triggerEnable": {
+            "target": "ht_t2_hunter_clearing"
+          }
+        }
+      },
+      "ht_t2_check_player_height": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenStatus": {
+              "object_type": "isInAir",
+              "check_objects": "any",
+              "object_marking": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@ht_t1_player_name"
+            }
+          },
+          {
+            "unitWhenReachHeight": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "check_objects": "all",
+              "value": 500.0,
+              "comparasion_func": "more",
+              "absolute_value": false,
+              "object": "@ht_t1_player_name"
+            }
+          },
+          {
+            "unitWhenReachHeight": {
+              "object_type": "isActive",
+              "object_marking": 0,
+              "check_objects": "all",
+              "value": 4000.0,
+              "comparasion_func": "less",
+              "absolute_value": false,
+              "object": "@ht_t1_player_name"
+            }
+          }
+        ],
+        "actions": {
+          "comment": {
+            "value": "проверили, что игрок в высотах от 500 до 4000"
+          },
+          "varSetBool": {
+            "value": true,
+            "var": "ht_t2_active"
+          },
+          "unitRespawn": {
+            "delay": 1.0,
+            "offset": [0.0,4000.0,-7000.0],
+            "object": "@ht_t2_hunter_name",
+            "target": "@ht_t1_player_name",
+            "resetFormation": true
+          },
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "@ht_t2_hunter_name",
+            "target": "@ht_t1_player_name"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "realisticAI": false,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t2_hunter_name",
+            "targetableByAi": false
+          },
+          "triggerEnable": [
+            {
+              "target": "ht_t2_hunter_retreat"
+            },
+            {
+              "target": "ht_t2_hunter_start_shoot"
+            },
+            {
+              "target": "ht_t2_hunter_dead"
+            },
+            {
+              "target": "ht_t2_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t2_hunter_near"
+            },
+            {
+              "target": "ht_t2_hunter_lost_target"
+            }
+          ]
+        },
+        "else_actions": {
+          "triggerEnable": {
+            "target": "ht_t2_hunter_clearing"
+          }
+        }
+      }
+    },
+    "ht_ai": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ht_t1_hunter_lost_target": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenReachHeight": {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "check_objects": "all",
+            "value": 500.0,
+            "comparasion_func": "less",
+            "absolute_value": false,
+            "object": "@ht_t2_player_name"
+          },
+          "unitWhenStatus": {
+            "object_type": "isOnGround",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t2_player_name"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "хантеры потеряли цель до начала стрельбы и убегают"
+          },
+          "triggerDisable": [
+            {
+              "target": "ht_t1_hunter_start_shoot"
+            },
+            {
+              "target": "ht_t1_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t1_hunter_retreat"
+            },
+            {
+              "target": "ht_t1_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t1_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_hunter_near": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 5500.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "@ht_t1_hunter_name",
+            "target": "@ht_t2_player_name",
+            "compareCenters": false
+          }
+        },
+        "actions": [
+          {
+            "playHint": {
+              "hintType": "custom",
+              "name": "hints/ht_hunters_activate",
+              "action": "show",
+              "shouldFadeOut": false,
+              "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
+            }
+          },
+          {
+            "playHint": {
+              "hintType": "custom",
+              "name": "hints/ht_hunters_activate",
+              "action": "hide",
+              "shouldFadeOut": false,
+              "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "team": "B"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ht_t1_hunter_retreat": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "haveKilledParts",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t1_hunter_name"
+          }
+        },
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t1_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t1_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t1_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_hunter_retreat_by_time": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0,
+            "var": "ht_chase_time"
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t1_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t1_hunter_retreat"
+            },
+            {
+              "target": "ht_t1_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_hunter_start_shoot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isShooting",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t1_hunter_name"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": "ht_t1_hunter_lost_target"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t1_hunter_name",
+            "targetableByAi": true
+          },
+          "triggerEnable": {
+            "target": "ht_t1_hunter_end_shoot"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_hunter_end_shoot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0,
+            "var": "ht_shoot_time"
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t1_hunter_retreat"
+            },
+            {
+              "target": "ht_t1_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t1_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t1_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t1_hunter_escape": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "ht_t1_hunter_retreat_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "@ht_t1_hunter_name",
+            "speed": 1500.0
+          },
+          "triggerEnable": {
+            "target": "ht_t1_hunter_despawn"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_lost_target": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenReachHeight": {
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "check_objects": "all",
+            "value": 500.0,
+            "comparasion_func": "less",
+            "absolute_value": false,
+            "object": "@ht_t1_player_name"
+          },
+          "unitWhenStatus": {
+            "object_type": "isOnGround",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t1_player_name"
+          }
+        },
+        "actions": {
+          "comment": {
+            "value": "хантеры потеряли цель до начала стрельбы и убегают"
+          },
+          "triggerDisable": [
+            {
+              "target": "ht_t2_hunter_start_shoot"
+            },
+            {
+              "target": "ht_t2_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t2_hunter_retreat"
+            },
+            {
+              "target": "ht_t2_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t2_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_near": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitDistanceBetween": {
+            "value": 5500.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "@ht_t2_hunter_name",
+            "target": "@ht_t1_player_name",
+            "compareCenters": false
+          }
+        },
+        "actions": [
+          {
+            "playHint": {
+              "hintType": "custom",
+              "name": "hints/ht_hunters_activate",
+              "action": "show",
+              "shouldFadeOut": false,
+              "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "team": "A"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
+            }
+          },
+          {
+            "playHint": {
+              "hintType": "custom",
+              "name": "hints/ht_hunters_activate",
+              "action": "hide",
+              "shouldFadeOut": false,
+              "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "team": "A"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ht_t2_hunter_retreat": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "haveKilledParts",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t2_hunter_name"
+          }
+        },
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t2_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t2_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t2_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_retreat_by_time": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0,
+            "var": "ht_chase_time"
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t2_hunter_end_shoot"
+            },
+            {
+              "target": "ht_t2_hunter_retreat"
+            },
+            {
+              "target": "ht_t2_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_start_shoot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenStatus": {
+            "object_type": "isShooting",
+            "check_objects": "any",
+            "object_marking": 0,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t2_hunter_name"
+          }
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": "ht_t2_hunter_lost_target"
+          },
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "@ht_t2_hunter_name",
+            "targetableByAi": true
+          },
+          "triggerEnable": {
+            "target": "ht_t2_hunter_end_shoot"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_end_shoot": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0,
+            "var": "ht_shoot_time"
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "triggerDisable": [
+            {
+              "target": "ht_t2_hunter_retreat"
+            },
+            {
+              "target": "ht_t2_hunter_retreat_by_time"
+            },
+            {
+              "target": "ht_t2_hunter_near"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ht_t2_hunter_escape"
+          }
+        },
+        "else_actions": []
+      },
+      "ht_t2_hunter_escape": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "ht_t2_hunter_retreat_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "@ht_t2_hunter_name",
+            "speed": 1500.0
+          },
+          "triggerEnable": {
+            "target": "ht_t2_hunter_despawn"
+          }
+        },
+        "else_actions": []
+      }
+    },
+    "ht_t1_hunter_despawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 6500.0,
+          "math": "notNear2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t1_hunter_name",
+          "target": "all_players_squad",
+          "compareCenters": false,
+          "check_all_units": true
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@ht_t1_hunter_name",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "ht_t1_hunter_clearing"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t1_hunter_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t1_hunter_name"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "ht_t1_hunter_clearing"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t1_hunter_clearing": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t1_hunter_name"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 0,
+          "target": "t2_players_squad"
+        },
+        "triggerDisable": [
+          {
+            "target": "ht_t1_hunter_retreat"
+          },
+          {
+            "target": "ht_t1_hunter_start_shoot"
+          },
+          {
+            "target": "ht_t1_hunter_end_shoot"
+          },
+          {
+            "target": "ht_t1_hunter_escape"
+          },
+          {
+            "target": "ht_t1_hunter_despawn"
+          },
+          {
+            "target": "ht_t1_hunter_dead"
+          },
+          {
+            "target": "ht_t1_hunter_retreat_by_time"
+          },
+          {
+            "target": "ht_t1_hunter_near"
+          },
+          {
+            "target": "ht_t1_hunter_lost_target"
+          }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "ht_t1_active"
+        },
+        "triggerEnable": {
+          "target": "ht_restart_check"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t2_hunter_despawn": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 6500.0,
+          "math": "notNear2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "all",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t2_hunter_name",
+          "target": "all_players_squad",
+          "compareCenters": false,
+          "check_all_units": true
+        }
+      },
+      "actions": {
+        "unitPutToSleep": {
+          "target": "@ht_t2_hunter_name",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "ht_t2_hunter_clearing"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t2_hunter_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t2_hunter_name"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "ht_t2_hunter_clearing"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_t2_hunter_clearing": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@ht_t2_hunter_name"
+        }
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 0,
+          "target": "t1_players_squad"
+        },
+        "triggerDisable": [
+          {
+            "target": "ht_t2_hunter_retreat"
+          },
+          {
+            "target": "ht_t2_hunter_start_shoot"
+          },
+          {
+            "target": "ht_t2_hunter_end_shoot"
+          },
+          {
+            "target": "ht_t2_hunter_escape"
+          },
+          {
+            "target": "ht_t2_hunter_despawn"
+          },
+          {
+            "target": "ht_t2_hunter_dead"
+          },
+          {
+            "target": "ht_t2_hunter_retreat_by_time"
+          },
+          {
+            "target": "ht_t2_hunter_near"
+          },
+          {
+            "target": "ht_t2_hunter_lost_target"
+          }
+        ],
+        "varSetBool": {
+          "value": false,
+          "var": "ht_t2_active"
+        },
+        "triggerEnable": {
+          "target": "ht_restart_check"
+        }
+      },
+      "else_actions": []
+    },
+    "ht_restart_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "ht_self_restart",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerEnable": {
+          "target": "ht_start"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "ht_matching_rank": 0,
+    "ht_t1_hunter_name": "",
+    "ht_shoot_time": 90,
+    "ht_t2_hunter_name": "",
+    "ht_is_template_active": false,
+    "ht_army_zero_both": 0,
+    "ht_last_army": 0,
+    "ht_t1_initial_delay_timer": 360,
+    "ht_t2_initial_delay_timer": 360,
+    "ht_t1_player_name": "",
+    "ht_t2_player_name": "",
+    "ht_self_restart": false,
+    "ht_chase_time": 240,
+    "ht_delay_randomizer": 60,
+    "ht_t1_active": false,
+    "ht_t2_active": false,
+    "ht_t1_delay_timer": 0,
+    "ht_t2_delay_timer": 0,
+    "ht_t1_airfield_name": "",
+    "ht_t2_airfield_name": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

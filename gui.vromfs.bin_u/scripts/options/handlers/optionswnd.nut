@@ -53,7 +53,6 @@ class ::gui_handlers.Options extends ::gui_handlers.GenericOptionsModal
     guiScene.replaceContentFromText(groupsObj, data, data.len(), this)
     groupsObj.show(true)
     groupsObj.setValue(curOption)
-    onGroupSelect(groupsObj)
 
     showSceneBtn("btn_postfx_settings", !::is_compatibility_mode())
     showSceneBtn("btn_hdr_settings", ::is_hdr_enabled())

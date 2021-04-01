@@ -3,6 +3,7 @@ shopFilter {
   id:t='header_country<<countryIdx>>'
   height:t='ph'
   class:t='slotsHeader'
+  countryId:t='<<country>>'
   tooltip:t='<<tooltipText>>'
   <<^isEnabled>>
   enable:t='no'

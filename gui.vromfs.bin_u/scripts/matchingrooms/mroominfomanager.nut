@@ -16,7 +16,11 @@ g_mroom_info.get <- function get(roomId)
 
 g_mroom_info.clearOutdated <- function clearOutdated()
 {
+  local outdatedArr = []
   foreach(roomId, info in infoByRoomId)
     if (!info.isValid())
-      delete infoByRoomId[roomId]
+      outdatedArr.append(roomId)
+
+  foreach(roomId in outdatedArr)
+    delete infoByRoomId[roomId]
 }

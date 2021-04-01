@@ -284,15 +284,27 @@ local function getUnitRarity(unit)
   return "common"
 }
 
+local function getUnitRequireUnlockText(unit) {
+  local unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  local conditions = ::build_conditions_config(unlockBlk)
+
+  return "\n".concat(::loc("mainmenu/needUnlock"), ::build_unlock_desc(conditions,
+    { showProgress = true
+      showValueForBitList = true
+    }).text
+  )
+}
+
 return {
-  getUnitRole = getUnitRole
-  getUnitBasicRole = getUnitBasicRole
-  getRoleText = getRoleText
-  getUnitRoleIcon = getUnitRoleIcon
-  getUnitTooltipImage = getUnitTooltipImage
-  getFullUnitRoleText = getFullUnitRoleText
-  getChanceToMeetText = getChanceToMeetText
-  getShipMaterialTexts = getShipMaterialTexts
-  getUnitItemStatusText = getUnitItemStatusText
-  getUnitRarity = getUnitRarity
+  getUnitRole
+  getUnitBasicRole
+  getRoleText
+  getUnitRoleIcon
+  getUnitTooltipImage
+  getFullUnitRoleText
+  getChanceToMeetText
+  getShipMaterialTexts
+  getUnitItemStatusText
+  getUnitRarity
+  getUnitRequireUnlockText
 }

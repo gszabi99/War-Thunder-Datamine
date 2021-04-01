@@ -22,6 +22,7 @@ local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
 //
 
 
+local { getSlotbarOverrideCountriesByMissionName } = require("scripts/slotbar/slotbarOverride.nut")
 
 global const TANK_ALT_CROSSHAIR_ADD_NEW = -2
 global const TANK_CAMO_SCALE_SLIDER_FACTOR = 0.1
@@ -2546,7 +2547,7 @@ local isWaitMeasureEvent = false
       }
       else if ("missionName" in context)
       {
-        local countries = ::g_crews_list.getSlotbarOverrideCountriesByMissionName(context.missionName)
+        local countries = getSlotbarOverrideCountriesByMissionName(context.missionName)
         if (countries.len())
           allowedMask = ::get_bit_value_by_array(countries, ::shopCountriesList)
       }

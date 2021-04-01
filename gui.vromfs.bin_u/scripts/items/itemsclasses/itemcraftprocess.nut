@@ -53,7 +53,7 @@ class ::items_classes.CraftProcess extends ItemExternal {
 
   function onCancelComplete(resultItems, params)
   {
-    ::ItemsManager.markInventoryUpdate()
+    ::ItemsManager.markInventoryUpdateDelayed()
 
     local resultItemsShowOpening  = ::u.filter(resultItems, ::trophyReward.isShowItemInTrophyReward)
     local trophyId = id

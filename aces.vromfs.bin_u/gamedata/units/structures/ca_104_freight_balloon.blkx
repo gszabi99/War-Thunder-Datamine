@@ -1,0 +1,48 @@
+{
+  "model": "ca_104",
+  "balloonCollision": true,
+  "balloonRadius": 100.0,
+  "subclass": "barrageBalloon",
+  "dynCollisionGeom": true,
+  "damageableByGun": true,
+  "balloonCxOnSq": 50.0,
+  "liftForce": 100000.0,
+  "ropeStiffness": 100.0,
+  "mass": 10000.0,
+  "toGround": false,
+  "useOldExplosion": false,
+  "expClass": "exp_zero",
+  "showCable": false,
+  "deadOmegaY": 0.2,
+  "fireFx": "",
+  "DamageParts": {
+    "armor10": {
+      "fuse_dm": {
+        "hp": 15000.0
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "fuse_dm",
+      "onHit": {
+        "fire": 1.0
+      },
+      "onKill": {
+        "expl": 1.0
+      }
+    }
+  },
+  "explosion": {
+    "expl": {
+      "partNo": 0,
+      "timeToExplode": 0.5,
+      "preEffectName": "",
+      "postEffectName": "",
+      "explosionEffectName": "explosion_midair_big",
+      "timeForPostEffect": 1.0,
+      "preScale": 1.0,
+      "postScale": 1.0
+    }
+  }
+}

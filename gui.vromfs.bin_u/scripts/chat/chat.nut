@@ -305,9 +305,12 @@ g_chat._checkCleanThreadsList <- function _checkCleanThreadsList()
     }
 
   //clear outdated threads
+  local outdatedArr = []
   foreach(id, thread in threadsInfo)
     if (thread.isOutdated())
-      delete threadsInfo[id]
+      outdatedArr.append(id)
+  foreach(id in outdatedArr)
+    delete threadsInfo[id]
 }
 
 g_chat.getThreadInfo <- function getThreadInfo(roomId)

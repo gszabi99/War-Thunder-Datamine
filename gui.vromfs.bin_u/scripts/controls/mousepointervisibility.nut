@@ -12,8 +12,6 @@ local isMouseCursorVisible = ::Watched(::is_cursor_visible_in_gui())
 
 isMouseCursorVisible.subscribe(function(isVisible) {
   ::broadcastEvent("ChangedCursorVisibility", { isVisible = isVisible })
-  ::call_darg("hudCursorVisibleUpdate", isVisible)
-  ::get_cur_gui_scene().showCursor(isVisible)
 })
 
 return {

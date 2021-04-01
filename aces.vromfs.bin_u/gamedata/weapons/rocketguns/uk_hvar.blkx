@@ -68,6 +68,99 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "rockets_he_small",
+    "damage": {
+      "explosive": {
+        "radius": 0.4,
+        "offset": 0.2
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.17
+        },
+        {
+          "segment": {
+            "radiusScale": 0.14,
+            "penetrationScale": 3.5,
+            "damageScale": 1.0,
+            "angles": [0.0,29.0],
+            "countPortion": 0.045,
+            "onHitChanceMultFire": 20.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [30.0,69.0],
+            "countPortion": 0.255
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 0.35,
+            "penetrationScale": 1.75,
+            "damageScale": 1.5,
+            "angles": [70.0,110.0],
+            "countPortion": 0.05,
+            "onHitChanceMultFire": 75.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [111.0,180.0],
+            "countPortion": 0.15
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [181.0,249.0],
+            "countPortion": 0.15
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 0.35,
+            "penetrationScale": 1.75,
+            "damageScale": 1.5,
+            "angles": [250.0,290.0],
+            "countPortion": 0.05,
+            "onHitChanceMultFire": 75.0
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [291.0,329.0],
+            "countPortion": 0.255
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 0.14,
+            "penetrationScale": 3.5,
+            "damageScale": 1.0,
+            "angles": [330.0,359.0],
+            "countPortion": 0.045,
+            "onHitChanceMultFire": 20.0
+          }
+        }
+      ]
+    },
+    "shatterDamage": {
+      "breachConeAngle": 45.0
+    },
     "collisions": {
       "steel": {
         "fx": "explosion_midair_small"

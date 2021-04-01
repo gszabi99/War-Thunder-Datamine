@@ -17,7 +17,7 @@ tdiv {
     pos:t='-1@blockInterval, 1@blockInterval'
     position:t='relative'
     width:t='pw + 2@blockInterval'
-    background-color:t='@black'
+    background-color:t='#0e0e0e'
     movie {
       size:t='1@bulletAnimationWidth ,1@bulletAnimationHeight'
       pos:t='0.5pw-0.5w, 0'

@@ -47,14 +47,6 @@ globalCallbacks.addTypes({
   }
 })
 
-::on_show_hud <- function on_show_hud(show = true) //called from native code
-{
-  local handler = ::handlersManager.getActiveBaseHandler()
-  if (handler && ("onShowHud" in handler))
-    handler.onShowHud(show, true)
-  ::broadcastEvent("ShowHud", { show = show })
-}
-
 class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName         = "gui/hud/hud.blk"

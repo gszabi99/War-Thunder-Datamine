@@ -188,9 +188,12 @@ g_hud_hitcamera.getTargetInfo <- function getTargetInfo(unitId, unitVersion, uni
 g_hud_hitcamera.cleanupUnitsInfo <- function cleanupUnitsInfo()
 {
   local old = ::get_usefull_total_time() - 5.0
+  local oldUnits = []
   foreach (unitId, info in unitsInfo)
     if (info.isKilled && info.time < old)
-      delete unitsInfo[unitId]
+      oldUnits.append(unitId)
+  foreach (unitId in oldUnits)
+    delete unitsInfo[unitId]
 }
 
 g_hud_hitcamera.updateDebuffItem <- function updateDebuffItem(item, camInfo, unitInfo, partName = null, dmgParams = null)

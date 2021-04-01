@@ -1,0 +1,256 @@
+{
+  "cannon": true,
+  "weaponType": 1,
+  "maxDeltaAngle": 0.075,
+  "maxDeltaAngleVertical": 0.075,
+  "aimMinDist": 0.05,
+  "aimMaxDist": 3000.0,
+  "attackMaxDist": 2500.0,
+  "shotFreq": 1.2,
+  "bullets": 1,
+  "reloadTime": 0.705,
+  "recoilOffset": 0.42,
+  "recoilTimes": [0.11,0.3],
+  "jammedReloadTime": 14.0,
+  "traceFreq": 1,
+  "bulletsCluster": 1,
+  "shouldCollideWithRendinsts": true,
+  "fxType": "muzzle_naval_80mm",
+  "sound_pathStudio": "toon/weapon",
+  "sound": "airship_cannon",
+  "sfxReloadBullet": "naval_cannon_reload",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "notUseDefaultBulletInGui": true,
+  "overheat": [
+    {
+      "overheat": [35.0,0.0]
+    },
+    {
+      "overheat": [40.0,0.2]
+    }
+  ],
+  "deviation": [
+    {
+      "deviation": [30.0,0.0]
+    },
+    {
+      "deviation": [35.0,2.0]
+    }
+  ],
+  "bullet": {
+    "bulletCount": 25,
+    "mass": 6.296,
+    "explosiveType": "comp_b",
+    "explosiveMass": 0.66,
+    "caliber": 0.0762,
+    "speed": 914.0,
+    "speedDispersion": 0.05,
+    "maxDistance": 18400.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.4,
+    "stabilityCaliberToArmorThreshold": 10.0,
+    "stabilityReductionAfterRicochet": 0.45,
+    "stabilityReductionAfterPenetration": 1.0,
+    "bulletType": "he_frag_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [0.23,0.1,2.0],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/he.ivf",
+    "bulletName": "76mm_dm251",
+    "dynamicKv": true,
+    "relativeVelHitShift": [300.0,1000.0],
+    "relativeVelArmorShift": [200.0,1000.0],
+    "explodeTreshold": 0.1,
+    "fuseDelayDist": 0.0,
+    "explosionEffect": "hit_39_58mm_metal_he",
+    "groundCollisionEffect": "hit_39_58mm_dirt_he",
+    "ricochetEffect": "hit_59_80mm_metal_ap",
+    "waterCollisionEffect": "hit_39_58mm_water",
+    "explosionPatchRadius": 1.4,
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "damage": {
+      "kinetic": {
+        "damageType": "generic"
+      },
+      "shatter": [
+        {
+          "useRealShatters": true
+        },
+        {
+          "countPortion": 0.5
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.4,
+            "damageScale": 1.0,
+            "angles": [0.0,30.0],
+            "countPortion": 0.1
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [31.0,74.0],
+            "countPortion": 0.2
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.8,
+            "damageScale": 1.5,
+            "angles": [75.0,100.0],
+            "countPortion": 0.05
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [101.0,180.0],
+            "countPortion": 0.15
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [181.0,259.0],
+            "countPortion": 0.15
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.8,
+            "damageScale": 1.5,
+            "angles": [260.0,285.0],
+            "countPortion": 0.05
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [286.0,329.0],
+            "countPortion": 0.2
+          }
+        },
+        {
+          "segment": {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.4,
+            "damageScale": 1.0,
+            "angles": [330.0,359.0],
+            "countPortion": 0.1
+          }
+        }
+      ]
+    },
+    "hitpower": {
+      "HitPower0m": [1.0,500.0],
+      "HitPower4000m": [0.5,4000.0],
+      "HitPower8000m": [0.1,8000.0]
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "76mmYellow",
+      "trail": "black"
+    },
+    "collisions": {
+      "default": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "horLandMesh": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "soil": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "dirt": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "road": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "roadSoil": {
+        "fx": "hit_39_58mm_dirt_he"
+      },
+      "sand": {
+        "fx": "hit_39_58mm_sand_he"
+      },
+      "duneSand": {
+        "fx": "hit_39_58mm_sand_he"
+      },
+      "roadSand": {
+        "fx": "hit_39_58mm_sand_he"
+      },
+      "quickSand": {
+        "fx": "hit_39_58mm_sand_he"
+      },
+      "snow": {
+        "fx": "hit_39_58mm_snow_he"
+      },
+      "ice": {
+        "fx": "hit_39_58mm_snow_he"
+      },
+      "roadSnow": {
+        "fx": "hit_39_58mm_snow_he"
+      },
+      "snowLower": {
+        "fx": "hit_39_58mm_snow_he"
+      },
+      "glass": {
+        "fx": "hit_39_58mm_metal_he"
+      },
+      "wood": {
+        "fx": "hit_39_58mm_wood_he"
+      },
+      "steel": {
+        "fx": "hit_39_58mm_metal_he"
+      },
+      "metal": {
+        "fx": "hit_39_58mm_metal_he"
+      },
+      "buildings": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "verLandMesh": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "concrete": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "rocks": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "rocksSlippery": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "fabric": {
+        "fx": "hit_39_58mm_stone_he"
+      },
+      "stone_snow": {
+        "fx": "hit_39_58mm_snow_he"
+      }
+    }
+  }
+}

@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -10.0
-    },
     "player": {
       "army": 1,
       "wing": "flt_armada"
@@ -16,17 +12,21 @@
     "mission": {
       "level": "levels/air_afghan.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -10.0
     },
     "spectator_points": []
   },
   "imports": [
     {
       "import_record": {
-        "file": "gameData/missions/templates/air_templates/jip/air_flt_frontline_template.blk",
+        "file": "gameData\\missions\\templates\\enduring_confrontation\\flt_frontline_template.blk",
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -243,7 +243,25 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/air_templates/jip/frontline_tanksets/flt_t1_ussr_rank_05.blk",
-        "rankRange": [17,30],
+        "rankRange": [17,20],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/frontline_tanksets/flt_t1_ussr_rank_06.blk",
+        "rankRange": [21,50],
         "allowedUnitTypes": "isAirplanesAllowed",
         "importAreas": true,
         "importUnits": true,
@@ -333,7 +351,25 @@
     {
       "import_record": {
         "file": "gameData/missions/templates/air_templates/jip/frontline_tanksets/flt_t2_us_rank_05.blk",
-        "rankRange": [17,30],
+        "rankRange": [17,20],
+        "allowedUnitTypes": "isAirplanesAllowed",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/jip/frontline_tanksets/flt_t2_us_rank_06.blk",
+        "rankRange": [21,50],
         "allowedUnitTypes": "isAirplanesAllowed",
         "importAreas": true,
         "importUnits": true,
@@ -373,9 +409,9 @@
             "killArea": false,
             "detectionArea": false,
             "killOutOfBattleArea": true,
-            "newGridHorizontalCellCount": 7,
             "airMapArea": true,
-            "area": "flt_battle_area"
+            "area": "flt_battle_area",
+            "newGridHorizontalCellCount": 7
           }
         },
         {
@@ -531,9 +567,9 @@
           }
         },
         {
-          "__varSetInt": {
+          "varSetInt": {
             "value": 0,
-            "var": "flt_area_29_state"
+            "var": "flt_area_39_state"
           }
         },
         {
@@ -604,6 +640,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -644,6 +682,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 20,
@@ -684,6 +724,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -724,6 +766,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 20,
@@ -895,9 +939,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -935,9 +981,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -990,6 +1038,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,

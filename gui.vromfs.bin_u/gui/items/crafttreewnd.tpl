@@ -40,6 +40,7 @@ root {
         moveX:t='linear'
         moveY:t='closest'
 
+        on_activate:t='onMainAction'
         on_pushed:t='::gcb.delayedTooltipListPush'
         on_hold_start:t='::gcb.delayedTooltipListHoldStart'
         on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
@@ -48,11 +49,6 @@ root {
       }
     }
   }
-}
-
-DummyButton {
-  btnName:t='A'
-  on_click:t='onMainAction'
 }
 
 timer

@@ -69,11 +69,6 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       showAction = inMenu && ::SessionLobby.canChangeCrewUnits()
       actionFunc = function () {
-        if (::g_crews_list.isSlotbarOverrided)
-        {
-          ::showInfoMsgBox(::loc("multiplayer/slotbarOverrided"))
-          return
-        }
         ::queues.checkAndStart(
           function() {
             ::g_squad_utils.checkSquadUnreadyAndDo(
@@ -93,7 +88,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = "#ui/gameuiskin#slot_crew.svg"
       haveWarning = ::isInArray(::get_crew_status(crew, unit), [ "ready", "full" ])
       haveDiscount = ::g_crew.getMaxDiscountByInfo(discountInfo) > 0
-      showAction = inMenu && ::has_feature("CrewInfo") && !::g_crews_list.isSlotbarOverrided
+      showAction = inMenu && ::has_feature("CrewInfo")
       local params = {
         countryId = crew.idCountry,
         idInCountry = crew.idInCountry,
@@ -117,7 +112,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = "#ui/gameuiskin#slot_preset.svg"
       haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
-      showAction = inMenu && !::g_crews_list.isSlotbarOverrided &&
+      showAction = inMenu &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
       actionFunc = @() weaponryPresetsModal.open({ unit = unit })
     }
@@ -130,7 +125,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
-      showAction = inMenu && !::g_crews_list.isSlotbarOverrided
+      showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {
         curEdiff = curEdiff
         needHideSlotbar = !isSlotbarEnabled
@@ -153,7 +148,6 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
       showAction = inMenu && isUsable && repairCost > 0 && ::SessionLobby.canChangeCrewUnits()
-        && !::g_crews_list.isSlotbarOverrided
       actionFunc = @() unitActions.repairWithMsgBox(unit)
     }
     else if (action == "buy")

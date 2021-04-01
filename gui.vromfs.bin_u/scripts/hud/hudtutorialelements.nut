@@ -179,6 +179,7 @@ g_hud_tutorial_elements.getAABB <- function getAABB(name)
 
 g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
 {
+  local invalidObjects = []
   foreach(id, htObj in visibleHTObjects)
   {
     local isVisible = htObj.isVisibleByTime()
@@ -189,8 +190,13 @@ g_hud_tutorial_elements.refreshObjects <- function refreshObjects()
         htObj.updateAabb()
 
     if (!isVisible || !htObj.isValid())
-      delete visibleHTObjects[id]
+      invalidObjects.append(id)
+  }
 
+  foreach(id in invalidObjects)
+  {
+    local htObj = visibleHTObjects[id]
+    delete visibleHTObjects[id]
     updateObjTimer(id, htObj)
   }
 

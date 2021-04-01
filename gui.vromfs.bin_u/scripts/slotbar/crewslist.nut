@@ -1,6 +1,8 @@
+local { getSlotbarOverrideData, isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+
 ::g_crews_list <- {
   crewsList = !::g_login.isLoggedIn() ? [] : ::get_crew_info()
-  isSlotbarOverrided = false
+  isCrewListOverrided = false
   version = 0
 
   isNeedToSkipNextProfileUpdate = false
@@ -26,7 +28,7 @@ g_crews_list.get <- function get()
 
 g_crews_list.invalidate <- function invalidate(needForceInvalidate = false)
 {
-  if (needForceInvalidate || !::SessionLobby.isSlotbarOverrided())
+  if (needForceInvalidate || !isSlotbarOverrided())
   {
     crewsList = [] //do not broke previously received crewsList if someone use link on it
     ::broadcastEvent("CrewsListInvalidate")
@@ -38,17 +40,17 @@ g_crews_list.invalidate <- function invalidate(needForceInvalidate = false)
 g_crews_list.refresh <- function refresh()
 {
   version++
-  if (::SessionLobby.isSlotbarOverrided() && !::is_in_flight())
+  if (isSlotbarOverrided() && !::is_in_flight())
   {
-    crewsList = SessionLobby.getSlotbarOverrideData()
-    isSlotbarOverrided = true
+    crewsList = getSlotbarOverrideData()
+    isCrewListOverrided = true
     return
   }
   //we don't know about slotbar refresh in flight,
   //but we know than out of flight it refresh only with profile,
   //so can optimize it updates, and remove some direct refresh calls from outside
   crewsList = ::get_crew_info()
-  isSlotbarOverrided = false
+  isCrewListOverrided = false
 }
 
 g_crews_list._isReinitSlotbarsInProgress <- false
@@ -110,7 +112,7 @@ g_crews_list.onEventOverrideSlotbarChanged <- function onEventOverrideSlotbarCha
 
 g_crews_list.onEventLobbyIsInRoomChanged <- function onEventLobbyIsInRoomChanged(p)
 {
-  if (isSlotbarOverrided)
+  if (isCrewListOverrided)
     invalidate()
 }
 
@@ -129,93 +131,10 @@ g_crews_list.onEventLoadingStateChange <- function onEventLoadingStateChange(p)
   isSlotbarUpdateSuspended = false
 }
 
-g_crews_list.makeCrewsCountryData <- function makeCrewsCountryData(country)
-{
-  return {
-    country = country
-    crews = []
-  }
-}
-
-g_crews_list.addCrewToCountryData <- function addCrewToCountryData(countryData, crewId, countryId, crewUnitName)
-{
-  countryData.crews.append({
-    id = crewId
-    idCountry = countryId
-    idInCountry = countryData.crews.len()
-    country = countryData.country
-
-    aircraft = crewUnitName
-    isEmpty = ::u.isEmpty(crewUnitName) ? 1 : 0
-
-    trainedSpec = {}
-    trained = []
-    skillPoints = 0
-    lockedTillSec = 0
-    isLocked = 0
-  })
-}
-
-g_crews_list.getMissionEditSlotbarBlk <- function getMissionEditSlotbarBlk(missionName)
-{
-  local misBlk = ::get_mission_meta_info(missionName)
-  local editSlotbar = ::getTblValue("editSlotbar", misBlk)
-  //override slotbar does not support keepOwnUnits atm.
-  if (!::u.isDataBlock(editSlotbar) || editSlotbar.keepOwnUnits)
-    return null
-  return editSlotbar
-}
-
-g_crews_list.calcSlotbarOverrideByMissionName <- function calcSlotbarOverrideByMissionName(missionName)
-{
-  local res = null
-  local editSlotbar = getMissionEditSlotbarBlk(missionName)
-  if (!editSlotbar)
-    return res
-
-  res = []
-  local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
-  foreach(country in ::shopCountriesList)
-  {
-    local countryBlk = editSlotbar?[country]
-    if (!::u.isDataBlock(countryBlk) || !countryBlk.blockCount()
-      || !::is_country_available(country))
-      continue
-
-    local countryData = ::g_crews_list.makeCrewsCountryData(country)
-    res.append(countryData)
-    for(local i = 0; i < countryBlk.blockCount(); i++)
-    {
-      local crewBlk = countryBlk.getBlock(i)
-      ::g_crews_list.addCrewToCountryData(countryData, crewId--, res.len() - 1, crewBlk.getBlockName())
-    }
-  }
-  if (!res.len())
-    res = null
-  return res
-}
-
-g_crews_list.getSlotbarOverrideCountriesByMissionName <- function getSlotbarOverrideCountriesByMissionName(missionName)
-{
-  local res = []
-  local editSlotbar = getMissionEditSlotbarBlk(missionName)
-  if (!editSlotbar)
-    return res
-
-  foreach(country in ::shopCountriesList)
-  {
-    local countryBlk = editSlotbar?[country]
-    if (::u.isDataBlock(countryBlk) && countryBlk.blockCount()
-      && ::is_country_available(country))
-      res.append(country)
-  }
-  return res
-}
-
 ::reinitAllSlotbars <- function reinitAllSlotbars()
 {
   ::g_crews_list.reinitSlotbars()
 }
 
 ::subscribe_handler(::g_crews_list, ::g_listener_priority.DEFAULT_HANDLER)
-::g_script_reloader.registerPersistentData("g_crews_list", ::g_crews_list, [ "isSlotbarOverrided" ])
+::g_script_reloader.registerPersistentData("g_crews_list", ::g_crews_list, [ "isCrewListOverrided" ])

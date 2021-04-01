@@ -1,4 +1,5 @@
 local platformModule = require("scripts/clientState/platform.nut")
+local { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
 
 local function clearInfo(scene)
 {
@@ -175,7 +176,7 @@ return function(scene, sessionInfo)
   if (::check_obj(slObj))
   {
     local slotOverrideText = ""
-    if (::SessionLobby.isSlotbarOverrided(sessionInfo))
+    if (isSlotbarOverrided(::SessionLobby.getMissionName(true, sessionInfo)))
       slotOverrideText = ::colorize("userlogColoredText", ::loc("multiplayer/slotbarOverrided"))
 
     slObj.setValue(slotOverrideText)

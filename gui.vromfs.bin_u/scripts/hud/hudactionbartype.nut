@@ -498,11 +498,64 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
           return "#ui/gameuiskin#ship_gunner_state_air_targets"
         case AI_GUNNERS_GROUND_TARGETS:
           return "#ui/gameuiskin#ship_gunner_state_naval_targets"
+        case AI_GUNNERS_SHELL:
+          return "#ui/gameuiskin#bomb_mark"
       }
       return _icon
     }
   }
 
+  AUTO_TURRET_STATE = {
+    code = ::EII_AUTO_TURRET
+    _name = "auto_turret"
+    _icon = "#ui/gameuiskin#ship_gunner_state_hold_fire"
+    _title = ::loc("hotkeys/ID_TOGGLE_AUTOTURRET_TARGETS")
+    isForWheelMenu = @() true
+    getShortcut = @(actionItem, unit = null) "ID_TOGGLE_AUTOTURRET_TARGETS"
+    getIcon = function (killStreakTag = null, unit = null) {
+      switch (::get_autoturret_state())
+      {
+        case AI_GUNNERS_DISABLED:
+          return "#ui/gameuiskin#ship_gunner_state_hold_fire"
+        case AI_GUNNERS_ALL_TARGETS:
+          return "#ui/gameuiskin#autogun_state_fire_at_will"
+        case AI_GUNNERS_AIR_TARGETS:
+          return "#ui/gameuiskin#autogun_state_air_targets"
+        case AI_GUNNERS_GROUND_TARGETS:
+          return "#ui/gameuiskin#ship_gunner_state_naval_targets"
+        case AI_GUNNERS_SHELL:
+          return "#ui/gameuiskin#autogun_state_rocket_targets"
+      }
+      return _icon
+    }
+  }
+
+  SUPPORT_PLANE = {
+    code = ::EII_SUPPORT_PLANE
+    _name = "support_plane"
+    _icon = "#ui/gameuiskin#scout_streak"
+    _title = ::loc("hotkeys/ID_START_SUPPORT_PLANE")
+    isForWheelMenu = @() true
+    getShortcut = @(actionItem, unit = null) "ID_START_SUPPORT_PLANE"
+  }
+
+  STEALTH = {
+    code = ::EII_STEALTH
+    _name = "stealth_activate"
+    _icon = "#ui/gameuiskin#stealth_camo"
+    _title = ::loc("hotkeys/ID_TOGGLE_STEALTH")
+    isForWheelMenu = @() true
+    getShortcut = @(actionItem, unit = null) "ID_TOGGLE_STEALTH"
+  }
+
+  WEAPON_LOCK = {
+    code = ::EII_LOCK
+    _name = "weapon_lock"
+    _icon = "#ui/gameuiskin#torpedo_active_sonar"
+    _title = ::loc("hotkeys/ID_WEAPON_LOCK_TANK")
+    isForWheelMenu = @() true
+    getShortcut = @(actionItem, unit = null) "ID_WEAPON_LOCK_TANK"
+  }
 })
 
 g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code)

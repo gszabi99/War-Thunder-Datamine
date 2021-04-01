@@ -4,6 +4,8 @@
   <<#isTooltipByHold>>
     <<#items>>
     tooltipId:t='<<tooltipId>>'
+    on_hover:t='::gcb.delayedTooltipHover'
+    on_unhover:t='::gcb.delayedTooltipHover'
     <</items>>
   <</isTooltipByHold>>
   <<#isDisabled>>isDisabled:t='yes'<</isDisabled>>

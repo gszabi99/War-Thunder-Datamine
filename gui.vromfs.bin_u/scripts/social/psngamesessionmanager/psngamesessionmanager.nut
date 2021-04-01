@@ -125,10 +125,20 @@ addListenersWithoutEnv({
     }
   }
   LobbyStatusChange = function(p) {
-    if (::SessionLobby.isInRoom())
+    if (!::SessionLobby.isInRoom()) {
+      destroy()
+      return
+    }
+
+    if (!::SessionLobby.isRoomOwner)
       return
 
-    destroy()
+    local sessionId = ::SessionLobby.getExternalId()
+    if (!isEmpty(sessionId) &&
+      (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value))
+    ) {
+      create()
+    }
   }
   LobbySettingsChange = function(p) {
     local sessionId = ::SessionLobby.getExternalId()

@@ -34,6 +34,7 @@ local IlsAtgmTargetPos = [0, 0]
 local IlsAtgmLocked = Watched(false)
 local RwrScale = Watched(1.0)
 local IsLaserDesignatorEnabled = Watched(false)
+local IsWeaponHudVisible = Watched(false)
 local LaserPoint = [0, 0]
 local RadarTargetDist = Watched(0.0)
 
@@ -72,6 +73,7 @@ local planeState = {
   IlsAtgmLocked,
   RwrScale,
   IsLaserDesignatorEnabled,
+  IsWeaponHudVisible,
   LaserPoint,
   RadarTargetDist
 }

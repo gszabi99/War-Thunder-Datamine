@@ -1,10 +1,11 @@
 local radarComponent = require("radarComponent.nut")
 local tws = require("tws.nut")
 local opticAtgmSight = require("opticAtgmSight.nut")
-local {OpticAtgmSightVisible, AtgmTrackerVisible, IsLaserDesignatorEnabled, LaserPoint} = require("planeState.nut")
+local {OpticAtgmSightVisible, AtgmTrackerVisible, IsLaserDesignatorEnabled, LaserPoint, IsWeaponHudVisible} = require("planeState.nut")
 local {IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon} = require("twsState.nut")
 local {hudFontHgt, greenColor, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
 local {safeAreaSizeHud} = require("style/screenState.nut")
+local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
 
 
@@ -103,6 +104,18 @@ local laserPointComponent = @() {
   children = IsLaserDesignatorEnabled.value ? laserPoint : null
 }
 
+local function weaponHud() {
+  return @(){
+    watch = IsWeaponHudVisible
+    children = IsWeaponHudVisible.value
+    ? [
+      aamAim(style, @() greenColor)
+      agmAim(style, @() greenColor)
+    ]
+    : null
+  }
+}
+
 local function Root() {
   return {
     halign = ALIGN_LEFT
@@ -117,6 +130,7 @@ local function Root() {
       OpticAtgmSightVisible.value ? opticAtgmSight(sw(100), sh(100)) : null
       agmAimIndicator
       laserPointComponent
+      weaponHud()
     ]
   }
 }

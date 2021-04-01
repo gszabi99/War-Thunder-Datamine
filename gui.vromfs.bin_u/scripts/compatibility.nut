@@ -105,3 +105,13 @@
   OPTION_COMMANDER_CAMERA_IN_VIEWS = -1
 })
 
+//----------------------------wop_2_5_0_X---------------------------------//
+::apply_compatibilities({
+  EII_AUTO_TURRET = 31
+  get_autoturret_state = @() 0
+  AI_GUNNERS_SHELL = 4
+  EII_SUPPORT_PLANE = 32
+  EII_STEALTH = 33
+  EII_LOCK = 34
+})
+

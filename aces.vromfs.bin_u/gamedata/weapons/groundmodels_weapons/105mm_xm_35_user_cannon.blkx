@@ -262,6 +262,255 @@
       }
     }
   },
+  "105mm_usa_HESH": {
+    "bullet": {
+      "bulletCount": 25,
+      "mass": 14.85,
+      "explosiveType": "comp_a",
+      "explosiveMass": 2.99,
+      "caliber": 0.105,
+      "speed": 731.5,
+      "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "hesh",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.9,
+      "bulletType": "hesh_tank",
+      "slopeEffectPreset": "hesh",
+      "cumulativeSecondaryShattersPreset": "hesh",
+      "useEffectiveArmorThicknessForShatter": true,
+      "fresnel": [0.23,0.1,2.0],
+      "cumulativeByNormal": true,
+      "shellAnimation": "video/shells_animations/hesh.ivf",
+      "bulletName": "105mm_m393a2",
+      "hitPowerMult": 20.0,
+      "relativeVelHitShift": [300.0,1000.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "hitPower": 260.0,
+      "fuseDelayDist": 0.05,
+      "explodeTreshold": 0.1,
+      "explosionEffect": "hit_106_132mm_metal_he",
+      "groundCollisionEffect": "hit_106_132mm_dirt_he",
+      "ricochetEffect": "hit_106_132mm_metal_ap",
+      "waterCollisionEffect": "hit_106_132mm_water",
+      "explosionPatchRadius": 3.5,
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.3]
+        },
+        {
+          "mod3": [30.0,0.5]
+        },
+        {
+          "mod3": [45.0,0.7]
+        },
+        {
+          "mod4": [60.0,1.0]
+        }
+      ],
+      "pressureDamage": {
+        "damageType": "pressure"
+      },
+      "hitpower": {
+        "HitPower0m": [1.0,500.0],
+        "HitPower1000m": [0.9,1000.0],
+        "HitPower1500m": [0.65,1500.0],
+        "HitPower2500m": [0.5,2500.0],
+        "HitPower7000m": [0.0,7000.0]
+      },
+      "armorpower": {
+        "ArmorPower0m": [5.0,10.0],
+        "ArmorPower10000m": [4.0,10000.0]
+      },
+      "damage": {
+        "explosive": {
+          "radius": 0.15,
+          "offset": 0.2
+        },
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.22
+          },
+          {
+            "segment": {
+              "radiusScale": 0.15,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [0.0,29.0],
+              "countPortion": 0.04,
+              "onHitChanceMultFire": 10.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [30.0,69.0],
+              "countPortion": 0.235
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.25,
+              "penetrationScale": 1.7,
+              "damageScale": 1.5,
+              "angles": [70.0,110.0],
+              "countPortion": 0.075,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [111.0,180.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,249.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.25,
+              "penetrationScale": 1.7,
+              "damageScale": 1.5,
+              "angles": [250.0,290.0],
+              "countPortion": 0.075,
+              "onHitChanceMultFire": 50.0
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [291.0,329.0],
+              "countPortion": 0.235
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 0.15,
+              "penetrationScale": 2.0,
+              "damageScale": 1.0,
+              "angles": [330.0,359.0],
+              "countPortion": 0.04,
+              "onHitChanceMultFire": 10.0
+            }
+          }
+        ]
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
+      },
+      "cumulativeDamage": {
+        "armorPower": 127.0,
+        "distance": 0.127,
+        "damage": 400.0
+      },
+      "visual": {
+        "range_percent_of_ammo": [100.0,0.0],
+        "traceFreq": 1,
+        "tracer": "76mmRed",
+        "trail": "black"
+      },
+      "collisions": {
+        "default": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "horLandMesh": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "soil": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "dirt": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "road": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "roadSoil": {
+          "fx": "hit_106_132mm_dirt_he"
+        },
+        "sand": {
+          "fx": "hit_106_132mm_sand_he"
+        },
+        "duneSand": {
+          "fx": "hit_106_132mm_sand_he"
+        },
+        "roadSand": {
+          "fx": "hit_106_132mm_sand_he"
+        },
+        "quickSand": {
+          "fx": "hit_106_132mm_sand_he"
+        },
+        "snow": {
+          "fx": "hit_106_132mm_snow_he"
+        },
+        "ice": {
+          "fx": "hit_106_132mm_snow_he"
+        },
+        "roadSnow": {
+          "fx": "hit_106_132mm_snow_he"
+        },
+        "snowLower": {
+          "fx": "hit_106_132mm_snow_he"
+        },
+        "glass": {
+          "fx": "hit_106_132mm_metal_he"
+        },
+        "wood": {
+          "fx": "hit_106_132mm_wood_he"
+        },
+        "steel": {
+          "fx": "hit_106_132mm_metal_he"
+        },
+        "metal": {
+          "fx": "hit_106_132mm_metal_he"
+        },
+        "buildings": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "verLandMesh": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "concrete": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "rocks": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "rocksSlippery": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "fabric": {
+          "fx": "hit_106_132mm_stone_he"
+        },
+        "stone_snow": {
+          "fx": "hit_106_132mm_snow_he"
+        }
+      }
+    }
+  },
   "105mm_us_M416_Smoke": {
     "bullet": {
       "bulletCount": 40,
@@ -333,7 +582,7 @@
       }
     }
   },
-  "105mm_usa_M735_APDS_FS": {
+  "105mm_NATO_APDS_FS": {
     "bullet": {
       "bulletCount": 40,
       "mass": 3.7,
@@ -484,14 +733,14 @@
       }
     }
   },
-  "105mm_NATO_APDS_FS": {
+  "105mm_usa_M735_APDS_FS": {
     "bullet": {
       "bulletCount": 40,
-      "mass": 3.79,
+      "mass": 3.6,
       "caliber": 0.105,
-      "damageCaliber": 0.033,
-      "ballisticCaliber": 0.033,
-      "speed": 1455.0,
+      "damageCaliber": 0.026,
+      "ballisticCaliber": 0.026,
+      "speed": 1509.0,
       "maxDistance": 20000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
@@ -504,8 +753,8 @@
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "105mm_dm23",
-      "Cx": 0.24,
+      "bulletName": "105mm_c76a1",
+      "Cx": 0.45,
       "relativeVelArmorShift": [200.0,1000.0],
       "explosionEffect": "hit_106_132mm_dirt_ap",
       "groundCollisionEffect": "hit_106_132mm_dirt_ap",
@@ -539,13 +788,13 @@
         "HitPower10000m": [0.8,10000.0]
       },
       "armorpower": {
-        "ArmorPower0m": [337.0,10.0],
-        "ArmorPower100m": [335.0,100.0],
-        "ArmorPower500m": [330.0,500.0],
-        "ArmorPower1000m": [322.0,1000.0],
-        "ArmorPower1500m": [314.0,1500.0],
-        "ArmorPower2000m": [306.0,2000.0],
-        "ArmorPower3000m": [290.0,3000.0],
+        "ArmorPower0m": [334.0,10.0],
+        "ArmorPower100m": [330.0,100.0],
+        "ArmorPower500m": [323.0,500.0],
+        "ArmorPower1000m": [314.0,1000.0],
+        "ArmorPower1500m": [306.0,1500.0],
+        "ArmorPower2000m": [297.0,2000.0],
+        "ArmorPower3000m": [279.0,3000.0],
         "ArmorPower10000m": [10.0,10000.0],
         "ArmorPower20000m": [0.0,20000.0]
       },

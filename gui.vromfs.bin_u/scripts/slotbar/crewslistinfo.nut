@@ -26,7 +26,7 @@ local function getMyCrewUnitsState(country = null) {
           unitsStateCached.crewAirs[c.country].append(crew.aircraft)
           if (c.country == country && unitsStateCached.rank < air.rank)
             unitsStateCached.rank = air.rank
-          if (::wp_get_repair_cost(crew.aircraft))
+          if (::wp_get_repair_cost(crew.aircraft) > 0)
             unitsStateCached.brokenAirs.append(crew.aircraft)
         }
       }

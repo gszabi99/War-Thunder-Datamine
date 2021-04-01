@@ -9,6 +9,9 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
 local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { resetSlotbarOverrided, updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
+local { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/events/eventInfo.nut")
+
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -139,10 +142,20 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateWindow()
   {
+    local event = ::events.getEvent(curEventId)
+    local showOverrideSlotbar = needShowOverrideSlotbar(::events.getEvent(curEventId))
+    if (showOverrideSlotbar)
+      updateOverrideSlotbar(::events.getEventMission(curEventId))
+    else
+      resetSlotbarOverrided()
     createSlotbar({
       eventId = curEventId
       afterSlotbarSelect = updateButtons
       afterFullUpdate = updateButtons
+      needPresetsPanel = !showOverrideSlotbar
+      showAlwaysFullSlotbar = true
+      customViewCountryData = getCustomViewCountryData(event)
+      needCheckUnitUnlock = showOverrideSlotbar
     })
     showEventDescription(curEventId)
     updateButtons()
@@ -403,6 +416,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onDestroy()
   {
     seenEvents.markSeen(::events.getEventsForEventsWindow())
+    resetSlotbarOverrided()
   }
 
   function getHandlerRestoreData()

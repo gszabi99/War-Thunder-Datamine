@@ -238,32 +238,22 @@
           }
         }
       ],
-      "else_actions": [
-        {
-          "comment": {
-            "value": "PVP режим, обе команды равноправны"
-          }
+      "else_actions": {
+        "comment": {
+          "value": "PVP режим, обе команды равноправны"
         },
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "lbt_battle_t1_reference_units_ratio"
-            },
-            {
-              "var": "lbt_battle_t2_reference_units_ratio"
-            }
-          ]
-        },
-        {
-          "varSetInt": {
-            "value": 2,
+        "varSetInt": [
+          {
+            "value": 1
+          },
+          {
+            "var": "lbt_battle_t1_reference_units_ratio"
+          },
+          {
             "var": "lbt_battle_t2_reference_units_ratio"
           }
-        }
-      ]
+        ]
+      }
     },
     "lbt_matching": {
       "isCategory": true,
@@ -1566,6 +1556,10 @@
             },
             "triggerEnable": {
               "target": "lbt_battle_t1_spawn_end"
+            },
+            "missionSetTimeSpeed": {
+              "speed": 0.0,
+              "realtimeTriggers": false
             }
           }
         },

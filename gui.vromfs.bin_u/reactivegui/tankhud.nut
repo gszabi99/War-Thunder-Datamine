@@ -1,5 +1,6 @@
 local radarComponent = require("radarComponent.nut")
 local aamAim = require("rocketAamAim.nut")
+local agmAim = require("agmAim.nut")
 local tws = require("tws.nut")
 local {IsMlwsLwsHudVisible} = require("twsState.nut")
 local sightIndicators = require("hud/tankSightIndicators.nut")
@@ -29,6 +30,7 @@ local function Root() {
     children = [
       radarComponent.mkRadar()
       aamAim(styleAamAim, getColor)
+      agmAim(styleAamAim, getColor)
       sightIndicators(styleAamAim, getColor)
     ]
   }

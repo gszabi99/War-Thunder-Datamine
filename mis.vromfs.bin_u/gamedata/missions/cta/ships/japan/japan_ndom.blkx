@@ -426,65 +426,103 @@
   "dialogs": [],
   "airfields": [],
   "effects": [],
-  "units": {
-    "ships": {
-      "name": "t1_player01",
-      "tm": [
-        [-0.440087,0.0,0.897955],
-        [0.0,1.0,0.0],
-        [-0.897955,0.0,-0.440087],
-        [8303.03,226.184,-7743.92]
-      ],
-      "unit_class": "ussr_destroyer_moskva",
-      "objLayer": 1,
-      "closed_waypoints": false,
-      "isShipSpline": false,
-      "shipTurnRadius": 100.0,
-      "weapons": "",
-      "bullets0": "",
-      "bullets1": "",
-      "bullets2": "",
-      "bullets3": "",
-      "bulletsCount0": 0,
-      "bulletsCount1": 0,
-      "bulletsCount2": 0,
-      "bulletsCount3": 0,
-      "props": {
-        "army": 2,
-        "count": 1,
-        "formation_type": "rows",
-        "formation_div": 3,
-        "formation_step": [2.5,2.0],
-        "formation_noise": [0.1,0.1],
-        "uniqueName": "",
-        "attack_type": "fire_at_will"
-      },
-      "way": []
+  "units": [
+    {
+      "ships": {
+        "name": "t1_player01",
+        "tm": [
+          [-0.440087,0.0,0.897955],
+          [0.0,1.0,0.0],
+          [-0.897955,0.0,-0.440087],
+          [8303.03,226.184,-7743.92]
+        ],
+        "unit_class": "ussr_destroyer_moskva",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
     },
-    "squad": {
-      "name": "ndom_buoy_circles_squad",
-      "tm": [
-        [1.0,0.0,0.0],
-        [0.0,1.0,0.0],
-        [0.0,0.0,1.0],
-        [2939.21,47.2988,-1273.6]
-      ],
-      "props": [
-        {
-          "object_marking": 0
-        },
-        {
-          "squad_members": "ndom_buoy_circle_01"
-        },
-        {
-          "squad_members": "ndom_buoy_circle_02"
-        },
-        {
-          "squad_members": "ndom_buoy_circle_03"
+    {
+      "squad": {
+        "name": "ndom_buoy_circles_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2939.21,47.2988,-1273.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ndom_buoy_circle_01"
+          },
+          {
+            "squad_members": "ndom_buoy_circle_02"
+          },
+          {
+            "squad_members": "ndom_buoy_circle_03"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_01",
+        "tm": [
+          [0.930417,0.0,-0.366501],
+          [0.0,1.0,0.0],
+          [0.366501,0.0,0.930417],
+          [2639.7,-4.5,1707.3]
+        ],
+        "unit_class": "det_container_ship_triple_e_class_b",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
         }
-      ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2645.7,0.0,1705.55]
+        ],
+        "unit_class": "noTreeObjectGroup10",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
     }
-  },
+  ],
   "areas": {
     "briefing_t1_shipspawn01": {
       "type": "Point",

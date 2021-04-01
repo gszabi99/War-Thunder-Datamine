@@ -162,6 +162,16 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_AUTOTURRET_TARGETS"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
+  {
+    id = "ID_SELECT_AUTOTURRET_TARGET"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
+  {
     id = "ID_IRCM_SWITCH_TANK"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
@@ -505,6 +515,16 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
     showFunc = @() ::has_feature("ActiveScouting")
+  }
+  {
+    id = "ID_START_SUPPORT_PLANE"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
+  }
+  {
+    id = "ID_TOGGLE_STEALTH"
+    checkGroup = ctrlGroups.TANK
+    checkAssign = false
   }
   {
     id = "ID_RANGEFINDER"

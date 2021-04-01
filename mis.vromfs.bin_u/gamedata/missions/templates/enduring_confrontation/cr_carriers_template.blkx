@@ -501,6 +501,7 @@
               "resetStrictSpawnIndex": false,
               "forceCreate": false,
               "replaceAreas": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@cr_t1_carrier_name",
               "team": "A",
               "object": "@cr_t1_carrier_name",
@@ -661,6 +662,7 @@
               "resetStrictSpawnIndex": false,
               "forceCreate": false,
               "replaceAreas": false,
+              "ignoreTeamsOnReuse": false,
               "target": "@cr_t2_carrier_name",
               "team": "B",
               "object": "@cr_t2_carrier_name",
@@ -1383,11 +1385,20 @@
             }
           },
           {
-            "varSetReal": {
-              "value": 0.0,
-              "var": "cr_t1_detection_range",
-              "input_var": "cr_detection_base_range"
-            }
+            "varSetReal": [
+              {
+                "value": 0.0
+              },
+              {
+                "var": "cr_t1_detection_range"
+              },
+              {
+                "var": "cr_t2_detection_range"
+              },
+              {
+                "input_var": "cr_detection_base_range"
+              }
+            ]
           },
           {
             "comment": {
@@ -1401,6 +1412,15 @@
               "var": "cr_t1_detection_range",
               "use_variable": true,
               "var_value": "lpt_t1_detection_bonus"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "cr_t2_detection_range",
+              "use_variable": true,
+              "var_value": "lpt_t2_detection_bonus"
             }
           },
           {
@@ -1446,15 +1466,33 @@
             }
           },
           {
-            "varSetReal": {
-              "value": 0.0,
-              "var": "cr_t2_detection_range",
-              "input_var": "cr_detection_base_range"
-            }
+            "varSetReal": [
+              {
+                "value": 0.0
+              },
+              {
+                "var": "cr_t1_detection_range"
+              },
+              {
+                "var": "cr_t2_detection_range"
+              },
+              {
+                "input_var": "cr_detection_base_range"
+              }
+            ]
           },
           {
             "comment": {
               "value": "добавляем значение от корректировщика"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "cr_t1_detection_range",
+              "use_variable": true,
+              "var_value": "lpt_t1_detection_bonus"
             }
           },
           {

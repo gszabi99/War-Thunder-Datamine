@@ -1,3 +1,5 @@
+local { isSlotbarOverrided } = require("scripts/slotbar/slotbarOverride.nut")
+
 class ::gui_handlers.VehiclesWindow extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType = handlerType.MODAL
@@ -34,7 +36,7 @@ class ::gui_handlers.VehiclesWindow extends ::gui_handlers.BaseGuiHandlerWT
 ::update_vehicle_info_button <- function update_vehicle_info_button(scene, room)
 {
   ::showBtn("vehicles_info_button_block",
-    !::SessionLobby.isSlotbarOverrided(room)
+    !isSlotbarOverrided(::SessionLobby.getMissionName(true, room))
       && !::events.isEventAllUnitAllowed(::SessionLobby.getPublicData(room)),
     scene
   )

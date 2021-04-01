@@ -6,6 +6,7 @@ local { AMMO,
         getAmmoAmount,
         getAmmoMaxAmount,
         getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+local { getMissionEditSlotbarBlk } = require("scripts/slotbar/slotbarOverride.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
 global const UNIT_WEAPONS_WARNING = 1
@@ -777,7 +778,7 @@ local function getOverrideBullets(unit)
 {
   if (!unit)
     return null
-  local editSlotbarBlk = ::g_crews_list.getMissionEditSlotbarBlk(::get_current_mission_name())
+  local editSlotbarBlk = getMissionEditSlotbarBlk(::get_current_mission_name())
   local editSlotbarUnitBlk = editSlotbarBlk?[unit.shopCountry]?[unit.name]
   return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
 }

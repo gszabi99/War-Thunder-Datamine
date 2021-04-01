@@ -179,6 +179,7 @@ local IsTransmissionOilAlert = []
 local IsMainHudVisible = Watched(false)
 local IsSightHudVisible = Watched(false)
 local IsPilotHudVisible = Watched(false)
+local IsWeaponHudVisible = Watched(false)
 local IsGunnerHudVisible = Watched(false)
 local IsMfdEnabled = Watched(false)
 local IsIlsEnabled = Watched(false)
@@ -319,6 +320,7 @@ local helicopterState = {
   IsMainHudVisible,
   IsSightHudVisible,
   IsPilotHudVisible,
+  IsWeaponHudVisible,
   IsGunnerHudVisible,
   IsMfdEnabled,
   IsIlsEnabled,
