@@ -279,6 +279,18 @@
       "conditions": [],
       "actions": [
         {
+          "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "battle_area"
+          }
+        },
+        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "",
             "spawnEffect": false,
@@ -2135,6 +2147,17 @@
         [-69.9304,0.0,187.376],
         [0.0,2000.0,0.0]
       ],
+      "props": []
+    },
+    "battle_area": {
+      "type": "Cylinder",
+      "tm": [
+        [8000.0,0.0,0.0],
+        [0.0,3500.0,0.0],
+        [0.0,0.0,8000.0],
+        [0.0,-100.0,0.0]
+      ],
+      "objLayer": 0,
       "props": []
     }
   },
