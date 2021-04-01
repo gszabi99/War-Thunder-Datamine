@@ -131,6 +131,7 @@ local function getChallengeView(config, paramsCfg = {}) {
     needShowProgressBar = progressData?.show
     progressBarValue = progressBarValue.tointeger()
     isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
+    isFavorite = (id in ::g_unlocks.getFavoriteUnlocks()) ? "yes" : "no"
   }
 }
 

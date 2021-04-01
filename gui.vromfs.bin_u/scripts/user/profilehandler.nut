@@ -1062,27 +1062,8 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     })
   }
 
-  function unlockToFavorites(obj)
-  {
-    local unlockId = obj?.unlockId
-
-    if (::u.isEmpty(unlockId))
-      return
-
-    if (!::g_unlocks.canAddFavorite()
-      && obj.getValue() // Don't notify if value set to false
-      && !(unlockId in ::g_unlocks.getFavoriteUnlocks())) //Don't notify if unlock wasn't in list already
-    {
-      ::g_popups.add("", ::colorize("warningTextColor", ::loc("mainmenu/unlockAchievements/limitReached", {num = ::g_unlocks.favoriteUnlocksLimit})))
-      obj.setValue(false)
-      return
-    }
-
-    obj.tooltip = obj.getValue() ?
-      ::g_unlocks.addUnlockToFavorites(unlockId) : ::g_unlocks.removeUnlockFromFavorites(unlockId)
-    ::g_unlock_view.fillUnlockFavCheckbox(obj)
-    updateFavoritesCheckboxesInList()
-  }
+  unlockToFavorites = @(obj) ::g_unlocks.unlockToFavorites(obj,
+    ::Callback(updateFavoritesCheckboxesInList, this))
 
   function updateFavoritesCheckboxesInList()
   {
@@ -1096,7 +1077,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       if (!::check_obj(unlockObj))
         continue
 
-      local cbObj = unlockObj.findObject("checkbox-favorites")
+      local cbObj = unlockObj.findObject("checkbox_favorites")
       if (::check_obj(cbObj))
         cbObj.inactiveColor = (canAddFav || (unlockId in ::g_unlocks.getFavoriteUnlocks())) ? "no" : "yes"
     }
@@ -1109,7 +1090,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     if (index < 0 || index >= childrenCount)
       return
 
-    local checkBoxObj = obj.getChild(index).findObject("checkbox-favorites")
+    local checkBoxObj = obj.getChild(index).findObject("checkbox_favorites")
     if (!::check_obj(checkBoxObj))
       return
 
@@ -1250,7 +1231,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local condView = []
     append_condition_item(config, 0, condView, true, isUnlocked)
 
-    ::showBtn("checkbox-favorites", true, containerObj)
+    ::showBtn("checkbox_favorites", true, containerObj)
     ::g_unlock_view.fillUnlockFav(name, containerObj)
     showSceneBtn("unlocks_list", false)
 

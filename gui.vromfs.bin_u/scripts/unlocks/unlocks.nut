@@ -1912,7 +1912,7 @@ g_unlocks.addUnlockToFavorites <- function addUnlockToFavorites(unlockId)
   getFavoriteUnlocks().addBlock(unlockId)
   getFavoriteUnlocks()[unlockId] = ::g_unlocks.getUnlockById(unlockId)
   saveFavorites()
-  ::broadcastEvent("FavoriteUnlocksChanged")
+  ::broadcastEvent("FavoriteUnlocksChanged", {changedId = unlockId, value = true})
 }
 
 g_unlocks.removeUnlockFromFavorites <- function removeUnlockFromFavorites(unlockId)
@@ -1921,7 +1921,7 @@ g_unlocks.removeUnlockFromFavorites <- function removeUnlockFromFavorites(unlock
   {
     getFavoriteUnlocks().removeBlock(unlockId)
     saveFavorites()
-    ::broadcastEvent("FavoriteUnlocksChanged")
+    ::broadcastEvent("FavoriteUnlocksChanged", {changedId = unlockId, value = false})
   }
 }
 
@@ -1933,6 +1933,30 @@ g_unlocks.saveFavorites <- function saveFavorites()
     if( ! (unlockId in saveBlk))
       saveBlk[unlockId] = true
   ::save_local_account_settings(FAVORITE_UNLOCKS_LIST_SAVE_ID, saveBlk)
+}
+
+g_unlocks.unlockToFavorites <- function unlockToFavorites(obj, updateCb = null)
+{
+  local unlockId = obj?.unlockId
+
+  if (::u.isEmpty(unlockId))
+    return
+
+  if (!canAddFavorite()
+    && obj.getValue() // Don't notify if value set to false
+    && !(unlockId in getFavoriteUnlocks())) //Don't notify if unlock wasn't in list already
+  {
+    ::g_popups.add("", ::colorize("warningTextColor",
+      ::loc("mainmenu/unlockAchievements/limitReached", {num = ::g_unlocks.favoriteUnlocksLimit})))
+    obj.setValue(false)
+    return
+  }
+
+  obj.tooltip = obj.getValue() ?
+    addUnlockToFavorites(unlockId) : removeUnlockFromFavorites(unlockId)
+  ::g_unlock_view.fillUnlockFavCheckbox(obj)
+  if(updateCb)
+    updateCb()
 }
 
 g_unlocks.isVisibleByTime <- function isVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimit = true)

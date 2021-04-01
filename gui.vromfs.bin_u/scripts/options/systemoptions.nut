@@ -758,6 +758,7 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, quality)
     }
     onChanged = "latencyClick"
+    isVisible = @() ::has_feature("ReflexLowLatency")
   }
   texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
     init = function(blk, desc) {

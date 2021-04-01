@@ -368,7 +368,7 @@ g_unlock_view.getRewardText <- function getRewardText(unlockConfig, stageNum)
 
 g_unlock_view.fillUnlockFav <- function fillUnlockFav(unlockId, unlockObj)
 {
-  local checkboxFavorites = unlockObj.findObject("checkbox-favorites")
+  local checkboxFavorites = unlockObj.findObject("checkbox_favorites")
   if( ! ::checkObj(checkboxFavorites))
     return
   checkboxFavorites.unlockId = unlockId

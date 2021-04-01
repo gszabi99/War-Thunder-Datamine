@@ -276,6 +276,7 @@ local getItemBlockView = ::kwarg(
         hasIncrasedAmountTextSize = count != null
         showTooltip = !itemConfig.isDisguised
         enableBackground = itemConfig.hasItemBackground
+        onHover = "onItemHover"
       }))]
       blockPos = overridePos ?? sizeAndPosViewConfig.itemPos({
         itemSizes = itemSizes
@@ -804,8 +805,13 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     local id = buttonObj?.holderId ?? "-1"
     local item = itemsList?[id.tointeger()]
     local itemObj = findItemObj(id)
-    setFocusItem(item)
     doMainAction(item, itemObj)
+  }
+
+  function onItemHover(obj) {
+    local id = obj?.holderId ?? "-1"
+    local item = itemsList?[id.tointeger()]
+    setFocusItem(item)
   }
 
   function onMainAction()

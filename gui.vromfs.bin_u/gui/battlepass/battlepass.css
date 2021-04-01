@@ -224,3 +224,9 @@ battlePassStamp {
   background-image:#ui/gameuiskin#battle_pass_stamp.svg;
   background-color:@white;
 }
+
+expandable[selected=yes] > selImg > header > CheckBox[showOnSelect=hover],
+expandable:hover > selImg > header > CheckBox[showOnSelect=hover] {
+  display:show;
+  enable:yes;
+}

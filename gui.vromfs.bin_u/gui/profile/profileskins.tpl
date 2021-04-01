@@ -57,7 +57,7 @@
       margin-top:t='1@blockInterval'
 
       CheckBox {
-        id:t='checkbox-favorites'
+        id:t='checkbox_favorites'
         text:t='#mainmenu/UnlockAchievementsToFavorite'
         smallFont:t='yes'
         tooltip:t=''

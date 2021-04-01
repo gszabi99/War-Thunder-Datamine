@@ -44,100 +44,88 @@
     }
   },
   {
-    "tdiv": [
-      {
-        "size": "pw, fh"
-      },
-      {
-        "id": "shop_items_visible_div"
-      },
-      {
-        "overflow-y": "auto"
-      },
-      {
-        "scrollbarShortcuts": "yes"
-      },
-      {
-        "total-input-transparent": "yes"
-      },
-      {
-        "tdiv": [
-          {
-            "id": "shop_items_scroll_div"
-          },
-          {
-            "width": "fw"
-          },
-          {
+    "tdiv": {
+      "size": "pw, fh",
+      "id": "shop_items_visible_div",
+      "overflow-y": "auto",
+      "scrollbarShortcuts": "yes",
+      "total-input-transparent": "yes",
+      "tdiv": [
+        {
+          "id": "shop_items_scroll_div"
+        },
+        {
+          "width": "fw"
+        },
+        {
+          "tdiv": {
+            "id": "shop_useful_width",
+            "pos": "0, 0",
+            "position": "absolute",
+            "size": "pw-@scrollBarSize, 0"
+          }
+        },
+        {
+          "tdiv": {
+            "id": "shopTable_air_plates",
+            "pos": "0, 0",
+            "position": "absolute",
+            "height": "ph",
+            "flow": "vertical"
+          }
+        },
+        {
+          "tdiv": {
+            "id": "shop_items_pos_div",
+            "left": "(pw-w)/2",
+            "padding": "1@modBlockTierNumHeight, 0, 1@scrollBarSize, 0",
+            "top": "1@shop_h_extra_first",
+            "position": "relative",
             "tdiv": {
-              "id": "shop_useful_width",
-              "pos": "0, 0",
-              "position": "absolute",
-              "size": "pw-@scrollBarSize, 0"
-            }
-          },
-          {
-            "tdiv": {
-              "id": "shopTable_air_plates",
-              "pos": "0, 0",
+              "id": "shopTable_air_rows",
+              "pos": "1@modBlockTierNumHeight, 0",
               "position": "absolute",
               "height": "ph",
               "flow": "vertical"
-            }
-          },
-          {
-            "tdiv": {
-              "id": "shop_items_pos_div",
-              "left": "(pw-w)/2",
-              "padding": "1@modBlockTierNumHeight, 0, 1@scrollBarSize, 0",
-              "top": "1@shop_h_extra_first",
-              "position": "relative",
-              "tdiv": {
-                "id": "shopTable_air_rows",
-                "pos": "1@modBlockTierNumHeight, 0",
-                "position": "absolute",
-                "height": "ph",
-                "flow": "vertical"
-              },
-              "shopTable": {
-                "id": "shop_items_list",
-                "behavior": "posNavigator",
-                "navigatorShortcuts": "yes",
-                "alwaysShowBorder": "yes",
-                "moveY": "linear",
-                "on_click": "onUnitClick",
-                "on_r_click": "onUnitRightClick",
-                "on_activate": "onUnitActivate",
-                "on_select": "onUnitSelect",
-                "on_dbl_click": "onUnitDblClick",
-                "on_pushed": "::gcb.delayedTooltipListPush",
-                "on_hold_start": "::gcb.delayedTooltipListHoldStart",
-                "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
-              }
-            }
-          },
-          {
-            "tdiv": {
-              "id": "shop_dark_screen",
-              "pos": "0, 0",
-              "position": "absolute",
-              "size": "pw, ph",
-              "total-input-transparent": "yes",
-              "display": "hide"
+            },
+            "shopTable": {
+              "id": "shop_items_list",
+              "behavior": "posNavigator",
+              "navigatorShortcuts": "yes",
+              "alwaysShowBorder": "yes",
+              "moveY": "linear",
+              "on_click": "onUnitClick",
+              "on_r_click": "onUnitRightClick",
+              "on_activate": "onUnitActivate",
+              "on_select": "onUnitSelect",
+              "on_dbl_click": "onUnitDblClick",
+              "on_pushed": "::gcb.delayedTooltipListPush",
+              "on_hold_start": "::gcb.delayedTooltipListHoldStart",
+              "on_hold_stop": "::gcb.delayedTooltipListHoldStop"
             }
           }
-        ]
-      },
-      {
-        "tdiv": {
-          "id": "tier_arrows_div",
-          "pos": "0, 1@shop_h_extra_first",
-          "position": "absolute",
-          "width": "1@modBlockTierNumHeight",
-          "height": "ph"
+        },
+        {
+          "tdiv": {
+            "id": "shop_dark_screen",
+            "pos": "0, 0",
+            "position": "absolute",
+            "size": "pw, ph",
+            "total-input-transparent": "yes",
+            "display": "hide"
+          }
+        },
+        {
+          "tdiv": {
+            "id": "tier_arrows_div",
+            "pos": "0, 1@shop_h_extra_first",
+            "position": "absolute",
+            "width": "1@modBlockTierNumHeight",
+            "height": "ph"
+          }
         }
-      }
-    ]
+      ]
+    }
   },
   {
     "navBar": []

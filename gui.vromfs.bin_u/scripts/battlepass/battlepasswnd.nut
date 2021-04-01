@@ -326,6 +326,8 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     }]))
   }
 
+  unlockToFavorites = @(obj) ::g_unlocks.unlockToFavorites(obj)
+
   function updateChallengesSheet(obj, challenges) {
     if (getCurSheetObjId() != "challenges_sheet")
       return
@@ -369,12 +371,41 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     return obj.getChild(value)?.id ?? ""
   }
 
+  function onEventFavoriteUnlocksChanged(params)
+  {
+    if (getCurSheetObjId() != "challenges_sheet")
+      return
+
+    local listBoxObj = scene.findObject("challenges_list")
+    if (!listBoxObj.isValid())
+      return
+
+    for (local i = 0; i < listBoxObj.childrenCount(); i++)
+    {
+      local challengeObj = listBoxObj.getChild(i)
+      if(params.changedId == challengeObj?.id)
+      {
+        local cbObj = challengeObj.findObject("checkbox_favorites")
+        if(cbObj.isValid())
+          cbObj.setValue(params.value)
+      }
+    }
+  }
+
   function onChallengeSelect(obj) {
     curChallengeId = getSelectedChildId(obj)
     if (::show_console_buttons && !isFillingChallengesList) {
       guiScene.applyPendingChanges(false)
       ::move_mouse_on_child_by_value(obj)
     }
+  }
+
+  function challengeToFavoritesByActivateItem(obj)
+  {
+    curChallengeId = getSelectedChildId(obj)
+    local checkBoxObj = obj.findObject(curChallengeId)?.findObject("checkbox_favorites")
+    if (checkBoxObj?.isValid())
+      checkBoxObj.setValue(!checkBoxObj.getValue())
   }
 
   function getCurrentConfig() {

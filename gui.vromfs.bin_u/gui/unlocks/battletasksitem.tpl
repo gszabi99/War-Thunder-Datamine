@@ -40,7 +40,27 @@ expandable {
         normalFont:t='yes'
         <</isLowWidthScreen>>
       }
-
+      <<#isFavorite>>
+      CheckBox {
+        id:t='checkbox_favorites'
+        unlockId :t='<<id>>'
+        pos:t='0, 50%ph-50%h'
+        position:t='relative'
+        showOnSelect:t='hover'
+        text:t='#mainmenu/UnlockAchievementsToFavorite'
+        value:t='<<isFavorite>>'
+        on_change_value:t='unlockToFavorites'
+        btnName:t=''
+        skip-navigation:t='yes'
+        display:t = 'hide'
+        enable:t='no'
+        CheckBoxImg{}
+        ButtonImg{
+          showOnSelect:t='hover'
+          btnName:t='A'
+        }
+      }
+      <</isFavorite>>
       <<#taskHeaderCondition>>
       textareaNoTab {
         text:t='<<taskHeaderCondition>>'
