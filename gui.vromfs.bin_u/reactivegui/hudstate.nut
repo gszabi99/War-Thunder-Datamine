@@ -6,6 +6,7 @@ local hudState = persist("hudState", @(){
   playerArmyForHud = Watched(-1)
   isPlayingReplay = Watched(false)
   isVisibleDmgIndicator = Watched(false)
+  dmgIndicatorStates = Watched({ size = [0, 0], pos = [0, 0]})
 })
 
 
