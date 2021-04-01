@@ -1,4 +1,5 @@
 local interopGen = require("reactiveGui/interopGen.nut")
+local { floor } = require("std/math.nut")
 
 local IsCommanderViewAimModeActive = Watched(false)
 
@@ -7,8 +8,8 @@ local ActiveProtectionSystemModulesCount = Watched(0)
 
 local getModuleDefaultParams = @() {
   shotCountRemain = Watched(0)
-  posX = Watched(0.0)
-  posY = Watched(0.0)
+  emitterPosX = Watched(0.0)
+  emitterPosY = Watched(0.0)
   horAnglesX = Watched(0.0)
   horAnglesY = Watched(0.0)
   timeToReady = Watched(0.0)
@@ -38,14 +39,14 @@ interopGen({
   postfix = "Update"
 })
 
-::interop.updateActiveProtectionSystem <- function (shotCountRemain, posX, posY, horAnglesX, horAnglesY, timeToReady, index) {
+::interop.updateActiveProtectionSystem <- function (shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
   local module = activeProtectionSystemModules[index]
   module.shotCountRemain(shotCountRemain)
-  module.posX(posX)
-  module.posY(posY)
-  module.horAnglesX(horAnglesX)
-  module.horAnglesY(horAnglesY)
-  module.timeToReady(timeToReady)
+  module.emitterPosX(floor(emitterPosX*100)/100)
+  module.emitterPosY(floor(emitterPosY*100)/100)
+  module.horAnglesX(floor(horAnglesX*100)/100)
+  module.horAnglesY(floor(horAnglesY*100)/100)
+  module.timeToReady(floor(timeToReady*100)/100)
 }
 
 return tankState

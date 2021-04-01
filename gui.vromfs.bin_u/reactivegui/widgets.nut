@@ -68,7 +68,7 @@ local widgetsMap = {
     children = changelog
   },
 
-  [DargWidgets.DAMAGE_PANEL] = tankHud.tankTws
+  [DargWidgets.DAMAGE_PANEL] = tankHud.tankDmgIndicator
 }
 
 
