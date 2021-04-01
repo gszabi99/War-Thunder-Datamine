@@ -574,19 +574,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function updateMissionProgressPlace()
   {
-    local obj = scene.findObject("mission_progress_place")
-    if (!obj?.isValid())
-      return
-
-    local isVisible = isProgressVisible()
-    if (obj.isVisible() == isVisible)
-      return
-
-    obj.show(isVisible)
-    guiScene.applyPendingChanges(false)
-    obj = scene.findObject("xray_render_dmg_indicator")
-    if (obj?.isValid())
-      ::call_darg("hudDmgIndicatorStatesUpdate", { size = obj.getSize(), pos = obj.getPos()})
+    showSceneBtn("mission_progress_place", isProgressVisible())
   }
 }
 
@@ -723,6 +711,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   widgetsList = [
     {
       widgetId = DargWidgets.DAMAGE_PANEL
+      placeholderId = "xray_render_dmg_indicator"
     }
   ]
 
@@ -740,9 +729,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
     ::g_hud_event_manager.subscribe("DamageIndicatorToggleVisbility",
       @(eventData) updateDamageIndicatorBackground(),
-      this)
-    ::g_hud_event_manager.subscribe("DamageIndicatorSizeChanged",
-      function(ed) { updateDmgIndicatorSize() },
       this)
   }
 
@@ -766,12 +752,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   function updateShowHintsNest()
   {
     showSceneBtn("actionbar_hints_nest", true)
-  }
-
-  function updateDmgIndicatorSize() {
-    local obj = scene.findObject("xray_render_dmg_indicator")
-    if (obj?.isValid())
-      ::call_darg("hudDmgIndicatorStatesUpdate", { size = obj.getSize(), pos = obj.getPos()})
   }
 }
 
