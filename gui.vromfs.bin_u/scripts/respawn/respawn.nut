@@ -24,6 +24,7 @@ local { checkInRoomMembers } = require("scripts/contacts/updateContactsStatus.nu
 local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInitialPos.nut")
 local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+local { getEventSlotbarHint } = require("scripts/events/eventInfo.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -553,7 +554,10 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
       {
         slotbarInited = false
         beforeRefreshSlotbar()
-        createSlotbar(getSlotbarParams(), "flight_menu_bgd")
+        createSlotbar(getSlotbarParams()
+          .__update({ slotbarHintText = getEventSlotbarHint(
+            ::SessionLobby.getRoomEvent(), ::get_local_player_country()) }),
+          "flight_menu_bgd")
         afterRefreshSlotbar()
         slotReadyAtHostMask = getCrewSlotReadyMask()
         slotbarInited = true

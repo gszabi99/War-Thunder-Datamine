@@ -42,6 +42,22 @@ massTransp {
         on_hold_start:t='::gcb.delayedTooltipListHoldStart'
         on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
       }
+
+      tdiv {
+        id:t='slotbarHint'
+        size:t='2.5@slot_width, @slot_height + 1@slotbar_pad_top + 1@slotbar_pad_bottom'
+        position:t='relative'
+        pos:t='0, 1@slotbarInvisPad'
+        padding:t='@slot_interval, 0'
+        display:t='hide'
+        textareaNoTab {
+          id:t='slotbarHintText'
+          width:t='pw'
+          position:t='relative'
+          top:t='0.5ph-0.5h'
+          text-align:t='center'
+        }
+      }
     }
   }
 }

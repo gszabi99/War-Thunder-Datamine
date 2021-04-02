@@ -92,6 +92,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   needFullSlotBlock = false
   showAlwaysFullSlotbar = false
   needCheckUnitUnlock = false
+  slotbarHintText = ""
 
   static function create(params)
   {
@@ -527,6 +528,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillCountryContent(countryData, tblObj)
   {
+    updateSlotbarHint()
     if (loadedCountries?[countryData.id] == ::g_crews_list.version
       || !::check_obj(tblObj))
       return
@@ -1381,5 +1383,11 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventUnitWeaponChanged(p) {
     updateWeaponryData(getSlotsData(p.unitName))
+  }
+
+  function updateSlotbarHint() {
+    local obj = showSceneBtn("slotbarHint", slotbarHintText != "")
+    if (obj != null && slotbarHintText != "")
+     obj.findObject("slotbarHintText").setValue(slotbarHintText)
   }
 }
