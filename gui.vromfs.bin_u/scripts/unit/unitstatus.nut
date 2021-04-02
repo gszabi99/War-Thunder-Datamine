@@ -153,7 +153,7 @@ local function bombNbr(unit) {
   return unit.getAvailableSecondaryWeapons().bombsNbr
 }
 
-local isRequireUnlockForUnit = @(unit) unit.reqUnlock && !::is_unlocked_scripted(-1, unit.reqUnlock)
+local isRequireUnlockForUnit = @(unit) unit?.reqUnlock != null && !::is_unlocked_scripted(-1, unit.reqUnlock)
 
 return {
   canBuyNotResearched
