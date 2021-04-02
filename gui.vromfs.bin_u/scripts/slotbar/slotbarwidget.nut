@@ -4,7 +4,7 @@ local selectUnitHandler = require("scripts/slotbar/selectUnitHandler.nut")
 local { getWeaponsStatusName, checkUnitWeapons } = require("scripts/weaponry/weaponryInfo.nut")
 local { getNearestSelectableChildIndex } = require("sqDagui/guiBhv/guiBhvUtils.nut")
 local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatus.nut")
-local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
+local { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 
 ::slotbar_oninit <- false //!!FIX ME: Why this variable is global?
@@ -1316,6 +1316,9 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         forceCrewInfoUnit = unitForSpecType
         isLocalState = isLocalState
         fullBlock        = needFullSlotBlock
+        bottomLineText = needCheckUnitUnlock && isRequireUnlockForUnit(crewData.unit)
+          ? getUnitRequireUnlockShortText(crewData.unit)
+          : null
       }
       airParams.__update(getCrewDataParams(crewData))
       local unitItem = ::build_aircraft_item(id, crewData.unit, airParams)

@@ -295,6 +295,14 @@ local function getUnitRequireUnlockText(unit) {
   )
 }
 
+local function getUnitRequireUnlockShortText(unit) {
+  local unlockBlk = ::g_unlocks.getUnlockById(unit.reqUnlock)
+  local conditions = ::build_conditions_config(unlockBlk)
+  local mainCond = ::UnlockConditions.getMainProgressCondition(conditions.conditions)
+  return ::UnlockConditions._genMainConditionText(
+    mainCond, conditions.curVal, conditions.maxVal, {isProgressTextOnly = true})
+}
+
 return {
   getUnitRole
   getUnitBasicRole
@@ -307,4 +315,5 @@ return {
   getUnitItemStatusText
   getUnitRarity
   getUnitRequireUnlockText
+  getUnitRequireUnlockShortText
 }

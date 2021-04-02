@@ -347,6 +347,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
           missionsComplete = ::my_stats.getMissionsComplete()
           result = resTheme
         }))
+    local sessionIdObj = scene.findObject("txt_session_id")
+    if (sessionIdObj?.isValid())
+      sessionIdObj.setValue(::debriefing_result?.sessionId ?? "")
   }
 
   function alignObjHorizontalMarginsByObj(objId, alignObjId)
@@ -3045,13 +3048,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   function onEventMatchingDisconnect(p)
   {
     ::go_debriefing_next_func = startLogout
-  }
-
-  function onEventSessionDestroyed(p)
-  {
-    local obj = scene.findObject("txt_session_id")
-    if (::check_obj(obj))
-      obj.setValue(::debriefing_result?.sessionId ?? "")
   }
 
   function isDelayedLogoutOnDisconnect()
