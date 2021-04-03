@@ -22,6 +22,7 @@ enums.addTypesByGlobalName("g_ww_top_menu_operation_map", [
     buttons = [
       [
         buttonsList.WW_LEADERBOARDS
+        buttonsList.WW_ACHIEVEMENTS
         buttonsList.WW_SCENARIO_DESCR
         buttonsList.WW_OPERATION_LIST
         buttonsList.WW_WIKI

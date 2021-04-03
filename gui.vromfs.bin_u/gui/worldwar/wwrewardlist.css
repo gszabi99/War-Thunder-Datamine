@@ -1,0 +1,84 @@
+@const wwRewardItemHeight: 1@itemHeight + 1@battlePassFlagSize + 1@buttonHeight + 2@blockInterval;
+
+rewardItem {
+  size:1@itemWidth, 1@wwRewardItemHeight;
+  background-repeat:expand-svg;
+  background-image:#ui/gameuiskin#item_gradient.svg;
+  background-svg-size:10@dp, 186@dp;
+  background-position:1@dp;
+  background-color:@frameDarkTransparentBgColor;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+dailyIcon {
+  size:1@cIco, 1@cIco;
+  pos:0.5pw-0.5w, 1@blockInterval;
+  position:absolute;
+  background-image:#ui/gameuiskin#icon_repeatable.svg;
+  background-svg-size:1@cIco, 1@cIco;
+  background-color:@white;
+  css-hier-invalidate:yes;
+}
+
+rewardFlag {
+  size:1@battlePassFlagSize, 1@battlePassFlagSize;
+  position:absolute;
+  background-image:#ui/gameuiskin#stage_flag.svg;
+  background-svg-size:1@battlePassFlagSize, 1@battlePassFlagSize;
+  background-color:@battlePassLockedFlagColor;
+  color-factor:128;
+  css-hier-invalidate:yes;
+}
+
+rewardFlag > textareaNoTab {
+  pos:50%pw-50%w, 2@blockInterval;
+  position:absolute;
+  color:@activeTextColor;
+  smallFont:yes;
+}
+
+rewardItem > bottomBar {
+  size: pw, 1@buttonHeight;
+  pos:0, ph - h;
+  position:absolute;
+  background-color:@battlePassBottomBarColor;
+  overflow:hidden;
+  css-hier-invalidate:yes;
+}
+
+rewardItem > bottomBar > textareaNoTab {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:10*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+}
+
+rewardItem[status=received] > bottomBar {
+  display:hide;
+}
+
+rewardItem > statusImg {
+  size:1@cIco, 1@cIco;
+  background-svg-size:1@cIco, 1@cIco;
+  pos:50%pw-50%w, ph-h-1@blockInterval;
+  position:absolute;
+  display:hide;
+  css-hier-invalidate:yes;
+}
+
+rewardItem > rewardFlag > textareaNoTab {
+  color:@battlePassLockedFlagTextColor;
+}
+
+rewardItem[status=received] > tdiv > rewardFlag,
+rewardItem[status=received] > tdiv > rewardFlag > textareaNoTab {
+  background-color:@battlePassFlagColor;
+  color-factor:255;
+}
+
+rewardItem[status=received] > statusImg {
+  background-image:#ui/gameuiskin#task_check.svg;
+  background-color:@white;
+  display:show;
+}

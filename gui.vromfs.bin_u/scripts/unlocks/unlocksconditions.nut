@@ -813,7 +813,7 @@ UnlockConditions.getMainConditionText <- function getMainConditionText(condition
 UnlockConditions._genMainConditionText <- function _genMainConditionText(condition, curValue = null, maxValue = null, params = null)
 {
   local res = ""
-  local modeType = ::getTblValue("modeType", condition)
+  local modeType = condition?.modeType
   if (!modeType)
     return res
 
@@ -866,6 +866,9 @@ UnlockConditions._genMainConditionText <- function _genMainConditionText(conditi
     if (maxValue != null && maxValue != "")
       progressText += ((progressText != "") ? "/" : "") + maxValue
   }
+
+  if(params?.isProgressTextOnly)
+    return progressText
 
   if ("modeTypeLocID" in condition)
     textId = condition.modeTypeLocID

@@ -2,7 +2,7 @@ local time = require("scripts/time.nut")
 local seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-local { getCurrenNotCompletedUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
+local { getAllUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 local { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
@@ -10,6 +10,7 @@ local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
+local stdMath = require("std/math.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -94,7 +95,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     collectMaps()
     findMapForSelection()
-    updateLeftPanel()
+    updateRewardsPanel()
     onClansQueue()
   }
 
@@ -225,23 +226,17 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
   function fillTrophyList()
   {
+    local res = []
     local trophiesBlk = ::g_world_war.getSetting("dailyTrophies", ::DataBlock())
     local reqFeatureId = trophiesBlk?.reqFeature
     if (reqFeatureId && !::has_feature(reqFeatureId))
-      return false
+      return res
 
     trophiesAmount = trophiesBlk.blockCount()
     if (!trophiesAmount)
-      return false
+      return res
 
     local updStatsText = time.buildTimeStr(time.getUtcMidnight(), false, false)
-
-    local view = {
-      titleText = getTrophyDesc(trophiesBlk)
-      tooltipText = getTrophyTooltip(trophiesBlk, updStatsText)
-      trophy = []
-    }
-
     local curDay = time.getUtcDays() - time.DAYS_TO_YEAR_1970 + 1
     local trophiesProgress = ::get_es_custom_blk(-1)?.customClientData
     for (local i = 0; i < trophiesAmount; i++)
@@ -260,34 +255,67 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       local progressMaxValue = trophy?.rewardedParamValue ?? 0
       local isProgressReached = progressCurValue >= progressMaxValue
       local progressText = ::loc("ui/parentheses",
-        { text = ::min(progressCurValue, progressMaxValue) + "/" + progressMaxValue })
+        { text = $"{::min(progressCurValue, progressMaxValue)}/{progressMaxValue}"})
 
-      if (isProgressReached)
-        progressText = ::colorize("activeTextColor", progressText)
-
-      local trophyAmount = trophy?.amount ?? 1
-      view.trophy.append({
-        titleText = getTrophyDesc(trophy) + " " + progressText
-        tooltipText = getTrophyTooltip(trophy, updStatsText)
-        wwTrophyMarkup = trophyItem.getNameMarkup(trophyAmount, false)
-        isTrophyRecieved = isProgressReached
+      res.append({
+        trophyDesc = $"{getTrophyDesc(trophy)} {progressText}"
+        status = isProgressReached ? "received" : ""
+        descTooltipText = getTrophyTooltip(trophy, updStatsText)
+        iconTooltipText = getTrophyTooltip(trophiesBlk, updStatsText)
+        rewardImage = trophyItem.getIcon()
+        isTrophy = true
       })
     }
+    return res
+  }
 
-    local markup = ::handyman.renderCached("gui/worldWar/wwTrophiesList", view)
-    local trophyBlockObj = scene.findObject("trophy_list")
-    guiScene.replaceContentFromText(trophyBlockObj, markup, markup.len(), this)
-    return true
+  function fillUnlocksList()
+  {
+    local res = []
+    local unlocksArray = getAllUnlocks()
+    foreach (blk in unlocksArray)
+    {
+      local unlConf = ::build_conditions_config(blk)
+      local mainCond = ::UnlockConditions.getMainProgressCondition(unlConf.conditions)
+      local imgConf = ::g_unlock_view.getUnlockImageConfig(unlConf)
+      local progressTxt = ::UnlockConditions._genMainConditionText(
+        mainCond, unlConf.curVal, unlConf.maxVal, {isProgressTextOnly = true})
+      local isComplete = ::UnlockConditions.isBitModeType(unlConf.type)
+        ? stdMath.number_of_set_bits(unlConf.curVal) >= stdMath.number_of_set_bits(unlConf.maxVal)
+        : unlConf.curVal >= unlConf.maxVal
+      res.append({
+        descTooltipText = unlConf.locId != "" ? ::get_locId_name(unlConf)
+          : ::get_unlock_name_text(unlConf.unlockType, unlConf.id)
+        progressTxt = progressTxt
+        rewardImage = ::LayersIcon.getIconData(
+          imgConf.style,
+          imgConf.image,
+          imgConf.ratio,
+          null,
+          imgConf.params
+        )
+        status = isComplete ? "received" : ""
+      })
+    }
+    return res
+  }
+
+  function fillRewards(rewards)
+  {
+    local rewardsObj = scene.findObject("wwRewards")
+    if (!rewardsObj?.isValid())
+      return
+
+    local data = ::handyman.renderCached("gui/worldWar/wwRewards", {wwRewards = rewards})
+    guiScene.replaceContentFromText(rewardsObj, data, data.len(), this)
   }
 
   getTrophyLocId = @(blk) blk?.locId ?? ("worldwar/" + blk.getBlockName())
   getTrophyDesc = @(blk) ::loc(getTrophyLocId(blk))
   getTrophyTooltip = @(blk, timeText) ::loc(getTrophyLocId(blk) + "/desc", {time = timeText})
 
-  function onEventItemsShopUpdate(params)
-  {
-    fillTrophyList()
-  }
+  onEventItemsShopUpdate = @(p) updateRewardsPanel()
+  onEventWWUnlocksCacheInvalidate = @(p) updateRewardsPanel()
 
   function refreshSelMap()
   {
@@ -976,11 +1004,13 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     btnObj.findObject("ww_wiki_text").setValue(::loc($"worldwar/urlBtn/{worldWarUrlBtnKey}"))
   }
 
-  function updateLeftPanel()
+  function updateRewardsPanel()
   {
-    local isTrophyListVisible = fillTrophyList()
-    local isUnlocksVisible =  fillUnlocksList()
-    showSceneBtn("panel_left", isTrophyListVisible || isUnlocksVisible)
+    local rewards = fillTrophyList().extend(fillUnlocksList())
+    local isRewardsVisible = rewards.len() > 0
+    showSceneBtn("rewards_panel", isRewardsVisible)
+    if (isRewardsVisible)
+      fillRewards(rewards)
   }
 
   function onTimerBeginMapWaitTime(obj, dt)
@@ -1015,7 +1045,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
       [["ok", null]], "ok")
   }
 
-  function onOpenAchievments()
+  function onOpenAchievements()
   {
     ::gui_start_profile({
       initialSheet = "UnlockAchievement"
@@ -1029,44 +1059,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
         return containerObj.getChild(idx)
 
     return containerObj.getChild(idx-1).getClone(containerObj, this)
-  }
-
-  function fillUnlocksList()
-  {
-    local unlocksArray = getCurrenNotCompletedUnlocks()
-    local unlocksCount = unlocksArray.len()
-    local isVisibleBtn = unlocksCount > 0
-    local unlocksListObj = showSceneBtn("unlocks_block", isVisibleBtn)
-    if (!isVisibleBtn || !::check_obj(unlocksListObj))
-      return false
-
-    local listContainer = scene.findObject("unlocks_list")
-    if (!::check_obj(listContainer))
-      return false
-
-    local unlocksObjCount = listContainer.childrenCount()
-    local total = ::max(unlocksObjCount, unlocksCount)
-    listContainer["max-height"] = ::to_pixels(
-      "1@maxWindowHeightNoSrh - 2@dp - 1@wwMainMenuBackgroundShadowDeltaHeight - 1@leaderboardHeaderHeight")
-        - (trophiesAmount > 0
-          ? ::to_pixels($"1@leaderboardHeaderHeight + {trophiesAmount}@baseTrHeight") : 0)
-    if (unlocksObjCount == 0 && total > 0) {
-      local blk = ::handyman.renderCached(("gui/unlocks/unlockItemSimplified"),
-        { unlocks = array(total, { hasCloseButton = false, isSimpleList = true })})
-      guiScene.appendWithBlk(listContainer, blk, this)
-    }
-
-    for(local i = 0; i < total; i++) {
-      local unlockObj = getUnlockObj(listContainer, i)
-      ::g_unlock_view.fillSimplifiedUnlockInfo(unlocksArray?[i], unlockObj, this)
-    }
-
-    return true
-  }
-
-  function onEventWWUnlocksCacheInvalidate(params)
-  {
-    fillUnlocksList()
   }
 
   function updateBattleButtonsStatus() {

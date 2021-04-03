@@ -123,74 +123,22 @@
     {
       "tdiv": {
         "id": "wnd_content",
-        "pos": "pw/2-w/2, 1@minYposWindow",
+        "pos": "0.5pw-0.5w, 1@minYposWindow",
         "position": "absolute",
         "size": "sw-2@bw, 1@maxWindowHeightNoSrh",
-        "wwMainMenuBackgroundShadow": [
-          {
-            "id": "panel_left"
-          },
-          {
-            "width": "50%sh"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "display": "hide"
-          },
-          {
-            "type": "left"
-          },
-          {
-            "div": {
-              "id": "trophy_list",
-              "flow": "vertical"
-            }
-          },
-          {
-            "div": {
-              "id": "unlocks_block",
-              "flow": "vertical",
-              "ww_map_item": {
-                "class": "header",
-                "isReflected": "yes",
-                "textareaNoTab": {
-                  "position": "relative",
-                  "top": "0.5(ph-h)",
-                  "padding-left": "1@framePadding",
-                  "input-transparent": "yes",
-                  "text": "#mainmenu/btnUnlockAchievement",
-                  "overlayTextColor": "silver",
-                  "caption": "yes"
-                },
-                "Button_text": {
-                  "position": "relative",
-                  "top": "0.5(ph-h)",
-                  "class": "image",
-                  "noMargin": "yes",
-                  "margin-left": "1@buttonMargin",
-                  "btnName": "L3",
-                  "on_click": "onOpenAchievments",
-                  "ButtonImg": [],
-                  "img": {
-                    "background-image": "#ui/gameuiskin#sh_unlockachievement.svg"
-                  }
-                }
-              },
-              "listbox": {
-                "id": "unlocks_list",
-                "flow": "vertical",
-                "width": "0.3sh",
-                "itemInterval": "@unlocksListboxItemInterval",
-                "overflow": "auto",
-                "scroll-align": "left",
-                "navigatorShortcuts": "cancel",
-                "scrollbarShortcuts": "yes"
-              }
-            }
+        "tdiv": {
+          "id": "rewards_panel",
+          "max-width": "pw",
+          "height": "1@wwRewardItemHeight+1@scrollBarSize",
+          "pos": "0.5pw-0.5w, ph-h-1@navBarBattleButtonHeight",
+          "position": "relative",
+          "flow": "horizontal",
+          "overflow-x": "auto",
+          "display": "hide",
+          "tdiv": {
+            "id": "wwRewards"
           }
-        ],
+        },
         "navBar": {
           "style": "size:pw, 1@navBarBattleButtonHeight; pos:pw/2-w/2, ph-h;",
           "navLeft": {

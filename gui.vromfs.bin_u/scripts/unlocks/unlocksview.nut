@@ -42,35 +42,32 @@ local { DECORATION, UNLOCK, REWARD_TOOLTIP, UNLOCK_SHORT
   function getUnlockImageConfig(unlockConfig)
   {
     local unlockType = getUnlockType(unlockConfig)
+    local isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
     local iconStyle = unlockConfig?.iconStyle ?? ""
     local image = unlockConfig?.image ?? ""
 
     if (iconStyle=="" && image=="")
-    {
-      local isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
       iconStyle = (isUnlocked? "default_unlocked" : "default_locked") +
           ((isUnlocked || unlockConfig.curStage < 1)? "" : "_stage_" + unlockConfig.curStage)
-    }
 
     return {
       style = iconStyle
       image = unlockType == ::UNLOCKABLE_PILOT? unlockConfig.descrImage : image
       ratio = unlockConfig?.imgRatio ?? 1.0
       params = unlockConfig?.iconParams
+      isDecalLocked = (!isUnlocked && (unlockType == ::UNLOCKABLE_DECAL
+        || unlockType == ::UNLOCKABLE_MEDAL) )
+      isAchievementLocked = (!isUnlocked && unlockConfig.curStage <= 0
+        && unlockType != ::UNLOCKABLE_MEDAL && unlockType != ::UNLOCKABLE_DECAL)
     }
   }
 
   function fillUnlockImage(unlockConfig, unlockObj)
   {
     local imgConfig = getUnlockImageConfig(unlockConfig)
-
     local iconObj = unlockObj.findObject("achivment_ico")
-
-    local unlockType = getUnlockType(unlockConfig)
-    local isUnlocked = ::is_unlocked_scripted(unlockType, unlockConfig.id)
-    iconObj.decal_locked = (!isUnlocked && (unlockType == ::UNLOCKABLE_DECAL || unlockType == ::UNLOCKABLE_MEDAL) ) ? "yes" : "no"
-    iconObj.achievement_locked = (!isUnlocked && unlockConfig.curStage <= 0 &&
-        unlockType != ::UNLOCKABLE_MEDAL && unlockType != ::UNLOCKABLE_DECAL) ? "yes" : "no"
+    iconObj.decal_locked = imgConfig.isDecalLocked ? "yes" : "no"
+    iconObj.achievement_locked = imgConfig.isAchievementLocked ? "yes" : "no"
 
     ::LayersIcon.replaceIcon(
       iconObj,

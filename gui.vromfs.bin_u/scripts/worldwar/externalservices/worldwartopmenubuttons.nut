@@ -78,6 +78,11 @@ local list = {
       {beginningMode = "ww_clans"})
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
+  WW_ACHIEVEMENTS = {
+    text = "#mainmenu/btnUnlockAchievement"
+    onClickFunc = @(obj, handler) handler?.onOpenAchievements()
+    elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
+  }
   WW_SCENARIO_DESCR = {
     text = "#worldwar/scenarioDescription"
     onClickFunc = @(obj, handler) handler?.openOperationsListModal()

@@ -52,7 +52,7 @@ local function getAllUnlocks() {
 }
 
 return {
-  getCurrenNotCompletedUnlocks = @() getAllUnlocks().filter(@(unlock) ::g_unlocks.canDo(unlock))
+  getAllUnlocks = getAllUnlocks
   unlocksChapterName = CHAPTER_NAME
   invalidateUnlocksCache = invalidateUnlocksCache
 }
