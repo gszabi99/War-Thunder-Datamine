@@ -407,6 +407,26 @@ enums.addTypes(result, {
       ]
     }
   }
+  IMAGE_WARFARE2077 = {
+    subTabName = "#event/war2077"
+    showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
+    helpPattern = CONTROL_HELP_PATTERN.IMAGE
+    showByUnit = @(unit, unitTag) [ "sdi_minotaur", "sdi_harpy", "sdi_hydra", "ucav_assault", "ucav_scout" ].contains(unit?.name)
+    pageBlkName = "gui/help/controlsWarfare2077.blk"
+    defaultValues = { country = "usa" }
+    imagePattern = "https://static-ggc.gaijin.net/event_promo/help_warfare2077.jpg?P1"
+    hasImageByCountries = ["usa"]
+    countryRelatedObjs = { usa = [] }
+    linkLines = {
+      links = [
+        { start = "action_autoturret_label", end = "action_autoturret_point" }
+        { start = "target_locked_a_label", end = "target_locked_aa_point" }
+        { start = "target_locked_a_label", end = "target_locked_ag_point" }
+        { start = "target_locked_gg_label", end = "target_locked_gg_point" }
+        { start = "target_locked_ga_label", end = "target_locked_ga_point" }
+      ]
+    }
+  }
   CONTROLLER_AIRCRAFT = {
     subTabName = helpMarkup.title
     showInSets = [ HELP_CONTENT_SET.MISSION, HELP_CONTENT_SET.CONTROLS ]
