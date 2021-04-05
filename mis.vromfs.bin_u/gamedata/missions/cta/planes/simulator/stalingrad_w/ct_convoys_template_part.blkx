@@ -2,10 +2,6 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": -15.0
-    },
     "player": {
       "army": 1,
       "wing": "cnv_armada"
@@ -16,11 +12,15 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
-      "timeLimit": 144000
+      "timeLimit": 144000,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": -15.0
     },
     "spectator_points": []
   },
@@ -63,7 +63,7 @@
         },
         {
           "varSetInt": {
-            "value": 3,
+            "value": 2,
             "var": "cnv_t1_max_convoys_num"
           }
         },
@@ -74,7 +74,7 @@
         },
         {
           "varSetInt": {
-            "value": 3,
+            "value": 2,
             "var": "cnv_t2_max_convoys_num"
           }
         }
@@ -100,9 +100,12 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [16775.8,1.7,18283.1]
+          [16775.8,1.7,38452.9]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t1_convoy_01_truck"
           },
@@ -125,9 +128,12 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [15116.3,1.7,18064.0]
+          [15116.3,1.7,38233.8]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t1_convoy_02_truck"
           },
@@ -150,9 +156,12 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [9086.75,166.95,18375.1]
+          [9086.75,166.95,38544.9]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t2_convoy_01_truck"
           },
@@ -179,6 +188,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "cnv_t1_all_convoys_squad"
           },
           {
@@ -194,11 +206,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [17111.2,22.2,18710.1]
+          [17111.2,22.2,38879.9]
         ],
         "unit_class": "ussr_t34_mode41",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -208,9 +222,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [6.0,3.0],
@@ -229,11 +245,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [16835.8,22.2,18717.0]
+          [16835.8,22.2,38886.8]
         ],
         "unit_class": "ussr_zis5_cargo",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -243,9 +261,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 9,
+          "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -264,11 +284,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [16514.1,22.2,18690.3]
+          [16514.1,22.2,38860.1]
         ],
         "unit_class": "ussr_ba10",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -278,6 +300,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -299,11 +323,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [16801.1,22.2,18820.8]
+          [16801.1,22.2,38990.6]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -313,9 +339,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -334,11 +362,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [15401.4,22.2,18561.9]
+          [15401.4,22.2,38731.7]
         ],
         "unit_class": "ussr_t34_mode41",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -348,9 +378,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [6.0,3.0],
@@ -369,11 +401,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [15137.2,22.2,18554.1]
+          [15137.2,22.2,38723.9]
         ],
         "unit_class": "ussr_zis5_cargo",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -383,9 +417,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 9,
+          "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -404,11 +440,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [14843.1,22.2,18529.1]
+          [14843.1,22.2,38698.9]
         ],
         "unit_class": "ussr_ba10",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -418,6 +456,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
@@ -439,11 +479,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [15045.6,22.2,18663.0]
+          [15045.6,22.2,38832.8]
         ],
         "unit_class": "ussr_zis5_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -453,150 +495,12 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "cnv_t1_convoy_03_tank",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [17099.6,22.2,19889.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t1_convoy_03_truck",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16803.1,22.2,19878.1]
-        ],
-        "unit_class": "ussr_zis5_cargo",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t1_convoy_03_acar",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16447.1,22.2,19792.3]
-        ],
-        "unit_class": "ussr_ba10",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 4,
           "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "cnv_t1_convoy_03_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16837.3,22.2,20067.4]
-        ],
-        "unit_class": "ussr_zis5_20mm",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 6,
-          "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
           "formation_noise": [0.4,0.5],
@@ -605,196 +509,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "cnv_t1_convoy_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16835.9,1.7,19621.1]
-        ],
-        "props": [
-          {
-            "squad_members": "cnv_t1_convoy_03_truck"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_03_acar"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_03_aaa"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_03_tank"
-          }
-        ]
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "cnv_t1_convoy_04_tank",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15462.2,22.2,19802.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t1_convoy_04_truck",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15174.5,22.2,19731.8]
-        ],
-        "unit_class": "ussr_zis5_cargo",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t1_convoy_04_acar",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14889.2,22.2,19653.4]
-        ],
-        "unit_class": "ussr_ba10",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "cnv_t1_convoy_04_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15120.4,22.2,19855.2]
-        ],
-        "unit_class": "ussr_zis5_20mm",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "cnv_t1_convoy_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15142.3,1.7,19460.9]
-        ],
-        "props": [
-          {
-            "squad_members": "cnv_t1_convoy_04_truck"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_04_acar"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_04_aaa"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_04_tank"
-          }
-        ]
       }
     },
     {
@@ -804,11 +518,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [9774.2,22.2,18880.8]
+          [9774.2,22.2,39050.6]
         ],
         "unit_class": "germ_pzIVc",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -818,9 +534,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [6.0,3.0],
@@ -839,11 +557,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [9332.2,22.2,18892.9]
+          [9332.2,22.2,39062.7]
         ],
         "unit_class": "germ_opelBlitz_tent",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -853,9 +573,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 9,
+          "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -874,11 +596,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8805.75,22.2,18819.5]
+          [8805.75,22.2,38989.3]
         ],
         "unit_class": "germ_sdKfz_222",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -888,6 +612,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -909,11 +635,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [9582.65,22.2,19057.3]
+          [9582.65,22.2,39227.1]
         ],
         "unit_class": "germ_sdkfz71_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -923,9 +651,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -944,11 +674,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [6903.9,154.225,18954.0]
+          [6903.9,154.225,39123.8]
         ],
         "unit_class": "germ_pzIVc",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -958,9 +690,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 2,
           "formation_step": [6.0,3.0],
@@ -979,11 +713,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [6253.35,159.193,18892.3]
+          [6253.35,159.193,39062.1]
         ],
         "unit_class": "germ_opelBlitz_tent",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -993,9 +729,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 9,
+          "count": 6,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -1014,11 +752,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [5719.9,192.683,18916.0]
+          [5719.9,192.683,39085.8]
         ],
         "unit_class": "germ_sdKfz_222",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1028,6 +768,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 4,
@@ -1049,11 +791,13 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [6347.45,174.461,19096.2]
+          [6347.45,174.461,39266.0]
         ],
         "unit_class": "germ_sdkfz71_20mm",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1063,9 +807,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 6,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [6.0,3.0],
@@ -1084,9 +830,12 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [6398.9,166.95,18251.5]
+          [6398.9,166.95,38421.3]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t2_convoy_02_truck"
           },
@@ -1103,356 +852,23 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "cnv_t2_convoy_03_tank",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9774.2,22.2,20213.3]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t2_convoy_03_truck",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9394.75,22.2,20123.2]
-        ],
-        "unit_class": "germ_opelBlitz_tent",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 9,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t2_convoy_03_acar",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9038.25,22.2,20053.1]
-        ],
-        "unit_class": "germ_sdKfz_222",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "cnv_t2_convoy_03_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9408.9,22.2,20293.0]
-        ],
-        "unit_class": "germ_sdkfz71_20mm",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "cnv_t2_convoy_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9452.55,166.95,19716.6]
-        ],
-        "props": [
-          {
-            "squad_members": "cnv_t2_convoy_03_truck"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_03_acar"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_03_aaa"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_03_tank"
-          }
-        ]
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "cnv_t2_convoy_04_tank",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7165.15,154.2,19962.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t2_convoy_04_truck",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6802.65,159.2,19914.7]
-        ],
-        "unit_class": "germ_opelBlitz_tent",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 9,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "cnv_t2_convoy_04_acar",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6493.65,192.7,19934.5]
-        ],
-        "unit_class": "germ_sdKfz_222",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "cnv_t2_convoy_04_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6800.1,174.45,20030.0]
-        ],
-        "unit_class": "germ_sdkfz71_20mm",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "cnv_t2_convoy_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6689.9,166.95,19544.8]
-        ],
-        "props": [
-          {
-            "squad_members": "cnv_t2_convoy_04_truck"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_04_acar"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_04_aaa"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_04_tank"
-          }
-        ]
-      }
-    },
-    {
       "squad": {
         "name": "cnv_t1_all_convoys_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [15825.5,14.6,17181.5]
+          [15825.5,14.6,37351.3]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t1_convoy_01"
           },
           {
             "squad_members": "cnv_t1_convoy_02"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_03"
-          },
-          {
-            "squad_members": "cnv_t1_convoy_04"
           }
         ]
       }
@@ -1464,20 +880,17 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8689.8,14.6,16967.8]
+          [8689.8,14.6,37137.6]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "cnv_t2_convoy_01"
           },
           {
             "squad_members": "cnv_t2_convoy_02"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_03"
-          },
-          {
-            "squad_members": "cnv_t2_convoy_04"
           }
         ]
       }
@@ -1492,6 +905,7 @@
           [10569.2,1.55,-13905.0]
         ],
         "props": {
+          "object_marking": 0,
           "squad_members": "stalingrad_w_bridges_squad"
         }
       }
@@ -1508,6 +922,8 @@
         "unit_class": "yak-1b",
         "objLayer": 1,
         "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
         "weapons": "",
         "bullets0": "",
         "bullets1": "",
@@ -1517,6 +933,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -2349,11 +1767,13 @@
   "wayPoints": {
     "cnv_t1_road_01": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_01": {
           "type": "normal",
           "tm": [
-            [1.36457e+20,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [23139.7,1.75,-27312.6]
@@ -2361,7 +1781,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_01": {
@@ -2375,7 +1797,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_02": {
@@ -2389,7 +1813,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_03": {
@@ -2403,7 +1829,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_04": {
@@ -2417,7 +1845,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_05": {
@@ -2431,7 +1861,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_06": {
@@ -2445,7 +1877,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_07": {
@@ -2459,7 +1893,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_08": {
@@ -2473,7 +1909,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_09": {
@@ -2487,7 +1925,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_10": {
@@ -2501,7 +1941,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_01_wp_11": {
@@ -2515,18 +1957,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_02": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_02": {
           "type": "normal",
           "tm": [
-            [1.36457e+20,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27062.4,1.8,-23280.7]
@@ -2534,7 +1980,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_01": {
@@ -2548,7 +1996,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_02": {
@@ -2562,7 +2012,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_03": {
@@ -2576,7 +2028,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_04": {
@@ -2590,7 +2044,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_05": {
@@ -2604,7 +2060,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_06": {
@@ -2618,7 +2076,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_07": {
@@ -2632,7 +2092,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_08": {
@@ -2646,7 +2108,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_09": {
@@ -2660,7 +2124,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_10": {
@@ -2674,7 +2140,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_11": {
@@ -2688,7 +2156,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_12": {
@@ -2702,7 +2172,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_13": {
@@ -2716,7 +2188,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_14": {
@@ -2730,7 +2204,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_15": {
@@ -2744,7 +2220,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_16": {
@@ -2758,7 +2236,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_17": {
@@ -2772,7 +2252,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_18": {
@@ -2786,7 +2268,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_19": {
@@ -2800,7 +2284,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t1_road_02_wp_20": {
@@ -2814,18 +2300,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_03": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_03": {
           "type": "normal",
           "tm": [
-            [1.36457e+20,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [26885.8,1.75,-16011.5]
@@ -2833,7 +2323,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_01": {
@@ -2847,7 +2339,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_02": {
@@ -2861,7 +2355,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_03": {
@@ -2875,7 +2371,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_04": {
@@ -2889,7 +2387,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_05": {
@@ -2903,7 +2403,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_06": {
@@ -2917,7 +2419,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_07": {
@@ -2931,7 +2435,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_08": {
@@ -2945,7 +2451,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_09": {
@@ -2959,7 +2467,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_10": {
@@ -2973,7 +2483,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_03_wp_11": {
@@ -2987,18 +2499,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_04": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_04": {
           "type": "normal",
           "tm": [
-            [1.84263e+19,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27047.0,1.75,-13592.8]
@@ -3006,7 +2522,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_01": {
@@ -3020,7 +2538,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_02": {
@@ -3034,7 +2554,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_03": {
@@ -3048,7 +2570,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_04": {
@@ -3062,7 +2586,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_05": {
@@ -3076,7 +2602,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_06": {
@@ -3090,7 +2618,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_07": {
@@ -3104,7 +2634,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_08": {
@@ -3118,7 +2650,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_09": {
@@ -3132,7 +2666,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_04_wp_10": {
@@ -3146,18 +2682,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_05": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_05": {
           "type": "normal",
           "tm": [
-            [1.84263e+19,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [26765.6,5.5,-9059.8]
@@ -3165,7 +2705,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_05_wp_01": {
@@ -3179,7 +2721,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_05_wp_02": {
@@ -3193,7 +2737,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_05_wp_03": {
@@ -3207,7 +2753,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_05_wp_04": {
@@ -3221,7 +2769,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_05_wp_05": {
@@ -3235,18 +2785,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_06": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_06": {
           "type": "normal",
           "tm": [
-            [1.84263e+19,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [26995.0,27.85,-4062.2]
@@ -3254,7 +2808,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_06_wp_01": {
@@ -3268,7 +2824,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_06_wp_02": {
@@ -3282,7 +2840,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_06_wp_03": {
@@ -3296,7 +2856,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_06_wp_04": {
@@ -3310,7 +2872,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_06_wp_05": {
@@ -3324,18 +2888,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_07": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_07": {
           "type": "normal",
           "tm": [
-            [1.84263e+19,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27152.4,30.05,370.5]
@@ -3343,7 +2911,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_01": {
@@ -3357,7 +2927,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_02": {
@@ -3371,7 +2943,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_03": {
@@ -3385,7 +2959,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_04": {
@@ -3399,7 +2975,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_05": {
@@ -3413,7 +2991,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_06": {
@@ -3427,7 +3007,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_07": {
@@ -3441,7 +3023,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_08": {
@@ -3455,7 +3039,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_09": {
@@ -3469,7 +3055,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_07_wp_10": {
@@ -3483,18 +3071,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_08": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_08": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [26799.0,34.4,4723.35]
@@ -3502,7 +3094,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_01": {
@@ -3516,7 +3110,9 @@
           "props": {
             "speed": 300.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_02": {
@@ -3530,7 +3126,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_03": {
@@ -3544,7 +3142,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_04": {
@@ -3558,7 +3158,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_05": {
@@ -3572,7 +3174,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_06": {
@@ -3586,7 +3190,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_07": {
@@ -3600,7 +3206,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_08": {
@@ -3614,7 +3222,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_08_wp_09": {
@@ -3628,18 +3238,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_09": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_09": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27135.2,36.45,8546.6]
@@ -3647,7 +3261,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_01": {
@@ -3661,7 +3277,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_02": {
@@ -3675,7 +3293,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_03": {
@@ -3689,7 +3309,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_04": {
@@ -3703,7 +3325,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_05": {
@@ -3717,7 +3341,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_06": {
@@ -3731,7 +3357,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_09_wp_07": {
@@ -3745,18 +3373,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_10": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_10": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27259.2,40.05,11710.8]
@@ -3764,7 +3396,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_10_wp_01": {
@@ -3778,7 +3412,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_10_wp_02": {
@@ -3792,7 +3428,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_10_wp_03": {
@@ -3806,7 +3444,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_10_wp_04": {
@@ -3820,7 +3460,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_10_wp_05": {
@@ -3834,18 +3476,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t1_road_11": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_11": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [27350.1,37.15,18095.0]
@@ -3853,7 +3499,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_11_wp_01": {
@@ -3867,7 +3515,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_11_wp_02": {
@@ -3881,7 +3531,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "cnv_t1_road_11_wp_03": {
@@ -3895,18 +3547,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_01": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_12": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27318.1,171.25,-25334.9]
@@ -3914,7 +3570,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_01": {
@@ -3928,7 +3586,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_02": {
@@ -3942,7 +3602,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_03": {
@@ -3956,7 +3618,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_04": {
@@ -3970,7 +3634,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_05": {
@@ -3984,7 +3650,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_06": {
@@ -3998,7 +3666,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_01_wp_07": {
@@ -4012,18 +3682,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_02": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_13": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27426.6,147.45,-18651.2]
@@ -4031,7 +3705,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_01": {
@@ -4045,7 +3721,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_02": {
@@ -4059,7 +3737,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_03": {
@@ -4073,7 +3753,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_04": {
@@ -4087,7 +3769,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_05": {
@@ -4101,7 +3785,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_06": {
@@ -4115,7 +3801,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_07": {
@@ -4129,7 +3817,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_08": {
@@ -4143,7 +3833,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_02_wp_09": {
@@ -4157,18 +3849,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_03": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_14": {
           "type": "normal",
           "tm": [
-            [-1.40212e-24,2.868458e-42,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27441.8,105.35,-15091.0]
@@ -4176,7 +3872,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_01": {
@@ -4190,7 +3888,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_02": {
@@ -4204,7 +3904,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_03": {
@@ -4218,7 +3920,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_04": {
@@ -4232,7 +3936,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_05": {
@@ -4246,7 +3952,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_06": {
@@ -4260,7 +3968,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_03_wp_07": {
@@ -4274,18 +3984,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_04": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_15": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27148.5,191.3,-8966.75]
@@ -4293,7 +4007,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_01": {
@@ -4307,7 +4023,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_02": {
@@ -4321,7 +4039,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_03": {
@@ -4335,7 +4055,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_04": {
@@ -4349,7 +4071,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_05": {
@@ -4363,7 +4087,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_06": {
@@ -4377,7 +4103,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_07": {
@@ -4391,7 +4119,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_08": {
@@ -4405,7 +4135,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_09": {
@@ -4419,7 +4151,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_10": {
@@ -4433,7 +4167,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_04_wp_11": {
@@ -4447,13 +4183,17 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_05": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "t2_road_05_wp_21": {
           "type": "normal",
@@ -4466,7 +4206,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_01": {
@@ -4480,7 +4222,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_02": {
@@ -4494,7 +4238,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_03": {
@@ -4508,7 +4254,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_04": {
@@ -4522,7 +4270,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_05": {
@@ -4536,7 +4286,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_06": {
@@ -4550,7 +4302,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_07": {
@@ -4564,7 +4318,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_08": {
@@ -4578,7 +4334,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_09": {
@@ -4592,7 +4350,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_10": {
@@ -4606,7 +4366,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_11": {
@@ -4620,7 +4382,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_12": {
@@ -4634,7 +4398,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_13": {
@@ -4648,7 +4414,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_14": {
@@ -4662,7 +4430,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_15": {
@@ -4676,7 +4446,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_16": {
@@ -4690,7 +4462,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_17": {
@@ -4704,7 +4478,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_18": {
@@ -4718,7 +4494,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_19": {
@@ -4732,7 +4510,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_05_wp_20": {
@@ -4746,18 +4526,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_06": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_16": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-26925.3,157.7,-2002.05]
@@ -4765,7 +4549,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_01": {
@@ -4779,7 +4565,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_02": {
@@ -4793,7 +4581,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_03": {
@@ -4807,7 +4597,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_04": {
@@ -4821,7 +4613,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_05": {
@@ -4835,7 +4629,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_06": {
@@ -4849,7 +4645,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_07": {
@@ -4863,7 +4661,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_08": {
@@ -4877,7 +4677,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_09": {
@@ -4891,7 +4693,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_10": {
@@ -4905,7 +4709,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_11": {
@@ -4919,7 +4725,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_12": {
@@ -4933,7 +4741,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_13": {
@@ -4947,7 +4757,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_14": {
@@ -4961,7 +4773,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_15": {
@@ -4975,7 +4789,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_16": {
@@ -4989,7 +4805,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_17": {
@@ -5003,7 +4821,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_18": {
@@ -5017,7 +4837,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_19": {
@@ -5031,7 +4853,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_20": {
@@ -5045,7 +4869,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_21": {
@@ -5059,7 +4885,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_06_wp_22": {
@@ -5073,18 +4901,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_07": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_17": {
           "type": "normal",
           "tm": [
-            [226254000000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27135.5,-4.65,7530.7]
@@ -5092,7 +4924,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_01": {
@@ -5106,7 +4940,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_02": {
@@ -5120,7 +4956,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_03": {
@@ -5134,7 +4972,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_04": {
@@ -5148,7 +4988,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_05": {
@@ -5162,7 +5004,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_06": {
@@ -5176,7 +5020,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_07": {
@@ -5190,7 +5036,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_08": {
@@ -5204,7 +5052,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_09": {
@@ -5218,7 +5068,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_10": {
@@ -5232,7 +5084,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_11": {
@@ -5246,7 +5100,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_12": {
@@ -5260,7 +5116,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_13": {
@@ -5274,7 +5132,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_14": {
@@ -5288,7 +5148,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_15": {
@@ -5302,7 +5164,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_16": {
@@ -5316,7 +5180,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_07_wp_17": {
@@ -5330,18 +5196,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_08": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_18": {
           "type": "normal",
           "tm": [
-            [-100867000.0,2.868458e-42,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27146.4,79.35,10708.8]
@@ -5349,7 +5219,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_01": {
@@ -5363,7 +5235,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_02": {
@@ -5377,7 +5251,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_03": {
@@ -5391,7 +5267,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_04": {
@@ -5405,7 +5283,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_05": {
@@ -5419,7 +5299,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_06": {
@@ -5433,7 +5315,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_07": {
@@ -5447,7 +5331,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_08": {
@@ -5461,7 +5347,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_09": {
@@ -5475,7 +5363,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_10": {
@@ -5489,7 +5379,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_08_wp_11": {
@@ -5503,18 +5395,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_09": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_19": {
           "type": "normal",
           "tm": [
-            [88967900000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-26800.1,181.1,14405.0]
@@ -5522,7 +5418,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_01": {
@@ -5536,7 +5434,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_02": {
@@ -5550,7 +5450,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_03": {
@@ -5564,7 +5466,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_04": {
@@ -5578,7 +5482,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_05": {
@@ -5592,7 +5498,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_09_wp_06": {
@@ -5606,18 +5514,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_10": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_20": {
           "type": "normal",
           "tm": [
-            [88967900000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-27141.0,205.45,19134.6]
@@ -5625,7 +5537,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_01": {
@@ -5639,7 +5553,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_02": {
@@ -5653,7 +5569,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_03": {
@@ -5667,7 +5585,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_04": {
@@ -5681,7 +5601,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_05": {
@@ -5695,7 +5617,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_06": {
@@ -5709,7 +5633,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_07": {
@@ -5723,7 +5649,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_08": {
@@ -5737,7 +5665,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_09": {
@@ -5751,7 +5681,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_10_wp_10": {
@@ -5765,18 +5697,22 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }
     },
     "cnv_t2_road_11": {
       "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
       "way": {
         "way_points_01_wp_21": {
           "type": "normal",
           "tm": [
-            [88967900000.0,0.0,0.0],
+            [1.0,0.0,0.0],
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [-19397.6,161.5,27161.1]
@@ -5784,7 +5720,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "GATHER_TO",
-            "shouldKeepFormation": false
+            "shouldKeepFormation": false,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_11_wp_01": {
@@ -5798,7 +5736,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_11_wp_02": {
@@ -5812,7 +5752,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_11_wp_03": {
@@ -5826,7 +5768,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         },
         "t2_road_11_wp_04": {
@@ -5840,7 +5784,9 @@
           "props": {
             "speed": 30.0,
             "moveType": "USE_SPLINES",
-            "shouldKeepFormation": true
+            "shouldKeepFormation": true,
+            "tas": false,
+            "canUsePathFinder": false
           }
         }
       }

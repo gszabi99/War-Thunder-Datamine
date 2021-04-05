@@ -186,6 +186,22 @@
       "conditions": [],
       "actions": [
         {
+          "comment": {
+            "value": "ограничиваем количество битв"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_battle_max_battle_num"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "varSetInt": {
             "value": 10,
             "var": "flt_big_aaa_weight"
@@ -362,52 +378,12 @@
   "units": [
     {
       "tracked_vehicles": {
-        "name": "flt_t1_tank_01",
+        "name": "flt_t2_tank",
         "tm": [
           [0.461749,0.0,0.887011],
           [0.0,1.0,0.0],
           [-0.887011,0.0,0.461749],
-          [41140.1,0.55,36832.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_01",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6480.25,0.55,58960.6]
+          [9174.25,0.55,59364.1]
         ],
         "unit_class": "germ_pzIVc",
         "objLayer": 1,
@@ -424,9 +400,10 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -464,6 +441,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -505,9 +483,10 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -546,6 +525,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -587,9 +567,10 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -759,9 +740,10 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -800,9 +782,10 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -856,6 +839,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -894,6 +878,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -932,6 +917,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -970,6 +956,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1008,6 +995,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1046,6 +1034,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1084,6 +1073,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1122,6 +1112,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1160,6 +1151,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1198,6 +1190,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1236,6 +1229,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1274,6 +1268,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1312,6 +1307,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1350,6 +1346,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1388,6 +1385,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1426,6 +1424,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -1464,6 +1463,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1502,6 +1502,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1540,6 +1541,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1578,6 +1580,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1616,6 +1619,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1654,6 +1658,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1692,6 +1697,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1730,6 +1736,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1768,6 +1775,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1806,6 +1814,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1844,6 +1853,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1882,6 +1892,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1920,6 +1931,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1958,6 +1970,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -1996,6 +2009,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2034,6 +2048,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2072,6 +2087,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2110,6 +2126,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2148,6 +2165,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2186,6 +2204,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2224,6 +2243,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2262,6 +2282,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2300,6 +2321,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2338,6 +2360,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2376,6 +2399,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2414,6 +2438,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2452,6 +2477,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2490,6 +2516,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2528,6 +2555,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2566,6 +2594,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2604,6 +2633,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "attack_type": "fire_at_will",
@@ -2642,6 +2672,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2680,6 +2711,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2718,6 +2750,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "attack_type": "fire_at_will",
@@ -2938,6 +2971,7 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -2962,169 +2996,44 @@
       }
     },
     {
-      "squad": {
-        "name": "flt_t2_tanks_squad",
+      "tracked_vehicles": {
+        "name": "flt_t1_tank",
         "tm": [
-          [1.0,0.0,0.0],
+          [0.461749,0.0,0.887011],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7227.45,176.55,59392.1]
+          [-0.887011,0.0,0.461749],
+          [36368.0,0.55,37980.6]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t2_tank_01"
-          },
-          {
-            "squad_members": "flt_t2_tank_02"
-          },
-          {
-            "squad_members": "flt_t2_tank_03"
-          },
-          {
-            "squad_members": "flt_t2_tank_04"
-          },
-          {
-            "squad_members": "flt_t2_tank_05"
-          },
-          {
-            "squad_members": "flt_t2_tank_06"
-          },
-          {
-            "squad_members": "flt_t2_tank_07"
-          },
-          {
-            "squad_members": "flt_t2_tank_08"
-          },
-          {
-            "squad_members": "flt_t2_tank_09"
-          },
-          {
-            "squad_members": "flt_t2_tank_10"
-          },
-          {
-            "squad_members": "flt_t2_tank_11"
-          },
-          {
-            "squad_members": "flt_t2_tank_12"
-          },
-          {
-            "squad_members": "flt_t2_tank_13"
-          },
-          {
-            "squad_members": "flt_t2_tank_14"
-          },
-          {
-            "squad_members": "flt_t2_tank_15"
-          },
-          {
-            "squad_members": "flt_t2_tank_16"
-          },
-          {
-            "squad_members": "flt_t2_tank_17"
-          },
-          {
-            "squad_members": "flt_t2_tank_18"
-          },
-          {
-            "squad_members": "flt_t2_tank_19"
-          },
-          {
-            "squad_members": "flt_t2_tank_20"
-          },
-          {
-            "squad_members": "flt_t2_tank_21"
-          },
-          {
-            "squad_members": "flt_t2_tank_22"
-          },
-          {
-            "squad_members": "flt_t2_tank_23"
-          },
-          {
-            "squad_members": "flt_t2_tank_24"
-          },
-          {
-            "squad_members": "flt_t2_tank_25"
-          },
-          {
-            "squad_members": "flt_t2_tank_26"
-          },
-          {
-            "squad_members": "flt_t2_tank_27"
-          },
-          {
-            "squad_members": "flt_t2_tank_28"
-          },
-          {
-            "squad_members": "flt_t2_tank_29"
-          },
-          {
-            "squad_members": "flt_t2_tank_30"
-          },
-          {
-            "squad_members": "flt_t2_tank_31"
-          },
-          {
-            "squad_members": "flt_t2_tank_32"
-          },
-          {
-            "squad_members": "flt_t2_tank_33"
-          },
-          {
-            "squad_members": "flt_t2_tank_34"
-          },
-          {
-            "squad_members": "flt_t2_tank_35"
-          },
-          {
-            "squad_members": "flt_t2_tank_36"
-          },
-          {
-            "squad_members": "flt_t2_tank_37"
-          },
-          {
-            "squad_members": "flt_t2_tank_38"
-          },
-          {
-            "squad_members": "flt_t2_tank_39"
-          },
-          {
-            "squad_members": "flt_t2_tank_40"
-          },
-          {
-            "squad_members": "flt_t2_tank_41"
-          },
-          {
-            "squad_members": "flt_t2_tank_42"
-          },
-          {
-            "squad_members": "flt_t2_tank_43"
-          },
-          {
-            "squad_members": "flt_t2_tank_44"
-          },
-          {
-            "squad_members": "flt_t2_tank_45"
-          },
-          {
-            "squad_members": "flt_t2_tank_46"
-          },
-          {
-            "squad_members": "flt_t2_tank_47"
-          },
-          {
-            "squad_members": "flt_t2_tank_48"
-          },
-          {
-            "squad_members": "flt_t2_tank_49"
-          },
-          {
-            "squad_members": "flt_t2_tank_50"
-          }
-        ]
+        "unit_class": "ussr_t34_mode41",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
       }
     },
     {
@@ -3134,4083 +3043,27 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [41946.2,1.8,38216.4]
+          [39969.1,0.55,38565.6]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t1_tank_01"
-          },
-          {
-            "squad_members": "flt_t1_tank_02"
-          },
-          {
-            "squad_members": "flt_t1_tank_03"
-          },
-          {
-            "squad_members": "flt_t1_tank_04"
-          },
-          {
-            "squad_members": "flt_t1_tank_05"
-          },
-          {
-            "squad_members": "flt_t1_tank_06"
-          },
-          {
-            "squad_members": "flt_t1_tank_07"
-          },
-          {
-            "squad_members": "flt_t1_tank_08"
-          },
-          {
-            "squad_members": "flt_t1_tank_09"
-          },
-          {
-            "squad_members": "flt_t1_tank_10"
-          },
-          {
-            "squad_members": "flt_t1_tank_11"
-          },
-          {
-            "squad_members": "flt_t1_tank_12"
-          },
-          {
-            "squad_members": "flt_t1_tank_13"
-          },
-          {
-            "squad_members": "flt_t1_tank_14"
-          },
-          {
-            "squad_members": "flt_t1_tank_15"
-          },
-          {
-            "squad_members": "flt_t1_tank_16"
-          },
-          {
-            "squad_members": "flt_t1_tank_17"
-          },
-          {
-            "squad_members": "flt_t1_tank_18"
-          },
-          {
-            "squad_members": "flt_t1_tank_19"
-          },
-          {
-            "squad_members": "flt_t1_tank_20"
-          },
-          {
-            "squad_members": "flt_t1_tank_21"
-          },
-          {
-            "squad_members": "flt_t1_tank_22"
-          },
-          {
-            "squad_members": "flt_t1_tank_23"
-          },
-          {
-            "squad_members": "flt_t1_tank_24"
-          },
-          {
-            "squad_members": "flt_t1_tank_25"
-          },
-          {
-            "squad_members": "flt_t1_tank_26"
-          },
-          {
-            "squad_members": "flt_t1_tank_27"
-          },
-          {
-            "squad_members": "flt_t1_tank_28"
-          },
-          {
-            "squad_members": "flt_t1_tank_29"
-          },
-          {
-            "squad_members": "flt_t1_tank_30"
-          },
-          {
-            "squad_members": "flt_t1_tank_31"
-          },
-          {
-            "squad_members": "flt_t1_tank_32"
-          },
-          {
-            "squad_members": "flt_t1_tank_33"
-          },
-          {
-            "squad_members": "flt_t1_tank_34"
-          },
-          {
-            "squad_members": "flt_t1_tank_35"
-          },
-          {
-            "squad_members": "flt_t1_tank_36"
-          },
-          {
-            "squad_members": "flt_t1_tank_37"
-          },
-          {
-            "squad_members": "flt_t1_tank_38"
-          },
-          {
-            "squad_members": "flt_t1_tank_39"
-          },
-          {
-            "squad_members": "flt_t1_tank_40"
-          },
-          {
-            "squad_members": "flt_t1_tank_41"
-          },
-          {
-            "squad_members": "flt_t1_tank_42"
-          },
-          {
-            "squad_members": "flt_t1_tank_43"
-          },
-          {
-            "squad_members": "flt_t1_tank_44"
-          },
-          {
-            "squad_members": "flt_t1_tank_45"
-          },
-          {
-            "squad_members": "flt_t1_tank_46"
-          },
-          {
-            "squad_members": "flt_t1_tank_47"
-          },
-          {
-            "squad_members": "flt_t1_tank_48"
-          },
-          {
-            "squad_members": "flt_t1_tank_49"
-          },
-          {
-            "squad_members": "flt_t1_tank_50"
-          }
-        ]
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_02",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41180.0,0.55,36810.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_03",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41223.3,0.55,36793.8]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_04",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41280.4,0.55,36763.0]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_05",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41334.9,0.55,36735.8]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_06",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41334.9,0.55,36710.5]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_07",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41270.4,0.55,36710.5]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_08",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41237.1,0.55,36747.8]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_09",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41189.6,0.55,36769.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_10",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41134.0,0.55,36787.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_11",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41113.6,0.55,36757.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_12",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41153.6,0.55,36734.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_13",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41194.9,0.55,36710.2]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_14",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41251.5,0.55,36682.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_15",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41301.8,0.55,36661.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_16",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41253.0,0.55,36639.7]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_17",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41202.2,0.55,36667.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_18",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41159.9,0.55,36684.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_19",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41114.0,0.55,36707.8]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_20",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41071.7,0.55,36727.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_21",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41075.0,0.55,36691.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_22",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41113.4,0.55,36664.2]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_23",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41161.5,0.55,36634.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_24",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41210.6,0.55,36605.0]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_25",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41266.9,0.55,36590.8]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_26",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41242.2,0.55,36564.0]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_27",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41196.2,0.55,36580.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_28",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41145.2,0.55,36609.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_29",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41095.5,0.55,36623.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_30",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41053.6,0.55,36653.0]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_31",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41050.0,0.55,36622.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_32",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41085.0,0.55,36601.5]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_33",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41133.3,0.55,36576.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_34",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41177.2,0.55,36549.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_35",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41216.0,0.55,36529.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_02",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6455.1,0.55,58985.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_03",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6426.2,0.55,59014.4]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_04",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6396.55,0.55,59046.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_05",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6370.6,0.55,59082.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_06",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6340.05,0.55,59109.4]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_07",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6306.9,0.55,59139.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_08",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6283.75,0.55,59165.3]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_09",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6257.1,0.55,59201.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_10",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6227.7,0.55,59227.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_11",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6262.65,0.55,59246.5]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_12",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6298.55,0.55,59213.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_13",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6336.2,0.55,59176.3]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_14",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6374.55,0.55,59135.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_15",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6406.9,0.55,59100.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_16",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6442.2,0.55,59065.0]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_17",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6482.4,0.55,59025.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_18",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6514.65,0.55,58987.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_19",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6549.4,0.55,59021.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_20",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6519.3,0.55,59056.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_21",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6481.95,0.55,59096.4]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_22",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6443.5,0.55,59129.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_23",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6402.95,0.55,59166.8]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_24",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6368.55,0.55,59206.4]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_25",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6335.55,0.55,59239.3]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_26",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6293.1,0.55,59275.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_27",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6322.4,0.55,59290.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_28",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6358.75,0.55,59256.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_29",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6389.9,0.55,59225.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_30",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6435.0,0.55,59188.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_31",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6467.25,0.55,59148.6]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_32",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6509.25,0.55,59119.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_33",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6531.65,0.55,59081.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_34",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6565.9,0.55,59055.8]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_35",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6596.05,0.55,59028.4]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_36",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6624.5,0.55,59055.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_37",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6597.5,0.55,59084.8]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_38",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6572.5,0.55,59116.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_39",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6545.35,0.55,59150.0]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_40",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6506.85,0.55,59183.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_41",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6470.2,0.55,59223.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_42",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6437.65,0.55,59262.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_43",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6411.1,0.55,59289.1]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_44",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6380.4,0.55,59313.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_45",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6423.05,0.55,59341.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_46",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6450.3,0.55,59320.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_47",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6474.05,0.55,59298.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_48",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6501.35,0.55,59263.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_49",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6538.7,0.55,59219.9]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t2_tank_50",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [6573.35,0.55,59179.8]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_36",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41195.9,0.55,36499.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_37",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41153.6,0.55,36523.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_38",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41112.2,0.55,36544.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_39",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41065.3,0.55,36568.0]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_40",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41020.1,0.55,36590.7]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_41",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41001.9,0.55,36554.5]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_42",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41032.6,0.55,36539.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_43",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41064.4,0.55,36517.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_44",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41103.8,0.55,36498.6]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_45",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41152.6,0.55,36477.7]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_46",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41129.1,0.55,36444.1]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_47",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41085.4,0.55,36461.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_48",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41049.4,0.55,36481.9]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_49",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [41008.6,0.55,36501.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
+          "object_marking": 0,
+          "squad_members": "flt_t1_tank"
+        }
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "flt_t1_tank_50",
+      "squad": {
+        "name": "flt_t2_tanks_squad",
         "tm": [
-          [0.461749,0.0,0.887011],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [40965.6,0.55,36523.9]
+          [0.0,0.0,1.0],
+          [7002.5,0.55,59364.1]
         ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
         "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
+          "object_marking": 0,
+          "squad_members": "flt_t2_tank"
+        }
       }
     }
   ],

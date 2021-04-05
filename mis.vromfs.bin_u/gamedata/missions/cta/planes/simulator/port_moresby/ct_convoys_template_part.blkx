@@ -11,10 +11,10 @@
     "mission": {
       "type": "singleMission",
       "level": "levels/water.bin",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -57,7 +57,7 @@
         },
         {
           "varSetInt": {
-            "value": 3,
+            "value": 2,
             "var": "cnv_t1_max_convoys_num"
           }
         },
@@ -68,7 +68,7 @@
         },
         {
           "varSetInt": {
-            "value": 3,
+            "value": 2,
             "var": "cnv_t2_max_convoys_num"
           }
         }
@@ -84,7 +84,914 @@
   "dialogs": [],
   "airfields": [],
   "effects": [],
-  "units": [],
+  "units": [
+    {
+      "squad": {
+        "name": "cnv_t1_convoy_01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16775.8,1.7,42041.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_truck"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_acar"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_aaa"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t1_convoy_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15116.3,1.7,41822.4]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_truck"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_acar"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_aaa"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t2_convoy_01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9086.75,166.95,42133.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t2_convoy_01_truck"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_01_acar"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_01_aaa"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_01_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_all_convoys_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5863.35,-5.15,2806.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_all_convoys_squad"
+          },
+          {
+            "squad_members": "cnv_t2_all_convoys_squad"
+          }
+        ]
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "cnv_t1_convoy_01_tank",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [17111.2,22.2,42468.6]
+        ],
+        "unit_class": "us_m4a2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t1_convoy_01_truck",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16835.8,22.2,42475.4]
+        ],
+        "unit_class": "us_cargo_truck",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t1_convoy_01_acar",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16514.1,22.2,42448.8]
+        ],
+        "unit_class": "us_m8_greyhound",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "cnv_t1_convoy_01_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16801.1,22.2,42749.6]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "cnv_t1_convoy_02_tank",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15401.4,22.2,42320.4]
+        ],
+        "unit_class": "us_m4a2",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t1_convoy_02_truck",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15137.2,22.2,42312.6]
+        ],
+        "unit_class": "us_cargo_truck",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t1_convoy_02_acar",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14843.1,22.2,42287.6]
+        ],
+        "unit_class": "us_m8_greyhound",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "cnv_t1_convoy_02_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15045.6,22.2,42687.0]
+        ],
+        "unit_class": "ussr_zis5_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "cnv_t2_convoy_01_tank",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9774.2,22.2,42639.2]
+        ],
+        "unit_class": "jpn_t97_ChiHa_Med",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t2_convoy_01_truck",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9332.2,22.2,42651.4]
+        ],
+        "unit_class": "germ_opelBlitz_tent",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t2_convoy_01_acar",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8805.75,22.2,42577.9]
+        ],
+        "unit_class": "germ_sdKfz_222",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "cnv_t2_convoy_01_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9582.65,22.2,43076.6]
+        ],
+        "unit_class": "germ_sdkfz71_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "cnv_t2_convoy_02_tank",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6903.9,154.225,42712.4]
+        ],
+        "unit_class": "jpn_t97_ChiHa_Med",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t2_convoy_02_truck",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6253.35,159.193,42650.8]
+        ],
+        "unit_class": "germ_opelBlitz_tent",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "cnv_t2_convoy_02_acar",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5719.9,192.683,42674.4]
+        ],
+        "unit_class": "germ_sdKfz_222",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "cnv_t2_convoy_02_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6347.45,174.45,43110.2]
+        ],
+        "unit_class": "germ_sdkfz71_20mm",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t2_convoy_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6398.9,166.95,42009.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t2_convoy_02_truck"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_02_acar"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_02_aaa"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_02_tank"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t1_all_convoys_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15825.5,14.6,40940.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t1_convoy_01_squad"
+          },
+          {
+            "squad_members": "cnv_t1_convoy_02_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "cnv_t2_all_convoys_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8689.8,14.6,40726.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cnv_t2_convoy_01_squad"
+          },
+          {
+            "squad_members": "cnv_t2_convoy_02_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "bridges_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [10569.2,1.55,-13905.0]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "fake_bridge"
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "cnv_armada",
+        "tm": [
+          [-0.793353,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,-0.793353],
+          [14338.3,1388.0,3195.95]
+        ],
+        "unit_class": "yak-1b",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "fake_bridge",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [21125.5,0.0,38869.0]
+        ],
+        "unit_class": "dummy_bombtarget",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    }
+  ],
   "areas": {
     "cnv_t1_road_01_spawn": {
       "type": "Point",

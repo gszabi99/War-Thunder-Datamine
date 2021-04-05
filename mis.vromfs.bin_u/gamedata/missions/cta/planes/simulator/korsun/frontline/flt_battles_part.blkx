@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -56,9 +56,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 12,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -93,9 +95,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 12,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -130,6 +134,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -167,6 +173,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -192,13 +200,13 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "lbt_battle_t1_squad_01"
           },
           {
             "squad_members": "lbt_battle_t1_squad_02"
-          },
-          {
-            "squad_members": "lbt_battle_t1_squad_03"
           }
         ]
       }
@@ -214,13 +222,13 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "lbt_battle_t2_squad_01"
           },
           {
             "squad_members": "lbt_battle_t2_squad_02"
-          },
-          {
-            "squad_members": "lbt_battle_t2_squad_03"
           }
         ]
       }
@@ -248,6 +256,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -294,6 +304,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -331,6 +343,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -368,6 +382,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -405,6 +421,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
@@ -442,120 +460,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 12,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "lbt_battle_t1_bunker_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13682.6,-11.9988,37449.4]
-        ],
-        "unit_class": "uk_bunker_light",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "lbt_battle_t1_art_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13865.3,-12.0,38774.2]
-        ],
-        "unit_class": "ussr_quest_large_art",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "lbt_battle_t1_tank_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13309.5,-12.0,36563.3]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 12,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -590,9 +499,11 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 12,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -627,6 +538,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -664,117 +577,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "lbt_battle_t2_tank_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8321.13,-12.0,36457.2]
-        ],
-        "unit_class": "germ_pzIVc",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 12,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "lbt_battle_t2_art_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8283.75,-12.0,38718.7]
-        ],
-        "unit_class": "germ_quest_large_art",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "lbt_battle_t2_bunker_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8365.05,-11.9985,37342.8]
-        ],
-        "unit_class": "uk_bunker_light",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 10,
@@ -800,6 +604,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "lbt_battle_t1_tank_01"
           },
           {
@@ -822,6 +629,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "lbt_battle_t1_tank_02"
           },
           {
@@ -829,28 +639,6 @@
           },
           {
             "squad_members": "lbt_battle_t1_bunker_02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "lbt_battle_t1_squad_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12867.6,-11.999,34495.5]
-        ],
-        "props": [
-          {
-            "squad_members": "lbt_battle_t1_bunker_03"
-          },
-          {
-            "squad_members": "lbt_battle_t1_art_03"
-          },
-          {
-            "squad_members": "lbt_battle_t1_tank_03"
           }
         ]
       }
@@ -865,6 +653,9 @@
           [6775.69,-11.9995,35125.7]
         ],
         "props": [
+          {
+            "object_marking": 0
+          },
           {
             "squad_members": "lbt_battle_t2_tank_01"
           },
@@ -888,6 +679,9 @@
         ],
         "props": [
           {
+            "object_marking": 0
+          },
+          {
             "squad_members": "lbt_battle_t2_tank_02"
           },
           {
@@ -895,28 +689,6 @@
           },
           {
             "squad_members": "lbt_battle_t2_bunker_02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "lbt_battle_t2_squad_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8464.56,-12.0,35090.2]
-        ],
-        "props": [
-          {
-            "squad_members": "lbt_battle_t2_tank_03"
-          },
-          {
-            "squad_members": "lbt_battle_t2_art_03"
-          },
-          {
-            "squad_members": "lbt_battle_t2_bunker_03"
           }
         ]
       }

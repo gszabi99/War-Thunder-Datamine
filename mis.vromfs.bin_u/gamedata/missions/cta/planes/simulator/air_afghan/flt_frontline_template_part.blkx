@@ -402,6 +402,22 @@
       "conditions": [],
       "actions": [
         {
+          "comment": {
+            "value": "ограничиваем количество битв"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_battle_max_battle_num"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "missionBattleArea": {
             "air": true,
             "ground": false,
@@ -686,7 +702,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
@@ -770,7 +786,7 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
-          "count": 20,
+          "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
           "formation_step": [2.5,2.0],
