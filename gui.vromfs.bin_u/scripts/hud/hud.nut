@@ -12,18 +12,6 @@ local UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 local getUnmappedControlsWarningTime = @() ::get_game_mode() == ::GM_TRAINING ? 180000.0 : 30.0
 local defaultFontSize = "small"
 
-local controlsHelpShownBits = 0
-local function maybeOfferControlsHelp() {
-  local unit = ::get_player_cur_unit()
-  if (![ "sdi_minotaur", "sdi_harpy", "sdi_hydra", "ucav_assault", "ucav_scout" ].contains(unit?.name))
-    return
-  local utBit = unit?.unitType.bit ?? 0
-  if ((controlsHelpShownBits & utBit) != 0)
-    return
-  controlsHelpShownBits = controlsHelpShownBits | utBit
-  ::g_hud_event_manager.onHudEvent("hint:f1_controls:show", {})
-}
-
 ::air_hud_actions <- {
   flaps = {
     id     = "flaps"
@@ -644,7 +632,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     updateTacticalMapVisibility()
     updateDmgIndicatorVisibility()
     updateShowHintsNest()
-    maybeOfferControlsHelp()
   }
 
   function updateTacticalMapVisibility()
@@ -767,7 +754,6 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
     ::g_hud_tank_debuffs.reinit()
     ::g_hud_crew_state.reinit()
     updateShowHintsNest()
-    maybeOfferControlsHelp()
   }
 
   function updateDamageIndicatorBackground()

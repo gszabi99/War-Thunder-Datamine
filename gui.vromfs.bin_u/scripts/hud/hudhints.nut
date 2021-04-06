@@ -671,14 +671,14 @@ enums.addTypesByGlobalName("g_hud_hints", {
   }
 
   F1_CONTROLS_HINT = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId = "hints/help_controls"
-    noKeyLocId = "hints/help_controls/nokey"
-    shortcuts = "ID_HELP"
+    hintType = ::g_hud_hint_types.ACTIONBAR
+    locId = "hints/f1_controls"
     showEvent = "hint:f1_controls:show"
     hideEvent = "helpOpened"
-    lifeTime = 30.0
-    delayTime = 3.0
+    priority = CATASTROPHIC_HINT_PRIORITY
+    totalCount = 3
+    lifeTime = 5.0
+    delayTime = 10.0
     maskId = 0
   }
 

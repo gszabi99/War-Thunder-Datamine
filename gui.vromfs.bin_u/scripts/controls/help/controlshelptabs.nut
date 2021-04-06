@@ -47,12 +47,6 @@ local tabGroups = [
     ]
   }
   {
-    title = "#event/war2077"
-    list = [
-      helpTypes.IMAGE_WARFARE2077
-    ]
-  }
-  {
     title = "#mission_objectives"
     list = [
       helpTypes.MISSION_OBJECTIVES
@@ -86,19 +80,14 @@ local function getPrefferableType(contentSet)
   local unit = ::get_player_cur_unit()
   local unitTag = unit?.isSubmarine() ? "submarine" : null
 
-  local patterns = [
+  foreach (pattern in [
     CONTROL_HELP_PATTERN.HOTAS4,
     CONTROL_HELP_PATTERN.MISSION,
     CONTROL_HELP_PATTERN.IMAGE,
     CONTROL_HELP_PATTERN.GAMEPAD,
     CONTROL_HELP_PATTERN.KEYBOARD_MOUSE,
     CONTROL_HELP_PATTERN.RADAR,
-  ]
-
-  if ([ "sdi_minotaur", "sdi_harpy", "sdi_hydra", "ucav_assault", "ucav_scout" ].contains(unit?.name))
-    patterns.insert(0, CONTROL_HELP_PATTERN.IMAGE)
-
-  foreach (pattern in patterns)
+  ])
   {
     local helpType = search(helpTypes.types, @(t) t.helpPattern == pattern
       && t.needShow(contentSet)
