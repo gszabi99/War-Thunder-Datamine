@@ -32,6 +32,26 @@ enum DEBR_THEME {
   PROGRESS  = "progress"
 }
 
+local statTooltipColumnParamByType = {
+  time = @(rowConfig) {
+    pId = rowConfig.hideUnitSessionTimeInTooltip ? "" : "sessionTime"
+    paramType = "tim"
+    showEmpty = !rowConfig.hideUnitSessionTimeInTooltip
+  }
+  value = @(rowConfig) {
+    pId = rowConfig.customValueName ?? $"{rowConfig.type}{rowConfig.id}"
+    paramType = rowConfig.type
+  }
+  reward = @(rowConfig) {
+    pId = $"{rowConfig.rewardType}{rowConfig.id}"
+    paramType = rowConfig.rewardType
+  }
+  info = @(rowConfig) {
+    pId = rowConfig?.infoName ?? ""
+    paramType = rowConfig?.infoType ?? ""
+  }
+}
+
 ::go_debriefing_next_func <- null
 
 ::gui_start_debriefingFull <- function gui_start_debriefingFull(params = {})
@@ -1645,7 +1665,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     }
 
     local tRow = getDebriefingRowById(id)
-    if (!tRow)
+    if (!tRow || tRow.hideTooltip)
     {
       obj["class"] = "empty"
       return
@@ -1760,36 +1780,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
       foreach(p in ["time", "value", "reward", "info"])
       {
-        local text = ""
-
-        local paramType = (p == "reward")? cfg.row.rewardType : p
-        local pId = paramType + cfg.row.id
-        local showEmpty = false
-        if (p == "time")
-        {
-          pId = "sessionTime"
-          paramType = "tim"
-          if (cfg.row.id == "sessionTime")
-            pId = ""
-          else
-            showEmpty = true
-        }
-        else if (p == "reward" || p == "value")
-        {
-          if (p == "value")
-          {
-            paramType = cfg.row.type
-            pId = cfg.row.customValueName? cfg.row.customValueName : cfg.row.type + cfg.row.id
-          }
-        }
-        else if (p=="info")
-        {
-          pId = cfg.row?.infoName ?? ""
-          paramType = cfg.row?.infoType ?? ""
-        }
-
-        text = getTextByType(cfg.expData?[pId] ?? 0, paramType, showEmpty)
-        rowView[p] <- text
+        local { paramType, pId, showEmpty = false } = statTooltipColumnParamByType[p](cfg.row)
+        rowView[p] <- getTextByType(cfg.expData?[pId] ?? 0, paramType, showEmpty)
       }
 
       view.append(rowView)

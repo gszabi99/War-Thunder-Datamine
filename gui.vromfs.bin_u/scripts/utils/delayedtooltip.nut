@@ -190,7 +190,10 @@ local function onHover(obj) {
   restartHintTask(function(_) {
     removeHintTask()
     if (hintTgt?.isValid() && hasTooltip(hintTgt))
-      showHintForObj(hintTgt)
+      if (::is_mouse_last_time_used())
+        showTooltipForObj(hintTgt)
+      else
+        showHintForObj(hintTgt)
   })
 }
 

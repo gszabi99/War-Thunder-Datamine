@@ -35,6 +35,8 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   tooltipExtraRows = null //function(), array
   tooltipComment = null  //string function()
   tooltipRowBonuses = @(unitId, unitData) null
+  hideTooltip = false
+  hideUnitSessionTimeInTooltip = false
   isCountedInUnits = true
   isFreeRP = false  //special row where exp currency is not RP but FreeRP
 
@@ -158,13 +160,10 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     icon = "icon/mpstats/raceBestLapTime"
   }
   { id = "BattleTime"
+    text = "debriefing/activityTime"
     type = "tim"
     icon = "icon/hourglass"
-    tooltipComment = function() {
-      return ::g_string.implode(::u.map([ "mainmenu/legend", "ui/colon", "icon/timer", "ui/mdash",
-        "multiplayer/lifetime", "ui/comma", "icon/hourglass", "ui/mdash", "debriefing/BattleTime",
-        "ui/dot" ], @(t) ::loc(t)))
-    }
+    hideUnitSessionTimeInTooltip = true
   }
   { id = "Activity"
     type = "pct"
@@ -362,10 +361,18 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
                               return result
                             }
   }
-  { id = "sessionTime"
-    customValueName = "sessionTime"
+  { id = "timePlayed"
+    customValueName = "timePlayed"
     type = "tim"
     icon = ""
+  }
+  { id = "sessionTime"
+    customValueName = "sessionTime"
+    text = "debriefing/missionDuration"
+    type = "tim"
+    icon = ""
+    hideTooltip = true
+    hideUnitSessionTimeInTooltip = true
   }
   { id = "Free"
     text = "debriefing/freeExp"
@@ -373,6 +380,7 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
     rewardType = "exp"
     isFreeRP = true
     isOverall = true
+    hideTooltip = true
   }
 ]
 //  notReduceByPrem = ["total", "Premium", "Unlocks"]
@@ -524,18 +532,17 @@ global enum debrState {
     ::debriefing_result.exp.ptmLapTimesArray <- ::get_race_lap_times()
   }
 
-  local sesTimeAir = 0
-  foreach(airName, airData in ::debriefing_result.exp.aircrafts)
-    sesTimeAir += airData.sessionTime
-
   local sessionTime = ::getTblValue("sessionTime", ::debriefing_result.exp, 0)
   local score = 0.0
+  local timePlayed = 0.0
   foreach(airName, airData in ::debriefing_result.exp.aircrafts)
   {
     score += airData.score
+    timePlayed += (airData.sessionTime+0.5).tointeger().tofloat()
     airData.timBattleTime <- airData.battleTime
     airData.pctActivity <- 0
   }
+  ::debriefing_result.exp.timePlayed <- timePlayed
   local sessionActivity = ::player_activity_coef(score, ((sessionTime+0.5).tointeger()).tofloat())
   ::debriefing_result.exp.pctActivity <- sessionActivity
 

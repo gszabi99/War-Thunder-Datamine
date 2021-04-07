@@ -409,7 +409,7 @@ class ::BaseItem
     local amountVal = params?.count || getAmount()
     local additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
       : getAdditionalTextInAmmount()
-    if (!::u.isInteger(amountVal) || shouldShowAmount(amountVal))
+    if (!shouldAutoConsume && (!::u.isInteger(amountVal) || shouldShowAmount(amountVal)))
     {
       res.amount <- isSelfAmount && hasReachedMaxAmount()
         ? ::colorize("goodTextColor",

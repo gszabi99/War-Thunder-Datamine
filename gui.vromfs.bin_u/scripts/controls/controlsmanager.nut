@@ -217,9 +217,12 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
   function clearGuiOptions()
   {
     local prefix = "USEROPT_"
+    local userOptTypes = []
     foreach (oType, value in curPreset.params)
       if (::g_string.startsWith(oType, prefix))
-        delete curPreset.params[oType]
+        userOptTypes.append(oType)
+    foreach (oType in userOptTypes)
+      delete curPreset.params[oType]
   }
 
   function commitGuiOptions()
