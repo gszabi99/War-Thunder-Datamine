@@ -13,6 +13,13 @@ def delayed_action_update_es(act : ecs::UpdateStageInfoAct;
   if (delayed_action_dot_doAtTime <= act.curTime)
     destroyEntity(eid)
 
+[es (on_event=EventEntityCreated)]
+def delayed_action_create_es(evt:Event;
+                             var delayed_action_dot_doAtTime : float&;
+                             delayed_action_dot_timer : float)
+  if (delayed_action_dot_doAtTime < 0.0)
+    delayed_action_dot_doAtTime = float(get_total_time()) + delayed_action_dot_timer
+
 [es (on_event=EventEntityDestroyed)]
 def delayed_unit_shot_action_es(evt:Event;
                                 delayed_unit_shot_dot_unitName : string;
