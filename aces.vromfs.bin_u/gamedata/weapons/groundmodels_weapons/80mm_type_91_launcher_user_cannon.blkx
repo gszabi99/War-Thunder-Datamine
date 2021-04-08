@@ -60,6 +60,7 @@
     "sound": "atgm_LPC",
     "sound_inside": "atgm_LPC_interior",
     "recoilMultiplier": 0.05,
+    "isAam": true,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
       "mod2": [20.0,0.6],
@@ -89,11 +90,12 @@
       "WdK": [0.1,0.1,0.1],
       "finsAoaHor": 0.04,
       "finsAoaVer": 0.04,
+      "fireDelay": 0.2,
       "force": 2600.0,
       "timeFire": 2.0,
       "force1": 700.0,
       "timeFire1": 6.0,
-      "thrustVectoringAngle": 0.0025,
+      "orientationTorque": 200.0,
       "spawnExplosionFx": false,
       "spawnExplosionWreckage": false,
       "explosionEffect": "hit_133_160mm_metal_he",
@@ -119,7 +121,6 @@
       "loftTime": [0.05,0.5],
       "loftOmegaLimit": 0.1,
       "loftAccel": 45.0,
-      "useThrustVectoringForLoft": true,
       "guidanceSfx": "alarm_con_scan",
       "hasProximityFuse": false,
       "breakLockMaxTime": 3.0,
@@ -127,7 +128,7 @@
       "statType": "hydra",
       "advancedMissiles": false,
       "useStartSpeed": true,
-      "startSpeed": 0.0,
+      "startSpeed": 25.0,
       "endSpeed": 1000.0,
       "timeLife": 17.0,
       "machMax": 1.9,
@@ -356,8 +357,19 @@
         "rateMax": 12.0,
         "prolongationTimeMax": 3.0
       },
-      "propNavGuidance": {
+      "orientationAutopilot": {
         "timeOut": 0.0,
+        "controlTime": 0.2,
+        "elevationAdd": 8.0,
+        "elevationToHeadingMult": [45.0,10.0,0.0,1.0],
+        "angleToAngularRate": 1.8,
+        "accelControlProp": 0.1,
+        "accelControlIntg": 0.0,
+        "accelControlIntgLim": 0.5,
+        "accelControlDiff": 0.02
+      },
+      "guidanceAutopilot": {
+        "timeOut": 0.7,
         "propNavMult": 4.0,
         "baseIndSpeed": 2100.0,
         "accelControlProp": 0.013,
@@ -366,7 +378,7 @@
         "accelControlDiff": 0.0015
       },
       "proximityFuse": {
-        "timeOut": 0.5,
+        "timeOut": 0.7,
         "radius": 0.5,
         "detectAirUnits": true,
         "detectGroundUnits": false,
@@ -406,6 +418,7 @@
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
+      "isAam": true,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
         "mod2": [20.0,0.6],
@@ -435,11 +448,12 @@
         "WdK": [0.1,0.1,0.1],
         "finsAoaHor": 0.04,
         "finsAoaVer": 0.04,
+        "fireDelay": 0.2,
         "force": 2600.0,
         "timeFire": 2.0,
         "force1": 700.0,
         "timeFire1": 6.0,
-        "thrustVectoringAngle": 0.0025,
+        "orientationTorque": 200.0,
         "spawnExplosionFx": false,
         "spawnExplosionWreckage": false,
         "explosionEffect": "hit_133_160mm_metal_he",
@@ -465,7 +479,6 @@
         "loftTime": [0.05,0.5],
         "loftOmegaLimit": 0.1,
         "loftAccel": 45.0,
-        "useThrustVectoringForLoft": true,
         "guidanceSfx": "alarm_con_scan",
         "hasProximityFuse": false,
         "breakLockMaxTime": 3.0,
@@ -473,7 +486,7 @@
         "statType": "hydra",
         "advancedMissiles": false,
         "useStartSpeed": true,
-        "startSpeed": 0.0,
+        "startSpeed": 25.0,
         "endSpeed": 1000.0,
         "timeLife": 17.0,
         "machMax": 1.9,
@@ -702,8 +715,19 @@
           "rateMax": 12.0,
           "prolongationTimeMax": 3.0
         },
-        "propNavGuidance": {
+        "orientationAutopilot": {
           "timeOut": 0.0,
+          "controlTime": 0.2,
+          "elevationAdd": 8.0,
+          "elevationToHeadingMult": [45.0,10.0,0.0,1.0],
+          "angleToAngularRate": 1.8,
+          "accelControlProp": 0.1,
+          "accelControlIntg": 0.0,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.02
+        },
+        "guidanceAutopilot": {
+          "timeOut": 0.7,
           "propNavMult": 4.0,
           "baseIndSpeed": 2100.0,
           "accelControlProp": 0.013,
@@ -712,7 +736,7 @@
           "accelControlDiff": 0.0015
         },
         "proximityFuse": {
-          "timeOut": 0.5,
+          "timeOut": 0.7,
           "radius": 0.5,
           "detectAirUnits": true,
           "detectGroundUnits": false,
