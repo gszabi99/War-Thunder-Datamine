@@ -108,12 +108,41 @@
   },
   "delayed_action": {
     "delayed_action:_namespace": {
-      "doAtTime": 0.0
+      "doAtTime": -1.0,
+      "timer": 0.0
     }
   },
   "delayed_unit_shot": {
     "_extends": "delayed_action",
     "delayed_unit_shot:_namespace": {
+      "unitName": "",
+      "triggerGroup": 0
+    }
+  },
+  "action_by_date": {
+    "action_by_date:_namespace": {
+      "yearFrom": 1900,
+      "monthFrom": 1,
+      "dayFrom": 1,
+      "hourFrom": 0,
+      "minFrom": 0,
+      "secFrom": 0,
+      "yearTo": 1901,
+      "monthTo": 1,
+      "dayTo": 1,
+      "hourTo": 0,
+      "minTo": 0,
+      "secTo": 0,
+      "timeFrom": 0,
+      "timeTo": 0,
+      "delayFromCreate": 30.0,
+      "doAtTime": -1.0,
+      "onlyFirstEnter": false
+    }
+  },
+  "unit_shot_by_date": {
+    "_extends": "action_by_date",
+    "unit_shot_by_date:_namespace": {
       "unitName": "",
       "triggerGroup": 0
     }
