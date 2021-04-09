@@ -1,0 +1,185 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "battleAreaColorPreset": "battleArea"
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/sector_montmedy/mainareas/template_sector_montmedy_Conq2_hardcore.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [-4.47035e-08,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-4.47035e-08],
+          [-387.238,25.7046,2687.12]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_block01_hardcore"
+          },
+          {
+            "squad_members": "t2_killarea_block02_hardcore"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [-4.47035e-08,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-4.47035e-08],
+          [-338.578,4.53395,2101.23]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_block01_hardcore"
+          },
+          {
+            "squad_members": "t1_killarea_block02_hardcore"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "conq_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [-3380.0,0.0,0.0],
+        [0.0,644.0,0.0],
+        [0.0,0.0,-3380.0],
+        [-2308.4,84.7615,2396.28]
+      ],
+      "objLayer": 5,
+      "props": []
+    },
+    "t2_killarea_block01_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [-9.53674e-06,0.0,-200.0],
+        [0.0,97.6116,0.0],
+        [200.0,0.0,-9.53674e-06],
+        [-2032.71,13.8833,3606.86]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block01_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [-9.53674e-06,0.0,-200.0],
+        [0.0,97.6116,0.0],
+        [200.0,0.0,-9.53674e-06],
+        [-1571.17,5.42383,1241.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_block02_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [-9.53674e-06,0.0,-200.0],
+        [0.0,97.6116,0.0],
+        [200.0,0.0,-9.53674e-06],
+        [-2953.17,11.0129,3512.41]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_block02_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [-9.53674e-06,0.0,-200.0],
+        [0.0,97.6116,0.0],
+        [200.0,0.0,-9.53674e-06],
+        [-2425.91,4.39978,938.776]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

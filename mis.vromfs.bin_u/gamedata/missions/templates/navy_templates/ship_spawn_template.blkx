@@ -1,0 +1,678 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_stalingrad_factory.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "scoreLimit": 17000,
+      "timeLimit": 20,
+      "deathPenaltyMul": 1.0,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "editSlotbar": {
+        "keepOwnUnits": false,
+        "country_usa": {
+          "us_m4a3_105_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m4a1_76w_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m24_chaffee": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m4a1_1942_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        },
+        "country_germany": [
+          {
+            "germ_pzkpfw_IV_ausf_G": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_jgdpz_38t": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          }
+        ],
+        "country_ussr": {
+          "ussr_t_34_1942": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_t_34_1941_57": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_su_85_1943": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_su_122": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_kv_1_zis_5": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        }
+      }
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "template_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {
+          "target": "t1_tankSpawn",
+          "postfix": "",
+          "loc_name": "missions/spawn",
+          "spawnEffect": false,
+          "isStrictSpawn": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "varMaxBasesCount": "num_tankSpawn_zones",
+          "createRandomBase": true,
+          "useExisting": false,
+          "isIndividual": true,
+          "removeAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
+          "team": "A",
+          "offset": [0.0,0.0,0.0],
+          "radius": -1.0,
+          "tags": {
+            "tank": true
+          }
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": "fill boats spawn string"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t1_boat_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t2_boat_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t1_boat_spawn",
+            "digits": 0,
+            "var": "t1_boat_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t2_boat_spawn",
+            "digits": 0,
+            "var": "t2_boat_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "fill destroyers spawn string"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t1_destroyer_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t2_destroyer_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t1_destroyer_spawn",
+            "digits": 0,
+            "var": "t1_destroyer_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t2_destroyer_spawn",
+            "digits": 0,
+            "var": "t2_destroyer_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "fill cruisers spawn string"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t1_cruiser_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t2_cruiser_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t1_cruiser_spawn",
+            "digits": 0,
+            "var": "t1_cruiser_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t2_cruiser_spawn",
+            "digits": 0,
+            "var": "t2_cruiser_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "fill battleship spawn string"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t1_battleship_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "t2_battleship_spawn_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t1_battleships_spawn",
+            "digits": 0,
+            "var": "t1_battleship_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "t2_battleships_spawn",
+            "digits": 0,
+            "var": "t2_battleship_spawn_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "fill battleareas strings"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "",
+            "var": "battle_area_name",
+            "input_var": "modename"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "battle_area",
+            "digits": 0,
+            "var": "battle_area_name"
+          }
+        },
+        {
+          "comment": {
+            "value": "enable next trigger"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "create_naval_spawns"
+            },
+            {
+              "target": "check_battle_area_exist"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "create_naval_spawns": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t1_boat_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": true,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t2_boat_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": true,
+              "type_frigate": false,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_destroyers",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t1_destroyer_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_destroyers",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t2_destroyer_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": false
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_cruisers",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t1_cruiser_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": true,
+              "type_heavy_cruiser": true,
+              "type_battlecruiser": true,
+              "type_battleship": true
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_cruisers",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t2_cruiser_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": true,
+              "type_heavy_cruiser": true,
+              "type_battlecruiser": true,
+              "type_battleship": true
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_battleship",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t1_battleship_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "A",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": true,
+              "type_heavy_cruiser": true,
+              "type_battlecruiser": true,
+              "type_battleship": true
+            }
+          }
+        },
+        {
+          "missionCreateRespawnBasesByTemplate": {
+            "loc_name": "missions/spawn_battleship",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "createRandomBase": true,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "offset": [0.0,0.0,0.0],
+            "radius": -1.0,
+            "target": "@t2_battleship_spawn_name",
+            "postfix": "",
+            "varMaxBasesCount": "spawn_num",
+            "team": "B",
+            "tags": {
+              "ship": true,
+              "boat": false,
+              "type_frigate": true,
+              "type_destroyer": true,
+              "type_light_cruiser": true,
+              "type_heavy_cruiser": true,
+              "type_battlecruiser": true,
+              "type_battleship": true
+            }
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "check_battle_area_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@battle_area_name",
+          "type": "area"
+        }
+      },
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": true,
+          "killOutOfBattleArea": true,
+          "target": "@battle_area_name",
+          "newGridHorizontalCellCount": 0,
+          "killArea": false,
+          "detectionArea": false,
+          "airMapArea": false,
+          "area": "@battle_area_name"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "t1_boat_spawn_name": "",
+    "t2_boat_spawn_name": "",
+    "t1_destroyer_spawn_name": "",
+    "t2_destroyer_spawn_name": "",
+    "t1_cruiser_spawn_name": "",
+    "t2_cruiser_spawn_name": "",
+    "t1_battleship_spawn_name": "",
+    "t2_battleship_spawn_name": "",
+    "battle_area_name": "",
+    "spawn_num": 15
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

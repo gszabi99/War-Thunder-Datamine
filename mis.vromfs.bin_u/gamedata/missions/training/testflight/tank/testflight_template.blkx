@@ -1,0 +1,551 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "t1_player01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/avg_training_ground.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "unitPutToSleep": [
+          {
+            "target": "target_tanks_squad"
+          },
+          {
+            "target": "flight_target01"
+          }
+        ],
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": ""
+          },
+          {
+            "spawnEffect": false
+          },
+          {
+            "isGroundZone": false
+          },
+          {
+            "isUnit": false
+          },
+          {
+            "radius": -1.0
+          },
+          {
+            "isStrictSpawn": false
+          },
+          {
+            "isAirfield": false
+          },
+          {
+            "useExisting": false
+          },
+          {
+            "isIndividual": false
+          },
+          {
+            "removeAreas": false
+          },
+          {
+            "canSpawnOnNeutral": false
+          },
+          {
+            "showOnMap": true
+          },
+          {
+            "onlyOnePlayerPerSpawnPoint": false
+          },
+          {
+            "resetStrictSpawnIndex": false
+          },
+          {
+            "replaceAreas": false
+          },
+          {
+            "forceCreate": false
+          },
+          {
+            "target": "artillery_spawn01"
+          },
+          {
+            "target": "artillery_spawn02"
+          },
+          {
+            "target": "artillery_spawn03"
+          },
+          {
+            "target": "artillery_spawn04"
+          },
+          {
+            "team": "A"
+          },
+          {
+            "tags": {
+              "artillery": true
+            }
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "end": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isKilled",
+          "check_players": "any"
+        }
+      },
+      "actions": {
+        "wait": {
+          "time": 3.0
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "t1_player01",
+          "target": "spawn01"
+        }
+      },
+      "else_actions": []
+    },
+    "name_assemble": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varSetString": {
+            "value": "target_tank",
+            "var": "target_tank"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "tank_spawn_area",
+            "var": "tank_spawn_area"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "target_tank",
+            "input_var": "tank_num"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "tank_spawn_area",
+            "input_var": "tank_num"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "check_exist"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "check_exist": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@target_tank",
+          "type": "unit"
+        }
+      },
+      "actions": {
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "@target_tank",
+          "target": "@tank_spawn_area"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "tank_num"
+        },
+        "triggerEnable": {
+          "target": "name_assemble"
+        }
+      },
+      "else_actions": {
+        "unitSetRoute": {
+          "route": "way_target_tank05",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "teleportToStart": true,
+          "object": "target_tank06",
+          "object_type": "isActive"
+        },
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "target_tanks_squad",
+          "forceVisibleOnMap": true,
+          "attack_type": "dont_aim",
+          "speed": 25.0,
+          "lockSpeed": true
+        }
+      }
+    },
+    "spawn_plane_exist": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "flight_target01",
+            "type": "unit"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "spawn_area",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "flight_point",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": {
+        "triggerEnable": {
+          "target": "spawn_plane"
+        }
+      },
+      "else_actions": []
+    },
+    "spawn_plane": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "type_spaa": true
+            }
+          }
+        },
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "has_proximityFuse_rocket": true
+            }
+          }
+        }
+      ],
+      "actions": {
+        "unitLoadBehTree": {
+          "name": "missionKamikaze",
+          "objects": "flight_target01"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "flight_target01",
+          "target": "spawn_area"
+        },
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "flight_point",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "flight_target01"
+        }
+      },
+      "else_actions": []
+    },
+    "spawn_plane2_exist": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "flight_target02",
+            "type": "unit"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "spawn_area02",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "flight_point02",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": {
+        "triggerEnable": {
+          "target": "spawn_plane2"
+        }
+      },
+      "else_actions": []
+    },
+    "spawn_plane2": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "type_spaa": true
+            }
+          }
+        },
+        {
+          "unitCheckTag": {
+            "target": "t1_player01",
+            "tags": {
+              "has_proximityFuse_rocket": true
+            }
+          }
+        }
+      ],
+      "actions": {
+        "unitLoadBehTree": {
+          "name": "missionKamikaze",
+          "objects": "flight_target02"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [0.0,0.0,0.0],
+          "object": "flight_target02",
+          "target": "spawn_area02"
+        },
+        "unitMoveTo": {
+          "object_marking": 0,
+          "target": "flight_point02",
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": false,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "flight_target02"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "target_tank": "",
+    "tank_num": 1,
+    "tank_spawn_area": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": {
+    "artillery_spawn01": {
+      "type": "Point",
+      "tm": [
+        [0.300706,0.0,0.953717],
+        [0.0,1.0,0.0],
+        [-0.953717,0.0,0.300706],
+        [1267.02,159.532,-493.17]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "artillery_spawn02": {
+      "type": "Point",
+      "tm": [
+        [0.300706,0.0,0.953717],
+        [0.0,1.0,0.0],
+        [-0.953717,0.0,0.300706],
+        [1200.42,166.037,-452.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "artillery_spawn03": {
+      "type": "Point",
+      "tm": [
+        [0.300706,0.0,0.953717],
+        [0.0,1.0,0.0],
+        [-0.953717,0.0,0.300706],
+        [1130.52,160.526,-405.62]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "artillery_spawn04": {
+      "type": "Point",
+      "tm": [
+        [0.300706,0.0,0.953717],
+        [0.0,1.0,0.0],
+        [-0.953717,0.0,0.300706],
+        [1071.25,166.2,-374.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

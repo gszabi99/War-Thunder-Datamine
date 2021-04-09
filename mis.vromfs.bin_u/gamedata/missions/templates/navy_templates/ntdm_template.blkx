@@ -1,0 +1,749 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_stalingrad_factory.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "scoreLimit": 17000,
+      "timeLimit": 20,
+      "deathPenaltyMul": 1.0,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "editSlotbar": {
+        "keepOwnUnits": false,
+        "country_usa": {
+          "us_m4a3_105_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m4a1_76w_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m24_chaffee": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "us_m4a1_1942_sherman": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        },
+        "country_germany": [
+          {
+            "germ_pzkpfw_IV_ausf_G": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_pzkpfw_IV_ausf_F2": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          },
+          {
+            "germ_jgdpz_38t": {
+              "crewSkillsPercent": 100,
+              "crewSpecialization": 2,
+              "allWeapons": true,
+              "allModifications": true
+            }
+          }
+        ],
+        "country_ussr": {
+          "ussr_t_34_1942": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_t_34_1941_57": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_su_85_1943": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_su_122": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          },
+          "ussr_kv_1_zis_5": {
+            "crewSkillsPercent": 100,
+            "crewSpecialization": 2,
+            "allWeapons": true,
+            "allModifications": true
+          }
+        }
+      }
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/templates/navy_templates/ship_spawn_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "ntdm_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ntdm_t1_capture_area",
+            "var": "zone_t1_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ntdm_t2_capture_area",
+            "var": "zone_t2_name"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 0
+            },
+            {
+              "var": "t1_ai_int"
+            },
+            {
+              "var": "t2_ai_int"
+            }
+          ]
+        },
+        {
+          "varSetString": {
+            "value": "ntdm_t1_ai_ship_squad",
+            "var": "t1_ai_squad_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "ntdm_t2_ai_ship_squad",
+            "var": "t2_ai_squad_name"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "ntdm_start"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "ntdm_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionMarkAsCaptureZone": {
+            "army": 1,
+            "timeMultiplier": 10.0,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "target": "@zone_t1_name",
+            "canCaptureOnGround": true,
+            "playAirfieldSound": false,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "useHUDMarkers": true,
+            "captureNoPenalty": true,
+            "zoneDefenders": [],
+            "tags": {
+              "air": false,
+              "type_hydroplane": true,
+              "tank": false,
+              "ship": true
+            }
+          }
+        },
+        {
+          "missionMarkAsCaptureZone": {
+            "army": 2,
+            "timeMultiplier": 10.0,
+            "disableZone": false,
+            "name_for_respawn_base": "",
+            "target": "@zone_t2_name",
+            "canCaptureOnGround": true,
+            "playAirfieldSound": false,
+            "canCaptureInAir": false,
+            "canCaptureByGM": true,
+            "useHUDMarkers": true,
+            "captureNoPenalty": true,
+            "zoneDefenders": [],
+            "tags": {
+              "air": false,
+              "type_hydroplane": true,
+              "tank": false,
+              "ship": true
+            }
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "ntdm_t1_ai_counter"
+            },
+            {
+              "target": "ntdm_t2_ai_counter"
+            },
+            {
+              "target": "ntdm_ai_indicator"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "@t1_ai_squad_name"
+            },
+            {
+              "object": "@t2_ai_squad_name"
+            },
+            {
+              "targetableByAi": false
+            },
+            {
+              "accuracy": 0.3
+            },
+            {
+              "airAccuracy": 0.8
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "avn_ntdm_objective_01",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "avn_ntdm_objective_02",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "game_logic": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ntdm_t1_ai_counter": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 0,
+            "object": "@t1_ai_squad_name",
+            "var": "t1_ai_int"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t1_ai_int"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": [
+            {
+              "target": "ntdm_t1_lost_one_ship"
+            },
+            {
+              "target": "ntdm_t1_lose_by_lost_ship"
+            }
+          ],
+          "missionSetTargetsIndicator": {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "ship",
+            "icon army": 1,
+            "set": true,
+            "target": "@t1_ai_squad_name",
+            "team": "Both"
+          },
+          "triggerDisable": {
+            "target": "ntdm_t1_ai_counter"
+          }
+        }
+      },
+      "ntdm_t2_ai_counter": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 0,
+            "object": "@t2_ai_squad_name",
+            "object_var_value": 0,
+            "var": "t2_ai_int"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t2_ai_int"
+          }
+        },
+        "else_actions": {
+          "triggerEnable": [
+            {
+              "target": "ntdm_t2_lost_one_ship"
+            },
+            {
+              "target": "ntdm_t2_lose_by_lost_ship"
+            }
+          ],
+          "missionSetTargetsIndicator": {
+            "target_type": "isActive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "ship",
+            "icon army": 2,
+            "set": true,
+            "target": "@t2_ai_squad_name",
+            "team": "Both"
+          },
+          "triggerDisable": {
+            "target": "ntdm_t2_ai_counter"
+          }
+        }
+      },
+      "ntdm_t1_lose_by_lost_ship": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "less",
+            "value": 1,
+            "object": "@t1_ai_squad_name",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -7,
+            "valueSystem": "percentage",
+            "team": "A"
+          }
+        },
+        "else_actions": []
+      },
+      "ntdm_t2_lose_by_lost_ship": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "less",
+            "value": 1,
+            "object": "@t2_ai_squad_name",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "gameMPChangeScore": {
+            "value": -7,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        "else_actions": []
+      },
+      "ntdm_ai_indicator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenStatus": {
+              "object_type": "isKilled",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": "@t1_ai_squad_name"
+            }
+          },
+          {
+            "unitWhenStatus": {
+              "object_type": "isKilled",
+              "check_objects": "any",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object": "@t2_ai_squad_name"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "missionSetTargetsIndicator": {
+              "target_type": "isActive",
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "delta": 0,
+              "icon": "ship",
+              "icon army": 1,
+              "set": true,
+              "target": "@t1_ai_squad_name",
+              "team": "Both"
+            }
+          },
+          {
+            "missionSetTargetsIndicator": {
+              "target_type": "isActive",
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "delta": 0,
+              "icon": "ship",
+              "icon army": 2,
+              "set": true,
+              "target": "@t2_ai_squad_name",
+              "team": "Both"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ntdm_t1_lost_one_ship": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "less",
+            "value": 1,
+            "object": "@t1_ai_squad_name",
+            "object_var_value": 0,
+            "var": "t1_ai_int"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "t1_ai_int"
+          },
+          "gameMPChangeScore": {
+            "value": -1000,
+            "valueSystem": "amount",
+            "team": "A"
+          }
+        },
+        "else_actions": []
+      },
+      "ntdm_t2_lost_one_ship": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "less",
+            "value": 1,
+            "object": "@t2_ai_squad_name",
+            "object_var_value": 0,
+            "var": "t2_ai_int"
+          }
+        },
+        "actions": {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "t2_ai_int"
+          },
+          "gameMPChangeScore": {
+            "value": -1000,
+            "valueSystem": "amount",
+            "team": "B"
+          }
+        },
+        "else_actions": []
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "avn_ntdm_objective_01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "avn_ntdm_objective_02": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "t1_ai_int": 10,
+    "t2_ai_int": 10,
+    "modename": "ntdm_",
+    "t1_ai_squad_name": "",
+    "t2_ai_squad_name": "",
+    "zone_t1_name": "",
+    "zone_t2_name": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

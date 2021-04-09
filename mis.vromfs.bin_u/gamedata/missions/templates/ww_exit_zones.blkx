@@ -1,0 +1,200 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear",
+      "scoreLimit": 6400,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.0,
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "exit_zones_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "varSetBool": {
+          "value": false,
+          "var": "enableExitZones",
+          "fromDescriptor": "enableExitZones"
+        },
+        "triggerEnable": {
+          "target": "exit_zones_enable_check"
+        }
+      },
+      "else_actions": []
+    },
+    "exit_zones_enable_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "enableExitZones",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "разрешены зоны выхода, надо их включить"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_plane_exit_zone",
+            "var": "t1_exitZoneName"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_plane_exit_zone",
+            "var": "t2_exitZoneName"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "exit_zone_exist_check"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "exit_zone_exist_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "@t1_exitZoneName",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "@t2_exitZoneName",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "зоны существуют в миссии. можно их назначать"
+          }
+        },
+        {
+          "missionMarkAsExitZone": {
+            "army": 1,
+            "area_name": "@t1_exitZoneName",
+            "enabled": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          }
+        },
+        {
+          "missionMarkAsExitZone": {
+            "army": 2,
+            "area_name": "@t2_exitZoneName",
+            "enabled": true,
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true
+            }
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "enableExitZones": false,
+    "t1_exitZoneName": "",
+    "t2_exitZoneName": ""
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

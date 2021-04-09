@@ -1,0 +1,1154 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/bridges/berlin_avg_bridges.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/berlin/template_berlin_heli_spawn.blk",
+        "rankRange": [21,50],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/berlin/airfields/template_berlin_airfields_low_ranks.blk",
+        "rankRange": [0,5],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/berlin/airfields/template_berlin_airfields_mid_ranks.blk",
+        "rankRange": [6,16],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/tanks/berlin/airfields/template_berlin_airfields_high_ranks.blk",
+        "rankRange": [17,50],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "objectGroups": {
+        "name": "objectGroups_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3021.75,45.65,792.3]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3027.4,45.65,795.7]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_03",
+        "tm": [
+          [0.983261,0.0,0.182201],
+          [0.0,1.0,0.0],
+          [-0.182201,0.0,0.983261],
+          [3032.0,45.65,790.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_04",
+        "tm": [
+          [0.908525,0.0,-0.41783],
+          [0.0,1.0,0.0],
+          [0.41783,0.0,0.908525],
+          [3015.2,45.65,791.0]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_09",
+        "tm": [
+          [-0.729621,0.0,0.683852],
+          [0.0,1.0,0.0],
+          [-0.683852,0.0,-0.729621],
+          [3047.35,45.65,791.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_10",
+        "tm": [
+          [-0.842006,0.0,0.539468],
+          [0.0,1.0,0.0],
+          [-0.539468,0.0,-0.842006],
+          [3047.52,45.65,797.953]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_11",
+        "tm": [
+          [-0.729621,0.0,0.683852],
+          [0.0,1.0,0.0],
+          [-0.683852,0.0,-0.729621],
+          [3053.8,45.65,789.667]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_08",
+        "tm": [
+          [-0.377145,0.0,0.926154],
+          [0.0,1.0,0.0],
+          [-0.926154,0.0,-0.377145],
+          [3059.47,45.65,786.136]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_16",
+        "tm": [
+          [-0.729621,0.0,0.683852],
+          [0.0,1.0,0.0],
+          [-0.683852,0.0,-0.729621],
+          [3131.23,45.65,779.564]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_17",
+        "tm": [
+          [-0.842006,0.0,0.539468],
+          [0.0,1.0,0.0],
+          [-0.539468,0.0,-0.842006],
+          [3131.4,45.65,786.467]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_18",
+        "tm": [
+          [-0.729621,0.0,0.683852],
+          [0.0,1.0,0.0],
+          [-0.683852,0.0,-0.729621],
+          [3137.68,45.65,778.181]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_15",
+        "tm": [
+          [-0.68727,0.0,0.726402],
+          [0.0,1.0,0.0],
+          [-0.726402,0.0,-0.68727],
+          [3146.35,45.65,774.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3017.35,45.65,882.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3019.8,45.65,885.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_07",
+        "tm": [
+          [0.147354,0.0,-0.989084],
+          [0.0,1.0,0.0],
+          [0.989084,0.0,0.147354],
+          [3008.8,45.65,904.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_12",
+        "tm": [
+          [0.999338,0.0,-0.0363884],
+          [0.0,1.0,0.0],
+          [0.0363884,0.0,0.999338],
+          [3090.0,45.65,882.2]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_13",
+        "tm": [
+          [0.999338,0.0,-0.0363884],
+          [0.0,1.0,0.0],
+          [0.0363884,0.0,0.999338],
+          [3092.5,45.65,817.0]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_14",
+        "tm": [
+          [0.112842,0.0,-0.993613],
+          [0.0,1.0,0.0],
+          [0.993613,0.0,0.112842],
+          [2973.95,45.65,1041.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_19",
+        "tm": [
+          [0.112842,0.0,-0.993613],
+          [0.0,1.0,0.0],
+          [0.993613,0.0,0.112842],
+          [2971.9,45.65,1034.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_20",
+        "tm": [
+          [-0.996332,0.0,-0.0855699],
+          [0.0,1.0,0.0],
+          [0.0855699,0.0,-0.996332],
+          [2919.0,45.65,1045.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_21",
+        "tm": [
+          [-0.843767,0.0,-0.53671],
+          [0.0,1.0,0.0],
+          [0.53671,0.0,-0.843767],
+          [3094.9,45.65,1240.3]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_22",
+        "tm": [
+          [-0.843767,0.0,-0.53671],
+          [0.0,1.0,0.0],
+          [0.53671,0.0,-0.843767],
+          [3086.75,45.65,1232.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_24",
+        "tm": [
+          [-0.843767,0.0,-0.53671],
+          [0.0,1.0,0.0],
+          [0.53671,0.0,-0.843767],
+          [3080.45,45.65,1230.9]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_23",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2171.05,40.55,1527.5]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_25",
+        "tm": [
+          [-0.607052,0.0,-0.794662],
+          [0.0,1.0,0.0],
+          [0.794662,0.0,-0.607052],
+          [2113.7,40.55,1556.3]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_26",
+        "tm": [
+          [-0.607052,0.0,-0.794662],
+          [0.0,1.0,0.0],
+          [0.794662,0.0,-0.607052],
+          [2124.25,40.55,1568.8]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_27",
+        "tm": [
+          [-0.29437,0.0,-0.955691],
+          [0.0,1.0,0.0],
+          [0.955691,0.0,-0.29437],
+          [2884.4,40.55,1173.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_28",
+        "tm": [
+          [0.209939,0.0,-0.977714],
+          [0.0,1.0,0.0],
+          [0.977714,0.0,0.209939],
+          [2885.95,40.55,1178.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_29",
+        "tm": [
+          [0.209939,0.0,-0.977714],
+          [0.0,1.0,0.0],
+          [0.977714,0.0,0.209939],
+          [2878.8,40.55,1178.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_30",
+        "tm": [
+          [0.209939,0.0,-0.977714],
+          [0.0,1.0,0.0],
+          [0.977714,0.0,0.209939],
+          [2879.1,40.55,1176.5]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_31",
+        "tm": [
+          [0.209939,0.0,-0.977714],
+          [0.0,1.0,0.0],
+          [0.977714,0.0,0.209939],
+          [2881.85,40.55,1177.0]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_32",
+        "tm": [
+          [0.209939,0.0,-0.977714],
+          [0.0,1.0,0.0],
+          [0.977714,0.0,0.209939],
+          [2877.1,40.55,1174.65]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_33",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2168.9,40.55,1528.5]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_34",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2172.65,40.55,1525.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_35",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2172.25,40.55,1527.1]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_36",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2158.55,40.55,1511.1]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_37",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2161.85,40.55,1511.2]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_38",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2166.55,40.55,1513.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_39",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2639.25,40.55,1521.0]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_40",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2635.45,40.55,1523.65]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_41",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2636.0,40.55,1521.2]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_42",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2650.95,40.55,1507.5]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_43",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2648.65,40.55,1507.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_44",
+        "tm": [
+          [0.497683,0.0,-0.867359],
+          [0.0,1.0,0.0],
+          [0.867359,0.0,0.497683],
+          [2652.85,40.55,1506.2]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_47",
+        "tm": [
+          [0.663501,0.0,-0.748175],
+          [0.0,1.0,0.0],
+          [0.748175,0.0,0.663501],
+          [2698.5,40.55,1551.2]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_46",
+        "tm": [
+          [0.663501,0.0,-0.748175],
+          [0.0,1.0,0.0],
+          [0.748175,0.0,0.663501],
+          [2688.26,40.55,1563.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_50",
+        "tm": [
+          [0.809655,0.0,0.586906],
+          [0.0,1.0,0.0],
+          [-0.586906,0.0,0.809655],
+          [3043.2,40.55,1312.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_49",
+        "tm": [
+          [0.809655,0.0,0.586906],
+          [0.0,1.0,0.0],
+          [-0.586906,0.0,0.809655],
+          [3029.51,40.55,1303.41]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_45",
+        "tm": [
+          [-0.99197,0.0,-0.126473],
+          [0.0,1.0,0.0],
+          [0.126473,0.0,-0.99197],
+          [3090.1,45.65,782.8]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    }
+  ],
+  "areas": {
+    "t1_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [192.596,0.0,-230.014],
+        [0.0,300.0,0.0],
+        [230.014,0.0,192.596],
+        [-1685.48,1000.0,6409.89]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-192.596,0.0,230.014],
+        [0.0,300.0,0.0],
+        [-230.014,0.0,-192.596],
+        [6659.05,1000.0,-3555.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bombers_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [9641.81,0.0,-11490.7],
+        [0.0,15000.0,0.0],
+        [11490.7,0.0,9641.81],
+        [2486.16,1500.0,1427.71]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [192.596,0.0,-230.014],
+        [0.0,300.0,0.0],
+        [230.014,0.0,192.596],
+        [-2328.77,1500.0,7178.31]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-192.596,0.0,230.014],
+        [0.0,300.0,0.0],
+        [-230.014,0.0,-192.596],
+        [7298.2,1500.0,-4318.98]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [19283.6,0.0,-22981.3],
+        [0.0,30000.0,0.0],
+        [22981.3,0.0,19283.6],
+        [2486.16,2000.0,1427.71]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [192.596,0.0,-230.014],
+        [0.0,300.0,0.0],
+        [230.014,0.0,192.596],
+        [-7144.01,2000.0,12928.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [-192.596,0.0,230.014],
+        [0.0,300.0,0.0],
+        [-230.014,0.0,-192.596],
+        [12115.5,2000.0,-10072.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [641.989,0.0,-766.713],
+        [0.0,5000.0,0.0],
+        [766.713,0.0,641.989],
+        [5263.28,0.0,7243.98]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [-641.989,0.0,766.713],
+        [0.0,5000.0,0.0],
+        [-766.713,0.0,-641.989],
+        [849.954,0.0,-4810.96]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "fighters_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [-8345.85,0.0,9967.29],
+        [0.0,13000.0,0.0],
+        [-9967.29,0.0,-8345.85],
+        [2486.16,1000.0,1427.71]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [-97.7552,0.0,249.75],
+        [0.0,268.2,0.0],
+        [-249.75,0.0,-97.7552],
+        [4260.91,300.002,-3566.67]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_heli_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [97.7552,0.0,-249.75],
+        [0.0,268.2,0.0],
+        [249.75,0.0,97.7552],
+        [615.588,300.002,5746.59]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

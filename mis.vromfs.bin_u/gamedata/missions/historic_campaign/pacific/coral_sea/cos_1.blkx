@@ -1,0 +1,5644 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "map": "tazirstan_p",
+      "environment": "Day",
+      "weather": "hazy",
+      "type": "campaign",
+      "gt_use_lb": true,
+      "gt_use_replay": true,
+      "gt_use_stats": true,
+      "level": "levels/water.bin",
+      "windDirection": [1.0,0.0,0.0],
+      "gt_cooperative": false,
+      "gt_versus": false,
+      "restoreType": "tactical control",
+      "optionalTakeOff": false,
+      "locationName": "water_coral",
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 3,
+      "windSpeed": [5.0,5.0],
+      "windDirectionDeg": [-30.0,-30.0],
+      "stars": {
+        "latitude": 18.0,
+        "longitude": 158.0,
+        "year": 1942,
+        "month": 5,
+        "day": 5,
+        "localTime": 10.0
+      },
+      "customWeather": {
+        "windDir": [0.6,0.8],
+        "wind_scale": 1.0,
+        "max_wind_strength": 6.0,
+        "waterWindStrength": 4.0,
+        "strata_clouds": {
+          "amount": 1.0,
+          "altitude": 10.0
+        },
+        "clouds_weather_gen": {
+          "layers[0].coverage": 0.21,
+          "layers[0].freq": 1.3,
+          "layers[0].seed": 26.76,
+          "layers[1].coverage": 0.55,
+          "layers[1].freq": 2.87,
+          "layers[1].seed": 4.23,
+          "cumulonimbusCoverage": 0.15,
+          "cumulonimbusSeed": 16.9
+        },
+        "clouds_form": {
+          "layers[0].startAt": 3.5,
+          "layers[0].thickness": 5.0,
+          "layers[0].density": 0.5,
+          "layers[0].clouds_type": 0.32,
+          "layers[0].clouds_type_variance": 0.21,
+          "layers[1].startAt": 6.0,
+          "layers[1].thickness": 2.6,
+          "layers[1].density": 1.22,
+          "layers[1].clouds_type": 0.25,
+          "layers[1].clouds_type_variance": 0.76,
+          "turbulenceStrength": 0.65,
+          "turbulenceFreq": 2
+        }
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 28.0
+    },
+    "spectator_points": [],
+    "briefing": [
+      {
+        "place_loc": "mb/coS_1/place"
+      },
+      {
+        "date_loc": ""
+      },
+      {
+        "objective_loc": "mb/coS_1/objective"
+      },
+      {
+        "music": "3_us_guadalcanal"
+      },
+      {
+        "part": {
+          "event": "mb/coS_1/part1",
+          "minTime": 0,
+          "slide": {
+            "map": false,
+            "minTime": 6,
+            "picture": "coral_sea/briefing_slide_coralsea_m2_part1",
+            "showAirMap": false
+          }
+        }
+      },
+      {
+        "part": [
+          {
+            "event": "mb/coS_1/part2"
+          },
+          {
+            "minTime": 0
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 3,
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part2a",
+              "showAirMap": false
+            }
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 3,
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part2b",
+              "showAirMap": false
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "event": "mb/coS_1/part3",
+          "minTime": 0,
+          "slide": {
+            "map": false,
+            "minTime": 6,
+            "picture": "coral_sea/briefing_slide_coralsea_m2_part3",
+            "showAirMap": false
+          }
+        }
+      },
+      {
+        "part": [
+          {
+            "event": "mb/coS_1/part4"
+          },
+          {
+            "minTime": 0
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 3,
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part4a",
+              "showAirMap": false
+            }
+          },
+          {
+            "slide": {
+              "map": false,
+              "minTime": 3,
+              "picture": "coral_sea/briefing_slide_coralsea_m2_part4b",
+              "showAirMap": false
+            }
+          }
+        ]
+      },
+      {
+        "part": {
+          "event": "mb/coS_1/part5",
+          "minTime": 0,
+          "slide": [
+            {
+              "map": true
+            },
+            {
+              "minTime": 6
+            },
+            {
+              "picture": ""
+            },
+            {
+              "showAirMap": false
+            },
+            {
+              "arrow": [
+                {
+                  "width": 1
+                },
+                {
+                  "side": "player"
+                },
+                {
+                  "point": "player"
+                },
+                {
+                  "point": "player_portal"
+                }
+              ]
+            },
+            {
+              "icon": {
+                "icontype": "carrier",
+                "side": "enemy",
+                "target": "player_portal"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "fighter",
+                "side": "player",
+                "target": "player",
+                "lookAt": "player_portal"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "carrier",
+                "side": "ally",
+                "target": "us_carrier_yorktown"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "carrier",
+                "side": "ally",
+                "target": "us_carrier_lexington"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "destroyer",
+                "side": "ally",
+                "target": "us_cruiser_hammann"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "destroyer",
+                "side": "ally",
+                "target": "us_destroyer_briefing01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "destroyer",
+                "side": "ally",
+                "target": "us_destroyer_briefing02"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "destroyer",
+                "side": "enemy",
+                "target": "destroyer_icon01"
+              }
+            },
+            {
+              "icon": {
+                "icontype": "destroyer",
+                "side": "enemy",
+                "target": "destroyer_icon02"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "miss_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "japanese_fleet",
+            "effShootingRate": 0.5,
+            "speed": 0.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "lexington_group",
+            "effShootingRate": 0.0,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "bombs",
+                "defaultVal": 1.0,
+                "limits": [0.1,1.0]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "yorktown_bombers"
+            },
+            {
+              "object": "player"
+            },
+            {
+              "object": "shoho_fighters"
+            },
+            {
+              "object": "yorktown_fighters01"
+            },
+            {
+              "plane": [
+                {
+                  "targetDeviation": {
+                    "trigger": "machine gun",
+                    "defaultVal": 4.0,
+                    "limits": [1.0,4.0]
+                  }
+                },
+                {
+                  "targetDeviation": {
+                    "trigger": "bombs",
+                    "defaultVal": 1.0,
+                    "limits": [0.1,1.0]
+                  }
+                },
+                {
+                  "targetDeviation": {
+                    "trigger": "gunner",
+                    "defaultVal": 4.0,
+                    "limits": [1.0,4.0]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "japanese_fleet"
+            },
+            {
+              "target": "lexington_group"
+            },
+            {
+              "target": "cutscene_fighters"
+            }
+          ]
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "us_carrier_yorktown",
+            "objects": "player"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "lexington_group",
+            "effShootingRate": 0.01
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "corS_mission01_fly00",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "takeOff_point"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "teleport"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "teleport": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 2000.0,
+          "math": "notNear2D",
+          "object_type": "isAlive",
+          "target_type": "isAlive",
+          "check_objects": "any",
+          "check_targets": "all",
+          "object_marking": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "player",
+          "target": "us_carrier_yorktown"
+        },
+        "unitWhenStatus": {
+          "object_type": "isInAir",
+          "object_marking": 0,
+          "check_objects": "any",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player"
+        }
+      },
+      "actions": [
+        {
+          "missionForceMusic": {
+            "evName": "6_us_guadalcanal"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "takeOff_point"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "corS_mission01_fly00",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "us_fleet"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "player_portal",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "player",
+            "move_type": "teleport",
+            "distributionRadius": 200.0,
+            "lookat": "waypoit01",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "f4f_portal",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "yorktown_fighters01",
+            "move_type": "teleport",
+            "lookat": "waypoit01",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "tbf_portal",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "yorktown_bombers",
+            "move_type": "teleport",
+            "lookat": "waypoit01",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "yorktown_bombers"
+            },
+            {
+              "target": "yorktown_fighters01"
+            }
+          ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "player",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "yorktown_bombers",
+            "follow_offset": [-200.0,0.0,0.0]
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "player",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "yorktown_fighters01",
+            "follow_offset": [-300.0,200.0,0.0]
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [1.0,1.0,1.0],
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "teleport_cut"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "teleport_cut": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isAlive",
+          "check_players": "any"
+        }
+      },
+      "actions": [
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "showSmartCutscene": [
+            {
+              "sceneType": "on_the_march"
+            },
+            {
+              "startSubTypeOnTheMarch": "right"
+            },
+            {
+              "startSubTypeGroundUnits": ""
+            },
+            {
+              "startSubTypeArea": ""
+            },
+            {
+              "startSubTypeUnitAttackUnit": ""
+            },
+            {
+              "startSubTypeUnitMoveToUnit": ""
+            },
+            {
+              "startSubTypeTwoUnits": ""
+            },
+            {
+              "duration": 6.0
+            },
+            {
+              "changeCameras": true
+            },
+            {
+              "teleportAllAttackers": false
+            },
+            {
+              "delayPlayer": false
+            },
+            {
+              "fadeOut": true
+            },
+            {
+              "allowDeadUnits": false
+            },
+            {
+              "allowTeleportAttackers": false
+            },
+            {
+              "fadeIn": false
+            },
+            {
+              "inverseCameraDirection": false
+            },
+            {
+              "startSubTypeTakeoff": ""
+            },
+            {
+              "startSubTypeFlyBy": ""
+            },
+            {
+              "wait": false
+            },
+            {
+              "object": "player"
+            },
+            {
+              "object": "yorktown_bombers"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "teleport_cut_skip"
+          }
+        },
+        {
+          "showCutsceneInfo": {
+            "text": "cutscene_text/coral_m1_p2",
+            "duration": 6.0
+          }
+        },
+        {
+          "playerControls": [
+            {
+              "setStatus": "enable"
+            },
+            {
+              "control": "ID_SKIP_CUTSCENE"
+            },
+            {
+              "control": "ID_FLIGHTMENU"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "on_the_march",
+            "startSubTypeOnTheMarch": "right2front",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 6.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "delayPlayer": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": false,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "yorktown_fighters01"
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "on_the_march",
+            "startSubTypeOnTheMarch": "back",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 6.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "delayPlayer": false,
+            "fadeOut": false,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": false,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "player"
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "teleport_cut_skip"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "after_teleport"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "teleport_cut_skip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SKIP_CUTSCENE"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "teleport_cut"
+        },
+        "missionStopSpeech": [],
+        "playHint": {
+          "hintType": "custom",
+          "name": "hints/cutsc_skip",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SKIP_CUTSCENE",
+          "shouldBlink": false
+        },
+        "triggerEnable": {
+          "target": "after_teleport"
+        },
+        "wait": {
+          "time": 0.95
+        },
+        "missionStopCutscene": []
+      },
+      "else_actions": []
+    },
+    "after_teleport": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "japanese_fleet"
+          }
+        },
+        {
+          "unitSetStealth": [
+            {
+              "set": true
+            },
+            {
+              "radius": 5000.0
+            },
+            {
+              "target": "us_fleet"
+            },
+            {
+              "target": "japanese_fleet"
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": {
+            "target": "us_fleet"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ALL"
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoit01"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "corS_mission01_fly01",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "near_wp01"
+            },
+            {
+              "target": "near_target"
+            },
+            {
+              "target": "zeros_attacks_tbd"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "near_wp01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 3500.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "waypoit01"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "waypoit01"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "coral_m1_dialogue01",
+            "subtitles": false
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "second_waypoint"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "zeros_attacks_tbd": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 15000.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "second_waypoint"
+        }
+      },
+      "actions": [
+        {
+          "unitWakeUp": {
+            "target": "shoho_fighters"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "player_squad",
+            "follow_target": true,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 3000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "shoho_fighters",
+            "move_type": "teleport",
+            "lookat": "player",
+            "velocity": 400.0
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "shoho_fighters"
+            },
+            {
+              "target": "yorktown_bombers"
+            },
+            {
+              "target": "yorktown_fighters01"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 3
+            },
+            {
+              "playerAttractedEffRate": 1.0
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "yorktown_fighters01",
+            "target": "shoho_fighters",
+            "fireRandom": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "coral_m1_dialogue02",
+            "subtitles": true
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "gunner_hint"
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "gunner_hint"
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/useGunner",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW",
+            "shouldBlink": false
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "near_target": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": [
+          {
+            "value": 5000.0
+          },
+          {
+            "math": "2D"
+          },
+          {
+            "object_type": "isAlive"
+          },
+          {
+            "target_type": "isAlive"
+          },
+          {
+            "check_objects": "any"
+          },
+          {
+            "check_targets": "any"
+          },
+          {
+            "object_marking": 0
+          },
+          {
+            "target_marking": 0
+          },
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "object": "player"
+          },
+          {
+            "object": "yorktown_group"
+          },
+          {
+            "target": "second_waypoint"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "missionForceMusic": {
+            "evName": "2_us_midway"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "near_wp01"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "corS_mission01_fly01",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "second_waypoint"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": false,
+            "radius": 5000.0,
+            "target": "japanese_fleet"
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "japanese_fleet"
+            },
+            {
+              "target": "yorktown_group"
+            },
+            {
+              "target": "lexington_group"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "jap_carrier_shoho"
+            },
+            {
+              "object": "jap_cruiser_furutaka"
+            },
+            {
+              "target": "player"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "lexington_scouts"
+            },
+            {
+              "target": "japanese_fleet"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "japanese_fleet",
+            "speed": 10.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jap_carrier_shoho",
+            "isImmortal": true
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "lexington_scouts"
+            },
+            {
+              "object": "lexington_bombers"
+            },
+            {
+              "target": "jap_destroyer_sazanami"
+            },
+            {
+              "target": "jap_cruiser_kako"
+            },
+            {
+              "target": "jap_cruiser_aoba"
+            },
+            {
+              "target": "jap_carrier_shoho"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "near_target_cut"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "near_target_cut": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isAlive",
+          "check_players": "any"
+        }
+      },
+      "actions": [
+        {
+          "unitMoveTo": {
+            "target": "bomb_cut_tele",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "bomb_cut_tbd",
+            "move_type": "teleport",
+            "lookat": "jap_carrier_shoho",
+            "velocity": 250.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "second_waypoint",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "bomb_cut_tbd",
+            "velocity": 250.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "duration": 12.0,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "bomb_cut_tbd",
+            "target": "jap_carrier_shoho",
+            "finalLook": "lexington_scouts",
+            "changeLookTime": 8.0,
+            "finalZoom": 30.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "near_target_cut_skip"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "bomber_attack_ground",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 25.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": false,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "lexington_scouts",
+            "target": "jap_carrier_shoho",
+            "changeLookTime": 9.0
+          }
+        },
+        {
+          "wait": {
+            "time": 19.0
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_big",
+            "offset": [50.0,0.0,-50.0],
+            "show": true,
+            "loop": false,
+            "scale": 0.3,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "jap_carrier_shoho",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_med",
+            "offset": [0.0,0.0,-25.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "jap_carrier_shoho",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "ship_model_expl",
+            "offset": [-50.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "jap_carrier_shoho",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_med",
+            "offset": [-50.0,0.0,100.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "jap_carrier_shoho",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect": "bomb_water_explosion_med",
+            "offset": [25.0,0.0,125.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "jap_carrier_shoho",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "near_target_cut_skip"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "bombing_start"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "near_target_cut_skip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SKIP_CUTSCENE"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "near_target_cut"
+        },
+        "playHint": {
+          "hintType": "custom",
+          "name": "hints/cutsc_skip",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SKIP_CUTSCENE",
+          "shouldBlink": false
+        },
+        "triggerEnable": {
+          "target": "bombing_start"
+        },
+        "missionStopCutscene": []
+      },
+      "else_actions": []
+    },
+    "bombing_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "lexington_group_evac",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "lexington_group"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "yorktown_bombers",
+            "target": "jap_carrier_shoho"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jap_carrier_shoho",
+            "isImmortal": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "yorktown_bombers",
+            "effShootingRate": 0.0,
+            "plane": [
+              {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 4.0,
+                  "limits": [1.0,4.0]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "bombs",
+                  "defaultVal": 1.0,
+                  "limits": [0.1,1.0]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "gunner",
+                  "defaultVal": 4.0,
+                  "limits": [1.0,4.0]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "corS_mission01_att00",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jap_carrier_shoho"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bombing_done"
+            },
+            {
+              "target": "shoho_dmg_by_player"
+            },
+            {
+              "target": "torpedo_miss_hint"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "bombing_done": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "jap_carrier_shoho"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "shoho_dmg_by_player"
+            },
+            {
+              "target": "mission_fail"
+            },
+            {
+              "target": "torpedo_miss_hint"
+            }
+          ]
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "corS_mission01_att00",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "corS_mission01_fly02",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "evac"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "end_of_mission"
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "japanese_fleet",
+            "speed": 3.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "bomb_cut_tbd"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "shoho_dmg_by_player": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isDamagedByPlayerBombOrTorp",
+          "object_marking": 0,
+          "check_objects": "all",
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "jap_carrier_shoho"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "bombing_done"
+            },
+            {
+              "target": "torpedo_miss_hint"
+            }
+          ]
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "ground_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "center",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 4.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": false,
+            "allowDeadUnits": true,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "jap_carrier_shoho"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "jap_carrier_shoho"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "bombing_done"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "zero_fly_back": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 14000.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "evac"
+        }
+      },
+      "actions": {
+        "unitMoveTo": {
+          "target": "japanese_fleet",
+          "follow_target": true,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "shoho_fighters",
+          "follow_offset": [0.0,1000.0,0.0]
+        },
+        "triggerEnable": {
+          "target": "near_fleet_again"
+        }
+      },
+      "else_actions": []
+    },
+    "near_fleet_again": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 3000.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "japanese_fleet"
+        }
+      },
+      "actions": {
+        "unitAttackTarget": {
+          "playerAttracted": true,
+          "object": "shoho_fighters",
+          "target": "player",
+          "playerAttractedCount": 2,
+          "playerAttractedEffRate": 1.0
+        },
+        "triggerEnable": {
+          "target": "zero_fly_back"
+        }
+      },
+      "else_actions": []
+    },
+    "end_of_mission": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersDistanceBetween": {
+          "value": 12000.0,
+          "math": "2D",
+          "players": "isAlive",
+          "target_type": "isAlive",
+          "check_players": "any",
+          "check_targets": "any",
+          "target": "evac"
+        }
+      },
+      "actions": [
+        {
+          "missionForceMusic": {
+            "evName": "2_us_wake"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 1.0,
+            "target": "evac"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "corS_mission01_fly02",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "us_fleet"
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "lexington_group"
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "japanese_fleet",
+            "speed": 0.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "takeOff_point",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "player",
+            "move_type": "teleport",
+            "lookat": "us_carrier_yorktown",
+            "velocity": 300.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [1.0,1.0,1.0],
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "end_cut"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "end_cut": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isAlive",
+          "check_players": "any"
+        }
+      },
+      "actions": [
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "on_the_march",
+            "startSubTypeOnTheMarch": "right2front",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 6.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "delayPlayer": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "player"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playerControls": [
+            {
+              "setStatus": "enable"
+            },
+            {
+              "control": "ID_SKIP_CUTSCENE"
+            },
+            {
+              "control": "ID_FLIGHTMENU"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "end_cut_skip"
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "on_the_march",
+            "startSubTypeOnTheMarch": "back",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 24.0,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "delayPlayer": false,
+            "fadeOut": false,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "player"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "coral_m1_dialogue03",
+            "subtitles": true
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "end_cut_skip"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "mission_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "end_cut_skip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SKIP_CUTSCENE"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "end_cut"
+        },
+        "playHint": {
+          "hintType": "custom",
+          "name": "hints/cutsc_skip",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SKIP_CUTSCENE",
+          "shouldBlink": false
+        },
+        "missionStopSpeech": [],
+        "triggerEnable": {
+          "target": "mission_completed"
+        },
+        "playerControls": {
+          "setStatus": "enable",
+          "control": "ALL"
+        }
+      },
+      "else_actions": []
+    },
+    "mission_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "missionStopCutscene": []
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ALL"
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "japanese_fleet"
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": false,
+            "radius": 5000.0,
+            "target": "us_fleet"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "allyShip_kill_fail"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "corS_mission01_land",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": true,
+            "target": "us_carrier_yorktown"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "missionCompleted": {
+            "timer": true,
+            "afterComplete": "debriefing_cutscene"
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "landing_fail"
+            },
+            {
+              "target": "landing_completed"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "landing_fail": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "us_carrier_yorktown"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "corS_mission01_land",
+          "status": 3,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "triggerEnable": {
+          "target": "debriefing_cutscene"
+        }
+      },
+      "else_actions": []
+    },
+    "landing_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playersWhenOnLZ": {
+          "object_type": "isOnGround",
+          "object_marking": 0,
+          "check_objects": "any",
+          "afterRepaired": false,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player_squad",
+          "target": "us_carrier_yorktown"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "corS_mission01_land",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "airfieldSetIndication": {
+          "set": false,
+          "target": "us_carrier_yorktown"
+        },
+        "wait": {
+          "time": 1.0
+        },
+        "triggerEnable": {
+          "target": "debriefing_cutscene"
+        }
+      },
+      "else_actions": []
+    },
+    "mission_fail": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "japanese_fleet",
+          "target": "where_ships_desappearing"
+        },
+        "misObjStatus": {
+          "target": "corS_mission01_att00",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "corS_mission01_att00",
+          "status": 3,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "missionFailed": []
+      },
+      "else_actions": []
+    },
+    "debriefing_cutscene": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "playersWhenStatus": {
+          "players": "isAlive",
+          "check_players": "any"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "landing_fail"
+            },
+            {
+              "target": "mission_completed"
+            }
+          ]
+        },
+        {
+          "missionForceMusic": {
+            "evName": "usa_victory_theme"
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "player_squad"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "jap_carrier_shoho",
+            "isImmortal": false
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "yorktown_group"
+            },
+            {
+              "target": "shoho_fighters"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "tbd_cut"
+            },
+            {
+              "target": "lexington_scouts"
+            },
+            {
+              "target": "zero_cut"
+            },
+            {
+              "target": "japanese_fleet"
+            }
+          ]
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "japanese_fleet"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "japanese_fleet",
+            "speed": 10.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "zero_cut",
+            "effShootingRate": 0.0,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 1.0,
+                "limits": [1.0,1.0]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "tbd_cut",
+            "isImmortal": true,
+            "plane": {
+              "targetDeviation": {
+                "trigger": "gunner",
+                "defaultVal": 0.0,
+                "limits": [0.0,0.0]
+              }
+            }
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "japanese_fleet",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 500.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "lexington_scouts",
+            "move_type": "teleport",
+            "distributionRadius": 200.0,
+            "lookat": "jap_carrier_shoho",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "zero_cut",
+            "target": "tbd_cut",
+            "fireRandom": true
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "ground_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "center",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 6.0,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "jap_carrier_shoho"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "tbd_cut",
+            "target": "jap_carrier_shoho"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "debriefing_skip"
+            },
+            {
+              "target": "debriefing_dialogue"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 12.0,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": false,
+            "allowDeadUnits": true,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "zero_cut",
+            "target": "tbd_cut"
+          }
+        },
+        {
+          "wait": {
+            "time": 12.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "duration": 7.0,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "tbd_leader",
+            "target": "jap_carrier_shoho"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "ground_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "center",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "duration": 60.0,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "delayPlayer": true,
+            "fadeOut": false,
+            "allowDeadUnits": true,
+            "allowTeleportAttackers": true,
+            "fadeIn": false,
+            "inverseCameraDirection": false,
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "wait": false,
+            "object": "jap_carrier_shoho"
+          }
+        },
+        {
+          "wait": {
+            "time": 58.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "debriefing_skip"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionDebriefing": []
+        }
+      ],
+      "else_actions": []
+    },
+    "debriefing_skip": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "playerShortcutPressed": {
+          "control": "ID_SKIP_CUTSCENE"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "debriefing_cutscene"
+        },
+        "missionStopSpeech": [],
+        "playHint": {
+          "hintType": "custom",
+          "name": "hints/cutsc_skip",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ID_SKIP_CUTSCENE",
+          "shouldBlink": false
+        },
+        "missionStopCutscene": [],
+        "missionDebriefing": []
+      },
+      "else_actions": []
+    },
+    "debriefing_dialogue": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "missionPlayDialogue": {
+          "dialog": "coral_m1_debriefing",
+          "subtitles": true
+        },
+        "wait": {
+          "time": 5.0
+        },
+        "missionDebriefing": []
+      },
+      "else_actions": []
+    },
+    "only_player_target": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 10.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "targetableByAi": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player_squad",
+            "targetableByAi": true
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "allyShip_kill_fail": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isKilledByPlayer",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "us_fleet_sq"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isDamagedByPlayerBombOrTorp",
+            "object_marking": 0,
+            "func": "more",
+            "value": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "us_fleet_sq"
+          }
+        }
+      ],
+      "actions": {
+        "wait": {
+          "time": 3.0
+        },
+        "missionSetFailText": {
+          "value": "MF_ally_kill"
+        },
+        "missionFailed": []
+      },
+      "else_actions": []
+    },
+    "torpedo_miss_hint": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "playersWhenStatus": {
+            "players": "noTorpedoesInWorld",
+            "check_players": "any"
+          }
+        },
+        {
+          "playersWhenStatus": {
+            "players": "noBombs",
+            "check_players": "any"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/changePlaneT",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_MPSTATSCREEN",
+            "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/changePlaneT",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_MPSTATSCREEN",
+            "shouldBlink": false
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "gunner_hint": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "currentMode": "notGunner"
+        }
+      },
+      "actions": [
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/useGunner",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW",
+            "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/useGunner",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW",
+            "shouldBlink": false
+          }
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "corS_mission01_fly00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "corS_mission01_fly01": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "corS_mission01_att00": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "corS_mission01_fly02": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "corS_mission01_land": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": false,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": [],
+  "dialogs": {
+    "coral_m1_dialogue01": [
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph01",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 6.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph02",
+          "speakerId": "american_base_1",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph03",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 8.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph04",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 7.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph05",
+          "speakerId": "american_base_1",
+          "props": {
+            "time": 2.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph06",
+          "speakerId": "american_base_1",
+          "props": {
+            "time": 5.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph07",
+          "speakerId": "american_base_1",
+          "props": {
+            "time": 10.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph08",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 2.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg1_ph09",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 4.0
+          }
+        }
+      }
+    ],
+    "coral_m1_dialogue02": [
+      {
+        "speech": {
+          "id": "coral_mis1_dlg2_ph01",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg2_ph02",
+          "speakerId": "american_fighter_pilot_1",
+          "props": {
+            "time": 4.0
+          }
+        }
+      }
+    ],
+    "coral_m1_dialogue03": [
+      {
+        "speech": {
+          "id": "coral_mis1_dlg3_ph01",
+          "speakerId": "american_bomber_pilot_1",
+          "props": {
+            "time": 5.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg3_ph02",
+          "speakerId": "american_bomber_pilot_2",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg3_ph03",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_dlg3_ph04",
+          "speakerId": "american_bomber_pilot_leader",
+          "props": {
+            "time": 4.0
+          }
+        }
+      }
+    ],
+    "coral_m1_debriefing": [
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part1",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part2",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part3",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part4",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part5",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      },
+      {
+        "speech": {
+          "id": "coral_mis1_debriefing_part6",
+          "speakerId": "",
+          "props": {
+            "time": 4.0
+          }
+        }
+      }
+    ]
+  },
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "ships": {
+        "name": "jap_carrier_shoho",
+        "tm": [
+          [0.043619,0.0,0.999049],
+          [0.0,1.0,0.0],
+          [-0.999049,0.0,0.043619],
+          [-4868.75,-478.5,3468.15]
+        ],
+        "unit_class": "ijn_cvl_ryujo",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": "unic_shoho"
+        },
+        "way": {
+          "jap_carrier_shoho_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58414.7,-523.25,54593.7]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_carrier_shoho_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146356.0,-17741.8,108230.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [37626.3,-216.35,-47824.9]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "yorktown_group",
+        "tm": [
+          [0.573577,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,0.573577],
+          [-2818.08,0.000976563,14041.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "yorktown_bombers"
+          },
+          {
+            "squad_members": "yorktown_fighters01"
+          }
+        ]
+      }
+    },
+    {
+      "ships": {
+        "name": "jap_cruiser_furutaka",
+        "tm": [
+          [-0.0871554,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,-0.0871554],
+          [-4166.71,-478.5,3556.08]
+        ],
+        "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": {
+          "jap_cruiser_furutaka_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58397.8,-560.249,54593.2]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_cruiser_furutaka_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146468.0,-17716.0,108169.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "jap_cruiser_kinugasa",
+        "tm": [
+          [-0.0871554,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,-0.0871554],
+          [-4391.12,-478.5,2676.22]
+        ],
+        "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": {
+          "jap_cruiser_kinugasa_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58275.6,-499.45,54813.6]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_cruiser_kinugasa_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146337.0,-17743.3,108241.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "jap_cruiser_kako",
+        "tm": [
+          [0.0871552,0.0,0.996195],
+          [0.0,1.0,0.0],
+          [-0.996195,0.0,0.0871552],
+          [-6015.6,-478.5,3249.99]
+        ],
+        "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": {
+          "jap_cruiser_kako_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58351.3,-518.899,54690.7]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_cruiser_kako_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146394.0,-17738.8,108208.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "jap_cruiser_aoba",
+        "tm": [
+          [0.0871552,0.0,0.996195],
+          [0.0,1.0,0.0],
+          [-0.996195,0.0,0.0871552],
+          [-5597.16,-478.5,4474.55]
+        ],
+        "unit_class": "ijn_ca_myoko",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": {
+          "jap_cruiser_aoba_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58228.9,-557.649,54861.6]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_cruiser_aoba_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146565.0,-17737.4,108099.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "jap_destroyer_sazanami",
+        "tm": [
+          [0.0871552,0.0,0.996195],
+          [0.0,1.0,0.0],
+          [-0.996195,0.0,0.0871552],
+          [-5222.75,-478.5,2987.77]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": {
+          "jap_destroyer_sazanami_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-58427.6,-520.649,54576.2]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "jap_destroyer_sazanami_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-146450.0,-17734.3,108173.0]
+            ],
+            "props": {
+              "speed": 5.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "japanese_fleet",
+        "tm": [
+          [1.0,0.0,-3.2981e-07],
+          [0.0,1.0,0.0],
+          [3.2981e-07,0.0,1.0],
+          [-3418.99,0.000244141,3357.25]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "jap_cruiser_furutaka"
+          },
+          {
+            "squad_members": "jap_cruiser_kinugasa"
+          },
+          {
+            "squad_members": "jap_cruiser_kako"
+          },
+          {
+            "squad_members": "jap_cruiser_aoba"
+          },
+          {
+            "squad_members": "jap_destroyer_sazanami"
+          },
+          {
+            "squad_members": "jap_carrier_shoho"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "shoho_fighters",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [-12988.8,4000.0,36914.7]
+        ],
+        "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "a6m2_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 8,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 2.0,
+            "col_distances": 2.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "lexington_scouts",
+        "tm": [
+          [-0.996195,0.0,0.0871551],
+          [0.0,1.0,0.0],
+          [-0.0871551,0.0,-0.996195],
+          [-2276.9,1200.0,3311.75]
+        ],
+        "unit_class": "sbd-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "sbd_3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 28,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT",
+            "targetDeviation": {
+              "trigger": "bombs",
+              "limits": [0.1,0.1],
+              "defaultVal": 0.1
+            }
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "lexington_bombers",
+        "tm": [
+          [-0.866025,0.0,-0.5],
+          [0.0,1.0,0.0],
+          [0.5,0.0,-0.866025],
+          [-2258.6,2500.0,4965.9]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 12,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "lexington_group",
+        "tm": [
+          [-1.0,0.0,4.80806e-07],
+          [0.0,1.0,0.0],
+          [-4.80806e-07,0.0,-1.0],
+          [-1422.01,929.85,5421.69]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lexington_scouts"
+          },
+          {
+            "squad_members": "lexington_bombers"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "yorktown_fighters01",
+        "tm": [
+          [0.766045,0.0,0.642788],
+          [0.0,1.0,0.0],
+          [-0.642788,0.0,0.766045],
+          [43219.6,1286.0,-48235.3]
+        ],
+        "unit_class": "f4f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 8,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "yorktown_bombers",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [42261.0,1286.0,-48726.6]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 6,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_squad",
+        "tm": [
+          [0.953717,0.0,-0.300706],
+          [0.0,1.0,0.0],
+          [0.300706,0.0,0.953717],
+          [2122.4,0.000244141,11423.3]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "us_carrier_lexington",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [39345.9,0.0,-49901.9]
+        ],
+        "unit_class": "uss_cv_lexington",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": "unic_lexington"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_carrier_yorktown",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [41087.0,0.0,-48872.6]
+        ],
+        "unit_class": "uss_cv_enterprise",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": "unic_yorktown"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_minneapolis",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [37152.9,0.0,-51332.0]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_newOrleans",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [36300.3,0.0,-47596.1]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_portland",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [40744.4,0.0,-45552.0]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_astoria",
+        "tm": [
+          [-0.52992,0.0,0.848049],
+          [0.0,1.0,0.0],
+          [-0.848049,0.0,-0.52992],
+          [42595.2,0.0,-47676.4]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_chester",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [42094.4,0.0,-51844.5]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_destroyer_phelps",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [39162.3,0.0,-52572.6]
+        ],
+        "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_destroyer_dewey",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [36067.4,0.0,-51716.9]
+        ],
+        "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_morris",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [35767.3,0.0,-48934.6]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_anderson",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [37487.6,0.0,-46869.6]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_russell",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [38795.2,0.0,-45574.9]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_cruiser_hammann",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [41571.5,0.0,-45348.3]
+        ],
+        "unit_class": "uss_ca_sanfrancisco",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_destroyer_aylwin",
+        "tm": [
+          [-0.5373,0.0,0.843392],
+          [0.0,1.0,0.0],
+          [-0.843392,0.0,-0.5373],
+          [43177.5,0.0,-50308.2]
+        ],
+        "unit_class": "uss_dd_sims",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "us_fleet",
+        "tm": [
+          [-0.953717,0.0,0.300706],
+          [0.0,1.0,0.0],
+          [-0.300706,0.0,-0.953717],
+          [-13515.2,0.0,-22324.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_carrier_lexington"
+          },
+          {
+            "squad_members": "us_carrier_yorktown"
+          },
+          {
+            "squad_members": "us_cruiser_minneapolis"
+          },
+          {
+            "squad_members": "us_cruiser_newOrleans"
+          },
+          {
+            "squad_members": "us_cruiser_portland"
+          },
+          {
+            "squad_members": "us_cruiser_astoria"
+          },
+          {
+            "squad_members": "us_cruiser_chester"
+          },
+          {
+            "squad_members": "us_destroyer_phelps"
+          },
+          {
+            "squad_members": "us_destroyer_dewey"
+          },
+          {
+            "squad_members": "us_cruiser_morris"
+          },
+          {
+            "squad_members": "us_cruiser_anderson"
+          },
+          {
+            "squad_members": "us_cruiser_russell"
+          },
+          {
+            "squad_members": "us_cruiser_hammann"
+          },
+          {
+            "squad_members": "us_destroyer_aylwin"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "cutscene_fighters",
+        "tm": [
+          [-0.573577,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,-0.573577],
+          [39633.7,36.95,-50353.2]
+        ],
+        "unit_class": "sbd-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "numInWing": 1,
+          "speed": 190.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 2.0,
+            "col_distances": 2.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "tbd_cut",
+        "tm": [
+          [-0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,-0.965926],
+          [-2323.5,500.0,3963.6]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "tbd_cut_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-8351.9,1500.0,1982.1]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "zero_cut",
+        "tm": [
+          [-0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,-0.965926],
+          [458.85,500.0,4643.7]
+        ],
+        "unit_class": "a6m2_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "tbd_leader",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5020.8,0.0,7528.45]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "tbd_cut",
+          "object_type": "isFormationLeader"
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "bomb_cut_tbd",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [807.65,500.0,10964.9]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "scout_leader",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1374.0,-478.5,9361.4]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "lexington_scouts",
+          "object_type": "isFormationLeader"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "us_fleet_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [44665.8,0.0,-49164.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_carrier_lexington"
+          },
+          {
+            "squad_members": "us_carrier_yorktown"
+          },
+          {
+            "squad_members": "us_cruiser_minneapolis"
+          },
+          {
+            "squad_members": "us_cruiser_newOrleans"
+          },
+          {
+            "squad_members": "us_cruiser_portland"
+          },
+          {
+            "squad_members": "us_cruiser_astoria"
+          },
+          {
+            "squad_members": "us_cruiser_chester"
+          },
+          {
+            "squad_members": "us_destroyer_phelps"
+          },
+          {
+            "squad_members": "us_destroyer_dewey"
+          },
+          {
+            "squad_members": "us_cruiser_morris"
+          },
+          {
+            "squad_members": "us_cruiser_anderson"
+          },
+          {
+            "squad_members": "us_cruiser_russell"
+          },
+          {
+            "squad_members": "us_cruiser_hammann"
+          },
+          {
+            "squad_members": "us_destroyer_aylwin"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "evac": {
+      "type": "Sphere",
+      "tm": [
+        [36002.0,11.3438,-346.067],
+        [-3.8053,36002.0,87.1557],
+        [346.232,86.4979,36002.0],
+        [10681.4,1286.0,-13908.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "second_waypoint": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.00121433],
+        [0.0,1.0,0.0],
+        [-0.00121433,0.0,1.0],
+        [-4757.5,1500.0,3570.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "way_to_yorktown": {
+      "type": "Box",
+      "tm": [
+        [-119536.0,0.0,10458.1],
+        [0.0,2215.2,0.0],
+        [-133.474,0.0,-1525.61],
+        [-17637.1,-1023.45,-1726.76]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "where_ships_desappearing": {
+      "type": "Box",
+      "tm": [
+        [-0.000488281,0.0,-2245.23],
+        [0.0,1540.0,0.0],
+        [122674.0,0.0,0.086328],
+        [-3881.58,-481.05,31033.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "lexington_group_evac": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,1375.19],
+        [0.0,1.0,0.0],
+        [-1375.19,0.0,1.0],
+        [82049.8,1550.6,-11566.1]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "player_portal": {
+      "type": "Point",
+      "tm": [
+        [-1572.36,-11.3438,1207.78],
+        [-69.2112,1.0,-53.1076],
+        [-1206.71,-86.4979,-1570.97],
+        [3116.35,1500.0,18441.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "f4f_portal": {
+      "type": "Point",
+      "tm": [
+        [-1572.36,-11.3438,1207.78],
+        [-69.2112,1.0,-53.1076],
+        [-1206.71,-86.4979,-1570.97],
+        [3379.15,1700.0,18225.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "tbf_portal": {
+      "type": "Sphere",
+      "tm": [
+        [400.0,0.0,0.0],
+        [-75.7376,400.0,21.7856],
+        [1.1076,-1.35772e-05,400.0],
+        [3343.85,1500.0,18278.9]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "cutscene_area01": {
+      "type": "Sphere",
+      "tm": [
+        [2608.02,0.0,1826.15],
+        [0.0,3183.8,0.0],
+        [-1826.15,0.0,2608.02],
+        [41039.2,117.3,-49164.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "takeOff_point": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,1826.15],
+        [0.0,1.0,0.0],
+        [-1826.15,0.0,1.0],
+        [35781.8,1071.85,-39468.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "area_01": {
+      "type": "Sphere",
+      "tm": [
+        [30000.0,0.0,0.0],
+        [0.0,30000.0,0.0],
+        [0.0,0.0,30000.0],
+        [-4783.01,308.65,3608.35]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "waypoit01": {
+      "type": "Sphere",
+      "tm": [
+        [14000.0,0.0,0.0],
+        [0.0,14000.0,0.0],
+        [0.0,0.0,14000.0],
+        [-2932.8,1500.0,22192.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "deb_cut_tele": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-2253.95,300.0,3894.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "bomb_cut_tele": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.00121433],
+        [0.0,1.0,0.0],
+        [-0.00121433,0.0,1.0],
+        [-4757.5,1500.0,8570.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "scout_tele": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-1956.5,1000.0,3315.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "destroyer_icon02": {
+      "type": "Point",
+      "tm": [
+        [-1572.36,-11.3438,1207.78],
+        [-69.2112,1.0,-53.1076],
+        [-1206.71,-86.4979,-1570.97],
+        [2061.35,1500.0,19275.1]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "destroyer_icon01": {
+      "type": "Point",
+      "tm": [
+        [-1572.36,-11.3438,1207.78],
+        [-69.2112,1.0,-53.1076],
+        [-1206.71,-86.4979,-1570.97],
+        [4651.0,1500.0,18009.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "us_destroyer_briefing01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [55676.4,0.0,-63693.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "us_destroyer_briefing02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [27345.8,0.0,-57791.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "north": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [0.0,0.0,32000.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    }
+  },
+  "objLayers": [],
+  "wayPoints": []
+}

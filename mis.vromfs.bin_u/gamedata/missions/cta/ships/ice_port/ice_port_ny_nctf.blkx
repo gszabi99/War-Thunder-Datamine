@@ -1,0 +1,6840 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "player_01"
+      },
+      {
+        "wing": "player_02"
+      },
+      {
+        "wing": "player_03"
+      },
+      {
+        "wing": "player_04"
+      },
+      {
+        "wing": "player_05"
+      },
+      {
+        "wing": "player_06"
+      },
+      {
+        "wing": "player_07"
+      },
+      {
+        "wing": "player_08"
+      },
+      {
+        "wing": "player_09"
+      },
+      {
+        "wing": "player_10"
+      },
+      {
+        "wing": "player_11"
+      },
+      {
+        "wing": "player_12"
+      },
+      {
+        "wing": "player_13"
+      },
+      {
+        "wing": "player_14"
+      },
+      {
+        "wing": "player_15"
+      },
+      {
+        "wing": "player_16"
+      }
+    ],
+    "player_teamB": [
+      {
+        "army": 2
+      },
+      {
+        "wing": "player_17"
+      },
+      {
+        "wing": "player_18"
+      },
+      {
+        "wing": "player_19"
+      },
+      {
+        "wing": "player_20"
+      },
+      {
+        "wing": "player_21"
+      },
+      {
+        "wing": "player_22"
+      },
+      {
+        "wing": "player_23"
+      },
+      {
+        "wing": "player_24"
+      },
+      {
+        "wing": "player_25"
+      },
+      {
+        "wing": "player_26"
+      },
+      {
+        "wing": "player_27"
+      },
+      {
+        "wing": "player_28"
+      },
+      {
+        "wing": "player_29"
+      },
+      {
+        "wing": "player_30"
+      },
+      {
+        "wing": "player_31"
+      },
+      {
+        "wing": "player_32"
+      }
+    ],
+    "mission": {
+      "level": "levels/avn_ice_port.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_naval_ny_gift_ctf",
+      "locDesc": "missions/_naval_ny_gift_ctf/desc",
+      "scoreLimit": 3000,
+      "timeLimit": 15,
+      "deathPenaltyMul": 0.1,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "t1_shipspawn01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "t2_shipspawn01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "ally",
+              "target": "t1_flag_area"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "enemy",
+              "target": "t2_flag_area"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "mark",
+              "side": "neutral",
+              "target": "flag01_pos07"
+            }
+          },
+          {
+            "battleArea": {
+              "target": "battlearea"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init_mission": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionBattleArea": {
+            "air": false,
+            "ground": true,
+            "mapArea": true,
+            "killOutOfBattleArea": true,
+            "newGridHorizontalCellCount": 0,
+            "killArea": false,
+            "detectionArea": false,
+            "airMapArea": false,
+            "area": "battlearea"
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "target": "t1_boat_spawn",
+            "team": "A",
+            "tags": {
+              "air": false,
+              "tank": false,
+              "ship": true,
+              "boat": true
+            }
+          }
+        },
+        {
+          "missionMarkAsRespawnPoint": {
+            "loc_name": "",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "useExisting": false,
+            "isIndividual": true,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "resetStrictSpawnIndex": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "target": "t2_boat_spawn",
+            "team": "B",
+            "tags": {
+              "air": false,
+              "tank": false,
+              "ship": true,
+              "boat": true
+            }
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "flag_01"
+            },
+            {
+              "object": "flag_02"
+            },
+            {
+              "object": "flag_03"
+            },
+            {
+              "object": "flag_04"
+            },
+            {
+              "object": "flag_05"
+            },
+            {
+              "army": 0
+            },
+            {
+              "isImmortal": true
+            },
+            {
+              "movable": true
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "t1_fir"
+            },
+            {
+              "object": "t2_fir"
+            },
+            {
+              "object": "t1_icefloe"
+            },
+            {
+              "object": "t2_icefloe"
+            },
+            {
+              "isImmortal": true
+            },
+            {
+              "stealthRadius": -1.0
+            }
+          ]
+        },
+        {
+          "varSetRandomInt": {
+            "var": "flag01_pos_int",
+            "from": 1,
+            "to_not_including": 10
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "flag02_pos_int",
+            "from": 1,
+            "to_not_including": 10
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "flag03_pos_int",
+            "from": 1,
+            "to_not_including": 10
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@flag01_pos_int",
+            "digits": 1,
+            "var": "flag01_pos_str"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@flag02_pos_int",
+            "digits": 1,
+            "var": "flag02_pos_str"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@flag03_pos_int",
+            "digits": 1,
+            "var": "flag03_pos_str"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "@flag01_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_01",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "@flag02_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_02",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "@flag03_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_03",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "flag_01"
+            },
+            {
+              "target": "flag_02"
+            },
+            {
+              "target": "flag_03"
+            }
+          ]
+        },
+        {
+          "unitSetIndication": [
+            {
+              "set": true
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "target": "flag_01"
+            },
+            {
+              "target": "flag_02"
+            },
+            {
+              "target": "flag_03"
+            },
+            {
+              "team": "Both"
+            }
+          ]
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "team": "Both",
+            "iconName": "ui/gameuiskin#objective_captureZone_next_default",
+            "areaName": "t1_flag_area",
+            "colorCode": "Team A",
+            "opacity": 190
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "team": "Both",
+            "iconName": "ui/gameuiskin#objective_captureZone_next_default",
+            "areaName": "t2_flag_area",
+            "colorCode": "Team B",
+            "opacity": 190
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "flag01_pickup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.3
+        }
+      },
+      "conditions": [
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isNotMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_01",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        },
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_01",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        }
+      ],
+      "actions": {
+        "unitMark": {
+          "target_marking": 1,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": true,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitPutToSleep": {
+          "target": "flag_01"
+        },
+        "triggerEnable": {
+          "target": "flag01_holder_dead"
+        }
+      },
+      "else_actions": []
+    },
+    "flag01_holder_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 1,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isKilled"
+          }
+        },
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 1,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isOffline"
+          }
+        }
+      ],
+      "actions": {
+        "unitMoveTo": {
+          "target": "players_squad",
+          "waypointReachedDist": 1.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "flag_01",
+          "object_type": "any",
+          "target_type": "isMarked",
+          "move_type": "teleport"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitMark": {
+          "target_marking": 6,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "unitWakeUp": {
+          "target": "flag_01"
+        },
+        "triggerEnable": {
+          "target": "flag01_pickup"
+        }
+      },
+      "else_actions": []
+    },
+    "flag02_pickup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.3
+        }
+      },
+      "conditions": [
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isNotMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_02",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        },
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_02",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        }
+      ],
+      "actions": {
+        "unitMark": {
+          "target_marking": 2,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "small_accented",
+          "set": true,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitPutToSleep": {
+          "target": "flag_02"
+        },
+        "triggerEnable": {
+          "target": "flag02_holder_dead"
+        }
+      },
+      "else_actions": []
+    },
+    "flag02_holder_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 2,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isKilled"
+          }
+        },
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 2,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isOffline"
+          }
+        }
+      ],
+      "actions": {
+        "unitMoveTo": {
+          "target": "players_squad",
+          "waypointReachedDist": 1.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 2,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "flag_02",
+          "object_type": "any",
+          "target_type": "isMarked",
+          "move_type": "teleport"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitMark": {
+          "target_marking": 6,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "unitWakeUp": {
+          "target": "flag_02"
+        },
+        "triggerEnable": {
+          "target": "flag02_pickup"
+        }
+      },
+      "else_actions": []
+    },
+    "flag03_pickup": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.3
+        }
+      },
+      "conditions": [
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isNotMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_03",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        },
+        {
+          "unitDistanceBetween": {
+            "value": 15.0,
+            "math": "2D",
+            "object_type": "isAlive",
+            "object_marking": 0,
+            "target_type": "isMarked",
+            "target_marking": 0,
+            "check_objects": "any",
+            "check_targets": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "flag_03",
+            "target": "players_squad",
+            "object_var_value": 0
+          }
+        }
+      ],
+      "actions": {
+        "unitMark": {
+          "target_marking": 3,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": true,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "small_accented",
+          "set": true,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitPutToSleep": {
+          "target": "flag_03"
+        },
+        "triggerEnable": {
+          "target": "flag03_holder_dead"
+        }
+      },
+      "else_actions": []
+    },
+    "flag03_holder_dead": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 3,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isKilled"
+          }
+        },
+        {
+          "unitWhenStatus": {
+            "object_type": "isMarked",
+            "check_objects": "any",
+            "object_marking": 3,
+            "target_type": "isAlive",
+            "check_period": 1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "players_squad",
+            "unit_type_ex": "isOffline"
+          }
+        }
+      ],
+      "actions": {
+        "unitMoveTo": {
+          "target": "players_squad",
+          "waypointReachedDist": 1.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object_marking": 0,
+          "target_marking": 3,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "object": "flag_03",
+          "object_type": "any",
+          "target_type": "isMarked",
+          "move_type": "teleport"
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitMark": {
+          "target_marking": 6,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "wait": {
+          "time": 0.5
+        },
+        "unitWakeUp": {
+          "target": "flag_03"
+        },
+        "triggerEnable": {
+          "target": "flag03_pickup"
+        }
+      },
+      "else_actions": []
+    },
+    "t1_flag_delivered_common": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t1_score_int"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "total_score_int"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -1000,
+            "valueSystem": "amount",
+            "team": "B"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_t1_delivered_teamA",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 4.0,
+            "priority": 1,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "B"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_t1_delivered_teamB",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 4.0,
+            "priority": 1,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "A"
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "firework_large_single",
+            "offset": [0.0,250.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 0.75,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "t1_fir_dummy",
+            "radiusOffset": [0.0,0.0]
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "t2_flag_delivered_common": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t2_score_int"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "total_score_int"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -1000,
+            "valueSystem": "amount",
+            "team": "A"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_t2_delivered_teamA",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 5.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "B"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_t2_delivered_teamB",
+            "action": "show",
+            "shouldFadeOut": true,
+            "time": 5.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "team": "A"
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "firework_large_single",
+            "offset": [0.0,250.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 0.75,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "t2_fir_dummy",
+            "radiusOffset": [0.0,0.0]
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "t1_flag01_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t1_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t1_flag_01"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t1_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag01_pickup"
+          },
+          {
+            "target": "flag01_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t1_flag02_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t1_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t1_flag_02"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t1_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag02_pickup"
+          },
+          {
+            "target": "flag02_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t1_flag03_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 3,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t1_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t1_flag_03"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t1_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag03_pickup"
+          },
+          {
+            "target": "flag03_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t2_flag01_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 1,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t2_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t2_flag_01"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t2_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag01_pickup"
+          },
+          {
+            "target": "flag01_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t2_flag02_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 2,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t2_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t2_flag_02"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t2_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag02_pickup"
+          },
+          {
+            "target": "flag02_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "t2_flag03_delivered": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isMarked",
+          "object_marking": 3,
+          "check_objects": "any",
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "players_squad",
+          "target": "t2_flag_area",
+          "unit_type_ex": "isAlive",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitWakeUp": {
+          "target": "t2_flag_03"
+        },
+        "addTextToUnit": {
+          "langID": "icon/xmas_tree",
+          "fontSize": "big",
+          "set": false,
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "unitSetIndication": {
+          "set": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true,
+          "team": "Both"
+        },
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        },
+        "triggerEnable": {
+          "target": "t2_flag_delivered_common"
+        },
+        "triggerDisable": [
+          {
+            "target": "flag03_pickup"
+          },
+          {
+            "target": "flag03_holder_dead"
+          }
+        ]
+      },
+      "else_actions": []
+    },
+    "flag_holder_erase_marking": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": [
+          {
+            "math": "3D"
+          },
+          {
+            "object_type": "isMarked"
+          },
+          {
+            "object_marking": 6
+          },
+          {
+            "object_var_name": ""
+          },
+          {
+            "object_var_comp_op": "equal"
+          },
+          {
+            "check_objects": "any"
+          },
+          {
+            "object": "players_squad"
+          },
+          {
+            "target": "t1_spawnarea"
+          },
+          {
+            "target": "t2_spawnarea"
+          },
+          {
+            "unit_type_ex": "isAlive"
+          },
+          {
+            "object_var_value": 0
+          }
+        ]
+      },
+      "actions": {
+        "unitMark": {
+          "target_marking": 0,
+          "target": "players_squad",
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "t1_win": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "t1_score_int",
+          "value": 3,
+          "comparasion_func": "notLess"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "t1_flag01_delivered"
+            },
+            {
+              "target": "t1_flag02_delivered"
+            },
+            {
+              "target": "t1_flag03_delivered"
+            },
+            {
+              "target": "t2_flag01_delivered"
+            },
+            {
+              "target": "t2_flag02_delivered"
+            },
+            {
+              "target": "t2_flag03_delivered"
+            },
+            {
+              "target": "t1_flag_delivered_common"
+            },
+            {
+              "target": "t2_flag_delivered_common"
+            }
+          ]
+        },
+        {
+          "triggerDisable": {
+            "target": "t2_win"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t1_naval_ny_gift_ctf_objective",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_naval_ny_gift_ctf_objective",
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "t2_win": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.5
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "t2_score_int",
+          "value": 3,
+          "comparasion_func": "notLess"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": [
+            {
+              "target": "t1_flag01_delivered"
+            },
+            {
+              "target": "t1_flag02_delivered"
+            },
+            {
+              "target": "t1_flag03_delivered"
+            },
+            {
+              "target": "t2_flag01_delivered"
+            },
+            {
+              "target": "t2_flag02_delivered"
+            },
+            {
+              "target": "t2_flag03_delivered"
+            },
+            {
+              "target": "t1_flag_delivered_common"
+            },
+            {
+              "target": "t2_flag_delivered_common"
+            }
+          ]
+        },
+        {
+          "triggerDisable": {
+            "target": "t1_win"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_naval_ny_gift_ctf_objective",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t1_naval_ny_gift_ctf_objective",
+            "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -100,
+            "valueSystem": "percentage",
+            "team": "A"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "flag_captured_you": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "targets": "player_01",
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "targets": "player_01",
+            "target_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "targets": "player_01",
+            "target_marking": 3,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "targets": "player_01",
+            "target_marking": 4,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "standard",
+            "name": "hints/ny_gift_ctf_captured_you",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": 2.0,
+            "priority": 0,
+            "targets": "player_01",
+            "target_marking": 5,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 1,
+            "set": true,
+            "target": "players_squad",
+            "var": "t1_score_int"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "delta": 0,
+            "icon": "score",
+            "icon army": 2,
+            "set": true,
+            "target": "players_squad",
+            "var": "t2_score_int"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "extra-game": {
+      "isCategory": true,
+      "is_enabled": true,
+      "start_extra_game": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "total_score_int",
+              "value": 3,
+              "comparasion_func": "equal"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "t1_score_int",
+              "value": 3,
+              "comparasion_func": "notEqual"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "t2_score_int",
+              "value": 3,
+              "comparasion_func": "notEqual"
+            }
+          }
+        ],
+        "actions": [
+          {
+            "playHint": {
+              "hintType": "standard",
+              "name": "hints/naval_ny_gift_ctf_extra_round",
+              "action": "show",
+              "shouldFadeOut": true,
+              "isOverFade": false,
+              "time": 4.0,
+              "priority": 3,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "team": "Both"
+            }
+          },
+          {
+            "unitMoveTo": {
+              "target": "flag04_pos",
+              "waypointReachedDist": 1.0,
+              "recalculatePathDist": -1.0,
+              "follow_target": false,
+              "teleportHeightType": "absolute",
+              "useUnitHeightForTele": true,
+              "shouldKeepFormation": false,
+              "teleportHeightValue": 1000.0,
+              "horizontalDirectionForTeleport": true,
+              "object_marking": 0,
+              "target_marking": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "fastClimb": false,
+              "destTimeMode": false,
+              "object": "flag_04",
+              "object_type": "any",
+              "move_type": "teleport"
+            }
+          },
+          {
+            "unitMoveTo": {
+              "target": "flag05_pos",
+              "waypointReachedDist": 1.0,
+              "recalculatePathDist": -1.0,
+              "follow_target": false,
+              "teleportHeightType": "absolute",
+              "useUnitHeightForTele": true,
+              "shouldKeepFormation": false,
+              "teleportHeightValue": 1000.0,
+              "horizontalDirectionForTeleport": true,
+              "object_marking": 0,
+              "target_marking": 1,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "fastClimb": false,
+              "destTimeMode": false,
+              "object": "flag_05",
+              "object_type": "any",
+              "move_type": "teleport"
+            }
+          },
+          {
+            "unitWakeUp": [
+              {
+                "target": "flag_04"
+              },
+              {
+                "target": "flag_05"
+              }
+            ]
+          },
+          {
+            "unitSetIndication": [
+              {
+                "set": true
+              },
+              {
+                "target_marking": 0
+              },
+              {
+                "object_var_name": ""
+              },
+              {
+                "object_var_comp_op": "equal"
+              },
+              {
+                "object_var_value": 0
+              },
+              {
+                "target": "flag_04"
+              },
+              {
+                "target": "flag_05"
+              },
+              {
+                "team": "Both"
+              }
+            ]
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "flag04_pickup"
+              },
+              {
+                "target": "flag05_pickup"
+              },
+              {
+                "target": "t1_flag04_delivered"
+              },
+              {
+                "target": "t1_flag05_delivered"
+              },
+              {
+                "target": "t2_flag04_delivered"
+              },
+              {
+                "target": "t2_flag05_delivered"
+              }
+            ]
+          }
+        ],
+        "else_actions": []
+      },
+      "flag04_pickup": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.3
+          }
+        },
+        "conditions": [
+          {
+            "unitDistanceBetween": {
+              "value": 15.0,
+              "math": "2D",
+              "object_type": "isAlive",
+              "object_marking": 0,
+              "target_type": "isNotMarked",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object": "flag_04",
+              "target": "players_squad",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitDistanceBetween": {
+              "value": 15.0,
+              "math": "2D",
+              "object_type": "isAlive",
+              "object_marking": 0,
+              "target_type": "isMarked",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object": "flag_04",
+              "target": "players_squad",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "unitMark": {
+            "target_marking": 4,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": true,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitPutToSleep": {
+            "target": "flag_04"
+          },
+          "triggerEnable": {
+            "target": "flag04_holder_dead"
+          }
+        },
+        "else_actions": []
+      },
+      "flag04_holder_dead": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenStatus": {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 4,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "players_squad",
+              "unit_type_ex": "isKilled"
+            }
+          },
+          {
+            "unitWhenStatus": {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 4,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "players_squad",
+              "unit_type_ex": "isOffline"
+            }
+          }
+        ],
+        "actions": {
+          "unitMoveTo": {
+            "target": "players_squad",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_04",
+            "object_type": "any",
+            "target_type": "isMarked",
+            "move_type": "teleport"
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 6,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "wait": {
+            "time": 0.5
+          },
+          "unitWakeUp": {
+            "target": "flag_04"
+          },
+          "triggerEnable": {
+            "target": "flag04_pickup"
+          }
+        },
+        "else_actions": []
+      },
+      "flag05_pickup": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.3
+          }
+        },
+        "conditions": [
+          {
+            "unitDistanceBetween": {
+              "value": 15.0,
+              "math": "2D",
+              "object_type": "isAlive",
+              "object_marking": 0,
+              "target_type": "isNotMarked",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object": "flag_05",
+              "target": "players_squad",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitDistanceBetween": {
+              "value": 15.0,
+              "math": "2D",
+              "object_type": "isAlive",
+              "object_marking": 0,
+              "target_type": "isMarked",
+              "target_marking": 0,
+              "check_objects": "any",
+              "check_targets": "any",
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object": "flag_05",
+              "target": "players_squad",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "unitMark": {
+            "target_marking": 5,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": true,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitPutToSleep": {
+            "target": "flag_05"
+          },
+          "triggerEnable": {
+            "target": "flag05_holder_dead"
+          }
+        },
+        "else_actions": []
+      },
+      "flag05_holder_dead": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.5
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenStatus": {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 5,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "players_squad",
+              "unit_type_ex": "isKilled"
+            }
+          },
+          {
+            "unitWhenStatus": {
+              "object_type": "isMarked",
+              "check_objects": "any",
+              "object_marking": 5,
+              "target_type": "isAlive",
+              "check_period": 1.0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "players_squad",
+              "unit_type_ex": "isOffline"
+            }
+          }
+        ],
+        "actions": {
+          "unitMoveTo": {
+            "target": "players_squad",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_05",
+            "object_type": "any",
+            "target_type": "isMarked",
+            "move_type": "teleport"
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitMark": {
+            "target_marking": 6,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "wait": {
+            "time": 0.5
+          },
+          "unitWakeUp": {
+            "target": "flag_05"
+          },
+          "triggerEnable": {
+            "target": "flag05_pickup"
+          }
+        },
+        "else_actions": []
+      },
+      "t1_flag04_delivered": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isMarked",
+            "object_marking": 4,
+            "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "players_squad",
+            "target": "t1_flag_area",
+            "unit_type_ex": "isAlive",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "unitWakeUp": {
+            "target": "t1_flag_04"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "t1_flag_delivered_common"
+          },
+          "triggerDisable": [
+            {
+              "target": "flag04_pickup"
+            },
+            {
+              "target": "flag04_holder_dead"
+            }
+          ]
+        },
+        "else_actions": []
+      },
+      "t1_flag05_delivered": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isMarked",
+            "object_marking": 5,
+            "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "players_squad",
+            "target": "t1_flag_area",
+            "unit_type_ex": "isAlive",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "unitWakeUp": {
+            "target": "t1_flag_05"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "t1_flag_delivered_common"
+          },
+          "triggerDisable": [
+            {
+              "target": "flag05_pickup"
+            },
+            {
+              "target": "flag05_holder_dead"
+            }
+          ]
+        },
+        "else_actions": []
+      },
+      "t2_flag04_delivered": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isMarked",
+            "object_marking": 4,
+            "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "players_squad",
+            "target": "t2_flag_area",
+            "unit_type_ex": "isAlive",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "unitWakeUp": {
+            "target": "t2_flag_04"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "t2_flag_delivered_common"
+          },
+          "triggerDisable": [
+            {
+              "target": "flag04_pickup"
+            },
+            {
+              "target": "flag04_holder_dead"
+            }
+          ]
+        },
+        "else_actions": []
+      },
+      "t2_flag05_delivered": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.01
+          }
+        },
+        "conditions": {
+          "unitWhenInArea": {
+            "math": "3D",
+            "object_type": "isMarked",
+            "object_marking": 5,
+            "check_objects": "any",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object": "players_squad",
+            "target": "t2_flag_area",
+            "unit_type_ex": "isAlive",
+            "object_var_value": 0
+          }
+        },
+        "actions": {
+          "unitWakeUp": {
+            "target": "t2_flag_05"
+          },
+          "addTextToUnit": {
+            "langID": "icon/xmas_tree",
+            "fontSize": "big",
+            "set": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "unitSetIndication": {
+            "set": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true,
+            "team": "Both"
+          },
+          "unitMark": {
+            "target_marking": 0,
+            "target": "players_squad",
+            "useForTriggerFiltered": true
+          },
+          "triggerEnable": {
+            "target": "t2_flag_delivered_common"
+          },
+          "triggerDisable": [
+            {
+              "target": "flag05_pickup"
+            },
+            {
+              "target": "flag05_holder_dead"
+            }
+          ]
+        },
+        "else_actions": []
+      }
+    },
+    "flag_out_of_field": {
+      "isCategory": true,
+      "is_enabled": true,
+      "flag01_out": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_01",
+              "target": "battlearea_out01",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_01",
+              "target": "battlearea_out02",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_01",
+              "target": "battlearea_out03",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_01",
+              "target": "battlearea_out04",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "flag01_return"
+          }
+        },
+        "else_actions": []
+      },
+      "flag01_return": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "@flag01_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_01",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        "else_actions": []
+      },
+      "flag02_out": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_02",
+              "target": "battlearea_out01",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_02",
+              "target": "battlearea_out02",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_02",
+              "target": "battlearea_out03",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_02",
+              "target": "battlearea_out04",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "flag02_return"
+          }
+        },
+        "else_actions": []
+      },
+      "flag02_return": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "@flag02_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_02",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        "else_actions": []
+      },
+      "flag03_out": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_03",
+              "target": "battlearea_out01",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_03",
+              "target": "battlearea_out02",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_03",
+              "target": "battlearea_out03",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_03",
+              "target": "battlearea_out04",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "flag03_return"
+          }
+        },
+        "else_actions": []
+      },
+      "flag03_return": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "@flag03_pos_str",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_03",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        "else_actions": []
+      },
+      "flag04_out": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_04",
+              "target": "battlearea_out01",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_04",
+              "target": "battlearea_out02",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_04",
+              "target": "battlearea_out03",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_04",
+              "target": "battlearea_out04",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "flag04_return"
+          }
+        },
+        "else_actions": []
+      },
+      "flag04_return": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "flag04_pos",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_04",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        "else_actions": []
+      },
+      "flag05_out": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ANY",
+          "enableAfterComplete": true
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_05",
+              "target": "battlearea_out01",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_05",
+              "target": "battlearea_out02",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_05",
+              "target": "battlearea_out03",
+              "object_var_value": 0
+            }
+          },
+          {
+            "unitWhenInArea": {
+              "math": "3D",
+              "object_type": "isActive",
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "check_objects": "any",
+              "object": "flag_05",
+              "target": "battlearea_out04",
+              "object_var_value": 0
+            }
+          }
+        ],
+        "actions": {
+          "triggerEnable": {
+            "target": "flag05_return"
+          }
+        },
+        "else_actions": []
+      },
+      "flag05_return": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "unitMoveTo": {
+            "target": "flag05_pos",
+            "waypointReachedDist": 1.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "flag_05",
+            "object_type": "any",
+            "move_type": "teleport"
+          }
+        },
+        "else_actions": []
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "t1_naval_ny_gift_ctf_objective": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t2_naval_ny_gift_ctf_objective": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "t1_flag_holder": "",
+    "t2_flag_holder": "",
+    "t1_flag_move_trig_str": "",
+    "t2_flag_move_trig_str": "",
+    "flag01_pos_int": 1,
+    "flag02_pos_int": 1,
+    "flag03_pos_int": 1,
+    "flag01_pos_str": "flag01_pos0",
+    "flag02_pos_str": "flag02_pos0",
+    "flag03_pos_str": "flag03_pos0",
+    "t1_score_int": 0,
+    "t2_score_int": 0,
+    "total_score_int": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "ships": {
+        "name": "flag_01",
+        "tm": [
+          [0.824789,0.0,-1.57668],
+          [0.0,1.77938,0.0],
+          [1.57668,0.0,0.824789],
+          [-1877.1,0.0,-1220.14]
+        ],
+        "unit_class": "giftbox",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "player_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4216.03,0.0,-171.791]
+        ],
+        "unit_class": "germ_ls_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3294.65,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3358.21,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3421.78,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3485.34,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3548.91,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3612.47,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3676.04,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3739.6,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_10",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3803.17,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_11",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3866.73,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_12",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3930.3,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_13",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3993.86,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_14",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4057.43,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_15",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4120.8,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_16",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4184.17,500.0,-1243.73]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_17",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3231.08,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_18",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3289.22,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_19",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3347.36,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_20",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3405.5,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_21",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3463.64,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_22",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3521.78,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_23",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3579.91,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_24",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3638.05,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_25",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3696.19,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_26",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3754.33,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_27",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3812.47,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_28",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3870.61,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_29",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3928.75,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_30",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3986.88,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_31",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4045.02,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_32",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4103.16,500.0,-1470.61]
+        ],
+        "unit_class": "dummy_plane",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "players_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3804.91,19.9756,-359.529]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "player_01"
+          },
+          {
+            "squad_members": "player_02"
+          },
+          {
+            "squad_members": "player_03"
+          },
+          {
+            "squad_members": "player_04"
+          },
+          {
+            "squad_members": "player_05"
+          },
+          {
+            "squad_members": "player_06"
+          },
+          {
+            "squad_members": "player_07"
+          },
+          {
+            "squad_members": "player_08"
+          },
+          {
+            "squad_members": "player_09"
+          },
+          {
+            "squad_members": "player_10"
+          },
+          {
+            "squad_members": "player_11"
+          },
+          {
+            "squad_members": "player_12"
+          },
+          {
+            "squad_members": "player_13"
+          },
+          {
+            "squad_members": "player_14"
+          },
+          {
+            "squad_members": "player_15"
+          },
+          {
+            "squad_members": "player_16"
+          },
+          {
+            "squad_members": "player_17"
+          },
+          {
+            "squad_members": "player_18"
+          },
+          {
+            "squad_members": "player_19"
+          },
+          {
+            "squad_members": "player_20"
+          },
+          {
+            "squad_members": "player_21"
+          },
+          {
+            "squad_members": "player_22"
+          },
+          {
+            "squad_members": "player_23"
+          },
+          {
+            "squad_members": "player_24"
+          },
+          {
+            "squad_members": "player_25"
+          },
+          {
+            "squad_members": "player_26"
+          },
+          {
+            "squad_members": "player_27"
+          },
+          {
+            "squad_members": "player_28"
+          },
+          {
+            "squad_members": "player_29"
+          },
+          {
+            "squad_members": "player_30"
+          },
+          {
+            "squad_members": "player_31"
+          },
+          {
+            "squad_members": "player_32"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_players",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3805.69,19.9756,-132.355]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "player_01"
+          },
+          {
+            "squad_members": "player_02"
+          },
+          {
+            "squad_members": "player_03"
+          },
+          {
+            "squad_members": "player_04"
+          },
+          {
+            "squad_members": "player_05"
+          },
+          {
+            "squad_members": "player_06"
+          },
+          {
+            "squad_members": "player_07"
+          },
+          {
+            "squad_members": "player_08"
+          },
+          {
+            "squad_members": "player_09"
+          },
+          {
+            "squad_members": "player_10"
+          },
+          {
+            "squad_members": "player_11"
+          },
+          {
+            "squad_members": "player_12"
+          },
+          {
+            "squad_members": "player_13"
+          },
+          {
+            "squad_members": "player_14"
+          },
+          {
+            "squad_members": "player_15"
+          },
+          {
+            "squad_members": "player_16"
+          },
+          {
+            "squad_members": "player_17"
+          },
+          {
+            "squad_members": "player_18"
+          },
+          {
+            "squad_members": "player_19"
+          },
+          {
+            "squad_members": "player_20"
+          },
+          {
+            "squad_members": "player_21"
+          },
+          {
+            "squad_members": "player_22"
+          },
+          {
+            "squad_members": "player_23"
+          },
+          {
+            "squad_members": "player_24"
+          },
+          {
+            "squad_members": "player_25"
+          },
+          {
+            "squad_members": "player_26"
+          },
+          {
+            "squad_members": "player_27"
+          },
+          {
+            "squad_members": "player_28"
+          },
+          {
+            "squad_members": "player_29"
+          },
+          {
+            "squad_members": "player_30"
+          },
+          {
+            "squad_members": "player_31"
+          },
+          {
+            "squad_members": "player_32"
+          },
+          {
+            "object_type": "isTeamA"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_players",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3811.73,19.9756,-255.006]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "player_01"
+          },
+          {
+            "squad_members": "player_02"
+          },
+          {
+            "squad_members": "player_03"
+          },
+          {
+            "squad_members": "player_04"
+          },
+          {
+            "squad_members": "player_05"
+          },
+          {
+            "squad_members": "player_06"
+          },
+          {
+            "squad_members": "player_07"
+          },
+          {
+            "squad_members": "player_08"
+          },
+          {
+            "squad_members": "player_09"
+          },
+          {
+            "squad_members": "player_10"
+          },
+          {
+            "squad_members": "player_11"
+          },
+          {
+            "squad_members": "player_12"
+          },
+          {
+            "squad_members": "player_13"
+          },
+          {
+            "squad_members": "player_14"
+          },
+          {
+            "squad_members": "player_15"
+          },
+          {
+            "squad_members": "player_16"
+          },
+          {
+            "squad_members": "player_17"
+          },
+          {
+            "squad_members": "player_18"
+          },
+          {
+            "squad_members": "player_19"
+          },
+          {
+            "squad_members": "player_20"
+          },
+          {
+            "squad_members": "player_21"
+          },
+          {
+            "squad_members": "player_22"
+          },
+          {
+            "squad_members": "player_23"
+          },
+          {
+            "squad_members": "player_24"
+          },
+          {
+            "squad_members": "player_25"
+          },
+          {
+            "squad_members": "player_26"
+          },
+          {
+            "squad_members": "player_27"
+          },
+          {
+            "squad_members": "player_28"
+          },
+          {
+            "squad_members": "player_29"
+          },
+          {
+            "squad_members": "player_30"
+          },
+          {
+            "squad_members": "player_31"
+          },
+          {
+            "squad_members": "player_32"
+          },
+          {
+            "object_type": "isTeamB"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_fir",
+        "tm": [
+          [-0.662313,0.0,1.34586],
+          [0.0,1.5,0.0],
+          [-1.34586,0.0,-0.662313],
+          [474.838,1.2961,501.924]
+        ],
+        "unit_class": "det_fir_garland_medium_c",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_fir",
+        "tm": [
+          [-0.662313,0.0,1.34586],
+          [0.0,1.5,0.0],
+          [-1.34586,0.0,-0.662313],
+          [-883.934,1.3,-851.765]
+        ],
+        "unit_class": "det_fir_garland_medium_c",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_flag_01",
+        "tm": [
+          [1.22749,0.0,0.620951],
+          [0.0,1.37561,0.0],
+          [-0.620951,0.0,1.22749],
+          [475.642,0.800001,504.392]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_flag_01",
+        "tm": [
+          [1.18999,0.0,-0.405661],
+          [0.0,1.25723,0.0],
+          [0.406436,0.0,1.19227],
+          [-886.074,0.8,-852.651]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_flag_02",
+        "tm": [
+          [-0.227007,0.0,1.29717],
+          [0.0,1.31689,0.0],
+          [-1.29717,0.0,-0.227007],
+          [-883.271,0.83153,-849.287]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_flag_03",
+        "tm": [
+          [1.20617,0.0,0.536804],
+          [0.0,1.32022,0.0],
+          [-0.536804,0.0,1.20617],
+          [-882.054,0.823,-853.503]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_flag_02",
+        "tm": [
+          [1.35913,0.0,0.489029],
+          [0.0,1.44442,0.0],
+          [-0.489029,0.0,1.35913],
+          [475.475,0.800001,499.339]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_flag_03",
+        "tm": [
+          [1.20741,0.0,-0.411599],
+          [0.0,1.27563,0.0],
+          [0.411599,0.0,1.20741],
+          [472.405,0.800001,501.183]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "flag_02",
+        "tm": [
+          [1.77134,0.0,-0.168995],
+          [0.0,1.77938,0.0],
+          [0.168995,0.0,1.77134],
+          [-1876.29,-9.91821e-05,-1215.86]
+        ],
+        "unit_class": "giftbox",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "flag_03",
+        "tm": [
+          [1.41904,0.0,1.07356],
+          [0.0,1.77938,0.0],
+          [-1.07356,0.0,1.41904],
+          [-1875.49,0.0,-1211.58]
+        ],
+        "unit_class": "giftbox",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_boat_spawn",
+        "tm": [
+          [0.989667,0.0,-0.143383],
+          [0.0,1.0,0.0],
+          [0.143383,0.0,0.989667],
+          [495.33,0.00292968,-1801.99]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_shipspawn01"
+          },
+          {
+            "squad_members": "t2_shipspawn02"
+          },
+          {
+            "squad_members": "t2_shipspawn03"
+          },
+          {
+            "squad_members": "t2_shipspawn04"
+          },
+          {
+            "squad_members": "t2_shipspawn05"
+          },
+          {
+            "squad_members": "t2_shipspawn06"
+          },
+          {
+            "squad_members": "t2_shipspawn07"
+          },
+          {
+            "squad_members": "t2_shipspawn08"
+          },
+          {
+            "squad_members": "t2_shipspawn09"
+          },
+          {
+            "squad_members": "t2_shipspawn10"
+          },
+          {
+            "squad_members": "t2_shipspawn11"
+          },
+          {
+            "squad_members": "t2_shipspawn12"
+          },
+          {
+            "squad_members": "t2_shipspawn13"
+          },
+          {
+            "squad_members": "t2_shipspawn14"
+          },
+          {
+            "squad_members": "t2_shipspawn15"
+          },
+          {
+            "squad_members": "t2_shipspawn16"
+          },
+          {
+            "squad_members": "t2_shipspawn20"
+          },
+          {
+            "squad_members": "t2_shipspawn18"
+          },
+          {
+            "squad_members": "t2_shipspawn19"
+          },
+          {
+            "squad_members": "t2_shipspawn22"
+          },
+          {
+            "squad_members": "t2_shipspawn21"
+          },
+          {
+            "squad_members": "t2_shipspawn17"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_boat_spawn",
+        "tm": [
+          [0.989667,0.0,-0.143383],
+          [0.0,1.0,0.0],
+          [0.143383,0.0,0.989667],
+          [-1019.03,0.00244141,1023.76]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_shipspawn01"
+          },
+          {
+            "squad_members": "t1_shipspawn02"
+          },
+          {
+            "squad_members": "t1_shipspawn04"
+          },
+          {
+            "squad_members": "t1_shipspawn05"
+          },
+          {
+            "squad_members": "t1_shipspawn06"
+          },
+          {
+            "squad_members": "t1_shipspawn07"
+          },
+          {
+            "squad_members": "t1_shipspawn08"
+          },
+          {
+            "squad_members": "t1_shipspawn09"
+          },
+          {
+            "squad_members": "t1_shipspawn10"
+          },
+          {
+            "squad_members": "t1_shipspawn11"
+          },
+          {
+            "squad_members": "t1_shipspawn12"
+          },
+          {
+            "squad_members": "t1_shipspawn13"
+          },
+          {
+            "squad_members": "t1_shipspawn14"
+          },
+          {
+            "squad_members": "t1_shipspawn15"
+          },
+          {
+            "squad_members": "t1_shipspawn16"
+          },
+          {
+            "squad_members": "t1_shipspawn03"
+          },
+          {
+            "squad_members": "t1_shipspawn17"
+          },
+          {
+            "squad_members": "t1_shipspawn18"
+          },
+          {
+            "squad_members": "t1_shipspawn19"
+          },
+          {
+            "squad_members": "t1_shipspawn20"
+          },
+          {
+            "squad_members": "t1_shipspawn21"
+          },
+          {
+            "squad_members": "t1_shipspawn22"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_icefloe",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-882.756,0.0,-850.046]
+        ],
+        "unit_class": "det_icefloe_a",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_icefloe",
+        "tm": [
+          [0.987031,0.0,0.16053],
+          [0.0,1.0,0.0],
+          [-0.16053,0.0,0.987031],
+          [473.799,0.0,503.455]
+        ],
+        "unit_class": "det_icefloe_a",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "ships": {
+        "name": "flag_04",
+        "tm": [
+          [1.41904,0.0,1.07356],
+          [0.0,1.77938,0.0],
+          [-1.07356,0.0,1.41904],
+          [-1875.49,0.0,-1206.76]
+        ],
+        "unit_class": "giftbox",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "flag_05",
+        "tm": [
+          [1.41904,0.0,1.07356],
+          [0.0,1.77938,0.0],
+          [-1.07356,0.0,1.41904],
+          [-1875.49,0.0,-1201.94]
+        ],
+        "unit_class": "giftbox",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_flag_04",
+        "tm": [
+          [0.873902,0.0,0.989595],
+          [0.0,1.32022,0.0],
+          [-0.989595,0.0,0.873902],
+          [-880.788,0.823,-850.978]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_flag_05",
+        "tm": [
+          [0.873902,0.0,0.989595],
+          [0.0,1.32022,0.0],
+          [-0.989595,0.0,0.873902],
+          [-884.395,0.823,-854.301]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_flag_04",
+        "tm": [
+          [0.987172,0.0,1.05445],
+          [0.0,1.44442,0.0],
+          [-1.05445,0.0,0.987172],
+          [477.822,0.800001,501.543]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_flag_05",
+        "tm": [
+          [0.647289,0.0,1.29128],
+          [0.0,1.44442,0.0],
+          [-1.29128,0.0,0.647289],
+          [473.253,0.800002,503.642]
+        ],
+        "unit_class": "det_giftbox_ny",
+        "objLayer": 1,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "t2_fir_dummy",
+        "tm": [
+          [-0.662313,0.0,1.34586],
+          [0.0,1.5,0.0],
+          [-1.34586,0.0,-0.662313],
+          [474.838,1.45959,501.924]
+        ],
+        "unit_class": "dummy",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "t1_fir_dummy",
+        "tm": [
+          [-0.662313,0.0,1.34586],
+          [0.0,1.5,0.0],
+          [-1.34586,0.0,-0.662313],
+          [-883.934,1.55906,-851.765]
+        ],
+        "unit_class": "dummy",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "t1_flag_area": {
+      "type": "Sphere",
+      "tm": [
+        [-32.2664,0.0,-94.6514],
+        [0.0,100.0,0.0],
+        [94.6514,0.0,-32.2664],
+        [-884.015,0.0,-851.737]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_flag_area": {
+      "type": "Sphere",
+      "tm": [
+        [-75.129,0.0,65.9972],
+        [0.0,100.0,0.0],
+        [-65.9972,0.0,-75.129],
+        [474.797,5.96046e-07,501.759]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea": {
+      "type": "Box",
+      "tm": [
+        [4000.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,-0.00127078,4000.0],
+        [0.0,-50.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos01": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-329.835,0.0,-216.834]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos02": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-255.727,0.0,-134.275]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos03": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-277.413,0.0,-270.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos04": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-265.13,0.0,-201.911]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos05": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-204.585,0.350006,-183.785]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos06": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-227.798,0.25,-163.082]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos07": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-131.518,0.149994,-103.696]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos08": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-172.265,0.0499878,-57.9118]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag01_pos09": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-192.032,-0.465302,-118.585]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos01": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-352.4,0.0,227.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos02": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-373.35,0.05,198.849]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos03": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-331.095,0.05,205.083]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos04": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-287.269,0.05,214.276]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos05": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-240.576,0.0,220.663]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos06": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-195.402,-0.2,216.085]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos07": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-216.574,-0.5,248.42]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos08": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-268.684,-0.55,250.844]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag02_pos09": {
+      "type": "Point",
+      "tm": [
+        [-0.586892,0.0,0.809665],
+        [0.0,1.0,0.0],
+        [-0.809665,0.0,-0.586892],
+        [-315.557,-0.7,239.303]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos01": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [196.6,0.0,-481.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos02": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [242.5,0.0,-462.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos03": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [253.85,0.0,-379.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos04": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [252.05,0.0,-333.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos05": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [242.1,0.0,-270.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos06": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [229.85,0.0,-403.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos07": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [223.5,0.0,-323.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos08": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [201.55,0.0,-443.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag03_pos09": {
+      "type": "Point",
+      "tm": [
+        [-0.441542,0.0,0.897241],
+        [0.0,1.0,0.0],
+        [-0.897241,0.0,-0.441542],
+        [265.7,0.0,-424.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn01": {
+      "type": "Sphere",
+      "tm": [
+        [29.5719,0.0,-5.05016],
+        [0.0,30.0,0.0],
+        [5.05016,0.0,29.5719],
+        [-975.18,0.00244141,825.688]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn02": {
+      "type": "Sphere",
+      "tm": [
+        [19.8185,0.0,-22.5217],
+        [0.0,30.0,0.0],
+        [22.5217,0.0,19.8185],
+        [-1015.33,0.00244141,902.391]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn03": {
+      "type": "Sphere",
+      "tm": [
+        [2.81145,0.0,-29.8679],
+        [0.0,30.0,0.0],
+        [29.8679,0.0,2.81145],
+        [-1281.06,0.00238038,610.272]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn04": {
+      "type": "Sphere",
+      "tm": [
+        [21.8203,0.0,-20.5883],
+        [0.0,30.0,0.0],
+        [20.5883,0.0,21.8203],
+        [-1099.54,0.00244141,870.409]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn05": {
+      "type": "Sphere",
+      "tm": [
+        [28.4954,0.0,9.38197],
+        [0.0,30.0,0.0],
+        [-9.38197,0.0,28.4954],
+        [-1145.06,0.00247192,1034.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn06": {
+      "type": "Sphere",
+      "tm": [
+        [23.9173,0.0,-18.1098],
+        [0.0,30.0,0.0],
+        [18.1098,0.0,23.9173],
+        [-1088.27,0.00244141,941.884]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn07": {
+      "type": "Sphere",
+      "tm": [
+        [23.5906,0.0,-18.5332],
+        [0.0,30.0,0.0],
+        [18.5332,0.0,23.5906],
+        [-1154.45,0.00244141,964.742]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn08": {
+      "type": "Sphere",
+      "tm": [
+        [22.9191,0.0,-19.3573],
+        [0.0,30.0,0.0],
+        [19.3573,0.0,22.9191],
+        [-1176.2,0.00244142,893.159]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn09": {
+      "type": "Sphere",
+      "tm": [
+        [29.6625,0.0,-4.48736],
+        [0.0,30.0,0.0],
+        [4.48736,0.0,29.6625],
+        [-1229.89,0.00219727,784.948]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn10": {
+      "type": "Sphere",
+      "tm": [
+        [29.7616,0.0,3.77391],
+        [0.0,30.0,0.0],
+        [-3.77391,0.0,29.7616],
+        [-1140.91,0.00219727,744.862]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn11": {
+      "type": "Sphere",
+      "tm": [
+        [9.41773,0.0,-28.4834],
+        [0.0,30.0,0.0],
+        [28.4834,0.0,9.41773],
+        [-1330.62,0.00244141,545.121]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn12": {
+      "type": "Sphere",
+      "tm": [
+        [13.9648,0.0,-26.5515],
+        [0.0,30.0,0.0],
+        [26.5515,0.0,13.9648],
+        [-1386.48,0.00244141,482.646]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn13": {
+      "type": "Sphere",
+      "tm": [
+        [29.7971,0.0,3.4829],
+        [0.0,30.0,0.0],
+        [-3.4829,0.0,29.7971],
+        [-1218.28,0.00219727,682.292]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn14": {
+      "type": "Sphere",
+      "tm": [
+        [29.7669,0.0,3.73176],
+        [0.0,30.0,0.0],
+        [-3.73176,0.0,29.7669],
+        [-1300.84,0.00219727,703.349]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn15": {
+      "type": "Sphere",
+      "tm": [
+        [9.76532,0.0,-28.3661],
+        [0.0,30.0,0.0],
+        [28.3661,0.0,9.76532],
+        [-1358.89,0.00244141,633.418]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn16": {
+      "type": "Sphere",
+      "tm": [
+        [20.9276,0.0,-21.4949],
+        [0.0,30.0,0.0],
+        [21.4949,0.0,20.9276],
+        [-1418.73,0.00244141,571.273]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn01": {
+      "type": "Sphere",
+      "tm": [
+        [-20.0265,0.0,22.3369],
+        [0.0,30.0,0.0],
+        [-22.3369,0.0,-20.0265],
+        [509.57,0.000976563,-1319.87]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn02": {
+      "type": "Sphere",
+      "tm": [
+        [-25.3737,0.0,16.0054],
+        [0.0,30.0,0.0],
+        [-16.0054,0.0,-25.3737],
+        [568.566,0.000976562,-1271.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn03": {
+      "type": "Sphere",
+      "tm": [
+        [-29.389,0.0,6.02353],
+        [0.0,30.0,0.0],
+        [-6.02353,0.0,-29.389],
+        [623.419,0.000976563,-1223.42]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn04": {
+      "type": "Sphere",
+      "tm": [
+        [-27.9909,0.0,10.7938],
+        [0.0,30.0,0.0],
+        [-10.7938,0.0,-27.9909],
+        [680.513,0.00100708,-1270.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn05": {
+      "type": "Sphere",
+      "tm": [
+        [-18.9037,0.0,23.2949],
+        [0.0,30.0,0.0],
+        [-23.2949,0.0,-18.9037],
+        [526.379,0.00100708,-1402.16]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn06": {
+      "type": "Sphere",
+      "tm": [
+        [-20.0456,0.0,22.3198],
+        [0.0,30.0,0.0],
+        [-22.3198,0.0,-20.0456],
+        [594.92,0.00100708,-1347.24]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn07": {
+      "type": "Sphere",
+      "tm": [
+        [-18.4331,0.0,23.669],
+        [0.0,30.0,0.0],
+        [-23.669,0.0,-18.4331],
+        [476.492,0.00100708,-1412.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn08": {
+      "type": "Sphere",
+      "tm": [
+        [-20.2398,0.0,22.1439],
+        [0.0,30.0,0.0],
+        [-22.1439,0.0,-20.2398],
+        [549.115,0.00100708,-1355.03]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn09": {
+      "type": "Sphere",
+      "tm": [
+        [-23.3263,0.0,18.865],
+        [0.0,30.0,0.0],
+        [-18.865,0.0,-23.3263],
+        [521.376,0.00106812,-1256.56]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn10": {
+      "type": "Sphere",
+      "tm": [
+        [-29.945,0.0,1.81529],
+        [0.0,30.0,0.0],
+        [-1.81529,0.0,-29.945],
+        [718.494,0.00247192,-1165.37]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn11": {
+      "type": "Sphere",
+      "tm": [
+        [3.35211,0.0,29.8122],
+        [0.0,30.0,0.0],
+        [-29.8122,0.0,3.35211],
+        [818.914,0.00292969,-964.018]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn12": {
+      "type": "Sphere",
+      "tm": [
+        [-2.13055,0.0,29.9242],
+        [0.0,30.0,0.0],
+        [-29.9242,0.0,-2.13055],
+        [858.353,0.00292969,-961.777]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn13": {
+      "type": "Sphere",
+      "tm": [
+        [1.52666,0.0,29.9611],
+        [0.0,30.0,0.0],
+        [-29.9611,0.0,1.52666],
+        [751.871,0.00268554,-1009.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn14": {
+      "type": "Sphere",
+      "tm": [
+        [-28.3716,0.0,9.74944],
+        [0.0,30.0,0.0],
+        [-9.74944,0.0,-28.3716],
+        [570.486,0.00247193,-1214.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn15": {
+      "type": "Sphere",
+      "tm": [
+        [5.26445,0.0,29.5345],
+        [0.0,30.0,0.0],
+        [-29.5345,0.0,5.26445],
+        [817.308,0.00286865,-1024.11]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn16": {
+      "type": "Sphere",
+      "tm": [
+        [-7.18048,0.0,29.128],
+        [0.0,30.0,0.0],
+        [-29.128,0.0,-7.18048],
+        [940.521,0.00292969,-942.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn20": {
+      "type": "Sphere",
+      "tm": [
+        [3.66595,0.0,29.7752],
+        [0.0,30.0,0.0],
+        [-29.7752,0.0,3.66595],
+        [816.94,0.0029602,-826.092]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn18": {
+      "type": "Sphere",
+      "tm": [
+        [5.31753,0.0,29.5251],
+        [0.0,30.0,0.0],
+        [-29.5251,0.0,5.31753],
+        [721.206,0.00268554,-850.846]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn19": {
+      "type": "Sphere",
+      "tm": [
+        [5.13882,0.0,29.5566],
+        [0.0,30.0,0.0],
+        [-29.5566,0.0,5.13882],
+        [802.503,0.00289917,-881.797]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn22": {
+      "type": "Sphere",
+      "tm": [
+        [0.155661,0.0,29.9994],
+        [0.0,30.0,0.0],
+        [-29.9994,0.0,0.155661],
+        [859.601,0.0012207,-885.643]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn21": {
+      "type": "Sphere",
+      "tm": [
+        [0.125559,0.0,29.9996],
+        [0.0,30.0,0.0],
+        [-29.9996,0.0,0.125559],
+        [884.748,0.00125122,-859.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_shipspawn17": {
+      "type": "Sphere",
+      "tm": [
+        [-0.936347,0.0,29.9854],
+        [0.0,30.0,0.0],
+        [-29.9854,0.0,-0.936347],
+        [773.752,0.00134277,-930.885]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn17": {
+      "type": "Sphere",
+      "tm": [
+        [9.88271,0.0,-28.3254],
+        [0.0,30.0,0.0],
+        [28.3254,0.0,9.88271],
+        [-1502.57,0.00262451,606.545]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn18": {
+      "type": "Sphere",
+      "tm": [
+        [12.2004,0.0,-27.407],
+        [0.0,30.0,0.0],
+        [27.407,0.0,12.2004],
+        [-1383.73,0.00268555,742.637]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn19": {
+      "type": "Sphere",
+      "tm": [
+        [3.46815,0.0,-29.7988],
+        [0.0,30.0,0.0],
+        [29.7988,0.0,3.46815],
+        [-1270.11,0.00244141,491.501]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn20": {
+      "type": "Sphere",
+      "tm": [
+        [29.1703,0.0,7.0064],
+        [0.0,30.0,0.0],
+        [-7.0064,0.0,29.1703],
+        [-1110.37,0.0022583,675.07]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn21": {
+      "type": "Sphere",
+      "tm": [
+        [27.5693,0.0,11.8298],
+        [0.0,30.0,0.0],
+        [-11.8298,0.0,27.5693],
+        [-1080.67,0.00247192,999.643]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_shipspawn22": {
+      "type": "Sphere",
+      "tm": [
+        [29.7275,0.0,-4.03502],
+        [0.0,30.0,0.0],
+        [4.03502,0.0,29.7275],
+        [-1339.82,0.00244141,799.478]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_spawnarea": {
+      "type": "Sphere",
+      "tm": [
+        [-353.235,0.0,717.792],
+        [0.0,800.0,0.0],
+        [-717.792,0.0,-353.235],
+        [698.341,0.0,-1151.46]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_spawnarea": {
+      "type": "Sphere",
+      "tm": [
+        [-353.235,0.0,717.792],
+        [0.0,800.0,0.0],
+        [-717.792,0.0,-353.235],
+        [-1219.99,0.0,759.504]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag04_pos": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [-481.598,0.0,-412.781]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "flag05_pos": {
+      "type": "Point",
+      "tm": [
+        [-0.421684,0.0,0.906743],
+        [0.0,1.0,0.0],
+        [-0.906743,0.0,-0.421684],
+        [35.572,0.0,100.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_out01": {
+      "type": "Box",
+      "tm": [
+        [16000.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,-0.00190617,6000.0],
+        [0.0,-50.0,5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_out02": {
+      "type": "Box",
+      "tm": [
+        [16000.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,-0.00190617,6000.0],
+        [0.0,-50.0,-5000.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_out03": {
+      "type": "Box",
+      "tm": [
+        [6000.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,-0.00508312,16000.0],
+        [-5000.0,-50.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_out04": {
+      "type": "Box",
+      "tm": [
+        [6000.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,-0.00508312,16000.0],
+        [5000.0,-50.0,0.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

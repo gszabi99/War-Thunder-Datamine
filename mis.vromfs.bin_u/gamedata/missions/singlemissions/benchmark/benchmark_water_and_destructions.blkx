@@ -1,0 +1,1208 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "proximity": "ground_vehicle",
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_rheinland.bin",
+      "type": "benchmark",
+      "environment": "Day",
+      "weather": "good",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 2,
+      "stars": {
+        "latitude": 48.0,
+        "longitude": 21.0,
+        "year": 1944,
+        "month": 7,
+        "day": 2,
+        "localTime": 10.0
+      },
+      "customWeather": {
+        "windDir": [0.6,0.8],
+        "wind_scale": 1.0,
+        "max_wind_strength": 6.0,
+        "sky": {
+          "mie_height": 0.7
+        },
+        "strata_clouds": {
+          "amount": 0.5,
+          "altitude": 11.0
+        }
+      }
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "cutscenes_sequence": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitPutToSleep": {
+            "target": "cutscene_bombers01"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "small_cutscene_squad"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "small_cutscene_squad",
+            "attack_type": "dont_aim",
+            "effShootingRate": 0.0,
+            "airEffShootingRate": 0.0,
+            "effShootingRateByPlayer": 0.0,
+            "ignoreCollisions": false,
+            "aiEnabled": false
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "cutscene_area01",
+            "second_target": "cutscene_area01",
+            "duration": 15.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 0.0,
+            "flat_offs": [0.0,0.0,0.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.903,-1.5,-2.19],
+            "linear_eye_vel": [0.903,-1.0,-2.19],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 0.0,
+            "yaw_amplitude": 0.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "min_cam_alt": 1.0,
+            "linear_at": [0.0,0.024,-6.272],
+            "linear_eye": [0.01,0.0,0.0],
+            "endFade": [5.0,4.0],
+            "delayPlayer": false
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "init_no_additional_effects"
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "cutscene_area02",
+            "second_target": "cutscene_area02",
+            "duration": 40.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 0.0,
+            "flat_offs": [0.0,0.0,0.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [-3.3,0.0,3.0],
+            "linear_eye_vel": [-3.3,0.0,3.0],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 0.0,
+            "yaw_amplitude": 0.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "min_cam_alt": 1.0,
+            "linear_at": [-5.0,-1.0,5.0],
+            "linear_eye": [0.01,0.0,0.0],
+            "endFade": [5.0,4.0],
+            "delayPlayer": false
+          }
+        },
+        {
+          "wait": {
+            "time": 40.0
+          }
+        },
+        {
+          "__missionStartCutscene": {
+            "target": "cutscene_area03",
+            "second_target": "cutscene_area03",
+            "duration": 17.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 0.0,
+            "flat_offs": [0.0,0.0,0.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.0,0.0,0.0],
+            "linear_eye_vel": [9.0,-0.001,-1.3],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 0.0,
+            "yaw_amplitude": 0.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "min_cam_alt": 1.0,
+            "linear_at": [80.0,5.0,120.0],
+            "linear_eye": [0.01,1.0,0.0],
+            "endFade": [5.0,4.0],
+            "delayPlayer": false
+          }
+        },
+        {
+          "__wait": {
+            "time": 17.0
+          }
+        },
+        {
+          "__missionStartCutscene": {
+            "target": "cutscene_area04",
+            "second_target": "cutscene_area04",
+            "duration": 15.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 0.0,
+            "flat_offs": [0.0,0.0,0.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [-11.4,-0.2,4.0],
+            "linear_eye_vel": [-11.4,-0.3,1.8],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 0.0,
+            "yaw_amplitude": 0.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "min_cam_alt": 1.0,
+            "linear_at": [-114.0,6.0,20.0],
+            "linear_eye": [0.01,4.0,0.0],
+            "endFade": [5.0,4.0],
+            "delayPlayer": false
+          }
+        },
+        {
+          "__wait": {
+            "time": 14.2
+          }
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "small_cutscene_squad"
+            },
+            {
+              "target": "cutscene_bombers01"
+            }
+          ]
+        },
+        {
+          "missionDebriefing": []
+        }
+      ],
+      "else_actions": []
+    },
+    "init_no_additional_effects": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitWakeUp": {
+            "target": "cutscene_bombers01"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "cutscene_bombers01"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionDestroyArea": {
+            "target_type": "ALL",
+            "area": "destructive_area_03"
+          }
+        },
+        {
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "__missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 3.0,
+            "target": "small_cutscene_squad"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "small_cutscene_squad",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "__missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 0.5,
+            "target": "small_cutscene_squad"
+          }
+        },
+        {
+          "__unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "small_cutscene_squad",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "missionDestroyArea": {
+            "target_type": "ALL",
+            "area": "destructive_area_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "missionDestroyArea": {
+            "target_type": "ALL",
+            "area": "destructive_area_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "missionDestroyArea": {
+            "target_type": "ALL",
+            "area": "destructive_area_01"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "test_trigger": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "missionStartCutscene": {
+          "target": "cutscene_area03",
+          "second_target": "cutscene_area03",
+          "duration": 24.0,
+          "camera_type": "flat_linear",
+          "direction_amp": 0.0,
+          "flat_offs": [0.0,0.0,0.0],
+          "zoom": 0.0,
+          "frequency": 1.0,
+          "linear_at_vel": [0.0,0.0,0.0],
+          "linear_eye_vel": [9.0,-0.001,-1.3],
+          "linear_at_accel": 0.0,
+          "linear_eye_accel": 0.0,
+          "linear_relative": false,
+          "pitch": 0.1,
+          "yaw": 0.0,
+          "pitch_amplitude": 0.0,
+          "yaw_amplitude": 0.0,
+          "distance": 30.0,
+          "shake_mult": 0.0,
+          "splineEye": "",
+          "splineAt": "",
+          "splineSpeed": 100.0,
+          "resetCamera": true,
+          "shake_accel": 0.0,
+          "fov_accel": 0.0,
+          "mustHaveGui": false,
+          "min_cam_alt": 1.0,
+          "linear_at": [80.0,5.0,120.0],
+          "linear_eye": [0.01,1.0,0.0],
+          "endFade": [5.0,4.0],
+          "delayPlayer": false
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank23",
+        "tm": [
+          [-0.884549,0.0,0.466448],
+          [0.0,1.0,0.0],
+          [-0.466448,0.0,-0.884549],
+          [3735.46,12.5027,1897.31]
+        ],
+        "unit_class": "ussr_su_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_su_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank24",
+        "tm": [
+          [0.446079,0.0,0.894994],
+          [0.0,1.0,0.0],
+          [-0.894994,0.0,0.446079],
+          [3689.49,12.5027,1870.0]
+        ],
+        "unit_class": "ussr_su_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_su_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank25",
+        "tm": [
+          [-0.339182,0.0,0.940721],
+          [0.0,1.0,0.0],
+          [-0.940721,0.0,-0.339182],
+          [3729.96,12.5027,1851.18]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3653.93,9.8259,2544.92]
+        ],
+        "unit_class": "germ_panther_II",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_panther_II_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "small_cutscene_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3705.17,9.82619,1900.01]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamB_cutscene_tank23"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank24"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank25"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank28"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank29"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank30"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank31"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank32"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank33"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank34"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank35"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank36"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank37"
+          }
+        ]
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank28",
+        "tm": [
+          [-0.835189,0.0,0.549964],
+          [0.0,1.0,0.0],
+          [-0.549964,0.0,-0.835189],
+          [3837.78,12.5027,1828.9]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank29",
+        "tm": [
+          [-0.835189,0.0,0.549964],
+          [0.0,1.0,0.0],
+          [-0.549964,0.0,-0.835189],
+          [3829.52,12.5027,1817.4]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank30",
+        "tm": [
+          [0.387323,0.0,0.921944],
+          [0.0,1.0,0.0],
+          [-0.921944,0.0,0.387323],
+          [3803.86,12.5027,1804.97]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank31",
+        "tm": [
+          [0.639804,0.0,0.768538],
+          [0.0,1.0,0.0],
+          [-0.768538,0.0,0.639804],
+          [3778.42,12.5027,1819.14]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank32",
+        "tm": [
+          [0.965156,0.0,-0.261674],
+          [0.0,1.0,0.0],
+          [0.261674,0.0,0.965156],
+          [3755.78,12.5027,1866.49]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "cutscene_bombers01",
+        "tm": [
+          [0.815555,0.0,-0.57868],
+          [0.0,1.0,0.0],
+          [0.57868,0.0,0.815555],
+          [3403.17,139.787,2123.58]
+        ],
+        "unit_class": "b-29",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "B29_12x1000lbs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 15,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank33",
+        "tm": [
+          [-0.583156,0.0,-0.81236],
+          [0.0,1.0,0.0],
+          [0.81236,0.0,-0.583156],
+          [3795.91,12.5027,1888.88]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank34",
+        "tm": [
+          [-0.787927,0.0,-0.615769],
+          [0.0,1.0,0.0],
+          [0.615769,0.0,-0.787927],
+          [3777.28,12.5027,1911.49]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank35",
+        "tm": [
+          [-0.0801033,0.0,-0.996787],
+          [0.0,1.0,0.0],
+          [0.996787,0.0,-0.0801033],
+          [3702.3,12.5027,1966.62]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank36",
+        "tm": [
+          [-0.890491,0.0,0.455001],
+          [0.0,1.0,0.0],
+          [-0.455001,0.0,-0.890491],
+          [3761.48,12.5027,1878.82]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "teamB_cutscene_tank37",
+        "tm": [
+          [-0.793613,0.0,0.608423],
+          [0.0,1.0,0.0],
+          [-0.608423,0.0,-0.793613],
+          [3724.6,12.5027,1907.15]
+        ],
+        "unit_class": "ussr_isu_152",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "ussr_isu_152_default",
+        "bullets0": "152mm_ussr_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 900,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "cutscene_zero": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [794.837,-94.2513,350.08]
+      ],
+      "objLayer": 0,
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "cutscene_area01": {
+      "type": "Sphere",
+      "tm": [
+        [81.9268,0.0,0.0],
+        [0.0,81.9268,0.0],
+        [0.0,0.0,81.9268],
+        [4436.77,21.2055,1307.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cutscene_area02": {
+      "type": "Sphere",
+      "tm": [
+        [78.9474,0.0,21.893],
+        [0.0,81.9268,0.0],
+        [-21.893,0.0,78.9474],
+        [3850.04,18.5259,1794.86]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cutscene_area03": {
+      "type": "Sphere",
+      "tm": [
+        [81.9268,0.0,0.0],
+        [0.0,81.9268,0.0],
+        [0.0,0.0,81.9268],
+        [3023.86,49.9734,1922.8]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cutscene_area04": {
+      "type": "Sphere",
+      "tm": [
+        [81.9268,0.0,0.0],
+        [0.0,81.9268,0.0],
+        [0.0,0.0,81.9268],
+        [3041.52,77.8329,2263.54]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "destructive_area_01": {
+      "type": "Box",
+      "tm": [
+        [44.3665,0.0,-30.9936],
+        [0.0,27.7908,0.0],
+        [23.4951,0.0,33.6327],
+        [3696.71,2.86424,1918.27]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "destructive_area_02": {
+      "type": "Box",
+      "tm": [
+        [11.3767,0.0,-7.94757],
+        [0.0,27.7908,0.0],
+        [23.4951,0.0,33.6327],
+        [3706.65,2.86423,1863.74]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "destructive_area_03": {
+      "type": "Box",
+      "tm": [
+        [11.3767,0.0,-7.94757],
+        [0.0,27.7908,0.0],
+        [23.4951,0.0,33.6327],
+        [3772.69,2.86423,1801.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "destructive_area_04": {
+      "type": "Box",
+      "tm": [
+        [60.8317,0.0,-42.4959],
+        [0.0,27.7908,0.0],
+        [23.4951,0.0,33.6327],
+        [3776.32,2.86423,1900.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

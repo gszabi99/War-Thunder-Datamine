@@ -1,0 +1,177 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "armada_01"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "campaign",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init_bridge_template": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "unitSetProperties": {
+          "object": "bridge_units_squad",
+          "minDistBetween": 75.0,
+          "ignoresObstaclesAfterTime": false
+        }
+      },
+      "else_actions": []
+    },
+    "check_bridge_units_stop": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 150.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isKilled",
+          "target_marking": 2,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "bridge_units_squad",
+          "target": "bridges_squad",
+          "var": "bridges_stop_distance",
+          "compareCenters": false,
+          "check_all_units": true
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object": "bridge_units_squad",
+          "speed": 0.0,
+          "lockSpeed": true,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    },
+    "check_bridge_units_kill": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 50.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "target_type": "isKilled",
+          "target_marking": 2,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "bridge_units_squad",
+          "target": "bridges_squad",
+          "var": "bridges_destroy_distance",
+          "compareCenters": false,
+          "check_all_units": true
+        }
+      },
+      "actions": {
+        "unitDamage": {
+          "part": 1,
+          "power": 1.0,
+          "useEffect": false,
+          "countEffects": 1,
+          "delay": [1.0,1.0],
+          "offset": [0.0,0.0,0.0],
+          "radiusOffset": [10.0,15.0],
+          "target": "bridge_units_squad",
+          "doExplosion": true,
+          "useForTriggerFiltered": true
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {
+    "bridges_stop_distance": 100.0,
+    "bridges_destroy_distance": 50.0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

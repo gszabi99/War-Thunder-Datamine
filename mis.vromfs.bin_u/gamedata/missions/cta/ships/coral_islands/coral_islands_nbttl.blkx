@@ -1,0 +1,545 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "t1_player01"
+      },
+      {
+        "wing": "t1_player02"
+      },
+      {
+        "wing": "t1_player03"
+      },
+      {
+        "wing": "t1_player04"
+      },
+      {
+        "wing": "t1_player05"
+      },
+      {
+        "wing": "t1_player06"
+      },
+      {
+        "wing": "t1_player07"
+      },
+      {
+        "wing": "t1_player08"
+      },
+      {
+        "wing": "t1_player09"
+      },
+      {
+        "wing": "t1_player10"
+      },
+      {
+        "wing": "t1_player11"
+      },
+      {
+        "wing": "t1_player12"
+      },
+      {
+        "wing": "t1_player13"
+      },
+      {
+        "wing": "t1_player14"
+      },
+      {
+        "wing": "t1_player15"
+      },
+      {
+        "wing": "t1_player16"
+      }
+    ],
+    "player_teamB": [
+      {
+        "army": 2
+      },
+      {
+        "wing": "t2_player01"
+      },
+      {
+        "wing": "t2_player02"
+      },
+      {
+        "wing": "t2_player03"
+      },
+      {
+        "wing": "t2_player04"
+      },
+      {
+        "wing": "t2_player05"
+      },
+      {
+        "wing": "t2_player06"
+      },
+      {
+        "wing": "t2_player07"
+      },
+      {
+        "wing": "t2_player08"
+      },
+      {
+        "wing": "t2_player09"
+      },
+      {
+        "wing": "t2_player10"
+      },
+      {
+        "wing": "t2_player11"
+      },
+      {
+        "wing": "t2_player12"
+      },
+      {
+        "wing": "t2_player13"
+      },
+      {
+        "wing": "t2_player14"
+      },
+      {
+        "wing": "t2_player15"
+      },
+      {
+        "wing": "t2_player16"
+      },
+      {
+        "wing": "t2_player17"
+      }
+    ],
+    "mission": {
+      "level": "levels/avn_coral_islands.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": true,
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_NBttl;coral_islands/name;missions/naval_newbie",
+      "locDesc": "coral_islands/desc;missions/_NBttl/desc",
+      "scoreLimit": 20000,
+      "timeLimit": 30,
+      "deathPenaltyMul": 0.5,
+      "ctaCaptureZoneEqualPenaltyMul": 0.5,
+      "randomSpawnTeams": true,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "showTacticalMapCellSize": true,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "ally"
+              },
+              {
+                "point": "briefing_capture_zone_01"
+              },
+              {
+                "point": "briefing_capture_zone_t1"
+              },
+              {
+                "point": "briefing_capture_zone_02"
+              }
+            ]
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "enemy"
+              },
+              {
+                "point": "briefing_capture_zone_01"
+              },
+              {
+                "point": "briefing_capture_zone_t2"
+              },
+              {
+                "point": "briefing_capture_zone_02"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "briefing_spawn_t1_boat_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "ally",
+              "target": "briefing_spawn_t1_boat_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "briefing_spawn_t2_boat_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "ship",
+              "side": "enemy",
+              "target": "briefing_spawn_t2_boat_02"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "ally",
+              "target": "briefing_capture_zone_t1"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone",
+              "side": "enemy",
+              "target": "briefing_capture_zone_t2"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "briefing_capture_zone_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "basezone_B",
+              "side": "neutral",
+              "target": "briefing_capture_zone_02"
+            }
+          },
+          {
+            "battleArea": {
+              "target": "briefing_battle_area"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/navy_templates/ship_base_logic.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/navy_templates/nbttl_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/ships/coral_islands/template_coral_islands_air_spawn.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/ships/coral_islands/mainareas/coral_islands_NBttl_airspawn.blk",
+        "rankRange": [6,30],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/ships/coral_islands/mainareas/coral_islands_NBttl_newbie_airspawn.blk",
+        "rankRange": [0,5],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/ships/coral_islands/mainareas/coral_islands_NBttl_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "armada": {
+      "name": "t1_player01",
+      "tm": [
+        [0.707107,0.0,0.707107],
+        [0.0,1.0,0.0],
+        [-0.707107,0.0,0.707107],
+        [7057.08,1378.2,-9086.68]
+      ],
+      "unit_class": "a-20g",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "props": {
+        "army": 2,
+        "count": 1,
+        "free_distance": 70.0,
+        "floating_distance": 50.0,
+        "minimum_distance_to_earth": 20.0,
+        "altLimit": 6000.0,
+        "attack_type": "fire_at_will",
+        "skill": 4,
+        "plane": {
+          "wing_formation": "Diamond",
+          "row_distances": 3.0,
+          "col_distances": 3.0,
+          "super_formation": "Diamond",
+          "super_row_distances": 1.5,
+          "super_col_distances": 1.5,
+          "ai_skill": "NORMAL",
+          "task": "FLY_WAYPOINT"
+        }
+      },
+      "way": []
+    }
+  },
+  "areas": {
+    "briefing_capture_zone_01": {
+      "type": "Point",
+      "tm": [
+        [212.132,0.0,212.132],
+        [0.0,211.1,0.0],
+        [-212.132,0.0,212.132],
+        [850.906,0.0,-939.393]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "briefing_capture_zone_02": {
+      "type": "Point",
+      "tm": [
+        [212.132,0.0,212.132],
+        [0.0,211.1,0.0],
+        [-212.132,0.0,212.132],
+        [-887.841,-0.000244141,850.86]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "briefing_capture_zone_t1": {
+      "type": "Point",
+      "tm": [
+        [299.499,0.0,-17.3206],
+        [0.0,211.1,0.0],
+        [17.3206,0.0,299.499],
+        [-616.333,6.10352e-05,-599.82]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "briefing_capture_zone_t2": {
+      "type": "Point",
+      "tm": [
+        [299.499,0.0,-17.3206],
+        [0.0,211.1,0.0],
+        [17.3206,0.0,299.499],
+        [551.179,0.0,524.926]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "briefing_spawn_t2_boat_01": {
+      "type": "Point",
+      "tm": [
+        [0.973646,0.0,-0.228063],
+        [0.0,1.0,0.0],
+        [0.228063,0.0,0.973646],
+        [330.137,0.0,2760.14]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_spawn_t2_boat_02": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,0.707107],
+        [0.0,1.0,0.0],
+        [-0.707107,0.0,0.707107],
+        [2783.34,0.0,459.438]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_spawn_t1_boat_01": {
+      "type": "Point",
+      "tm": [
+        [0.92417,0.0,0.381982],
+        [0.0,1.0,0.0],
+        [-0.381982,0.0,0.92417],
+        [-364.985,0.0,-2793.44]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_spawn_t1_boat_02": {
+      "type": "Point",
+      "tm": [
+        [0.707107,0.0,0.707107],
+        [0.0,1.0,0.0],
+        [-0.707107,0.0,0.707107],
+        [-2820.64,0.0,-422.339]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_battle_area": {
+      "type": "Box",
+      "tm": [
+        [7000.0,0.0,0.0],
+        [0.0,150.0,0.0],
+        [0.0,0.0,7000.0],
+        [-30.0,0.0,-60.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

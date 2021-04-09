@@ -1,0 +1,231 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 30.0
+    },
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_guadalcanal.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "clear",
+      "scoreLimit": 6400,
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "randomSpawnTeams": true,
+      "remapAiTankModels": true,
+      "country_axis": "germany",
+      "country_allies": "ussr"
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "showAirMap": false
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "ally",
+              "target": "bttl_t1_spawn_01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "tank",
+              "side": "player",
+              "target": "bttl_t2_spawn_01"
+            }
+          },
+          {
+            "captureZone": {
+              "area": "bttl_t1_capture_area",
+              "side": "ally",
+              "type": "ground"
+            }
+          },
+          {
+            "captureZone": {
+              "area": "bttl_t2_capture_area",
+              "side": "enemy",
+              "type": "ground"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/port_novorossiysk/mainareas/template_port_novorossiysk_Bttl.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": {
+    "bttl_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [-1700.0,0.0,0.0],
+        [0.0,166.65,0.0],
+        [0.0,0.0,-1700.0],
+        [1046.85,0.0,918.65]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "area_01": {
+      "type": "Sphere",
+      "tm": [
+        [2151.0,0.0,0.0],
+        [0.0,2151.0,0.0],
+        [0.0,0.0,2151.0],
+        [858.0,9.9,1007.65]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "area_02": {
+      "type": "Sphere",
+      "tm": [
+        [2151.0,0.0,0.0],
+        [0.0,2151.0,0.0],
+        [0.0,0.0,2151.0],
+        [1189.3,9.9,649.05]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_killarea_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,89.2708,0.0],
+        [0.0,0.0,120.0],
+        [1763.89,5.48059,255.263]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,89.2708,0.0],
+        [0.0,0.0,120.0],
+        [759.733,5.48077,1680.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "bttl_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [-1700.0,0.0,0.0],
+        [0.0,166.65,0.0],
+        [0.0,0.0,-1700.0],
+        [1046.85,0.0,918.65]
+      ],
+      "objLayer": 4,
+      "props": []
+    },
+    "t1_killarea": {
+      "type": "Cylinder",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,89.2708,0.0],
+        [0.0,0.0,120.0],
+        [1763.89,4.76367,255.263]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea": {
+      "type": "Cylinder",
+      "tm": [
+        [120.0,0.0,0.0],
+        [0.0,89.2708,0.0],
+        [0.0,0.0,120.0],
+        [759.733,5.48077,1680.76]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

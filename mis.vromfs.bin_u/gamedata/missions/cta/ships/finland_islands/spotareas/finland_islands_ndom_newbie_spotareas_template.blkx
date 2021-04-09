@@ -1,0 +1,190 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "stars": {
+      "latitude": 48.0,
+      "longitude": 44.0,
+      "year": 1940,
+      "month": 1,
+      "day": 15,
+      "time": 12.0
+    },
+    "spectator_points": [],
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_spotarea",
+        "tm": [
+          [-4.66878e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,-4.66878e-08],
+          [-1868.43,-0.000244141,-761.031]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_spotarea_block01"
+          },
+          {
+            "squad_members": "t1_spotarea_block02"
+          },
+          {
+            "squad_members": "t1_spotarea_block03"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_spotarea",
+        "tm": [
+          [-4.66878e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,-4.66878e-08],
+          [1026.98,-7.27596e-12,-1017.12]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_spotarea_block01"
+          },
+          {
+            "squad_members": "t2_spotarea_block02"
+          },
+          {
+            "squad_members": "t2_spotarea_block03"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "t1_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [-0.000201232,0.0,4009.36],
+        [0.0,3175.57,0.0],
+        [-2003.99,0.0,-8.03034e-05],
+        [-4300.46,0.0,-2082.13]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t2_spotarea_block01": {
+      "type": "Sphere",
+      "tm": [
+        [-0.000204244,0.0,3980.07],
+        [0.0,3175.57,0.0],
+        [-1967.12,0.0,-7.88259e-05],
+        [4575.64,0.0,-2272.44]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [890.945,0.0,2683.2],
+        [0.0,483.653,0.0],
+        [-871.271,0.0,289.304],
+        [-2840.72,0.0,3645.44]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t2_spotarea_block02": {
+      "type": "Sphere",
+      "tm": [
+        [-840.451,0.0,2551.89],
+        [0.0,483.653,0.0],
+        [-700.102,0.0,-230.576],
+        [2673.01,0.0,3429.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t2_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [-441.118,0.0,2650.27],
+        [0.0,483.653,0.0],
+        [-727.092,0.0,-121.02],
+        [3277.66,0.0,285.36]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_spotarea_block03": {
+      "type": "Sphere",
+      "tm": [
+        [1328.33,0.0,2495.77],
+        [0.0,483.653,0.0],
+        [-810.411,0.0,431.329],
+        [-3468.01,0.0,935.002]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "ndom_battle_area": {
+      "type": "Box",
+      "tm": [
+        [11264.0,0.0,0.0],
+        [0.0,826.015,0.0],
+        [0.0,0.0,11264.0],
+        [0.0,0.0,0.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

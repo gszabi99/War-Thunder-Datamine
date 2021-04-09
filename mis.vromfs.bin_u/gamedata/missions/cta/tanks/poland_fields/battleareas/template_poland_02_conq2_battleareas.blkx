@@ -1,0 +1,141 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_normandy.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/cta/tanks/poland_fields/mainareas/template_poland_02_Conq2.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": {
+    "conq_battle_area_arcade": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,4096.0],
+        [2048.0,10.55,2048.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_killarea": {
+      "type": "Cylinder",
+      "tm": [
+        [250.0,0.0,0.0],
+        [0.0,77.3,0.0],
+        [0.0,0.0,250.0],
+        [3839.61,4.55005,1196.52]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea": {
+      "type": "Cylinder",
+      "tm": [
+        [250.0,0.0,0.0],
+        [0.0,77.3,0.0],
+        [0.0,0.0,250.0],
+        [567.106,4.55005,1243.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "conq_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [4096.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,4096.0],
+        [2048.0,10.55,2048.0]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t2_killarea_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [250.0,0.0,0.0],
+        [0.0,77.3,0.0],
+        [0.0,0.0,250.0],
+        [567.106,4.55005,1243.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t1_killarea_hardcore": {
+      "type": "Cylinder",
+      "tm": [
+        [250.0,0.0,0.0],
+        [0.0,77.3,0.0],
+        [0.0,0.0,250.0],
+        [3839.61,4.55005,1196.52]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": false
+      }
+    }
+  ],
+  "wayPoints": []
+}

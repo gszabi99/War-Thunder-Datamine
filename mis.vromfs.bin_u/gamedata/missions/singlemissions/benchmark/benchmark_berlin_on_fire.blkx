@@ -1,0 +1,5191 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "proximity": "airplane",
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/berlin.bin",
+      "type": "benchmark",
+      "environment": "Morning",
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "forceSkiesInitialRandomSeed": true,
+      "skiesInitialRandomSeed": 1,
+      "stars": {
+        "latitude": 52.5,
+        "longitude": 13.0,
+        "year": 1945,
+        "month": 5,
+        "day": 1
+      },
+      "customWeather": {
+        "windDir": [0.6,0.8],
+        "wind_scale": 1.0,
+        "max_wind_strength": 6.0,
+        "sky": {
+          "mie_height": 0.5
+        },
+        "strata_clouds": {
+          "amount": 0.5,
+          "altitude": 10.0
+        }
+      }
+    },
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 10.0
+    },
+    "spectator_points": []
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/bridges/berlin_bridges.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "showAreas": true,
+      "showUnits": false,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "initial_fade": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": {
+        "missionSetFade": {
+          "mode": "fadeOut",
+          "color": [0.0,0.0,0.0],
+          "time": 0.0
+        },
+        "triggerEnable": {
+          "target": "000_movement"
+        },
+        "missionForceMusic": {
+          "evName": "ussr_main_theme"
+        }
+      },
+      "else_actions": []
+    },
+    "000_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "land_crash_fire"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "explosion08"
+            },
+            {
+              "target": "explosion10"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "ground_model_gray_smoke",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 2.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion01",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 5.0,
+            "target": "player"
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "land_crash_smoke",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion07",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 5.0,
+            "target": "player"
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "land_crash_smoke",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion11",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "ground_model_smoke",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion02",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "land_explosion_plane",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion00",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "enemy_planes_crowd00"
+            },
+            {
+              "object": "friendly_planes_crowd00"
+            },
+            {
+              "object": "freindly_airdef00"
+            },
+            {
+              "object": "ussr_attackers_squad"
+            },
+            {
+              "object": "ussr_bombers"
+            },
+            {
+              "object": "airfield_planes"
+            },
+            {
+              "effShootingRate": 0.0
+            },
+            {
+              "aiEnabled": false
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "airfield_planes",
+            "ignoresEnemy": true,
+            "speed": 0.0,
+            "lockSpeed": true,
+            "aiEnabled": false,
+            "stayOnGround": true
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "isAlive"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 5.0
+            },
+            {
+              "target": "freindly_airdef00"
+            },
+            {
+              "target": "friendly_tanks01"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "unitDamage": {
+            "part": 16,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "enemy_planes_crowd02",
+            "doExplosion": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_03",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": true
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.1
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "airfield_planes"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "001_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "001_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.3
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "airfield_planes"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers01"
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.3
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "airfield_planes"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers01"
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.5
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_03"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "002_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "002_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers01"
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.5
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "airfield_planes"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers01"
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.4
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "airfield_planes"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "003_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "003_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_attackers_02"
+            },
+            {
+              "object": "ussr_attackers_03"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "rockets",
+                  "set": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers01"
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.1
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.4
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_03"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "object": "ussr_bombers03"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_03"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "004_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "004_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_bombers02"
+            },
+            {
+              "object": "ussr_bombers03"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "bombs",
+                  "set": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.6
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.3
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_03"
+            },
+            {
+              "target": "airfield_planes"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_03"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "005_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "005_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_03",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": false
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": false
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "rockets",
+                  "set": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.1
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "ussr_attackers_squad"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_bombers03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "bombs",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "010_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "010_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": true
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": false
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_13"
+            },
+            {
+              "target": "shell_expl_fx_14"
+            },
+            {
+              "target": "shell_expl_fx_17"
+            },
+            {
+              "target": "shell_expl_fx_22"
+            },
+            {
+              "target": "shell_expl_fx_24"
+            },
+            {
+              "target": "shell_expl_fx_29"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd01",
+            "engineFire": true,
+            "aiEnabled": false
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "ground_model_fire"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "explosion05"
+            },
+            {
+              "target": "explosion06"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.3
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "011_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "011_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ussr_attackers_01"
+            },
+            {
+              "object": "ussr_attackers_03"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "rockets",
+                  "set": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_02",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": false
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": false
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_05"
+            },
+            {
+              "target": "shell_expl_fx_07"
+            },
+            {
+              "target": "shell_expl_fx_15"
+            },
+            {
+              "target": "shell_expl_fx_19"
+            },
+            {
+              "target": "shell_expl_fx_31"
+            },
+            {
+              "target": "shell_expl_fx_33"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd05",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd05"
+            },
+            {
+              "target": "enemy_planes_crowd03"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "bomb_expl_1000kg"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "explosion04"
+            },
+            {
+              "target": "explosion12"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_04"
+            },
+            {
+              "target": "shell_expl_fx_08"
+            },
+            {
+              "target": "shell_expl_fx_10"
+            },
+            {
+              "target": "shell_expl_fx_35"
+            },
+            {
+              "target": "shell_expl_fx_32"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd05",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd05",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.3
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            },
+            {
+              "target": "friendly_planes_crowd05"
+            },
+            {
+              "target": "enemy_planes_crowd03"
+            },
+            {
+              "target": "enemy_planes_crowd05"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "012_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "012_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": false
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": false
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_02"
+            },
+            {
+              "target": "shell_expl_fx_12"
+            },
+            {
+              "target": "shell_expl_fx_16"
+            },
+            {
+              "target": "shell_expl_fx_18"
+            },
+            {
+              "target": "shell_expl_fx_37"
+            },
+            {
+              "target": "shell_expl_fx_36"
+            },
+            {
+              "target": "shell_expl_fx_34"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd05",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "bomb_expl_1000kg",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion13",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            },
+            {
+              "target": "friendly_planes_crowd03"
+            },
+            {
+              "target": "friendly_planes_crowd05"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_01"
+            },
+            {
+              "target": "shell_expl_fx_11"
+            },
+            {
+              "target": "shell_expl_fx_20"
+            },
+            {
+              "target": "shell_expl_fx_38"
+            },
+            {
+              "target": "shell_expl_fx_39"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "bridge_95",
+            "doExplosion": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd04",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": true
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd03",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd06",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd06",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "machine gun",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "bomb_expl_1000kg",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "explosion03",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "ussr_attackers_squad"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            },
+            {
+              "target": "enemy_planes_crowd04"
+            },
+            {
+              "target": "friendly_planes_crowd02"
+            },
+            {
+              "target": "enemy_planes_crowd03"
+            },
+            {
+              "target": "friendly_planes_crowd06"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "013_movement"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "013_movement": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ussr_attackers_01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": false
+              }
+            }
+          }
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "explosion_midair_tiny"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "shell_expl_fx_00"
+            },
+            {
+              "target": "shell_expl_fx_03"
+            },
+            {
+              "target": "shell_expl_fx_06"
+            },
+            {
+              "target": "shell_expl_fx_09"
+            },
+            {
+              "target": "shell_expl_fx_21"
+            },
+            {
+              "target": "shell_expl_fx_23"
+            },
+            {
+              "target": "shell_expl_fx_25"
+            },
+            {
+              "target": "shell_expl_fx_26"
+            },
+            {
+              "target": "shell_expl_fx_27"
+            },
+            {
+              "target": "shell_expl_fx_28"
+            },
+            {
+              "target": "shell_expl_fx_30"
+            },
+            {
+              "target": "shell_expl_fx_40"
+            },
+            {
+              "radiusOffset": [0.0,0.0]
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd04",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_planes_crowd02",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "enemy_planes_crowd05",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "cannon",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.1
+            },
+            {
+              "target": "enemy_planes_crowd02"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            },
+            {
+              "target": "ussr_bombers"
+            },
+            {
+              "target": "friendly_planes_crowd01"
+            },
+            {
+              "target": "enemy_planes_crowd04"
+            },
+            {
+              "target": "friendly_planes_crowd02"
+            },
+            {
+              "target": "enemy_planes_crowd05"
+            },
+            {
+              "target": "enemy_planes_crowd03"
+            },
+            {
+              "target": "friendly_planes_crowd06"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 0.15
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "01_cutscene"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "01_cutscene": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 5.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "point_07",
+            "target": "point_04",
+            "randSeed": 0,
+            "finalLook": "point_03",
+            "changeLookTime": 5.0,
+            "zoom": 0.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 0.01,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "point_07",
+            "target": "point_04",
+            "zoom": 0.0
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "point_08",
+            "second_target": "point_01",
+            "duration": 6.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.0,0.0,0.0],
+            "linear_eye_vel": [190.0,0.0,3.5],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [1450.0,-15.0,45.0],
+            "linear_eye": [0.0,0.0,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "1to2",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 3.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "friendly_planes_crowd06",
+            "target": "enemy_planes_crowd06",
+            "randSeed": 10
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 3.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "friendly_planes_crowd06",
+            "target": "enemy_planes_crowd06",
+            "randSeed": 42
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 0.01,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "cutscene_area01",
+            "target": "enemy_planes_crowd06",
+            "changeLookTime": 10.0,
+            "zoom": 0.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "02_cutscene"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "02_cutscene": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "timeExpires": {
+          "time": 0.0
+        }
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionStartCutscene": {
+            "target": "point_00",
+            "second_target": "point_01",
+            "duration": 12.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [-150.0,3.0,60.0],
+            "linear_eye_vel": [-250.0,-1.0,-50.0],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [-1150.0,-15.0,-300.0],
+            "linear_eye": [0.0,0.0,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 12.0
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "point_02",
+            "second_target": "point_02",
+            "duration": 8.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [5.0,0.0,0.0],
+            "linear_eye_vel": [0.01,-60.0,0.01],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [150.0,-310.0,0.0],
+            "linear_eye": [0.0,0.0,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 8.0
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "point_03",
+            "second_target": "point_03",
+            "duration": 15.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.0,0.0,0.0],
+            "linear_eye_vel": [50.0,20.0,-50.0],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [450.0,-10.0,50.0],
+            "linear_eye": [0.0,0.0,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "point_04",
+            "second_target": "point_03",
+            "duration": 19.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [30.0,25.0,0.0],
+            "linear_eye_vel": [65.0,33.0,70.0],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [100.0,1.0,1000.0],
+            "linear_eye": [1.0,1.0,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 19.0
+          }
+        },
+        {
+          "showSmartCutscene": [
+            {
+              "sceneType": "unit_attack_unit"
+            },
+            {
+              "startSubTypeOnTheMarch": ""
+            },
+            {
+              "startSubTypeGroundUnits": ""
+            },
+            {
+              "startSubTypeArea": ""
+            },
+            {
+              "startSubTypeUnitAttackUnit": "1to2_2"
+            },
+            {
+              "startSubTypeUnitMoveToUnit": ""
+            },
+            {
+              "startSubTypeTwoUnits": ""
+            },
+            {
+              "startSubTypeTakeoff": ""
+            },
+            {
+              "startSubTypeFlyBy": ""
+            },
+            {
+              "duration": 3.0
+            },
+            {
+              "wait": true
+            },
+            {
+              "changeCameras": false
+            },
+            {
+              "teleportAllAttackers": false
+            },
+            {
+              "allowTeleportAttackers": true
+            },
+            {
+              "inverseCameraDirection": false
+            },
+            {
+              "delayPlayer": true
+            },
+            {
+              "fadeIn": false
+            },
+            {
+              "fadeOut": true
+            },
+            {
+              "allowDeadUnits": false
+            },
+            {
+              "object": "enemy_planes_crowd03"
+            },
+            {
+              "object": "enemy_planes_crowd05"
+            },
+            {
+              "target": "friendly_planes_crowd03"
+            },
+            {
+              "randSeed": 99
+            },
+            {
+              "zoom": 0.5
+            }
+          ]
+        },
+        {
+          "showSmartCutscene": [
+            {
+              "sceneType": "unit_attack_unit"
+            },
+            {
+              "startSubTypeOnTheMarch": ""
+            },
+            {
+              "startSubTypeGroundUnits": ""
+            },
+            {
+              "startSubTypeArea": ""
+            },
+            {
+              "startSubTypeUnitAttackUnit": "target"
+            },
+            {
+              "startSubTypeUnitMoveToUnit": ""
+            },
+            {
+              "startSubTypeTwoUnits": ""
+            },
+            {
+              "startSubTypeTakeoff": ""
+            },
+            {
+              "startSubTypeFlyBy": ""
+            },
+            {
+              "duration": 3.0
+            },
+            {
+              "wait": true
+            },
+            {
+              "changeCameras": false
+            },
+            {
+              "teleportAllAttackers": false
+            },
+            {
+              "allowTeleportAttackers": true
+            },
+            {
+              "inverseCameraDirection": false
+            },
+            {
+              "delayPlayer": true
+            },
+            {
+              "fadeIn": false
+            },
+            {
+              "fadeOut": true
+            },
+            {
+              "allowDeadUnits": false
+            },
+            {
+              "object": "enemy_planes_crowd03"
+            },
+            {
+              "object": "enemy_planes_crowd05"
+            },
+            {
+              "target": "friendly_planes_crowd03"
+            },
+            {
+              "randSeed": 66
+            }
+          ]
+        },
+        {
+          "showSmartCutscene": [
+            {
+              "sceneType": "unit_attack_unit"
+            },
+            {
+              "startSubTypeOnTheMarch": ""
+            },
+            {
+              "startSubTypeGroundUnits": ""
+            },
+            {
+              "startSubTypeArea": ""
+            },
+            {
+              "startSubTypeUnitAttackUnit": "1to2"
+            },
+            {
+              "startSubTypeUnitMoveToUnit": ""
+            },
+            {
+              "startSubTypeTwoUnits": ""
+            },
+            {
+              "startSubTypeTakeoff": ""
+            },
+            {
+              "startSubTypeFlyBy": ""
+            },
+            {
+              "duration": 3.0
+            },
+            {
+              "wait": true
+            },
+            {
+              "changeCameras": false
+            },
+            {
+              "teleportAllAttackers": false
+            },
+            {
+              "allowTeleportAttackers": true
+            },
+            {
+              "inverseCameraDirection": false
+            },
+            {
+              "delayPlayer": true
+            },
+            {
+              "fadeIn": false
+            },
+            {
+              "fadeOut": true
+            },
+            {
+              "allowDeadUnits": false
+            },
+            {
+              "object": "friendly_planes_crowd05"
+            },
+            {
+              "target": "enemy_planes_crowd03"
+            },
+            {
+              "target": "enemy_planes_crowd05"
+            },
+            {
+              "randSeed": 142
+            },
+            {
+              "zoom": 0.5
+            }
+          ]
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "1to2",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 3.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "enemy_planes_crowd04",
+            "target": "friendly_planes_crowd04",
+            "randSeed": 42
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "target",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 5.0,
+            "wait": true,
+            "changeCameras": false,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": true,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "friendly_planes_crowd01",
+            "target": "enemy_planes_crowd02",
+            "randSeed": 27,
+            "zoom": 0.0
+          }
+        },
+        {
+          "missionStartCutscene": {
+            "target": "point_11",
+            "second_target": "point_11",
+            "duration": 10.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.1,0.1,0.0],
+            "linear_eye_vel": [0.1,0.1,0.1],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "linear_at": [100.0,1.0,1000.0],
+            "linear_eye": [1.0,1.0,0.0],
+            "endFade": [10.0,66.0],
+            "delayPlayer": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionDebriefing": []
+        }
+      ],
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-17087.5,1649.9,-14612.0]
+        ],
+        "unit_class": "il-10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "IL10_fab50_rs132",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "freindly_airdef00",
+        "tm": [
+          [0.130527,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,0.130527],
+          [37.6,66.0,8730.7]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,-0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "friendly_tanks01",
+        "tm": [
+          [1.0,0.0,-2.38419e-07],
+          [0.0,1.0,0.0],
+          [2.38419e-07,0.0,1.0],
+          [-159.65,65.3,9601.75]
+        ],
+        "unit_class": "germ_pzIVc",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [2.0,5.0],
+          "formation_noise": [0.3,0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "friendly_tanks01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1488.1,64.05,9635.65]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd01",
+        "tm": [
+          [-0.935234,0.353899,0.00970129],
+          [0.35372,0.935209,-0.0163399],
+          [-0.0148554,-0.0118501,-0.99982],
+          [811.85,497.3,8714.7]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 90,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd01",
+        "tm": [
+          [0.753255,-0.612293,-0.240217],
+          [0.434261,0.737277,-0.517532],
+          [0.493988,0.285517,0.821253],
+          [571.05,777.05,8712.4]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4533.25,50.1,4655.65]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "airfield_planes",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-236.0,-70.85,8566.35]
+        ],
+        "unit_class": "he-111h-6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 5,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_planes_crowd00",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5523.1,49.1,3957.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "enemy_planes_crowd01"
+          },
+          {
+            "squad_members": "enemy_planes_crowd02"
+          },
+          {
+            "squad_members": "enemy_planes_crowd03"
+          },
+          {
+            "squad_members": "enemy_planes_crowd04"
+          },
+          {
+            "squad_members": "enemy_planes_crowd05"
+          },
+          {
+            "squad_members": "enemy_planes_crowd06"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd02",
+        "tm": [
+          [0.184736,-0.59388,-0.783058],
+          [0.909853,0.404564,-0.0921771],
+          [0.371539,-0.695439,0.615081],
+          [606.85,483.4,8772.3]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd03",
+        "tm": [
+          [-0.205198,-0.105201,0.97305],
+          [0.852265,0.469591,0.230496],
+          [-0.481184,0.876594,-0.00669985],
+          [695.95,641.75,8484.8]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd04",
+        "tm": [
+          [-0.422619,-0.582563,0.694272],
+          [0.0,0.766044,0.642788],
+          [-0.906308,0.271654,-0.323745],
+          [736.45,588.35,8608.5]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd05",
+        "tm": [
+          [-0.214046,-0.0744919,0.973979],
+          [0.87599,0.426564,0.225135],
+          [-0.432235,0.901385,-0.0260503],
+          [704.1,621.471,8511.17]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "friendly_planes_crowd00",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [608.3,53.45,9753.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "friendly_planes_crowd01"
+          },
+          {
+            "squad_members": "friendly_planes_crowd02"
+          },
+          {
+            "squad_members": "friendly_planes_crowd03"
+          },
+          {
+            "squad_members": "friendly_planes_crowd04"
+          },
+          {
+            "squad_members": "friendly_planes_crowd05"
+          },
+          {
+            "squad_members": "friendly_planes_crowd06"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd02",
+        "tm": [
+          [0.776705,0.324405,-0.539899],
+          [-0.415641,0.908021,-0.0523515],
+          [0.473256,0.265066,0.8401],
+          [548.05,497.35,8759.95]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd03",
+        "tm": [
+          [0.718596,-0.48336,-0.499983],
+          [0.562138,0.827,0.00842222],
+          [0.409415,-0.287112,0.865995],
+          [590.75,628.0,8834.15]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd04",
+        "tm": [
+          [0.447536,-0.0555466,-0.892539],
+          [0.454734,0.873535,0.173648],
+          [0.770019,-0.483581,0.416197],
+          [663.65,521.1,8727.15]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd05",
+        "tm": [
+          [-0.838415,-0.489456,0.239778],
+          [-0.0463718,0.502397,0.863393],
+          [-0.543056,0.712763,-0.443914],
+          [820.05,724.5,8520.6]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_attackers_01",
+        "tm": [
+          [-0.497338,-0.656396,0.567273],
+          [-0.436594,0.754407,0.490159],
+          [-0.749693,-0.00389306,-0.661774],
+          [128.3,549.4,8199.7]
+        ],
+        "unit_class": "il-10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "IL10_fab50_rs82",
+        "bullets0": "shkas_all_tracers",
+        "bullets1": "shkas_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100500,
+        "bulletsCount1": 100500,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_attackers_02",
+        "tm": [
+          [-0.600022,-0.606408,0.521768],
+          [-0.410085,0.793166,0.450242],
+          [-0.68688,0.0561862,-0.724596],
+          [31.3,481.7,8232.15]
+        ],
+        "unit_class": "il-10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "IL10_fab100_rs132",
+        "bullets0": "shkas_all_tracers",
+        "bullets1": "shkas_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100500,
+        "bulletsCount1": 100500,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_attackers_03",
+        "tm": [
+          [-0.444534,-0.482711,0.754572],
+          [-0.27958,0.875066,0.395087],
+          [-0.851014,-0.035334,-0.523953],
+          [88.7,539.75,7890.55]
+        ],
+        "unit_class": "il-10",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "IL10_fab50_rs132",
+        "bullets0": "shkas_all_tracers",
+        "bullets1": "shkas_universal",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100500,
+        "bulletsCount1": 100500,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_bombers01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-846.8,1021.85,8628.0]
+        ],
+        "unit_class": "tu-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tu-2_4xfab500",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "ussr_bombers_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1566.0,1294.4,8493.75]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "ussr_attackers_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-781.7,72.0,8654.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ussr_attackers_01"
+          },
+          {
+            "squad_members": "ussr_attackers_02"
+          },
+          {
+            "squad_members": "ussr_attackers_03"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_bombers02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-929.3,1021.85,8726.15]
+        ],
+        "unit_class": "tu-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tu-2_4xfab500",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "ussr_bombers01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1483.5,1294.4,8591.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_bombers03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-940.0,1021.85,8531.55]
+        ],
+        "unit_class": "tu-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tu-2_4xfab500",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "uniqueName": "",
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "ussr_bombers02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1472.8,1294.4,8397.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "ussr_bombers",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1157.0,60.0,7561.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ussr_bombers01"
+          },
+          {
+            "squad_members": "ussr_bombers02"
+          },
+          {
+            "squad_members": "ussr_bombers03"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_planes_crowd06",
+        "tm": [
+          [-0.955375,-0.294914,-0.0168784],
+          [-0.286798,0.939734,-0.186134],
+          [0.0707553,-0.172988,-0.98238],
+          [974.2,144.7,9625.75]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_planes_crowd06",
+        "tm": [
+          [-0.983116,0.18159,-0.0225565],
+          [0.10495,0.66054,0.743419],
+          [0.149897,0.7285,-0.668446],
+          [811.6,77.15,9622.05]
+        ],
+        "unit_class": "yak-9t",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Yak9_default",
+        "bullets0": "ns37_air_target",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 90,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "uniqueName": "",
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "airfield00": {
+      "type": "Sphere",
+      "tm": [
+        [50.0,0.0,0.0],
+        [0.0,50.0,0.0],
+        [0.0,0.0,50.0],
+        [-423.65,66.0,8304.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "airfield01": {
+      "type": "Sphere",
+      "tm": [
+        [50.0,0.0,0.0],
+        [0.0,50.0,0.0],
+        [0.0,0.0,50.0],
+        [790.35,66.0,8365.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "spawnpoint00": {
+      "type": "Sphere",
+      "tm": [
+        [50.0,0.0,0.0],
+        [0.0,50.0,0.0],
+        [0.0,0.0,50.0],
+        [-416.15,66.0,8307.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "spawnpoint01": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-455.5,66.0,8335.5]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "spawnpoint02": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-508.1,66.0,8336.65]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "spawnpoint03": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-509.15,66.0,8384.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion00": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [1644.1,70.75,9453.4]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion01": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [-895.3,70.75,6797.9]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion02": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [-24.7,70.75,8388.65]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion03": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [191.1,64.1,9574.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion05": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [-281.9,70.75,7920.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion06": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [-1456.6,70.75,8673.5]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion07": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [1109.45,53.85,7119.85]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion08": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [892.65,63.8,7907.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion09": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [1024.3,70.75,8652.45]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion10": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [-717.9,70.75,8601.45]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion11": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [36.0501,70.7501,8905.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion12": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [705.3,70.75,8283.45]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_00": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [673.6,501.75,8733.35]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_01": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [717.8,573.25,8607.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_02": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [811.7,604.65,8713.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_03": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [568.1,779.2,8711.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_04": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [449.35,865.85,8547.25]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_05": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [420.45,535.75,8827.9]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_06": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [607.0,428.05,8905.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_07": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [823.2,703.75,8580.15]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_08": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [798.25,662.15,8742.5]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_09": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,19.6962,-3.47296],
+        [0.0,3.47296,19.6962],
+        [705.0,614.629,8498.57]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_10": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [616.5,721.85,8470.95]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_11": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [665.1,590.4,8352.85]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_12": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [753.75,471.7,8597.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_13": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [801.05,471.7,8625.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_14": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [759.45,402.4,8751.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_15": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [759.45,574.0,8751.2]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_16": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [502.6,752.9,9057.75]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_17": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [756.3,467.55,8877.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_18": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [713.45,467.55,8523.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_19": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-207.8,729.45,8200.15]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_20": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-143.4,896.2,8320.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_21": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,19.6962,-3.47296],
+        [0.0,3.47296,19.6962],
+        [686.1,608.693,8531.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_22": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [572.75,626.5,8641.95]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_23": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [693.9,571.15,8937.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_24": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [527.85,683.55,8505.05]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_25": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [353.3,683.55,8897.55]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_26": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [627.55,741.55,8520.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_27": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [411.7,662.05,8244.05]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_28": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [184.55,662.05,9242.25]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_29": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [226.15,738.9,9061.55]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_30": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [45.9,738.9,8429.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion04": {
+      "type": "Sphere",
+      "tm": [
+        [278.0,0.0,0.0],
+        [0.0,278.0,0.0],
+        [0.0,0.0,278.0],
+        [580.15,70.75,9057.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_31": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-15.25,404.85,8308.15]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_32": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [117.15,474.25,8232.45]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_33": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-93.8,443.25,8205.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_34": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-169.1,342.2,8013.75]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_35": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [68.2,478.55,7976.3]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_36": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [50.45,498.05,7938.9]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_37": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-104.5,373.1,8264.1]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_38": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-117.1,253.3,8420.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_39": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-7.95,380.7,8413.6]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "shell_expl_fx_40": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [-151.65,339.3,8357.65]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_00": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [3690.75,115.0,7489.1]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1900.0,100.0,7150.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-566.2,1270.0,8626.25]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_03": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-584.65,100.0,8574.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_04": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [200.0,80.0,7499.95]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_05": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1001.15,600.0,8828.95]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_06": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [700.0,600.0,8700.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_07": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-3032.2,1569.05,7166.15]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_08": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-618.5,100.0,9590.0]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_09": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [987.4,168.7,9603.85]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "explosion13": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [25.65,70.75,9578.45]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "cutscene_area00": {
+      "type": "Sphere",
+      "tm": [
+        [80.0,0.0,0.0],
+        [0.0,80.0,0.0],
+        [0.0,0.0,80.0],
+        [584.25,545.0,8787.25]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "cutscene_area01": {
+      "type": "Sphere",
+      "tm": [
+        [20.0,0.0,0.0],
+        [0.0,20.0,0.0],
+        [0.0,0.0,20.0],
+        [773.45,109.45,9593.7]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_10": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [767.55,78.65,9629.85]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "point_11": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [-17655.5,1569.05,-17436.8]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    }
+  },
+  "objLayers": [],
+  "wayPoints": []
+}

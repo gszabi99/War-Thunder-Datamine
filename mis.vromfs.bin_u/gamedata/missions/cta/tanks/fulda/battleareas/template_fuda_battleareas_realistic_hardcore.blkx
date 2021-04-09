@@ -1,0 +1,253 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": ""
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/avg_finland.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Day",
+      "weather": "hazy",
+      "timeLimit": 25,
+      "deathPenaltyMul": 1.0,
+      "remapAiTankModels": true,
+      "country_axis": "germany",
+      "country_allies": "ussr"
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "area_squad": {
+        "name": "t1_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-488.65,163.367,1217.17]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t1_killarea_realistic_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_hardcore",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-471.2,153.378,1776.28]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t2_killarea_realistic_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t2_killarea_realistic",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-471.2,164.012,1648.15]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t2_killarea_realistic_block02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "t1_killarea_realistic",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-488.65,163.367,1300.35]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_killarea_realistic_block01"
+          },
+          {
+            "squad_members": "t1_killarea_realistic_block02"
+          }
+        ]
+      }
+    }
+  ],
+  "areas": {
+    "conq_battle_area_realistic": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.456,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_killarea_realistic_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,244.783,0.0],
+        [0.0,0.0,150.0],
+        [673.829,180.709,1158.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_realistic_block01": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,244.783,0.0],
+        [0.0,0.0,150.0],
+        [2594.81,178.973,3875.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "dom_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.456,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "t1_killarea_realistic_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,244.783,0.0],
+        [0.0,0.0,150.0],
+        [1323.69,195.367,771.157]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "t2_killarea_realistic_block02": {
+      "type": "Cylinder",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,244.783,0.0],
+        [0.0,0.0,150.0],
+        [3260.83,190.632,3164.99]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "conq_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.455,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "dom_battle_area_realistic": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.456,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "bttl_battle_area_realistic": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.456,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    },
+    "bttl_battle_area_hardcore": {
+      "type": "Box",
+      "tm": [
+        [0.000157361,0.0,3600.0],
+        [0.0,400.0,0.0],
+        [-3600.0,0.0,0.000157361],
+        [2049.91,239.455,2166.5]
+      ],
+      "objLayer": 3,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": []
+}

@@ -1,0 +1,747 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": "cr_armada"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "singleMission",
+      "environment": "Day",
+      "weather": "clear",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
+    },
+    "spectator_points": []
+  },
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/cr_carriers_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t1_uk_rank_01.blk",
+        "rankRange": [0,3],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t1_uk_rank_02.blk",
+        "rankRange": [4,7],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t1_uk_rank_03.blk",
+        "rankRange": [8,11],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t1_uk_rank_04.blk",
+        "rankRange": [12,16],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t1_uk_rank_05.blk",
+        "rankRange": [17,30],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t2_it_rank_01.blk",
+        "rankRange": [0,3],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t2_it_rank_02.blk",
+        "rankRange": [4,7],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t2_it_rank_03.blk",
+        "rankRange": [8,11],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t2_it_rank_04.blk",
+        "rankRange": [12,16],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/enduring_confrontation/destroyers_shipsets/dst_t2_it_rank_05.blk",
+        "rankRange": [17,30],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": {
+    "ships": {
+      "name": "cr_t1_carrier",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [33383.6,0.0,41857.2]
+      ],
+      "unit_class": "us_aircraftcarrier_forrestal",
+      "objLayer": 1,
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "weapons": "",
+      "bullets0": "",
+      "bullets1": "",
+      "bullets2": "",
+      "bullets3": "",
+      "bulletsCount0": 0,
+      "bulletsCount1": 0,
+      "bulletsCount2": 0,
+      "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
+      "props": {
+        "army": 1,
+        "count": 1,
+        "formation_type": "rows",
+        "formation_div": 3,
+        "formation_step": [2.5,2.0],
+        "formation_noise": [0.1,0.1],
+        "uniqueName": "",
+        "attack_type": "fire_at_will",
+        "isDelayed": true
+      },
+      "way": []
+    }
+  },
+  "areas": {
+    "cr_t1_carrier_spawn_point_01": {
+      "type": "Point",
+      "tm": [
+        [-6.70552e-08,0.0,1.0],
+        [0.0,1.0,0.0],
+        [-1.0,0.0,-6.70552e-08],
+        [18968.4,3.05176e-05,-2626.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_spawn_point_02": {
+      "type": "Point",
+      "tm": [
+        [-2.98023e-08,0.0,-1.0],
+        [0.0,1.0,0.0],
+        [1.0,0.0,-2.98023e-08],
+        [18781.8,3.05176e-05,18417.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_spawn_point_03": {
+      "type": "Point",
+      "tm": [
+        [-6.70552e-08,0.0,1.0],
+        [0.0,1.0,0.0],
+        [-1.0,0.0,-6.70552e-08],
+        [25378.6,3.05176e-05,-2626.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_spawn_point_04": {
+      "type": "Point",
+      "tm": [
+        [-2.98023e-08,0.0,-1.0],
+        [0.0,1.0,0.0],
+        [1.0,0.0,-2.98023e-08],
+        [25378.6,3.05176e-05,18417.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_respawn_point_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [30899.0,0.0,-2966.56]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_respawn_point_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [30899.0,0.0,27414.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_respawn_point_03": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [30899.0,0.0,20638.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_carrier_respawn_point_04": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [30899.0,0.0,-8464.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_spawn_point_01": {
+      "type": "Point",
+      "tm": [
+        [-6.70552e-08,0.0,1.0],
+        [0.0,1.0,0.0],
+        [-1.0,0.0,-6.70552e-08],
+        [18968.4,0.0,-2916.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_spawn_point_02": {
+      "type": "Point",
+      "tm": [
+        [-2.98023e-08,0.0,-1.0],
+        [0.0,1.0,0.0],
+        [1.0,0.0,-2.98023e-08],
+        [18781.8,0.0,18686.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_spawn_point_03": {
+      "type": "Point",
+      "tm": [
+        [-6.70552e-08,0.0,1.0],
+        [0.0,1.0,0.0],
+        [-1.0,0.0,-6.70552e-08],
+        [25378.6,0.0,-2916.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_spawn_point_04": {
+      "type": "Point",
+      "tm": [
+        [-2.98023e-08,0.0,-1.0],
+        [0.0,1.0,0.0],
+        [1.0,0.0,-2.98023e-08],
+        [25378.6,0.0,18682.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_respawn_point_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [31399.0,0.0,-2966.56]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_respawn_point_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [31399.0,0.0,27414.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_respawn_point_03": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [31399.0,0.0,20638.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "cr_t1_fleet_respawn_point_04": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [31399.0,0.0,-8464.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": {
+    "cr_t1_carrier_route_01": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 1000.0,
+      "way": {
+        "cr_t1_carrier_route_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18981.8,0.000976563,-1526.6]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18981.8,-0.000976563,17317.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25178.6,-0.000976563,17317.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25178.6,0.0,-1526.6]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cr_t1_carrier_route_02": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 1000.0,
+      "way": {
+        "cr_t1_carrier_route_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,0.000976563,-1626.6]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25338.3,0.0,-1626.64]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25378.6,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cr_t1_carrier_route_03": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 1000.0,
+      "way": {
+        "cr_t1_carrier_route_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25378.6,0.0,-1626.64]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25378.6,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_03_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,0.000976563,-1626.6]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "cr_t1_carrier_route_04": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 1000.0,
+      "way": {
+        "cr_t1_carrier_route_04_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25378.6,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_04_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [25347.4,0.0,-1626.64]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_04_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,0.000976563,-1626.6]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "cr_t1_carrier_route_04_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [18781.8,-0.000976563,17417.5]
+          ],
+          "props": {
+            "speed": 15.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1421 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": [
+      {
+        "army": 1
+      },
+      {
+        "wing": "t1_player02"
+      },
+      {
+        "wing": "t1_player03"
+      },
+      {
+        "wing": "t1_player04"
+      },
+      {
+        "wing": "t1_player05"
+      },
+      {
+        "wing": "t1_player06"
+      },
+      {
+        "wing": "t1_player07"
+      },
+      {
+        "wing": "t1_player08"
+      },
+      {
+        "wing": "t1_player09"
+      },
+      {
+        "wing": "t1_player10"
+      },
+      {
+        "wing": "t1_player11"
+      },
+      {
+        "wing": "t1_player12"
+      },
+      {
+        "wing": "t1_player13"
+      },
+      {
+        "wing": "t1_player14"
+      },
+      {
+        "wing": "t1_player15"
+      },
+      {
+        "wing": "t1_player16"
+      },
+      {
+        "wing": "t1_player17"
+      },
+      {
+        "wing": "t1_player18"
+      },
+      {
+        "wing": "t1_player19"
+      },
+      {
+        "wing": "t1_player20"
+      },
+      {
+        "wing": "t1_player21"
+      },
+      {
+        "wing": "t1_player22"
+      },
+      {
+        "wing": "t1_player23"
+      },
+      {
+        "wing": "t1_player24"
+      },
+      {
+        "wing": "t1_player25"
+      },
+      {
+        "wing": "t1_player26"
+      },
+      {
+        "wing": "t1_player27"
+      },
+      {
+        "wing": "t1_player28"
+      },
+      {
+        "wing": "t1_player29"
+      },
+      {
+        "wing": "t1_player30"
+      },
+      {
+        "wing": "t1_player31"
+      },
+      {
+        "wing": "t1_player32"
+      }
+    ],
+    "player_teamB": [
+      {
+        "army": 2
+      },
+      {
+        "wing": "t2_player01"
+      },
+      {
+        "wing": "t2_player02"
+      },
+      {
+        "wing": "t2_player03"
+      },
+      {
+        "wing": "t2_player04"
+      },
+      {
+        "wing": "t2_player05"
+      },
+      {
+        "wing": "t2_player06"
+      },
+      {
+        "wing": "t2_player07"
+      },
+      {
+        "wing": "t2_player08"
+      },
+      {
+        "wing": "t2_player09"
+      },
+      {
+        "wing": "t2_player10"
+      },
+      {
+        "wing": "t2_player11"
+      },
+      {
+        "wing": "t2_player12"
+      },
+      {
+        "wing": "t2_player13"
+      },
+      {
+        "wing": "t2_player14"
+      },
+      {
+        "wing": "t2_player15"
+      },
+      {
+        "wing": "t2_player16"
+      },
+      {
+        "wing": "t2_player17"
+      },
+      {
+        "wing": "t2_player18"
+      },
+      {
+        "wing": "t2_player19"
+      },
+      {
+        "wing": "t2_player20"
+      },
+      {
+        "wing": "t2_player21"
+      },
+      {
+        "wing": "t2_player22"
+      },
+      {
+        "wing": "t2_player23"
+      },
+      {
+        "wing": "t2_player24"
+      },
+      {
+        "wing": "t2_player25"
+      },
+      {
+        "wing": "t2_player26"
+      },
+      {
+        "wing": "t2_player27"
+      },
+      {
+        "wing": "t2_player28"
+      },
+      {
+        "wing": "t2_player29"
+      },
+      {
+        "wing": "t2_player30"
+      },
+      {
+        "wing": "t2_player31"
+      },
+      {
+        "wing": "t2_player32"
+      },
+      {
+        "wing": "t2_player33"
+      }
+    ],
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Evening",
+      "weather": "clear",
+      "scoreLimit": 5000
+    },
+    "spectator_points": []
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "subquest_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "t1_subquest_units_squad",
+            "type": "squad"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "t2_subquest_units_squad",
+            "type": "squad"
+          }
+        }
+      ],
+      "actions": {
+        "comment": {
+          "value": "есть сквады, можно запускать логику"
+        },
+        "triggerEnable": {
+          "target": "subquest_timer_check"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_timer_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "subquest_delay_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "players_related_spawns",
+          "value": false,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": [
+        {
+          "triggerDisable": {
+            "target": "subquest_players_check"
+          }
+        },
+        {
+          "comment": {
+            "value": "прошло время с начала миссии, включаем доп таргеты"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "subquest_spawn_01"
+            },
+            {
+              "target": "subquest_spawn_02"
+            },
+            {
+              "target": "subquest_spawn_03"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/subquest_units_avaible",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/subquest_units_avaible",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_players_check": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0,
+          "var": "subquest_players_timer"
+        }
+      },
+      "conditions": {
+        "varCompareBool": {
+          "var_value": "players_related_spawns",
+          "value": true,
+          "comparasion_func": "equal"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "subquest_timer_check"
+        },
+        "comment": {
+          "value": ""
+        },
+        "triggerEnable": {
+          "target": "subquest_players_processing"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_players_processing": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "func": "less",
+            "value": 3,
+            "object": "t1_players_squad"
+          }
+        },
+        {
+          "unitWhenCountMatches": {
+            "object_type": "isOnline",
+            "object_marking": 0,
+            "func": "less",
+            "value": 3,
+            "object": "t2_players_squad"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "прошло время с начала миссии, включаем доп таргеты"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "subquest_spawn_01"
+            },
+            {
+              "target": "subquest_spawn_02"
+            },
+            {
+              "target": "subquest_spawn_03"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/subquest_units_avaible",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/subquest_units_avaible",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_spawn_01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "t1_subquest_area_01",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "t2_subquest_area_01",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "спавним юнит"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t1_subquest_units_01",
+            "object_type": "isInactive",
+            "target": "t1_subquest_area_01",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t2_subquest_units_01",
+            "object_type": "isInactive",
+            "target": "t2_subquest_area_01",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t1_subquest_01_units_task",
+            "unit_or_area": "t2_subquest_area_01"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t2_subquest_01_units_task",
+            "unit_or_area": "t1_subquest_area_01"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t1_subquest_units_01",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t2_subquest_units_01",
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "subquest_t1_task_01_completed"
+            },
+            {
+              "target": "subquest_t2_task_01_completed"
+            },
+            {
+              "target": "subquest_t1_task_01_inprogress"
+            },
+            {
+              "target": "subquest_t2_task_01_inprogress"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_01_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t2_subquest_units_01"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t1_task_01_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t1_subquest_01_units_task",
+            "status": 2,
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t1_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t2_task_01_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t1_subquest_units_01"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t2_task_01_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_subquest_01_units_task",
+            "status": 2,
+            "team": "B"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t2_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_01_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t1_subquest_01_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t1_subquest_01_units_task",
+          "status": 1,
+          "team": "A",
+          "unit_or_area": "t2_subquest_units_01",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_t2_task_01_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t2_subquest_01_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t2_subquest_01_units_task",
+          "status": 1,
+          "team": "B",
+          "unit_or_area": "t1_subquest_units_01",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_spawn_02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "t1_subquest_area_02",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "t2_subquest_area_02",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "спавним юнит"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t1_subquest_units_02",
+            "object_type": "isInactive",
+            "target": "t1_subquest_area_02",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t2_subquest_units_02",
+            "object_type": "isInactive",
+            "target": "t2_subquest_area_02",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t1_subquest_02_units_task",
+            "unit_or_area": "t2_subquest_area_02"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t2_subquest_02_units_task",
+            "unit_or_area": "t1_subquest_area_02"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t1_subquest_units_02",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t2_subquest_units_02",
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "subquest_t1_task_02_completed"
+            },
+            {
+              "target": "subquest_t2_task_02_completed"
+            },
+            {
+              "target": "subquest_t1_task_02_inprogress"
+            },
+            {
+              "target": "subquest_t2_task_02_inprogress"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_02_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t2_subquest_units_02"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t1_task_02_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t1_subquest_02_units_task",
+            "status": 2,
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t1_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t2_task_02_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t1_subquest_units_02"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t2_task_02_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_subquest_02_units_task",
+            "status": 2,
+            "team": "B"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t2_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_02_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t1_subquest_02_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t1_subquest_02_units_task",
+          "status": 1,
+          "team": "A",
+          "unit_or_area": "t2_subquest_units_02",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_t2_task_02_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t2_subquest_02_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t2_subquest_02_units_task",
+          "status": 1,
+          "team": "B",
+          "unit_or_area": "t1_subquest_units_02",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_spawn_03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [
+        {
+          "objectExists": {
+            "target": "t1_subquest_area_03",
+            "type": "area"
+          }
+        },
+        {
+          "objectExists": {
+            "target": "t2_subquest_area_03",
+            "type": "area"
+          }
+        }
+      ],
+      "actions": [
+        {
+          "comment": {
+            "value": "спавним юнит"
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t1_subquest_units_03",
+            "object_type": "isInactive",
+            "target": "t1_subquest_area_03",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "t2_subquest_units_03",
+            "object_type": "isInactive",
+            "target": "t2_subquest_area_03",
+            "randomObjectsCount": 6,
+            "randomSpawn": true
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t1_subquest_03_units_task",
+            "unit_or_area": "t2_subquest_area_03"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "t2_subquest_03_units_task",
+            "unit_or_area": "t1_subquest_area_03"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t1_subquest_units_03",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "target": "t2_subquest_units_03",
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "subquest_t1_task_03_completed"
+            },
+            {
+              "target": "subquest_t2_task_03_completed"
+            },
+            {
+              "target": "subquest_t1_task_03_inprogress"
+            },
+            {
+              "target": "subquest_t2_task_03_inprogress"
+            }
+          ]
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_03_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t2_subquest_units_03"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t1_task_03_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t1_subquest_03_units_task",
+            "status": 2,
+            "team": "A"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t1_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t2_task_03_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenCountMatches": {
+          "object_type": "isActive",
+          "object_marking": 0,
+          "func": "less",
+          "value": 1,
+          "object": "t1_subquest_units_03"
+        }
+      },
+      "actions": [
+        {
+          "comment": {
+            "value": "живых нет"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "subquest_t2_task_03_inprogress"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_subquest_03_units_task",
+            "status": 2,
+            "team": "B"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t2_task_completed"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "subquest_t1_task_03_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t1_subquest_03_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t1_subquest_03_units_task",
+          "status": 1,
+          "team": "A",
+          "unit_or_area": "t2_subquest_units_03",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    },
+    "subquest_t2_task_03_inprogress": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 20.0
+        }
+      },
+      "conditions": {
+        "misObjStatus": {
+          "target": "t2_subquest_03_units_task",
+          "status": "inProgress"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "t2_subquest_03_units_task",
+          "status": 1,
+          "team": "B",
+          "unit_or_area": "t1_subquest_units_03",
+          "object_type": "isActive"
+        }
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "t1_subquest_01_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t2_subquest_01_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t1_subquest_02_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t2_subquest_02_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t1_subquest_03_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "A"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    },
+    "t2_subquest_03_units_task": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600,
+        "team": "B"
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "subquest_delay_timer": 1200,
+    "players_related_spawns": false,
+    "subquest_players_timer": 300
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": [],
+  "objLayers": [],
+  "wayPoints": []
+}

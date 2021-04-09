@@ -1,0 +1,5681 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 0.0
+    },
+    "player": {
+      "army": 1,
+      "wing": "player"
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/bulge.bin",
+      "type": "singleMission",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "environment": "Evening",
+      "weather": "cloudy"
+    },
+    "spectator_points": [],
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": [
+          {
+            "map": true
+          },
+          {
+            "minTime": 4
+          },
+          {
+            "picture": ""
+          },
+          {
+            "arrow": [
+              {
+                "width": 1
+              },
+              {
+                "side": "player"
+              },
+              {
+                "point": "player"
+              },
+              {
+                "point": "waypoint46"
+              }
+            ]
+          },
+          {
+            "icon": {
+              "icontype": "fighter",
+              "side": "player",
+              "target": "player",
+              "lookAt": "waypoint46"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "friendly_air_def01"
+            }
+          },
+          {
+            "icon": {
+              "icontype": "artillery",
+              "side": "ally",
+              "target": "friendly_air_def02"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gameData/missions/bridges/bulge_bridges.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "excludes": []
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "waypoint00": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": [],
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint00"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint01"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint01"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "enemy_squad",
+            "stealthRadius": 1000.0,
+            "effShootingRate": 0.05
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "enemy_vehicles00"
+            },
+            {
+              "object": "enemy_vehicles01"
+            },
+            {
+              "object": "enemy_vehicles02"
+            },
+            {
+              "object": "friendly_vehicles02"
+            },
+            {
+              "object": "enemy_tanks00"
+            },
+            {
+              "object": "friendly_tanks00"
+            },
+            {
+              "object": "enemy_vehicles03"
+            },
+            {
+              "object": "enemy_tanks01"
+            },
+            {
+              "object": "friendly_tanks01"
+            },
+            {
+              "stealthRadius": 500.0
+            },
+            {
+              "speed": 0.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        }
+      ]
+    },
+    "waypoint01": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint00"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint00"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint01"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint02"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint02"
+          }
+        }
+      ]
+    },
+    "waypoint02": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint01"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint01"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint02"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint03"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint03"
+          }
+        }
+      ]
+    },
+    "waypoint03": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint02"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint02"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint03"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint04"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint04"
+          }
+        }
+      ]
+    },
+    "waypoint04": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint03"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint03"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint04"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint05"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint05"
+          }
+        }
+      ]
+    },
+    "waypoint05": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint04"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint04"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint05"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint06"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint06"
+          }
+        }
+      ]
+    },
+    "waypoint06": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint05"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint05"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint06"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint07"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint07"
+          }
+        }
+      ]
+    },
+    "waypoint07": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint06"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint06"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint07"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint08"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint08"
+          }
+        }
+      ]
+    },
+    "waypoint08": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint07"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint07"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint08"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint09"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint09"
+          }
+        }
+      ]
+    },
+    "waypoint09": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint08"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint08"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint09"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint10"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint10"
+          }
+        }
+      ]
+    },
+    "waypoint10": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint09"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint09"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint10"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint11"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint11"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "enemy_vehicles00",
+            "speed": 50.0,
+            "lockSpeed": true
+          }
+        }
+      ]
+    },
+    "waypoint11": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint10"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint10"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint11"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint12"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint12"
+          }
+        }
+      ]
+    },
+    "waypoint12": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint11"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint11"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint12"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint13"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint13"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "enemy_vehicles01",
+            "speed": 50.0,
+            "lockSpeed": true
+          }
+        }
+      ]
+    },
+    "waypoint13": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint12"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint12"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint13"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint14"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint14"
+          }
+        }
+      ]
+    },
+    "waypoint14": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint13"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint13"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint14"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint15"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint15"
+          }
+        }
+      ]
+    },
+    "waypoint15": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint14"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint14"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint15"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint16"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint16"
+          }
+        }
+      ]
+    },
+    "waypoint16": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint15"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint15"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint16"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint17"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint17"
+          }
+        }
+      ]
+    },
+    "waypoint17": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint16"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint16"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint17"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint18"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint18"
+          }
+        }
+      ]
+    },
+    "waypoint18": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint17"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint17"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint18"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint19"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint19"
+          }
+        }
+      ]
+    },
+    "waypoint19": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint18"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint18"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint19"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint20"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint20"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "enemy_tanks00"
+            },
+            {
+              "object": "friendly_tanks00"
+            },
+            {
+              "speed": 30.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        }
+      ]
+    },
+    "waypoint20": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint19"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint19"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint20"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint21"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint21"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "enemy_vehicles02"
+            },
+            {
+              "object": "friendly_vehicles02"
+            },
+            {
+              "speed": 50.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        }
+      ]
+    },
+    "waypoint21": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint20"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint20"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint21"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint22"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint22"
+          }
+        }
+      ]
+    },
+    "waypoint22": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint21"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint21"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint22"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint23"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint23"
+          }
+        }
+      ]
+    },
+    "waypoint23": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint22"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint22"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint23"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint24"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint24"
+          }
+        }
+      ]
+    },
+    "waypoint24": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint23"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint23"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint24"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint25"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint25"
+          }
+        }
+      ]
+    },
+    "waypoint25": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint24"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint24"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint25"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint26"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint26"
+          }
+        }
+      ]
+    },
+    "waypoint26": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint25"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint25"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint26"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint27"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint27"
+          }
+        }
+      ]
+    },
+    "waypoint27": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint26"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint26"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint27"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint28"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint28"
+          }
+        }
+      ]
+    },
+    "waypoint28": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint27"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint27"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint28"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint29"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint29"
+          }
+        }
+      ]
+    },
+    "waypoint29": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint28"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint28"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint29"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint30"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint30"
+          }
+        }
+      ]
+    },
+    "waypoint30": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint29"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint29"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint30"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint31"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint31"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "enemy_vehicles03",
+            "speed": 60.0,
+            "lockSpeed": true
+          }
+        }
+      ]
+    },
+    "waypoint31": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint30"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint30"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint31"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint32"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint32"
+          }
+        }
+      ]
+    },
+    "waypoint32": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint31"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint31"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint32"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint33"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint33"
+          }
+        }
+      ]
+    },
+    "waypoint33": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint32"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint32"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint33"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint34"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint34"
+          }
+        }
+      ]
+    },
+    "waypoint34": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint33"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint33"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint34"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint35"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint35"
+          }
+        }
+      ]
+    },
+    "waypoint35": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint34"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint34"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint35"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint36"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint36"
+          }
+        }
+      ]
+    },
+    "waypoint36": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint35"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint35"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint36"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint37"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint37"
+          }
+        }
+      ]
+    },
+    "waypoint37": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint36"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint36"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint37"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint38"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint38"
+          }
+        }
+      ]
+    },
+    "waypoint38": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint37"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint37"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint38"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint39"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint39"
+          }
+        }
+      ]
+    },
+    "waypoint39": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint38"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint38"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint39"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint40"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint40"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object": "enemy_tanks01"
+            },
+            {
+              "object": "friendly_tanks01"
+            },
+            {
+              "speed": 50.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_tanks01",
+            "target": "friendly_tanks01"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "friendly_tanks01",
+            "target": "enemy_tanks01"
+          }
+        }
+      ]
+    },
+    "waypoint40": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint39"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint39"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint40"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint41"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint41"
+          }
+        }
+      ]
+    },
+    "waypoint41": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint40"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint40"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint41"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint42"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint42"
+          }
+        }
+      ]
+    },
+    "waypoint42": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint41"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint41"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint42"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint43"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint43"
+          }
+        }
+      ]
+    },
+    "waypoint43": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint42"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint42"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint43"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint44"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint44"
+          }
+        }
+      ]
+    },
+    "waypoint44": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint43"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint43"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint44"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint45"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint45"
+          }
+        }
+      ]
+    },
+    "waypoint45": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint44"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint44"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint45"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint46"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waypoint46"
+          }
+        }
+      ]
+    },
+    "waypoint46": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint45"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint45"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "scale": 0.4,
+            "oriented": false,
+            "ignoreDifficulty": true,
+            "target": "waypoint46"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "mission_completed"
+          }
+        }
+      ]
+    },
+    "mission_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playersWhenInArea": {
+          "math": "3D",
+          "players": "isAlive",
+          "check_players": "any",
+          "target": "waypoint46"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "timer"
+        },
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "scale": 0.4,
+          "oriented": false,
+          "ignoreDifficulty": true,
+          "target": "waypoint46"
+        },
+        "moSetObjectiveStatus": {
+          "target": "single_bulge_m01_fly00",
+          "status": 2
+        },
+        "wait": {
+          "time": 2.0
+        },
+        "missionCompleted": {
+          "timer": false,
+          "debriefingTimer": 2
+        }
+      }
+    },
+    "timer": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "varModify": {
+          "var": "timer",
+          "operator": "add",
+          "value": 1.0
+        },
+        "missionSetTimeIndicator": {
+          "var": "timer"
+        }
+      }
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "single_bulge_m01_fly00": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 1800,
+        "scoreConst": 100,
+        "scoreTime": 400
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "timer": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "armada": {
+        "name": "player",
+        "tm": [
+          [0.976296,0.0,-0.216439],
+          [0.0,1.0,0.0],
+          [0.216439,0.0,0.976296],
+          [989.3,566.75,-3206.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "p-39n",
+        "weapons": "p_39_n_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def00",
+        "tm": [
+          [0.130526,0.0,0.991444],
+          [0.0,1.0,0.0],
+          [-0.991444,0.0,0.130526],
+          [2495.1,231.971,-7887.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def01",
+        "tm": [
+          [-0.996194,0.0,0.0871558],
+          [0.0,1.0,0.0],
+          [-0.0871558,0.0,-0.996194],
+          [2395.01,233.163,-8010.88]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def02",
+        "tm": [
+          [-0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,-0.906308],
+          [887.3,236.534,-7757.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def05",
+        "tm": [
+          [0.34202,0.0,-0.939693],
+          [0.0,1.0,0.0],
+          [0.939693,0.0,0.34202],
+          [-935.05,12.4717,-6171.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def06",
+        "tm": [
+          [0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,0.573576],
+          [-7.85,219.692,-8137.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def07",
+        "tm": [
+          [0.965926,0.0,0.258819],
+          [0.0,1.0,0.0],
+          [-0.258819,0.0,0.965926],
+          [-2282.15,236.467,-5225.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def08",
+        "tm": [
+          [0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,0.573576],
+          [-2531.8,257.352,-4885.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def09",
+        "tm": [
+          [0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,0.573576],
+          [-4005.7,163.028,-2888.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def10",
+        "tm": [
+          [-0.0871558,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,-0.0871558],
+          [-4220.65,135.23,-1987.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def11",
+        "tm": [
+          [0.642787,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,0.642787],
+          [-5325.8,2.76572,-2780.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def12",
+        "tm": [
+          [0.88701,0.0,0.461748],
+          [0.0,1.0,0.0],
+          [-0.461748,0.0,0.88701],
+          [-4841.9,6.39743,-2358.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def13",
+        "tm": [
+          [-0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,-0.573576],
+          [-4399.15,161.259,-2976.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def14",
+        "tm": [
+          [-0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,-0.573576],
+          [-5589.1,209.835,-3693.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def15",
+        "tm": [
+          [-0.953717,0.0,0.300706],
+          [0.0,1.0,0.0],
+          [-0.300706,0.0,-0.953717],
+          [-5899.65,192.76,-3866.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def16",
+        "tm": [
+          [-0.0436194,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436194],
+          [-6649.4,132.24,-3044.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def17",
+        "tm": [
+          [0.887011,0.0,-0.461749],
+          [0.0,1.0,0.0],
+          [0.461749,0.0,0.887011],
+          [-7251.25,232.059,-1005.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def18",
+        "tm": [
+          [-0.130526,0.0,-0.991445],
+          [0.0,1.0,0.0],
+          [0.991445,0.0,-0.130526],
+          [-6751.05,259.045,-617.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_def00",
+        "tm": [
+          [0.939692,0.0,-0.34202],
+          [0.0,1.0,0.0],
+          [0.34202,0.0,0.939692],
+          [-9337.15,257.471,-810.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_40mm_bofors",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_def01",
+        "tm": [
+          [0.939692,0.0,-0.34202],
+          [0.0,1.0,0.0],
+          [0.34202,0.0,0.939692],
+          [-9214.95,174.863,-399.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_40mm_bofors",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_def02",
+        "tm": [
+          [0.939692,0.0,-0.34202],
+          [0.0,1.0,0.0],
+          [0.34202,0.0,0.939692],
+          [-8569.65,217.147,853.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uk_40mm_bofors",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-10101.3,380.45,-66.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "air_def00"
+          },
+          {
+            "squad_members": "air_def01"
+          },
+          {
+            "squad_members": "air_def02"
+          },
+          {
+            "squad_members": "air_def03"
+          },
+          {
+            "squad_members": "air_def04"
+          },
+          {
+            "squad_members": "air_def05"
+          },
+          {
+            "squad_members": "air_def06"
+          },
+          {
+            "squad_members": "air_def07"
+          },
+          {
+            "squad_members": "air_def08"
+          },
+          {
+            "squad_members": "air_def09"
+          },
+          {
+            "squad_members": "air_def10"
+          },
+          {
+            "squad_members": "air_def11"
+          },
+          {
+            "squad_members": "air_def12"
+          },
+          {
+            "squad_members": "air_def13"
+          },
+          {
+            "squad_members": "air_def14"
+          },
+          {
+            "squad_members": "air_def15"
+          },
+          {
+            "squad_members": "air_def16"
+          },
+          {
+            "squad_members": "air_def17"
+          },
+          {
+            "squad_members": "air_def18"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "enemy_vehicles00",
+        "tm": [
+          [-0.573576,0.0,0.819152],
+          [0.0,1.0,0.0],
+          [-0.819152,0.0,-0.573576],
+          [2528.25,59.3149,-8073.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_horch",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": -1.0,
+          "setStealth": true
+        },
+        "way": {
+          "enemy_vehicles00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2481.05,33.25,-8012.15]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2251.3,32.5,-7746.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2163.9,97.4,-7655.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2079.55,172.8,-7529.75]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1963.95,193.0,-7275.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1879.0,212.201,-7032.25]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1721.45,208.584,-6954.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles00_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1656.2,191.367,-6978.95]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def03",
+        "tm": [
+          [0.21644,0.0,-0.976296],
+          [0.0,1.0,0.0],
+          [0.976296,0.0,0.21644],
+          [473.15,260.35,-6848.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def04",
+        "tm": [
+          [-0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,-0.737277],
+          [216.2,260.35,-6845.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "enemy_vehicles01",
+        "tm": [
+          [-0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,-0.965926],
+          [960.9,96.3217,-6762.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_horch",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": -1.0,
+          "setStealth": true
+        },
+        "way": {
+          "enemy_vehicles01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [707.75,76.4397,-6816.15]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [501.15,38.2622,-6841.15]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [393.45,36.1892,-6841.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [271.55,38.796,-6828.75]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [160.3,50.8269,-6802.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [38.8,56.9052,-6759.45]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-107.25,64.5981,-6712.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-240.55,62.6554,-6690.75]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-349.5,49.2368,-6691.85]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-408.8,44.145,-6685.1]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-455.15,45.9749,-6660.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-482.9,53.2941,-6626.05]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-495.15,66.4955,-6577.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-490.6,83.2868,-6522.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_15": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-490.25,94.2395,-6487.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_16": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-489.75,102.143,-6438.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_17": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-485.9,107.717,-6385.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_18": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-483.7,102.709,-6310.15]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_19": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-503.9,90.4616,-6242.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_20": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-531.5,70.5862,-6200.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_21": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-573.05,49.6,-6164.05]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_22": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-894.15,49.55,-5961.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_23": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-951.8,70.4067,-5930.55]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles01_wp_24": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1007.2,86.2709,-5910.75]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "enemy_vehicles02",
+        "tm": [
+          [-0.300706,0.0,0.953717],
+          [0.0,1.0,0.0],
+          [-0.953717,0.0,-0.300706],
+          [-499.2,93.5308,-6248.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_horch",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": -1.0,
+          "setStealth": true
+        },
+        "way": {
+          "enemy_vehicles02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-526.9,73.7492,-6206.95]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-569.75,49.9,-6164.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-716.4,52.0,-6074.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "friendly_vehicles02",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-1024.35,91.6666,-5909.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_dodge_wc51",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": -1.0,
+          "setStealth": true
+        },
+        "way": {
+          "friendly_vehicles02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-989.65,83.85,-5917.05]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "friendly_vehicles02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-916.45,63.3792,-5948.1]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "friendly_vehicles02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-861.7,53.3,-5983.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "enemy_tanks00",
+        "tm": [
+          [-0.573576,0.0,-0.819152],
+          [0.0,1.0,0.0],
+          [0.819152,0.0,-0.573576],
+          [-1311.65,153.736,-6886.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [15.0,6.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.0
+        },
+        "way": {
+          "enemy_tanks00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1428.4,153.283,-6948.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_tanks00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1446.3,170.787,-7110.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_tanks00_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1398.9,187.847,-7150.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "friendly_tanks00",
+        "tm": [
+          [-0.173648,0.0,0.984808],
+          [0.0,1.0,0.0],
+          [-0.984808,0.0,-0.173648],
+          [-1206.05,188.95,-7183.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_m5a1_stuart6",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [17.0,7.0],
+          "formation_noise": [0.5,-0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.0
+        },
+        "way": {
+          "friendly_tanks00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1162.0,176.435,-7094.25]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "friendly_tanks00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1215.0,161.32,-6980.55]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "enemy_vehicles03",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [-5014.2,0.404068,-2575.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_horch",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [4.0,4.0],
+          "formation_noise": [0.3,0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "enemy_vehicles03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5109.6,4.85,-2684.65]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5170.2,2.66958,-2754.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5245.45,4.21859,-2827.25]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5345.1,2.49957,-2893.95]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5518.55,1.30454,-2989.05]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5739.45,5.12597,-3078.65]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6085.95,3.18032,-3196.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6375.45,2.60975,-3377.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6600.4,2.07516,-3663.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6675.4,0.489801,-3891.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_vehicles03_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-6645.45,5.51776,-4195.85]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "enemy_tanks01",
+        "tm": [
+          [-0.34202,0.0,0.939692],
+          [0.0,1.0,0.0],
+          [-0.939692,0.0,-0.34202],
+          [-7947.75,-3.57669,-507.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 9,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [11.0,7.0],
+          "formation_noise": [0.4,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "enemy_tanks01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-8054.2,7.05,-356.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "enemy_tanks01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-8206.75,4.29652,-216.85]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "friendly_tanks01",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-8605.65,-2.50797,-57.35]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_m5a1_stuart6",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 7,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [9.0,7.0],
+          "formation_noise": [0.4,-0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.0
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "artillery_00",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [-8754.25,-3.58104,28.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_105mm_m2a1",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "artillery_01",
+        "tm": [
+          [0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,0.906308],
+          [-8780.85,-0.687469,-26.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_105mm_m2a1",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "artillery_02",
+        "tm": [
+          [0.866025,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,0.866025],
+          [-8983.8,177.387,-503.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_105mm_m2a1",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "artillery_03",
+        "tm": [
+          [0.866025,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,0.866025],
+          [-9114.9,159.094,-362.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_105mm_m2a1",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_def19",
+        "tm": [
+          [-0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,-0.92388],
+          [-6797.55,251.897,-547.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "waypoint00": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2038.5,80.0,-3468.5]
+      ],
+      "props": []
+    },
+    "waypoint01": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2315.1,80.0,-3588.55]
+      ],
+      "props": []
+    },
+    "waypoint02": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2473.85,80.0,-3910.0]
+      ],
+      "props": []
+    },
+    "waypoint03": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2952.7,80.0,-4233.8]
+      ],
+      "props": []
+    },
+    "waypoint04": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3188.15,80.0,-4450.1]
+      ],
+      "props": []
+    },
+    "waypoint05": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3398.1,80.0,-4930.5]
+      ],
+      "props": []
+    },
+    "waypoint06": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3472.85,80.0,-5366.6]
+      ],
+      "props": []
+    },
+    "waypoint07": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3161.0,80.0,-5904.2]
+      ],
+      "props": []
+    },
+    "waypoint08": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3539.2,80.0,-6404.85]
+      ],
+      "props": []
+    },
+    "waypoint09": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [3437.55,80.0,-6939.05]
+      ],
+      "props": []
+    },
+    "waypoint10": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2890.35,80.0,-7214.05]
+      ],
+      "props": []
+    },
+    "waypoint11": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2357.25,22.4,-7911.7]
+      ],
+      "props": []
+    },
+    "waypoint12": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [2233.5,80.0,-8310.15]
+      ],
+      "props": []
+    },
+    "waypoint13": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [1688.7,80.0,-8757.2]
+      ],
+      "props": []
+    },
+    "waypoint14": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [1427.3,80.0,-8085.75]
+      ],
+      "props": []
+    },
+    "waypoint15": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [830.65,80.0,-7925.65]
+      ],
+      "props": []
+    },
+    "waypoint16": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [1087.05,80.0,-7258.9]
+      ],
+      "props": []
+    },
+    "waypoint17": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [116.1,80.0,-6986.8]
+      ],
+      "props": []
+    },
+    "waypoint18": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-503.15,284.15,-7251.25]
+      ],
+      "props": []
+    },
+    "waypoint19": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-993.5,323.75,-7247.7]
+      ],
+      "props": []
+    },
+    "waypoint20": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-706.2,34.8,-6060.15]
+      ],
+      "props": []
+    },
+    "waypoint21": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-863.95,110.2,-5553.45]
+      ],
+      "props": []
+    },
+    "waypoint22": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-1167.0,276.65,-5256.5]
+      ],
+      "props": []
+    },
+    "waypoint23": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-1485.9,412.95,-4664.7]
+      ],
+      "props": []
+    },
+    "waypoint24": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-1762.2,44.35,-3831.7]
+      ],
+      "props": []
+    },
+    "waypoint25": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-2148.65,44.35,-3608.0]
+      ],
+      "props": []
+    },
+    "waypoint26": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-2347.3,44.35,-3214.65]
+      ],
+      "props": []
+    },
+    "waypoint27": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-2933.95,236.7,-1911.65]
+      ],
+      "props": []
+    },
+    "waypoint28": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-3221.7,236.3,-1707.4]
+      ],
+      "props": []
+    },
+    "waypoint29": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-3825.15,267.7,-1547.9]
+      ],
+      "props": []
+    },
+    "waypoint30": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-4414.35,199.15,-1897.75]
+      ],
+      "props": []
+    },
+    "waypoint31": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-5194.8,31.05,-2736.15]
+      ],
+      "props": []
+    },
+    "waypoint32": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-5844.65,266.65,-3117.3]
+      ],
+      "props": []
+    },
+    "waypoint33": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-6416.75,344.45,-3439.25]
+      ],
+      "props": []
+    },
+    "waypoint34": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-7011.55,31.05,-3355.4]
+      ],
+      "props": []
+    },
+    "waypoint35": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-7335.35,31.05,-2848.8]
+      ],
+      "props": []
+    },
+    "waypoint36": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-7310.8,259.75,-2160.2]
+      ],
+      "props": []
+    },
+    "waypoint37": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-6916.25,295.95,-1649.8]
+      ],
+      "props": []
+    },
+    "waypoint38": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-6752.55,460.6,-1026.05]
+      ],
+      "props": []
+    },
+    "waypoint39": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-7167.05,267.0,-467.05]
+      ],
+      "props": []
+    },
+    "waypoint40": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-7688.15,187.1,-289.45]
+      ],
+      "props": []
+    },
+    "waypoint41": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-8882.85,37.05,79.35]
+      ],
+      "props": []
+    },
+    "waypoint42": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-9098.2,37.05,289.35]
+      ],
+      "props": []
+    },
+    "waypoint43": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-9594.45,37.05,468.2]
+      ],
+      "props": []
+    },
+    "waypoint44": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-9959.45,76.2,430.05]
+      ],
+      "props": []
+    },
+    "waypoint45": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-10434.9,167.85,79.15]
+      ],
+      "props": []
+    },
+    "waypoint46": {
+      "type": "Sphere",
+      "tm": [
+        [109.9,0.0,0.0],
+        [0.0,109.9,0.0],
+        [0.0,0.0,109.9],
+        [-10585.3,247.9,-274.85]
+      ],
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ]
+}
