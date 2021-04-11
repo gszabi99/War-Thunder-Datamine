@@ -18,6 +18,7 @@ local { canOpenPlayerReviewDialog, openPlayerReviewDialog } = require("scripts/s
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 local { boosterEffectType, getBoostersEffects } = require("scripts/items/boosterEffect.nut")
 local { fillItemDescr, getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
+local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
@@ -3009,7 +3010,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local btnNextLocId = showWorldWarOperationBtn ? "worldWar/stayInOperation"
       : !isToBattleBtnVisible ? "mainmenu/btnOk"
       : ::g_squad_manager.isSquadMember() ? "mainmenu/btnReady"
-      : "mainmenu/toBattle"
+      : getToBattleLocId()
 
     setDoubleTextToButton(scene, "btn_next", ::loc(btnNextLocId))
 
@@ -3036,6 +3037,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   {
     updateStartButton()
   }
+
+  onEventToBattleLocChanged = @(params) updateStartButton()
 
   function onEventMatchingDisconnect(p)
   {

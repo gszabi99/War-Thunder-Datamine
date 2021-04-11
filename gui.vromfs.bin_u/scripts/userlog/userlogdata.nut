@@ -411,7 +411,7 @@ local logNameByType = {
     }
     else if (blk?.type == ::EULT_INVENTORY_ADD_ITEM)
     {
-      local item = ::ItemsManager.findItemById(blk.body?.itemDefId)
+      local item = ::ItemsManager.getInventoryItemById(blk.body?.itemDefId)
       if (item)
       {
         if (!item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false))

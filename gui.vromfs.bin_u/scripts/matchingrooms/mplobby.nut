@@ -7,6 +7,7 @@ local { mpLobbyBlkPath } = require("scripts/matchingRooms/getMPLobbyBlkPath.nut"
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -364,7 +365,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       res.readyBtnText = ::loc("multiplayer/btnStart")
     else if (::SessionLobby.isRoomInSession)
     {
-      res.readyBtnText = ::loc("mainmenu/toBattle")
+      res.readyBtnText = ::loc(getToBattleLocId())
       res.isVisualDisabled = !::SessionLobby.canJoinSession()
     } else if (!isReady)
       res.readyBtnText = ::loc("mainmenu/btnReady")
@@ -561,6 +562,8 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
     else
       updateButtons()
   }
+
+  onEventToBattleLocChanged = @(params) updateButtons()
 
   function onNotReady()
   {

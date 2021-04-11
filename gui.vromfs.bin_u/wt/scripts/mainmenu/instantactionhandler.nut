@@ -17,6 +17,7 @@ local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
+local { getToBattleLocIdShort } = require("scripts/viewUtils/interfaceCustomization.nut")
 
 class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -765,7 +766,7 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       }
       else
       {
-        txt = ::loc("mainmenu/toBattle/short")
+        txt = ::loc(getToBattleLocIdShort())
         isCancel = false
       }
     }
@@ -1304,4 +1305,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     if (::g_clans.isHaveRightsToReviewCandidates())
       ::showClanRequests(::g_clans.getMyClanCandidates(), ::clan_get_my_clan_id(), false);
   }
+
+  onEventToBattleLocShortChanged = @(params) doWhenActiveOnce("updateStartButton")
 }

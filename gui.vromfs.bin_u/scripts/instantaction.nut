@@ -4,6 +4,7 @@ local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
 local { AMMO,
         getAmmoCost,
         getUnitNotReadyAmmoList } = require("scripts/weaponry/ammoInfo.nut")
+local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
 
 ::instant_domination_handler <- null
 
@@ -205,7 +206,7 @@ local { AMMO,
                 ::colorize("activeTextColor", ::getUnitName(u, true))),
               ::loc("ui/comma"))
           })
-        startBtnText = ::loc("mainmenu/toBattle")
+        startBtnText = ::loc(getToBattleLocId())
         ableToStartAndSkip = true
         showCheckBoxBullets = false
         skipFunc = function(value) {
