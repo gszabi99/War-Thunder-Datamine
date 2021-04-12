@@ -109,6 +109,8 @@ local function fillTooltipObj(tooltipObj, tooltipId) {
 }
 
 local function showTooltipForObj(obj) {
+  local objId = obj?.id // warning disable: -declared-never-used
+  local tooltipId = obj?.tooltipId // warning disable: -declared-never-used
   local tooltip = getTooltipForObj(obj)
   if (!tooltip)
     return
@@ -122,6 +124,11 @@ local function showTooltipForObj(obj) {
   if (!isSuccess)
     return
 
+  if(!obj?.isValid())
+  {
+    ::script_net_assert_once("DelayedTooltip","Invalid object for tooltip")
+    return
+  }
   local align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
   tooltip.getScene().applyPendingChanges(false)
   ::g_dagui_utils.setPopupMenuPosAndAlign(obj, align, tooltip)

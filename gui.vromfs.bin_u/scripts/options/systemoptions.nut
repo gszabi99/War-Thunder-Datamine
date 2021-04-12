@@ -1,4 +1,4 @@
-local { set_blk_value_by_path, get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { get_primary_screen_info } = ::require_native("dagor.system")
 //------------------------------------------------------------------------------
 local mSettings = {}
@@ -1020,10 +1020,7 @@ local function validateInternalConfigs() {
 local function configRead() {
   mCfgInitial = {}
   mCfgCurrent = {}
-  mBlk = ::DataBlock()
-  if (!mBlk.tryLoad(::get_config_name()))
-    ::dagor.debug(::get_config_name()+" not read")
-
+  mBlk = blkOptFromPath(::get_config_name())
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(mBlk, desc)
@@ -1042,10 +1039,7 @@ local function configRead() {
 }
 
 local function init() {
-  local blk = ::DataBlock()
-  if (!blk.tryLoad(::get_config_name()))
-    ::dagor.debug(::get_config_name()+" not read")
-
+  local blk = blkOptFromPath(::get_config_name())
   foreach (id, desc in mSettings) {
     if ("init" in desc)
       desc.init(blk, desc)
