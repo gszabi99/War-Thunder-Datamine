@@ -92,7 +92,6 @@ local ItemExternal = class extends ::BaseItem
     shouldAutoConsume = !!itemDefDesc?.tags?.autoConsume || canOpenForGold()
 
     link = inventoryClient.getMarketplaceItemUrl(id, itemDesc?.itemid) || ""
-    forceExternalBrowser = true
 
     if (itemDesc)
     {

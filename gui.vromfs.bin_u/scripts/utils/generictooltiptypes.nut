@@ -238,12 +238,9 @@ local exportTypes = addTooltipTypes({
 
       if (obj.getSize()[1] < ::g_dagui_utils.toPixels(obj.getScene(), "1@rh"))
         return true
-      local tooltipObj = obj.findObject("air_info_tooltip")
-      if (!tooltipObj?.isValid())
-        return true
 
-      tooltipObj.height = "1@rh - 2@framePadding"
-      local unitImgObj = tooltipObj.findObject("aircraft-image")
+      contentObj.height = "1@rh - 2@framePadding"
+      local unitImgObj = contentObj.findObject("aircraft-image")
       if (unitImgObj?.isValid())
         unitImgObj.height = "fh"
       return true

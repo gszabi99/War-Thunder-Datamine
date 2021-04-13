@@ -188,6 +188,7 @@ local function onHover(obj) {
   if (isSame ? !isHovered : isHovered) {
     removeHintTask()
     hideHint()
+    hideTooltip()
   }
   if (!isHovered)
     return

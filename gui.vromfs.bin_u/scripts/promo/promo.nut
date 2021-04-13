@@ -343,7 +343,7 @@ g_promo.recievePromoBlk <- function recievePromoBlk()
     }
   }
 
-  if (!::g_promo.needUpdate(promoBlk) && !showAllPromo)
+  if (!::g_promo.needUpdate(promoBlk))
     return null
   return promoBlk
 }
