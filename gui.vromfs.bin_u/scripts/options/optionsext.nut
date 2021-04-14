@@ -19,6 +19,7 @@ local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 local { checkUnitSpeechLangPackWatch } = require("scripts/options/optionsManager.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
+local { has_forced_crosshair } = ::require_native("crosshair")
 //
 
 
@@ -3816,8 +3817,14 @@ local isWaitMeasureEvent = false
       descr.id = "tank_alt_crosshair"
       descr.cb = "onTankAltCrosshair"
 
-      descr.items = [::loc("options/defaultSight")]
-      descr.values = [""]
+      descr.items = []
+      descr.values = []
+
+      if (!has_forced_crosshair())
+      {
+        descr.items.append(::loc("options/defaultSight"));
+        descr.values.append("");
+      }
 
       local presets = ::get_user_alt_crosshairs()
       for (local i = 0; i < presets.len(); i++)

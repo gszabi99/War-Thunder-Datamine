@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/guadalcanal.bin",
       "type": "campaign",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": []
   },
@@ -373,6 +373,7 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "@lpt_t1_lookup_plane"
           }
         },
@@ -415,6 +416,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t1_lookup_plane",
             "speed": 300.0
           }
@@ -513,6 +516,8 @@
         {
           "moAddMissionObjective": {
             "target": "lpt_t1_defend_task",
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "unit_or_area": "@lpt_t1_lookup_plane"
           }
         },
@@ -555,6 +560,8 @@
         "moSetObjectiveStatus": {
           "target": "lpt_t1_defend_task",
           "status": 1,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "A",
           "unit_or_area": "@lpt_t1_lookup_plane"
         },
@@ -598,6 +605,8 @@
         "moSetObjectiveStatus": {
           "target": "lpt_t2_kill_task",
           "status": 1,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "B",
           "unit_or_area": "@lpt_t1_lookup_plane"
         }
@@ -775,6 +784,8 @@
         {
           "moAddMissionObjective": {
             "target": "lpt_t2_kill_task",
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "unit_or_area": "@lpt_t1_lookup_plane"
           }
         },
@@ -818,8 +829,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@lpt_t1_lookup_plane"
+          "object": "@lpt_t1_lookup_plane",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -884,6 +895,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_defend_task",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -914,6 +927,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_defend_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -969,6 +984,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -984,6 +1001,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         }
@@ -1018,6 +1037,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -1033,6 +1054,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         }
@@ -1112,6 +1135,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t1_lookup_plane",
             "speed": 350.0
           }
@@ -1154,9 +1179,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "target": "@lpt_t1_target_point",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -1241,6 +1266,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t1_lookup_plane",
             "speed": 350.0
           }
@@ -1283,9 +1310,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "target": "t1_lookup_retreat_point",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -1331,6 +1358,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_defend_task",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t1_lookup_plane",
@@ -1356,6 +1385,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_defend_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         },
@@ -1667,6 +1698,7 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": true,
+            "target_marking": 0,
             "target": "@lpt_t2_lookup_plane"
           }
         },
@@ -1709,6 +1741,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t2_lookup_plane",
             "speed": 300.0
           }
@@ -1807,6 +1841,8 @@
         {
           "moAddMissionObjective": {
             "target": "lpt_t2_defend_task",
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "unit_or_area": "@lpt_t2_lookup_plane"
           }
         },
@@ -1849,6 +1885,8 @@
         "moSetObjectiveStatus": {
           "target": "lpt_t1_kill_task",
           "status": 1,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "A",
           "unit_or_area": "@lpt_t2_lookup_plane"
         }
@@ -1881,6 +1919,8 @@
         "moSetObjectiveStatus": {
           "target": "lpt_t2_defend_task",
           "status": 1,
+          "object_var_comp_op": "equal",
+          "object_var_name": "",
           "team": "B",
           "unit_or_area": "@lpt_t2_lookup_plane"
         },
@@ -2069,6 +2109,8 @@
         {
           "moAddMissionObjective": {
             "target": "lpt_t1_kill_task",
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "unit_or_area": "@lpt_t2_lookup_plane"
           }
         },
@@ -2112,8 +2154,8 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "@lpt_t2_lookup_plane"
+          "object": "@lpt_t2_lookup_plane",
+          "object_var_value": 0
         }
       },
       "actions": [
@@ -2178,6 +2220,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_defend_task",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -2208,6 +2252,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_defend_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -2263,6 +2309,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -2278,6 +2326,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         }
@@ -2312,6 +2362,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 3,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "A",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -2327,6 +2379,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "A"
           }
         }
@@ -2406,6 +2460,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t2_lookup_plane",
             "speed": 350.0
           }
@@ -2448,9 +2504,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "target": "@lpt_t2_target_point",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -2535,6 +2591,8 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
             "object": "@lpt_t2_lookup_plane",
             "speed": 350.0
           }
@@ -2577,9 +2635,9 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "target": "t2_lookup_retreat_point",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -2625,6 +2683,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_defend_task",
             "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "extendedEnding": true,
             "team": "B",
             "unit_or_area": "@lpt_t2_lookup_plane",
@@ -2650,6 +2710,8 @@
           "moSetObjectiveStatus": {
             "target": "lpt_t2_defend_task",
             "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
             "team": "B"
           }
         },
@@ -2996,6 +3058,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
           "speed": 300.0,
           "altRange": [1700.0,2000.0]
@@ -3039,8 +3103,10 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "speed": 300.0,
+          "speed": 320.0,
           "altRange": [2200.0,2500.0]
         }
       },
@@ -3082,8 +3148,10 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "speed": 300.0,
+          "speed": 340.0,
           "altRange": [2700.0,3000.0]
         }
       },
@@ -3125,8 +3193,9 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "speed": 300.0,
           "altRange": [3200.0,3500.0]
         }
       },
@@ -3168,8 +3237,9 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t1_lookup_plane",
-          "speed": 300.0,
           "altRange": [3700.0,4000.0]
         }
       },
@@ -3211,6 +3281,8 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
           "speed": 300.0,
           "altRange": [1700.0,2000.0]
@@ -3254,8 +3326,10 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "speed": 300.0,
+          "speed": 320.0,
           "altRange": [2200.0,2500.0]
         }
       },
@@ -3297,8 +3371,10 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "speed": 300.0,
+          "speed": 340.0,
           "altRange": [2700.0,3000.0]
         }
       },
@@ -3340,8 +3416,9 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "speed": 300.0,
           "altRange": [3200.0,3500.0]
         }
       },
@@ -3383,8 +3460,9 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
+          "fastClimb": false,
+          "destTimeMode": false,
           "object": "@lpt_t2_lookup_plane",
-          "speed": 300.0,
           "altRange": [3700.0,4000.0]
         }
       },
@@ -3452,10 +3530,10 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t1_lookup_plane",
           "target": "t2_players_squad",
           "var": "lpt_t2_players_detection_range",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -3508,10 +3586,10 @@
           "check_targets": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": "@lpt_t2_lookup_plane",
           "target": "t1_players_squad",
           "var": "lpt_t1_players_detection_range",
+          "object_var_value": 0,
           "compareCenters": false
         }
       },
@@ -3567,10 +3645,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@lpt_t1_lookup_plane",
             "target": "t1_players_squad",
             "var": "lpt_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -3616,10 +3694,10 @@
             "check_targets": "any",
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@lpt_t2_lookup_plane",
             "target": "t2_players_squad",
             "var": "lpt_activity_distance",
+            "object_var_value": 0,
             "compareCenters": false,
             "check_all_units": true
           }
@@ -3847,8 +3925,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@lpt_t2_lookup_plane"
+            "object": "@lpt_t2_lookup_plane",
+            "object_var_value": 0
           }
         },
         "actions": {
@@ -3889,8 +3967,8 @@
             "value": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@lpt_t1_lookup_plane"
+            "object": "@lpt_t1_lookup_plane",
+            "object_var_value": 0
           }
         },
         "actions": {
