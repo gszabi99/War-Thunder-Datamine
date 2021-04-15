@@ -35,6 +35,13 @@ excludesdata =
     ]
   },
   {
+    key = "m",
+    arr =
+    [
+      "method"
+    ]
+  },
+  {
     key = "t",
     arr =
     [
