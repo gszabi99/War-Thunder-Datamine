@@ -2017,24 +2017,29 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   return res
 }
 
+local function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought)
+{
+  // Keep this in sync with getUnitsCountAtRank() in chard
+  return (esUnitType == ::get_es_unit_type(unit) || esUnitType == ::ES_UNIT_TYPE_TOTAL)
+    && (country == unit.shopCountry || country == "")
+    && (unit.rank == rank || (!exact_rank && unit.rank > rank))
+    && ((!needBought || ::isUnitBought(unit)) && unit.isVisibleInShop())
+}
+
+local function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
+{
+  foreach (unit in ::all_units)
+    if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
+      return true
+  return false
+}
+
 ::get_units_count_at_rank <- function get_units_count_at_rank(rank, esUnitType, country, exact_rank, needBought = true)
 {
   local count = 0
   foreach (unit in ::all_units)
-  {
-    if ((needBought && !::isUnitBought(unit)) || !unit.isVisibleInShop())
-      continue
-
-    // Keep this in sync with getUnitsCountAtRank() in chard
-    if (
-        (::ES_UNIT_TYPE_TOTAL == esUnitType || ::get_es_unit_type(unit) == esUnitType) &&
-        (unit.rank == rank || (!exact_rank && unit.rank > rank) ) &&
-        ("" == country || unit.shopCountry == country)
-       )
-    {
+    if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
       count++
-    }
-  }
   return count
 }
 
@@ -2063,4 +2068,8 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
   local unitDir = ::g_string.implode(nodes, "/")
   local fmPath = unitDir + "/" + (unitBlkData?.fmFile ?? ("fm/" + unitId))
   return blkFromPath(fmPath)
+}
+
+return {
+  hasUnitAtRank
 }

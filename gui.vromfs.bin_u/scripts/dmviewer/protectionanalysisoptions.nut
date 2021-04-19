@@ -13,6 +13,7 @@ local { getBulletsList,
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { WEAPON, MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
+local { hasUnitAtRank } = require("scripts/airInfo.nut")
 
 local options = {
   types = []
@@ -21,6 +22,7 @@ local options = {
   }
 
   nestObj = null
+  isSaved = false
   targetUnit = null
   setParams = @(unit) targetUnit = unit
 }
@@ -97,16 +99,12 @@ options.template <- {
   sortId = 0
   labelLocId = null
   controlStyle = ""
-  shouldInit = false
-  shouldInitNext = true
-  shouldSetParams = false
   items  = []
   values = []
   value = null
   defValue = null
   valueWidth = null
 
-  isNeedInit = @() shouldInit
   getLabel = @() labelLocId && ::loc(labelLocId)
   getControlMarkup = function() {
     return ::create_option_combobox(id, [], -1, "onChangeOption", true,
@@ -116,28 +114,41 @@ options.template <- {
 
   onChange = function(handler, scene, obj) {
     value = getValFromObj(obj)
-    if (afterChangeFunc)
-      afterChangeFunc(obj)
-    if (shouldSetParams)
-      options.setAnalysisParams()
-    if (shouldInitNext)
-      options.getBySortId(sortId + 1).reinit(handler, scene)
+    afterChangeFunc?(obj)
+    updateDependentOptions(handler, scene)
+    options.setAnalysisParams()
   }
 
   isVisible = @() true
   getValFromObj = @(obj) ::check_obj(obj) ? values?[obj.getValue()] : null
   afterChangeFunc = null
-  reinit = @(handler, scene) null
 
-  update = function(handler, scene) {
+  updateDependentOptions = function(handler, scene) {
+    handler.guiScene.setUpdatesEnabled(false, false)
+    for (local i = sortId + 1;; i++) {
+      local option = options.getBySortId(i)
+      if (option == options.UNKNOWN)
+        break
+      option.update(handler, scene)
+    }
+    handler.guiScene.setUpdatesEnabled(true, true)
+  }
+
+  updateParams = @(handler, scene) null
+
+  updateView = function(handler, scene) {
     local idx = values.indexof(value) ?? -1
     local markup = ::create_option_combobox(null, items, idx, null, false)
     local obj = scene.findObject(id)
     if (::check_obj(obj))
-    {
       obj.getScene().replaceContentFromText(obj, markup, markup.len(), handler)
-      onChange(handler, scene, obj)
-    }
+  }
+
+  update = function(handler, scene, needReset = true) {
+    if (needReset)
+      updateParams(handler, scene)
+    updateView(handler, scene)
+    afterChangeFunc?(scene.findObject(id))
   }
 }
 
@@ -152,15 +163,13 @@ options.addTypes({
   UNKNOWN = {
     sortId = sortId++
     isVisible = @() false
-    shouldInitNext = false
   }
   UNITTYPE = {
     sortId = sortId++
     labelLocId = "mainmenu/threat"
-    shouldInit = true
     isVisible = @() getThreatEsUnitTypes().len() > 1
 
-    reinit = function(handler, scene)
+    updateParams = function(handler, scene)
     {
       local esUnitTypes = getThreatEsUnitTypes()
       local types = esUnitTypes.map(@(e) unitTypes.getByEsUnitType(e))
@@ -169,16 +178,14 @@ options.addTypes({
       local preferredEsUnitType = value ?? options.targetUnit.esUnitType
       value = values.indexof(preferredEsUnitType) != null ? preferredEsUnitType
         : (values?[0] ?? ::ES_UNIT_TYPE_INVALID)
-      update(handler, scene)
     }
   }
   COUNTRY = {
     sortId = sortId++
     controlStyle = "iconType:t='small';"
-    isNeedInit = @() !options.UNITTYPE.isVisible()
     getLabel = @() options.UNITTYPE.isVisible() ? null : ::loc("mainmenu/threat")
 
-    reinit = function(handler, scene)
+    updateParams = function(handler, scene)
     {
       local unitType = options.UNITTYPE.value
       values = ::u.filter(::shopCountriesList, @(c) ::isCountryHaveUnitType(c, unitType))
@@ -186,39 +193,37 @@ options.addTypes({
       local preferredCountry = value ?? options.targetUnit.shopCountry
       value = values.indexof(preferredCountry) != null ? preferredCountry
         : (values?[0] ?? "")
-      update(handler, scene)
     }
   }
   RANK = {
     sortId = sortId++
 
-    reinit = function(handler, scene)
+    updateParams = function(handler, scene)
     {
       local unitType = options.UNITTYPE.value
       local country = options.COUNTRY.value
       values = []
       for (local rank = 1; rank <= ::max_country_rank; rank++)
-        if (::get_units_count_at_rank(rank, unitType, country, true, false))
+        if (hasUnitAtRank(rank, unitType, country, true, false))
           values.append(rank)
       items = ::u.map(values, @(r) {
         text = ::format(::loc("conditions/unitRank/format"), get_roman_numeral(r))
       })
       local preferredRank = value ?? options.targetUnit.rank
       value = values?[::find_nearest(preferredRank, values)] ?? 0
-      update(handler, scene)
     }
   }
   UNIT = {
     sortId = sortId++
 
-    reinit = function(handler, scene)
+    updateParams = function(handler, scene)
     {
       local unitType = options.UNITTYPE.value
       local rank = options.RANK.value
       local country = options.COUNTRY.value
       local ediff = ::get_current_ediff()
-      local list = ::get_units_list(@(u) u.isVisibleInShop() &&
-        u.esUnitType == unitType && u.rank == rank && u.shopCountry == country)
+      local list = ::get_units_list(@(u) u.esUnitType == unitType
+        && u.shopCountry == country && u.rank == rank && u.isVisibleInShop())
       list = ::u.map(list, @(u) { unit = u, id = u.name, br = u.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)
       values = ::u.map(list, @(v) v.unit)
@@ -232,16 +237,14 @@ options.addTypes({
       value = values.findvalue(@(v) v.name == preferredUnitId) ??
         values.findvalue(@(v) v.name == targetUnitId) ??
         values?[0]
-      update(handler, scene)
     }
   }
   BULLET = {
     sortId = sortId++
     labelLocId = "mainmenu/shell"
-    shouldSetParams = true
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 
-    reinit = function(handler, scene)
+    updateParams = function(handler, scene)
     {
       local unit = options.UNIT.value
       values = []
@@ -367,7 +370,6 @@ options.addTypes({
       }
 
       value = values?[0]
-      update(handler, scene)
     }
 
     afterChangeFunc = function(obj) {
@@ -377,9 +379,6 @@ options.addTypes({
   DISTANCE = {
     sortId = sortId++
     labelLocId = "distance"
-    shouldInit = true
-    shouldInitNext = false
-    shouldSetParams = true
     value = -1
     defValue = -1
     minValue = -1
@@ -432,24 +431,22 @@ options.addTypes({
       updateArmorPiercingText(options.nestObj)
     }
 
-    reinit = function(handler, scene) {
+    updateParams = function(handler, scene) {
       minValue = 0
       maxValue = options.UNIT.value?.isShipOrBoat() ? 15000 : 5000
       step     = 100
       local preferredDistance = value >= 0 ? value
         : (options.UNIT.value?.isShipOrBoat() ? 2000 : 500)
       value = ::clamp(preferredDistance, minValue, maxValue)
-      update(handler, scene)
     }
 
-    update = function(handler, scene) {
+    updateView = function(handler, scene) {
       local obj = scene.findObject(id)
       if (::check_obj(obj))
       {
         obj.max = maxValue
         obj.optionAlign = step
         obj.setValue(value)
-        onChange(handler, scene, obj)
       }
     }
   }
@@ -457,11 +454,14 @@ options.addTypes({
 
 options.init <- function(handler, scene) {
   nestObj = scene
-  foreach (o in options.types)
-    o.value = o.defValue
-  foreach (o in options.types)
-    if (o.isNeedInit())
-      o.reinit(handler, scene)
+  local needReinit = !isSaved
+    || !targetTypeToThreatTypes[targetUnit.esUnitType].contains(UNITTYPE.value)
+
+  if (needReinit)
+    types.each(@(o) o.value = o.defValue)
+
+  types.each(@(o) o.update(handler, scene, needReinit))
+  setAnalysisParams()
 }
 
 options.setAnalysisParams <- function() {

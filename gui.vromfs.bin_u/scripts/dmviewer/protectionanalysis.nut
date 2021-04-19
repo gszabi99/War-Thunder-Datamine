@@ -58,6 +58,8 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
     switch_damage = true //value is off by default it will be changed in AllowSimulation
     allow_cutting = false
 
+    scene.findObject("checkboxSaveChoice").setValue(protectionAnalysisOptions.isSaved)
+
     local isSimulationEnabled = unit?.unitType.canShowVisualEffectInProtectionAnalysis() ?? false
     local obj = showSceneBtn("switch_damage", isSimulationEnabled)
     if (isSimulationEnabled)
@@ -65,6 +67,8 @@ class ::gui_handlers.ProtectionAnalysis extends ::gui_handlers.BaseGuiHandlerWT
 
     ::allowCuttingInHangar(false)
   }
+
+  onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
 
   function onChangeOption(obj)
   {
