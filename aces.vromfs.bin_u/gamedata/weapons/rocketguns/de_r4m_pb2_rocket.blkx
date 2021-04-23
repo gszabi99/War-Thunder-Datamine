@@ -5,14 +5,18 @@
   "helicopterGroup": 2,
   "mesh": "de_r4m_pb2_rocket",
   "rocket": {
-    "normalizationPreset": "default",
-    "ricochetPreset": "defaultExt",
+    "normalizationPreset": "heat",
+    "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "aam",
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.001,
+    "bulletType": "heat_fs_tank",
+    "cumulativeSecondaryShattersPreset": "heat_fs",
+    "explodeOnRendinst": true,
+    "fresnel": [0.23,0.1,2.0],
+    "shellAnimation": "video/shells_animations/heat_fs.ivf",
     "caliber": 0.088,
     "length": 0.815,
     "explosiveType": "hta",
@@ -71,20 +75,10 @@
     "aiAirOnly": false,
     "amountPerTier": 7.0,
     "iconType": "rockets_ap_small_group",
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
