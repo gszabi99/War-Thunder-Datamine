@@ -2019,7 +2019,13 @@
       "preset": {
         "name": "f-104j_aim_9e",
         "blk": "gameData/FlightModels/weaponPresets/f-104j_aim_9e.blk",
-        "reqModification": "us_aim_9e"
+        "reqModification": "us_aim_9e",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+            "iconType": "missile_type_c_air_to_air"
+          }
+        }
       }
     },
     {
@@ -2037,13 +2043,21 @@
           "reqModification": "us_aim_9e"
         },
         {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
-              "amountPerTier": 7.0,
-              "iconType": "nar_ap_small"
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_hydra_70_m247.blk",
+                "amountPerTier": 7.0,
+                "iconType": "nar_ap_small"
+              }
+            },
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/rocketGuns/us_aim9e_sidewinder.blk",
+                "iconType": "missile_type_c_air_to_air"
+              }
             }
-          }
+          ]
         }
       ]
     },
