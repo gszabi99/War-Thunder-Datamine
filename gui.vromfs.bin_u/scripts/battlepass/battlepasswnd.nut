@@ -53,6 +53,7 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   isInitedBattlePassSheet = false
   isInitedChallengesSheet = false
   curChallengeId = ""
+  hoverChallengeId = ""
   isFillingChallengesList = false
   needCalculateCurPage = true
 
@@ -327,12 +328,14 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
   }
 
   unlockToFavorites = @(obj) ::g_unlocks.unlockToFavorites(obj)
+  onChallengeHover = @(obj) hoverChallengeId = obj.id
 
   function updateChallengesSheet(obj, challenges) {
     if (getCurSheetObjId() != "challenges_sheet")
       return
 
-    local view = { items = challenges.map(@(config) getChallengeView(config)) }
+    local view = { items = challenges.map(
+      @(config) getChallengeView(config, { hoverAction = "onChallengeHover" })) }
     local challengesObj = scene.findObject("challenges_list")
     local data = ::handyman.renderCached("gui/unlocks/battleTasksItem", view)
     guiScene.replaceContentFromText(challengesObj, data, data.len(), this)
@@ -399,6 +402,17 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
       ::move_mouse_on_child_by_value(obj)
     }
   }
+  function expandHoverChallenge()
+  {
+    local listBoxObj = scene.findObject("challenges_list")
+    local total = listBoxObj.childrenCount()
+    if (total == 0)
+      return
+
+    for (local i = 0; i < total; i++)
+      if(hoverChallengeId == listBoxObj.getChild(i).id)
+        listBoxObj.setValue(i)
+  }
 
   function challengeToFavoritesByActivateItem(obj)
   {
@@ -407,6 +421,9 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     if (checkBoxObj?.isValid())
       checkBoxObj.setValue(!checkBoxObj.getValue())
   }
+
+  onChallengeDblClick = @(obj) curChallengeId == hoverChallengeId
+    ? challengeToFavoritesByActivateItem(obj) : expandHoverChallenge()
 
   function getCurrentConfig() {
     local listBoxObj = scene.findObject("challenges_list")

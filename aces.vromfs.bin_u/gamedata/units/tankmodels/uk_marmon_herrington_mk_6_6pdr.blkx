@@ -460,10 +460,6 @@
           "armorThickness": 3.0,
           "hp": 20.0
         },
-        "optic_body_01_dm": {
-          "armorThickness": 3.0,
-          "hp": 20.0
-        },
         "optic_body_02_dm": {
           "armorThickness": 3.0,
           "hp": 20.0
@@ -2582,6 +2578,7 @@
           "blk": "gameData/Weapons/groundModels_weapons/57mm_6pdr_QQF_Mk_3_L43_user_cannon.blk",
           "emitter": "bone_gun_barrel",
           "flash": "emtr_gun_flame",
+          "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
           "barrelDP": "gun_barrel_dm",
@@ -2616,9 +2613,9 @@
             "pitch": [-10.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-130.0,2.0,20.0],
+            "lim1": [-180.0,-130.0,-1.0,20.0],
             "lim2": [-130.0,130.0,-10.0,20.0],
-            "lim3": [130.0,180.0,2.0,20.0]
+            "lim3": [130.0,180.0,-1.0,20.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -2659,6 +2656,9 @@
           },
           {
             "flash": "emtr_mg_twin_flame"
+          },
+          {
+            "maxAdditionalPitch": 0.0
           },
           {
             "defaultYaw": 0.0
@@ -2766,6 +2766,9 @@
           },
           {
             "fireConeAngle": 1.0
+          },
+          {
+            "isBulletBelt": true
           },
           {
             "bullets": 500
@@ -3549,6 +3552,7 @@
                 "blk": "gameData/Weapons/groundModels_weapons/57mm_6pdr_QQF_Mk_3_L43_user_cannon.blk",
                 "emitter": "bone_gun_barrel",
                 "flash": "emtr_gun_flame",
+                "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
                 "barrelDP": "gun_barrel_dm",
@@ -3583,9 +3587,9 @@
                   "pitch": [-10.0,20.0]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-130.0,2.0,20.0],
+                  "lim1": [-180.0,-130.0,-1.0,20.0],
                   "lim2": [-130.0,130.0,-10.0,20.0],
-                  "lim3": [130.0,180.0,2.0,20.0]
+                  "lim3": [130.0,180.0,-1.0,20.0]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": true,
@@ -3626,6 +3630,9 @@
                 },
                 {
                   "flash": "emtr_mg_twin_flame"
+                },
+                {
+                  "maxAdditionalPitch": 0.0
                 },
                 {
                   "defaultYaw": 0.0
@@ -3733,6 +3740,9 @@
                 },
                 {
                   "fireConeAngle": 1.0
+                },
+                {
+                  "isBulletBelt": true
                 },
                 {
                   "bullets": 500

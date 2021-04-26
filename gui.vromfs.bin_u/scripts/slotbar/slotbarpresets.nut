@@ -3,6 +3,9 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { batchTrainCrew } = require("scripts/crew/crewActions.nut")
 local { forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
 
+// Independed Modules
+require("scripts/slotbar/hangarVehiclesPreset.nut")
+
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 

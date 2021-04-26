@@ -2264,13 +2264,13 @@
           "role": "tank_gunner"
         },
         {
-          "substitute": "machine_gunner"
-        },
-        {
           "substitute": "machine_gunner1"
         },
         {
           "substitute": "commander"
+        },
+        {
+          "substitute": "machine_gunner"
         },
         {
           "substitute": "loader"
@@ -2284,13 +2284,10 @@
           "role": "driver"
         },
         {
-          "substitute": "machine_gunner"
-        },
-        {
           "substitute": "machine_gunner1"
         },
         {
-          "substitute": "commander"
+          "substitute": "machine_gunner"
         },
         {
           "substitute": "loader"
@@ -2304,13 +2301,13 @@
           "role": "loader"
         },
         {
-          "substitute": "machine_gunner"
-        },
-        {
           "substitute": "machine_gunner1"
         },
         {
           "substitute": "commander"
+        },
+        {
+          "substitute": "machine_gunner"
         }
       ],
       "commander": {
@@ -2319,7 +2316,8 @@
       },
       "machine_gunner": {
         "dmPart": "machine_gunner_dm",
-        "role": "radio_gunner"
+        "role": "radio_gunner",
+        "substitute": "commander"
       },
       "machine_gunner1": {
         "dmPart": "machine_gunner_01_dm",
@@ -3686,7 +3684,7 @@
     "cockpit": {
       "zoomOutFov": 13.3,
       "zoomInFov": 12.3,
-      "sightFov": 8.0,
+      "sightFov": 6.3,
       "sightName": "periscope_40t",
       "headPos": [0.0,4.2,-8.5],
       "headPosOnShooting": [0.5,3.7,0.6],

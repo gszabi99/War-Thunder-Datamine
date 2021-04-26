@@ -2,7 +2,10 @@
 expandable {
   id:t='<<#performActionId>><<performActionId>><</performActionId>><<^performActionId>><<id>><</performActionId>>'
   type:t='battleTask'
-  <<^isOnlyInfo>><<#action>> on_click:t='<<action>>' <</action>><</isOnlyInfo>>
+  <<^isOnlyInfo>>
+    <<#action>> on_click:t='<<action>>' <</action>>
+    <<#hoverAction>> on_hover:t='<<hoverAction>>' <</hoverAction>>
+  <</isOnlyInfo>>
   task_id:t='<<id>>'
 
   <<#taskStatus>>

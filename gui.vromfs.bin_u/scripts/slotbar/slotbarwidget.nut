@@ -698,9 +698,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   }
 
   function applySlotSelectionDefault(prevSlot, restorePrevSelection) {
-    if (prevSlot.crewIdInCountry != curSlotIdInCountry && prevSlot.countryId == curSlotCountryId)
-      ::hangar_current_preset_changed(-1, curSlotIdInCountry, -1)
-
     local crew = getSlotItem(curSlotCountryId, curSlotIdInCountry)
     if (crew)
     {
@@ -987,7 +984,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       ownerWeak.presetsListWeak.update()
     if (onCountryChanged)
       onCountryChanged()
-    ::hangar_current_preset_changed(curSlotCountryId, curSlotIdInCountry, ::slotbarPresets.getCurrent())
   }
 
   function prevCountry(obj) { switchCountry(-1) }

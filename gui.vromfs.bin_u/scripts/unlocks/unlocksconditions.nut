@@ -99,7 +99,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "gameModeInfoString", "modes", "events", "tournamentMode",
     "location", "operationMap", "weaponType", "difficulty",
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag",
-    "targetUnit", "targetType", "targetExpClass", "targetUnitClass", "targetTag",
+    "offenderType", "targetUnit", "targetType", "targetExpClass", "targetUnitClass", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
     "activity", "minStat", "statPlaceInSession", "statScoreInSession", "statAwardDamageInSession",
     "statKillsPlayerInSession", "statKillsAirInSession", "statKillsAirAiInSession",
@@ -118,6 +118,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
 
   locGroupByType = {
     playerType             = "playerUnit"
+    offenderType           = "playerUnit"
     playerTag              = "playerUnit"
     playerUnitRank         = "playerUnit"
     playerUnitMRank        = "playerUnit"
@@ -530,7 +531,7 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
   }
   else if (t == "playerUnit" || t == "targetUnit")
     res.values = (blk % "class")
-  else if (t == "playerType" || t == "targetType")
+  else if (t == "playerType" || t == "targetType" || t == "offenderType")
   {
     res.values = (blk % "unitType")
     res.values.extend(blk % "unitClass")
@@ -978,7 +979,8 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
     if (cType == "playerUnit" || cType=="targetUnit" || cType == "crewsUnit" || cType=="unitExists" ||
         cType == "usedInSessionUnit" || cType == "lastInSessionUnit")
       text = ::getUnitName(v)
-    else if (cType == "playerType" || cType == "targetType" || cType == "usedInSessionType" || cType == "lastInSessionType")
+    else if (cType == "playerType" || cType == "targetType" || cType == "usedInSessionType" || cType == "lastInSessionType" ||
+             cType == "offenderType")
       text = ::loc("unlockTag/" + ::getTblValue(v, mapConditionUnitType, v))
     else if (cType == "playerExpClass" || cType == "targetExpClass" || cType == "unitClass" || cType == "targetUnitClass" ||
              cType == "usedInSessionClass" || cType == "lastInSessionClass")
