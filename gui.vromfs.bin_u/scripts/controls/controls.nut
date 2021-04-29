@@ -799,7 +799,7 @@ class ::gui_handlers.Hotkeys extends ::gui_handlers.GenericOptions
   }
 
   function onScUnHover(obj) {
-    if (!::show_console_buttons || curShortcut?.shortcutId != getScById(obj?.scId)?.shortcutId)
+    if (!::show_console_buttons || curShortcut != getScById(obj?.scId))
       return
     curShortcut = null
     updateButtonsChangeValue()

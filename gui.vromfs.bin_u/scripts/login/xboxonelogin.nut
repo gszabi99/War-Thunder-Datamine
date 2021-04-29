@@ -94,6 +94,7 @@ class ::gui_handlers.LoginWndHandlerXboxOne extends ::BaseGuiHandler
         {
           msgBox("no_internet_connection", ::loc("xbox/noInternetConnection"), [["ok", function() {} ]], "ok")
           isLoginInProcess = false
+          ::dagor.logerr($"XBOX: login failed with error - {err_code}")
         }
 
       }.bindenv(this)
