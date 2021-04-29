@@ -1,9 +1,9 @@
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { hasFeature } = require("scripts/user/features.nut")
 
-::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId)
+::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {
-  ::fpsDrawer.updateStatus(fps, ping, packetLoss, sessionId)
+  ::fpsDrawer.updateStatus(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 }
 
 ::fpsDrawer <- {
@@ -12,7 +12,7 @@ local { hasFeature } = require("scripts/user/features.nut")
   QUALITY_COLOR_OKAY = "qualityColorOkay"
   QUALITY_COLOR_POOR = "qualityColorPoor"
 
-  paramsList = ["fps", "ping", "pl", "sid"]
+  paramsList = ["fps", "latency", "ping", "pl", "sid"]
   objIdPrefix = "status_text_"
 
   mainSceneObjects = {}
@@ -24,14 +24,14 @@ fpsDrawer.init <- function init()
   ::subscribe_handler(this)
 }
 
-fpsDrawer.updateStatus <- function updateStatus(fps, ping, packetLoss, sessionId)
+fpsDrawer.updateStatus <- function updateStatus(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {
   local objects = getCurSceneObjects()
   if (!objects)
     return
 
   checkVisibility(objects)
-  updateTexts(objects, fps, ping, packetLoss, sessionId)
+  updateTexts(objects, fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 }
 
 fpsDrawer.getCurSceneObjects <- function getCurSceneObjects()
@@ -65,7 +65,8 @@ fpsDrawer.validateObjects <- function validateObjects(objects, guiScene)
   return true
 }
 
-fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId) //validate objects before calling this
+//validate objects before calling this
+fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId, latency, latencyA, latencyR)
 {
   fps = (fps + 0.5).tointeger();
   local fpsText = ""
@@ -75,15 +76,23 @@ fpsDrawer.updateTexts <- function updateTexts(objects, fps, ping, pl, sessionId)
     fpsText = ::colorize(getFpsColor(fps), ::format("FPS: %d", fps))
   objects.fps.setValue(fpsText)
 
+  local latencyText = ""
   local pingText = ""
   local plText = ""
   local sidText = ""
+  if (latency >= 0) {
+    if (latencyA >= 0 && latencyR >= 0)
+      latencyText = ::format("%s:%5.1fms (A:%5.1fms R:%5.1fms)", ::loc("latency", "Latency"), latency, latencyA, latencyR)
+    else
+      latencyText = ::format("%s:%5.1fms", ::loc("latency", "Latency"), latency)
+  }
   if (ping >= 0)
   {
     pingText = ::colorize(getPingColor(ping), "Ping: " + ping)
     plText = ::colorize(getPacketlossColor(pl), "PL: " + pl + "%")
     sidText = sessionId
   }
+  objects.latency.setValue(latencyText)
   objects.ping.setValue(pingText)
   objects.pl.setValue(plText)
   objects.sid.setValue(sidText)

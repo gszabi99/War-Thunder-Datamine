@@ -74,6 +74,8 @@ local mUiStruct = [
       "antialiasing"
       "ssaa"
       "latency"
+      "latencyFlash"
+      "perfMetrics"
       "texQuality"
       "shadowQuality"
       "backgroundScale"
@@ -113,6 +115,14 @@ local mUiStruct = [
       "enableVr"
     ]
   }
+]
+
+local perfValues = [
+  "off",
+  "fps",
+  "compact",
+  "full"
+  // append new values to the end to keep original indexes consistent
 ]
 //------------------------------------------------------------------------------
 local getGuiValue = @(id, defVal=null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
@@ -352,8 +362,7 @@ local function getAvailableDlssModes()
   return values;
 }
 
-local function getAvailableLatencyModes()
-{
+local function getAvailableLatencyModes() {
   local values = ["off"]
   if (::is_low_latency_available(1))
     values.append("on")
@@ -364,6 +373,8 @@ local function getAvailableLatencyModes()
 
   return values;
 }
+
+local getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 0 || ::is_perf_metrics_available(id))
 
 local function getListOption(id, desc, cb, needCreateList = true) {
   local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -748,6 +759,7 @@ mSettings = {
   latency = { widgetType="list" def="off" blk="video/latency" restart=false
     init = function(blk, desc) {
       desc.values <- getAvailableLatencyModes()
+      desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = ::loc($"guiHints/latency_{value}") })
     }
     getFromBlk = function(blk, desc) {
       local quality = get_blk_value_by_path(blk, desc.blk, -1)
@@ -758,6 +770,23 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, quality)
     }
     onChanged = "latencyClick"
+    isVisible = @() ::has_feature("ReflexLowLatency")
+  }
+  latencyFlash = { widgetType="checkbox" def=false blk="video/latencyFlash" restart=false
+    isVisible = @() ::has_feature("ReflexLowLatency")
+  }
+  perfMetrics = { widgetType="list" def="fps" blk="video/perfMetrics" restart=false
+    init = function(blk, desc) {
+      desc.values <- getAvailablePerfMetricsModes()
+    }
+    function getFromBlk(blk, desc) {
+      local mode = get_blk_value_by_path(blk, desc.blk, -1)
+      return perfValues?[mode] ?? desc.def
+    }
+    function setToBlk(blk, desc, val) {
+      // -1 will use the default value when loaded
+      set_blk_value_by_path(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
+    }
     isVisible = @() ::has_feature("ReflexLowLatency")
   }
   texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
