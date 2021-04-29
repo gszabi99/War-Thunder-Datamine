@@ -374,7 +374,7 @@ local function getAvailableLatencyModes() {
   return values;
 }
 
-local getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 0 || ::is_perf_metrics_available(id))
+local getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || ::is_perf_metrics_available(id))
 
 local function getListOption(id, desc, cb, needCreateList = true) {
   local raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
@@ -1044,6 +1044,10 @@ local function validateInternalConfigs() {
   mScriptValid = !errorsList.len()
   if (::is_dev_version)
     mValidationError = ::g_string.implode(errorsList, "\n")
+  if (!mScriptValid) {
+    local errorString = ::g_string.implode(errorsList, "\n") // warning disable: -declared-never-used
+    ::script_net_assert_once("system_options_not_valid", "not valid system option list")
+  }
 }
 
 local function configRead() {

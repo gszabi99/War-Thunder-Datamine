@@ -343,9 +343,29 @@ local function sortPresetLists(listArr) {
       || b.totalMass <=> a.totalMass)
 }
 
+local function updateUnitWeaponsByPreset(unit)
+{
+  if (!unit)
+    return
+
+  local unitBlk = ::get_full_unit_blk(unit.name)
+  if( !unitBlk )
+    return
+
+  local presetArr = (unitBlk?.weapon_presets ?? ::DataBlock()) % "preset"
+  local weapons = unit.weapons
+  foreach (wp in presetArr)
+  {
+    local idx = weapons.findindex(@(inst) inst.name == wp.name)
+    if (wp?.weaponConfig.presetType != null && idx != null)
+      weapons[idx].presetType <- wp.weaponConfig.presetType
+  }
+}
+
 local function getWeaponryByPresetInfo(unit, chooseMenuList = null)
 {
   // Get list clone to avoid adding properties such as isEnabled, isDefault, chapterOrd in presets
+  updateUnitWeaponsByPreset(unit)
   local res = {presets = [],
     presetsList = _clone(getPresetsList(unit, chooseMenuList)),
     favoriteArr = getFavoritePresets(unit.name)}

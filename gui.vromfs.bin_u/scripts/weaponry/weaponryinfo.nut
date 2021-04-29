@@ -646,16 +646,12 @@ local function getUnitWeaponry(unit, p = WEAPON_TEXT_PARAMS)
     local wpBlk = null
     local wConf = null
     foreach (wp in (unitBlk.weapon_presets % "preset"))
-    {
       if (wp.name == unit.weapons?[weaponPresetIdx]?.name)
       {
         wpBlk = blkFromPath(wp.blk)
         wConf = wp?.weaponConfig
-        if (wConf?.presetType != null)
-            unit.weapons[weaponPresetIdx].presetType <- wConf.presetType
         break
       }
-    }
 
     weapons = addWeaponsFromBlk(weapons, wpBlk, unit, p.weaponsFilterFunc, wConf)
   }
