@@ -1252,4 +1252,14 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         blk.hide = true
     }
   }
+  {
+    id = "require"
+    addToExportDataBlock = function(blk, unit)
+    {
+      if (unit.reqAir == null || unit.reqAir == "")
+        blk.hide = true
+      else
+        blk.value = unit.reqAir
+    }
+  }
 ])
