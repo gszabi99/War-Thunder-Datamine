@@ -275,7 +275,9 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     local idx = curPresetIdx
     local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     local btnText = itemParams?.weaponryItem.actionBtnText ?? ""
-    local actionBtnObj = showSceneBtn("actionBtn", btnText != "" && idx != chosenPresetIdx)
+    local canBuy = weaponryByPresetInfo.presets[idx].cost > 0
+    local actionBtnObj = showSceneBtn("actionBtn", btnText != ""
+      && (idx != chosenPresetIdx || canBuy))
     if (btnText != "" && ::check_obj(actionBtnObj))
       actionBtnObj.setValue(btnText)
     local altBtnText = itemParams?.weaponryItem.altBtnBuyText ?? ""
@@ -383,10 +385,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function onChangeFavorite(obj)
   {
     local preset = weaponryByPresetInfo.presets[curPresetIdx]
-    local isSelected = preset.chapterOrd == CHAPTER_FAVORITE_IDX
-    local chapterOrd = isSelected
+    local isChosen = chosenPresetIdx == curPresetIdx
+    local chosenPresetName = presetsList[chosenPresetIdx].name
+    local isFavorite = preset.chapterOrd == CHAPTER_FAVORITE_IDX
+    local chapterOrd = isFavorite
       ? CHAPTER_ORDER.findindex(@(p) p == preset.purposeType) : CHAPTER_FAVORITE_IDX
-    if (isSelected)
+    if (isFavorite)
     {
       local idx = favoriteArr.findindex(@(id) id == preset.id)
       if (idx != null)
@@ -398,7 +402,10 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     preset.chapterOrd = chapterOrd
     presetsList[curPresetIdx].chapterOrd = chapterOrd
     sortPresetLists([weaponryByPresetInfo.presets, presetsList])
+    chosenPresetIdx = presetsList.findindex(
+      @(w) w.name == (isChosen ? preset.id : chosenPresetName)) ?? 0
     updateAllItems()
+    selectPreset(presetsList.findindex(@(w) w.name == preset.id) ?? 0)
   }
 }
 

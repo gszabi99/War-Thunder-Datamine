@@ -560,20 +560,15 @@
               "margin": "1@blockInterval, 0"
             },
             "tdiv": {
+              "id": "decals_zone",
               "size": "fw, ph",
-              "padding-left": "1@blockInterval",
-              "flow": "vertical",
+              "behaviour": "posNavigator",
+              "padding": "@blockInterval",
+              "class": "hoverFrame",
+              "flow": "h-flow",
+              "flow-align": "center",
               "overflow-y": "auto",
-              "total-input-transparent": "yes",
-              "tdiv": {
-                "id": "decals_zone",
-                "width": "pw",
-                "padding-top": "@blockInterval",
-                "class": "hoverFrame",
-                "flow": "h-flow",
-                "flow-align": "center",
-                "display": "hide"
-              }
+              "navigatorShortcuts": "noSelect"
             }
           }
         }
@@ -636,7 +631,6 @@
                         "id": "pages_list",
                         "class": "countries_small",
                         "type": "transparent",
-                        "activeAccesskeys": "LeftRight",
                         "navigatorShortcuts": "yes",
                         "move-only-hover": "yes",
                         "on_select": "onPageChange"
@@ -649,7 +643,6 @@
                         "padding-right": "0",
                         "class": "countries_small",
                         "type": "transparent",
-                        "activeAccesskeys": "LeftRight",
                         "navigatorShortcuts": "yes",
                         "move-only-hover": "yes",
                         "on_select": "onSubPageChange"

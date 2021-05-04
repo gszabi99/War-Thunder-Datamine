@@ -2223,30 +2223,70 @@
   {
     "commonWeapons": [
       {
-        "Weapon": {
-          "trigger": "gunner0",
-          "blk": "gameData/Weapons/gunType2_turret.blk",
-          "breechInCockpit": true,
-          "emitter": "gun1",
-          "flash": "flare1",
-          "dm": "gunner1_dm",
-          "gunnerDm": "gunner1_dm",
-          "gunDm": "gun1_dm",
-          "partsDP": "gun1_dm",
-          "bullets": 750,
-          "turret": {
-            "head": "turret1",
-            "gun": "gun1"
+        "Weapon": [
+          {
+            "trigger": "gunner0"
           },
-          "limits": {
-            "yaw": [-42.0,45.0],
-            "pitch": [0.0,80.0]
+          {
+            "blk": "gameData/Weapons/gunType2_turret.blk"
           },
-          "limitsDeadzone": {
-            "yaw": [-2.0,2.0],
-            "pitch": [0.0,25.0]
+          {
+            "breechInCockpit": true
+          },
+          {
+            "emitter": "gun1"
+          },
+          {
+            "flash": "flare1"
+          },
+          {
+            "dm": "gunner1_dm"
+          },
+          {
+            "gunnerDm": "gunner1_dm"
+          },
+          {
+            "gunDm": "gun1_dm"
+          },
+          {
+            "partsDP": "gun1_dm"
+          },
+          {
+            "bullets": 750
+          },
+          {
+            "turret": {
+              "head": "turret1",
+              "gun": "gun1"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-75.0,75.0],
+              "pitch": [-30.0,55.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-4.0,4.0],
+              "pitch": [-10.0,5.0]
+            }
+          },
+          {
+            "limitsDeadzone": {
+              "yaw": [-15.0,15.0],
+              "pitch": [-2.0,5.0]
+            }
+          },
+          {
+            "limitsTable": {
+              "lim1": [-75.0,-20.0,-30.0,55.0],
+              "lim2": [-20.0,-4.0,-10.0,55.0],
+              "lim3": [-4.0,20.0,-10.0,55.0],
+              "lim4": [20.0,75.0,-30.0,55.0]
+            }
           }
-        }
+        ]
       },
       {
         "Weapon": {
@@ -2265,8 +2305,8 @@
             "gun": "gun2"
           },
           "limits": {
-            "yaw": [-15.0,15.0],
-            "pitch": [-30.0,15.0]
+            "yaw": [-60.0,60.0],
+            "pitch": [-90.0,-5.0]
           }
         }
       }

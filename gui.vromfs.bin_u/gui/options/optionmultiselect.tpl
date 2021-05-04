@@ -20,7 +20,7 @@ MultiSelect {
   class:t='<<listClass>>'
   value:t='<<#value>><<value>><</value>><<^value>>0<</value>>'
   optionsShortcuts:t='yes'
-
+  interactive:t='yes'
   <<#items>>
   multiOption {
     <<#id>>

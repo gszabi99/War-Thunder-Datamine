@@ -471,7 +471,11 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     local needUpdateCountriesMarkup = countriesObjsCount != countriesView.countries.len()
     if (!needUpdateCountriesMarkup)
       for (local i = 0;i < countriesObjsCount; i++) {
-         needUpdateCountriesMarkup = countriesView.countries.findindex(@(v) v.country == countriesNestObj.getChild(i)?.countryId) == null
+         needUpdateCountriesMarkup = countriesView.countries.findindex(
+           function(v) {
+             local countryObj = countriesNestObj.getChild(i)
+             return v.country == countryObj?.countryId && v.isEnabled == countryObj.isEnabled()
+           }) == null
          if (needUpdateCountriesMarkup)
            break
       }
@@ -1388,5 +1392,10 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     local obj = showSceneBtn("slotbarHint", slotbarHintText != "")
     if (obj != null && slotbarHintText != "")
      obj.findObject("slotbarHintText").setValue(slotbarHintText)
+  }
+
+  function onEventLobbyIsInRoomChanged(p) {
+    if (p.wasSessionInLobby != ::SessionLobby.hasSessionInLobby())
+      fullUpdate()
   }
 }

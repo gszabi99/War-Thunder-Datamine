@@ -128,6 +128,7 @@ class ::ChatHandler
     updatePrompt(sceneData)
     scenes.append(sceneData)
     validateCurMode()
+    ::handlersManager.updateControlsAllowMask()
     return sceneData
   }
 
@@ -742,7 +743,7 @@ class ::ChatHandler
 
   function getControlsAllowMask()
   {
-    return isActive
+    return isActive && canEnableChatInput()
       ? CtrlsInGui.CTRL_IN_MP_CHAT | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE | CtrlsInGui.CTRL_ALLOW_MP_CHAT
       : CtrlsInGui.CTRL_ALLOW_FULL
   }
@@ -774,6 +775,7 @@ class ::ChatHandler
 {
   sceneData.scene = null
   ::get_game_chat_handler().cleanScenesList()
+  ::handlersManager.updateControlsAllowMask()
 }
 
 ::game_chat_input_toggle_request <- function game_chat_input_toggle_request(toggle)

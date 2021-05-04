@@ -953,6 +953,7 @@ SessionLobby.switchStatus <- function switchStatus(_status)
 
   local wasInRoom = isInRoom()
   local wasStatus = status
+  local wasSessionInLobby = isEventRoom
   status = _status  //for easy notify other handlers about change status
   //dlog("GP: status changed to " + ::getEnumValName("lobbyStates", status))
   if (needJoiningWnd())
@@ -988,7 +989,7 @@ SessionLobby.switchStatus <- function switchStatus(_status)
   ::broadcastEvent("LobbyStatusChange")
   if (wasInRoom != isInRoom())
   {
-    ::broadcastEvent("LobbyIsInRoomChanged")
+    ::broadcastEvent("LobbyIsInRoomChanged", { wasSessionInLobby })
     ::call_darg("networkIsMultiplayerUpdate", isInRoom())
   }
 }

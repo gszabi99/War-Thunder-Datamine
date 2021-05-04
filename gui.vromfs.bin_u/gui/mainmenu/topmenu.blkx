@@ -1,99 +1,123 @@
 [
   {
-    "shopWnd": {
-      "id": "shop_wnd_move",
-      "width": "1@slotbarWidthFull",
-      "height": "0",
-      "pos": "50%sw-50%w, 1@shopYPos-h",
-      "position": "absolute",
-      "input-transparent": "yes",
-      "_size-timer": "0",
-      "moveOut": "no",
-      "on_activate": "onShopWndAnimStarted",
-      "on_deactivate": "onShopWndAnimFinished",
-      "tdiv": {
-        "size": "pw, ph",
-        "overflow": "hidden",
-        "frame": {
-          "id": "shop_wnd_frame",
-          "size": "1@shopWndWidth, 1@maxWindowHeightWithFullSlotbar",
-          "pos": "50%pw-50%w, sh-h",
-          "position": "absolute",
-          "class": "wndNav",
-          "type": "blue",
-          "padByLine": "yes",
-          "tooltip": ""
-        }
+    "shopWnd": [
+      {
+        "id": "shop_wnd_move"
       },
-      "navBar": {
-        "style": "id:nav-topMenu;"
+      {
+        "width": "1@slotbarWidthFull"
       },
-      "Button_text": [
-        {
-          "id": "topmenu_btn_shop_wnd"
-        },
-        {
-          "width": "1@shopWidthMax"
-        },
-        {
-          "pos": "1@offsetFromEdge, ph-h +1@slotbarTop -1@buttonMargin"
-        },
-        {
-          "position": "absolute"
-        },
-        {
-          "text": "#mainmenu/btnShop"
-        },
-        {
-          "visualStyle": "common"
-        },
-        {
-          "class": "switch"
-        },
-        {
-          "noMargin": "yes"
-        },
-        {
-          "btnName": "LT"
-        },
-        {
-          "_on_click": "shopWndSwitch"
-        },
-        {
-          "ButtonImg": []
-        },
-        {
-          "img": {
-            "pos": "50%ph-50%w, 50%ph-50%h",
-            "position": "absolute"
-          }
-        },
-        {
-          "img": {
-            "pos": "pw-50%ph-50%w, 50%ph-50%h",
-            "position": "absolute"
-          }
-        },
-        {
-          "additionalIconsDiv": {
-            "pos": "10%ph, -h",
+      {
+        "height": "0"
+      },
+      {
+        "pos": "50%sw-50%w, 1@shopYPos-h"
+      },
+      {
+        "position": "absolute"
+      },
+      {
+        "input-transparent": "yes"
+      },
+      {
+        "_size-timer": "0"
+      },
+      {
+        "moveOut": "no"
+      },
+      {
+        "on_activate": "onShopWndAnimStarted"
+      },
+      {
+        "on_deactivate": "onShopWndAnimFinished"
+      },
+      {
+        "tdiv": {
+          "size": "pw, ph",
+          "overflow": "hidden",
+          "frame": {
+            "id": "shop_wnd_frame",
+            "size": "1@shopWndWidth, 1@maxWindowHeightWithFullSlotbar",
+            "pos": "50%pw-50%w, sh-h",
             "position": "absolute",
-            "input-transparent": "yes",
-            "css-hier-invalidate": "yes",
-            "discount_notification": {
-              "type": "down",
-              "id": "topmenu_research_discount",
-              "display": "hide"
-            },
-            "squadronExpIcon": {
-              "value": "{\"viewId\": \"SHOP_SQUADRON_EXP_ICON\"}",
-              "type": "down",
-              "display": "hide"
-            }
+            "class": "wndNav",
+            "type": "blue",
+            "padByLine": "yes",
+            "tooltip": ""
           }
         }
-      ]
-    }
+      },
+      {
+        "navBar": {
+          "style": "id:nav-topMenu;"
+        }
+      },
+      {
+        "tdiv": {
+          "pos": "1@offsetFromEdge, ph-h +1@slotbarTop -1@buttonMargin",
+          "position": "absolute",
+          "Button_text": [
+            {
+              "id": "topmenu_btn_shop_wnd"
+            },
+            {
+              "width": "1@shopWidthMax"
+            },
+            {
+              "text": "#mainmenu/btnShop"
+            },
+            {
+              "visualStyle": "common"
+            },
+            {
+              "class": "switch"
+            },
+            {
+              "noMargin": "yes"
+            },
+            {
+              "btnName": "LT"
+            },
+            {
+              "_on_click": "shopWndSwitch"
+            },
+            {
+              "ButtonImg": []
+            },
+            {
+              "img": {
+                "pos": "50%ph-50%w, 50%ph-50%h",
+                "position": "absolute"
+              }
+            },
+            {
+              "img": {
+                "pos": "pw-50%ph-50%w, 50%ph-50%h",
+                "position": "absolute"
+              }
+            },
+            {
+              "additionalIconsDiv": {
+                "pos": "10%ph, -h",
+                "position": "absolute",
+                "input-transparent": "yes",
+                "css-hier-invalidate": "yes",
+                "discount_notification": {
+                  "type": "down",
+                  "id": "topmenu_research_discount",
+                  "display": "hide"
+                },
+                "squadronExpIcon": {
+                  "value": "{\"viewId\": \"SHOP_SQUADRON_EXP_ICON\"}",
+                  "type": "down",
+                  "display": "hide"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   },
   {
     "gamercard_div": [

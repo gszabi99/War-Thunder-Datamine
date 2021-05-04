@@ -18,18 +18,21 @@ local styling = {
         opacity = 1
         _width = ::fpx(8)
         _height = ::fpx(8)
+        skipDirPadNav=true
       }
     } else {
       return class {
         opacity = 0
         _width = ::fpx(8)
         _height = ::fpx(8)
+        skipDirPadNav=true
       }
     }
   }
 
   ContentRoot = class {
     size = flex()
+    skipDirPadNav=true
   }
 }
 

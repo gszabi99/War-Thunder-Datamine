@@ -620,7 +620,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local data = ""
     local lowerCurPage = curPage.tolower()
     local pageTypeId = ::get_unlock_type(lowerCurPage)
-    local isNeedDecalDesc = pageTypeId == ::UNLOCKABLE_MEDAL
     local itemSelectFunc  = pageTypeId == ::UNLOCKABLE_MEDAL ? onMedalSelect : null
     local containerObjId = pageTypeId == ::UNLOCKABLE_MEDAL ? "medals_zone"
       : pageTypeId == ::UNLOCKABLE_DECAL ? "decals_zone"
@@ -639,9 +638,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       data = ::handyman.renderCached("gui/commonParts/imgFrame", view)
     }
 
-    showSceneBtn("medals_info", isNeedDecalDesc)
-    foreach (id in [ "medals_zone", "decals_zone" ])
-      showSceneBtn(id, id == containerObjId)
     local unlocksObj = scene.findObject(containerObjId)
 
     local curIndex = 0
@@ -1233,7 +1229,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     ::showBtn("checkbox_favorites", true, containerObj)
     ::g_unlock_view.fillUnlockFav(name, containerObj)
-    showSceneBtn("unlocks_list", false)
 
     local view = {
       title = ::loc(name + "/name")

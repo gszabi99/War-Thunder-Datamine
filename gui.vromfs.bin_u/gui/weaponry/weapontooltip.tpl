@@ -1,8 +1,5 @@
 tdiv {
   flow:t='vertical'
-  <<#bulletAnimation>>
-  width:t='1@bulletAnimationWidth + 2@bulletAnimationPadding'
-  <</bulletAnimation>>
   textareaNoTab {
     text:t='<<name>>'
   }
@@ -14,14 +11,9 @@ tdiv {
   }
   <<#bulletAnimation>>
   tdiv {
-    pos:t='-1@blockInterval, 1@blockInterval'
-    position:t='relative'
-    width:t='pw + 2@blockInterval'
-    background-color:t='#0e0e0e'
+    margin-top:t='1@blockInterval'
     movie {
       size:t='1@bulletAnimationWidth ,1@bulletAnimationHeight'
-      pos:t='0.5pw-0.5w, 0'
-      position:t='relative'
       movie-load='<<bulletAnimation>>'
       movie-autoStart:t='yes'
       movie-loop:t='yes'

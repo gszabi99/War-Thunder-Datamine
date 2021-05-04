@@ -78,6 +78,7 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
   afkTimeToKick = null
 
   curHudVisMode = null
+  curChatData = null
   isReinitDelayed = false
   needVoiceChat = false
   sideBlockMaxWidth = null
@@ -168,8 +169,13 @@ class ::gui_handlers.Hud extends ::gui_handlers.BaseGuiHandlerWT
 
   function loadGameChat()
   {
+    if (curChatData)
+    {
+      ::detachGameChatSceneData(curChatData)
+      curChatData = null
+    }
     if (::is_multiplayer())
-      ::loadGameChatToObj(scene.findObject("chatPlace"), "gui/chat/gameChat.blk", this,
+      curChatData = ::loadGameChatToObj(scene.findObject("chatPlace"), "gui/chat/gameChat.blk", this,
                           { selfHideInput = true, selfHideLog = true })
   }
 
