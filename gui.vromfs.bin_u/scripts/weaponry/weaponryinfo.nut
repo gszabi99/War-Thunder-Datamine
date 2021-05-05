@@ -250,7 +250,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
         TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
         TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]))
     { //not a turret
-      currentTypeName = WEAPON_TYPE.GUNS
+      currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && typeof(weaponBlk?.bullet) == "instance"
           && isCaliberCannon(1000 * ::getTblValue("caliber", weaponBlk?.bullet, 0)))
         currentTypeName = WEAPON_TYPE.CANNONS

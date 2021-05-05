@@ -5,19 +5,25 @@
       "power": 90.0,
       "band": 9,
       "rcs": 3.0,
-      "range": 10000.0,
-      "rangeMax": 15000.0,
+      "range": 12000.0,
+      "rangeMax": 16000.0,
       "antenna": {
-        "angleHalfSens": 1.5,
-        "sideLobesSensitivity": -35.0
+        "azimuth": {
+          "angleHalfSens": 2.2,
+          "sideLobesSensitivity": -30.0
+        },
+        "elevation": {
+          "angleHalfSens": 1.1,
+          "sideLobesSensitivity": -35.0
+        }
       }
     }
   },
   "scanPatterns": {
     "lock": {
       "type": "pyramide",
-      "azimuthLimits": [-15.0,15.0],
-      "elevationLimits": [-20.0,85.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
@@ -30,8 +36,8 @@
     },
     "losLock": {
       "type": "pyramide",
-      "azimuthLimits": [-15.0,15.0],
-      "elevationLimits": [-20.0,85.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
@@ -44,8 +50,8 @@
     },
     "track": {
       "type": "no",
-      "azimuthLimits": [-15.0,15.0],
-      "elevationLimits": [-20.0,85.0],
+      "azimuthLimits": [-10.0,10.0],
+      "elevationLimits": [-10.0,80.0],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0
@@ -60,8 +66,9 @@
       "track": true,
       "distance": {
         "presents": true,
-        "minValue": 75.0,
-        "maxValue": 15000.0
+        "minValue": 750.0,
+        "maxValue": 16000.0,
+        "width": 60.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -188,8 +195,8 @@
           },
           "setDistGatePos": {
             "source": "constRange",
-            "pos": 7500.0,
-            "width": 15000.0
+            "pos": 8375.0,
+            "width": 15250.0
           }
         },
         "setVisualLockMode": {

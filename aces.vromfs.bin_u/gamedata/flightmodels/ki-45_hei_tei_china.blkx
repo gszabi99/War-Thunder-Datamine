@@ -6,12 +6,6 @@
     "fmFile": "fm/ki-45_ko.blk"
   },
   {
-    "model": "ki_45_ko"
-  },
-  {
-    "fmFile": "fm/ki-45_ko.blk"
-  },
-  {
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk"
   },
   {
@@ -73,6 +67,12 @@
   },
   {
     "thisIsFakeDM": true
+  },
+  {
+    "model": "ki_45_hei_tei"
+  },
+  {
+    "fmFile": "fm/ki-45_ko.blk"
   },
   {
     "Params": {
@@ -470,6 +470,14 @@
         },
         "armor2_dm": {
           "hp": 45.0
+        },
+        "armor4_dm": {
+          "hp": 45.0
+        }
+      },
+      "armor8_5": {
+        "armor3_dm": {
+          "hp": 40.0
         }
       },
       "armor_engine": {
@@ -485,15 +493,15 @@
       "c_dural10": {
         "tail_dm": {
           "genericDamageMult": 0.6,
-          "hp": 125.9
+          "hp": 131.5
         },
         "wing1_l_dm": {
           "genericDamageMult": 0.35,
-          "hp": 85.2
+          "hp": 86.4
         },
         "wing1_r_dm": {
           "genericDamageMult": 0.35,
-          "hp": 85.2
+          "hp": 86.4
         },
         "wing2_l_dm": {
           "genericDamageMult": 0.35,
@@ -505,11 +513,11 @@
         },
         "wing_l_dm": {
           "genericDamageMult": 0.35,
-          "hp": 112.4
+          "hp": 109.8
         },
         "wing_r_dm": {
           "genericDamageMult": 0.35,
-          "hp": 112.4
+          "hp": 109.8
         }
       },
       "c_dural15": {
@@ -523,31 +531,41 @@
       "c_dural3": {
         "aileron_l_dm": {
           "genericDamageMult": 0.3,
-          "hp": 44.1
+          "hp": 43.6
         },
         "aileron_r_dm": {
           "genericDamageMult": 0.3,
-          "hp": 44.1
+          "hp": 43.6
         },
-        "elevator_dm": {
+        "elevator0_dm": {
           "genericDamageMult": 0.3,
-          "hp": 50.5
+          "hp": 29.5
+        },
+        "elevator1_dm": {
+          "genericDamageMult": 0.3,
+          "hp": 29.5
         },
         "fin_dm": {
-          "hp": 30.6
+          "hp": 31.0
         },
         "flap_l_dm": {
-          "hp": 40.3
+          "hp": 39.3
         },
         "flap_r_dm": {
-          "hp": 40.3
+          "hp": 39.3
         },
         "rudder_dm": {
           "genericDamageMult": 0.3,
-          "hp": 31.7
+          "hp": 32.5
         },
         "stab_dm": {
-          "hp": 36.3
+          "hp": 30.0
+        },
+        "stab2_dm": {
+          "hp": 30.0
+        },
+        "stab1_dm": {
+          "hp": 38.5
         }
       },
       "dural": {
@@ -558,19 +576,19 @@
           "hp": 19.5
         },
         "cover1_dm": {
-          "hp": 25.8
+          "hp": 19.5
         },
         "cover2_dm": {
-          "hp": 25.8
+          "hp": 19.5
         },
         "cover3_dm": {
           "hp": 19.5
         },
         "cover4_dm": {
-          "hp": 19.5
+          "hp": 23.7
         },
         "cover5_dm": {
-          "hp": 23.8
+          "hp": 23.7
         },
         "cover6_dm": {
           "hp": 19.5
@@ -587,10 +605,10 @@
       },
       "dural70": {
         "spar1_l_dm": {
-          "hp": 59.5
+          "hp": 69.8
         },
         "spar1_r_dm": {
-          "hp": 59.5
+          "hp": 69.8
         },
         "spar2_l_dm": {
           "hp": 59.5
@@ -599,24 +617,21 @@
           "hp": 59.5
         },
         "spar_l_dm": {
-          "hp": 88.3
+          "hp": 90.5
         },
         "spar_r_dm": {
-          "hp": 88.3
+          "hp": 90.5
         }
       },
       "protected_controls": {
         "tailcontrol_dm": {
-          "hp": 59.5
-        },
-        "wingcontrol_dm": {
-          "hp": 59.5
+          "hp": 80.5
         },
         "wingcontrol_l_dm": {
-          "hp": 59.5
+          "hp": 69.3
         },
         "wingcontrol_r_dm": {
-          "hp": 59.5
+          "hp": 69.3
         }
       },
       "steel": {
@@ -624,18 +639,18 @@
           "hp": 49.5
         },
         "gear_l_dm": {
-          "hp": 52.2
+          "hp": 49.5
         },
         "gear_r_dm": {
-          "hp": 52.2
+          "hp": 49.5
         }
       },
       "steel_cooling_sys": {
         "oil1_dm": {
-          "hp": 17.7
+          "hp": 21.5
         },
         "oil2_dm": {
-          "hp": 17.7
+          "hp": 21.5
         },
         "oil3_dm": {
           "hp": 15.5
@@ -664,13 +679,13 @@
           "hp": 44.5
         },
         "tank2_dm": {
-          "hp": 57.7
+          "hp": 54.3
         },
         "tank3_dm": {
-          "hp": 57.7
+          "hp": 56.4
         },
         "tank4_dm": {
-          "hp": 44.5
+          "hp": 56.4
         },
         "tank5_dm": {
           "hp": 44.5
@@ -756,6 +771,16 @@
       },
       {
         "part": {
+          "name": "armor3_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "armor4_dm"
+        }
+      },
+      {
+        "part": {
           "name": "cannon1_dm"
         }
       },
@@ -832,7 +857,39 @@
       {
         "part": [
           {
-            "name": "elevator_dm"
+            "name": "elevator0_dm"
+          },
+          {
+            "onHit": {
+              "damage": 50.0,
+              "cut": 0.7
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 2.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "elevator1_dm"
           },
           {
             "onHit": {
@@ -1558,6 +1615,108 @@
         "part": [
           {
             "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab1_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab2_dm"
           },
           {
             "onHit": {
@@ -2403,11 +2562,6 @@
       {
         "part": {
           "name": "wing_r_dm"
-        }
-      },
-      {
-        "part": {
-          "name": "wingcontrol_dm"
         }
       },
       {
