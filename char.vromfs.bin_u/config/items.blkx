@@ -1237,6 +1237,32 @@
       }
     }
   },
+  "booster_wp_400_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "wpRate": 400,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
+  "booster_rp_400_1mp": {
+    "expiredTimeH": 72.0,
+    "expiredTimeHAfterActivation": 24.0,
+    "type": "rateBooster",
+    "rateBoosterParams": {
+      "xpRate": 400,
+      "spentInSessionTimeMin": 30,
+      "stop": {
+        "type": "sessionsStarted",
+        "num": 1
+      }
+    }
+  },
   "booster_wp_300_1mp": {
     "expiredTimeH": 72.0,
     "expiredTimeHAfterActivation": 24.0,
@@ -2873,6 +2899,33 @@
     "universalSpareParams": {
       "unitType": "aircraft",
       "country": "country_ussr",
+      "numSpares": 1
+    }
+  },
+  "item_universal_spare_tank_italy": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "universalSpareParams": {
+      "unitType": "tank",
+      "country": "country_italy",
+      "numSpares": 1
+    }
+  },
+  "item_universal_spare_ship_ussr": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "universalSpareParams": {
+      "unitType": "ship",
+      "country": "country_ussr",
+      "numSpares": 1
+    }
+  },
+  "item_universal_spare_aircraft_france": {
+    "type": "universalSpare",
+    "canPacked": true,
+    "universalSpareParams": {
+      "unitType": "aircraft",
+      "country": "country_france",
       "numSpares": 1
     }
   },

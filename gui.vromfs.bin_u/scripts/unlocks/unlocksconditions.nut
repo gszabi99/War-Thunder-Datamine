@@ -97,7 +97,7 @@ local function getOverrideCondType(condBlk, unlockMode) {
     "atLeastOneUnitsRankOnStartMission", "maxUnitsRankOnStartMission",
     "unitExists", "additional", "unitClass",
     "gameModeInfoString", "modes", "events", "tournamentMode",
-    "location", "operationMap", "weaponType", "difficulty",
+    "location", "operationMap", "weaponType", "ammoMass", "bulletCaliber", "difficulty",
     "playerUnit", "playerType", "playerExpClass", "playerUnitRank", "playerUnitMRank", "playerTag",
     "offenderType", "targetUnit", "targetType", "targetExpClass", "targetUnitClass", "targetTag",
     "crewsUnit", "crewsUnitRank", "crewsUnitMRank", "crewsTag", "usedPlayerUnit", "lastPlayerUnit",
@@ -677,6 +677,14 @@ UnlockConditions.loadCondition <- function loadCondition(blk, unlockMode)
     })
     res.values = v != "" ? v : null
   }
+  else if (t == "ammoMass") {
+    res.values = format("%d %s", (blk?.mass ?? 1), ::loc("measureUnits/kg"))
+    res.gt <- blk?.notLess ?? true
+  }
+  else if (t == "bulletCaliber") {
+    res.values = format("%d %s", (blk?.caliber ?? 1) * 1000, ::loc("measureUnits/mm"))
+    res.gt <- blk?.notLess ?? true
+  }
 
   local overrideCondType = getOverrideCondType(blk, unlockMode)
   if (overrideCondType)
@@ -989,7 +997,7 @@ UnlockConditions._addUsualConditionsText <- function _addUsualConditionsText(gro
              cType == "playerCountry" || cType == "usedInSessionTag" || cType == "lastInSessionTag")
       text = ::loc("unlockTag/" + v)
     else if (::isInArray(cType, [ "activity", "playerUnitRank", "playerUnitMRank",
-      "crewsUnitRank", "crewsUnitMRank", "minStat", "targetDistance", "higherBR"]))
+      "crewsUnitRank", "crewsUnitMRank", "minStat", "targetDistance", "higherBR", "ammoMass", "bulletCaliber"]))
       text = condition?.gt != null
         ? ::format( ::loc("conditions/" + (condition.gt ? "min" : "max") + "_limit"), v.tostring())
         : v.tostring()
