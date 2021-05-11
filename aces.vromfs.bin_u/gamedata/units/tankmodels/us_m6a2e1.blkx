@@ -104,9 +104,6 @@
       "armorClass": "CHA_tank",
       "hp": 10000.0,
       "hull": {
-        "body_front_dm": {
-          "armorThickness": 38.1
-        },
         "body_side_dm": {
           "armorThickness": 80.0,
           "variableThickness": true
@@ -139,7 +136,7 @@
           "armorThickness": 150.0
         },
         "turret_04_side_dm": {
-          "armorThickness": 160.0
+          "armorThickness": 12.7
         },
         "turret_04_front_dm": {
           "armorThickness": 190.0
@@ -183,6 +180,11 @@
       },
       "hull_shields": {
         "armorClass": "RHA_tank",
+        "body_front_dm": {
+          "armorThickness": 38.1,
+          "hidableInViewer": true,
+          "createSecondaryShatters": false
+        },
         "body_top_dm": {
           "armorThickness": 25.4
         },
