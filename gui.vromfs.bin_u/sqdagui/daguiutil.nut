@@ -422,6 +422,16 @@ local function setFocusToNextObj(scene, objIdsList, increment) {
   objectsList[newIdx].select()
 }
 
+local function getSelectedChild(obj) {
+  local total = obj.childrenCount()
+  if (total == 0)
+    return null
+
+  local value = ::clamp(obj.getValue(), 0, total - 1)
+  return obj.getChild(value)
+}
+
 return {
   setFocusToNextObj = setFocusToNextObj
+  getSelectedChild = getSelectedChild
 }

@@ -1175,25 +1175,6 @@ if need - put commented in array above
     obj.setValue(::get_auto_refill(1))
 }
 
-::set_autorefill_by_obj <- function set_autorefill_by_obj(obj)
-{
-  if (::slotbar_oninit || !obj) return
-  local mode = -1
-  if (obj.id == "slots-autorepair") mode = 0
-  else if (obj.id == "slots-autoweapon") mode = 1
-
-  if (mode>=0)
-  {
-    local value = obj.getValue()
-    set_auto_refill(mode, value)
-    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
-
-    ::slotbar_oninit = true
-    ::broadcastEvent("AutorefillChanged", { id = obj.id, value = value })
-    ::slotbar_oninit = false
-  }
-}
-
 ::isCountryAvailable <- function isCountryAvailable(country)
 {
   if (country=="country_0" || country=="")

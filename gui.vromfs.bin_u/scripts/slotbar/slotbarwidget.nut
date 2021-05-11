@@ -7,8 +7,6 @@ local { getBitStatus, isRequireUnlockForUnit } = require("scripts/unit/unitStatu
 local { getUnitItemStatusText, getUnitRequireUnlockShortText } = require("scripts/unit/unitInfoTexts.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 
-::slotbar_oninit <- false //!!FIX ME: Why this variable is global?
-
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
 class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
@@ -16,6 +14,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   wndType = handlerType.CUSTOM
   sceneBlkName = "gui/slotbar/slotbar.blk"
   ownerWeak = null
+  slotbarOninit = false
 
   //slotbar config
   singleCountry = null //country name to show it alone in slotbar
@@ -68,6 +67,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   beforeFullUpdate = null //function()
   afterFullUpdate = null //function()
   onSlotBattleBtn = null //function()
+  getLockedCountryData = null //function()
 
 
   //******************************* self slotbar params ***********************************//
@@ -399,7 +399,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   {
     if (!::g_login.isLoggedIn())
       return
-    if (::slotbar_oninit)
+    if (slotbarOninit)
     {
       ::script_net_assert_once("slotbar recursion", "init_slotbar: recursive call found")
       return
@@ -412,7 +412,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    ::slotbar_oninit = true
+    slotbarOninit = true
     ::init_selected_crews()
     ::update_crew_skills_available()
     local crewsConfig = gatherVisibleCrewsConfig()
@@ -499,7 +499,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         })
     }
 
-    ::slotbar_oninit = false
+    slotbarOninit = false
     guiScene.applyPendingChanges(false)
 
     local countriesNestMaxWidth = ::g_dagui_utils.toPixels(guiScene, "1@slotbarCountriesMaxWidth")
@@ -643,7 +643,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     if (!::checkObj(obj))
       return
 
-    if (::slotbar_oninit || skipCheckAirSelect || !shouldCheckQueue)
+    if (slotbarOninit || skipCheckAirSelect || !shouldCheckQueue)
     {
       onSlotbarSelectImpl(obj)
       skipCheckAirSelect = false
@@ -752,7 +752,7 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
     curSlotCountryId = selSlot.countryId
     curSlotIdInCountry = selSlot.crewIdInCountry
 
-    if (!::slotbar_oninit)
+    if (!slotbarOninit)
       (applySlotSelectionOverride ?? applySlotSelectionDefault)(prevSlot,
         Callback(function() {
           if (curSlotCountryId != selSlot.countryId)
@@ -865,17 +865,14 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
   function onHeaderCountry(obj)
   {
     local countryData = getCountryDataByObject(obj)
-    if (::slotbar_oninit || skipCheckCountrySelect)
+    if (slotbarOninit || skipCheckCountrySelect)
     {
       onSlotbarCountryImpl(countryData)
       skipCheckCountrySelect = false
       return
     }
 
-    local lockedCountryData = ::SessionLobby.getLockedCountryData()
-      ?? ::g_world_war.getLockedCountryData()
-      ?? ::g_squad_manager.getLockedCountryData()
-
+    local lockedCountryData = getLockedCountryData?()
     if (lockedCountryData != null
       && !::isInArray(countryData.country, lockedCountryData.availableCountries))
     {
@@ -1289,7 +1286,6 @@ class ::gui_handlers.SlotbarWidget extends ::gui_handlers.BaseGuiHandlerWT
         emptyText      = isVisualDisabled ? "" : emptyText,
         crewImage      = "#ui/gameuiskin#slotbar_crew_free_" + ::g_string.slice(countryData.country, 8)
         status         = getUnitItemStatusText(crewData.status),
-        inactive       = ::show_console_buttons && crewData.status == bit_unit_status.locked && ::is_in_flight(),
         hasActions     = hasActions && !::g_crews_list.isCrewListOverrided
         toBattle       = toBattle
         mainActionFunc = ::SessionLobby.canChangeCrewUnits() ? "onSlotChangeAircraft" : ""

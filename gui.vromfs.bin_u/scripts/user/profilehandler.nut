@@ -11,6 +11,7 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
 local { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -1601,3 +1602,26 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
       false, false, "profile_page")
   }
 }
+
+local openProfileSheetParamsFromPromo = {
+  UnlockAchievement = @(p1, p2) {
+    uncollapsedChapterName = p2 != ""? p1 : null
+    curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
+  }
+  Medal = @(p1, p2) { filterCountryName = p1 }
+  UnlockSkin = @(p1, p2) {
+    filterCountryName = p1
+    filterUnitTag = p2
+  }
+  UnlockDecal = @(p1, p2) { filterGroupName = p1 }
+}
+
+local function openProfileFromPromo(params, sheet = null) {
+  sheet = sheet ?? params?[0]
+  local launchParams = openProfileSheetParamsFromPromo?[sheet](params?[1], params?[2] ?? "") ?? {}
+  launchParams.__update({ initialSheet = sheet })
+  ::gui_start_profile(launchParams)
+}
+
+addPromoAction("profile", @(handler, params, obj) openProfileFromPromo(params))
+addPromoAction("achievements", @(handler, params, obj) openProfileFromPromo(params, "UnlockAchievement"))

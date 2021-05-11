@@ -1,127 +1,15 @@
 local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
-local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
 local promoConditions = require("scripts/promo/promoConditions.nut")
-local { getPollIdByFullUrl, invalidateTokensCache } = require("scripts/web/webpoll.nut")
-local { isPlatformSony,
-        isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-
-local { canUseIngameShop, openIngameStore } = require("scripts/onlineShop/entitlementsStore.nut")
-local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
-local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
-local { promoTextFunctions } = require("scripts/promo/promoInfo.nut")
-local { tryOpenNextTutorialHandler } = require("scripts/tutorials/nextTutorialHandler.nut")
-local { openBattlePassWnd } = require("scripts/battlePass/battlePassWnd.nut")
-
-enum ONLINE_SHOP_TYPES {
-  WARPOINTS = "warpoints"
-  PREMIUM = "premium"
-  BUNDLE = "bundle"
-  EAGLES = "eagles"
-}
-
-local function openLink(owner, params = [], source = "promo_open_link")
-{
-  local link = ""
-  local forceBrowser = false
-  if (::u.isString(params))
-    link = params
-  else if (::u.isArray(params) && params.len() > 0)
-  {
-    link = params[0]
-    forceBrowser = params.len() > 1? params[1] : false
-  }
-
-  local processedLink = validateLink(link)
-  if (processedLink == null)
-    return
-  openUrl(processedLink, forceBrowser, false, source)
-}
-
-local function onOpenTutorial(owner, params = [])
-{
-  local tutorialId = ""
-  if (::u.isString(params))
-    tutorialId = params
-  else if (::u.isArray(params) && params.len() > 0)
-    tutorialId = params[0]
-
-  owner.checkedNewFlight(function() {
-    if (!tryOpenNextTutorialHandler(tutorialId, false))
-      ::gui_start_tutorial()
-  })
-}
-
-local function openEventsWnd(owner, params = [])
-{
-  local eventId = params.len() > 0? params[0] : null
-  owner.checkedForward((@(eventId) function() {
-    goForwardIfOnline((@(eventId) function() {
-      ::gui_start_modal_events({event = eventId})
-    })(eventId), false, true)
-  })(eventId), null)
-}
-
-local function openItemsWnd(owner, params = [])
-{
-  local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
-
-  local curSheet = null
-  local sheetSearchId = params?[0]
-  local initSubsetId = params?[2]
-  if (sheetSearchId)
-    curSheet = {searchId = sheetSearchId}
-
-  if (tab >= itemsTab.TOTAL)
-    tab = itemsTab.INVENTORY
-
-  ::gui_start_items_list(tab, {curSheet = curSheet, initSubsetId = initSubsetId})
-}
-
-local function onOpenBattleTasksWnd(owner, params = {}, obj = null)
-{
-  local taskId = obj?.task_id
-  if (taskId == null && params.len() > 0)
-    taskId = params[0]
-
-  ::g_warbonds_view.resetShowProgressBarFlag()
-  ::gui_start_battle_tasks_wnd(taskId)
-}
-
-local function onLaunchEmailRegistration(params)
-{
-  local platformName = params?[0] ?? ""
-  if (platformName == "")
-    return
-
-  local launchFunctionName = ::format("launch%sEmailRegistration", platformName)
-  local launchFunction = ::g_user_utils?[launchFunctionName]
-  if (launchFunction)
-    launchFunction()
-}
-
-local openProfileSheetParams = {
-  UnlockAchievement = @(p1, p2) {
-    uncollapsedChapterName = p2 != ""? p1 : null
-    curAchievementGroupName = p1 + (p2 != "" ? ("/" + p2) : "")
-  }
-  Medal = @(p1, p2) { filterCountryName = p1 }
-  UnlockSkin = @(p1, p2) {
-    filterCountryName = p1
-    filterUnitTag = p2
-  }
-  UnlockDecal = @(p1, p2) { filterGroupName = p1 }
-}
+local { getPromoAction, isVisiblePromoByAction } = require("scripts/promo/promoActions.nut")
+local { getPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::g_promo <- {
   PROMO_BUTTON_TYPE = {
     ARROW = "arrowButton"
     IMAGE = "imageButton"
     IMAGE_ROULETTE = "imageRoulette"
-    BATTLE_TASK = "battleTask"
-    RECENT_ITEMS = "recentItems"
-    BATTLE_PASS = "battlePass"
   }
 
   BUTTON_OUT_OF_DATE_DAYS = 15
@@ -133,126 +21,8 @@ local openProfileSheetParams = {
 
   PLAYLIST_SONG_TIMER_TASK = -1
 
-  performActionTable = {
-    events = function(handler, params, obj) { return openEventsWnd(handler, params) }
-    tutorial = function(handler, params, obj) { return onOpenTutorial(handler, params) }
-    battle_tasks = function(handler, params, obj) { return onOpenBattleTasksWnd(handler, params, obj) }
-    battle_pass = @(handler, params, obj) openBattlePassWnd()
-    url = function(handler, params, obj) {
-      local pollId = getPollIdByFullUrl(params?[0] ?? "")
-      if (pollId != null)
-        invalidateTokensCache(pollId.tointeger())
-      return openLink(handler, params)
-    }
-    items = function(handler, params, obj) { return openItemsWnd(handler, params) }
-    consume_item = function(handler, params, obj) {
-      local itemId = params?[0]
-      if (itemId == null)
-        return
-      local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
-      if (!(item?.canConsume() ?? false))
-        return
-
-      item?.consume(@(...) null, { needConsumeImpl = params?[1] == "needConsumeImpl" })
-      handler.goBack()
-    }
-    squad_contacts = function(handler, params, obj) { return ::open_search_squad_player() }
-    world_war = function(handler, params, obj) { ::g_world_war.openMainWnd(params?[0] == "openMainMenu") }
-    content_pack = function(handler, params, obj)
-    {
-      ::check_package_and_ask_download(::getTblValue(0, params, ""))
-    }
-    profile = function(handler, params, obj)
-    {
-      local sheet = params?[0]
-      local launchParams = openProfileSheetParams?[sheet](params?[1], params?[2] ?? "") ?? {}
-      launchParams.__update({ initialSheet = sheet })
-      ::gui_start_profile(launchParams)
-    }
-    achievements = function(handler, params, obj)
-    {
-      local sheet = "UnlockAchievement"
-      local launchParams = openProfileSheetParams?[sheet](params?[0], params?[1] ?? "") ?? {}
-      launchParams.__update({ initialSheet = sheet })
-      ::gui_start_profile(launchParams)
-    }
-    show_unit = function(handler, params, obj)
-    {
-      local unitName = params?[0] ?? ""
-      local unit = ::getAircraftByName(unitName)
-      if (!unit)
-        return
-
-      local country = unit.shopCountry
-      local showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
-        curAirName = unitName
-        forceUnitType = unit?.unitType
-        needHighlight = unitName != ""
-      })
-
-      local acceptCallback = ::Callback( function() {
-        ::switch_profile_country(country)
-        showUnitInShop() }, this)
-      if (country != ::get_profile_country_sq())
-        ::queues.checkAndStart(
-          acceptCallback,
-          null,
-          "isCanModifyCrew")
-      else
-        showUnitInShop()
-    }
-    email_registration = @(handler, params, obj) onLaunchEmailRegistration(params)
-    online_shop = function(handler, params, obj) {
-      local shopType = params?[0]
-      if (shopType == ONLINE_SHOP_TYPES.BUNDLE
-        || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop()))
-      {
-        local bundleId = getBundleId(params?[1])
-        if (bundleId != "")
-        {
-          if (isPlatformSony || isPlatformXboxOne)
-            openIngameStore({ curItemId = bundleId, openedFrom = "promo" })
-          else
-            ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
-          return
-        }
-      }
-      else
-        handler.startOnlineShop(shopType, null, "promo")
-    }
-  }
-
-  collapsedParams = {
-    world_war_button = { collapsedIcon = ::loc("icon/worldWar") }
-    events_mainmenu_button = { collapsedIcon = ::loc("icon/events") }
-    tutorial_mainmenu_button = { collapsedIcon = ::loc("icon/tutorial") }
-    current_battle_tasks_mainmenu_button = {
-      collapsedIcon = ::loc("icon/battleTasks")
-      collapsedText = "title"
-    }
-    web_poll = { collapsedIcon = ::loc("icon/web_poll") }
-  }
   defaultCollapsedIcon = ::loc("icon/news")
   defaultCollapsedText = ""
-
-  visibilityByAction = {
-    content_pack = function(params)
-    {
-      return ::has_feature("Packages") && !::have_package(::getTblValue(0, params, ""))
-    }
-    consume_item = function(params) {
-      local itemId = params?[0]
-      if (itemId == null)
-        return false
-      local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
-      return item?.canConsume() ?? false
-    }
-  }
-
-  customSeenId = {
-    events_mainmenu_button = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
-  }
-  getCustomSeenId = @(blockId) customSeenId?[blockId] && customSeenId[blockId]()
 
   actionParamsByBlockId = {}
   showAllPromoBlocks = false
@@ -269,12 +39,6 @@ local openProfileSheetParams = {
   oldRecordsCheckTable = {
     promo = @(tm) tm
   }
-
-  needUpdateByTimerTable = {
-    world_war_button = true
-  }
-
-  openLinkWithSource = openLink
 
   function checkBlockReqEntitlement(block)
   {
@@ -426,13 +190,14 @@ g_promo.generateBlockView <- function generateBlockView(block)
 {
   local id = block.getBlockName()
   local view = ::buildTableFromBlk(block)
+  local promoButtonConfig = getPromoButtonConfig(id)
   view.id <- id
   view.type <- ::g_promo.getType(block)
   view.collapsed <- ::g_promo.isCollapsed(id)? "yes" : "no"
   view.fillBlocks <- []
   view.h_ratio <- 1 / (block?.aspect_ratio ?? 1.0)
 
-  local unseenIcon = getCustomSeenId(id)
+  local unseenIcon = promoButtonConfig?.getCustomSeenId()
   if (unseenIcon)
     view.unseenIcon <- unseenIcon
   view.notifyNew <- !unseenIcon && (view?.notifyNew ?? true)
@@ -496,9 +261,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
       hasImage = true
     }
 
-    local text = ::isInArray(id,
-      ["world_war_button", "events_mainmenu_button", "tutorial_mainmenu_button"])
-        ? promoTextFunctions[id].bindenv(this)() : getViewText(fillBlock, isMultiblock ? "" : null)
+    local text = promoButtonConfig?.getText() ?? getViewText(fillBlock, isMultiblock ? "" : null)
     if (::u.isEmpty(text) && isMultiblock)
       text = getViewText(block)
     fillBlock.text <- text
@@ -528,7 +291,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
   view.show <- checkBlockVisibility(block) && block?.pollId == null
   view.collapsedIcon <- getCollapsedIcon(view, id)
   view.collapsedText <- getCollapsedText(view, id)
-  view.needUpdateByTimer <- view?.needUpdateByTimer ?? needUpdateByTimerTable?[id]
+  view.needUpdateByTimer <- view?.needUpdateByTimer ?? promoButtonConfig?.needUpdateByTimer
 
   return view
 }
@@ -536,7 +299,7 @@ g_promo.generateBlockView <- function generateBlockView(block)
 g_promo.getCollapsedIcon <- function getCollapsedIcon(view, promoButtonId)
 {
   local result = ""
-  local icon = collapsedParams?[promoButtonId].collapsedIcon
+  local icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
   if (icon)
     result = ::getTblValue(icon, view, icon) //can be set as param
   else
@@ -548,7 +311,7 @@ g_promo.getCollapsedIcon <- function getCollapsedIcon(view, promoButtonId)
 g_promo.getCollapsedText <- function getCollapsedText(view, promoButtonId)
 {
   local result = ""
-  local text = collapsedParams?[promoButtonId].collapsedText
+  local text = getPromoButtonConfig(promoButtonId)?.collapsedText
   if (text)
     result = ::getTblValue(text, view, defaultCollapsedText) //can be set as param
   else
@@ -622,8 +385,8 @@ g_promo.isVisibleByAction <- function isVisibleByAction(block)
   local actionData = gatherActionParamsData(block)
   if (!actionData)
     return true
-  local isVisibleFunc = ::getTblValue(actionData.action, visibilityByAction)
-  return !isVisibleFunc || isVisibleFunc(actionData.paramsArray)
+
+  return isVisiblePromoByAction(actionData.action, actionData.paramsArray)
 }
 
 g_promo.getCurrentValueInMultiBlock <- function getCurrentValueInMultiBlock(id)
@@ -680,15 +443,11 @@ g_promo.cutActionParamsKey <- function cutActionParamsKey(id)
 
 g_promo.getType <- function getType(block)
 {
-  local res = PROMO_BUTTON_TYPE.ARROW
+  local res = getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
   if (block.blockCount() > 1)
     res = PROMO_BUTTON_TYPE.IMAGE_ROULETTE
   else if (::getTblValue("image", block, "") != "")
     res = PROMO_BUTTON_TYPE.IMAGE
-  else if (block.getBlockName().indexof("current_battle_tasks") != null)
-    res = PROMO_BUTTON_TYPE.BATTLE_TASK
-  else if (block.getBlockName() == "battle_pass_mainmenu_button")
-    res = PROMO_BUTTON_TYPE.BATTLE_PASS
 
   return res
 }
@@ -789,7 +548,7 @@ g_promo.performAction <- function performAction(handler, obj)
 g_promo.launchAction <- function launchAction(actionData, handler, obj)
 {
   local action = actionData.action
-  local actionFunc = ::getTblValue(action, performActionTable)
+  local actionFunc = getPromoAction(action)
   if (!actionFunc)
   {
     ::dagor.assert(false, "Promo: Not found action in actions table. Action " + action)

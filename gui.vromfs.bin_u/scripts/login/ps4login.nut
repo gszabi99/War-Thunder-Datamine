@@ -3,7 +3,7 @@ local { animBgLoad } = require("scripts/loading/animBg.nut")
 local showTitleLogo = require("scripts/viewUtils/showTitleLogo.nut")
 local { setVersionText } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { targetPlatform } = require("scripts/clientState/platform.nut")
-local { requestPackageUpdateStatus } = ::require_native("sony")
+local { requestPackageUpdateStatus } = require("sony")
 
 class ::gui_handlers.LoginWndHandlerPs4 extends ::BaseGuiHandler
 {

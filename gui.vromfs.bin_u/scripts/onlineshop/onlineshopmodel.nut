@@ -1,9 +1,10 @@
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
-local { getShopItem, openIngameStore } = require("scripts/onlineShop/entitlementsStore.nut")
+local { getShopItem, openIngameStore, canUseIngameShop } = require("scripts/onlineShop/entitlementsStore.nut")
 
 local callbackWhenAppWillActive = require("scripts/clientState/callbackWhenAppWillActive.nut")
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 /*
  * Search in price.blk:
  * Search param is a name of a unit
@@ -18,6 +19,13 @@ local { openUrl } = require("scripts/onlineShop/url.nut")
  *    but this required refactioring in this handler
  *    ---
  * */
+
+enum ONLINE_SHOP_TYPES {
+  WARPOINTS = "warpoints"
+  PREMIUM = "premium"
+  BUNDLE = "bundle"
+  EAGLES = "eagles"
+}
 
 ::OnlineShopModel <- {
   priceBlk = null
@@ -532,3 +540,24 @@ OnlineShopModel.launchOnlineShop <- function launchOnlineShop(owner=null, chapte
 }
 
 ::subscribe_handler(::OnlineShopModel, ::g_listener_priority.CONFIG_VALIDATION)
+
+local function openOnlineShopFromPromo(handler, params) {
+  local shopType = params?[0]
+  if (shopType == ONLINE_SHOP_TYPES.BUNDLE
+    || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop()))
+  {
+    local bundleId = getBundleId(params?[1])
+    if (bundleId != "")
+    {
+      if (isPlatformSony || isPlatformXboxOne)
+        openIngameStore({ curItemId = bundleId, openedFrom = "promo" })
+      else
+        ::OnlineShopModel.doBrowserPurchaseByGuid(bundleId, params?[1])
+      return
+    }
+  }
+  else
+    handler.startOnlineShop(shopType, null, "promo")
+}
+
+addPromoAction("online_shop", @(handler, params, obj) openOnlineShopFromPromo(handler, params))

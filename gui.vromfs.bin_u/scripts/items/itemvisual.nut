@@ -38,6 +38,31 @@ local function fillItemTableInfo(item, holderObj)
   ::showBtn("item_additional_desc_table", hasItemAdditionalDescTable, holderObj)
 }
 
+local function getDescTextAboutDiv(item, preferMarkup = true)
+{
+  local desc = ""
+  if (!item)
+    return desc
+
+  desc = item.getShortItemTypeDescription()
+  local descText = preferMarkup ? item.getLongDescription() : item.getDescription()
+  if (descText.len() > 0)
+    desc = $"{desc}{desc.len() ? "\n\n" : ""}{descText}"
+  local itemLimitsDesc = item?.getLimitsDescription ? item.getLimitsDescription() : ""
+  if (itemLimitsDesc.len() > 0)
+    desc = $"{desc.len() ? "\n" : ""}{itemLimitsDesc}"
+
+  return desc
+}
+
+local function fillDescTextAboutDiv(item, descObj)
+{
+  local isDescTextBeforeDescDiv = item?.isDescTextBeforeDescDiv ?? false
+  local obj = descObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
+  if (obj?.isValid())
+    obj.setValue(getDescTextAboutDiv(item))
+}
+
 local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, preferMarkup = false, params = null)
 {
   handler = handler || ::get_cur_base_gui_handler()
@@ -61,29 +86,19 @@ local function fillItemDescr(item, holderObj, handler = null, shopDesc = false, 
 
   local isDescTextBeforeDescDiv = !item || item?.isDescTextBeforeDescDiv || false
   obj = holderObj.findObject(isDescTextBeforeDescDiv ? "item_desc" : "item_desc_under_div")
-  if (::checkObj(obj))
+
+  if (obj?.isValid())
   {
-    local desc = ""
-    if (item)
-    {
-      if (item?.getShortItemTypeDescription)
-        desc = item.getShortItemTypeDescription()
-      local descText = preferMarkup ? item.getLongDescription() : item.getDescription()
-      if (descText.len() > 0)
-        desc += (desc.len() ? "\n\n" : "") + descText
-      local itemLimitsDesc = item?.getLimitsDescription ? item.getLimitsDescription() : ""
-      if (itemLimitsDesc.len() > 0)
-        desc += (desc.len() ? "\n" : "") + itemLimitsDesc
-    }
-    if ("descModifyFunc" in params) {
+    local desc = getDescTextAboutDiv(item, preferMarkup)
+    if (params?.descModifyFunc) {
       desc = params.descModifyFunc(desc)
       params.rawdelete("descModifyFunc")
     }
 
-    local warbondId = ::getTblValue("wbId", params)
+    local warbondId = params?.wbId
     if (warbondId)
     {
-      local warbond = ::g_warbonds.findWarbond(warbondId, ::getTblValue("wbListId", params))
+      local warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
       local award = warbond? warbond.getAwardById(item.id) : null
       if (award)
         desc = award.addAmountTextToDesc(desc)
@@ -237,6 +252,8 @@ local function getActiveBoostersDescription(boostersArray, effectType, selectedI
 }
 
 return {
-  fillItemDescr                = fillItemDescr
-  getActiveBoostersDescription = getActiveBoostersDescription
+  fillItemDescr
+  getDescTextAboutDiv
+  fillDescTextAboutDiv
+  getActiveBoostersDescription
 }

@@ -1,5 +1,5 @@
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
-local mapPreferences    = ::require_native("mapPreferences")
+local mapPreferences    = require("mapPreferences")
 local daguiFonts = require("scripts/viewUtils/daguiFonts.nut")
 
 const POPUP_PREFIX_LOC_ID = "maps/preferences/notice/"

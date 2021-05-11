@@ -2,7 +2,7 @@
 //shouldDecreaseSize, allowedSizeIncrease = 100
 
 local time = require("scripts/time.nut")
-local penalty = ::require_native("penalty")
+local penalty = require("penalty")
 local { isPlatformSony, getPlayerName } = require("scripts/clientState/platform.nut")
 local stdMath = require("std/math.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")

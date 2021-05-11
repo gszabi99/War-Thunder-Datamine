@@ -1,4 +1,4 @@
-local { is_sound_mods_enabled, restart_game_without_mods } = ::require_native("soundModCheck")
+local { is_sound_mods_enabled, restart_game_without_mods } = require("soundModCheck")
 
 local isAllowSoundMods = @(event) event?.allowSoundMods ?? true
 

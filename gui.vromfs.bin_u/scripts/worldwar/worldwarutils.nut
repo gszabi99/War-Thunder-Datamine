@@ -18,7 +18,6 @@ local {
   checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 
-
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
 const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
@@ -167,17 +166,6 @@ g_world_war.canPlayWorldwar <- function canPlayWorldwar()
   )
 
   return !!unit
-}
-
-g_world_war.getLockedCountryData <- function getLockedCountryData()
-{
-  if (!curOperationCountry)
-    return null
-
-  return {
-    availableCountries = [curOperationCountry]
-    reasonText = ::loc("worldWar/cantChangeCountryInOperation")
-  }
 }
 
 g_world_war.canJoinWorldwarBattle <- function canJoinWorldwarBattle()
@@ -443,6 +431,11 @@ g_world_war.checkOpenGlobalBattlesModal <- function checkOpenGlobalBattlesModal(
 }
 
 g_world_war.onEventSquadSetReady <- function onEventSquadSetReady(params)
+{
+  checkOpenGlobalBattlesModal()
+}
+
+g_world_war.onEventSquadDataUpdated <- function onEventSquadDataUpdated(params)
 {
   checkOpenGlobalBattlesModal()
 }

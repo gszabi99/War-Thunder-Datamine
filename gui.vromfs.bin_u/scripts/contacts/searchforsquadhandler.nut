@@ -3,6 +3,8 @@ local { canInteractCrossConsole,
         isPlatformSony } = require("scripts/clientState/platform.nut")
 local crossplayModule = require("scripts/social/crossplay.nut")
 local { updateContacts } = require("scripts/contacts/contactsManager.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::gui_start_search_squadPlayer <- function gui_start_search_squadPlayer()
 {
@@ -127,3 +129,21 @@ class ::gui_handlers.SearchForSquadHandler extends ::ContactsHandler
 
   getContactsGroups = @() sg_groups
 }
+
+addPromoAction("squad_contacts", @(handler, params, obj) ::open_search_squad_player())
+
+local promoButtonId = "invite_squad_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  updateFunctionInHandler = function() {
+    local id = promoButtonId
+    local show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
+    local buttonObj = ::showBtn(id, show, scene)
+    if (!show || !::checkObj(buttonObj))
+      return
+
+    buttonObj.inactiveColor = ::checkIsInQueue() ? "yes" : "no"
+  }
+  updateByEvents = ["QueueChangeState"]
+})

@@ -2,10 +2,11 @@ local ItemGenerators = require("scripts/items/itemsClasses/itemGenerators.nut")
 local inventoryClient = require("scripts/inventory/inventoryClient.nut")
 local itemTransfer = require("scripts/items/itemsTransfer.nut")
 local stdMath = require("std/math.nut")
-local { shouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
+local { setShouldCheckAutoConsume, checkAutoConsume } = require("scripts/items/autoConsumeItems.nut")
 local { buyableSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
 local { boosterEffectType }= require("scripts/items/boosterEffect.nut")
 local seenList = require("scripts/seen/seenList.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 local seenInventory = seenList.get(SEEN.INVENTORY)
 local seenItems = seenList.get(SEEN.ITEMS_SHOP)
@@ -26,6 +27,9 @@ local OUT_OF_DATE_DAYS_INVENTORY = 0
 
 //events from native code:
 ::on_items_loaded <- @() ::ItemsManager.onItemsLoaded()
+
+local itemsShopListVersion = ::Watched(0)
+local inventoryListVersion = ::Watched(0)
 
 foreach (fn in [
                  "discountItemSortMethod.nut"
@@ -68,6 +72,7 @@ foreach (fn in [
                  "itemUnlock.nut"
                  "itemBattlePass.nut"
                  "itemRentedUnit.nut"
+                 "itemUnitCouponMod.nut"
                ])
   ::g_script_reloader.loadOnce("scripts/items/itemsClasses/" + fn)
 
@@ -438,6 +443,7 @@ foreach (fn in [
   seenItems.setDaysToUnseen(OUT_OF_DATE_DAYS_ITEMS_SHOP)
   seenItems.onListChanged()
   ::broadcastEvent("ItemsShopUpdate")
+  itemsShopListVersion(itemsShopListVersion.value + 1)
 }
 
 ::ItemsManager.smokeItems.subscribe(@(p) ::ItemsManager.markItemsListUpdate())
@@ -448,6 +454,7 @@ foreach (fn in [
   shopVisibleSeenIds = null
   seenItems.onListChanged()
   ::broadcastEvent("ItemsShopUpdate")
+  itemsShopListVersion(itemsShopListVersion.value + 1)
 }
 
 local lastItemDefsUpdatedelayedCall = 0
@@ -500,6 +507,7 @@ local lastItemDefsUpdatedelayedCall = 0
       case "unlock":              return itemType.UNLOCK
       case "battlePass":          return itemType.BATTLE_PASS
       case "rented_unit":         return itemType.RENTED_UNIT
+      case "unit_coupon_mod":     return itemType.UNIT_COUPON_MOD
     }
 
     blkType = ::item_get_type_id_by_type_name(blkType)
@@ -559,7 +567,7 @@ local lastItemDefsUpdatedelayedCall = 0
     local item = createItem(iType, blk, invItemBlk, slot)
     inventory.append(item)
     if (item.shouldAutoConsume && !item.isActive())
-      shouldCheckAutoConsume(true)
+      setShouldCheckAutoConsume(true)
   }
 
   ::ItemsManager.fillFakeItemsList()
@@ -613,7 +621,7 @@ local lastItemDefsUpdatedelayedCall = 0
       if (item.id in transferAmounts)
         item.transferAmount += delete transferAmounts[item.id]
       if (item.shouldAutoConsume)
-        shouldCheckAutoConsume(true)
+        setShouldCheckAutoConsume(true)
       extInventoryItems.append(item)
     }
   }
@@ -692,6 +700,7 @@ local lastItemDefsUpdatedelayedCall = 0
   }
   seenInventory.onListChanged()
   ::broadcastEvent("InventoryUpdate")
+  inventoryListVersion(inventoryListVersion.value + 1)
 }
 
 local lastInventoryUpdateDelayedCall = 0
@@ -717,7 +726,7 @@ local lastInventoryUpdateDelayedCall = 0
 }
 
 ::ItemsManager.onEventLoginComplete <- function onEventLoginComplete(p) {
-  shouldCheckAutoConsume(true)
+  setShouldCheckAutoConsume(true)
   _reqUpdateList = true
 }
 
@@ -876,6 +885,33 @@ local lastInventoryUpdateDelayedCall = 0
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
+//-----------------------------  PROMO ACTIONS---------------------------------------------//
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+local function consumeItemFromPromo(handler, params) {
+  local itemId = params?[0]
+  if (itemId == null)
+    return
+  local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+  if (!(item?.canConsume() ?? false))
+    return
+
+  item?.consume(@(...) null, { needConsumeImpl = params?[1] == "needConsumeImpl" })
+  handler.goBack()
+}
+
+local function canConsumeItemFromPromo(params) {
+  local itemId = params?[0]
+  if (itemId == null)
+    return false
+  local item = ::ItemsManager.getInventoryItemById(::to_integer_safe(itemId, itemId, false))
+  return item?.canConsume() ?? false
+}
+
+addPromoAction("consume_item", @(handler, params, obj) consumeItemFromPromo(handler, params),
+  @(params) canConsumeItemFromPromo(params))
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 //--------------------------------SEEN ITEMS-----------------------------------------------//
 /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -897,3 +933,8 @@ local makeSeenCompatibility = @(savePath) function()
 
 seenItems.setCompatibilityLoadData(makeSeenCompatibility("seen_shop_items"))
 seenInventory.setCompatibilityLoadData(makeSeenCompatibility("seen_inventory_items"))
+
+return {
+  itemsShopListVersion
+  inventoryListVersion
+}

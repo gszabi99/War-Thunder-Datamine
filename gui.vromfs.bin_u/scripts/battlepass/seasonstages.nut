@@ -97,6 +97,7 @@ local function getStageViewData(stageData, idxOnPage) {
         showPrice = false
         contentIcon = false
         hasFocusBorder = false
+        hasTimer = false
         showRarity = false
         count = rewards[itemId]
       })]

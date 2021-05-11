@@ -139,13 +139,21 @@ expandable {
     }
 
     hoverButton {
+      id:t='show_bonuses_btn'
+      position:t='relative'
+      left:t='0.5@scrn_tgt-0.5w'
       text:t='<<?clan/season_award/desc/lower_places_awards_included>><<?ui/ellipsis>>'
       tooltip:t='<<?mainmenu/btnExpand>>'
       on_click:t='onShowBonuses'
       isTextBtn:t='yes'
       interactive:t='yes'
-      style:t='width:pw; min-width:pw;'
       css-hier-invalidate:t='yes'
+      ButtonImg{
+        position:t='relative'
+        left:t='-w-1@blockInterval'
+        showOnSelect:t='hover'
+        btnName:t='A'
+      }
     }
     <</hasBonuses>>
   }

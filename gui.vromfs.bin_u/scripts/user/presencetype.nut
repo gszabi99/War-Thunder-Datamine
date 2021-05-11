@@ -78,7 +78,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_QUEUE
     locId = "status/in_queue_ww"
     queueTypeMask = QUEUE_TYPE_BIT.WW_BATTLE
-    isMatch = @() ::queues.isAnyQueuesActive(queueTypeMask)
+    isMatch = @() ::is_worldwar_enabled() && ::queues.isAnyQueuesActive(queueTypeMask)
     updateParams = function(params) {
       local queue = ::queues.getActiveQueueWithType(queueTypeMask)
       local operationId = ::queues.getQueueOperationId(queue)
@@ -106,7 +106,7 @@ enums.addTypesByGlobalName("g_presence_type", {
     checkOrder = presenceCheckOrder.IN_GAME_WW
     locId = "status/in_game_ww"
     isInBattle = true
-    isMatch = @() ::is_in_flight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
+    isMatch = @() ::is_worldwar_enabled() && ::is_in_flight() && ::g_mis_custom_state.getCurMissionRules().isWorldWar
     canInviteToWWBattle = false
     updateParams = function(params) {
       local operationId = ::SessionLobby.getOperationId()
@@ -132,7 +132,7 @@ enums.addTypesByGlobalName("g_presence_type", {
   IN_WW_BATTLE_PREPARE = {
     checkOrder = presenceCheckOrder.IN_WW_BATTLE_PREPARE
     locId = "status/in_prepare_ww"
-    isMatch = @() !!::g_squad_manager.getWwOperationBattle()
+    isMatch = @() ::is_worldwar_enabled() && ::g_squad_manager.getWwOperationBattle() != null
     updateParams = function(params) {
       params.operationId <- ::g_squad_manager.getWwOperationId()
       params.battleId <- ::g_squad_manager.getWwOperationBattle()

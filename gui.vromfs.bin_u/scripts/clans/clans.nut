@@ -1,4 +1,4 @@
-local { unixtime_to_utc_timetbl } = ::require_native("dagor.time")
+local { unixtime_to_utc_timetbl } = require("dagor.time")
 local time = require("scripts/time.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
 local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")

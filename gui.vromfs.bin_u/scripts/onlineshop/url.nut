@@ -1,5 +1,5 @@
 local { clearBorderSymbols } = require("std/string.nut")
-local base64 = ::require_native("base64")
+local base64 = require("base64")
 
 const URL_TAGS_DELIMITER = " "
 const URL_TAG_AUTO_LOCALIZE = "auto_local"

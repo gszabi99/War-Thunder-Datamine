@@ -8,7 +8,6 @@ local commonButtonStyle = {
   borderWidth = ::dp(1)
   size = [SIZE_TO_CONTENT, ::dp(2) + ::fpx(36)]
   minWidth = ::scrn_tgt(0.16)
-  padding = [::fpx(3), ::scrn_tgt(0.005)]
   borderRadius = 0
   textCtor = textButtonTextCtor
   textMargin = 0

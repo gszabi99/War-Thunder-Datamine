@@ -752,14 +752,18 @@ class ::gui_handlers.WwAirfieldFlyOut extends ::gui_handlers.BaseGuiHandlerWT
     local cb = ::Callback(function (unitName, weaponName) {
       changeUnitWeapon(unitName, weaponName)
     }, this)
-    local params = {
+    ::gui_start_choose_unit_weapon(unit, cb, {
+      alignObj = obj
+      align = "right"
+      isForcedAvailable = true
+      setLastWeapon = @(unitName, weaponName) ::g_world_war.set_last_weapon_preset(unitName, weaponName)
+      getLastWeapon = @(unitName) ::g_world_war.get_last_weapon_preset(unitName)
+      itemParams = {
         canShowStatusImage = false
         canShowResearch = false
         canShowPrice = false
         isForceHidePlayerInfo = true
       }
-    ::gui_start_choose_unit_weapon(unit, cb, {
-      itemParams = params, alignObj = obj, align = "right", isWorldWarUnit = true
     })
   }
 

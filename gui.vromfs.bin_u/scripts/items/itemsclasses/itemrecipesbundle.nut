@@ -6,7 +6,6 @@ class ::items_classes.RecipesBundle extends ::items_classes.Chest {
   static iType = itemType.RECIPES_BUNDLE
   static defaultLocId = "recipes_bundle"
   static typeIcon = "#ui/gameuiskin#items_blueprint"
-  static openingCaptionLocId = "mainmenu/itemCreated/title"
 
   isDisassemble         = @() itemDef?.tags?.isDisassemble == true
   updateNameLoc         = @(locName) isDisassemble() ? ::loc("item/disassemble_header", { name = locName })
@@ -71,5 +70,6 @@ class ::items_classes.RecipesBundle extends ::items_classes.Chest {
       ? "msgBox/disassembleItem/cant"
       : "msgBox/assembleItem/cant"
     msgBoxConfirm = "msgBox/disassembleItem/confirm"
+    openingRewardTitle = "mainmenu/itemCreated/title"
   })
 }

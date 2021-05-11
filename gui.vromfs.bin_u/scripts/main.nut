@@ -24,7 +24,7 @@ require("scripts/sqModuleHelpers.nut")
 require("sqStdLibs/helpers/backCompatibility.nut")
 require("scripts/compatibility.nut")
 require("scripts/clientState/errorHandling.nut")
-local { get_local_unixtime } = ::require_native("dagor.time")
+local { get_local_unixtime } = require("dagor.time")
 if (::disable_network())
   ::get_charserver_time_sec = get_local_unixtime
 
@@ -142,41 +142,42 @@ global enum itemsTab {
 global enum itemType { //bit values for easy multitype search
   UNKNOWN      = 0
 
-  TROPHY          = 0x00000001  //chest
-  BOOSTER         = 0x00000002
-  TICKET          = 0x00000004  //tournament ticket
-  WAGER           = 0x00000008
-  DISCOUNT        = 0x00000010
-  ORDER           = 0x00000020
-  FAKE_BOOSTER    = 0x00000040
-  UNIVERSAL_SPARE = 0x00000080
-  MOD_OVERDRIVE   = 0x00000100
-  MOD_UPGRADE     = 0x00000200
-  SMOKE           = 0x00000400
+  TROPHY          = 0x0000000001  //chest
+  BOOSTER         = 0x0000000002
+  TICKET          = 0x0000000004  //tournament ticket
+  WAGER           = 0x0000000008
+  DISCOUNT        = 0x0000000010
+  ORDER           = 0x0000000020
+  FAKE_BOOSTER    = 0x0000000040
+  UNIVERSAL_SPARE = 0x0000000080
+  MOD_OVERDRIVE   = 0x0000000100
+  MOD_UPGRADE     = 0x0000000200
+  SMOKE           = 0x0000000400
 
   //external inventory
-  VEHICLE         = 0x00010000
-  SKIN            = 0x00020000
-  DECAL           = 0x00040000
-  ATTACHABLE      = 0x00080000
-  KEY             = 0x00100000
-  CHEST           = 0x00200000
-  WARBONDS        = 0x00400000
-  INTERNAL_ITEM   = 0x00800000 //external inventory coupon which gives internal item
-  ENTITLEMENT     = 0x01000000
-  WARPOINTS       = 0x02000000
-  UNLOCK          = 0x04000000
-  BATTLE_PASS     = 0x08000000
-  RENTED_UNIT     = 0x10000000
+  VEHICLE         = 0x0000010000
+  SKIN            = 0x0000020000
+  DECAL           = 0x0000040000
+  ATTACHABLE      = 0x0000080000
+  KEY             = 0x0000100000
+  CHEST           = 0x0000200000
+  WARBONDS        = 0x0000400000
+  INTERNAL_ITEM   = 0x0000800000 //external inventory coupon which gives internal item
+  ENTITLEMENT     = 0x0001000000
+  WARPOINTS       = 0x0002000000
+  UNLOCK          = 0x0004000000
+  BATTLE_PASS     = 0x0008000000
+  RENTED_UNIT     = 0x0010000000
+  UNIT_COUPON_MOD = 0x0020000000
 
   //workshop
-  CRAFT_PART      = 0x20000000
-  RECIPES_BUNDLE  = 0x40000000
-  CRAFT_PROCESS   = 0x80000000
+  CRAFT_PART      = 0x1000000000
+  RECIPES_BUNDLE  = 0x2000000000
+  CRAFT_PROCESS   = 0x4000000000
 
   //masks
-  ALL             = 0xFFFFFFFF
-  INVENTORY_ALL   = 0x57BFFFFF //~CRAFT_PART ~CRAFT_PROCESS ~WARBONDS
+  ALL             = 0xFFFFFFFFFF
+  INVENTORY_ALL   = 0xAFFFBFFFFF //~CRAFT_PART ~CRAFT_PROCESS ~WARBONDS
 }
 
 global enum PREVIEW_MODE
@@ -268,6 +269,7 @@ global enum SEEN {
   EXT_XBOX_SHOP = "ext_xbox_shop"
   EXT_PS4_SHOP  = "ext_ps4_shop"
   EXT_EPIC_SHOP = "ext_epic_shop"
+  BATTLE_PASS_SHOP = "battle_pass_shop"
 
   //sublists
   S_EVENTS_WINDOW = "##events_window##"

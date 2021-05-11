@@ -178,8 +178,10 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
     !isSwitcher || isFakeBullet(visualItem.name)
   res.hideStatus = isResearchInProgress || res.hideStatus
   res.isShowDiscount = discount > 1
+  local isScoreCost = ::is_in_flight()
+    && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
   local haveDiscount = discount > 0 && statusTbl.canShowDiscount && itemCostText != ""
-  if (haveDiscount)
+  if (haveDiscount && !isScoreCost)
   {
     if (res.isShowDiscount)
     {

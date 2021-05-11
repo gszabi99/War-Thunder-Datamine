@@ -1,4 +1,4 @@
-local hudTankStates = ::require_native("hudTankStates")
+local hudTankStates = require("hudTankStates")
 local { hudTankMovementStatesVisible } = require("scripts/hud/hudConfigByGame.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
 

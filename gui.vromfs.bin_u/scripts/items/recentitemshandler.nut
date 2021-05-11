@@ -1,4 +1,5 @@
 local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -51,7 +52,7 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!isVisible)
       return
 
-    scene.type = ::g_promo.PROMO_BUTTON_TYPE.RECENT_ITEMS
+    scene.type = "recentItems"
     numOtherItems = ::g_recent_items.getNumOtherItems()
 
     local promoView = ::getTblValue(scene.id, ::g_promo.getConfig(), {})
@@ -145,3 +146,15 @@ class ::gui_handlers.RecentItemsHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   onEventActiveHandlersChanged = @(p) updateVisibility()
 }
+
+local promoButtonId = "recent_items_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  updateFunctionInHandler = function() {
+    local id = promoButtonId
+    local show = isShowAllCheckBoxEnabled() || ::g_promo.getVisibilityById(id)
+    local handlerWeak = ::g_recent_items.createHandler(this, scene.findObject(id), show)
+    owner.registerSubHandler(handlerWeak)
+  }
+})

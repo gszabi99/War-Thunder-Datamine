@@ -10,6 +10,8 @@ local { setDoubleTextToButton, setColoredDoubleTextToButton } = require("scripts
 local mkHoverHoldAction = require("sqDagui/timer/mkHoverHoldAction.nut")
 local { isMarketplaceEnabled, goToMarketplace } = require("scripts/items/itemsMarketplace.nut")
 local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
 
 ::gui_start_itemsShop <- function gui_start_itemsShop(params = null)
 {
@@ -763,16 +765,19 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     if (!itemsListValid)
       return
 
+    local selItemIdx = null
+    local listObj = getItemsListObj()
     local startIdx = curPage * itemsPerPage
     local lastIdx = min((curPage + 1) * itemsPerPage, itemsList.len())
     for(local i=startIdx; i < lastIdx; i++)
     {
       if (!itemsList[i].hasTimer())
         continue
-      local listObj = getItemsListObj()
+
       local itemObj = ::check_obj(listObj) ? listObj.getChild(i - curPage * itemsPerPage) : null
       if (::check_obj(itemObj))
       {
+        selItemIdx = listObj.getValue()
         local timeTxtObj = itemObj.findObject("expire_time")
         if (::check_obj(timeTxtObj))
           timeTxtObj.setValue(itemsList[i].getTimeLeftText())
@@ -781,6 +786,10 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
           timeTxtObj.setValue(itemsList[i].getCraftTimeTextShort())
       }
     }
+
+    if ((selItemIdx ?? -1) >= 0)
+      fillDescTextAboutDiv(itemsList[selItemIdx], infoHandler.scene)
+
   }
 
   function onToShopButton(obj)
@@ -966,3 +975,20 @@ class ::gui_handlers.ItemsList extends ::gui_handlers.BaseGuiHandlerWT
     }.bindenv(this))
   }
 }
+
+local function openItemsWndFromPromo(owner, params = []) {
+  local tab = getconsttable()?.itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
+
+  local curSheet = null
+  local sheetSearchId = params?[0]
+  local initSubsetId = params?[2]
+  if (sheetSearchId)
+    curSheet = {searchId = sheetSearchId}
+
+  if (tab >= itemsTab.TOTAL)
+    tab = itemsTab.INVENTORY
+
+  ::gui_start_items_list(tab, {curSheet = curSheet, initSubsetId = initSubsetId})
+}
+
+addPromoAction("items", @(handler, params, obj) openItemsWndFromPromo(handler, params))

@@ -1,6 +1,6 @@
 local gamepadIcons = require("scripts/controls/gamepadIcons.nut")
-local globalEnv = ::require_native("globalEnv")
-local controllerState = ::require_native("controllerState")
+local globalEnv = require("globalEnv")
+local controllerState = require("controllerState")
 local shortcutsListModule = require("scripts/controls/shortcutsList/shortcutsList.nut")
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
 local { TRIGGER_TYPE,

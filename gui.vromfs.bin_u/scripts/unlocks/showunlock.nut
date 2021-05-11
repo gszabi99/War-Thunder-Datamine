@@ -5,6 +5,7 @@ local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+local { openLinkWithSource } = require("scripts/web/webActionsForPromo.nut")
 
 ::delayed_unlock_wnd <- []
 ::showUnlockWnd <- function showUnlockWnd(config)
@@ -250,7 +251,7 @@ class ::gui_handlers.ShowUnlockHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (::getTblValue("type", config) == "regionalPromoPopup")
       ::add_big_query_record("promo_popup_click",
         ::save_to_json({ id = config?.id ?? config?.link ?? config?.popupImage ?? - 1 }))
-    ::g_promo.openLinkWithSource(this, [ obj?.link, config?.forceExternalBrowser ?? false ], "show_unlock")
+    openLinkWithSource([ obj?.link, config?.forceExternalBrowser ?? false ], "show_unlock")
   }
 
   function buyUnit()

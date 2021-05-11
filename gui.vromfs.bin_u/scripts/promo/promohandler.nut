@@ -1,8 +1,6 @@
 local { set_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("scripts/web/webpoll.nut")
-local { promoTextFunctions, getTutorialData } = require("scripts/promo/promoInfo.nut")
-local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHandler.nut")
+local { getPromoHandlerUpdateConfigs } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::create_promo_blocks <- function create_promo_blocks(handler)
 {
@@ -29,21 +27,24 @@ local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHan
   pollIdToObjectId = {}
   needUpdateByTimerArr = null
 
-  updateFunctions = {
-    events_mainmenu_button = function() { return updateEventButton() }
-    world_war_button = function() { return updateWorldWarButton() }
-    tutorial_mainmenu_button = function() { return updateTutorialButton() }
-    current_battle_tasks_mainmenu_button = function() { return updateCurrentBattleTaskButton() }
-    invite_squad_mainmenu_button = function() { return updateSquadInviteButton() }
-    recent_items_mainmenu_button = function() { return createRecentItemsHandler() }
-    battle_pass_mainmenu_button = function() { return updateBattlePassButton() }
-  }
+  updateFunctions = null
 
   constructor(_handler, _guiScene, _scene)
   {
     owner = _handler
     guiScene = _guiScene
     scene = _scene
+
+    updateFunctions = {}
+    foreach (key, config in getPromoHandlerUpdateConfigs()) {
+      local { updateFunctionInHandler, updateByEvents } = config
+      if (updateFunctionInHandler == null)
+        continue
+
+      updateFunctions[key] <- @() updateFunctionInHandler()
+      foreach (event in (updateByEvents ?? []))
+        ::add_event_listener(event, @(p) updateFunctionInHandler(), this)
+    }
 
     initScreen(true)
 
@@ -264,131 +265,6 @@ local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHan
     updatePromoBlocks()
   }
 
-  //------------- <CURRENT BATTLE TASK ---------------------
-  function updateCurrentBattleTaskButton()
-  {
-    local id = "current_battle_tasks_mainmenu_button"
-    local show = ::g_battle_tasks.isAvailableForUser()
-      && ::g_promo.getVisibilityById(id)
-
-    local buttonObj = ::showBtn(id, show, scene)
-    if (!show || !::checkObj(buttonObj))
-      return
-
-    ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
-  }
-  //------------- </CURRENT BATTLE TASK --------------------
-
-  //------------- <BATTLE PASS> ----------------------------
-  function updateBattlePassButton()
-  {
-    local id = "battle_pass_mainmenu_button"
-    local show = ::g_promo.getVisibilityById(id)
-
-    local buttonObj = ::showBtn(id, show, scene)
-    if (!show || !(buttonObj?.isValid() ?? false))
-      return
-
-    openBattlePassPromoHandler({ scene = buttonObj })
-  }
-  //------------- </BATTLE PASS> ---------------------------
-
-  //-------------- <TUTORIAL> ------------------------------
-
-  function updateTutorialButton()
-  {
-    local tutorialData = getTutorialData()
-
-    local tutorialMission = tutorialData?.tutorialMission
-    local tutorialId = ::getTblValue("tutorialId", tutorialData)
-
-    local id = "tutorial_mainmenu_button"
-    local actionKey = ::g_promo.getActionParamsKey(id)
-    ::g_promo.setActionParamsData(actionKey, "tutorial", [tutorialId])
-
-    local buttonObj = null
-    local show = isShowAllCheckBoxEnabled()
-    if (show)
-      buttonObj = ::showBtn(id, show, scene)
-    else
-    {
-      show = tutorialMission != null && ::g_promo.getVisibilityById(id)
-      buttonObj = ::showBtn(id, show, scene)
-    }
-
-    if (!show || !::checkObj(buttonObj))
-      return
-
-    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)(tutorialMission))
-  }
-  //--------------- </TUTORIAL> ----------------------------
-
-  //--------------- <EVENTS> -------------------------------
-  function updateEventButton()
-  {
-    local id = "events_mainmenu_button"
-    local buttonObj = null
-    local show = isShowAllCheckBoxEnabled()
-    if (show)
-      buttonObj = ::showBtn(id, show, scene)
-    else
-    {
-      show = isEventsAvailable() && ::g_promo.getVisibilityById(id)
-      buttonObj = ::showBtn(id, show, scene)
-    }
-
-    if (!show || !::checkObj(buttonObj))
-      return
-
-    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)())
-  }
-
-  function isEventsAvailable()
-  {
-    return ::has_feature("Events")
-           && ::events
-           && ::events.getEventsVisibleInEventsWindowCount()
-           && isMultiplayerPrivilegeAvailable()
-  }
-  //----------------- </EVENTS> -----------------------------
-
-  //----------------- <WORLD WAR> ---------------------------
-  function updateWorldWarButton()
-  {
-    local id = "world_war_button"
-    local isWwEnabled = ::g_world_war.canJoinWorldwarBattle()
-    local isVisible = ::g_promo.getShowAllPromoBlocks()
-      || (isWwEnabled && ::g_world_war.isWWSeasonActiveShort())
-
-    local buttonObj = ::showBtn(id, isVisible, scene)
-    if (!isVisible || !::checkObj(buttonObj))
-      return
-
-    ::g_promo.setButtonText(buttonObj, id, promoTextFunctions[id].bindenv(this)(isWwEnabled))
-
-    if (!::g_promo.isCollapsed(id))
-      return
-
-    if (::g_world_war.hasNewNearestAvailableMapToBattle())
-      ::g_promo.toggleItem(buttonObj.findObject(id + "_toggle"))
-  }
-  //----------------- </WORLD WAR> --------------------------
-
-  //---------------- <INVITE SQUAD> -------------------------
-
-  function updateSquadInviteButton()
-  {
-    local id = "invite_squad_mainmenu_button"
-    local show = !::is_me_newbie() && ::g_promo.getVisibilityById(id)
-    local buttonObj = ::showBtn(id, show, scene)
-    if (!show || !::checkObj(buttonObj))
-      return
-
-    buttonObj.inactiveColor = ::checkIsInQueue() ? "yes" : "no"
-  }
-
-  //---------------- </INVITE SQUAD> ------------------------
-
   //----------------- <NAVIGATION> --------------------------
 
   function getWrapNestObj()
@@ -413,18 +289,6 @@ local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHan
   function onToggleItem(obj) { ::g_promo.toggleItem(obj) }
 
   //-------------------- </TOGGLE> ----------------------------
-
-  //------------------ <RECENT ITEMS> -------------------------
-
-  function createRecentItemsHandler()
-  {
-    local id = "recent_items_mainmenu_button"
-    local show = isShowAllCheckBoxEnabled() || ::g_promo.getVisibilityById(id)
-    local handlerWeak = ::g_recent_items.createHandler(this, scene.findObject(id), show)
-    owner.registerSubHandler(handlerWeak)
-  }
-
-  //----------------- </RECENT ITEMS> -------------------------
 
   //------------------ <WEB POLL> -------------------------
 
@@ -460,20 +324,9 @@ local { openBattlePassPromoHandler } = require("scripts/promo/battlePassPromoHan
 
   //----------------- </RADIOBUTTONS> -------------------------
 
-  function onEventEventsDataUpdated(p)  { updateEventButton() }
-  function onEventMyStatsUpdated(p)     { updateEventButton() }
-  function onEventQueueChangeState(p)   {
-                                          updateSquadInviteButton()
-                                        }
-  function onEventUnlockedCountriesUpdate(p) { updateEventButton() }
-  function onEventHangarModelLoaded(p)  { updateTutorialButton() }
   function onEventShowAllPromoBlocksValueChanged(p) { updatePromoBlocks() }
   function onEventPartnerUnlocksUpdated(p) { updatePromoBlocks(true) }
   function onEventShopWndVisible(p) { toggleSceneVisibility(!::getTblValue("isShopShow", p, false)) }
-  function onEventWWLoadOperation(p) { updateWorldWarButton() }
-  function onEventWWStopWorldWar(p) { updateWorldWarButton() }
-  function onEventWWShortGlobalStatusChanged(p) { updateWorldWarButton() }
-  function onEventCrossPlayOptionChanged(p) { updateWorldWarButton() }
   function onEventXboxMultiplayerPrivilegeUpdated(p) { updatePromoBlocks(true) }
   function onEventWebPollAuthResult(p) { updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {

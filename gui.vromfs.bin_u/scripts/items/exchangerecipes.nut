@@ -394,7 +394,7 @@ local ExchangeRecipes = class {
     }
 
     params.componentToHide <- componentItem
-    params.showCurQuantities <- componentItem.descReceipesListWithCurQuantities
+    params.showCurQuantities <- (params?.showCurQuantities ?? true) && componentItem.descReceipesListWithCurQuantities
     params.canOpenForGold <- componentItem.canOpenForGold()
 
     local res = []

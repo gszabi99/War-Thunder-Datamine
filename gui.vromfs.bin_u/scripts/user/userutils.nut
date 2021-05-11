@@ -4,6 +4,7 @@ local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.n
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("scripts/clientState/platform.nut")
 local { getMyCrewUnitsState } = require("scripts/slotbar/crewsListInfo.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 local needShowRateWnd = false //need this, because debriefing data destroys after debriefing modal is closed
 
@@ -163,3 +164,16 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
     return ::get_player_tags().indexof(tag) != null
   }
 }
+
+local function onLaunchEmailRegistration(params) {
+  local platformName = params?[0] ?? ""
+  if (platformName == "")
+    return
+
+  local launchFunctionName = ::format("launch%sEmailRegistration", platformName)
+  local launchFunction = ::g_user_utils?[launchFunctionName]
+  if (launchFunction)
+    launchFunction()
+}
+
+addPromoAction("email_registration", @(handler, params, obj) onLaunchEmailRegistration(params))

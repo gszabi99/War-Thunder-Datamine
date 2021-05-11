@@ -1,6 +1,6 @@
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 
-local shouldCheckAutoConsume = ::Watched(false)
+local shouldCheckAutoConsume = false
 
 local failedAutoConsumeItems = {}
 
@@ -28,9 +28,9 @@ autoConsumeItems = function() {
 }
 
 local function checkAutoConsume() {
-  if (!shouldCheckAutoConsume.value)
+  if (!shouldCheckAutoConsume)
     return
-  shouldCheckAutoConsume(false)
+  shouldCheckAutoConsume = false
   autoConsumeItems()
 }
 
@@ -39,7 +39,7 @@ addListenersWithoutEnv({
 })
 
 return {
-  shouldCheckAutoConsume
+  setShouldCheckAutoConsume = @(value) shouldCheckAutoConsume = value
   checkAutoConsume
   autoConsumeItems
 }

@@ -76,7 +76,10 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
       randomize_builder_options()
 
     createSlotbar({
-      afterSlotbarSelect = @() !::slotbar_oninit && reinitOptionsList()
+      afterSlotbarSelect = function() {
+        if (!(slotbarWeak?.slotbarOninit ?? false))
+          reinitOptionsList()
+       }
     })
 
     ::move_mouse_on_obj(scene.findObject("btn_select"))

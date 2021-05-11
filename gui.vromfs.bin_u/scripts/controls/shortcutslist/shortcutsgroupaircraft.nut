@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")

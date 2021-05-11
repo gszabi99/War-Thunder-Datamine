@@ -4,6 +4,7 @@ local { seasonLevel, todayLoginExp, hasBattlePassReward,
 local { mainChallengeOfSeason, hasChallengesReward } = require("scripts/battlePass/challenges.nut")
 local { leftSpecialTasksBoughtCount } = require("scripts/warbonds/warbondShopState.nut")
 local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
+local { number_of_set_bits } = require("std/math.nut")
 
 local seasonLvlWatchObj = [{
   watch = seasonLevel
@@ -97,6 +98,12 @@ local seasonTasksProgressWatchObj = {
     obj.show(isVisible)
     if (!isVisible)
       return
+
+    local isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+    if (isBitMode) {
+      curVal = number_of_set_bits(curVal)
+      maxVal = number_of_set_bits(maxVal)
+    }
 
     obj.findObject("progress_bar").setValue(1000.0 * curVal / maxVal)
     obj.findObject("progress_text")

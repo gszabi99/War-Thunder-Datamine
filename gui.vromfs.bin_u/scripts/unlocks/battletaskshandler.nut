@@ -1,5 +1,6 @@
 local time = require("scripts/time.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 ::gui_start_battle_tasks_wnd <- function gui_start_battle_tasks_wnd(taskId = null, tabType = null)
 {
@@ -714,3 +715,10 @@ class ::gui_handlers.BattleTasksWnd extends ::gui_handlers.BaseGuiHandlerWT
     ::g_sound.stop()
   }
 }
+
+local function openBattleTasksWndFromPromo(params = [], obj = null) {
+  ::g_warbonds_view.resetShowProgressBarFlag()
+  ::gui_start_battle_tasks_wnd(obj?.task_id ?? params?[0])
+}
+
+addPromoAction("battle_tasks", @(handler, params, obj) openBattleTasksWndFromPromo(params, obj))

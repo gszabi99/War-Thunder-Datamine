@@ -1,4 +1,4 @@
-local penalty = ::require_native("penalty")
+local penalty = require("penalty")
 local stdStr = require("string")
 local time = require("std/time.nut")
 local timeLocTable = require("reactiveGui/timeLocTable.nut")

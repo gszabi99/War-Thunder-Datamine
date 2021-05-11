@@ -8,9 +8,11 @@ local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.nut")
-local { checkAndShowMultiplayerPrivilegeWarning } = require("scripts/user/xboxFeatures.nut")
+local { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { resetSlotbarOverrided, updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
 local { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/events/eventInfo.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
@@ -740,3 +742,45 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
   }
   return handler
 }
+
+local function openEventsWndFromPromo(owner, params = []) {
+  local eventId = params.len() > 0? params[0] : null
+  owner.checkedForward(@() goForwardIfOnline(
+    @() ::gui_start_modal_events({event = eventId}), false, true))
+}
+
+local getEventsPromoText = @() ::events.getEventsVisibleInEventsWindowCount() == 0
+  ? ::loc("mainmenu/events/eventlist_btn_no_active_events")
+  : ::loc("mainmenu/btnTournamentsAndEvents")
+
+addPromoAction("events", @(handler, params, obj) openEventsWndFromPromo(handler, params))
+
+local promoButtonId = "events_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  getText = getEventsPromoText
+  collapsedIcon = ::loc("icon/events")
+  getCustomSeenId = @() bhvUnseen.makeConfigStr(SEEN.EVENTS, SEEN.S_EVENTS_WINDOW)
+  updateFunctionInHandler = function() {
+    local id = promoButtonId
+    local buttonObj = null
+    local show = isShowAllCheckBoxEnabled()
+    if (show)
+      buttonObj = ::showBtn(id, show, scene)
+    else
+    {
+      show = ::has_feature("Events")
+        && ::events.getEventsVisibleInEventsWindowCount()
+        && isMultiplayerPrivilegeAvailable()
+        && ::g_promo.getVisibilityById(id)
+      buttonObj = ::showBtn(id, show, scene)
+    }
+
+    if (!show || !::checkObj(buttonObj))
+      return
+
+    ::g_promo.setButtonText(buttonObj, id, getEventsPromoText())
+  }
+  updateByEvents = ["EventsDataUpdated", "MyStatsUpdated", "UnlockedCountriesUpdate"]
+})

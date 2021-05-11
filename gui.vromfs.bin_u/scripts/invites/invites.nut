@@ -242,7 +242,7 @@ g_invites.fetchNewInvitesFromUserlogs <- function fetchNewInvitesFromUserlogs()
     if ( blk.type == ::EULT_WW_CREATE_OPERATION ||
          blk.type == ::EULT_WW_START_OPERATION )
     {
-      if (blk?.disabled)
+      if (blk?.disabled || !::is_worldwar_enabled())
         continue
 
       ::g_world_war.addOperationInvite(

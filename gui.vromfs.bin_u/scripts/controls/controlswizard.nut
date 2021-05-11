@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require("globalEnv")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 

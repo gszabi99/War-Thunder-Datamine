@@ -3,6 +3,7 @@ local { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::dagui_propid.add_name_id("task_id")
 ::dagui_propid.add_name_id("difficultyGroup")
@@ -222,3 +223,22 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
   onEventWarbondShopMarkSeenLevel             = @(p) updateHandler()
   onEventWarbondViewShowProgressBarFlagUpdate = @(p) updateHandler()
 }
+
+local promoButtonId = "current_battle_tasks_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  buttonType = "battleTask"
+  collapsedIcon = ::loc("icon/battleTasks")
+  collapsedText = "title"
+  updateFunctionInHandler = function() {
+    local id = promoButtonId
+    local show = ::g_battle_tasks.isAvailableForUser()
+      && ::g_promo.getVisibilityById(id)
+    local buttonObj = ::showBtn(id, show, scene)
+    if (!show || !::checkObj(buttonObj))
+      return
+
+    ::gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
+  }
+})

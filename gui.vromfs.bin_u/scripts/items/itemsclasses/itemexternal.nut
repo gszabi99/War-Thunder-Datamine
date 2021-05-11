@@ -16,6 +16,7 @@ local defaultLocIdsList = {
   assemble                              = "item/assemble"
   disassemble                           = "item/disassemble"
   recipes                               = "item/recipes"
+  modify                                = "item/modify"
   descReceipesListHeaderPrefix          = ""
   msgBoxCantUse                         = "msgBox/assembleItem/cant"
   msgBoxConfirm                         = ""
@@ -32,6 +33,7 @@ local defaultLocIdsList = {
   inventoryErrorPrefix                  = "inventoryError/"
   maxAmountIcon                         = "check_mark/green"
   reUseItemLocId                        = "item/consume/again"
+  openingRewardTitle                    = "mainmenu/itemConsumed/title"
 }
 
 local ItemExternal = class extends ::BaseItem
@@ -39,7 +41,6 @@ local ItemExternal = class extends ::BaseItem
   static defaultLocId = ""
   static combinedNameLocId = null
   static descHeaderLocId = ""
-  static openingCaptionLocId = "mainmenu/itemConsumed/title"
   static linkActionLocId = "msgbox/btn_find_on_marketplace"
   static linkActionIcon = "#ui/gameuiskin#gc.svg"
   static userlogOpenLoc = "coupon_exchanged"
@@ -237,7 +238,7 @@ local ItemExternal = class extends ::BaseItem
 
   function getOpeningCaption()
   {
-    return ::loc(openingCaptionLocId)
+    return ::loc(getLocIdsList().openingRewardTitle)
   }
 
   function isAllowSkipOpeningAnim()
@@ -333,6 +334,8 @@ local ItemExternal = class extends ::BaseItem
           false)
   }
 
+  getTypeNameForMarketableDesc = @() ::g_string.utf8ToLower(getTypeName())
+
   function getMarketablePropDesc()
   {
     if (!::has_feature("Marketplace") || shouldAutoConsume)
@@ -344,7 +347,7 @@ local ItemExternal = class extends ::BaseItem
       : noTradeableSec > 0 ? "afterTime"
       : "yes"
     local text = ::loc("item/marketable/" + locEnding,
-      { name =  ::g_string.utf8ToLower(getTypeName())
+      { name = getTypeNameForMarketableDesc()
         time = noTradeableSec > 0
           ? ::colorize("badTextColor",
               ::stringReplace(time.hoursToString(time.secondsToHours(noTradeableSec), false, true, true), " ", ::nbsp))
@@ -399,6 +402,8 @@ local ItemExternal = class extends ::BaseItem
   canConvertToWarbonds = @() isInventoryItem && !isExpired() && ::has_feature("ItemConvertToWarbond") && amount > 0 && getWarbondRecipe() != null
   canDisassemble       = @() isInventoryItem && itemDef?.tags?.canBeDisassembled
     && !isExpired() && getDisassembleRecipe() != null
+  canBeModified           = @() isInventoryItem && itemDef?.tags?.canBeModified != null
+    && !isExpired() && getModifiedRecipe() != null
   getMaxRecipesToShow = @() 1
 
   hasMainActionDisassemble  = @() itemDef?.tags?.canBeDisassembled == "mainAction"
@@ -453,10 +458,12 @@ local ItemExternal = class extends ::BaseItem
     : canConvertToWarbonds() ? ::loc("items/exchangeTo", { currency = getWarbondExchangeAmountText() })
     : (!hasMainActionDisassemble() && canDisassemble() && amount > 0 && !isCrafting() && !hasCraftResult())
       ? getDisassembleText()
+    : (canBeModified() && amount > 0) ? getModifiedText()
     : ""
   doAltAction        = @(params) (canConsume() && assemble(null, params))
     || convertToWarbonds(params)
     || (!hasMainActionDisassemble() && disassemble(params))
+    || modify(params)
 
   function consume(cb, params)
   {
@@ -567,10 +574,8 @@ local ItemExternal = class extends ::BaseItem
     if (amount <= 0 || !recipe)
       return ""
     local warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
-    local warbond = warbondItem && warbondItem.getWarbond()
-    if (!warbond)
-      return ""
-    return warbondItem.getWarbondsAmount() + ::loc(warbond.fontIcon)
+    local warbond = warbondItem?.getWarbond()
+    return $"{warbondItem?.getWarbondsAmount() ?? ""}{::loc(warbond?.fontIcon ?? "currency/warbond/green")}"
   }
 
   getDisassembleText = @() ::loc(getLocIdsList().disassemble)
@@ -589,6 +594,20 @@ local ItemExternal = class extends ::BaseItem
         bundleContent = content
       })
       return true
+  }
+
+  getModifiedText = @() ::loc(getLocIdsList().modify)
+  function modify(params = null)
+  {
+    if (!canBeModified() || amount <= 0)
+      return false
+
+    local recipe = getModifiedRecipe()
+    if (recipe == null)
+      return false
+
+    ExchangeRecipes.tryUse([ recipe ], this, params)
+    return true
   }
 
   getDisassembleResultContent = function(recipe)
@@ -610,8 +629,10 @@ local ItemExternal = class extends ::BaseItem
 
     local warbondItem = ::ItemsManager.findItemById(recipe.generatorId)
     local warbond = warbondItem && warbondItem.getWarbond()
-    if (!warbond)
-      return false
+    if (!warbond) {
+      ::showInfoMsgBox(::loc("mainmenu/warbondsShop/notAvailable"))
+      return true
+    }
 
     local leftWbAmount = ::g_warbonds.getLimit() - warbond.getBalance()
     if (leftWbAmount <= 0)
@@ -729,6 +750,20 @@ local ItemExternal = class extends ::BaseItem
     return null
   }
 
+  function getModifiedRecipe()
+  {
+    foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(id))
+    {
+      local gen = ItemGenerators.get(genItemdefId)
+      if (!gen?.tags.isModification)
+        continue
+      local recipes = gen.getRecipesWithComponent(id)
+      if (recipes.len() > 0)
+        return recipes[0]
+    }
+    return null
+  }
+
   getMyRecipes = @() ItemGenerators.get(id)?.getRecipes() ?? []
 
   function getVisibleRecipes() {
@@ -744,6 +779,8 @@ local ItemExternal = class extends ::BaseItem
   {
     if (expireTimestamp == -1)
       return ""
+    if (expiredTimeSec <= 0)
+      return ::colorize(expireCountdownColor, ::loc("items/expired"))
     return ::colorize(expireCountdownColor, ::loc(expireCountdownLocId, {
       datetime = time.buildDateTimeStr(expireTimestamp)
       timeleft = getExpireTimeTextShort()

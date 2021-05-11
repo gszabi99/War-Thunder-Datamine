@@ -104,7 +104,7 @@ local function update_font_heights(font)
   //text visible in options
   getOptionText = @() ::loc("fontSize/" + id.tolower())
     + ::loc("ui/parentheses/space", { text = "{0}%".subst(::round(100 * sizeMultiplier).tointeger()) })
-  getFontExample = @() "small_text; font-pixht: {0}".subst(::round(::require_native("fonts").getFontInitialHt("small_text") * sizeMultiplier).tointeger())
+  getFontExample = @() "small_text; font-pixht: {0}".subst(::round(getFontInitialHt("small_text") * sizeMultiplier).tointeger())
 }
 
 enums.addTypesByGlobalName("g_font",

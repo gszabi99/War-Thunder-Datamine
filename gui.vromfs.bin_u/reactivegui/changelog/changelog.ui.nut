@@ -9,6 +9,7 @@ local fontsState = require("reactiveGui/style/fontsState.nut")
 local JB = require("reactiveGui/control/gui_buttons.nut")
 local { mkImageCompByDargKey } = require("reactiveGui/components/gamepadImgByKey.nut")
 local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
+local focusBorder = require("reactiveGui/components/focusBorder.nut")
 
 local tabStyle = {
   fillColor = {
@@ -30,6 +31,7 @@ local borderWidth = ::dp(1)
 
 local scrollHandler = ::ScrollHandler()
 local scrollStep = ::fpx(75)
+local maxPatchnoteWidth = ::fpx(300)
 
 local function getTabColorCtor(sf, style, isCurrent) {
   if (isCurrent)        return style.current
@@ -41,35 +43,38 @@ local function getTabColorCtor(sf, style, isCurrent) {
 local function patchnote(v) {
   local stateFlags = Watched(0)
   local isCurrent = @() curPatchnote.value.iVersion == v.iVersion
-  return @() {
-    watch = [stateFlags, curPatchnote]
-    rendObj = ROBJ_BOX
-    fillColor = isCurrent() ? Color(58, 71, 79)
-      : Color(0, 0, 0)
-    borderColor = Color(178, 57, 29)
-    borderWidth = isCurrent()
-      ? [0, 0, 2*borderWidth, 0]
-      : 0
-    size = [flex(1), ::ph(100)]
-    maxWidth = ::fpx(300)
-    behavior = Behaviors.Button
-    halign = ALIGN_CENTER
-    onClick = @() choosePatchnote(v)
-    onElemState = @(sf) stateFlags(sf)
-    skipDirPadNav = false
-    children = [{
-        size = [flex(), ::ph(100)]
-        maxWidth = ::fpx(300) - 2 * ::scrn_tgt(0.01)
-        behavior = Behaviors.TextArea
-        rendObj = ROBJ_TEXTAREA
-        halign = ALIGN_CENTER
-        valign = ALIGN_CENTER
-        color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent())
-        font = fontsState.get("small")
-        text = v?.title ?? v.tVersion
-      },
-      stateFlags.value & S_HOVER ? { hotkeys = [[$"{JB.A} | J:RT", @() choosePatchnote(v)]] } : null
-    ]
+  return function() {
+    local children = [{
+      size = [flex(), ::ph(100)]
+      maxWidth = maxPatchnoteWidth - 2 * ::scrn_tgt(0.01)
+      behavior = Behaviors.TextArea
+      rendObj = ROBJ_TEXTAREA
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      color = getTabColorCtor(stateFlags.value, tabStyle.textColor, isCurrent())
+      font = fontsState.get("small")
+      text = v?.title ?? v.tVersion
+    }]
+    if ((stateFlags.value & S_HOVER) != 0)
+      children.append({ hotkeys = [[$"{JB.A} | J:RT", @() choosePatchnote(v)]] },
+        focusBorder({ maxWidth = maxPatchnoteWidth }))
+    return {
+      watch = [stateFlags, curPatchnote]
+      rendObj = ROBJ_BOX
+      fillColor = isCurrent() ? Color(58, 71, 79)
+        : Color(0, 0, 0)
+      borderColor = Color(178, 57, 29)
+      borderWidth = isCurrent()
+        ? [0, 0, 2*borderWidth, 0]
+        : 0
+      size = [flex(1), ::ph(100)]
+      maxWidth = maxPatchnoteWidth
+      behavior = Behaviors.Button
+      halign = ALIGN_CENTER
+      onClick = @() choosePatchnote(v)
+        onElemState = @(sf) stateFlags(sf)
+      children
+    }
   }
 }
 
@@ -193,8 +198,8 @@ local clicksHandler = {
   skipDirPadNav = true
   behavior = Behaviors.Button
   hotkeys = [
-    ["J:LB | Left", nextPatchNote],
-    ["J:RB | Right", prevPatchNote]
+    ["J:LB", nextPatchNote],
+    ["J:RB", prevPatchNote]
   ]
 }
 

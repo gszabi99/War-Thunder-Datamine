@@ -1,4 +1,4 @@
-local hudState = ::require_native("hudState")
+local hudState = require("hudState")
 
 local function getAabbObjFromHud(hudFuncName) {
   local handler = ::handlersManager.findHandlerClassInScene(::gui_handlers.Hud)

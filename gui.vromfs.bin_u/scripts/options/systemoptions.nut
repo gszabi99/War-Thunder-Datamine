@@ -1,5 +1,5 @@
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { get_primary_screen_info } = ::require_native("dagor.system")
+local { get_primary_screen_info } = require("dagor.system")
 //------------------------------------------------------------------------------
 local mSettings = {}
 local mShared = {}
@@ -758,6 +758,10 @@ mSettings = {
   }
   latency = { widgetType="list" def="off" blk="video/latency" restart=false
     init = function(blk, desc) {
+      if (!isVisible() && getGuiValue("latency", "off") != "off") {
+        setGuiValue("latency", "off", true)
+        enableGuiOption("vsync", getOptionDesc("vsync")?.enabled() ?? true)
+      }
       desc.values <- getAvailableLatencyModes()
       desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = ::loc($"guiHints/latency_{value}") })
     }

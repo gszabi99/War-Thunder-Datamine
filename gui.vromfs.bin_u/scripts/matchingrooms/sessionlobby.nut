@@ -2,7 +2,7 @@ local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getPlayerName } = require("scripts/clientState/platform.nut")
 local { getMissionLocIdsArray } = require("scripts/missions/missionsUtilsModule.nut")
-local base64 = ::require_native("base64")
+local base64 = require("base64")
 local DataBlock = require("DataBlock")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { getSlotbarOverrideCountriesByMissionName, resetSlotbarOverrided,

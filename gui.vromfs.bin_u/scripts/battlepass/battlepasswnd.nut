@@ -11,6 +11,10 @@ local { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { openBattlePassShopWnd } = require("scripts/battlePass/progressShop.nut")
 local { isUserstatMissingData } = require("scripts/userstat/userstat.nut")
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { number_of_set_bits } = require("std/math.nut")
+require("scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 
 local watchObjInfoConfig = {
   season_lvl = seasonLvlWatchObj
@@ -359,20 +363,19 @@ local BattlePassWnd = class extends ::gui_handlers.BaseGuiHandlerWT {
     local curValue = unlockConfig.curVal
     local maxValue = unlockConfig.maxVal
 
+    local isBitMode = ::UnlockConditions.isBitModeType(unlockConfig.type)
+    if (isBitMode) {
+      curValue = number_of_set_bits(curValue)
+      maxValue = number_of_set_bits(maxValue)
+    }
+
     mainChallengeProgressObj.findObject("progress_bar").setValue(
       (maxValue > 0 ? (curValue.tofloat() / maxValue) : 0) * 1000.0)
     mainChallengeProgressObj.findObject("progress_text").setValue(
       $"{curValue}{::loc("weapons_types/short/separator")}{maxValue}")
   }
 
-  function getSelectedChildId(obj) {
-    local total = obj.childrenCount()
-    if (total == 0)
-      return ""
-
-    local value = ::clamp(obj.getValue(), 0, total - 1)
-    return obj.getChild(value)?.id ?? ""
-  }
+  getSelectedChildId = @(obj) getSelectedChild(obj)?.id ?? ""
 
   function onEventFavoriteUnlocksChanged(params)
   {
@@ -476,6 +479,8 @@ local function openBattlePassWnd() {
 
   ::handlersManager.loadHandler(BattlePassWnd)
 }
+
+addPromoAction("battle_pass", @(handler, params, obj) openBattlePassWnd())
 
 return {
   openBattlePassWnd
