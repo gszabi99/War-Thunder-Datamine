@@ -1,0 +1,739 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": [],
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [],
+  "areas": {
+    "stage1_capzone": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [2273.4,643.722,1407.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage2_eliminate": {
+      "type": "Sphere",
+      "tm": [
+        [100.0,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,100.0],
+        [2075.1,645.225,2372.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_defend": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [2419.8,645.957,3216.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "enemy_spawn_for_counter": {
+      "type": "Sphere",
+      "tm": [
+        [200.0,0.0,0.0],
+        [0.0,200.0,0.0],
+        [0.0,0.0,200.0],
+        [1553.8,640.55,3204.65]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_stage1": {
+      "type": "Box",
+      "tm": [
+        [1166.92,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,899.032],
+        [1903.95,625.9,1425.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "safearea_stage1": {
+      "type": "Sphere",
+      "tm": [
+        [500.0,0.0,0.0],
+        [0.0,500.0,0.0],
+        [0.0,0.0,500.0],
+        [1576.8,632.75,1422.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_stage3": {
+      "type": "Box",
+      "tm": [
+        [-758.618,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,-1763.43],
+        [2272.7,626.7,2757.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_direction_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1735.33,640.294,2815.96]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_direction_03": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1609.18,640.197,3823.63]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_direction_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1574.44,637.0,3125.13]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_1 ": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1918.3,632.556,3017.31]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_3": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1901.95,633.7,3538.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_2": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1923.97,641.55,3275.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage1_02": {
+      "type": "Sphere",
+      "tm": [
+        [7.61902,0.0,6.47694],
+        [0.0,10.0,0.0],
+        [-6.47694,0.0,7.61902],
+        [1560.39,636.88,1367.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage1_01": {
+      "type": "Sphere",
+      "tm": [
+        [7.37277,0.0,6.7559],
+        [0.0,10.0,0.0],
+        [-6.7559,0.0,7.37277],
+        [1570.19,636.36,1376.17]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage1_03": {
+      "type": "Sphere",
+      "tm": [
+        [7.93354,0.0,6.08762],
+        [0.0,10.0,0.0],
+        [-6.08762,0.0,7.93354],
+        [1550.45,637.46,1358.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage1_04": {
+      "type": "Sphere",
+      "tm": [
+        [8.66025,0.0,5.0],
+        [0.0,10.0,0.0],
+        [-5.0,0.0,8.66025],
+        [1539.77,638.03,1351.16]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage2_01": {
+      "type": "Sphere",
+      "tm": [
+        [-0.871564,0.0,9.96195],
+        [0.0,10.0,0.0],
+        [-9.96195,0.0,-0.871564],
+        [2258.81,631.819,1478.67]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage2_02": {
+      "type": "Sphere",
+      "tm": [
+        [-0.436192,0.0,9.99048],
+        [0.0,10.0,0.0],
+        [-9.99048,0.0,-0.436192],
+        [2259.29,631.819,1462.71]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage2_03": {
+      "type": "Sphere",
+      "tm": [
+        [-0.436192,0.0,9.99048],
+        [0.0,10.0,0.0],
+        [-9.99048,0.0,-0.436192],
+        [2259.75,631.809,1449.08]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage2_04": {
+      "type": "Sphere",
+      "tm": [
+        [2.5034e-06,0.0,10.0],
+        [0.0,10.0,0.0],
+        [-10.0,0.0,2.5034e-06],
+        [2259.3,631.799,1437.01]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage3_01": {
+      "type": "Sphere",
+      "tm": [
+        [6.28431,0.0,7.77865],
+        [0.0,10.0,0.0],
+        [-7.77865,0.0,6.28431],
+        [2062.75,634.1,2803.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage3_02": {
+      "type": "Sphere",
+      "tm": [
+        [6.93836,0.0,7.20134],
+        [0.0,10.0,0.0],
+        [-7.20134,0.0,6.93836],
+        [2054.07,634.1,2793.78]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage3_03": {
+      "type": "Sphere",
+      "tm": [
+        [6.61763,0.0,7.49714],
+        [0.0,10.0,0.0],
+        [-7.49714,0.0,6.61763],
+        [2046.12,634.1,2784.47]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "respawn_stage3_04": {
+      "type": "Sphere",
+      "tm": [
+        [6.61763,0.0,7.49714],
+        [0.0,10.0,0.0],
+        [-7.49714,0.0,6.61763],
+        [2036.92,634.1,2774.86]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_1_end": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2373.65,639.432,3084.38]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_2_end": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2291.46,638.054,3207.62]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "advance_icon_3_end": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2306.74,645.619,3323.62]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "battlearea_stage2": {
+      "type": "Box",
+      "tm": [
+        [-977.241,0.0,0.0],
+        [0.0,100.0,0.0],
+        [0.0,0.0,-1564.21],
+        [2163.59,625.75,1957.94]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "briefing_battleArea": {
+      "type": "Box",
+      "tm": [
+        [1444.68,0.0,0.0],
+        [0.0,232.983,0.0],
+        [0.0,0.0,3220.67],
+        [1989.75,632.4,2559.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": {
+    "way_points_01": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_01_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1752.04,631.762,2876.33]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_01_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1795.89,632.177,2995.97]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_01_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2025.02,631.936,3040.39]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_01_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2097.46,630.35,3006.96]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_01_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2350.05,632.172,3087.12]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_01_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2443.72,632.769,3170.9]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        }
+      }
+    },
+    "way_points_02": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_02_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1642.46,631.562,3246.29]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_02_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1815.77,632.377,3290.62]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_02_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2003.12,632.739,3241.2]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_02_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2127.69,633.749,3260.39]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_02_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2237.27,631.032,3180.83]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_02_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2364.91,631.81,3182.48]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        }
+      }
+    },
+    "way_points_03": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "way_points_03_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1660.59,632.263,3870.91]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1815.46,637.657,3894.22]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1859.31,632.455,3538.18]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [1929.34,632.655,3540.63]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2013.46,631.365,3523.82]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2102.34,630.938,3479.36]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_07": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2299.27,632.111,3325.51]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        },
+        "way_points_03_wp_08": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [2396.19,631.347,3225.63]
+          ],
+          "props": {
+            "speed": 25.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false,
+            "waypointReachedDist": 10.0
+          }
+        }
+      }
+    }
+  }
+}
