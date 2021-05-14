@@ -200,10 +200,10 @@
                 "point": "briefing_stage3_05_b"
               },
               {
-                "point": "act_stage3_escape"
+                "point": "briefing_stage3_escape"
               },
               {
-                "point": "act_stage3_escape"
+                "point": "briefing_stage3_escape"
               }
             ]
           },
@@ -1764,15 +1764,6 @@
           "object_var_comp_op": "equal",
           "object_var_name": ""
         },
-        "missionShowMapIcon": {
-          "show": true,
-          "iconName": "ui/gameuiskin#waypoint_big",
-          "areaName": "act_stage2_scouting",
-          "colorCode": "Enemy",
-          "scale": 300.0,
-          "scaleWithMap": true,
-          "opacity": 64
-        },
         "triggerEnable": [
           {
             "target": "stage2__destroy"
@@ -1830,58 +1821,39 @@
           "target": "ai_stage2_tank_sq"
         }
       },
-      "actions": [
-        {
-          "moSetObjectiveStatus": {
-            "target": "convoy_pvet_scout",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "convoy_pvet_scout",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "moAddMissionObjective": {
-            "target": "convoy_pvet_destroy",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
+        "moAddMissionObjective": {
+          "target": "convoy_pvet_destroy",
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
         },
-        {
-          "missionShowMapIcon": {
-            "show": false,
-            "iconName": "ui/gameuiskin#waypoint_big",
-            "areaName": "act_stage2_scouting",
-            "colorCode": "Neutral",
-            "scale": 300.0,
-            "scaleWithMap": true,
-            "opacity": 64
-          }
+        "missionShowMapIcon": {
+          "show": false,
+          "iconName": "ui/gameuiskin#waypoint_big",
+          "areaName": "act_stage2_scouting",
+          "colorCode": "Neutral",
+          "scale": 300.0,
+          "scaleWithMap": true,
+          "opacity": 64
         },
-        {
-          "missionShowMapIcon": {
-            "show": true,
-            "iconName": "ui/gameuiskin#waypoint_big",
-            "areaName": "act_stage2_scouting",
-            "colorCode": "Enemy",
-            "scale": 300.0,
-            "scaleWithMap": true,
-            "opacity": 64
+        "triggerEnable": [
+          {
+            "target": "stage2__destroy"
+          },
+          {
+            "target": "stage2__destroyers_go"
+          },
+          {
+            "target": "stage2__to_kill_indicator"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "stage2__destroy"
-            },
-            {
-              "target": "stage2__destroyers_go"
-            },
-            {
-              "target": "stage2__to_kill_indicator"
-            }
-          ]
-        }
-      ],
+        ]
+      },
       "else_actions": []
     },
     "stage2__destroyers_go": {
@@ -1931,6 +1903,15 @@
         "varSetInt": {
           "value": 0,
           "var": "int_iterator"
+        },
+        "missionShowMapIcon": {
+          "show": true,
+          "iconName": "ui/gameuiskin#waypoint_big",
+          "areaName": "act_stage2_red_area",
+          "colorCode": "Enemy",
+          "scale": 300.0,
+          "scaleWithMap": true,
+          "opacity": 64
         },
         "triggerEnable": {
           "target": "stage2__iterate_destroyers"
@@ -2198,7 +2179,7 @@
         "missionShowMapIcon": {
           "show": false,
           "iconName": "ui/gameuiskin#waypoint_big",
-          "areaName": "act_stage2_scouting",
+          "areaName": "act_stage2_red_area",
           "colorCode": "Enemy",
           "scale": 300.0,
           "scaleWithMap": true,
@@ -2362,12 +2343,18 @@
             },
             {
               "target": "stage3__activate_pursue"
+            },
+            {
+              "target": "stage3__set_speed"
+            },
+            {
+              "target": "stage3__sleep_killed"
             }
           ]
         },
         {
           "wait": {
-            "time": 5.0
+            "time": 6.0
           }
         },
         {
@@ -2495,7 +2482,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_01_a",
-            "areaNameTo": "briefing_stage3_01_b",
+            "areaNameTo": "stage3_map_advance_01",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.5,
@@ -2515,7 +2502,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_02_a",
-            "areaNameTo": "briefing_stage3_02_b",
+            "areaNameTo": "stage3_map_advance_02",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.55,
@@ -2535,7 +2522,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_03_a",
-            "areaNameTo": "briefing_stage3_03_b",
+            "areaNameTo": "stage3_map_advance_03",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.45,
@@ -2555,7 +2542,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_04_a",
-            "areaNameTo": "briefing_stage3_04_b",
+            "areaNameTo": "stage3_map_advance_04",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.5,
@@ -2575,7 +2562,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_05_a",
-            "areaNameTo": "briefing_stage3_05_b",
+            "areaNameTo": "stage3_map_advance_05",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.45,
@@ -2592,7 +2579,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_01_a",
-            "areaNameTo": "briefing_stage3_01_b",
+            "areaNameTo": "stage3_map_advance_01",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.5,
@@ -2612,7 +2599,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_02_a",
-            "areaNameTo": "briefing_stage3_02_b",
+            "areaNameTo": "stage3_map_advance_02",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.55,
@@ -2632,7 +2619,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_03_a",
-            "areaNameTo": "briefing_stage3_03_b",
+            "areaNameTo": "stage3_map_advance_03",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.45,
@@ -2652,7 +2639,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_04_a",
-            "areaNameTo": "briefing_stage3_04_b",
+            "areaNameTo": "stage3_map_advance_04",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.5,
@@ -2672,7 +2659,7 @@
         {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_05_a",
-            "areaNameTo": "briefing_stage3_05_b",
+            "areaNameTo": "stage3_map_advance_05",
             "show": true,
             "colorCode": "Enemy",
             "scale": 0.45,
@@ -2740,6 +2727,74 @@
         }
       ],
       "else_actions": []
+    },
+    "stage3__set_speed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "gameWhenDifficulty": {
+          "difficulty": "arcade",
+          "is": "equal"
+        }
+      },
+      "actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "t1_ai_truck_sq",
+            "speed": 30.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_stage3_tank_sq",
+            "speed": 30.0,
+            "lockSpeed": true
+          }
+        }
+      ],
+      "else_actions": [
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "t1_ai_truck_sq",
+            "speed": 20.0,
+            "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_stage3_tank_sq",
+            "speed": 20.0,
+            "lockSpeed": true
+          }
+        }
+      ]
     },
     "convoy_set_speed": {
       "is_enabled": false,
@@ -3162,6 +3217,49 @@
           "target": "convoy_iterate_players"
         }
       }
+    },
+    "stage3__sleep_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitDistanceBetween": {
+          "value": 10.0,
+          "math": "2D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "target_type": "isKilled",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
+          "object": "ai_stage3_tank_sq",
+          "target": "ai_stage3_tank_sq"
+        }
+      },
+      "actions": {
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "ai_stage3_tank_sq",
+          "object_type": "isInactive",
+          "useForTriggerFiltered": true,
+          "isDelayed": true
+        }
+      },
+      "else_actions": []
     },
     "stage3__continuous_respawn_01": {
       "is_enabled": false,
@@ -3905,9 +4003,17 @@
         }
       },
       "actions": {
-        "unitPutToSleep": {
-          "target": "player_sq",
-          "useForTriggerFiltered": true
+        "wait": {
+          "time": 5.0
+        },
+        "unitSetProperties": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "object": "player_sq",
+          "object_type": "isInactive",
+          "isDelayed": true
         }
       },
       "else_actions": []
@@ -17594,10 +17700,10 @@
     "briefing_battlearea": {
       "type": "Box",
       "tm": [
-        [-2956.47,0.0,0.0],
+        [-2719.95,0.0,0.0],
         [0.0,147.527,0.0],
         [0.0,0.0,-1471.56],
-        [2015.42,76.1243,3219.43]
+        [1856.38,76.1243,3219.43]
       ],
       "objLayer": 0,
       "props": []
@@ -17630,7 +17736,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1857.05,64.3623,2764.44]
+        [1862.9,65.5,2732.35]
       ],
       "objLayer": 0,
       "props": []
@@ -17641,7 +17747,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2340.6,78.35,2793.45]
+        [2362.95,74.95,2768.9]
       ],
       "objLayer": 0,
       "props": []
@@ -17652,7 +17758,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2178.8,73.9,2818.9]
+        [2152.2,73.9,2756.6]
       ],
       "objLayer": 0,
       "props": []
@@ -17663,7 +17769,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2516.9,81.35,2790.35]
+        [2513.35,81.2,2778.0]
       ],
       "objLayer": 0,
       "props": []
@@ -17674,7 +17780,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2757.05,82.4,2801.9]
+        [2791.8,82.4,2795.55]
       ],
       "objLayer": 0,
       "props": []
@@ -17740,7 +17846,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [1779.15,65.4,2729.65]
+        [1872.55,65.4,2728.35]
       ],
       "objLayer": 0,
       "props": []
@@ -18334,7 +18440,7 @@
         [1.0,0.0,0.0],
         [0.0,1.0,0.0],
         [0.0,0.0,1.0],
-        [2933.45,89.9,2876.55]
+        [2998.75,89.9,2940.6]
       ],
       "objLayer": 0,
       "props": []
@@ -18445,6 +18551,72 @@
         [0.0,74.3554,0.0],
         [105.282,0.0,99.6689],
         [542.45,51.25,4145.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_map_advance_01": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [1789.35,63.55,2711.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_map_advance_02": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2171.7,73.15,2752.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_map_advance_03": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2395.1,80.0,2733.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_map_advance_04": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2514.9,81.7,2737.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "stage3_map_advance_05": {
+      "type": "Point",
+      "tm": [
+        [1.0,0.0,0.0],
+        [0.0,1.0,0.0],
+        [0.0,0.0,1.0],
+        [2768.1,81.95,2742.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "act_stage2_red_area": {
+      "type": "Sphere",
+      "tm": [
+        [150.0,0.0,0.0],
+        [0.0,150.0,0.0],
+        [0.0,0.0,150.0],
+        [1870.1,78.85,2728.0]
       ],
       "objLayer": 0,
       "props": []
