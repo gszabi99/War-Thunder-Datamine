@@ -351,8 +351,6 @@ local function parseResolution(resolution) {
 local function getAvailableDlssModes()
 {
   local values = ["off"]
-  if (::is_stereo_mode())  //switch off dlss in VR, until implemented for VR
-    return values
   local selectedResolution = parseResolution(getGuiValue("resolution", "auto"))
   if (::is_dlss_quality_available_at_resolution(0, selectedResolution.w, selectedResolution.h))
     values.append("performance")
@@ -718,7 +716,6 @@ mSettings = {
       local quality = (val == "performance") ? 0 : (val == "balanced") ? 1 : (val == "quality") ? 2 : -1
       set_blk_value_by_path(blk, desc.blk, quality)
     }
-    enabled = @() !::is_stereo_mode() //disable dlss in VR, until implemented for VR
   }
   anisotropy = { widgetType="list" def="2X" blk="graphics/anisotropy" restart=true
     values = [ "off", "2X", "4X", "8X", "16X" ]

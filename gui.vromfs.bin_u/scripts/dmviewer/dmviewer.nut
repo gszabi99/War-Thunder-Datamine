@@ -1316,17 +1316,18 @@ const AFTERBURNER_CHAMBER = 3
 
     local deg = ::loc("measureUnits/deg")
     local isInverted = weaponInfoBlk?.invertedLimitsInViewer ?? false
+    local isSwaped = weaponInfoBlk?.swapLimitsInViewer ?? false
     local verticalLabel = "shop/angleVerticalGuidance"
     local horizontalLabel = "shop/angleHorizontalGuidance"
 
     foreach (g in [
-      { need = needAxisX, angles = weaponInfoBlk?.limits?.yaw,   label = isInverted ? verticalLabel : horizontalLabel }
-      { need = needAxisY, angles = weaponInfoBlk?.limits?.pitch, label = isInverted ? horizontalLabel : verticalLabel }
+      { need = needAxisX, angles = weaponInfoBlk?.limits?.yaw,   label = isInverted ? verticalLabel : horizontalLabel, canSwap = true }
+      { need = needAxisY, angles = weaponInfoBlk?.limits?.pitch, label = isInverted ? horizontalLabel : verticalLabel, canSwap = false }
     ]) {
       if (!g.need || (!g.angles?.x && !g.angles?.y))
         continue
       local anglesText = (g.angles.x + g.angles.y == 0) ? ::format("±%d%s", g.angles.y, deg)
-        : ::format("%d%s/+%d%s", g.angles.x, deg, g.angles.y, deg)
+        : (isSwaped && g.canSwap ? ::format("-%d%s/+%d%s", ::abs(g.angles.y), deg, ::abs(g.angles.x), deg) : ::format("%d%s/+%d%s", g.angles.x, deg, g.angles.y, deg))
       desc.append(::loc(g.label) + " " + anglesText)
     }
 
