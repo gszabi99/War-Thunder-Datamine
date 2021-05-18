@@ -101,7 +101,7 @@ class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
       ::SessionLobby.setTeam(::SessionLobby.getRandomTeam(), true)
 
     updateSessionInfo()
-    createSlotbar({ getLockedCountryData = @() ::SessionLobby.getLockedCountryData() })
+    createSlotbar()
     setSceneTitle(::loc("multiplayer/lobby"))
     updateWindow()
     updateRoomInSession()

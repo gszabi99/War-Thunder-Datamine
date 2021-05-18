@@ -196,8 +196,6 @@ class ::gui_handlers.WwRewards extends ::gui_handlers.BaseGuiHandlerWT
   {
     updateRewardsList()
   }
-
-  function showBonusesByActivateItem(obj) {}
 }
 
 return {

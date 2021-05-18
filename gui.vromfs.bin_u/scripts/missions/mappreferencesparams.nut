@@ -1,4 +1,4 @@
-local mapPreferences = require("mapPreferences")
+local mapPreferences = ::require_native("mapPreferences")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 

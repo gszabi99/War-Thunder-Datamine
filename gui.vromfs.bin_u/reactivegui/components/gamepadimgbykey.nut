@@ -94,8 +94,6 @@ local function mkImageComp(text, params = {}) {
 local getTexture = @(textureId) cutPrefix(::cross_call.getTextureName(textureId), "#")
 
 local function mkImageCompByDargKey(key, sf = null, params={}) {
-  if (sf != null && (sf & S_HOVER) != 0)
-    key = "J:A"
   local textureId = dargJKeysToImage?[key]
   if (textureId == null)
     return null

@@ -37,16 +37,12 @@ tdiv {
 <</isCollapsable>>
 
 <<#list>>
-<<^hasHorizontalFlow>>
 _newline{ size:t='0' }
-<</hasHorizontalFlow>>
 tdiv {
-  <<^hasHorizontalFlow>>
   width:t='pw'
   <<^isCollapsable>>
   max-width:t='p.p.w'
   <</isCollapsable>>
-  <</hasHorizontalFlow>>
   flow:t='vertical'
   total-input-transparent:t='yes'
   <<#tooltip>>
@@ -93,9 +89,7 @@ tdiv {
   <</isTooltipByHold>>
 
   prizeNest {
-    <<^hasHorizontalFlow>>
     width:t='pw'
-    <</hasHorizontalFlow>>
 
     <<#isCategory>>
     css-hier-invalidate:t='yes'
@@ -131,14 +125,12 @@ tdiv {
     <<@previewImage>>
 
     textareaNoTab {
-      <<^hasHorizontalFlow>>
       <<^widthByParentParent>>
       width:t='fw'
       <</widthByParentParent>>
       <<#widthByParentParent>>
       max-width:t='p.p.p.p.w -1@dIco -1@itemPadding <<#icon2>>-1@dIco<</icon2>> <<#buttonsCount>>-2@sIco*<<buttonsCount>><</buttonsCount>>'
       <</widthByParentParent>>
-      <</hasHorizontalFlow>>
       pos:t='1@itemPadding, ph/2-h/2'; position:t='relative'
       interactive:t='yes'
       font-bold:t='@fontSmall'

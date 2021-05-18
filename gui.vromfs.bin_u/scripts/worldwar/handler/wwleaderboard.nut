@@ -456,11 +456,6 @@ class ::gui_handlers.WwLeaderboard extends ::gui_handlers.LeaderboardWindow
     })
   }
 
-  function updateButtons() {
-    base.updateButtons()
-    updateWwRewardsButton()
-  }
-
   function updateWwRewardsButton()
   {
     local curRewardsBlk = getCurModeAwards()

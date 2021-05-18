@@ -39,20 +39,25 @@ local CHOOSE_WEAPON_PARAMS = {
   alignObj = null
   align = "bottom"
   isForcedAvailable = false
-  setLastWeapon = @(unitName, weaponName) setLastWeapon(unitName, weaponName)
-  getLastWeapon = @(unitName) getLastWeapon(unitName)
+  isWorldWarUnit = false
 }
 ::gui_start_choose_unit_weapon <- function gui_start_choose_unit_weapon(unit, cb, params = CHOOSE_WEAPON_PARAMS)
 {
   params = CHOOSE_WEAPON_PARAMS.__merge(params)
 
-  local curWeaponName = params.getLastWeapon(unit.name)
+  local isWorldWarUnit = params.isWorldWarUnit
+  local curWeaponName = !isWorldWarUnit ? getLastWeapon(unit.name)
+    : ::g_world_war.get_last_weapon_preset(unit.name)
   local hasOnlyBought = !::is_in_flight() || !::g_mis_custom_state.getCurMissionRules().isWorldWar
-  local isForcedAvailable = params.isForcedAvailable
-  local onChangeValueCb = function(weapon) {
-    params.setLastWeapon(unit.name, weapon.name)
-    cb?(unit.name, weapon.name)
-  }
+  local isForcedAvailable = params.isForcedAvailable || isWorldWarUnit
+  local onChangeValueCb = (@(unit, cb) function(weapon) {
+    if (isWorldWarUnit)
+      ::g_world_war.set_last_weapon_preset(unit.name, weapon.name)
+    else
+      setLastWeapon(unit.name, weapon.name)
+
+    if (cb) cb(unit.name, weapon.name)
+  })(unit, cb)
 
   local list = []
   foreach(weapon in unit.weapons)
@@ -71,9 +76,9 @@ local CHOOSE_WEAPON_PARAMS = {
     weaponryPresetsModal.open({ //open modal menu for air and helicopter only
         unit = unit
         chooseMenuList   = list
-        initLastWeapon   = curWeaponName
+        isWorldWarUnit   = isWorldWarUnit
         weaponItemParams = params.itemParams
-        onChangeValueCb  = onChangeValueCb
+        onChangeValueCb   = onChangeValueCb
       })
   else
     ::gui_start_weaponry_select_modal({

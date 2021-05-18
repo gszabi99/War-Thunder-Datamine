@@ -40,7 +40,7 @@
 */
 
 
-local { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
+local time = require("scripts/time.nut")
 local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
 
 ::items_classes <- {}
@@ -128,19 +128,12 @@ class ::BaseItem
 
     expiredTimeAfterActivationH = blk?.expiredTimeHAfterActivation ?? 0
 
-    local expiredAt = blk?.expiredAt
-      ? getTimestampFromStringUtc(blk.expiredAt) - ::get_charserver_time_sec() : null
-    local invExpiredTime = invBlk?.expiredTime
-    local expiredTime = (expiredAt != null && invExpiredTime != null)
-      ? ::min(invExpiredTime, expiredAt) : expiredAt != null
-        ? expiredAt : invExpiredTime
-
-    expiredTimeSec = expiredTime != null ? expiredTime + 0.001 * ::dagor.getCurTime() : 0
-
     if (isInventoryItem)
     {
-      uids = slotData?.uids ?? []
-      amount = slotData?.count ?? 1
+      uids = ::getTblValue("uids", slotData, [])
+      amount = ::getTblValue("count", slotData, 1)
+      if (invBlk?.expiredTime != null)
+        expiredTimeSec = invBlk.expiredTime + 0.001 * ::dagor.getCurTime()
     } else
     {
       sellCountStep = blk?.sell_count_step || 1
@@ -589,7 +582,7 @@ class ::BaseItem
     if (!expiredTimeAfterActivationH)
       return res
 
-    res = hoursToString(expiredTimeAfterActivationH, true, false, true)
+    res = time.hoursToString(expiredTimeAfterActivationH, true, false, true)
     if (withTitle)
       res = ::loc("items/expireTimeAfterActivation") + ::loc("ui/colon") + ::colorize("activeTextColor", res)
     return res
@@ -608,7 +601,7 @@ class ::BaseItem
       return ::loc(itemExpiredLocId)
     }
     return ::loc("icon/hourglass") + ::nbsp +
-      ::stringReplace(hoursToString(secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp)
+      ::stringReplace(time.hoursToString(time.secondsToHours(deltaSeconds), false, true, true), " ", ::nbsp)
   }
 
   function getCurExpireTimeText()
@@ -639,7 +632,7 @@ class ::BaseItem
     }
 
     return ::loc("currency/gc/sign") + ::nbsp +
-      ::stringReplace(hoursToString(secondsToHours(seconds), false, true, true), " ", ::nbsp)
+      ::stringReplace(time.hoursToString(time.secondsToHours(seconds), false, true, true), " ", ::nbsp)
   }
 
   function getTableData()

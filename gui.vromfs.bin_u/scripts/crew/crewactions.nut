@@ -1,4 +1,4 @@
-local chard = require("chard")
+local chard = ::require_native("chard")
 
 const PROCESS_TIME_OUT = 60000
 

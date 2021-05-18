@@ -1,5 +1,5 @@
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { get_primary_screen_info } = require("dagor.system")
+local { get_primary_screen_info } = ::require_native("dagor.system")
 //------------------------------------------------------------------------------
 local mSettings = {}
 local mShared = {}
@@ -1071,6 +1071,23 @@ local function configRead() {
       mCfgApplied[id] <- value
 }
 
+local function init() {
+  local blk = blkOptFromPath(::get_config_name())
+  foreach (id, desc in mSettings) {
+    if ("init" in desc)
+      desc.init(blk, desc)
+    if (("onChanged" in desc) && type(desc.onChanged)=="string")
+      desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
+    local uiType = ("def" in desc) ? type(desc.def) : null
+    desc.uiType <- uiType
+    desc.widgetId <- null
+    desc.ignoreNextUiCallback <- false
+  }
+
+  validateInternalConfigs()
+  configRead()
+}
+
 local function configWrite() {
   if (! ::is_platform_pc)
     return;
@@ -1088,35 +1105,6 @@ local function configWrite() {
   }
   mBlk.saveToTextFile(::get_config_name())
   ::dagor.debug("[sysopt] Config saved.")
-}
-
-local function validateLatencyOpt() {
-  if (::has_feature("ReflexLowLatency"))
-    return
-
-  if (getGuiValue("latency", "off") != "off") {
-    setGuiValue("latency", "off", true)
-    configWrite()
-  }
-}
-
-local function init() {
-  local blk = blkOptFromPath(::get_config_name())
-  foreach (id, desc in mSettings) {
-    if ("init" in desc)
-      desc.init(blk, desc)
-    if (("onChanged" in desc) && type(desc.onChanged)=="string")
-      desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
-    local uiType = ("def" in desc) ? type(desc.def) : null
-    desc.uiType <- uiType
-    desc.widgetId <- null
-    desc.ignoreNextUiCallback <- false
-  }
-
-  validateInternalConfigs()
-  configRead()
-
-  validateLatencyOpt()
 }
 
 local function configFree() {

@@ -2,7 +2,6 @@ local contentStateModule = require("scripts/clientState/contentState.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { startLogout } = require("scripts/login/logout.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
-local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
 ::check_package_full <- function check_package_full(pack, silent = false)
 {
@@ -376,6 +375,3 @@ local { addPromoAction } = require("scripts/promo/promoActions.nut")
   )
 
 }
-
-addPromoAction("content_pack", @(handler, params, obj) ::check_package_and_ask_download(params?[0] ?? ""),
-  @(params) ::has_feature("Packages") && !::have_package(params?[0] ?? ""))

@@ -859,16 +859,13 @@
             "target": "convoy_casualty"
           },
           {
-            "target": "stage1__check_ambush"
-          },
-          {
             "target": "convoy_units_indicator"
           },
           {
             "target": "convoy_sleep_killed"
           },
           {
-            "target": "convoy_ahead"
+            "target": "convoy_proceed_to_ambush"
           },
           {
             "target": "players_sleep_killed"
@@ -4358,6 +4355,49 @@
           "target": "convoy_behind"
         }
       }
+    },
+    "convoy_proceed_to_ambush": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "2D",
+          "object_type": "isActive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "all",
+          "object": "t1_ai_truck_sq",
+          "target": "convoy_check_proceed"
+        }
+      },
+      "actions": {
+        "unitSetRoute": {
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "route": "convoy_way_stage2",
+          "teleportToStart": true,
+          "object": "t1_ai_truck_sq"
+        },
+        "unitFollowWaypoints": {
+          "followWaypoints": true,
+          "target": "t1_ai_truck_sq"
+        },
+        "triggerEnable": {
+          "target": "stage1__check_ambush"
+        }
+      },
+      "else_actions": []
     }
   },
   "mission_objectives": {
@@ -18459,98 +18499,10 @@
     "convoy_behind_01": {
       "type": "Box",
       "tm": [
-        [240.619,0.0,-254.17],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [643.6,51.25,3813.4]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_ahead_01": {
-      "type": "Box",
-      "tm": [
-        [54.9987,0.0,-58.096],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [956.85,51.25,3485.4]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_behind_02": {
-      "type": "Box",
-      "tm": [
-        [295.618,0.0,-312.266],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [671.25,51.25,3784.3]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_ahead_02": {
-      "type": "Box",
-      "tm": [
-        [54.9987,0.0,-58.096],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [1012.15,51.25,3427.9]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_ahead_03": {
-      "type": "Box",
-      "tm": [
-        [54.9987,0.0,-58.096],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [1066.4,51.25,3370.4]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_ahead_04": {
-      "type": "Box",
-      "tm": [
-        [54.9987,0.0,-58.096],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [1121.15,51.25,3312.35]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_behind_03": {
-      "type": "Box",
-      "tm": [
-        [350.616,0.0,-370.362],
-        [0.0,74.3554,0.0],
-        [493.458,0.0,467.149],
-        [698.85,51.25,3755.7]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_behind_04": {
-      "type": "Box",
-      "tm": [
         [405.615,0.0,-428.458],
         [0.0,74.3554,0.0],
         [493.458,0.0,467.149],
         [726.3,51.25,3726.9]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "convoy_ahead_05": {
-      "type": "Box",
-      "tm": [
-        [54.9987,0.0,-58.096],
-        [0.0,74.3554,0.0],
-        [105.282,0.0,99.6689],
-        [542.45,51.25,4145.0]
       ],
       "objLayer": 0,
       "props": []
@@ -18617,6 +18569,39 @@
         [0.0,150.0,0.0],
         [0.0,0.0,150.0],
         [1870.1,78.85,2728.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "convoy_ahead_01": {
+      "type": "Box",
+      "tm": [
+        [54.9987,0.0,-58.096],
+        [0.0,74.3554,0.0],
+        [493.458,0.0,467.149],
+        [1120.75,51.25,3311.95]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "convoy_ahead_02": {
+      "type": "Box",
+      "tm": [
+        [54.9987,0.0,-58.096],
+        [0.0,74.3554,0.0],
+        [91.3564,0.0,86.4856],
+        [1272.4,51.25,3867.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "convoy_check_proceed": {
+      "type": "Box",
+      "tm": [
+        [322.909,0.0,-341.094],
+        [0.0,74.3554,0.0],
+        [493.458,0.0,467.149],
+        [1091.6,51.25,3342.3]
       ],
       "objLayer": 0,
       "props": []
@@ -18742,57 +18727,6 @@
             [0.0,1.0,0.0],
             [0.0,0.0,1.0],
             [1126.5,61.3,3319.75]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false,
-            "waypointReachedDist": 10.0
-          }
-        },
-        "way_points_01_wp_07": {
-          "type": "normal",
-          "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1264.1,62.7,3178.0]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false,
-            "waypointReachedDist": 10.0
-          }
-        },
-        "way_points_01_wp_08": {
-          "type": "normal",
-          "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1344.85,63.4,3100.35]
-          ],
-          "props": {
-            "speed": 30.0,
-            "tas": false,
-            "moveType": "MOVETO_STRAIGHT",
-            "shouldKeepFormation": false,
-            "canUsePathFinder": false,
-            "waypointReachedDist": 10.0
-          }
-        },
-        "convoy_way_wp_01": {
-          "type": "normal",
-          "tm": [
-            [1.0,0.0,0.0],
-            [0.0,1.0,0.0],
-            [0.0,0.0,1.0],
-            [1475.8,70.25,3020.3]
           ],
           "props": {
             "speed": 30.0,

@@ -2,7 +2,6 @@ local { isDataBlock, isEmpty, isEqual } = require("sqStdLibs/helpers/u.nut")
 
 local overrrideSlotbarMissionName = persist("overrrideSlotbarMissionName", @() ::Watched("")) //recalc slotbar only on mission change
 local overrideSlotbar = persist("overrideSlotbar", @() ::Watched(null)) //null or []
-local userSlotbarCountry = persist("userSlotbarCountry", @() ::Watched("")) //for return user country after reset override slotbar
 
 overrideSlotbar.subscribe(@(_) ::broadcastEvent("OverrideSlotbarChanged"))
 
@@ -79,15 +78,6 @@ local function getSlotbarOverrideCountriesByMissionName(missionName) {
   return res
 }
 
-local function getSlotbarOverrideData(missionName = "") {
-  if (missionName == "" || missionName == overrrideSlotbarMissionName.value)
-    return overrideSlotbar.value
-
-  return calcSlotbarOverrideByMissionName(missionName)
-}
-
-local isSlotbarOverrided = @(missionName = "") getSlotbarOverrideData(missionName) != null
-
 local function updateOverrideSlotbar(missionName) {
   if (missionName == overrrideSlotbarMissionName.value)
     return
@@ -97,17 +87,21 @@ local function updateOverrideSlotbar(missionName) {
   if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
     return
 
-  if (!isSlotbarOverrided())
-    userSlotbarCountry(::get_profile_country_sq())
   overrideSlotbar(newOverrideSlotbar)
 }
+
+local function getSlotbarOverrideData(missionName = "") {
+  if (missionName == "" || missionName == overrrideSlotbarMissionName.value)
+    return overrideSlotbar.value
+
+  return calcSlotbarOverrideByMissionName(missionName)
+}
+
+local isSlotbarOverrided = @(missionName = "") getSlotbarOverrideData(missionName) != null
 
 local function resetSlotbarOverrided() {
   overrrideSlotbarMissionName("")
   overrideSlotbar(null)
-  if (userSlotbarCountry.value != "")
-    ::switch_profile_country(userSlotbarCountry.value)
-  userSlotbarCountry("")
 }
 
 return {

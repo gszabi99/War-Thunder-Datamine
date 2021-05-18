@@ -8,6 +8,7 @@ class ::items_classes.Chest extends ItemExternal {
   static iType = itemType.CHEST
   static defaultLocId = "chest"
   static typeIcon = "#ui/gameuiskin#item_type_trophies"
+  static openingCaptionLocId = "mainmenu/chestConsumed/title"
   static isPreferMarkupDescInTooltip = true
   static userlogOpenLoc = "open_trophy"
   static hasTopRewardAsFirstItem = false
@@ -205,7 +206,6 @@ class ::items_classes.Chest extends ItemExternal {
     descReceipesListHeaderPrefix = descReceipesListHeaderPrefix
     msgBoxCantUse                = "msgBox/chestOpen/cant"
     msgBoxConfirm                = "msgBox/chestOpen/confirm"
-    openingRewardTitle           = "mainmenu/chestConsumed/title"
   })
 
   needShowDropChance = @() ::has_feature("ShowDropChanceInTrophy")

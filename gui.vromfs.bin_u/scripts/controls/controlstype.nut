@@ -1,4 +1,4 @@
-local globalEnv = require("globalEnv")
+local globalEnv = ::require_native("globalEnv")
 local avatars = require("scripts/user/avatars.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 

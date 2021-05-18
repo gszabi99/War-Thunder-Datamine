@@ -1,5 +1,4 @@
 local { getPersonalUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "personal_unlocks_collapsed_chapters"
 
@@ -148,7 +147,14 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     isFillingUnlocksList = false
   }
 
-  getSelectedChildId = @(obj) getSelectedChild(obj)?.id ?? ""
+  function getSelectedChildId(obj) {
+    local total = obj.childrenCount()
+    if (total == 0)
+      return ""
+
+    local value = ::clamp(obj.getValue(), 0, total - 1)
+    return obj.getChild(value)?.id ?? ""
+  }
 
   function onChapterSelect(obj) {
     curChapterId = getSelectedChildId(obj)

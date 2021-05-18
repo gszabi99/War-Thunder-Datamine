@@ -1,5 +1,3 @@
-local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
-
 class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 {
   wndType             = handlerType.MODAL
@@ -176,9 +174,14 @@ class ::gui_handlers.squadInviteListWnd extends ::gui_handlers.BaseGuiHandlerWT
 
   function onInviteMemberMenu(obj)
   {
-    local selectedObj = getSelectedChild(obj)
-    if (selectedObj?.isValid())
-      ::g_squad_utils.showMemberMenu(selectedObj)
+    local childrenCount = obj.childrenCount()
+    if (!childrenCount)
+      return
+
+    local value = ::clamp(obj.getValue(), 0, childrenCount - 1)
+    local selectedObj = obj.getChild(value)
+
+    ::g_squad_utils.showMemberMenu(selectedObj)
   }
 
   function onMemberClicked(obj)

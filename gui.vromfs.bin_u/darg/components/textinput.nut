@@ -213,7 +213,6 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
       onEscape = onEscape
       onImeFinish = handlers?.onImeFinish
       xmbNode = options?.xmbNode
-      imeOpenJoyBtn = options?.imeOpenJoyBtn
 
       children = placeholder
     }

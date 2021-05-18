@@ -1,6 +1,6 @@
 local { is_seen_nuclear_event,
         is_seen_main_nuclear_event,
-        need_show_after_streak } = require("hangarEventCommand")
+        need_show_after_streak } = ::require_native("hangarEventCommand")
 local airRaidWndScene = require("scripts/wndLib/airRaidWnd.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 

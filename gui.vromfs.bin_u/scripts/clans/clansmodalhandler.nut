@@ -471,7 +471,11 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
         needText = (item?.text ?? "") != ""
       }
       if(!("field" in item) || !item.sort)
+      {
         block.rawParam <- "no-hover:t='yes';"
+        if (block.tooltip != "")
+          block.rawParam = $"{block.rawParam} interactive:t='yes';"
+      }
       if(item.sort)
         block.callback <- "onCategory"
       if(item?.width != null)
@@ -569,6 +573,8 @@ class ::gui_handlers.ClansModalHandler extends ::gui_handlers.clanPageModal
       res.tooltip <- item.getCellTooltipText(rowBlk)
     if ("tooltip" in res)
     {
+      if (res.tooltip != "")
+        res.rawParam <- "interactive:t='yes'"
       if (!(rowName in tooltips))
         tooltips[rowName] <- {}
       tooltips[rowName][item.id] <- res.rawdelete("tooltip")

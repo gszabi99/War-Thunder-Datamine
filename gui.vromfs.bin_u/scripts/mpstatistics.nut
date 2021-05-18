@@ -681,7 +681,7 @@ const OVERRIDE_COUNTRY_ID = "override_country"
 {
   local text = ""
 
-  if (::g_mis_custom_state.getCurMissionRules().isWorldWar && ::is_worldwar_enabled())
+  if (::g_mis_custom_state.getCurMissionRules().isWorldWar)
   {
     text = ::g_world_war.getCurMissionWWOperationName()
     local battleInfoText = ::g_world_war.getCurMissionWWBattleName()

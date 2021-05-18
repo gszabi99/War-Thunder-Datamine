@@ -1,4 +1,4 @@
-local chard = require("chard")
+local chard = ::require_native("chard")
 
 enum CTU_PROGRESS {
   NOT_STARTED

@@ -5,14 +5,6 @@ td {
   max-width:t='0.65@onlineShopWidth'
   overflow:t='hidden'
 
-  <<#unseenIcon>>
-  unseenIcon {
-    valign:t='center'
-    noMargin:t='yes'
-    value:t='<<unseenIcon>>'
-  }
-  <</unseenIcon>>
-
   textarea {
     id:t='amount';
     class:t='active';
@@ -35,23 +27,14 @@ td {
 }
 <</savingText>>
 td {
-  min-width:t='0.13@sf'
-  <<^customCostMarkup>>
   textarea {
-    id:t='cost'
-    position:t='relative'
-    pos:t='pw-w,0.5ph-0.5h'
-    class:t='active'
-    text:t='<<cost>>'
+    id:t='cost';
+    class:t='active';
+    text-align:t='right';
+    min-width:t='0.13@sf';
+    text:t='<<cost>>';
+    valign:t='center';
   }
-  <</customCostMarkup>>
-  <<#customCostMarkup>>
-  tdiv {
-    position:t='relative'
-    pos:t='pw-w,0.5ph-0.5h'
-    <<@customCostMarkup>>
-  }
-  <</customCostMarkup>>
 }
 td {
   id:t='<<rowName>>'

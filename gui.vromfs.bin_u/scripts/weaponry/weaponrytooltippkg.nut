@@ -219,19 +219,18 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
       res.amountText <- ::ActionBar.getModAmountText(modData, true)
   }
 
-  local isScoreCost = ::is_in_flight()
-    && ::g_mis_custom_state.getCurMissionRules().isScoreRespawnEnabled
-  if (statusTbl.discountType != "" && !isScoreCost)
+  if (statusTbl.discountType != "")
   {
     local discount = ::getDiscountByPath(getDiscountPath(unit, item, statusTbl.discountType))
-    if (discount > 0 && statusTbl.showPrice && currentPrice != "")
+    if (discount > 0 && statusTbl.showPrice)
     {
       local cost = "cost" in item? item.cost : 0
       local costGold = "costGold" in item? item.costGold : 0
       local priceText = ::Cost(cost, costGold).getUncoloredText()
       if (priceText != "")
         res.noDiscountPrice <- "<color=@oldPrice>" + priceText + "</color>"
-      currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
+      if (currentPrice != "")
+        currentPrice = "<color=@goodTextColor>" + currentPrice + "</color>"
     }
   }
 

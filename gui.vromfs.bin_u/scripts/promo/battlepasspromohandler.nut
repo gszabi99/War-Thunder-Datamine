@@ -1,7 +1,6 @@
 local { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
-local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 local BattlePassPromoHandler = class extends ::gui_handlers.BaseGuiHandlerWT {
   wndType = handlerType.CUSTOM
@@ -36,18 +35,7 @@ local function openBattlePassPromoHandler(params) {
   ::handlersManager.loadHandler(BattlePassPromoHandler, params)
 }
 
-local promoButtonId = "battle_pass_mainmenu_button"
+return {
+  openBattlePassPromoHandler
+}
 
-addPromoButtonConfig({
-  promoButtonId = promoButtonId
-  buttonType = "battlePass"
-  updateFunctionInHandler = function() {
-    local id = promoButtonId
-    local show = ::g_promo.getVisibilityById(id)
-    local buttonObj = ::showBtn(id, show, scene)
-    if (!show || !(buttonObj?.isValid() ?? false))
-      return
-
-    openBattlePassPromoHandler({ scene = buttonObj })
-  }
-})

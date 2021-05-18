@@ -26,12 +26,12 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   collapsedPresets     = []
   chapterCount         = 0
   presetTextWidth      = 0
+  isWorldWarUnit       = false
   onChangeValueCb      = null
   weaponItemParams     = null
   favoriteArr          = null
   chapterPos           = 0
   wndWidth             = 0
-  initLastWeapon       = null
 
   presetIdxToChildIdx  = null
 
@@ -49,7 +49,8 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     weaponryByPresetInfo = getWeaponryByPresetInfo(unit, chooseMenuList)
     favoriteArr = weaponryByPresetInfo.favoriteArr
     presetsList = weaponryByPresetInfo.presetsList
-    lastWeapon = initLastWeapon ?? getLastWeapon(unit.name)
+    lastWeapon = !isWorldWarUnit ?
+      getLastWeapon(unit.name) : ::g_world_war.get_last_weapon_preset(unit.name)
     local lw = lastWeapon
     chosenPresetIdx = presetsList.findindex(@(w) w.name == lw) ?? 0
     presetsMarkup = getPresetsMarkup()

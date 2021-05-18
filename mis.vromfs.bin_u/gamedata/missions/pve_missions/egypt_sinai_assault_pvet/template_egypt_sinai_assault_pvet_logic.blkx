@@ -405,19 +405,31 @@
               "object": "ai_tank_stage1_sq"
             },
             {
-              "attack_type": "fire_at_will"
+              "object": "ai_tank_stage2_sq"
             },
             {
-              "accuracy": 0.7
+              "object": "ai_atgun_stage2_sq"
+            },
+            {
+              "object": "ai_tank_mov_stage2_sq"
+            },
+            {
+              "object": "ai_tank_stage3_sq"
+            },
+            {
+              "detectableFromCameraPos": true
+            },
+            {
+              "accuracy": 0.66
             },
             {
               "maxDeviationAngle": 5.0
             },
             {
-              "checkVisibilityTarget": true
+              "adaptiveAccuracyTime": 0.01
             },
             {
-              "visibilityTreeTransparencyThreshold": 0.033
+              "moveSpeedKAtShooting": 0.0
             }
           ]
         },
@@ -442,25 +454,19 @@
               "object": "ai_tank_stage1_sq"
             },
             {
-              "object": "ai_tank_stage2_sq"
+              "attack_type": "fire_at_will"
             },
             {
-              "object": "ai_atgun_stage2_sq"
+              "accuracy": 0.7
             },
             {
-              "object": "ai_tank_mov_stage2_sq"
+              "maxDeviationAngle": 5.0
             },
             {
-              "object": "ai_tank_stage3_sq"
+              "checkVisibilityTarget": true
             },
             {
-              "detectableFromCameraPos": true
-            },
-            {
-              "adaptiveAccuracyTime": 0.01
-            },
-            {
-              "moveSpeedKAtShooting": 0.0
+              "visibilityTreeTransparencyThreshold": 0.033
             }
           ]
         },
@@ -811,6 +817,31 @@
             },
             {
               "visibilityTreeTransparencyThreshold": 1.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "ai_tank_stage2_sq"
+            },
+            {
+              "object": "ai_atgun_stage2_sq"
+            },
+            {
+              "accuracy": 0.8
             }
           ]
         },
@@ -1282,8 +1313,18 @@
             "captureNoPenalty": true,
             "zoneDefenders": [],
             "capture_tags": {
-              "country_germany": true
+              "country_ussr": true
             }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ai_tank_stage3_sq",
+            "accuracy": 0.75
           }
         },
         {
