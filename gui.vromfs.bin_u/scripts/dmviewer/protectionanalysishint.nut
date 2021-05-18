@@ -38,9 +38,6 @@ class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandle
     angle = function(params, id, resultCfg) {
       return ::max((params?.angle ?? 0.0), 0.0)
     }
-    headingAngle = function(params, id, resultCfg) {
-      return ::max((params?.headingAngle ?? 0.0), 0.0)
-    }
   }
 
   printValueByParam = {
@@ -69,11 +66,6 @@ class ::gui_handlers.ProtectionAnalysisHint extends ::gui_handlers.BaseGuiHandle
     angle = function(val)
     {
       return ::loc("bullet_properties/hitAngle") + ::loc("ui/colon") +
-        ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
-    }
-    headingAngle = function(val)
-    {
-      return ::loc("protection_analysis/hint/headingAngle") + ::loc("ui/colon") +
         ::colorize("activeTextColor", ::round(val)) + ::loc("measureUnits/deg")
     }
   }

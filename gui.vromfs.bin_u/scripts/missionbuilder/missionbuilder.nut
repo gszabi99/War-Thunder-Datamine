@@ -395,15 +395,8 @@ class ::gui_handlers.MissionBuilder extends ::gui_handlers.GenericOptionsModal
     missionBlk.setStr("difficulty", getSceneOptValue(::USEROPT_DIFFICULTY))
     missionBlk.setStr("restoreType", "attempts")
 
-    local fuelObj = scene.findObject("fuel_and_ammo")
-    if (fuelObj)
-    {
-      local limits = fuelObj.getValue()
-      ::mission_settings.isLimitedFuel = (limits == 2 || limits == 3)
-      ::mission_settings.isLimitedAmmo = (limits == 1 || limits == 3)
-      missionBlk.setBool("isLimitedFuel", ::mission_settings.isLimitedFuel)
-      missionBlk.setBool("isLimitedAmmo", ::mission_settings.isLimitedAmmo)
-    }
+    missionBlk.setBool("isLimitedFuel", ::get_option(::USEROPT_LIMITED_FUEL).value)
+    missionBlk.setBool("isLimitedAmmo", ::get_option(::USEROPT_LIMITED_AMMO).value)
 
     ::current_campaign_mission = missionBlk.getStr("name","")
     ::mission_settings.mission = missionBlk

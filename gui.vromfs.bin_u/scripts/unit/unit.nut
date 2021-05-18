@@ -358,12 +358,13 @@ local Unit = class
     local uWpCost = getUnitWpCostBlk()
     local mode = difficulty.getEgdName()
 
-    local premPart = ::isUnitSpecial(this) ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
+    local isSpecial = ::isUnitSpecial(this)
+    local premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
     local mul = (uWpCost?["rewardMul" + mode] ?? 1.0) *
       (warpoints?.rewardMulVisual?["rewardMulVisual" + mode] ?? 1.0)
 
     return {
-      wpMul   = stdMath.round_by_value(mul * (1.0 - premPart), 0.1)
+      wpMul   = stdMath.round_by_value(mul * (1.0 - premPart), isSpecial ? 0.05 : 0.1)
       premMul = stdMath.round_by_value(1.0 / (1.0 - premPart), 0.1)
     }
   }

@@ -22,6 +22,8 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
 ::switch_show_console_buttons <- function switch_show_console_buttons(showCB)
 {
+  ::set_dagui_mouse_last_time_used(!showCB)
+
   if (::get_is_console_mode_force_enabled() && !showCB)
     return false
   if (showCB == ::show_console_buttons)
@@ -29,7 +31,6 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
   ::show_console_buttons = showCB
   ::call_darg("updateExtWatched", { showConsoleButtons = showCB })
-  ::set_dagui_mouse_last_time_used(!showCB)
 
   if (!::g_login.isProfileReceived())
     return true

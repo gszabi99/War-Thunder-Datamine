@@ -39,6 +39,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -2267,7 +2270,9 @@
   },
   {
     "gunConvergence": {
-      "defaultDistance": 1200.0,
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }

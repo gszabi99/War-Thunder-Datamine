@@ -20,7 +20,7 @@ enums.addTypes(results, {
     color = "minorTextColor"
     loc = "hitcamera/result/ricochet"
     infoSrc = [ "lower", "upper"]
-    params = [ "angle", "headingAngle", "ricochetProb" ]
+    params = [ "angle", "ricochetProb" ]
   }
   POSSIBLEEFFECTIVE = {
     checkOrder = checkOrder++
@@ -29,7 +29,7 @@ enums.addTypes(results, {
     color = "cardProgressTextBonusColor"
     loc = "protection_analysis/result/possible_effective"
     infoSrc = [ "lower", "upper" ]
-    params = [ "angle", "headingAngle", "penetratedArmor", "parts" ]
+    params = [ "angle", "penetratedArmor", "parts" ]
   }
   EFFECTIVE = {
     checkOrder = checkOrder++
@@ -38,7 +38,7 @@ enums.addTypes(results, {
     color = "goodTextColor"
     loc = "protection_analysis/result/effective"
     infoSrc = [ "lower", "upper"]
-    params = [ "angle", "headingAngle", "penetratedArmor", "parts" ]
+    params = [ "angle", "penetratedArmor", "parts" ]
   }
   NOTPENETRATED = {
     checkOrder = checkOrder++
@@ -49,7 +49,7 @@ enums.addTypes(results, {
     color = "badTextColor"
     loc = "protection_analysis/result/not_penetrated"
     infoSrc = [ "max" ]
-    params = [ "angle", "headingAngle", "penetratedArmor", "ricochetProb" ]
+    params = [ "angle", "penetratedArmor", "ricochetProb" ]
   }
   INEFFECTIVE = {
     checkOrder = checkOrder++
@@ -57,7 +57,7 @@ enums.addTypes(results, {
     color = "minorTextColor"
     loc = "protection_analysis/result/ineffective"
     infoSrc = [ "max"]
-    params = [ "angle", "headingAngle", "ricochetProb" ]
+    params = [ "angle", "ricochetProb" ]
   }
 }, null, "id")
 results.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)

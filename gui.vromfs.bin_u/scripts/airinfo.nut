@@ -1549,7 +1549,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     if (showAsRent)
       wpMuls.premMul = 1.0
 
-    local wpMultText = [ ::format("%.1f", wpMuls.wpMul) ]
+    local wpMultText = [ wpMuls.wpMul.tostring() ]
     if (wpMuls.premMul != 1.0)
       wpMultText.append(::colorize("minorTextColor", ::loc("ui/multiply")),
         ::colorize("yellow", ::format("%.1f", wpMuls.premMul)))

@@ -758,10 +758,6 @@ mSettings = {
   }
   latency = { widgetType="list" def="off" blk="video/latency" restart=false
     init = function(blk, desc) {
-      if (!isVisible() && getGuiValue("latency", "off") != "off") {
-        setGuiValue("latency", "off", true)
-        enableGuiOption("vsync", getOptionDesc("vsync")?.enabled() ?? true)
-      }
       desc.values <- getAvailableLatencyModes()
       desc.items <- desc.values.map(@(value) {text = localize("latency", value), tooltip = ::loc($"guiHints/latency_{value}") })
     }
@@ -1075,23 +1071,6 @@ local function configRead() {
       mCfgApplied[id] <- value
 }
 
-local function init() {
-  local blk = blkOptFromPath(::get_config_name())
-  foreach (id, desc in mSettings) {
-    if ("init" in desc)
-      desc.init(blk, desc)
-    if (("onChanged" in desc) && type(desc.onChanged)=="string")
-      desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
-    local uiType = ("def" in desc) ? type(desc.def) : null
-    desc.uiType <- uiType
-    desc.widgetId <- null
-    desc.ignoreNextUiCallback <- false
-  }
-
-  validateInternalConfigs()
-  configRead()
-}
-
 local function configWrite() {
   if (! ::is_platform_pc)
     return;
@@ -1109,6 +1088,35 @@ local function configWrite() {
   }
   mBlk.saveToTextFile(::get_config_name())
   ::dagor.debug("[sysopt] Config saved.")
+}
+
+local function validateLatencyOpt() {
+  if (::has_feature("ReflexLowLatency"))
+    return
+
+  if (getGuiValue("latency", "off") != "off") {
+    setGuiValue("latency", "off", true)
+    configWrite()
+  }
+}
+
+local function init() {
+  local blk = blkOptFromPath(::get_config_name())
+  foreach (id, desc in mSettings) {
+    if ("init" in desc)
+      desc.init(blk, desc)
+    if (("onChanged" in desc) && type(desc.onChanged)=="string")
+      desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
+    local uiType = ("def" in desc) ? type(desc.def) : null
+    desc.uiType <- uiType
+    desc.widgetId <- null
+    desc.ignoreNextUiCallback <- false
+  }
+
+  validateInternalConfigs()
+  configRead()
+
+  validateLatencyOpt()
 }
 
 local function configFree() {
