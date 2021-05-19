@@ -97,8 +97,8 @@ local list = {
         "isCanNewflight"
       )
     }
-    tooltip = @() ::g_world_war.getCantPlayWorldwarReasonText()
-    isVisualDisabled = @() !::g_world_war.canPlayWorldwar()
+    tooltip = @() ::is_worldwar_enabled() ? ::g_world_war.getCantPlayWorldwarReasonText() : ""
+    isVisualDisabled = @() ::is_worldwar_enabled() && !::g_world_war.canPlayWorldwar()
     isHidden = @(...) !::is_worldwar_enabled()
     isInactiveInQueue = true
     unseenIcon = @() ::is_worldwar_enabled() && ::g_world_war.canPlayWorldwar() ?

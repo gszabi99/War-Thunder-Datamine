@@ -478,9 +478,25 @@ local class BaseGuiHandlerWT extends ::BaseGuiHandler {
       }.__update(params))
   }
 
+  hasAutoRefillChangeInProcess =false
   function onSlotsChangeAutoRefill(obj)
   {
-    set_autorefill_by_obj(obj)
+    if ((slotbarWeak?.slotbarOninit ?? false) || hasAutoRefillChangeInProcess)
+      return
+    local mode = obj.id == "slots-autorepair" ? 0
+      : obj.id == "slots-autoweapon" ? 1
+      : -1
+
+    if (mode == -1)
+      return
+
+    local value = obj.getValue()
+    set_auto_refill(mode, value)
+    ::save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
+
+    hasAutoRefillChangeInProcess = true
+    ::broadcastEvent("AutorefillChanged", { id = obj.id, value = value })
+    hasAutoRefillChangeInProcess = false
   }
 
   //"nav-help" - navBar

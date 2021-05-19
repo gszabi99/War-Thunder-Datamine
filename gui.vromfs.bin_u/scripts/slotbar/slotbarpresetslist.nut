@@ -186,7 +186,7 @@
 
   function onPresetChange()
   {
-    if (::slotbar_oninit || !isPresetChanged())
+    if ((ownerWeak?.getSlotbar().slotbarOninit ?? false) || !isPresetChanged())
       return
 
     checkChangePresetAndDo(applySelect)

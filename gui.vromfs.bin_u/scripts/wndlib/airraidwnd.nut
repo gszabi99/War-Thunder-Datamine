@@ -1,7 +1,7 @@
 local { secondsToTime, millisecondsToSecondsInt } = require("scripts/time.nut")
 local { buildTimeStr } = require("std/timeLoc.nut")
 local { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
-point_camera_to_event, play_background_nuclear_explosion } = ::require_native("hangarEventCommand")
+point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
 local exitGame = require("scripts/utils/exitGame.nut")
 
 const TIME_TO_EXPLOSION = 11000

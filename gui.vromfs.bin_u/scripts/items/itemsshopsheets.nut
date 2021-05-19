@@ -173,7 +173,7 @@ shopSheets.addSheets({
     isAllowedForTab = @(shopTab) shopTab != itemsTab.WORKSHOP && ::has_feature("ItemModUpgrade")
   }
   VEHICLES = {
-    typeMask = itemType.VEHICLE | itemType.RENTED_UNIT
+    typeMask = itemType.VEHICLE | itemType.RENTED_UNIT | itemType.UNIT_COUPON_MOD
     isMarketplace = true
     sortId = sortId++
     isAllowedForTab = isOnlyExtInventory

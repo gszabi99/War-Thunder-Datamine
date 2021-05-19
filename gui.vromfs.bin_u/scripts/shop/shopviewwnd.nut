@@ -1,3 +1,5 @@
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+
 class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
@@ -47,3 +49,30 @@ class ::gui_handlers.ShopViewWnd extends ::gui_handlers.ShopMenuHandler
     ::gui_handlers.BaseGuiHandlerWT.goBack.call(this)
   }
 }
+
+local function openShopViewWndFromPromo(params) {
+  local unitName = params?[0] ?? ""
+  local unit = ::getAircraftByName(unitName)
+  if (!unit)
+    return
+
+  local country = unit.shopCountry
+  local showUnitInShop = @() ::gui_handlers.ShopViewWnd.open({
+    curAirName = unitName
+    forceUnitType = unit?.unitType
+    needHighlight = unitName != ""
+  })
+
+  local acceptCallback = ::Callback( function() {
+    ::switch_profile_country(country)
+    showUnitInShop() }, this)
+  if (country != ::get_profile_country_sq())
+    ::queues.checkAndStart(
+      acceptCallback,
+      null,
+      "isCanModifyCrew")
+  else
+    showUnitInShop()
+}
+
+addPromoAction("show_unit", @(handler, params, obj) openShopViewWndFromPromo(params))

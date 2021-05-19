@@ -32,6 +32,6 @@ class ::gui_handlers.WwBattleResults extends ::gui_handlers.BaseGuiHandlerWT
 
   function onViewServerReplay()
   {
-    ::gui_start_replay_battle(battleRes.getSessionId(), ::gui_start_worldWar)
+    ::gui_start_replay_battle(battleRes.getSessionId(), @() ::g_world_war.openMainWnd())
   }
 }

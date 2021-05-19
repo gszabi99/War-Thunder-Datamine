@@ -1,6 +1,6 @@
 local psnsm = require("scripts/social/psnSessionManager/psnSessionManagerApi.nut")
 local psnNotify = require("sonyLib/notifications.nut")
-// local base64 = ::require_native("base64")
+// local base64 = require("base64")
 
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local { isEmpty, copy } = require("sqStdLibs/helpers/u.nut")

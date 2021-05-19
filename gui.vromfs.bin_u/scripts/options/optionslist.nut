@@ -1,7 +1,7 @@
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")
 local contentPreset = require("scripts/customization/contentPreset.nut")
-local soundDevice = ::require_native("soundDevice")
+local soundDevice = require("soundDevice")
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
 local { onSystemOptionsApply, canUseGraphicsOptions } = require("scripts/options/systemOptions.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")

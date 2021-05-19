@@ -532,13 +532,6 @@ class ::gui_handlers.LeaderboardWindow extends ::gui_handlers.BaseGuiHandlerWT
       btn_clan_info = showClan
       btn_membership_req = showClan && !::is_in_clan() && ::clan_get_requested_clan_id() != getLbClanUid(rowData)
     })
-
-    updateWwRewardsButton()
-  }
-
-  function updateWwRewardsButton()
-  {
-    showSceneBtn("btn_ww_rewards", false)
   }
 
   function getLbPlayerUid(rowData)

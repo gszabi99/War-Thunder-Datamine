@@ -1,6 +1,6 @@
 local time = require("scripts/time.nut")
 local { acos } = require("math")
-local penalty = ::require_native("penalty")
+local penalty = require("penalty")
 local decorLayoutPresets = require("scripts/customization/decorLayoutPresetsWnd.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")

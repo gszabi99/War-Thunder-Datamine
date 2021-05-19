@@ -267,6 +267,9 @@ tr[isLeaderBoardHeader=yes] {
 [show_console_buttons=no] table.lbTable[useNavigatorOrInteractiveCells=yes] {
   behavior:PosNavigator;
 }
+[show_console_buttons=no] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr {
+  mouse-pointer-centering:50, 90;
+}
 [show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr {
   on_hover:onRowHover;
   on_unhover:onRowHover;
@@ -275,14 +278,14 @@ tr[isLeaderBoardHeader=yes] {
   on_hover:onRowHoverClan;
   on_unhover:onRowHoverClan;
 }
-[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr > td {
+table.lbTable[useNavigatorOrInteractiveCells=yes] > tr > td {
   mouse-pointer-centering:50, 90;
   interactive:yes;
 }
-[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[inactive=yes] > td {
+table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[inactive=yes] > td {
   interactive:no;
 }
-[show_console_buttons=yes] table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[id=row_header] > td {
+table.lbTable[useNavigatorOrInteractiveCells=yes] > tr[id=row_header] > td {
   interactive:yes;
 }
 

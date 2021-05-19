@@ -1,4 +1,5 @@
 local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 ::show_clan_season_info <- function show_clan_season_info(difficulty)
 {
@@ -190,6 +191,13 @@ class ::gui_handlers.clanSeasonInfoModal extends ::gui_handlers.BaseGuiHandlerWT
     local listChildrenCount = rewardsListObj.childrenCount()
     local index = obj.getValue()
     selectedIndex = (index >= 0 && index < listChildrenCount) ? index : 0
+  }
+
+  function showBonusesByActivateItem(obj)
+  {
+    local btnObj = getSelectedChild(obj)?.findObject("show_bonuses_btn")
+    if (btnObj?.isValid())
+      onShowBonuses(btnObj)
   }
 
   function onBtnMoreInfo(obj)

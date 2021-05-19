@@ -6,7 +6,7 @@ local { getSkillCategoryTooltipContent } = require("scripts/crew/crewSkillsView.
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { updateDecoratorDescription } = require("scripts/customization/decoratorDescription.nut")
 local { getChallengeView } = require("scripts/battlePass/challenges.nut")
-local { fillItemDescr } = require("scripts/items/itemVisual.nut")
+local { fillItemDescr, fillDescTextAboutDiv } = require("scripts/items/itemVisual.nut")
 
 local tooltipTypes = {
   types = []
@@ -179,12 +179,15 @@ local exportTypes = addTooltipTypes({
 
   INVENTORY = { //by inventory item uid
     isCustomTooltipFill = true
+    item = null
+    tooltipObj = null
     fillTooltip = function(obj, handler, itemUid, ...)
     {
       if (!::checkObj(obj))
         return false
 
-      local item = ::ItemsManager.findItemByUid(itemUid)
+      tooltipObj = obj
+      item = ::ItemsManager.findItemByUid(itemUid)
       if (!item)
         return false
 
@@ -192,10 +195,20 @@ local exportTypes = addTooltipTypes({
       obj.getScene().replaceContent(obj, "gui/items/itemTooltip.blk", handler)
       fillItemDescr(item, obj, handler, false, preferMarkup,
         { showOnlyCategoriesOfPrizes = true })
+
+      if(item.hasTimer())
+        obj?.findObject("update_timer").setUserData(this)
+
       return true
     }
     onEventItemsShopUpdate = function(eventParams, obj, handler, id, params) {
       fillTooltip(obj, handler, id, params)
+    }
+    onTimer = function (obj, dt) {
+      if (!item || !tooltipObj?.isValid())
+        return
+
+      fillDescTextAboutDiv(item, tooltipObj)
     }
   }
 

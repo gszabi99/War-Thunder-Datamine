@@ -26,6 +26,7 @@
       }
 
 */
+local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 global enum AL_ORIENT
 {
@@ -189,13 +190,12 @@ class ::gui_handlers.ActionsList extends ::BaseGuiHandler
     guiScene.performDelayed(this, function () {
       if (!::checkObj(scene) || scene?.close == "yes" || !::checkObj(obj))
         return
-      local total = obj.childrenCount()
-      if (!total)
+
+      local currentObj = getSelectedChild(obj)
+      if (!currentObj)
         return close()
 
-      local value = ::clamp(obj.getValue(), 0, total - 1)
-      local currentObj = obj.getChild(value)
-      if (( !::checkObj(currentObj) || !currentObj.isFocused()) &&
+      if (( !currentObj.isValid() || !currentObj.isFocused()) &&
         !obj.isFocused() && !closeOnUnhover)
         close()
     })

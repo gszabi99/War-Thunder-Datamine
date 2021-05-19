@@ -1,4 +1,4 @@
-local globalEnv = ::require_native("globalEnv")
+local globalEnv = require("globalEnv")
 
 ::g_aircraft_helpers <- {
   /* PRIVATE */

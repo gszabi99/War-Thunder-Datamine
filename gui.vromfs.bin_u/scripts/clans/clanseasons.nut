@@ -1,5 +1,5 @@
 local { get_blk_value_by_path } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { unixtime_to_utc_timetbl } = ::require_native("dagor.time")
+local { unixtime_to_utc_timetbl } = require("dagor.time")
 local time = require("scripts/time.nut")
 
 global enum CLAN_SEASON_MEDAL_TYPE

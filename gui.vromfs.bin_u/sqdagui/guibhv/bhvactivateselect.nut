@@ -57,7 +57,7 @@ class gui_bhv.ActivateSelect extends gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    local value = (isShortcutsByHover(obj) ? getHoveredChild(obj).hoveredIdx : getSelectedValue(obj)) ?? -1
+    local value = getHoveredChild(obj).hoveredIdx ?? -1
     if (is_down) {
       if (value < 0)
         return ::RETCODE_NOTHING

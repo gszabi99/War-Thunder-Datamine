@@ -1,7 +1,7 @@
 local protectionAnalysisOptions = require("scripts/dmViewer/protectionAnalysisOptions.nut")
 local protectionAnalysisHint = require("scripts/dmViewer/protectionAnalysisHint.nut")
 
-local controllerState = ::require_native("controllerState")
+local controllerState = require("controllerState")
 
 
 local switch_damage = false

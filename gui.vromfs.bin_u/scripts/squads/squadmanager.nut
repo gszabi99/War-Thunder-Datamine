@@ -5,7 +5,6 @@ local battleRating = require("scripts/battleRating.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
-
 local { invite } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 
 enum squadEvent
@@ -142,16 +141,19 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
   if (data == null)
     data = ::g_user_utils.getMyStateData()
 
-  data.isReady <- isMeReady()
-  data.isCrewsReady <- isMyCrewsReady
-  data.canPlayWorldWar <- ::g_world_war.canPlayWorldwar()
-  data.isWorldWarAvailable <- ::is_worldwar_enabled()
-  data.isEacInited <- ::is_eac_inited()
-  data.squadsVersion <- SQUADS_VERSION
-  data.platform <- platformModule.targetPlatform
-
+  local isWorldwarEnabled = ::is_worldwar_enabled()
+  data.__update({
+    isReady = isMeReady()
+    isCrewsReady = isMyCrewsReady
+    canPlayWorldWar = isWorldwarEnabled
+    isWorldWarAvailable = isWorldwarEnabled
+    isEacInited = ::is_eac_inited()
+    squadsVersion = SQUADS_VERSION
+    platform = platformModule.targetPlatform
+  })
   local wwOperations = []
-  if (::is_worldwar_enabled())
+  if (isWorldwarEnabled) {
+    data.canPlayWorldWar = ::g_world_war.canPlayWorldwar()
     foreach (wwOperation in ::g_ww_global_status_type.ACTIVE_OPERATIONS.getShortStatusList())
     {
       if (!wwOperation.isValid())
@@ -164,6 +166,7 @@ g_squad_manager.updateMyMemberData <- function updateMyMemberData(data = null)
           country = country
         })
     }
+  }
   data.wwOperations <- wwOperations
   data.wwStartingBattle <- null
   data.sessionRoomId <- ::SessionLobby.canInviteIntoSession() ? ::SessionLobby.roomId : ""
@@ -1441,8 +1444,6 @@ g_squad_manager.onSquadDataChanged <- function onSquadDataChanged(data = null)
   local currentCrewsReadyness = lastCrewsReadyness || isSquadLeader()
   if (lastCrewsReadyness != currentCrewsReadyness || !alreadyInSquad)
     setCrewsReadyFlag(currentCrewsReadyness)
-
-  ::g_world_war.checkOpenGlobalBattlesModal()
 }
 
 g_squad_manager._parseCustomSquadData <- function _parseCustomSquadData(data)
@@ -1653,7 +1654,7 @@ g_squad_manager.onEventWWLoadOperation <- function onEventWWLoadOperation(params
 
 g_squad_manager.updateCurrentWWOperation <- function updateCurrentWWOperation()
 {
-  if (!isSquadLeader())
+  if (!isSquadLeader() || !::is_worldwar_enabled())
     return
 
   local wwOperationId = ::ww_get_operation_id()
@@ -1685,17 +1686,6 @@ g_squad_manager.startWWBattlePrepare <- function startWWBattlePrepare(battleId =
   updateSquadData()
 }
 
-g_squad_manager.getLockedCountryData <- function getLockedCountryData()
-{
-  if (!isPrepareToWWBattle())
-    return null
-
-  return {
-    availableCountries = [getWwOperationCountry()]
-    reasonText = ::loc("worldWar/cantChangeCountryInBattlePrepare")
-  }
-}
-
 g_squad_manager.getNotInvitedToSessionUsersList <- function getNotInvitedToSessionUsersList()
 {
   if (!isSquadLeader())
@@ -1725,13 +1715,6 @@ g_squad_manager.onEventWWStopWorldWar <- function onEventWWStopWorldWar(params)
   }
   updatePresenceSquad()
   updateSquadData()
-}
-
-g_squad_manager.isPrepareToWWBattle <- function isPrepareToWWBattle()
-{
-  return getWwOperationBattle() &&
-         getWwOperationId() >= 0 &&
-         !::u.isEmpty(getWwOperationCountry())
 }
 
 g_squad_manager.onEventLobbyStatusChange <- function onEventLobbyStatusChange(params)

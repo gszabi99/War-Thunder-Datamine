@@ -42,6 +42,5 @@ class ::gui_bhv.HoverNavigator extends ::gui_bhv.posNavigator {
 
   setChildSelected = @(obj, childObj, isSelected = true) null //do not set child selected, work only by hover
   onGamepadMouseFinishMove = @(obj) null
-  isShortcutsByHover = @(obj) true
   isOnlyHover = @(obj) true
 }

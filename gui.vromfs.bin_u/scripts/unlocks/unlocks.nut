@@ -179,6 +179,8 @@ local unlockConditionUnitclasses = {
   }
   else if (unlockType == ::UNLOCKABLE_CHALLENGE && unlockBlk?.showAsBattleTask)
     config.image <- unlockBlk?.image
+  else if (unlockBlk?.battlePassSeason != null)
+    config.image = "#ui/gameuiskin#item_challenge"
 
   local decoratorType = ::g_decorator_type.getTypeByUnlockedItemType(unlockType)
   if (decoratorType != ::g_decorator_type.UNKNOWN && !::is_in_loading_screen())
@@ -773,6 +775,9 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
   }
 
   local icoObj = obj.findObject("award_image")
+  if (config?.isLocked)
+    icoObj.achievement_locked = "yes"
+
   ::set_unlock_icon_by_config(icoObj, config, isForTooltip)
 
   local tObj = obj.findObject("award_title_text")
@@ -1171,6 +1176,12 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       local challengeDescription = ::loc(id+"/desc", "")
       if (challengeDescription && challengeDescription != "")
         res.desc = challengeDescription
+      if (unlockBlk?.battlePassSeason != null)
+      {
+       res.descrImage <- "#ui/gameuiskin#item_challenge"
+       res.descrImageSize <- "@profileMedalSize, @profileMedalSize"
+       res.isLocked <- !::is_unlocked_scripted(-1, id)
+      }
       res.image = "#ui/gameuiskin#unlock_achievement"
       break
 

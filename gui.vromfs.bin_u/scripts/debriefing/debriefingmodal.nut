@@ -2477,6 +2477,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function loadWwCasualtiesHistory()
   {
+    if (!::is_worldwar_enabled())
+      return
+
     local wwBattleResults = getWwBattleResults()
     if (!wwBattleResults)
       return

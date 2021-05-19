@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local controllerState = ::require_native("controllerState")
+local controllerState = require("controllerState")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 ::classic_control_preset <- "classic"

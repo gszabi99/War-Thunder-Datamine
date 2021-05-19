@@ -1,5 +1,5 @@
 local colorCorrector = ::require_native("colorCorrector")
-local fonts = ::require_native("fonts")
+local fonts = require("fonts")
 local screenInfo = require("scripts/options/screenInfo.nut")
 local safeAreaMenu = require("scripts/options/safeAreaMenu.nut")
 local safeAreaHud = require("scripts/options/safeAreaHud.nut")

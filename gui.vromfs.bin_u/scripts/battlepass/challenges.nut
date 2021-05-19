@@ -71,7 +71,7 @@ local function getConditionInTitleConfig(unlockBlk) {
   if (mode == null)
     return res
 
-  local condition = mode % "condition"
+  local condition = (mode % "condition").extend(mode % "visualCondition")
   local battlepassProgress = condition.findvalue(@(cond) cond.type == "battlepassProgress")
   if (battlepassProgress != null) {
     local level = getLevelByExp(battlepassProgress.progress)

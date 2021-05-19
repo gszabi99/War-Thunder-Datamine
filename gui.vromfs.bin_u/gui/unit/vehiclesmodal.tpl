@@ -34,7 +34,6 @@ root {
       top:t='1@popupFilterHeight'
       overflow-y:t='auto'
       flow:t='h-flow'
-      shortcut-on-hover:t='yes'
       behaviour:t='posNavigator'
       total-input-transparent:t='yes'
       clearOnFocusLost:t='no'

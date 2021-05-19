@@ -1,7 +1,10 @@
 local stdMath = require("std/math.nut")
 local { skipTutorialBitmaskId, checkTutorialsList, saveTutorialToCheckReward,
   launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
-  getUncompletedTutorialData, getTutorialRewardMarkup } = require("scripts/tutorials/tutorialsData.nut")
+  getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
+} = require("scripts/tutorials/tutorialsData.nut")
+local { addPromoAction } = require("scripts/promo/promoActions.nut")
+local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -165,6 +168,73 @@ local function tryOpenNextTutorialHandler(checkId, checkSkip = true) {
   return true
 }
 
+local function onOpenTutorialFromPromo(owner, params = []) {
+  local tutorialId = ""
+  if (::u.isString(params))
+    tutorialId = params
+  else if (::u.isArray(params) && params.len() > 0)
+    tutorialId = params[0]
+
+  owner.checkedNewFlight(function() {
+    if (!tryOpenNextTutorialHandler(tutorialId, false))
+      ::gui_start_tutorial()
+  })
+}
+
+local function getTutorialData() {
+  local curUnit = ::get_show_aircraft()
+  local {
+    mission = null,
+    id = ""
+  } = getSuitableUncompletedTutorialData(curUnit, 0)
+
+  return {
+    tutorialMission = mission
+    tutorialId = id
+  }
+}
+
+local function getTutorialButtonText(tutorialMission = null) {
+  tutorialMission = tutorialMission ?? getTutorialData()?.tutorialMission
+  return tutorialMission != null
+    ? ::loc("missions/" + (tutorialMission?.name ?? "") + "/short", "")
+    : ::loc("mainmenu/btnTutorial")
+}
+
+addPromoAction("tutorial", @(handler, params, obj) onOpenTutorialFromPromo(handler, params))
+
+local promoButtonId = "tutorial_mainmenu_button"
+
+addPromoButtonConfig({
+  promoButtonId = promoButtonId
+  getText = getTutorialButtonText
+  collapsedIcon = ::loc("icon/tutorial")
+  updateFunctionInHandler = function() {
+    local tutorialData = getTutorialData()
+    local tutorialMission = tutorialData?.tutorialMission
+    local tutorialId = ::getTblValue("tutorialId", tutorialData)
+
+    local id = promoButtonId
+    local actionKey = ::g_promo.getActionParamsKey(id)
+    ::g_promo.setActionParamsData(actionKey, "tutorial", [tutorialId])
+
+    local buttonObj = null
+    local show = isShowAllCheckBoxEnabled()
+    if (show)
+      buttonObj = ::showBtn(id, show, scene)
+    else
+    {
+      show = tutorialMission != null && ::g_promo.getVisibilityById(id)
+      buttonObj = ::showBtn(id, show, scene)
+    }
+
+    if (!show || !::checkObj(buttonObj))
+      return
+
+    ::g_promo.setButtonText(buttonObj, id, getTutorialButtonText(tutorialMission))
+  }
+  updateByEvents = ["HangarModelLoaded"]
+})
 
 return {
   tryOpenNextTutorialHandler = tryOpenNextTutorialHandler

@@ -1,5 +1,5 @@
 local time = require("scripts/time.nut")
-local penalty = ::require_native("penalty")
+local penalty = require("penalty")
 local { startLogout } = require("scripts/login/logout.nut")
 
 //  local penalist = penalty.getPenaltyList()

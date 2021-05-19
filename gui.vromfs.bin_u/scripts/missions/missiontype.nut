@@ -193,6 +193,12 @@ enums.addTypesByGlobalName("g_mission_type", {
     objectivesWw = MISSION_OBJECTIVE.KILLS_AIR | MISSION_OBJECTIVE.KILLS_ANY_AI | MISSION_OBJECTIVE.KILLS_NAVAL | MISSION_OBJECTIVE.ZONE_BOMBING
   }
 
+  PVE_T = { // PvE co-op: Tank
+    reMisName = ::regexp2(@"_pvet(_|$)")
+    objectives = MISSION_OBJECTIVE.KILLS_GROUND_AI
+    objectivesWw = MISSION_OBJECTIVE.KILLS_GROUND_AI
+  }
+
   PvE = {
     reMisName = ::regexp2(@"_PvE")
     objectives = MISSION_OBJECTIVE.KILLS_ANY_AI

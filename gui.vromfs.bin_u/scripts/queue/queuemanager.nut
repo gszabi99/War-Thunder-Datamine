@@ -365,36 +365,34 @@ foreach (fn in [
         isCanceledByPlayer = params?.isCanceledByPlayer ?? false }))
 
     queue.leave(
-      getOnLeaveQueueErrorCallback(queue, params?.msg, params?.cancelAction),
-      getOnLeaveQueueSuccessCallback(queue, params?.msg)
+      getOnLeaveQueueSuccessCallback(queue),
+      getOnLeaveQueueErrorCallback(queue)
     )
 
     changeState(queue, queueStates.LEAVING_QUEUE)
   }
 
-  function getOnLeaveQueueErrorCallback(queue, msg, cancelAction)
+  function getOnLeaveQueueErrorCallback(queue)
   {
-    return (@(queue, msg, cancelAction) function(response) {
+    return function(response) {
         ::queues.showProgressBox(false)
         if (response.error == SERVER_ERROR_REQUEST_REJECTED)
         {
-          if (cancelAction)
-            cancelAction()
           ::SessionLobby.setWaitForQueueRoom(true)
           return
         }
 
         ::checkMatchingError(response)
-        ::queues.afterLeaveQueue(queue, msg)
-      })(queue, msg, cancelAction)
+        ::queues.removeQueue(queue)
+      }
   }
 
-  function getOnLeaveQueueSuccessCallback(queue, msg)
+  function getOnLeaveQueueSuccessCallback(queue)
   {
-    return (@(queue, msg) function(response) {
+    return function(response) {
         ::queues.showProgressBox(false)
-        ::queues.afterLeaveQueue(queue, msg)
-      })(queue, msg)
+        ::queues.afterLeaveQueue(queue)
+      }
   }
 
   function afterLeaveQueue(queue, msg = null)

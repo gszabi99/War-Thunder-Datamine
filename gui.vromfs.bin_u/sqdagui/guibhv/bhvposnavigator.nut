@@ -371,9 +371,6 @@ class gui_bhv.posNavigator
 
   function onShortcutSelect(obj, is_down)
   {
-    if (!isShortcutsByHover(obj))
-      return ::RETCODE_NOTHING
-
     local { hoveredObj, hoveredIdx } = getHoveredChild(obj)
     if (is_down) {
       if (hoveredIdx == null)
@@ -400,33 +397,19 @@ class gui_bhv.posNavigator
 
   function moveSelect(obj, axis, dir)
   {
-    local byHover = isShortcutsByHover(obj)
-    local valueObj = (byHover ? getHoveredChild(obj).hoveredObj : null) ?? getChildObj(obj, getSelectedValue(obj))
-    if (!valueObj)
-    {
-      local { foundObj, foundIdx } = getClosestItem(obj, byHover ? ::get_dagui_mouse_cursor_pos_RC() : obj.getPos())
-      if (!foundObj)
-        sendNotifyWrap(obj, axis, dir)
-      else if (byHover)
-        hoverMove(obj, foundObj)
-      else
-        selectItem(obj, foundIdx, foundObj, true, true)
-      return ::RETCODE_HALT
-    }
-    return moveFromObj(obj, valueObj, axis, dir)
-  }
+    local valueObj = getHoveredChild(obj).hoveredObj ?? getChildObj(obj, getSelectedValue(obj))
+    local moveType = obj?[axis ? "moveY" : "moveX"]
+    local { foundObj, foundIdx } = moveType == "linear"
+      ? moveSelectLinear(obj, valueObj, axis, dir)
+      : moveSelectClosest(obj, valueObj, axis, dir)
 
-  function moveFromObj(obj, objFrom, axis, dir)
-  {
-    local moveType = obj?[axis? "moveY" : "moveX"]
-    local { foundObj, foundIdx } = moveType == "linear" ? moveSelectLinear(obj, objFrom, axis, dir)
-      : moveSelectClosest(obj, objFrom, axis, dir)
     if (!foundObj)
       sendNotifyWrap(obj, axis, dir)
     else if (isOnlyHover(obj))
       hoverMove(obj, foundObj)
     else
       selectItem(obj, foundIdx, foundObj, true, true)
+
     return ::RETCODE_HALT
   }
 
@@ -444,7 +427,7 @@ class gui_bhv.posNavigator
     obj.setIntProp(fixedAxisPID, -1)
   }
 
-  function checkFixedCoord(obj, axis, newPos, canChangeFixedData = true)
+  function checkFixedCoord(obj, axis, newPos)
   {
     if (obj?.disableFixedCoord == "yes")
       return newPos
@@ -459,7 +442,7 @@ class gui_bhv.posNavigator
     local coord = obj.getIntProp(fixedCoordPID)
     if (fixedAxis==axis && coord!=null)
       newPos[1-axis] = coord + objPos[1-axis]
-    else if (canChangeFixedData)
+    else
     {
       obj.setIntProp(fixedAxisPID, axis)
       obj.setIntProp(fixedCoordPID, newPos[1-axis] - objPos[1-axis])
@@ -472,33 +455,12 @@ class gui_bhv.posNavigator
     return axis ? ::screen_height() : ::screen_width()
   }
 
-  function validateOutsidePos(obj, pos, axis, dir, isFromOutside)
+  function moveSelectClosest(obj, valueObj, axis, dir)
   {
-    if (!isFromOutside)
-      return pos
-
-    local objPos = obj.getPos()
-    local objSize = obj.getSize()
-
-    local screenByAxis = getScreenSizeByAxis(axis)
-    objPos[axis] = ::clamp(objPos[axis], 0, screenByAxis)
-    if (dir > 0 && pos[axis] > objPos[axis])
-      pos[axis] -= screenByAxis
-    else if (dir < 0 && pos[axis] < objPos[axis] + objSize[axis])
-      pos[axis] += screenByAxis
-
-    local objSizeByAxis = objSize[1-axis]
-    pos[1-axis] = (objSizeByAxis > 0)
-      ? ::clamp(pos[1-axis], objPos[1-axis], objPos[1-axis] + objSizeByAxis)
-      : objPos[1-axis]
-    return pos
-  }
-
-  function moveSelectClosest(obj, valueObj, axis, dir, isFromOutside = false)
-  {
-    local pos = isOnlyHover ? ::get_dagui_mouse_cursor_pos_RC() : getMiddleCoords(valueObj)
-    pos = validateOutsidePos(obj, pos, axis, dir, isFromOutside)
-    pos = checkFixedCoord(obj, axis, pos, !isFromOutside)
+    local pos = isOnlyHover(obj) || valueObj == null
+      ? ::get_dagui_mouse_cursor_pos_RC()
+      : getMiddleCoords(valueObj)
+    pos = checkFixedCoord(obj, axis, pos)
 
     local foundObj = null
     local foundIdx = -1
@@ -536,12 +498,15 @@ class gui_bhv.posNavigator
         : pos[a] + pointerMul*size[a])
   }
 
-  function moveSelectLinear(obj, valueObj, axis, dir, isFromOutside = false)
+  function moveSelectLinear(obj, valueObj, axis, dir)
   {
-    local pos = isOnlyHover ? ::get_dagui_mouse_cursor_pos_RC() : getMiddleCoords(valueObj)
-    pos = validateOutsidePos(obj, pos, axis, dir, isFromOutside)
-    pos = checkFixedCoord(obj, axis, pos, !isFromOutside)
-    local posDiv = isFromOutside ? getScreenSizeByAxis(axis) : 0.4 * valueObj.getSize()[1-axis]
+    local pos = isOnlyHover(obj) || valueObj == null
+      ? ::get_dagui_mouse_cursor_pos_RC()
+      : getMiddleCoords(valueObj)
+    pos = checkFixedCoord(obj, axis, pos)
+    local posDiv = valueObj == null
+      ? getScreenSizeByAxis(axis)
+      : 0.4 * valueObj.getSize()[1-axis]
 
     local foundObj = null
     local foundIdx = -1
@@ -656,7 +621,6 @@ class gui_bhv.posNavigator
   }
 
   onInsert = @(obj, child, index) markInteractive(child, true)
-  isShortcutsByHover = @(obj) obj.getFinalProp("shortcut-on-hover") == "yes"
   isOnlyHover = @(obj) obj.getFinalProp("move-only-hover") == "yes"
   needActionAfterHold = @(obj) obj.getFinalProp("need-action-after-hold") == "yes"
 }

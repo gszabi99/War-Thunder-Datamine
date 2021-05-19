@@ -77,7 +77,7 @@ local handlerClass = class extends ::gui_handlers.SlotbarWidget
     curSlotCountryId = selSlot.countryId
     curSlotIdInCountry = selSlot.crewIdInCountry
 
-    if (::slotbar_oninit)
+    if (slotbarOninit)
     {
       if (afterSlotbarSelect)
         afterSlotbarSelect()

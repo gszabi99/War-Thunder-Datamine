@@ -29,11 +29,6 @@ local canPlayReplay = @(replay) replay != null && ::is_replay_turned_on()
   ::gui_start_replays()
 }
 
-::gui_start_worldWar <- function gui_start_worldWar()
-{
-  ::g_world_war.openMainWnd()
-}
-
 ::gui_start_replay_battle <- function gui_start_replay_battle(sessionId, backFunc)
 {
   ::back_from_replays = function() {

@@ -6,13 +6,15 @@ local collection = {}
 local Rarity = class {
   isRare = false
   value  = ITEM_RARITY_DEFAULT
+  colorValue = ITEM_RARITY_COLOR_DEFAULT
   color  = ITEM_RARITY_COLOR_DEFAULT
   tag    = null
 
   constructor(_value, _color) {
     isRare = _value > ITEM_RARITY_DEFAULT
     value  = isRare ? _value : ITEM_RARITY_DEFAULT
-    color  = "#" + (isRare && !::u.isEmpty(_color) ? _color : ITEM_RARITY_COLOR_DEFAULT)
+    colorValue = isRare && !::u.isEmpty(_color) ? _color : ITEM_RARITY_COLOR_DEFAULT
+    color  = $"#{colorValue}"
     updateTag()
   }
 

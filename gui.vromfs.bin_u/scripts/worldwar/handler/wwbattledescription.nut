@@ -7,6 +7,7 @@ local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local { getOperationById, getMapByName
 } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+local getLockedCountryData = require("scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 
 // Temporary image. Has to be changed after receiving correct art
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0"
@@ -442,6 +443,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
       showNewSlot = true
       customUnitsListName = getCustomUnitsListNameText()
       shouldAppendToObject = false
+      getLockedCountryData
     }
   }
 
@@ -1233,7 +1235,7 @@ class ::gui_handlers.WwBattleDescription extends ::gui_handlers.BaseGuiHandlerWT
 
   function onRunAutoPreset(obj)
   {
-    if (::slotbar_oninit)
+    if (slotbarWeak?.slotbarOninit ?? false)
       return
 
     local cb = ::Callback(generateAutoPreset, this)

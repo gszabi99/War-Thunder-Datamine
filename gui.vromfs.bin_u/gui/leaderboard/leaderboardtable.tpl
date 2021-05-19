@@ -24,7 +24,7 @@ table {
   text-halign:t='center'
   navigatorShortcuts:t='yes'
   selfFocusBorder:t='yes'
-  on_click:t='onRowSelect'
+  on_select:t='onRowSelect'
   on_dbl_click:t='onRowDblClick'
   on_r_click:t='onRowRClick'
   overflow-y:t='auto'
