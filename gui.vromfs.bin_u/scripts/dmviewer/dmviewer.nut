@@ -1128,23 +1128,11 @@ const AFTERBURNER_CHAMBER = 3
       case "optic_gun":
         local info = unitBlk?.cockpit
         if (info?.sightName)
-        {
-          local fovToZoom = @(fov) (2*::asin(::sin((80/2)/(180/PI))/fov))*(180/PI)
-          local fovOutIn = [info.zoomOutFov, info.zoomInFov]
-          local zoom = ::u.map(fovOutIn, @(fov) fovToZoom(fov))
-          if (::abs(zoom[0] - zoom[1]) < 0.1) {
-            zoom.remove(0)
-            fovOutIn.remove(0)
-          }
-          local zoomTexts = ::u.map(zoom, @(zoom) zoom ? ::format("%.1fx", zoom) : "")
-          zoomTexts = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
-          desc.append(::loc("sight_model/" + info.sightName, ""))
-          desc.append(::loc("optic/zoom") + ::loc("ui/colon") + zoomTexts)
-
-          local fovTexts = fovOutIn.map(@(fov) ::format("%d", fov))
-          fovTexts = ::g_string.implode(fovTexts, ::loc("ui/mdash"))
-          desc.append($"{::loc("optic/fov")}{::loc("ui/colon")}{fovTexts}")
-        }
+          desc.extend(getOpticsDesc(info))
+        break
+      case "commander_panoramic_sight":
+        if (unitBlk?.commanderView)
+          desc.extend(getOpticsDesc(unitBlk.commanderView))
         break
     }
 
@@ -1157,6 +1145,27 @@ const AFTERBURNER_CHAMBER = 3
 
     local description = ::g_string.implode(desc, "\n")
     return description
+  }
+
+  function getOpticsDesc(info)
+  {
+    local desc = []
+    local fovToZoom = @(fov) ::sin(80/2*PI/180)/::sin(fov/2*PI/180)
+    local fovOutIn = [info.zoomOutFov, info.zoomInFov]
+    local zoom = ::u.map(fovOutIn, @(fov) fovToZoom(fov))
+    if (::abs(zoom[0] - zoom[1]) < 0.1) {
+      zoom.remove(0)
+      fovOutIn.remove(0)
+    }
+    local zoomTexts = ::u.map(zoom, @(zoom) zoom ? ::format("%.1fx", zoom) : "")
+    zoomTexts = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
+    if (info?.sightName)
+      desc.append(::loc("sight_model/" + info.sightName, ""))
+    desc.append(::loc("optic/zoom") + ::loc("ui/colon") + zoomTexts)
+
+    local fovTexts = fovOutIn.map(@(fov) $"{::format("%d", fov)}{::loc("measureUnits/deg")}")
+    fovTexts = ::g_string.implode(fovTexts, ::loc("ui/mdash"))
+    return desc.append($"{::loc("optic/fov")}{::loc("ui/colon")}{fovTexts}")
   }
 
   function getWeaponTotalBulletCount(partId, weaponInfoBlk)

@@ -168,6 +168,7 @@ local list = {
   CONTROLS = {
     text = @() "#mainmenu/btnControls"
     onClickFunc = @(...) ::gui_start_controls()
+    isHidden = @(...) !::has_feature("ControlsAdvancedSettings")
   }
   LEADERBOARDS = {
     text = @() "#mainmenu/btnLeaderboards"

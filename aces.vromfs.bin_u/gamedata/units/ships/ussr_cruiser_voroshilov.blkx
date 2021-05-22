@@ -336,8 +336,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
+              "fire": 0.4,
               "expl": 0.6,
-              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -352,8 +352,8 @@
           {
             "onHit": {
               "damageType": "explosion",
+              "expl": 0.15,
               "fire": 0.85,
-              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -390,6 +390,7 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
+              "fire": 0.24,
               "expl": 0.76,
               "fHitCritical": false
             }
@@ -493,31 +494,19 @@
         ]
       },
       {
-        "ammunition_torpedoes": [
-          {
-            "onKill": {
-              "expl": 0.03,
-              "nothing": 0.04,
-              "fHitCritical": false
-            }
+        "ammunition_torpedoes": {
+          "onKill": {
+            "expl": 0.07,
+            "nothing": 0.93,
+            "fHitCritical": false
           },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.85,
-              "damage": 400.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "expl": 0.9,
-              "damage": 50.0,
-              "fHitCritical": false
-            }
+          "onHit": {
+            "damageType": "fire",
+            "expl": 0.1,
+            "damage": 50.0,
+            "fHitCritical": false
           }
-        ]
+        }
       },
       {
         "ammunition_mines": [
@@ -5103,6 +5092,12 @@
         },
         "fuel_tank_04_dm": {
           "hp": 4772.0
+        },
+        "fuel_tank_05_dm": {
+          "hp": 6834.0
+        },
+        "fuel_tank_06_dm": {
+          "hp": 6834.0
         }
       },
       "coal_bunkers": {
@@ -5120,6 +5115,7 @@
           "hp": 10000.0
         },
         "armor_cit_02_dm": {
+          "armorThickness": 100.0,
           "hp": 10000.0
         },
         "armor_cit_03_dm": {
@@ -5301,12 +5297,6 @@
         "ex_armor_r_04_dm": {
           "hp": 500.0
         },
-        "turret_01_dm": {
-          "hp": 500.0
-        },
-        "turret_02_dm": {
-          "hp": 500.0
-        },
         "turret_03_dm": {
           "hp": 500.0
         },
@@ -5356,9 +5346,6 @@
           "hp": 500.0
         },
         "turret_19_dm": {
-          "hp": 500.0
-        },
-        "turret_21_dm": {
           "hp": 500.0
         },
         "turret_22_dm": {
@@ -5800,8 +5787,8 @@
   },
   {
     "tank_crew": {
-      "minCrewMemberRepairCount": 256,
-      "minCrewMemberAliveCount": 220,
+      "minCrewMemberRepairCount": 308,
+      "minCrewMemberAliveCount": 264,
       "sailor1": {
         "dmPart": "bridge_dm",
         "role": "sailor",
@@ -5810,47 +5797,47 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 42
+        "crew": 60
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 38
+        "crew": 55
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor9": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 36
+        "crew": 51
       },
       "sailor10": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 50
+        "crew": 71
       },
       "sailor11": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -5910,7 +5897,7 @@
       "sailor22": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
-        "crew": 6
+        "crew": 7
       },
       "sailor23": {
         "dmPart": "ammunition_storage_aux_01_dm",

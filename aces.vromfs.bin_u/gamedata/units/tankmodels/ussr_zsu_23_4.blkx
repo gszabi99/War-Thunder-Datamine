@@ -117,15 +117,6 @@
     "type": "typeSPAA"
   },
   {
-    "irProjectorNode": "ex_lantern_05"
-  },
-  {
-    "irBeamRadius": [1400.0,100.0]
-  },
-  {
-    "irProjectorPower": [0.02,0.07]
-  },
-  {
     "drowningCheckHeightMultiplier": 0.45
   },
   {
@@ -305,6 +296,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -619,6 +611,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       },
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
@@ -2236,7 +2236,7 @@
           "speedYaw": 70.0,
           "speedPitch": 60.0,
           "bullets": 500,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2338,7 +2338,7 @@
           "speedYaw": 70.0,
           "speedPitch": 60.0,
           "bullets": 500,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2416,7 +2416,7 @@
           "speedYaw": 70.0,
           "speedPitch": 60.0,
           "bullets": 500,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2494,7 +2494,7 @@
           "speedYaw": 70.0,
           "speedPitch": 60.0,
           "bullets": 500,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2546,6 +2546,30 @@
                 "row": [50.0,0.3]
               }
             ]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner1",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "turret": {
+            "head": "bone_commander_sight_h",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,10.0]
           }
         }
       }
@@ -3183,6 +3207,19 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 15.0,
+      "zoomInFov": 14.7,
+      "sightSize": [0.29,0.2],
+      "ircmProjector": {
+        "node": "bone_commander_sight_v",
+        "beamRadius": [600.0,50.0],
+        "projectorPower": [0.02,0.04]
+      }
+    }
+  },
+  {
     "cockpit": {
       "headPos": [0.0,4.5,-7.0],
       "headPosOnShooting": [-0.6,3.4,-0.7],
@@ -3191,6 +3228,13 @@
       "sightFov": 18.0,
       "sightName": "zsu_23_4_sight",
       "detectionHeight": 3.76
+    }
+  },
+  {
+    "ircmProjector": {
+      "node": "ex_lantern_05",
+      "beamRadius": [1400.0,100.0],
+      "projectorPower": [0.02,0.07]
     }
   },
   {
@@ -3222,6 +3266,12 @@
       "night_vision_system": {
         "effects": {
           "nightVision": {
+            "commanderViewIr": {
+              "resolution": [800,600],
+              "lightMult": 8.0,
+              "ghosting": 0.75,
+              "noiseFactor": 0.2
+            },
             "commanderIr": {
               "resolution": [800,600],
               "lightMult": 8.0,

@@ -318,6 +318,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -666,6 +667,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -2443,7 +2452,16 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.66,
-        "height": 0.05
+        "height": 0.1,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_kgs64_660_150_phys_track_line",
+        "trackLen": 0.15,
+        "trackCount": 87,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.45,
+        "trackStartOffset": 0.12
       },
       "collisionProps": {
         "cls_body_01": "convex_hull",
@@ -2500,7 +2518,27 @@
         "frontBackGearRadius": 0.32,
         "defaultDampeningForce": [150000.0,150000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.399,
+        "wheel_l_drive": 0.399,
+        "wheel_r_back": 0.3,
+        "wheel_l_back": 0.3,
+        "wheel_r_01": 0.422,
+        "wheel_r_02": 0.422,
+        "wheel_r_03": 0.422,
+        "wheel_r_04": 0.422,
+        "wheel_r_05": 0.422,
+        "wheel_r_06": 0.422,
+        "wheel_r_07": 0.422,
+        "wheel_r_08": 0.422,
+        "wheel_l_01": 0.422,
+        "wheel_l_02": 0.422,
+        "wheel_l_03": 0.422,
+        "wheel_l_04": 0.422,
+        "wheel_l_05": 0.422,
+        "wheel_l_06": 0.422,
+        "wheel_l_07": 0.422,
+        "wheel_l_08": 0.422
       }
     }
   },
@@ -3158,10 +3196,10 @@
   },
   {
     "cockpit": {
-      "zoomOutFov": 8.0,
-      "zoomInFov": 7.37,
-      "sightFov": 6.5,
-      "sightName": "wzf_1_4",
+      "zoomOutFov": 15.7,
+      "zoomInFov": 14.7,
+      "sightFov": 8.0,
+      "sightName": "sfl_zf_1a",
       "headPos": [0.0,3.5,-7.8],
       "headPosOnShooting": [-0.45,3.6,-0.45],
       "bone_turret": "",
@@ -3452,6 +3490,28 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
     }
   }

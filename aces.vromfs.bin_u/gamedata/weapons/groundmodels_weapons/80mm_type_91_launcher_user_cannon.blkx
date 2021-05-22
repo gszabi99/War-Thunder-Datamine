@@ -6,8 +6,9 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
-  "aimMinDist": 0.1,
-  "aimMaxDist": 2000.0,
+  "aimMinDist": 600.0,
+  "aimMaxDist": 6000.0,
+  "attackMaxDist": 4500.0,
   "maxDeltaAngle": 0.06,
   "maxDeltaAngleVertical": 0.08,
   "shotFreq": 1.0,
@@ -43,9 +44,9 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "sam_tank",
     "slopeEffectPreset": "ap",
@@ -63,15 +64,15 @@
     "isAam": true,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"
     },
     "rocket": {
-      "normalizationPreset": "default",
-      "ricochetPreset": "defaultExt",
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
@@ -88,11 +89,12 @@
       "maxDeltaAngle": 2.0,
       "dragCx": 0.014,
       "length": 1.43,
-      "distFromCmToStab": 0.03,
+      "wingAreaMult": 1.05,
+      "distFromCmToStab": 0.02,
       "CxK": 2.1,
       "WdK": [0.1,0.1,0.1],
-      "finsAoaHor": 0.04,
-      "finsAoaVer": 0.04,
+      "finsAoaHor": 0.1,
+      "finsAoaVer": 0.1,
       "fireDelay": 0.2,
       "force": 3400.0,
       "timeFire": 2.0,
@@ -117,16 +119,7 @@
       "fuseDelayDist": 1.0,
       "explodeTreshold": 10.0,
       "guidanceType": "ir",
-      "guidance": "ir",
-      "warmUpTime": 4.0,
-      "workTime": 60.0,
-      "uncageBeforeLaunch": false,
-      "loftTime": [0.05,0.5],
-      "loftOmegaLimit": 0.1,
-      "loftAccel": 45.0,
-      "guidanceSfx": "alarm_con_scan",
-      "hasProximityFuse": false,
-      "breakLockMaxTime": 3.0,
+      "hasProximityFuse": true,
       "rendinstDamageRadius": 15.0,
       "statType": "hydra",
       "advancedMissiles": false,
@@ -286,6 +279,9 @@
         "roadSoil": {
           "fx": "hit_133_160mm_dirt_he"
         },
+        "bricks_red": {
+          "fx": "hit_133_160mm_stone_he"
+        },
         "sand": {
           "fx": "hit_133_160mm_sand_he"
         },
@@ -344,41 +340,52 @@
           "fx": "hit_133_160mm_snow_he"
         }
       },
-      "irSeeker": {
-        "rangeBand0": 7000.0,
-        "rangeBand1": 4500.0,
-        "rangeBand2": 6000.0,
-        "rangeBand3": 0.0,
-        "rangeMax": 11000.0,
-        "fov": 3.0,
-        "arretAngles": [0.0,0.0],
-        "gateWidth": 0.5,
-        "bandMaskToReject": 4,
-        "minAngleToSun": 5.0,
-        "lockAngleMax": 40.0,
-        "angleMax": 40.0,
-        "rateMax": 12.0,
-        "prolongationTimeMax": 3.0
-      },
-      "orientationAutopilot": {
-        "timeOut": 0.0,
-        "controlTime": 0.2,
-        "elevationAdd": 8.0,
-        "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
-        "angleToAngularRate": 0.8,
-        "accelControlProp": 0.05,
-        "accelControlIntg": 0.002,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.02
-      },
-      "guidanceAutopilot": {
-        "timeOut": 0.7,
-        "propNavMult": 4.0,
-        "baseIndSpeed": 2100.0,
-        "accelControlProp": 0.013,
-        "accelControlIntg": 0.0026,
-        "accelControlIntgLim": 0.5,
-        "accelControlDiff": 0.0015
+      "guidance": {
+        "warmUpTime": 4.0,
+        "workTime": 60.0,
+        "uncageBeforeLaunch": false,
+        "loftTime": [0.05,0.5],
+        "loftOmegaLimit": 0.1,
+        "loftAccel": 45.0,
+        "guidanceSfx": "alarm_con_scan",
+        "breakLockMaxTime": 3.0,
+        "irSeeker": {
+          "rangeBand0": 7000.0,
+          "rangeBand1": 4500.0,
+          "rangeBand2": 6000.0,
+          "rangeBand3": 0.0,
+          "rangeMax": 11000.0,
+          "fov": 3.0,
+          "arretAngles": [0.0,0.0],
+          "gateWidth": 0.5,
+          "bandMaskToReject": 4,
+          "minAngleToSun": 5.0,
+          "lockAngleMax": 40.0,
+          "angleMax": 40.0,
+          "rateMax": 12.0,
+          "prolongationTimeMax": 3.0
+        },
+        "orientationAutopilot": {
+          "timeOut": 0.0,
+          "controlTime": 0.2,
+          "elevationAdd": 8.0,
+          "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
+          "angleToAngularRate": 0.8,
+          "accelControlProp": 0.05,
+          "accelControlIntg": 0.002,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.02
+        },
+        "guidanceAutopilot": {
+          "timeOut": 0.7,
+          "propNavMult": 4.0,
+          "reqAccelMax": 10.0,
+          "baseIndSpeed": 1700.0,
+          "accelControlProp": 0.008,
+          "accelControlIntg": 0.003,
+          "accelControlIntgLim": 0.7,
+          "accelControlDiff": 0.0
+        }
       },
       "proximityFuse": {
         "timeOut": 0.7,
@@ -404,9 +411,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
       "slopeEffectPreset": "ap",
@@ -424,15 +431,15 @@
       "isAam": true,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
       },
       "rocket": {
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
@@ -449,11 +456,12 @@
         "maxDeltaAngle": 2.0,
         "dragCx": 0.014,
         "length": 1.43,
-        "distFromCmToStab": 0.03,
+        "wingAreaMult": 1.05,
+        "distFromCmToStab": 0.02,
         "CxK": 2.1,
         "WdK": [0.1,0.1,0.1],
-        "finsAoaHor": 0.04,
-        "finsAoaVer": 0.04,
+        "finsAoaHor": 0.1,
+        "finsAoaVer": 0.1,
         "fireDelay": 0.2,
         "force": 3400.0,
         "timeFire": 2.0,
@@ -478,16 +486,7 @@
         "fuseDelayDist": 1.0,
         "explodeTreshold": 10.0,
         "guidanceType": "ir",
-        "guidance": "ir",
-        "warmUpTime": 4.0,
-        "workTime": 60.0,
-        "uncageBeforeLaunch": false,
-        "loftTime": [0.05,0.5],
-        "loftOmegaLimit": 0.1,
-        "loftAccel": 45.0,
-        "guidanceSfx": "alarm_con_scan",
-        "hasProximityFuse": false,
-        "breakLockMaxTime": 3.0,
+        "hasProximityFuse": true,
         "rendinstDamageRadius": 15.0,
         "statType": "hydra",
         "advancedMissiles": false,
@@ -647,6 +646,9 @@
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
           },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
+          },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
           },
@@ -705,41 +707,52 @@
             "fx": "hit_133_160mm_snow_he"
           }
         },
-        "irSeeker": {
-          "rangeBand0": 7000.0,
-          "rangeBand1": 4500.0,
-          "rangeBand2": 6000.0,
-          "rangeBand3": 0.0,
-          "rangeMax": 11000.0,
-          "fov": 3.0,
-          "arretAngles": [0.0,0.0],
-          "gateWidth": 0.5,
-          "bandMaskToReject": 4,
-          "minAngleToSun": 5.0,
-          "lockAngleMax": 40.0,
-          "angleMax": 40.0,
-          "rateMax": 12.0,
-          "prolongationTimeMax": 3.0
-        },
-        "orientationAutopilot": {
-          "timeOut": 0.0,
-          "controlTime": 0.2,
-          "elevationAdd": 8.0,
-          "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
-          "angleToAngularRate": 0.8,
-          "accelControlProp": 0.05,
-          "accelControlIntg": 0.002,
-          "accelControlIntgLim": 0.5,
-          "accelControlDiff": 0.02
-        },
-        "guidanceAutopilot": {
-          "timeOut": 0.7,
-          "propNavMult": 4.0,
-          "baseIndSpeed": 2100.0,
-          "accelControlProp": 0.013,
-          "accelControlIntg": 0.0026,
-          "accelControlIntgLim": 0.5,
-          "accelControlDiff": 0.0015
+        "guidance": {
+          "warmUpTime": 4.0,
+          "workTime": 60.0,
+          "uncageBeforeLaunch": false,
+          "loftTime": [0.05,0.5],
+          "loftOmegaLimit": 0.1,
+          "loftAccel": 45.0,
+          "guidanceSfx": "alarm_con_scan",
+          "breakLockMaxTime": 3.0,
+          "irSeeker": {
+            "rangeBand0": 7000.0,
+            "rangeBand1": 4500.0,
+            "rangeBand2": 6000.0,
+            "rangeBand3": 0.0,
+            "rangeMax": 11000.0,
+            "fov": 3.0,
+            "arretAngles": [0.0,0.0],
+            "gateWidth": 0.5,
+            "bandMaskToReject": 4,
+            "minAngleToSun": 5.0,
+            "lockAngleMax": 40.0,
+            "angleMax": 40.0,
+            "rateMax": 12.0,
+            "prolongationTimeMax": 3.0
+          },
+          "orientationAutopilot": {
+            "timeOut": 0.0,
+            "controlTime": 0.2,
+            "elevationAdd": 8.0,
+            "elevationToHeadingMult": [45.0,0.0,0.0,0.0],
+            "angleToAngularRate": 0.8,
+            "accelControlProp": 0.05,
+            "accelControlIntg": 0.002,
+            "accelControlIntgLim": 0.5,
+            "accelControlDiff": 0.02
+          },
+          "guidanceAutopilot": {
+            "timeOut": 0.7,
+            "propNavMult": 4.0,
+            "reqAccelMax": 10.0,
+            "baseIndSpeed": 1700.0,
+            "accelControlProp": 0.008,
+            "accelControlIntg": 0.003,
+            "accelControlIntgLim": 0.7,
+            "accelControlDiff": 0.0
+          }
         },
         "proximityFuse": {
           "timeOut": 0.7,

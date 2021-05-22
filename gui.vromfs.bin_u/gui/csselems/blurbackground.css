@@ -5,7 +5,8 @@
 
 blur {
   position: root;
-  size: sw, sh;
+  size: 1@swOrRwInVr, 1@shOrRhInVr;
+  pos: 1@bwInVr, 1@bhInVr;
   background-blur: yes;
   input-transparent: yes;
 }
@@ -21,6 +22,7 @@ SlotbarBackground blur_foreground {
   background-color: @blurSlotbarForegroundColor;
 }
 
+optionlist_container[type=respawn] > tdiv > blur_foreground,
 [bgrStyle=fullScreenWnd] > blur_foreground {
   background-color: @fullScreenBgrColor;
 }
@@ -31,4 +33,11 @@ SlotbarBackground blur_foreground {
 
 [bgrStyle=transparent] > blur_foreground {
   background-color: @transparent;
+}
+
+optionlist_container[type=respawn] > tdiv > blur_foreground,
+root > blur_foreground,
+blur_foreground[isRoot=yes] {
+  size: 1@swOrRwInVr, 1@shOrRhInVr;
+  pos: 1@bwInVr, 1@bhInVr;
 }

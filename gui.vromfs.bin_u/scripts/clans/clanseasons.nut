@@ -61,8 +61,9 @@ global enum CLAN_SEASON_MEDAL_TYPE
       return false
 
     local path = $"{difficulty.egdLowercaseName}/era5"
-    foreach (rewardBlock in subRewards)
-      if (get_blk_value_by_path(rewardBlock, path))
+    local subRewardsCount = subRewards.blockCount()
+    for (local i = 0; i < subRewardsCount; i++)
+      if (get_blk_value_by_path(subRewards.getBlock(i), path))
         return true
 
     return false
@@ -80,15 +81,18 @@ global enum CLAN_SEASON_MEDAL_TYPE
     local rewards = []
     local blk = getRewardsBlk()
     local currentPlace = 0
-    if (!blk?.reward.subRewards)
+    local subRewards = blk?.reward.subRewards
+    if (!subRewards)
       return rewards
 
-    foreach (rewardBlockName, rewardBlock in blk.reward.subRewards)
+    local subRewardsCount = subRewards.blockCount()
+    for (local i = 0; i < subRewardsCount; i++)
     {
+      local rewardBlock = subRewards.getBlock(i)
       local rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
-      local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlockName)
+      local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlock.getBlockName())
       if (isLeprRewards(rewardsData))
       {
         local place = currentPlace
@@ -186,7 +190,8 @@ global enum CLAN_SEASON_MEDAL_TYPE
   {
     local rewards = []
     local blk = getRewardsBlk()
-    if (!blk?.reward.subRewards)
+    local subRewards = blk?.reward.subRewards
+    if (!subRewards)
       return rewards
 
     local rewardTemplate = {
@@ -203,12 +208,14 @@ global enum CLAN_SEASON_MEDAL_TYPE
 
     local prevRegalia = ""
     local prevPlace = 0
-    foreach (rewardBlockName, rewardBlock in blk.reward.subRewards)
+    local subRewardsCount = subRewards.blockCount()
+    for (local i = 0; i < subRewardsCount; i++)
     {
+      local rewardBlock = subRewards.getBlock(i)
       local rewardsData = get_blk_value_by_path(rewardBlock, difficulty.egdLowercaseName + "/era5")
       if (!rewardsData)
         continue
-      local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlockName)
+      local maxPlaceForBlock = getMaxPlaceForBlock(rewardBlock.getBlockName())
       local isSinglePlaceReward = !isLeprRewards(rewardsData)
 
       if (isSinglePlaceReward)

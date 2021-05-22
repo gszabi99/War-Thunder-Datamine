@@ -31,8 +31,8 @@
     },
     "lock": {
       "type": "cone",
-      "azimuthLimits": [-15.0,15.0],
-      "elevationLimits": [-15.0,15.0],
+      "azimuthLimits": [-7.5,7.5],
+      "elevationLimits": [-7.5,7.5],
       "period": 0.5,
       "width": 2.5,
       "indicate": true
@@ -229,6 +229,12 @@
             }
           },
           {
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          },
+          {
             "setFsmActive": {
               "fsm": "track",
               "active": true
@@ -365,6 +371,10 @@
           "event": "targetInSight",
           "actions": {
             "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "continuousScale",
               "width": 0.0
             },
@@ -563,6 +573,10 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

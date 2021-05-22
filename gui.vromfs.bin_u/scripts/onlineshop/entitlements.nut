@@ -5,8 +5,7 @@ local function getEntitlementConfig(name)
 
   local res = { name = name }
 
-  local pblk = ::DataBlock()
-  ::get_shop_prices(pblk)
+  local pblk = ::OnlineShopModel.getPriceBlk()
   if (pblk?[name] == null)
     return null
 

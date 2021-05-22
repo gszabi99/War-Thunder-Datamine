@@ -2,29 +2,20 @@
   "normalizationPreset": "heat",
   "ricochetPreset": "he",
   "secondaryShattersPreset": "ap",
-  "stabilityThreshold": 0.05,
+  "stabilityThreshold": 0.5,
   "stabilityCaliberToArmorThreshold": 5.0,
-  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterRicochet": 0.3,
   "stabilityReductionAfterPenetration": 0.15,
   "bulletType": "he_frag_vog",
   "slopeEffectPreset": "ap",
   "fresnel": [0.23,0.1,2.0],
   "explodeOnRendinst": true,
   "shellAnimation": "video/shells_animations/he.ivf",
-  "stabilityRicochetModifier": [
-    {
-      "mod1": [0.0,0.05]
-    },
-    {
-      "mod2": [20.0,0.1]
-    },
-    {
-      "mod3": [30.0,0.2]
-    },
-    {
-      "mod3": [45.0,0.3]
-    }
-  ],
+  "stabilityRicochetModifier": {
+    "mod1": [0.0,0.5],
+    "mod2": [15.0,0.7],
+    "mod3": [30.0,0.99]
+  },
   "pressureDamage": {
     "damageType": "pressure"
   }

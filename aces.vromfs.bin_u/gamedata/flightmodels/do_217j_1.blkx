@@ -469,8 +469,11 @@
           "genericDamageMult": 0.3,
           "hp": 39.5
         },
-        "stab_dm": {
-          "hp": 46.9
+        "stab1_dm": {
+          "hp": 39.5
+        },
+        "stab2_dm": {
+          "hp": 39.5
         }
       },
       "dural": {
@@ -553,6 +556,9 @@
           "hp": 20.0
         },
         "gunner2_dm": {
+          "hp": 20.0
+        },
+        "gunner3_dm": {
           "hp": 20.0
         },
         "pilot_dm": {
@@ -1624,6 +1630,11 @@
       },
       {
         "part": {
+          "name": "gunner3_dm"
+        }
+      },
+      {
+        "part": {
           "name": "mgun1_dm"
         }
       },
@@ -1854,7 +1865,58 @@
       {
         "part": [
           {
-            "name": "stab_dm"
+            "name": "stab1_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 14.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab2_dm"
           },
           {
             "onHit": {
@@ -2807,10 +2869,75 @@
     ]
   },
   {
+    "ikGunner": [
+      {
+        "model": "pilot_german_char"
+      },
+      {
+        "maxHeadHorAngle": 60.0
+      },
+      {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
+        "headNode": "Bip01 Head"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis_"
+      },
+      {
+        "suffix": "3"
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "throttle_lhand_",
+          "flexionDir": [0.0,-1.0,0.1]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "stick_rhand_",
+          "flexionDir": [0.0,-1.0,-0.1]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [0.0,1.0,-0.2]
+        }
+      },
+      {
+        "ikNode": {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [0.0,1.0,0.2]
+        }
+      }
+    ]
+  },
+  {
     "attach": {
       "pilot1": "pilot_lw_500",
       "gunner1": "gunner_lay_lw_500",
-      "gunner2": "gunner_lay_lw_500"
+      "gunner2": "gunner_lay_lw_500",
+      "gunner3": "gunner_lay_lw_500"
     }
   },
   {

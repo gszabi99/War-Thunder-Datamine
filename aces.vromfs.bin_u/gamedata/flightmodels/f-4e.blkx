@@ -51,6 +51,9 @@
     "ilsLCOSS": true
   },
   {
+    "isBwOpticSight": true
+  },
+  {
     "havePointOfInterestDesignator": true
   },
   {
@@ -114,6 +117,15 @@
           "hp": 15.0
         },
         "cannon4_dm": {
+          "hp": 15.0
+        },
+        "cannon5_dm": {
+          "hp": 15.0
+        },
+        "cannon6_dm": {
+          "hp": 15.0
+        },
+        "cannon7_dm": {
           "hp": 15.0
         }
       },
@@ -224,6 +236,15 @@
       },
       "dural": {
         "cover1_dm": {
+          "hp": 19.5
+        },
+        "cover2_dm": {
+          "hp": 19.5
+        },
+        "cover3_dm": {
+          "hp": 19.5
+        },
+        "cover4_dm": {
           "hp": 19.5
         }
       },
@@ -580,7 +601,37 @@
       },
       {
         "part": {
+          "name": "cannon5_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cannon6_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cannon7_dm"
+        }
+      },
+      {
+        "part": {
           "name": "cover1_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cover2_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cover3_dm"
+        }
+      },
+      {
+        "part": {
+          "name": "cover4_dm"
         }
       },
       {
@@ -2702,7 +2753,10 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2]
+          "flexionDir": [0.0,-1.0,0.2],
+          "type": "leftHand",
+          "detachedNodeYpr": [0.0,-15.0,-90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2711,7 +2765,10 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5]
+          "flexionDir": [0.0,-1.0,-0.5],
+          "type": "rightHand",
+          "detachedNodeYpr": [0.0,-15.0,90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2881,6 +2938,15 @@
         "lightRadius3": 0.2
       },
       {
+        "sightInFov": 1.5
+      },
+      {
+        "sightOutFov": 6.5
+      },
+      {
+        "sightFov": 3.1
+      },
+      {
         "devices": {
           "stick_ailerons": [-1.0,1.0],
           "stick_elevator": [-1.0,1.0],
@@ -2990,25 +3056,61 @@
     ]
   },
   {
-    "commonWeapons": {
-      "hideNodes": [
-        {
-          "node": "pylon_l_ltc_in"
-        },
-        {
-          "node": "pylon_r_ltc_in"
-        }
-      ],
-      "Weapon": {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonM61.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "bullets": 640,
-        "spread": 1.0
-      }
+    "gunnerOpticFps": {
+      "pos": [0.3,-0.2,0.0],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [-30.0,30.0,-30.0,30.0]
     }
+  },
+  {
+    "commonWeapons": [
+      {
+        "hideNodes": [
+          {
+            "node": "pylon_l_ltc_in"
+          },
+          {
+            "node": "pylon_r_ltc_in"
+          }
+        ]
+      },
+      {
+        "Weapon": {
+          "dummy": true,
+          "trigger": "gunner0",
+          "triggerGroup": "primary",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "optic1_gun",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "speedYaw": 25.0,
+          "speedPitch": 25.0,
+          "parkInDeadzone": false,
+          "aimForOperatedShell": true,
+          "turret": {
+            "head": "optic1_turret",
+            "gun": "optic1_gun",
+            "mainTurret": true
+          },
+          "limits": {
+            "yaw": [-30.0,30.0],
+            "pitch": [-30.0,30.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "cannon",
+          "blk": "gameData/Weapons/cannonM61.blk",
+          "emitter": "flare4",
+          "flash": "flare4",
+          "dm": "cannon4_dm",
+          "bullets": 640,
+          "spread": 1.0
+        }
+      }
+    ]
   },
   {
     "weapon_presets": [
@@ -4625,6 +4727,13 @@
             ]
           }
         ]
+      },
+      {
+        "preset": {
+          "name": "f_4e_agm_65b",
+          "blk": "gameData/flightModels/weaponPresets/f_4e_agm_65b.blk",
+          "reqModification": "us_agm_65b"
+        }
       }
     ]
   },
@@ -4842,6 +4951,11 @@
         "tier": 3,
         "modClass": "weapon"
       },
+      "us_agm_65b": {
+        "reqModification": "f4c_zuni",
+        "tier": 4,
+        "modClass": "weapon"
+      },
       "countermeasures_launcher_chaff_only": [],
       "countermeasures_launcher_flare_only": [],
       "countermeasures_launcher_chaff_priority": [],
@@ -4863,6 +4977,30 @@
                   "node": "pylon_r_in"
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0,
+                "parkInDeadzone": false,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [-30.0,30.0],
+                  "pitch": [-30.0,30.0]
+                }
+              }
             },
             {
               "Weapon": {

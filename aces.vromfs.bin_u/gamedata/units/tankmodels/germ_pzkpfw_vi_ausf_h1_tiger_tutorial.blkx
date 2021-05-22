@@ -336,6 +336,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -523,6 +524,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       },
       "hull": {
         "body_front_dm": {
@@ -1555,7 +1564,17 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.65,
-        "height": 0.06
+        "height": 0.1,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_pzkpfw_vi_tiger_early_phys_track_line",
+        "nonSymmetricMesh": true,
+        "trackLen": 0.13,
+        "trackCount": 96,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.2,
+        "trackStartOffset": 0.09
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -1621,7 +1640,27 @@
         "frontBackGearRadius": 0.36,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.395,
+        "wheel_l_drive": 0.395,
+        "wheel_r_back": 0.36,
+        "wheel_l_back": 0.36,
+        "wheel_r_01": 0.409,
+        "wheel_r_02": 0.409,
+        "wheel_r_03": 0.409,
+        "wheel_r_04": 0.409,
+        "wheel_r_05": 0.409,
+        "wheel_r_06": 0.409,
+        "wheel_r_07": 0.409,
+        "wheel_r_08": 0.409,
+        "wheel_l_01": 0.409,
+        "wheel_l_02": 0.409,
+        "wheel_l_03": 0.409,
+        "wheel_l_04": 0.409,
+        "wheel_l_05": 0.409,
+        "wheel_l_06": 0.409,
+        "wheel_l_07": 0.409,
+        "wheel_l_08": 0.409
       }
     }
   },
@@ -2214,6 +2253,17 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "grey",
+      "nameLocId": "skin/ger_camo_grey",
+      "descLocId": "skin/ger_camo_grey/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_grey*"
       }
     }
   },

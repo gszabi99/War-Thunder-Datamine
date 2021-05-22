@@ -17,7 +17,7 @@ local { reloadDargUiScript } = require("reactiveGuiCommand")
 local {bombNbr} = require("scripts/unit/unitStatus.nut")
 local { saveProfile } = require("scripts/clientState/saveProfile.nut")
 local { checkUnitSpeechLangPackWatch } = require("scripts/options/optionsManager.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
+local { isPlatformSony } = require("scripts/clientState/platform.nut")
 local { aeroSmokesList } = require("scripts/unlocks/unlockSmoke.nut")
 local { has_forced_crosshair } = ::require_native("crosshair")
 //
@@ -294,7 +294,7 @@ local isWaitMeasureEvent = false
     id = id,
     text = ::locOrStrip(value.tostring()),
     len = maxlength,
-    type = password? "type:t = 'password';" : "",
+    type = password ? "type:t='password'; password-smb:t='{0}';".subst(::loc("password_mask_char")) : "",
     charMask = charMask? $"char-mask:t='{charMask}';" : ""
   })
 })
@@ -1435,10 +1435,8 @@ local isWaitMeasureEvent = false
       descr.values = ::g_controls_presets.getControlsPresetsList()
       descr.trParams <- "optionWidthInc:t='double';"
 
-      if (!isPlatformSony && !isPlatformXboxOne)
-        descr.values.insert(0, "") //custom preset
-
-      local p = ::g_controls_manager.getCurPreset()?.getBasePresetInfo() ?? ::g_controls_presets.getCurrentPreset()
+      local p = ::g_controls_manager.getCurPreset().getBasePresetInfo()
+        ?? (clone ::g_controls_presets.nullPreset)
       for(local k = 0; k < descr.values.len(); k++)
       {
         local name = descr.values[k]
@@ -1453,10 +1451,9 @@ local isWaitMeasureEvent = false
           imageName = "gamepad"
         else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
           imageName = "ps4"
-        else if (name == "")
+        else if (name == "custom")
         {
-          name = "custom"
-          imageName = "custom"
+          imageName = name
           suffix = ""
         }
 
@@ -2335,6 +2332,13 @@ local isWaitMeasureEvent = false
       descr.defVal <- 0
       descr.value = ::hangar_get_tank_skin_condition().tointeger()
       descr.cb = "onChangeTankSkinCondition"
+      break
+
+    case ::USEROPT_DELAYED_DOWNLOAD_CONTENT:
+      descr.id = "delayed_download_content"
+      descr.controlType = optionControlType.CHECKBOX
+      descr.controlName <- "switchbox"
+      descr.value = ::get_option_delayed_download_content()
       break
 
     case ::USEROPT_TANK_CAMO_SCALE:
@@ -3919,6 +3923,17 @@ local isWaitMeasureEvent = false
       descr.showTitle <- false
       break
 
+    case ::USEROPT_REVEAL_NOTIFICATIONS:
+      descr.id = "reveal_notifications"
+      descr.controlType = optionControlType.BUTTON
+      descr.funcName <- "onRevealNotifications"
+      descr.delayed <- true
+      descr.shortcut <- "LB"
+      descr.text <- ::loc("mainmenu/btnRevealNotifications")
+      descr.title = descr.text
+      descr.showTitle <- false
+      break
+
     default:
       local optionName = ::user_option_name_by_idx?[optionId] ?? ""
       ::dagor.assertf(false, $"[ERROR] Options: Get: Unsupported type {optionId} ({optionName})")
@@ -4222,6 +4237,11 @@ local isWaitMeasureEvent = false
     case ::USEROPT_HUD_INDICATORS:
       if ("set_option_hud_indicators" in getroottable())
         ::set_option_hud_indicators(value)
+      break
+
+    case ::USEROPT_DELAYED_DOWNLOAD_CONTENT:
+      ::set_option_delayed_download_content(value)
+      ::save_local_account_settings("delayDownloadContent", value)
       break
 
     case ::USEROPT_AI_GUNNER_TIME:

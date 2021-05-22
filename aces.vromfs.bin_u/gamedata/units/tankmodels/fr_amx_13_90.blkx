@@ -206,6 +206,17 @@
     }
   },
   {
+    "attachables": {
+      "ex_decor_01_dm": true,
+      "ex_armor_02_dm": true,
+      "ex_decor_03_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_decor_09_dm": true,
+      "ex_decor_16_dm": true,
+      "ex_decor_17_dm": true
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -2566,7 +2577,8 @@
         "wheel_l_top_02_dm": [],
         "wheel_l_top_03_dm": [],
         "wheel_l_top_04_dm": [],
-        "ex_armor_03_dm": []
+        "ex_armor_03_dm": [],
+        "wheel_support_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -2628,6 +2640,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -2973,6 +2986,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -2991,6 +3012,7 @@
           "sleevesLifeTime": 10.0,
           "sleeveImpulse": [5.0,0.0,0.0],
           "sleeveExtractSound": "shell_eject",
+          "linkSleeveToGun": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -3314,6 +3336,7 @@
                 "sleevesLifeTime": 10.0,
                 "sleeveImpulse": [5.0,0.0,0.0],
                 "sleeveExtractSound": "shell_eject",
+                "linkSleeveToGun": true,
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,

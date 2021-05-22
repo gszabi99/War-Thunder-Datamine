@@ -1,9 +1,8 @@
 frame {
   size:t='1.4@sf, 1@maxWindowHeight'
   max-width:t='1@rw'
-  pos:t='50%pw-50%w, 1@minYposWindow'
-  position:t='absolute'
   class:t='wnd'
+  isCenteredUnderLogo:t='yes'
 
   frame_header {
     activeText {

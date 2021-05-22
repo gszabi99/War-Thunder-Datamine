@@ -41,10 +41,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.1,
-    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.01,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "heat_grenade_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
@@ -55,16 +55,17 @@
     "relativeVelHitShift": [300.0,1000.0],
     "relativeVelArmorShift": [200.0,1000.0],
     "hitPower": 260.0,
-    "fuseDelayDist": 0.05,
-    "explodeTreshold": 0.1,
+    "fuseDelayDist": 0.0,
+    "explodeTreshold": 0.01,
     "explosionEffect": "hit_59_80mm_metal_he",
     "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
     "waterCollisionEffect": "hit_59_80mm_water",
     "explosionPatchRadius": 2.2,
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.0],
-      "mod2": [20.0,1.0]
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -77,13 +78,13 @@
       "HitPower7000m": [0.0,7000.0]
     },
     "armorpower": {
-      "ArmorPower0m": [5.0,10.0],
-      "ArmorPower10000m": [4.0,10000.0]
+      "ArmorPower0m": [1.0,10.0],
+      "ArmorPower10000m": [1.0,10000.0]
     },
     "damage": {
       "explosive": {
         "radius": 0.15,
-        "offset": 0.2
+        "offset": 0.04
       },
       "shatter": [
         {
@@ -204,6 +205,9 @@
       "roadSoil": {
         "fx": "hit_59_80mm_dirt_he"
       },
+      "bricks_red": {
+        "fx": "hit_59_80mm_red_brick_he"
+      },
       "sand": {
         "fx": "hit_59_80mm_sand_he"
       },
@@ -275,10 +279,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.1,
-      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.01,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "heat_grenade_tank",
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
@@ -289,16 +293,17 @@
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
       "hitPower": 260.0,
-      "fuseDelayDist": 0.05,
-      "explodeTreshold": 0.1,
+      "fuseDelayDist": 0.0,
+      "explodeTreshold": 0.01,
       "explosionEffect": "hit_59_80mm_metal_he",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
       "ricochetEffect": "hit_59_80mm_metal_ap",
       "waterCollisionEffect": "hit_59_80mm_water",
       "explosionPatchRadius": 2.2,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.0],
-        "mod2": [20.0,1.0]
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -311,13 +316,13 @@
         "HitPower7000m": [0.0,7000.0]
       },
       "armorpower": {
-        "ArmorPower0m": [5.0,10.0],
-        "ArmorPower10000m": [4.0,10000.0]
+        "ArmorPower0m": [1.0,10.0],
+        "ArmorPower10000m": [1.0,10000.0]
       },
       "damage": {
         "explosive": {
           "radius": 0.15,
-          "offset": 0.2
+          "offset": 0.04
         },
         "shatter": [
           {
@@ -438,6 +443,9 @@
         "roadSoil": {
           "fx": "hit_59_80mm_dirt_he"
         },
+        "bricks_red": {
+          "fx": "hit_59_80mm_red_brick_he"
+        },
         "sand": {
           "fx": "hit_59_80mm_sand_he"
         },
@@ -510,10 +518,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.4,
-      "stabilityCaliberToArmorThreshold": 10.0,
-      "stabilityReductionAfterRicochet": 0.45,
-      "stabilityReductionAfterPenetration": 1.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_grenade_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
@@ -530,8 +538,8 @@
       "explosionPatchRadius": 2.2,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -623,6 +631,9 @@
         },
         "roadSoil": {
           "fx": "hit_59_80mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_59_80mm_red_brick_he"
         },
         "sand": {
           "fx": "hit_59_80mm_sand_he"

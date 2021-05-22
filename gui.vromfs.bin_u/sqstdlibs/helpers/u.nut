@@ -5,11 +5,7 @@
 local { DataBlock } = require("datablockWrapper.nut")
 local underscore = require("std/underscore.nut")
 local functools = require("std/functools.nut")
-local isTable = @(v) typeof(v)=="table"
-local isArray = @(v) typeof(v)=="array"
-local isString = @(v) typeof(v)=="string"
-local isFunction = @(v) typeof(v)=="function"
-local isDataBlock = @(v) v instanceof DataBlock
+local {isTable, isArray, isDataBlock } = underscore
 
 local rootTable = ::getroottable()
 local rnd = rootTable?.math?.rnd
@@ -118,7 +114,7 @@ local function isEmpty(val) {
   register instance class to work with u.is<className>, u.isEqual,  u.isEmpty
 */
 local function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
-  local funcName = "is" + className.slice(0, 1).toupper() + className.slice(1)
+  local funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
   this[funcName] <- function(value) {
     if (value instanceof classRef)
       return true
@@ -286,24 +282,6 @@ local function keysReplace(tbl, keysEqual, deepLevel = -1) {
   return res
 }
 
-/**
- * Given a array, and an iteratee function that returns a key for each
- * element in the array (or a property name), returns an object with an index
- * of each item.
- */
-local function indexBy(list, iteratee) {
-  local res = {}
-  if (isString(iteratee)){
-    foreach (idx, val in list)
-      res[val[iteratee]] <- val
-  }
-  else if (isFunction(iteratee)){
-    foreach (idx, val in list)
-      res[iteratee(val, idx, list)] <- val
-  }
-
-  return res
-}
 
 /*******************************************************************************
  ****************************** Array handling *********************************
@@ -424,46 +402,40 @@ local function search(data, predicate, reverseOrder = false) {
 
 
 local export = underscore.__merge({
-  isTable = isTable
-  isArray = isArray
-  isFunction = isFunction
-  isString = isString
-  isDataBlock = isDataBlock
-  appendOnce = appendOnce
-  chooseRandom = chooseRandom
-  chooseRandomNoRepeat = chooseRandomNoRepeat
-  wrapIdxInArrayLen = wrapIdxInArrayLen
-  shuffle = shuffle
+  appendOnce
+  chooseRandom
+  chooseRandomNoRepeat
+  wrapIdxInArrayLen
+  shuffle
   min = getMin
   max = getMax
-  mapAdvanced = mapAdvanced
-  indexBy = indexBy
-  removeFrom = removeFrom
-  extend = extend
-  registerClass = registerClass
-  registerIsEqual = registerIsEqual
-  keysReplace = keysReplace
-  copy = copy
-  search = search
-  isEmpty = isEmpty
-  isEqual = isEqual
+  mapAdvanced
+  removeFrom
+  extend
+  registerClass
+  registerIsEqual
+  keysReplace
+  copy
+  search
+  isEmpty
+  isEqual
 //obsolete
-  map = map
-  filter = filter
-  keys = keys
-  values = values
+  map
+  filter
+  keys
+  values
 
 }, functools)
 
 /**
- * Add type checking functions such as isArray()
+ * Add type checking functions such as isFloat()
  */
 local internalTypes = ["integer", "int64", "float", "null",
                       "bool",
                       "class", "instance", "generator",
                       "userdata", "thread", "weakref"]
 foreach (typeName in internalTypes) {
-  local funcName = "is" + typeName.slice(0, 1).toupper() + typeName.slice(1)
+  local funcName = $"is{typeName.slice(0, 1).toupper()}{typeName.slice(1)}"
   export[funcName] <- (@(val) @(arg) typeof arg == val)(typeName)
 }
 

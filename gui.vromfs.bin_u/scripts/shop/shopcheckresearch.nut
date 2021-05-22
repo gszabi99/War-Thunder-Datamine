@@ -2,12 +2,14 @@ local tutorialModule = require("scripts/user/newbieTutorialDisplay.nut")
 local unitActions = require("scripts/unit/unitActions.nut")
 local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setColoredDoubleTextToButton, placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 {
   wndType = handlerType.MODAL
   sceneTplName = "gui/shop/shopCheckResearch"
   sceneNavBlkName = "gui/shop/shopNav.blk"
+  shouldBlurSceneBgFn = needUseHangarDof
   canQuitByGoBack = false
 
   researchedUnit = null
@@ -479,12 +481,14 @@ class ::gui_handlers.ShopCheckResearch extends ::gui_handlers.ShopMenuHandler
 
 ::getSteamMarkUp <- function getSteamMarkUp()
 {
-  local blk = ::DataBlock()
-  blk = ::get_discounts_blk()
+  local blk = ::get_discounts_blk()
 
-  foreach(name, block in blk)
-    if(name == "steam_markup")
+  local blocksCount = blk.blockCount()
+  for (local i = 0; i < blocksCount; i++) {
+    local block = blk.getBlock(i)
+    if(block.getBlockName() == "steam_markup")
       return block.all
+  }
 
   return 0
 }

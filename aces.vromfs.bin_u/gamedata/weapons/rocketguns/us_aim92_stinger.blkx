@@ -10,10 +10,10 @@
   "tags": [],
   "rocket": [
     {
-      "normalizationPreset": "default"
+      "normalizationPreset": "heat"
     },
     {
-      "ricochetPreset": "defaultExt"
+      "ricochetPreset": "he"
     },
     {
       "secondaryShattersPreset": "ap"
@@ -64,7 +64,10 @@
       "length": 1.52
     },
     {
-      "distFromCmToStab": 0.03
+      "wingAreaMult": 1.05
+    },
+    {
+      "distFromCmToStab": 0.02
     },
     {
       "CxK": 2.1
@@ -73,10 +76,10 @@
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "finsAoaHor": 0.045
+      "finsAoaHor": 0.1
     },
     {
-      "finsAoaVer": 0.045
+      "finsAoaVer": 0.1
     },
     {
       "force": 3400.0
@@ -375,6 +378,9 @@
         "roadSoil": {
           "fx": "hit_133_160mm_dirt_he"
         },
+        "bricks_red": {
+          "fx": "hit_133_160mm_stone_he"
+        },
         "sand": {
           "fx": "hit_133_160mm_sand_he"
         },
@@ -459,10 +465,12 @@
         "guidanceAutopilot": {
           "timeOut": 0.5,
           "propNavMult": 4.0,
-          "accelControlProp": 0.013,
-          "accelControlIntg": 0.0026,
-          "accelControlIntgLim": 0.5,
-          "accelControlDiff": 0.0015
+          "reqAccelMax": 10.0,
+          "baseIndSpeed": 1700.0,
+          "accelControlProp": 0.008,
+          "accelControlIntg": 0.003,
+          "accelControlIntgLim": 0.7,
+          "accelControlDiff": 0.0
         }
       }
     },

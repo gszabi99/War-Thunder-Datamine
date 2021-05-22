@@ -11,6 +11,7 @@ local { showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 
 local { checkInvitesAfterFlight } = require("scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 local { checkNuclearEvent } = require("scripts/matching/serviceNotifications/nuclearEventHandler.nut")
+local { checkShowRateWnd } = require("scripts/user/suggestionRateGame.nut")
 
 //called after all first mainmenu actions
 onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
@@ -28,7 +29,7 @@ onMainMenuReturnActions.onMainMenuReturn <- function(handler, isAfterLogin) {
     penalties.showBannedStatusMsgBox(true)
     if (isAllowPopups && !::disable_network())
     {
-      handler.doWhenActive(::g_user_utils.checkShowRateWnd)
+      handler.doWhenActive(checkShowRateWnd)
       handler.doWhenActive(checkJoystickThustmasterHotas)
     }
   }

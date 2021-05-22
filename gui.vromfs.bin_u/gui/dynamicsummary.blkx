@@ -4,10 +4,10 @@
       "type": "big",
       "img": [
         {
-          "size": "sw,sh"
+          "size": "1@rw,1@rh"
         },
         {
-          "pos": "0,47%sh-50%h"
+          "pos": "1@bw,1@bh -0.03h"
         },
         {
           "position": "root"
@@ -16,20 +16,20 @@
           "background-repeat": "expand"
         },
         {
-          "padding-right": "w-sw+13%sh"
+          "padding-right": "w-1@rw+0.13@rh"
         },
         {
           "img": {
-            "size": "sw,sh",
-            "pos": "0, 0",
+            "size": "pw,ph",
+            "pos": "0, 0.03h",
             "position": "absolute",
             "style": "background-repeat:expand;background-image:ui/campaign_back;background-color:@white;"
           }
         },
         {
           "img": {
-            "size": "70%sh,65%sh",
-            "pos": "12%sw, 50%ph-50%h",
+            "size": "0.7ph,0.65ph",
+            "pos": "0.12pw, 50%ph-50%h",
             "position": "relative",
             "max-width": "88%sw-1@bw-56%sh",
             "max-height": "w-5%sh",
@@ -45,18 +45,24 @@
           }
         },
         {
-          "img": {
-            "size": "25%sh,64%sh",
-            "pos": "sw-90%w,18%sh",
+          "tdiv": {
+            "overflow": "hidden",
+            "size": "0.25ph,0.64ph",
+            "pos": "pw-w,0.18ph",
             "position": "absolute",
-            "style": "background-repeat:expand;background-image:ui/decor3;background-color:@white;"
+            "img": {
+              "size": "pw,ph",
+              "pos": "10%w, 0",
+              "position": "relative",
+              "style": "background-repeat:expand;background-image:ui/decor3;background-color:@white;"
+            }
           }
         },
         {
           "img": {
             "id": "briefing-flag",
-            "size": "32%sh,64%sh",
-            "pos": "-2*sw/sh,18%sh",
+            "size": "0.32ph,0.64ph",
+            "pos": "-2*sw/sh, 0.18ph",
             "position": "absolute",
             "background-image": ""
           }
@@ -65,8 +71,8 @@
           "img": {
             "id": "briefing_shadow_top",
             "position": "absolute",
-            "size": "sw, 35%sh",
-            "pos": "0,10%sh",
+            "size": "pw, 0.35ph",
+            "pos": "0,0.1ph",
             "background-image": "#ui/gameuiskin#optionlist_background_top"
           }
         },
@@ -74,33 +80,49 @@
           "img": {
             "id": "briefing_shadow_down",
             "position": "absolute",
-            "size": "sw, 35%sh",
-            "pos": "0,90%sh-h",
+            "size": "pw, 0.35ph",
+            "pos": "0,0.9ph-h",
             "rotation": "180",
             "background-image": "#ui/gameuiskin#optionlist_background_top"
           }
         },
         {
           "tdiv": {
-            "size": "40%sw,64%sh+1",
-            "pos": "-25%sh,50%sh-50%h+1",
+            "overflow": "hidden",
+            "size": "0.4pw,0.64ph+1",
+            "pos": "0, 0.5ph-0.5h+1",
             "position": "absolute",
-            "rotation": "180",
-            "style": "background-repeat:expand;background-image:ui/shadeside;background-color:#AAAAAAAA;"
+            "tdiv": {
+              "size": "pw,ph",
+              "pos": "-0.25p.p.h, 0",
+              "position": "absolute",
+              "rotation": "180",
+              "background-repeat": "expand",
+              "background-image": "ui/shadeside",
+              "background-color": "#AAAAAAAA"
+            }
           }
         },
         {
           "tdiv": {
-            "size": "40%sw,64%sh+1",
-            "pos": "sw+25%sh-w,50%sh-50%h+1",
+            "overflow": "hidden",
+            "size": "0.4pw,0.64ph+1",
+            "pos": "pw-w,0.5ph-0.5h+1",
             "position": "absolute",
-            "style": "background-repeat:expand;background-image:ui/shadeside;background-color:#AAAAAAAA;"
+            "tdiv": {
+              "size": "pw,ph",
+              "pos": "0.25p.p.h, 0",
+              "position": "absolute",
+              "background-repeat": "expand",
+              "background-image": "ui/shadeside",
+              "background-color": "#AAAAAAAA"
+            }
           }
         },
         {
           "tdiv": {
             "width": "fw",
-            "height": "45%sh",
+            "height": "0.45ph",
             "pos": "0, 50%ph-50%h",
             "position": "relative",
             "textareaNoTab": {
@@ -483,8 +505,8 @@
         }
       ],
       "tdiv": {
-        "size": "sw, 18%sh+1",
-        "pos": "-2,sh-h+4",
+        "size": "1@rw, 0.18@rh",
+        "pos": "1@bw,sh - 1@bh - h",
         "position": "root",
         "background-color": "@shadeBackgroundColor",
         "tdiv": {
@@ -498,22 +520,44 @@
   },
   {
     "tdiv": {
-      "size": "sw+4, 15%sh+1",
-      "pos": "-2,-2",
+      "size": "1@bw-1@bwInVr, 1@rh",
+      "pos": "0,1@bh",
       "position": "root",
-      "background-color": "@black",
-      "border": "yes",
-      "border-color": "@commonMenuButtonColor"
+      "background-color": "@black"
     }
   },
   {
     "tdiv": {
-      "size": "sw+4, 21%sh+1",
-      "pos": "-2,sh-h+4",
+      "size": "1@bw-1@bwInVr, 1@rh",
+      "pos": "sw-w,1@bh",
+      "position": "root",
+      "background-color": "@black"
+    }
+  },
+  {
+    "tdiv": {
+      "size": "1@swOrRwInVr, 0.15@rh+1@bh-1@bhInVr",
+      "pos": "1@bwInVr, 1@bhInVr",
       "position": "root",
       "background-color": "@black",
-      "border": "yes",
-      "border-color": "@commonMenuButtonColor"
+      "tdiv": {
+        "size": "pw, 1@dp",
+        "pos": "0,ph-h",
+        "position": "relative",
+        "background-color": "@commonMenuButtonColor"
+      }
+    }
+  },
+  {
+    "tdiv": {
+      "size": "1@swOrRwInVr, 0.21@rh+1@bh-1@bhInVr",
+      "pos": "1@bwInVr,sh-h - 1@bhInVr",
+      "position": "root",
+      "background-color": "@black",
+      "tdiv": {
+        "size": "pw, 1@dp",
+        "background-color": "@commonMenuButtonColor"
+      }
     }
   },
   {
@@ -530,13 +574,13 @@
       "pare-text": "yes",
       "max-height": "10%sh",
       "overflow": "hidden",
-      "pos": "@bw, 83%sh",
+      "pos": "1@bw, 1@bh + 0.83@rh",
       "position": "absolute"
     }
   },
   {
     "navBar": {
-      "style": "pos:50%sw-50%w, 80.5%sh"
+      "style": "pos:0.5sw-0.5w, 1@bh + 0.81@rh"
     }
   },
   {
@@ -557,7 +601,10 @@
           {
             "tdiv": [
               {
-                "size": "sw, 1@topBarHeight + 0.015@sf"
+                "size": "1@swOrRwInVr, 1@topBarHeight + 0.015@sf - 1@bhInVr"
+              },
+              {
+                "pos": "1@bwInVr, 1@bhInVr"
               },
               {
                 "position": "root"
@@ -658,11 +705,13 @@
                       "GameLogoPlate": {
                         "id": "gamercard_logo",
                         "padding": "1@titleLogoPlatePadding, 1@topGamercardDarkLineHeight, 1@titleLogoPlatePadding, 0",
+                        "top": "1@titleLogoPlatePaddingTop*@isInVr",
+                        "position": "relative",
                         "Shadow": {
                           "redPlate": {
                             "pattern": {
                               "type": "dark_diag_lines",
-                              "padding-top": "1@titleLogoPlatePaddingTop",
+                              "padding-top": "1@titleLogoPlatePaddingTop-1@titleLogoPlatePaddingTop*@isInVr",
                               "img": {
                                 "id": "titleLogo",
                                 "size": "1@titleLogoPlateWidth, 1@titleLogoPlateHeight",
@@ -1107,7 +1156,7 @@
                   "id": "chatPopupNest",
                   "size": "0.4@sf+10, 0.075*@sf+10",
                   "position": "absolute",
-                  "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
+                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
                   "flow": "vertical"
                 }
               }

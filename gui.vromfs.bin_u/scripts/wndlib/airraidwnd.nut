@@ -1,5 +1,5 @@
 local { secondsToTime, millisecondsToSecondsInt } = require("scripts/time.nut")
-local { buildTimeStr } = require("std/timeLoc.nut")
+local { buildTimeStr } = require("scripts/timeLoc.nut")
 local { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
 point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
 local exitGame = require("scripts/utils/exitGame.nut")

@@ -65,8 +65,10 @@ class ::gui_handlers.LoginWndHandler extends ::BaseGuiHandler
       unObj.setValue(lp.login)
 
     local psObj = scene.findObject("loginbox_password")
-    if (::checkObj(psObj))
+    if (::checkObj(psObj)) {
+      psObj["password-smb"] = ::loc("password_mask_char")
       psObj.setValue(lp.password)
+    }
 
     local alObj = scene.findObject("loginbox_autosave_login")
     if (::checkObj(alObj))

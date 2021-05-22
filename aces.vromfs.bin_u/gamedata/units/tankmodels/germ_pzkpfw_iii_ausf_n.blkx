@@ -2342,6 +2342,9 @@
         },
         "turret_04_back_dm": {
           "armorThickness": 31.5
+        },
+        "turret_04_side_dm": {
+          "armorThickness": 5.0
         }
       },
       "body_shields": {
@@ -2582,6 +2585,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -2931,6 +2935,14 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
       "gun": {
         "armorClass": "tank_barrel",
         "hp": 200.0,
@@ -3254,7 +3266,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3273,7 +3285,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,25.0]
+            "pitch": [-10.0,20.0]
           }
         }
       }
@@ -3612,7 +3624,7 @@
                 "speedPitch": 20.0,
                 "bullets": 2000,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3631,7 +3643,7 @@
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,25.0]
+                  "pitch": [-10.0,20.0]
                 }
               }
             },

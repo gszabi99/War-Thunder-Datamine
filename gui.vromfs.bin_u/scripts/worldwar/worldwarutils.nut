@@ -315,6 +315,7 @@ g_world_war.onJoinOperationSuccess <- function onJoinOperationSuccess(operationI
 g_world_war.openJoinOperationByIdWnd <- function openJoinOperationByIdWnd()
 {
   ::gui_modal_editbox_wnd({
+    title = ::loc("mainmenu/operationsMap")
     charMask="1234567890"
     allowEmpty = false
     okFunc = function(value) {

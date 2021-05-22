@@ -3,7 +3,7 @@
 local {round, PI, floor, cos, sin, fabs, sqrt} = require("std/math.nut")
 local interopGen = require("interopGen.nut")
 local compass = require("compass.nut")
-local {CompassValue} = require("compassState.nut")
+local {HasCompass, CompassValue} = require("compassState.nut")
 local {isPlayingReplay} = require("hudState.nut")
 local {hudFontHgt, fontOutlineFxFactor, greenColor, greenColorGrid, fontOutlineColor, targetSectorColor} = require("style/airHudStyle.nut")
 
@@ -31,13 +31,40 @@ const AIM_LINE_WIDTH = 2.0
 const TURRET_LINE_WIDTH = 1.0
 
 local compassWidth = hdpx(500)
-local compassHeight = hdpx(40)
+local compassHeight = hdpx(32)
 local compassStep = 5.0
 local compassOneElementWidth = compassHeight
 
 local getCompassStrikeWidth = @(oneElementWidth, step) 360.0 * oneElementWidth / step
 
-local modeNames = [ "hud/standby", "hud/search", "hud/acquisition", "hud/ACM", "hud/track", "hud/air_search", "hud/ground_search" ]
+local modeNames =
+[
+  "hud/standby",
+  "hud/search",
+  "hud/acquisition",
+  "hud/ACM",
+  "hud/track",
+
+  "hud/PD VS standby",
+  "hud/PD VS search",
+  "hud/PD VS acquisition",
+  "hud/PD VS ACM",
+
+  "hud/PD standby",
+  "hud/PD search",
+  "hud/PD acquisition",
+  "hud/PD ACM",
+  "hud/PD track",
+
+  "hud/LD standby",
+  "hud/LD search",
+  "hud/LD acquisition",
+  "hud/LD ACM",
+  "hud/LD track",
+
+  "hud/air_search",
+  "hud/ground_search"
+]
 
 local radarState = {
   targetAspectEnabled = false
@@ -116,8 +143,10 @@ local MfdViewMode = Watched(0)
 local HasAzimuthScale = Watched(0)
 local HasDistanceScale = Watched(0)
 local ScanPatternsMax = Watched(0)
+local DistanceMin = Watched(0)
 local DistanceMax = Watched(0)
 local DistanceScalesMax = Watched(0)
+local VelocitySearch = Watched(false)
 local AzimuthMarkersTrigger = Watched(0)
 local Irst = Watched(false)
 local RadarScale = Watched(1.0)
@@ -165,7 +194,7 @@ radarState.__update({
     IsCScopeVisible, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax,
 
     targets, TargetsTrigger, screenTargets, ScreenTargetsTrigger, ViewMode, MfdViewMode, HasAzimuthScale, HasDistanceScale, ScanPatternsMax,
-    DistanceMax, DistanceScalesMax, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight,
+    DistanceMin, DistanceMax, DistanceScalesMax, VelocitySearch, azimuthMarkers, AzimuthMarkersTrigger, Irst, RadarScale, MfdIlsHeight,
 
     IsForestallVisible, forestall, selectedTarget,
 
@@ -922,21 +951,28 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight, elemStyle) {
           })
         }
         @() elemStyle.__merge({
-          watch = [ HasDistanceScale, DistanceMax, DistanceScalesMax ]
+          watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
-          pos = [radarWidth * 0.50, -hdpx(20)]
-          text = HasDistanceScale.value
-            ? ::str(::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
-                (DistanceScalesMax.value > 1 ? "*" : " ")
-              )
+          pos = [radarWidth * 0.75, -hdpx(20)]
+          text = HasDistanceScale.value ?
+            ::str(VelocitySearch.value ?
+                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false) :
+                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                  (DistanceScalesMax.value > 1 ? "*" : " "))
             : ""
         })
-        elemStyle.__merge({
+        @() elemStyle.__merge({
+          watch = [ HasDistanceScale, VelocitySearch, DistanceMin ]
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
           pos = [radarWidth * 0.75, radarHeight + hdpx(6)]
-          text = !isCollapsed ? ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(0.0, true, false, false) : null
+          text = HasDistanceScale.value
+            ? ( !isCollapsed ?
+                  VelocitySearch.value ?
+                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false) :
+                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
+                : null) : ""
         })
         @() elemStyle.__merge({
           watch = AzimuthMin
@@ -956,10 +992,10 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight, elemStyle) {
           })
         }
         makeRadarModeText({
-          pos = [radarWidth * 0.5, -hdpx(40)]
+          pos = [radarWidth * 0.5, -hdpx(20)]
         }, elemStyle, isCollapsed)
         makeRadar2ModeText({
-          pos = [radarWidth * 0.5, -hdpx(75)]
+          pos = [radarWidth * 0.5, -hdpx(50)]
         }, elemStyle, isCollapsed)
         noiseSignal(
           [radarWidth * 0.06, radarWidth * 0.06],
@@ -1358,10 +1394,12 @@ local B_ScopeCircleMarkers = function(radarWidth, radarHeight, elemStyle) {
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
           pos = [radarWidth + hdpx(4), radarHeight * 0.5 + hdpx(5)]
-          watch = [ HasDistanceScale, DistanceMax, DistanceScalesMax ]
+          watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
           text = HasDistanceScale.value ?
-            ::str(::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
-            (DistanceScalesMax.value > 1 ? "*" : " ")) : ""
+            ::str(VelocitySearch.value ?
+                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false) :
+                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                  (DistanceScalesMax.value > 1 ? "*" : " ")) : ""
         }),
         styleText.__merge({
           rendObj = ROBJ_DTEXT
@@ -1584,13 +1622,15 @@ local B_ScopeHalfCircleMarkers = function(radarWidth, radarHeight, elemStyle) {
           })
         }
         @() elemStyle.__merge({
-          watch = [ HasDistanceScale, DistanceMax, DistanceScalesMax ]
+          watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
           rendObj = ROBJ_DTEXT
           size = SIZE_TO_CONTENT
           pos = [scanYaw, scanPitch]
           text = HasDistanceScale.value ?
-            ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false) +
-            (DistanceScalesMax.value > 1 ? "*" : " ") : ""
+            ::str(VelocitySearch.value ?
+                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false) :
+                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                  (DistanceScalesMax.value > 1 ? "*" : " ")) : ""
         })
         makeRadarModeText({
           pos = [radarWidth * (0.5 - 0.15), -hdpx(20)]
@@ -2397,10 +2437,11 @@ local function forestallTargetLine() {
 
 local compassComponent = @() {
   size = SIZE_TO_CONTENT
-  pos = [sw(50) - 0.5 * compassWidth, sh(12)]
-  children = [
-    compass(styleText.__merge(styleLineForeground), compassWidth, compassHeight, greenColor)
-  ]
+  pos = [sw(50) - 0.5 * compassWidth, sh(0.5)]
+  watch = [ HasCompass ]
+  children = HasCompass.value
+    ? [ compass(styleText.__merge(styleLineForeground), compassWidth, compassHeight, greenColor) ]
+    : null
 }
 
 

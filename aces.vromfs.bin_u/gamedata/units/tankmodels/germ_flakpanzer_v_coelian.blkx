@@ -162,8 +162,7 @@
         "ex_decor_r_01_dm": [],
         "ex_decor_03_dm": [],
         "ex_decor_14_dm": [],
-        "ex_decor_15_dm": [],
-        "ex_decor_16_dm": []
+        "ex_decor_15_dm": []
       },
       "ex_armor": {
         "hp": 100.0,
@@ -322,6 +321,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -650,6 +650,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -2281,7 +2289,7 @@
           "speedYaw": 60.0,
           "speedPitch": 20.0,
           "bullets": 752,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2328,7 +2336,7 @@
           "speedYaw": 60.0,
           "speedPitch": 20.0,
           "bullets": 752,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3089,7 +3097,7 @@
                 "speedYaw": 60.0,
                 "speedPitch": 20.0,
                 "bullets": 752,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3136,7 +3144,7 @@
                 "speedYaw": 60.0,
                 "speedPitch": 20.0,
                 "bullets": 752,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3283,6 +3291,28 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
     }
   }

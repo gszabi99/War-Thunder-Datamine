@@ -314,6 +314,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -659,6 +660,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -2416,7 +2425,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3411,7 +3420,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3492,7 +3501,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,
@@ -3679,6 +3688,28 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "ger_camo_carc*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "usa_modern_red_desert",
+      "nameLocId": "skin/usa_modern_red_desert",
+      "descLocId": "skin/usa_modern_red_desert/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_red_desert*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "usa_modern_summer_verdant",
+      "nameLocId": "skin/usa_modern_summer_verdant",
+      "descLocId": "skin/usa_modern_summer_verdant/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_summer_verdant*"
       }
     }
   }

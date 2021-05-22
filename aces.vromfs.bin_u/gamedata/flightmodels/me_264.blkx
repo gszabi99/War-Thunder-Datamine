@@ -33,6 +33,9 @@
     "paratrooper": "german"
   },
   {
+    "afterburnerExhaustFxType": "jet_afterburner_exhaust"
+  },
+  {
     "isCapableOfAttackTurn": false
   },
   {
@@ -164,7 +167,10 @@
           "genericDamageMult": 0.3,
           "hp": 59.5
         },
-        "stab_dm": {
+        "stab1_dm": {
+          "hp": 59.5
+        },
+        "stab2_dm": {
           "hp": 59.5
         }
       },
@@ -288,6 +294,9 @@
         "oil8_dm": {
           "hp": 25.5
         },
+        "oil9_dm": {
+          "hp": 25.5
+        },
         "water1_dm": {
           "hp": 19.5
         },
@@ -299,9 +308,6 @@
         },
         "water4_dm": {
           "hp": 19.5
-        },
-        "water5_dm": {
-          "hp": 25.5
         }
       },
       "steel_pilot": {
@@ -1403,6 +1409,17 @@
       },
       {
         "part": {
+          "name": "oil9_dm",
+          "onHit": {
+            "leak_oil": 0.95
+          },
+          "onKill": {
+            "leak_oil": 1.0
+          }
+        }
+      },
+      {
+        "part": {
           "name": "pilot_dm"
         }
       },
@@ -1569,7 +1586,58 @@
       {
         "part": [
           {
-            "name": "stab_dm"
+            "name": "stab1_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 70.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 14.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 1.0,
+              "nothing": 4.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 1.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab2_dm"
           },
           {
             "onHit": {
@@ -2055,17 +2123,6 @@
         }
       },
       {
-        "part": {
-          "name": "water5_dm",
-          "onHit": {
-            "leak_water": 0.5
-          },
-          "onKill": {
-            "leak_water": 1.0
-          }
-        }
-      },
-      {
         "part": [
           {
             "name": "wing1_l_dm"
@@ -2409,7 +2466,10 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2]
+          "flexionDir": [0.0,-1.0,0.2],
+          "type": "leftHand",
+          "detachedNodeYpr": [0.0,-15.0,-90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2418,7 +2478,10 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5]
+          "flexionDir": [0.0,-1.0,-0.5],
+          "type": "rightHand",
+          "detachedNodeYpr": [0.0,-15.0,90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {

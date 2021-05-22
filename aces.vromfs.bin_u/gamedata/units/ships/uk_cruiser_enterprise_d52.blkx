@@ -2712,7 +2712,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
-        "genericDamageMult": 0.5,
+        "genericDamageMult": 0.2,
         "compartment_01_dm": {
           "hp": 3000.0
         },
@@ -2746,7 +2746,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
         "hidableInViewer": true,
-        "genericDamageMult": 0.5,
+        "genericDamageMult": 0.1,
         "cover_01_dm": {
           "hp": 8000.0
         },
@@ -2833,38 +2833,39 @@
           "hp": 3000.0
         }
       },
-      "engine": {
-        "fireParamsPreset": "cruier_engine",
-        "armorClass": "armor_tank_engine",
+      "boiler_rooms": {
+        "fireParamsPreset": "ship_boiler_room",
+        "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "fireProtectionHp": 6.0,
+        "armorThrough": 250.0,
         "engine_room_01_dm": {
-          "armorThrough": 250.0,
           "hp": 2860.0
         },
         "engine_room_02_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_03_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
-        },
+        }
+      },
+      "engine_rooms": {
+        "fireParamsPreset": "ship_engine_room",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 25.4,
+        "fireProtectionHp": 10.0,
+        "armorThrough": 200.0,
         "transmission_01_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2000.0
         },
         "transmission_02_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2000.0
         },
         "transmission_03_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2000.0
         },
         "transmission_04_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2000.0
         }
       },
       "funnels": {
@@ -3538,37 +3539,37 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 49
+        "crew": 45
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor8": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 30
+        "crew": 31
       },
       "sailor9": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -3678,12 +3679,12 @@
       "sailor30": {
         "dmPart": "engine_room_02_dm",
         "role": "sailor",
-        "crew": 24
+        "crew": 23
       },
       "sailor31": {
         "dmPart": "engine_room_03_dm",
         "role": "sailor",
-        "crew": 24
+        "crew": 23
       },
       "sailor32": {
         "dmPart": "transmission_01_dm",
@@ -3713,8 +3714,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
+              "fire": 0.4,
               "expl": 0.6,
-              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -3729,8 +3730,8 @@
           {
             "onHit": {
               "damageType": "explosion",
+              "expl": 0.15,
               "fire": 0.85,
-              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -3767,6 +3768,7 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
+              "fire": 0.24,
               "expl": 0.76,
               "fHitCritical": false
             }
@@ -3870,31 +3872,19 @@
         ]
       },
       {
-        "ammunition_torpedoes": [
-          {
-            "onKill": {
-              "expl": 0.03,
-              "nothing": 0.04,
-              "fHitCritical": false
-            }
+        "ammunition_torpedoes": {
+          "onKill": {
+            "expl": 0.07,
+            "nothing": 0.93,
+            "fHitCritical": false
           },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.85,
-              "damage": 400.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "expl": 0.9,
-              "damage": 50.0,
-              "fHitCritical": false
-            }
+          "onHit": {
+            "damageType": "fire",
+            "expl": 0.1,
+            "damage": 50.0,
+            "fHitCritical": false
           }
-        ]
+        }
       },
       {
         "ammunition_mines": [
@@ -4759,9 +4749,11 @@
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [0.0,15.0,-5.0,40.0],
-            "lim2": [15.0,170.0,-5.0,40.0],
-            "lim3": [170.0,180.0,-5.0,40.0]
+            "lim1": [0.0,12.0,14.0,40.0],
+            "lim2": [12.0,20.0,-3.0,40.0],
+            "lim3": [20.0,170.0,-5.0,40.0],
+            "lim4": [170.0,175.0,0.0,40.0],
+            "lim5": [175.0,180.0,5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -4826,9 +4818,11 @@
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-170.0,-5.0,40.0],
-            "lim2": [-170.0,-15.0,-5.0,40.0],
-            "lim3": [-15.0,0.0,-5.0,40.0]
+            "lim1": [-180.0,-175.0,5.0,40.0],
+            "lim2": [-175.0,-170.0,0.0,40.0],
+            "lim3": [-170.0,-20.0,-5.0,40.0],
+            "lim4": [-20.0,-12.0,-3.0,40.0],
+            "lim5": [-12.0,0.0,14.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,

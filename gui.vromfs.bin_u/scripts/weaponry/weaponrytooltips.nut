@@ -1,6 +1,7 @@
 local { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { getFakeBulletsModByName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getFakeBulletsModByName,
+  getSingleBulletParamToDesc } = require("scripts/weaponry/bulletsInfo.nut")
 local { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
 } = require("scripts/weaponry/weaponryTooltipPkg.nut")
 
@@ -28,6 +29,27 @@ local lockedTimerHandler = {
 }
 
 local tooltipTypes = {
+  SINGLE_BULLET = {
+    getTooltipId = function(unitName, bulletName = "", params = null, p3 = null)
+    {
+      local p = params ? clone params : {}
+      p.bulletName <- bulletName
+      return _buildId(unitName, p)
+    }
+    isCustomTooltipFill = true
+    fillTooltip = function(obj, handler, unitName, params)
+    {
+      local unit = getAircraftByName(unitName)
+      if (!unit)
+        return false
+      local { locName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
+
+      local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
+        getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
+      obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
+      return true
+    }
+  }
   MODIFICATION = { //by unitName, modName
     getTooltipId = function(unitName, modName = "", params = null, p3 = null)
     {

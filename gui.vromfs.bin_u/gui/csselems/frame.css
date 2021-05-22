@@ -148,3 +148,14 @@ frameBlock_dark[bgTeamColor=blue] {
 frameBlock_dark[hasBorder=no] {
   border:no;
 }
+
+frame[isCenteredUnderLogo=yes] {
+  pos:50%pw-50%w, 1@minYposWindow + 0.3*(sh - 1@minYposWindow - 1@bh - 1@bottomMenuPanelHeight - h);
+  position:absolute;
+}
+
+frame[isCenteredUnderLogo=yes][withSlotbar=yes] {
+  pos:50%pw-50%w, 1@minYposWindow + 0.3*(sh - 1@minYposWindow - 1@wndWithSlotbarBottomOffset - h);
+  position:absolute;
+}
+

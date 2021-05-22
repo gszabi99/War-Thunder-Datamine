@@ -627,7 +627,7 @@ class ::gui_handlers.ConvertExpHandler extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_start_selecting_crew(config)
   }
 
-  function onEventPurchaseSuccess(params)
+  function onEventOnlineShopPurchaseSuccessful(params)
   {
     doWhenActiveOnce("fillContent")
   }

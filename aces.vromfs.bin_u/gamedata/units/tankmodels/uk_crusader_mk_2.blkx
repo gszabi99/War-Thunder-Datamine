@@ -239,6 +239,8 @@
         "ex_decor_r_02_dm": [],
         "ex_decor_r_05_dm": [],
         "ex_decor_r_07_dm": [],
+        "turret_04_top_dm": [],
+        "ex_decor_02_dm": [],
         "body_front_dm": {
           "armorThickness": 12.7
         },
@@ -340,6 +342,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -685,6 +688,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -697,6 +708,13 @@
       "TrackSoundNameCockpit": "tracks_interior",
       "EngineNameAi": "engine_tank_ai_middle",
       "TrackSoundNameAi": "tracks_ai_middle"
+    }
+  },
+  {
+    "attachables": {
+      "ex_decor_l_07_dm": true,
+      "ex_decor_r_07_dm": true,
+      "ex_decor_02_dm": true
     }
   },
   {
@@ -2322,7 +2340,7 @@
           },
           "limitsTable": {
             "lim1": [-180.0,-135.0,-5.0,20.0],
-            "lim2": [-135.0,135.0,-12.0,20.0],
+            "lim2": [-135.0,135.0,-10.0,20.0],
             "lim3": [135.0,180.0,-5.0,20.0]
           },
           "gunStabilizer": {
@@ -3195,7 +3213,7 @@
                 },
                 "limitsTable": {
                   "lim1": [-180.0,-135.0,-5.0,20.0],
-                  "lim2": [-135.0,135.0,-12.0,20.0],
+                  "lim2": [-135.0,135.0,-10.0,20.0],
                   "lim3": [135.0,180.0,-5.0,20.0]
                 },
                 "gunStabilizer": {

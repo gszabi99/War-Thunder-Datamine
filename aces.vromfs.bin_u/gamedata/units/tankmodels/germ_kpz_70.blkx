@@ -108,18 +108,6 @@
     "type": "typeMediumTank"
   },
   {
-    "irProjectorNode": "ex_decor_02"
-  },
-  {
-    "irBeamRadius": [1500.0,200.0]
-  },
-  {
-    "irProjectorPower": [0.03,0.07]
-  },
-  {
-    "irProjectorGlowOffset": [0.2,0.0,0.0]
-  },
-  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -522,6 +510,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -855,6 +844,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -869,11 +866,11 @@
       "EngineName": "engine_leo2a5",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
-      "turret_turn": "turret_turn_servo",
+      "TrackSoundName": "tracks_mbt",
+      "TrackSoundNameCockpit": "tracks_mbt_interior",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle"
+      "TrackSoundNameAi": "tracks_ai_mbt",
+      "turret_turn": "turret_turn_servo"
     }
   },
   {
@@ -2677,6 +2674,52 @@
             "pitch": [-0.0,0.0]
           }
         }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner3",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 40.0,
+          "speedPitch": 30.0,
+          "turret": {
+            "head": "bone_commander_sight_h",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-10.0,20.0]
+          },
+          "gunStabilizer": {
+            "hasVerticalGunFreeMode": false,
+            "forceEnabled": true,
+            "hasHorizontal": true,
+            "horizontalOmegaMult": 1.0,
+            "horizontalSpeedLimitKPH": 75.0,
+            "hasVertical": true,
+            "verticalOmegaMult": 1.0,
+            "verticalSpeedLimitKPH": 75.0,
+            "speedFromVehicleVerticalMult": -1.0,
+            "errorKPHToDegrees": [
+              {
+                "row": [5.0,0.0]
+              },
+              {
+                "row": [45.0,0.00015]
+              },
+              {
+                "row": [80.0,0.0002]
+              }
+            ]
+          }
+        }
       }
     ]
   },
@@ -3371,6 +3414,15 @@
     ]
   },
   {
+    "commanderView": {
+      "aimModeAvailable": true,
+      "optics": "commander_optics_square",
+      "zoomOutFov": 37.5,
+      "zoomInFov": 9.21,
+      "sightSize": [0.74,0.52]
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 10.53,
       "zoomInFov": 5.26,
@@ -3379,6 +3431,15 @@
       "headPos": [0.0,4.0,-8.5],
       "headPosOnShooting": [0.1,3.6,0.4],
       "detectionHeight": 2.46
+    }
+  },
+  {
+    "ircmProjector": {
+      "node": "ex_decor_02",
+      "beamRadius": [1500.0,200.0],
+      "projectorPower": [0.03,0.07],
+      "projectorGlowOffset": [0.5,0.2,0.0],
+      "glowOffset": [0.2,0.0,0.0]
     }
   },
   {
@@ -3594,6 +3655,52 @@
             {
               "Weapon": {
                 "trigger": "gunner3",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 40.0,
+                "speedPitch": 30.0,
+                "turret": {
+                  "head": "bone_commander_sight_h",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-10.0,20.0]
+                },
+                "gunStabilizer": {
+                  "hasVerticalGunFreeMode": false,
+                  "forceEnabled": true,
+                  "hasHorizontal": true,
+                  "horizontalOmegaMult": 1.0,
+                  "horizontalSpeedLimitKPH": 75.0,
+                  "hasVertical": true,
+                  "verticalOmegaMult": 1.0,
+                  "verticalSpeedLimitKPH": 75.0,
+                  "speedFromVehicleVerticalMult": -1.0,
+                  "errorKPHToDegrees": [
+                    {
+                      "row": [5.0,0.0]
+                    },
+                    {
+                      "row": [45.0,0.00015]
+                    },
+                    {
+                      "row": [80.0,0.0002]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",
@@ -3649,7 +3756,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,

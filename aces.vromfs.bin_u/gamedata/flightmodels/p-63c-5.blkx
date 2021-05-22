@@ -102,9 +102,8 @@
         "clock_hour": [0.0,12.0],
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
-        "manifold_pressure": [0.2,1.9],
-        "rpm_hour": [0.0,10000.0],
-        "rpm_min": [0.0,1000.0],
+        "manifold_pressure": [0.334,2.5],
+        "rpm": [0.0,4500.0],
         "oil_temperature": [0.0,100.0],
         "oil_pressure": [0.0,200.0],
         "oil_pressure1": [0.0,200.0],
@@ -298,91 +297,6 @@
     }
   },
   {
-    "commonWeapons": [
-      {
-        "Weapon": {
-          "trigger": "cannon",
-          "blk": "gameData/Weapons/cannonM10.blk",
-          "emitter": "flare1",
-          "flash": "flare1",
-          "dm": "cannon1_dm",
-          "bullets": 58,
-          "spread": 1.0
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-          "emitter": "flare2",
-          "flash": "flare2",
-          "dm": "mgun1_dm",
-          "bullets": 250,
-          "light": true,
-          "traceOffset": 2,
-          "spread": 1.0
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-          "emitter": "flare3",
-          "flash": "flare3",
-          "dm": "mgun2_dm",
-          "bullets": 250,
-          "light": false,
-          "spread": 1.0
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-          "emitter": "flare4",
-          "flash": "flare4",
-          "shell": "emtr_shellrejection1",
-          "dm": "mgun3_dm",
-          "bullets": 200,
-          "light": true,
-          "traceOffset": 3,
-          "spread": 1.1
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "machine gun",
-          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
-          "emitter": "flare5",
-          "flash": "flare5",
-          "shell": "emtr_shellrejection2",
-          "dm": "mgun4_dm",
-          "bullets": 200,
-          "light": true,
-          "traceOffset": 1,
-          "spread": 1.1
-        }
-      }
-    ]
-  },
-  {
-    "weapon_presets": [
-      {
-        "preset": {
-          "name": "p_63c_5_default",
-          "blk": "gameData/FlightModels/weaponPresets/p_63c_5_default.blk"
-        }
-      },
-      {
-        "preset": {
-          "name": "p_63c_5_bomb",
-          "blk": "gameData/FlightModels/weaponPresets/p_63c_5_bomb.blk",
-          "reqModification": "fmbc_mk2"
-        }
-      }
-    ]
-  },
-  {
     "user_skin": [
       {
         "name": "p_63c_5"
@@ -515,6 +429,12 @@
           "hp": 30.5
         },
         "stab_dm": {
+          "hp": 30.0
+        },
+        "stab2_dm": {
+          "hp": 30.0
+        },
+        "stab1_dm": {
           "hp": 30.5
         }
       },
@@ -603,7 +523,7 @@
       },
       "steel": {
         "gear_c_dm": {
-          "hp": 39.5
+          "hp": 50.7
         },
         "gear_l_dm": {
           "hp": 39.5
@@ -1652,6 +1572,108 @@
       {
         "part": [
           {
+            "name": "stab1_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab2_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
             "name": "tail_dm"
           },
           {
@@ -2362,7 +2384,10 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2]
+          "flexionDir": [0.0,-1.0,0.2],
+          "type": "leftHand",
+          "detachedNodeYpr": [0.0,-15.0,-90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2371,7 +2396,10 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5]
+          "flexionDir": [0.0,-1.0,-0.5],
+          "type": "rightHand",
+          "detachedNodeYpr": [0.0,-15.0,90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2450,6 +2478,91 @@
         "replace_tex": {
           "from": "p_63c_5_a_dmg*",
           "to": "p_63c_5_target_a_dmg*"
+        }
+      }
+    ]
+  },
+  {
+    "commonWeapons": [
+      {
+        "Weapon": {
+          "trigger": "cannon",
+          "blk": "gameData/Weapons/cannonM10.blk",
+          "emitter": "flare1",
+          "flash": "flare1",
+          "dm": "cannon1_dm",
+          "bullets": 58,
+          "spread": 1.0
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "machine gun",
+          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+          "emitter": "flare2",
+          "flash": "flare2",
+          "dm": "mgun1_dm",
+          "bullets": 250,
+          "light": true,
+          "traceOffset": 2,
+          "spread": 1.0
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "machine gun",
+          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+          "emitter": "flare3",
+          "flash": "flare3",
+          "dm": "mgun2_dm",
+          "bullets": 250,
+          "light": false,
+          "spread": 1.0
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "machine gun",
+          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+          "emitter": "flare4",
+          "flash": "flare4",
+          "shell": "emtr_shellrejection1",
+          "dm": "mgun3_dm",
+          "bullets": 200,
+          "light": true,
+          "traceOffset": 3,
+          "spread": 1.1
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "machine gun",
+          "blk": "gameData/Weapons/gunBrowning50_usaaf.blk",
+          "emitter": "flare5",
+          "flash": "flare5",
+          "shell": "emtr_shellrejection2",
+          "dm": "mgun4_dm",
+          "bullets": 200,
+          "light": true,
+          "traceOffset": 1,
+          "spread": 1.1
+        }
+      }
+    ]
+  },
+  {
+    "weapon_presets": [
+      {
+        "preset": {
+          "name": "p_63c_5_default",
+          "blk": "gameData/FlightModels/weaponPresets/p_63c_5_default.blk"
+        }
+      },
+      {
+        "preset": {
+          "name": "p_63c_5_bomb",
+          "blk": "gameData/FlightModels/weaponPresets/p_63c_5_bomb.blk",
+          "reqModification": "fmbc_mk2"
         }
       }
     ]

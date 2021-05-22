@@ -1093,24 +1093,67 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (item)
     {
-      logName = item?.userlogOpenLoc ?? logName
+      local cost = item.getCost()
+      logName = (item?.userlogOpenLoc ?? logName) != logName ? item.userlogOpenLoc
+        : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
 
-      local usedText = ::loc("userlog/" + logName + "/short")
-      local rewardText = ::trophyReward.getRewardText(log)
-      local reward = ::loc("reward") + ::loc("ui/colon") + rewardText
-
-      res.name = usedText + " " + ::loc("trophy/unlockables_names/trophy")
-                          + " " + ::loc("ui/parentheses/space", {text = reward})
+      local usedText = ::loc($"userlog/{logName}/short")
+      res.name = " ".concat(
+          usedText,
+          ::loc("trophy/unlockables_names/trophy"),
+          cost.gold > 0
+            ? ::loc("ui/parentheses/space", {text = $"{cost.getTextAccordingToBalance()}"}) : ""
+        )
       res.logImg = item.getSmallIconName()
-      res.tooltip = usedText + ::loc("ui/colon") + item.getName() + "\n" + reward
 
-      res.descriptionBlk <- ::format(textareaFormat, ::g_string.stripTags(usedText) + ::loc("ui/colon"))
+      res.descriptionBlk <- ::format(textareaFormat,
+        $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}")
       res.descriptionBlk += item.getNameMarkup()
-      res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
-      res.descriptionBlk += ::trophyReward.getRewardsListViewData(log)
+      res.descriptionBlk += ::format(textareaFormat,
+        ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
+
+      local resTextArr = []
+      local rewards = {}
+      if (log?.item)
+      {
+        if (typeof(log.item) == "array")
+        {
+          local items = log.item
+          while(items.len())
+          {
+            local inst = items.pop()
+            if (inst in rewards)
+              rewards[inst] += 1
+            else
+              rewards[inst] <- 1
+          }
+        }
+        else
+          rewards = { [log.item] = 1 }
+        foreach (idx, val in rewards)
+        {
+          local data = {
+            type = log.type
+            item = idx
+            count = val
+          }
+          resTextArr.append(::trophyReward.getRewardText(data))
+          res.descriptionBlk = "".concat(res.descriptionBlk,
+            ::trophyReward.getRewardsListViewData(log.__merge(data)))
+        }
+      }
+      else
+      {
+        resTextArr = [::trophyReward.getRewardText(log)]
+        res.descriptionBlk = $"{res.descriptionBlk}{::trophyReward.getRewardsListViewData(log)}"
+      }
+
+      local rewardText = "\n".join(resTextArr, true)
+      local reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
+      res.tooltip = $"{usedText}{::loc("ui/colon")}{item.getName()}\n{reward}"
     }
     else
-      res.name = ::loc("userlog/"+logName, { trophy = ::loc("userlog/no_trophy"),
+      res.name = ::loc($"userlog/{logName}", { trophy = ::loc("userlog/no_trophy"),
         reward = ::loc("userlog/trophy_deleted") })
 
     /*

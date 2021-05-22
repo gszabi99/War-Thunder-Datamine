@@ -98,8 +98,9 @@ local function getModificationBulletsGroup(modifName)
     if (!modification?.group)
       return "" //new_gun etc. - not a bullets list
     if (modification?.effects)
-      foreach (effectType, effect in modification.effects)
+      for (local i = 0; i < modification.effects.paramCount(); i++)
       {
+        local effectType = modification.effects.getParamName(i)
         if (effectType == "additiveBulletMod")
         {
           local underscore = modification.group.indexof("_")

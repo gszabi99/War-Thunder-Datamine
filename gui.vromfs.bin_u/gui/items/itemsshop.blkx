@@ -60,8 +60,6 @@
           {
             "tdiv": {
               "size": "pw, 1@frameHeaderHeight",
-              "position": "relative",
-              "pos": "0, 1@bh-1@blockInterval",
               "flow": "horizontal",
               "HorizontalListBox": {
                 "id": "tabs_list",
@@ -603,7 +601,7 @@
           "id": "chatPopupNest",
           "size": "0.4@sf, 0.075*@sf",
           "position": "absolute",
-          "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
+          "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
           "flow": "vertical"
         }
       },
@@ -670,7 +668,8 @@
         "tdiv": {
           "id": "black_screen",
           "background-color": "@black",
-          "size": "sw, sh",
+          "size": "1@swOrRwInVr, 1@shOrRhInVr",
+          "pos": "1@bwInVr, 1@bhInVr",
           "position": "absolute",
           "display": "hide"
         }

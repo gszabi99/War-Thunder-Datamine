@@ -4,6 +4,7 @@ local hudLogs = require("hudLogs.nut")
 local voiceChat = require("chat/voiceChat.nut")
 local { safeAreaSizeHud } = require("style/screenState.nut")
 local radarComponent = require("radarComponent.nut")
+local fireControl = require("shipFireControl.nut")
 
 
 local shipHud = @(){
@@ -27,7 +28,8 @@ local shipHud = @(){
 return {
   size = flex()
   children = [
-    shipHud,
+    shipHud
+    fireControl
     radarComponent.mkRadar(sh(4), sh(18))
   ]
 }

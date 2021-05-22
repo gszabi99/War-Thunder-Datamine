@@ -2,7 +2,7 @@
   "menu_background_color": [],
   "img": {
     "position": "absolute",
-    "size": "3sw, sh/3+1",
+    "size": "3sw - 3sw*@isInVr, sh/3+1",
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down"
   },
@@ -59,7 +59,10 @@
         {
           "tdiv": [
             {
-              "size": "sw, 1@topBarHeight + 0.015@sf"
+              "size": "1@swOrRwInVr, 1@topBarHeight + 0.015@sf - 1@bhInVr"
+            },
+            {
+              "pos": "1@bwInVr, 1@bhInVr"
             },
             {
               "position": "root"
@@ -160,11 +163,13 @@
                     "GameLogoPlate": {
                       "id": "gamercard_logo",
                       "padding": "1@titleLogoPlatePadding, 1@topGamercardDarkLineHeight, 1@titleLogoPlatePadding, 0",
+                      "top": "1@titleLogoPlatePaddingTop*@isInVr",
+                      "position": "relative",
                       "Shadow": {
                         "redPlate": {
                           "pattern": {
                             "type": "dark_diag_lines",
-                            "padding-top": "1@titleLogoPlatePaddingTop",
+                            "padding-top": "1@titleLogoPlatePaddingTop-1@titleLogoPlatePaddingTop*@isInVr",
                             "img": {
                               "id": "titleLogo",
                               "size": "1@titleLogoPlateWidth, 1@titleLogoPlateHeight",
@@ -609,7 +614,7 @@
                 "id": "chatPopupNest",
                 "size": "0.4@sf+10, 0.075*@sf+10",
                 "position": "absolute",
-                "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
+                "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
                 "flow": "vertical"
               }
             }

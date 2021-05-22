@@ -47,6 +47,12 @@ local tabGroups = [
     ]
   }
   {
+    title = "#event/war2077"
+    list = [
+      helpTypes.IMAGE_WARFARE2077
+    ]
+  }
+  {
     title = "#mission_objectives"
     list = [
       helpTypes.MISSION_OBJECTIVES

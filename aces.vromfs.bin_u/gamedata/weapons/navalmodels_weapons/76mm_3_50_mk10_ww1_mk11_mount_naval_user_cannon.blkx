@@ -76,16 +76,16 @@
       "secondaryShattersPreset": "ap"
     },
     {
-      "stabilityThreshold": 0.4
+      "stabilityThreshold": 0.5
     },
     {
-      "stabilityCaliberToArmorThreshold": 10.0
+      "stabilityCaliberToArmorThreshold": 5.0
     },
     {
-      "stabilityReductionAfterRicochet": 0.45
+      "stabilityReductionAfterRicochet": 0.3
     },
     {
-      "stabilityReductionAfterPenetration": 1.0
+      "stabilityReductionAfterPenetration": 0.15
     },
     {
       "bulletType": "he_frag_dist_fuse"
@@ -144,8 +144,8 @@
     {
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       }
     },
     {
@@ -163,13 +163,13 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.7
+            "countPortion": 0.3
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 0.8,
+              "damageScale": 1.0,
               "angles": [0.0,179.0],
               "countPortion": 0.5
             }
@@ -178,7 +178,7 @@
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 0.8,
+              "damageScale": 1.0,
               "angles": [180.0,359.0],
               "countPortion": 0.5
             }
@@ -197,7 +197,7 @@
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
-        "tracer": "76mmRed",
+        "tracer": "76mmRedShip",
         "trail": "black"
       }
     },
@@ -220,6 +220,9 @@
         },
         "roadSoil": {
           "fx": "hit_39_58mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_39_58mm_red_brick_he"
         },
         "sand": {
           "fx": "hit_39_58mm_sand_he"
@@ -326,16 +329,16 @@
         "secondaryShattersPreset": "ap"
       },
       {
-        "stabilityThreshold": 0.4
+        "stabilityThreshold": 0.5
       },
       {
-        "stabilityCaliberToArmorThreshold": 10.0
+        "stabilityCaliberToArmorThreshold": 5.0
       },
       {
-        "stabilityReductionAfterRicochet": 0.45
+        "stabilityReductionAfterRicochet": 0.3
       },
       {
-        "stabilityReductionAfterPenetration": 1.0
+        "stabilityReductionAfterPenetration": 0.15
       },
       {
         "bulletType": "he_frag_dist_fuse"
@@ -394,8 +397,8 @@
       {
         "stabilityRicochetModifier": {
           "mod1": [0.0,0.5],
-          "mod2": [20.0,0.6],
-          "mod3": [30.0,1.0]
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
         }
       },
       {
@@ -413,13 +416,13 @@
               "useRealShatters": true
             },
             {
-              "countPortion": 0.7
+              "countPortion": 0.3
             },
             {
               "segment": {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
-                "damageScale": 0.8,
+                "damageScale": 1.0,
                 "angles": [0.0,179.0],
                 "countPortion": 0.5
               }
@@ -428,7 +431,7 @@
               "segment": {
                 "radiusScale": 1.0,
                 "penetrationScale": 1.0,
-                "damageScale": 0.8,
+                "damageScale": 1.0,
                 "angles": [180.0,359.0],
                 "countPortion": 0.5
               }
@@ -447,7 +450,7 @@
         "visual": {
           "range_percent_of_ammo": [100.0,0.0],
           "traceFreq": 1,
-          "tracer": "76mmRed",
+          "tracer": "76mmRedShip",
           "trail": "black"
         }
       },
@@ -470,6 +473,9 @@
           },
           "roadSoil": {
             "fx": "hit_39_58mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_39_58mm_red_brick_he"
           },
           "sand": {
             "fx": "hit_39_58mm_sand_he"

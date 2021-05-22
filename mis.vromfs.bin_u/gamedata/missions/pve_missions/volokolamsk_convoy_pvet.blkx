@@ -352,7 +352,56 @@
       }
     }
   },
-  "imports": [],
+  "imports": [
+    {
+      "import_record": {
+        "file": "gameData/missions/pve_missions/template_volokolamsk_pvet_obj_vip.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/pve_missions/template_volokolamsk_pvet_obj_dstraa.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/pve_missions/template_volokolamsk_pvet_obj_loot.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    }
+  ],
   "triggers": {
     "isCategory": true,
     "is_enabled": true,
@@ -1733,6 +1782,32 @@
             "detectionArea": false,
             "killOutOfBattleArea": false,
             "area": "battlearea_stage1"
+          }
+        },
+        {
+          "__wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "__triggerEnable": {
+            "target": "secondary_vip_roll"
+          }
+        },
+        {
+          "__wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "__varSetString": {
+            "value": "secondary_dstraa_target",
+            "var": "secondary_dstraa_target"
+          }
+        },
+        {
+          "__triggerEnable": {
+            "target": "secondary_dstraa__roll"
           }
         }
       ],

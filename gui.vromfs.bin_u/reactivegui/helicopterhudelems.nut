@@ -1,21 +1,24 @@
 local {floor, round_by_value, round} = require("std/math.nut")
-
-local {CannonMode, IsCannonEmpty, CannonSelected, CannonReloadTime, CannonCount,
-        OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature, EngineState,
-        IsEngineAlert, TransmissionOilState, IsTransmissionOilAlert, Fuel, IsFuelCritical, IsCompassVisible,
-        MachineGuns, IsMachineGunEmpty, CannonsAdditional, IsCanAdditionalEmpty, Rockets,
-        IsRktEmpty, IsSightHudVisible, Agm, IsAgmEmpty, IsTargetTracked, AimCorrectionEnabled,
-        TargetRadius, TATargetX, TATargetY, DetectAllyProgress, DetectAllyState, Bombs, IsBmbEmpty,
-        IsHighRateOfFire, Aam, IsAamEmpty, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
-        AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin, AgmRotatedLaunchZoneYawMax,
-        AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin, TurretPitch, TurretYaw, IsZoomedAgmLaunchZoneVisible,
-        IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax, IsRangefinderEnabled, RangefinderDist,
-        Rpm, IsRpmCritical, TrtMode, Trt, Spd, IsOilAlert, IsWaterAlert, HorAngle, AgmLaunchZoneDistMin,
-        AlertColor, IsLaserDesignatorEnabled, TargetAge, IsInsideLaunchZoneDist, GunInDeadZone,
-        FovYaw, FovPitch, IsSightLocked, RocketSightMode, RocketAimVisible,
-        RocketAimX, RocketAimY, TATargetVisible, HasTargetTracker, IRCMState,
-        IsFlrEmpty, IsChaffsEmpty, Flares, Chaffs, DistanceToGround, CurrentTime, IsMfdEnabled, VerticalSpeed
+local {
+  CannonMode, IsCannonEmpty, CannonSelected, CannonReloadTime, CannonCount,
+  OilTemperature, OilState, WaterTemperature, WaterState, EngineTemperature,
+  EngineState, IsEngineAlert, TransmissionOilState, IsTransmissionOilAlert,
+  Fuel, IsFuelCritical, IsCompassVisible, MachineGuns, IsMachineGunEmpty,
+  CannonsAdditional, IsCanAdditionalEmpty, Rockets, IsRktEmpty, IsSightHudVisible,
+  Agm, IsAgmEmpty, DetectAllyProgress, DetectAllyState, Bombs, IsBmbEmpty,
+  IsHighRateOfFire, Aam, IsAamEmpty, IsInsideLaunchZoneYawPitch, AgmLaunchZoneYawMin,
+  AgmLaunchZonePitchMin, AgmLaunchZonePitchMax, AgmLaunchZoneYawMax, AgmRotatedLaunchZoneYawMin,
+  AgmRotatedLaunchZoneYawMax, AgmRotatedLaunchZonePitchMax, AgmRotatedLaunchZonePitchMin,
+  TurretYaw, TurretPitch, IsZoomedAgmLaunchZoneVisible, IsAgmLaunchZoneVisible, AgmLaunchZoneDistMax,
+  IsRangefinderEnabled, RangefinderDist, Rpm, IsRpmCritical, TrtMode, Trt, Spd,
+  IsOilAlert, IsWaterAlert, HorAngle, AgmLaunchZoneDistMin, AlertColor, IsLaserDesignatorEnabled,
+  IsInsideLaunchZoneDist, GunInDeadZone, FovYaw, FovPitch, RocketSightMode,
+  RocketAimVisible, RocketAimX, RocketAimY, TATargetVisible, IRCMState, IsFlrEmpty,
+  IsChaffsEmpty, Flares, Chaffs, DistanceToGround, CurrentTime, IsMfdEnabled, VerticalSpeed
 } = require("helicopterState.nut")
+
+local { IsTargetTracked, TargetAge, TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
 
 local aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
 local agmGuidanceLockState =  require("agmAimState.nut").GuidanceLockState
@@ -914,31 +917,9 @@ local function turretAngles(line_style, width, height, aspect, isBackground) {
   })
 }
 
-local lockSight = function(line_style, width, height, isBackground) {
-  return @() line_style.__merge({
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [width, height]
-    watch = [ IsAgmEmpty, IsSightLocked, IsTargetTracked ]
-    color = !isBackground && IsAgmEmpty.value ? AlertColor.value : getColor(isBackground, line_style)
-    commands = IsSightLocked.value ?
-     ( IsTargetTracked.value ?
-        [] :
-        [
-          [VECTOR_LINE, 0, 0, hl, vl],
-          [VECTOR_LINE, 0, 100, vl, 100 - vl],
-          [VECTOR_LINE, 100, 100, 100 - hl, 100 - vl],
-          [VECTOR_LINE, 100, 0, 100 - hl, vl]
-        ]
-        ) : []
-  })
-}
-
-local lockSightComponent = function(elemStyle, width, height, posX, posY, isBackground) {
-  return @() {
-    pos = [posX - width * 0.5, posY - height * 0.5]
-    size = SIZE_TO_CONTENT
-    children = lockSight(elemStyle, width, height, isBackground)
-  }
+local lockSightComponent = function(line_style, width, height, posX, posY, is_background) {
+  local color = !is_background && IsAgmEmpty.value ? AlertColor.value : getColor(is_background, line_style)
+  return lockSight(line_style, color, width, height, posX, posY)
 }
 
 local function helicopterRocketSightMode(sightMode){
@@ -1175,10 +1156,10 @@ local HelicopterTATarget = function(line_style, w, h, isBackground) {
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     size = SIZE_TO_CONTENT
-    watch = [TATargetVisible, TATargetX, TATargetY, IsTargetTracked,
+    watch = [TATargetVisible, TargetX, TargetY, IsTargetTracked,
       TargetAge, CurrentTime]
     transform = {
-      translate = [TATargetX.value, TATargetY.value]
+      translate = [TargetX.value, TargetY.value]
     }
     behavior = Behaviors.RtPropUpdate
     update = function() {
@@ -1192,101 +1173,12 @@ local HelicopterTATarget = function(line_style, w, h, isBackground) {
   }
 }
 
-local targetSize = function(line_style, width, height, isBackground) {
-  local hd = 5
-  local vd = 5
-  local posX = IsMfdEnabled.value ? 50 : (TATargetX.value / sw(100) * 100)
-  local posY = IsMfdEnabled.value ? 50 : (TATargetY.value / sh(100) * 100)
-  return @() line_style.__merge({
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [width, height]
-    fillColor = Color(0, 0, 0, 0)
-    watch = [ HasTargetTracker, IsTargetTracked, TargetRadius ]
-    commands = HasTargetTracker.value && TargetRadius.value > 0.0 ?
-      ( IsTargetTracked.value ? (
-        AimCorrectionEnabled.value ?
-        [
-          [ VECTOR_RECTANGLE,
-            posX - TargetRadius.value / width * 100,
-            posY - TargetRadius.value / height * 100,
-            2.0 * TargetRadius.value / width * 100,
-            2.0 * TargetRadius.value / height * 100
-          ],
-          [ VECTOR_ELLIPSE, 50, 50,
-            TargetRadius.value / width * 100,
-            TargetRadius.value / height * 100
-          ]
-        ] :
-        [
-          [ VECTOR_RECTANGLE,
-            posX - TargetRadius.value / width * 100,
-            posY - TargetRadius.value / height * 100,
-            2.0 * TargetRadius.value / width * 100,
-            2.0 * TargetRadius.value / height * 100
-          ]
-        ]
-        ) :
-        [
-          [VECTOR_LINE,
-            posX - TargetRadius.value / width * 100,
-            posY - TargetRadius.value / height * 100,
-            posX - (TargetRadius.value - hd) / width * 100,
-            posY - TargetRadius.value / height * 100],
-          [VECTOR_LINE,
-            posX - TargetRadius.value / width  * 100,
-            posY - TargetRadius.value / height * 100,
-            posX - TargetRadius.value / width  * 100,
-            posY - (TargetRadius.value - vd) / height * 100],
-
-          [VECTOR_LINE,
-            posX + TargetRadius.value / width  * 100,
-            posY - TargetRadius.value / height * 100,
-            posX + (TargetRadius.value - hd) / width  * 100,
-            posY - TargetRadius.value / height * 100],
-          [VECTOR_LINE,
-            posX + TargetRadius.value / width  * 100,
-            posY - TargetRadius.value / height * 100,
-            posX + TargetRadius.value / width  * 100,
-            posY - (TargetRadius.value - vd) / height * 100],
-
-          [VECTOR_LINE,
-            posX + TargetRadius.value / width  * 100,
-            posY + TargetRadius.value / height * 100,
-            posX + (TargetRadius.value - hd) / width  * 100,
-            posY + TargetRadius.value / height * 100],
-          [VECTOR_LINE,
-            posX + TargetRadius.value / width  * 100,
-            posY + TargetRadius.value / height * 100,
-            posX + TargetRadius.value / width  * 100,
-            posY + (TargetRadius.value - vd) / height * 100],
-
-          [VECTOR_LINE,
-            posX - TargetRadius.value / width  * 100,
-            posY + TargetRadius.value / height * 100,
-            posX - (TargetRadius.value - hd) / width  * 100,
-            posY + TargetRadius.value / height * 100],
-          [VECTOR_LINE,
-            posX - TargetRadius.value / width  * 100,
-            posY + TargetRadius.value / height * 100,
-            posX - TargetRadius.value / width  * 100,
-            posY + (TargetRadius.value - vd) / height * 100]
-        ]) : []
-  })
-}
-
-local targetSizeComponent = function(elemStyle, width, height, isBackground) {
+local targetSizeComponent = function(line_style, width, height) {
   return @() {
     pos = [0, 0]
     size = SIZE_TO_CONTENT
-    watch = [TATargetX, TATargetY]
-    behavior = Behaviors.RtPropUpdate
-    update = function() {
-      return {
-        opacity = TargetAge.value < 0.2 ||
-                  round(CurrentTime.value * 4) % 2 == 0 ? 100 : 0
-      }
-    }
-    children = targetSize(elemStyle, width, height, isBackground)
+    watch = [IsMfdEnabled]
+    children = targetSize(line_style, width, height, IsMfdEnabled.value, CurrentTime)
   }
 }
 

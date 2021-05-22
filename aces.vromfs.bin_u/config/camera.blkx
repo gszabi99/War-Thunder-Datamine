@@ -1300,7 +1300,13 @@
       "cameraFovSmoothing": 0.005
     },
     {
-      "isOrientationLocked": false
+      "hookNodeName": "bone_camera_commander"
+    },
+    {
+      "isHookNodeOptional": true
+    },
+    {
+      "isOrientationLocked": true
     },
     {
       "isOrientationLockedToNode": false
@@ -3934,7 +3940,17 @@
     "torpedoDistance": 55.0,
     "rocketDistance": 120.0,
     "rocketCameraViscosity": 0.02,
-    "cameraShakeMultiplier": 2.0
+    "cameraShakeMultiplier": 2.0,
+    "followBullet": {
+      "coneRadius": 15.0,
+      "bulletDistance": 20.0,
+      "bulletZoomDistanceRange": [0.5,1.3],
+      "returnSpeed": 4500.0,
+      "fov": 60.0,
+      "traceFxName": "bullet_distortion",
+      "timeAfterBulletDied": 2.0,
+      "watchExplosionDistance": 100.0
+    }
   },
   "weapon_aim_camera": {
     "type": "WeaponAimCamera",

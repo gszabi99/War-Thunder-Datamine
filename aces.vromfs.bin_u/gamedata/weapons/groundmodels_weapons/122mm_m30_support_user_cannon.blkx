@@ -39,10 +39,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.4,
-    "stabilityCaliberToArmorThreshold": 10.0,
-    "stabilityReductionAfterRicochet": 0.45,
-    "stabilityReductionAfterPenetration": 1.0,
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_frag_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
@@ -60,8 +60,8 @@
     "explosionPatchRadius": 3.5,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -171,46 +171,49 @@
     },
     "collisions": {
       "default": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
       },
       "horLandMesh": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
       },
       "soil": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
       },
       "dirt": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
       },
       "road": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
       },
       "roadSoil": {
-        "fx": "hit_106_132mm_dirt_he"
+        "fx": "hit_hit_artillery_dirt_he"
+      },
+      "bricks_red": {
+        "fx": "hit_106_132mm_stone_he"
       },
       "sand": {
-        "fx": "hit_106_132mm_sand_he"
+        "fx": "hit_hit_artillery_sand_he"
       },
       "duneSand": {
-        "fx": "hit_106_132mm_sand_he"
+        "fx": "hit_hit_artillery_sand_he"
       },
       "roadSand": {
-        "fx": "hit_106_132mm_sand_he"
+        "fx": "hit_hit_artillery_sand_he"
       },
       "quickSand": {
-        "fx": "hit_106_132mm_sand_he"
+        "fx": "hit_hit_artillery_sand_he"
       },
       "snow": {
-        "fx": "hit_106_132mm_snow_he"
+        "fx": "hit_hit_artillery_snow_he"
       },
       "ice": {
-        "fx": "hit_106_132mm_snow_he"
+        "fx": "hit_hit_artillery_snow_he"
       },
       "roadSnow": {
-        "fx": "hit_106_132mm_snow_he"
+        "fx": "hit_hit_artillery_snow_he"
       },
       "snowLower": {
-        "fx": "hit_106_132mm_snow_he"
+        "fx": "hit_hit_artillery_snow_he"
       },
       "glass": {
         "fx": "hit_106_132mm_metal_he"
@@ -243,7 +246,7 @@
         "fx": "hit_106_132mm_stone_he"
       },
       "stone_snow": {
-        "fx": "hit_106_132mm_snow_he"
+        "fx": "hit_hit_artillery_snow_he"
       }
     }
   }

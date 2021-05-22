@@ -4,10 +4,53 @@
       "type": "big"
     },
     {
-      "worldWarGlobe": {
-        "size": "pw, ph",
-        "position": "absolute",
-        "behavior": "worldWarGlobe"
+      "tdiv": {
+        "id": "bg_picture_container",
+        "size": "sw, sh",
+        "position": "root",
+        "background-color": "@black",
+        "tdiv": [
+          {
+            "pos": "50%sw-50%w,50%sh-50%h"
+          },
+          {
+            "position": "absolute"
+          },
+          {
+            "size": "2.333sh, sh"
+          },
+          {
+            "overflow": "hidden"
+          },
+          {
+            "tdiv": {
+              "id": "animated_bg_picture",
+              "pos": "pw/2-w/2, ph/2-h/2",
+              "position": "absolute",
+              "size": "2.5sh, sh",
+              "behaviour": "multiLayerImage",
+              "blend-time": "500"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "-w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          },
+          {
+            "tdiv": {
+              "size": "0.333sh, sh",
+              "pos": "pw -w/2, 0",
+              "position": "absolute",
+              "background-image": "!ui/gameuiskin#debriefing_bg_grad@@ss",
+              "background-color": "@black"
+            }
+          }
+        ]
       }
     },
     {
@@ -248,7 +291,10 @@
             {
               "tdiv": [
                 {
-                  "size": "sw, 1@topBarHeight + 0.015@sf"
+                  "size": "1@swOrRwInVr, 1@topBarHeight + 0.015@sf - 1@bhInVr"
+                },
+                {
+                  "pos": "1@bwInVr, 1@bhInVr"
                 },
                 {
                   "position": "root"
@@ -349,11 +395,13 @@
                         "GameLogoPlate": {
                           "id": "gamercard_logo",
                           "padding": "1@titleLogoPlatePadding, 1@topGamercardDarkLineHeight, 1@titleLogoPlatePadding, 0",
+                          "top": "1@titleLogoPlatePaddingTop*@isInVr",
+                          "position": "relative",
                           "Shadow": {
                             "redPlate": {
                               "pattern": {
                                 "type": "dark_diag_lines",
-                                "padding-top": "1@titleLogoPlatePaddingTop",
+                                "padding-top": "1@titleLogoPlatePaddingTop-1@titleLogoPlatePaddingTop*@isInVr",
                                 "img": {
                                   "id": "titleLogo",
                                   "size": "1@titleLogoPlateWidth, 1@titleLogoPlateHeight",
@@ -798,7 +846,7 @@
                     "id": "chatPopupNest",
                     "size": "0.4@sf+10, 0.075*@sf+10",
                     "position": "absolute",
-                    "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
+                    "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
                     "flow": "vertical"
                   }
                 }
@@ -1118,64 +1166,6 @@
           "on_select": "onItemSelect",
           "snd_select": "ww_globe_battle_select",
           "_on_click": "onOperationListSwitch"
-        }
-      }
-    }
-  ],
-  "tooltipObj": [
-    {
-      "id": "globe_hint"
-    },
-    {
-      "behavior": "Timer"
-    },
-    {
-      "timer_handler_func": "onGlobeHintTimer"
-    },
-    {
-      "position": "root"
-    },
-    {
-      "style": "padding:1@dp,1@wwGlobeTooltipPadding; color-factor:192;"
-    },
-    {
-      "display": "hide"
-    },
-    {
-      "flow": "vertical"
-    },
-    {
-      "textareaNoTab": {
-        "id": "title",
-        "padding": "1@wwGlobeTooltipPadding, 0",
-        "position": "relative",
-        "left": "50%pw-50%w",
-        "overlayTextColor": "active",
-        "text": ""
-      }
-    },
-    {
-      "textareaNoTab": {
-        "id": "desc",
-        "padding": "1@wwGlobeTooltipPadding, 0",
-        "margin-top": "1@blockInterval",
-        "position": "relative",
-        "left": "50%pw-50%w",
-        "hideEmptyText": "yes",
-        "smallFont": "yes",
-        "text": ""
-      }
-    },
-    {
-      "tdiv": {
-        "id": "statistics",
-        "margin-top": "1@blockInterval",
-        "position": "relative",
-        "left": "50%pw-50%w",
-        "flow": "vertical",
-        "display": "hide",
-        "animated_wait_icon": {
-          "background-rotation": "0"
         }
       }
     }

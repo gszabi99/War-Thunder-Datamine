@@ -9,6 +9,7 @@ local psnUser = require("sony.user");
 local { isLoadingBgUnlock,
         getLoadingBgName,
         getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
+local { statsTanks } = require("scripts/user/userInfoStats.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -587,7 +588,7 @@ local unlockConditionUnitclasses = {
       if (condition.type == "playerType")
       {
         foreach (unitType in condition % "unitType")
-          if (::isInArray(unitType, ::stats_tanks))
+          if (::isInArray(unitType, statsTanks))
             return true
         foreach (unitClass in condition % "unitClass")
           if ((unlockConditionUnitclasses?[unitClass] ?? ::ES_UNIT_TYPE_INVALID) == ::ES_UNIT_TYPE_TANK)
@@ -1894,8 +1895,9 @@ g_unlocks.loadFavorites <- function loadFavorites()
   local loaded = ::load_local_account_settings(FAVORITE_UNLOCKS_LIST_SAVE_ID)
   if (loaded)
   {
-    foreach(unlockId, unlockValue in loaded)
+    for (local i = 0; i < loaded.paramCount(); i++)
     {
+      local unlockId = loaded.getParamName(i)
       local unlock = ::g_unlocks.getUnlockById(unlockId)
       if (::is_unlock_visible(unlock, false))
       {

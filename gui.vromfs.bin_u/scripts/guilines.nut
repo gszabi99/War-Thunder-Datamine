@@ -177,9 +177,10 @@ class ::GuiBox
     return this
   }
 
-  function cloneBox(incSz = 0)
+  function cloneBox(incSzX = 0, incSzY = null)
   {
-    return ::GuiBox(c1[0] - incSz, c1[1] - incSz, c2[0] + incSz, c2[1] + incSz)
+    incSzY = incSzY ?? incSzX
+    return ::GuiBox(c1[0] - incSzX, c1[1] - incSzY, c2[0] + incSzX, c2[1] + incSzY)
   }
 
   function getBlkText(tag)

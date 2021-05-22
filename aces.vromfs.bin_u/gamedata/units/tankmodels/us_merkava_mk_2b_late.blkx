@@ -618,6 +618,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -952,6 +953,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -987,10 +996,11 @@
       "EngineName": "engine_m60_patton",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
+      "TrackSoundName": "tracks_mbt",
+      "TrackSoundNameCockpit": "tracks_mbt_interior",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle",
+      "TrackSoundNameAi": "tracks_ai_mbt",
+      "turret_turn": "turret_turn_servo",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -3055,7 +3065,7 @@
           "speedPitch": 20.0,
           "bullets": 1750,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3080,7 +3090,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner5",
+          "trigger": "gunner4",
           "triggerGroup": "machinegun",
           "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
           "emitter": "emtr_mg_flame_01",
@@ -3094,7 +3104,7 @@
           "speedPitch": 20.0,
           "bullets": 1750,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3119,7 +3129,7 @@
       },
       {
         "Weapon": {
-          "trigger": "gunner6",
+          "trigger": "gunner5",
           "triggerGroup": "smoke",
           "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
           "weaponType": "rockets",
@@ -3159,6 +3169,30 @@
           "limits": {
             "yaw": [-0.0,0.0],
             "pitch": [0.0,0.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner6",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "turret": {
+            "head": "bone_commander_sight_h",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-90.0,90.0],
+            "pitch": [-10.0,15.0]
           }
         }
       }
@@ -3795,6 +3829,14 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 18.5,
+      "zoomInFov": 3.68,
+      "sightSize": [0.355,0.25]
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
@@ -4280,7 +4322,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1750,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -4305,7 +4347,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner5",
+                "trigger": "gunner4",
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
                 "emitter": "emtr_mg_flame_01",
@@ -4319,7 +4361,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1750,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -4344,7 +4386,7 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner6",
+                "trigger": "gunner5",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/60mm_smoke_mortar_launcher.blk",
                 "weaponType": "rockets",
@@ -4389,7 +4431,31 @@
             },
             {
               "Weapon": {
-                "trigger": "gunner4",
+                "trigger": "gunner6",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
+                "turret": {
+                  "head": "bone_commander_sight_h",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm"
+                },
+                "limits": {
+                  "yaw": [-90.0,90.0],
+                  "pitch": [-10.0,15.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner7",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",
@@ -4445,7 +4511,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,

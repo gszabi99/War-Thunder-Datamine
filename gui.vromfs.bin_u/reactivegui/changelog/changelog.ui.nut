@@ -10,6 +10,7 @@ local JB = require("reactiveGui/control/gui_buttons.nut")
 local { mkImageCompByDargKey } = require("reactiveGui/components/gamepadImgByKey.nut")
 local { showConsoleButtons } = require("reactiveGui/ctrlsState.nut")
 local focusBorder = require("reactiveGui/components/focusBorder.nut")
+local blurPanel = require("reactiveGui/components/blurPanel.nut")
 
 local tabStyle = {
   fillColor = {
@@ -204,9 +205,9 @@ local clicksHandler = {
 }
 
 local changelogRoot = {
-  rendObj = ROBJ_WORLD_BLUR_PANEL
   size = flex()
   children = [
+    blurPanel
     clicksHandler
     modalWindow({
       content = {

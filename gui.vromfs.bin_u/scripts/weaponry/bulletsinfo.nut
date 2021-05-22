@@ -13,6 +13,7 @@ local { AMMO,
 local { isModResearched, isModAvailableOrFree, getModificationByName,
   getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
 local { isModificationInTree } = require("scripts/weaponry/modsTree.nut")
+local { copyParamsToTable } = require("std/datablock.nut")
 
 local BULLET_TYPE = {
   ROCKET_AIR     = "rocket_aircraft"
@@ -140,8 +141,9 @@ local function getModificationBulletsEffect(modifName)
   local modification = blk?.modifications?[modifName]
   if (modification?.effects)
   {
-    foreach (effectType, effect in modification.effects)
+    for (local i = 0; i < modification.effects.paramCount(); i++)
     {
+      local effectType = modification.effects.getParamName(i)
       if (effectType == "additiveBulletMod")
         return modification.effects.additiveBulletMod
       if (effectType == "bulletMod")
@@ -577,17 +579,26 @@ local function updateRelationModificationList(unit, modifName)
       {
         local modification = blk?.modifications?[m.name]
         if (modification?.effects)
-          foreach (effectType, effect in modification.effects)
-          {
-            if (effectType == "additiveBulletMod")
+          for (local i = 0; i < modification.effects.paramCount(); i++)
+            if (modification.effects.getParamName(i) == "additiveBulletMod")
             {
               mod.relationModification.append(m.name)
-              break;
+              break
             }
-          }
       }
     }
   }
+}
+
+local function getBulletAnnotation(name, addName=null)
+{
+  local txt = ::loc(name + "/name/short")
+  if (addName)
+    txt = $"{txt}{::loc(addName + "/name/short")}"
+  txt = $"{txt} - {::loc(name + "/name")}"
+  if (addName)
+    txt = $"{txt} {::loc(addName + "/name")}"
+  return txt
 }
 
 //FIX ME: Needs to relocate to visual module
@@ -719,36 +730,24 @@ local function getModificationInfo(air, modifName, isShortDesc=false, limitedNam
   }
 
   //bullets description
-  local annotation = ""
-  local usedLocs = []
-  local infoFunc = function(name, addName=null) {
-    local txt = ::loc(name + "/name/short")
-    if (addName) txt += ::loc(addName + "/name/short")
-    txt += " - " + ::loc(name + "/name")
-    if (addName) txt += " " + ::loc(addName + "/name")
-    return txt
-  }
   local separator = ::loc("bullet_type_separator/name")
-  local setText = ""
+  local usedLocs = []
+  local annArr = []
+  local txtArr = []
   foreach(b in set.bullets)
   {
-    setText += ((setText=="")? "" : separator)
     local part = b.indexof("@")
-    if (part==null)
-      setText+=::loc(b + "/name/short")
-    else
-      setText+=::loc(b.slice(0, part) + "/name/short") + ::loc(b.slice(part+1) + "/name/short")
+    txtArr.append("".join(part == null ? [::loc($"{b}/name/short")]
+      : [::loc($"{b.slice(0, part)}/name/short"), ::loc($"{b.slice(part+1)}/name/short")]))
     if (!::isInArray(b, usedLocs))
     {
-      if (annotation != "")
-        annotation += "\n"
-      if (part==null)
-        annotation += infoFunc(b)
-      else
-        annotation += infoFunc(b.slice(0, part), b.slice(part+1))
+      annArr.append(part == null ? getBulletAnnotation(b)
+        : getBulletAnnotation(b.slice(0, part), b.slice(part+1)))
       usedLocs.append(b)
     }
   }
+  local setText = separator.join(txtArr)
+  local annotation = "\n".join(annArr)
 
   if (ammo_pack_len)
     res.desc = shortDescr + "\n"
@@ -1041,15 +1040,8 @@ local function initBulletIcons(blk = null)
   if (!blk)
     blk = ::configs.GUI.get()
 
-  local ib = blk?.bullet_icons
-  if (ib)
-    foreach(key, value in ib)
-      bulletIcons[key] <- value
-
-  local ar = blk?.bullet_icon_aspect_ratio
-  if (ar)
-    foreach(key, value in ar)
-      bulletAspectRatio[key] <- value
+  copyParamsToTable(blk?.bullet_icons, bulletIcons)
+  copyParamsToTable(blk?.bullet_icon_aspect_ratio, bulletAspectRatio)
 
   local bf = blk?.bullets_features_icons
   if (bf)
@@ -1104,7 +1096,7 @@ local function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed =
         ratio = bulletAspectRatio?[getBulletImage(bulletsSet, 0, false)]
           ?? bulletAspectRatio?["default"]
           ?? DEFAULT_BULLET_IMG_ASPECT_RATIO
-        local maxAmountInView = ::min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
+        local maxAmountInView = (bulletsSet?.weaponType == WEAPON_TYPE.COUNTERMEASURES) ? 1 : ::min(MAX_BULLETS_ON_ICON, (1.0 / ratio).tointeger())
         if (bulletsSet.catridge)
           maxAmountInView = ::min(bulletsSet.catridge, maxAmountInView)
         count = length * ::max(1, ::floor(maxAmountInView / length))
@@ -1426,6 +1418,26 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
   }
 })
 
+local function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams)
+{
+  local descTbl = { name = ::colorize("activeTextColor", locName), desc = "", bulletActions = []}
+  local part = bulletName.indexof("@")
+    descTbl.desc = part == null ? getBulletAnnotation(bulletName)
+      : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part+1))
+
+  if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
+    return descTbl
+
+  descTbl.bulletActions = [{ visual = getBulletsIconData(bulletsSet) }]
+  buildPiercingData({
+    bulletsSet = bulletsSet,
+    bullet_parameters = [bulletParams],
+    descTbl = descTbl,
+    needAdditionalInfo = true
+  })
+  return descTbl
+}
+
 local function addBulletsParamToDesc(descTbl, unit, item)
 {
   if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
@@ -1543,4 +1555,5 @@ return {
   getBulletsIconView                    = getBulletsIconView
   getFakeBulletsModByName               = getFakeBulletsModByName
   getUnitLastBullets
+  getSingleBulletParamToDesc
 }

@@ -4,6 +4,9 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
 ::gui_start_controls_type_choice <- function gui_start_controls_type_choice(onlyDevicesChoice = true)
 {
+  if (!::has_feature("ControlsDeviceChoice"))
+    return
+
   ::gui_start_modal_wnd(::gui_handlers.ControlType, {onlyDevicesChoice = onlyDevicesChoice})
 }
 
