@@ -808,14 +808,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -2485,158 +2477,78 @@
   },
   {
     "commonWeapons": {
-      "Weapon": [
-        {
-          "trigger": "gunner0"
+      "Weapon": {
+        "trigger": "gunner0",
+        "triggerGroup": "primary",
+        "blk": "gameData/Weapons/groundModels_weapons/80mm_Type_91_launcher_user_cannon.blk",
+        "flash": "emtr_gun_flame_01",
+        "useEmitter": true,
+        "emitter": "bone_rocket_01",
+        "emitterGenRange": [1,8],
+        "emitterGenFmt": "bone_rocket_%02d",
+        "ammoDpGenFmt": "ammo_turret_%02d_dm",
+        "recoilMultiplier": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 20.0,
+        "barrelDP": "gun_barrel_dm",
+        "brokenBarrelAllowShoot": false,
+        "speedYaw": 100.0,
+        "speedPitch": 40.0,
+        "fireConeAngle": 1.0,
+        "bullets": 8,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "gunnerDm": "commander_dm"
         },
-        {
-          "triggerGroup": "primary"
+        "limits": {
+          "yaw": [-180.0,180.0],
+          "pitch": [0.0,70.0]
         },
-        {
-          "blk": "gameData/Weapons/groundModels_weapons/80mm_Type_91_launcher_user_cannon.blk"
-        },
-        {
-          "flash": "emtr_gun_flame_01"
-        },
-        {
-          "useEmitter": true
-        },
-        {
-          "emitter": "bone_rocket_01"
-        },
-        {
-          "emitterGenRange": [1,8]
-        },
-        {
-          "emitterGenFmt": "bone_rocket_%02d"
-        },
-        {
-          "ammoDpGenFmt": "ammo_turret_%02d_dm"
-        },
-        {
-          "recoilMultiplier": 0.0
-        },
-        {
-          "defaultYaw": 0.0
-        },
-        {
-          "defaultPitch": 0.0
-        },
-        {
-          "allowableDelta": 20.0
-        },
-        {
-          "barrelDP": "gun_barrel_dm"
-        },
-        {
-          "brokenBarrelAllowShoot": false
-        },
-        {
-          "speedYaw": 100.0
-        },
-        {
-          "speedPitch": 40.0
-        },
-        {
-          "fireConeAngle": 1.0
-        },
-        {
-          "bullets": 8
-        },
-        {
-          "salvoAmount": 100.0
-        },
-        {
-          "ChainfireTime": 0.0
-        },
-        {
-          "DelayAfterShoot": 2.0
-        },
-        {
-          "fireConeAngle": 1.0
-        },
-        {
-          "targetAngularRateMax": 5.0
-        },
-        {
-          "AttackMaxDistance": 10000.0
-        },
-        {
-          "AttackMaxRadius": 10000.0
-        },
-        {
-          "AttackMaxHeight": 4000.0
-        },
-        {
-          "accuracyAir": 1.5
-        },
-        {
-          "accuracyGnd": 0.0
-        },
-        {
-          "errMeasureVel": 0.0
-        },
-        {
-          "errMeasureVelFast": 0.0
-        },
-        {
-          "errMeasureVelFwdShift": 0.0
-        },
-        {
-          "errMeasureVelDir": 0.0
-        },
-        {
-          "errTargettingOn100kmph": 0.0
-        },
-        {
-          "errTargetting": 3.0
-        },
-        {
-          "errExplTime": 0.0
-        },
-        {
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_gun",
-            "gunnerDm": "commander_dm"
-          }
-        },
-        {
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [0.0,70.0]
-          }
-        },
-        {
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": false,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 75.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 75.0,
-            "speedFromVehicleVerticalMult": -1.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.0]
-              },
-              {
-                "row": [25.0,0.015]
-              },
-              {
-                "row": [35.0,0.02]
-              },
-              {
-                "row": [45.0,0.1]
-              },
-              {
-                "row": [50.0,0.3]
-              }
-            ]
-          }
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 75.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 75.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "errorKPHToDegrees": [
+            {
+              "row": [5.0,0.0]
+            },
+            {
+              "row": [25.0,0.015]
+            },
+            {
+              "row": [35.0,0.02]
+            },
+            {
+              "row": [45.0,0.1]
+            },
+            {
+              "row": [50.0,0.3]
+            }
+          ]
         }
-      ]
+      }
     }
   },
   {
@@ -2668,8 +2580,7 @@
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
-        "cls_body_01": "convex_hull",
-        "cls_body_02": "convex_hull"
+        "cls_body_01": "convex_hull"
       },
       "engine": {
         "horsePowers": 150.0,
@@ -3453,7 +3364,7 @@
               "resolution": [1200,800],
               "noiseFactor": 0.04
             },
-            "commanderViewThermal": {
+            "commanderThermal": {
               "resolution": [1200,800],
               "noiseFactor": 0.04
             },

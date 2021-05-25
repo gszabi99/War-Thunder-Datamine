@@ -2,9 +2,7 @@ local u = require("sqStdLibs/helpers/u.nut")
 local antiCheat = require("scripts/penitentiary/antiCheat.nut")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
 
-local saveOnlineJob = @() ::save_online_single_job(223) //super secure digit for job tag :)
-
-local function disableSeenUserlogs(idsList) {
+function disableSeenUserlogs(idsList) {
   if (u.isEmpty(idsList))
     return
 
@@ -24,7 +22,7 @@ local function disableSeenUserlogs(idsList) {
   if (needSave)
   {
     ::dagor.debug("Userlog: Disable seen logs: save online")
-    saveOnlineJob()
+    ::save_online_job()
   }
 }
 
@@ -56,7 +54,6 @@ local actionByLogType = {
 }
 
 return {
-  disableSeenUserlogs
-  actionByLogType
-  saveOnlineJob
+  disableSeenUserlogs = disableSeenUserlogs
+  actionByLogType = actionByLogType
 }

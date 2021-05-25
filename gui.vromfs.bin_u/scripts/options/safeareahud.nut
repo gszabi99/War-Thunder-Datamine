@@ -20,10 +20,10 @@ if (::is_platform_xbox)
 }
 
 
-local getFixedValue = @() //return -1 when not fixed
-  ::is_stereo_mode() ? 1.0
-  : isPlatformSony ? sony.getDisplaySafeArea()
-  : -1
+local getFixedValue = function() //return -1 when not fixed
+{
+  return isPlatformSony ? sony.getDisplaySafeArea() : -1
+}
 
 local getValue = function()
 {

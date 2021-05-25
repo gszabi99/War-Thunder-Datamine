@@ -52,11 +52,6 @@
   EII_SUPPORT_PLANE = 32
   EII_STEALTH = 33
   EII_LOCK = 34
-  //
-
-
   is_perf_metrics_available = @(request_mode) false
-  get_option_delayed_download_content = @() false
-  set_option_delayed_download_content = @(value) null
 })
 

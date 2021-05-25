@@ -1,5 +1,6 @@
 // TEST:  ::gui_start_wheelmenu({ menu = [0,1,2,3,4,5,6,7].map(@(v) { name = v.tostring() }), callbackFunc = dlog })
 
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { getGamepadAxisTexture } = require("scripts/controls/gamepadIcons.nut")
 
 ::gui_start_wheelmenu <- function gui_start_wheelmenu(params)
@@ -67,7 +68,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   invalidIndex = -1
   applyIndex = -1
   joystickSides = ["E", "NE", "N", "NW", "W", "SW", "S", "SE"]
-  joystickMinDeviation = 0.25
+  joystickMinDeviation = 8000
   btnSetIdx = -1
   btnSetsConfig = [
     ["W", "E"],
@@ -179,7 +180,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
   {
     local obj = scene.findObject("wheelmenu_select_shortcut")
     local isShow = ::show_console_buttons && axisEnabled
-    if (isShow)
+    if (isWheelmenuAxisConfigurable() && isShow)
     {
       local shortcuts = ::get_player_cur_unit()?.unitType.wheelmenuAxis ?? []
       local shortcutType = ::g_shortcut_type.COMPOSIT_AXIS
@@ -205,7 +206,7 @@ class ::gui_handlers.wheelMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     local axisData = ::joystickInterface.getAxisData(watchAxis, stuckAxis)
-    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, joystickMinDeviation)
+    local joystickData = ::joystickInterface.getMaxDeviatedAxisInfo(axisData, 32000, joystickMinDeviation)
     if (joystickData == null || joystickData.normLength == 0)
       return
 

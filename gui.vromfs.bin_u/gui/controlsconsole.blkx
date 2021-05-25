@@ -7,10 +7,11 @@
     "frame": {
       "id": "wnd_frame",
       "width": "@srw",
+      "pos": "50%pw-50%w, 1@titleLogoPlateHeight + 0.3*(sh - 1@titleLogoPlateHeight - h)",
+      "position": "absolute",
       "class": "wndNav",
       "type": "big",
       "fullScreenSize": "yes",
-      "isCenteredUnderLogo": "yes",
       "frame_header": {
         "Breadcrumb": {
           "Button_text": {
@@ -109,10 +110,7 @@
           {
             "tdiv": [
               {
-                "size": "1@swOrRwInVr, 1@topBarHeight + 0.015@sf - 1@bhInVr"
-              },
-              {
-                "pos": "1@bwInVr, 1@bhInVr"
+                "size": "sw, 1@topBarHeight + 0.015@sf"
               },
               {
                 "position": "root"
@@ -213,13 +211,11 @@
                       "GameLogoPlate": {
                         "id": "gamercard_logo",
                         "padding": "1@titleLogoPlatePadding, 1@topGamercardDarkLineHeight, 1@titleLogoPlatePadding, 0",
-                        "top": "1@titleLogoPlatePaddingTop*@isInVr",
-                        "position": "relative",
                         "Shadow": {
                           "redPlate": {
                             "pattern": {
                               "type": "dark_diag_lines",
-                              "padding-top": "1@titleLogoPlatePaddingTop-1@titleLogoPlatePaddingTop*@isInVr",
+                              "padding-top": "1@titleLogoPlatePaddingTop",
                               "img": {
                                 "id": "titleLogo",
                                 "size": "1@titleLogoPlateWidth, 1@titleLogoPlateHeight",
@@ -664,7 +660,7 @@
                   "id": "chatPopupNest",
                   "size": "0.4@sf+10, 0.075*@sf+10",
                   "position": "absolute",
-                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                  "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
                   "flow": "vertical"
                 }
               }

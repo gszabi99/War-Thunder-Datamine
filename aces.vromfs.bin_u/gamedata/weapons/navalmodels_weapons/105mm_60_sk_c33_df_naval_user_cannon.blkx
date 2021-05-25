@@ -45,10 +45,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
+    "stabilityThreshold": 0.4,
+    "stabilityCaliberToArmorThreshold": 10.0,
+    "stabilityReductionAfterRicochet": 0.45,
+    "stabilityReductionAfterPenetration": 1.0,
     "bulletType": "he_frag_dist_fuse",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
@@ -73,14 +73,11 @@
     "explosionPatchRadius": 3.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
     },
     "pressureDamage": {
       "damageType": "pressure"
-    },
-    "shatterDamage": {
-      "breachConeAngle": 30.0
     },
     "damage": {
       "kinetic": {
@@ -121,7 +118,7 @@
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
       "traceFreq": 1,
-      "tracer": "100mmOrangeShip",
+      "tracer": "100mmOrange",
       "trail": "noTrail"
     },
     "collisions": {
@@ -142,9 +139,6 @@
       },
       "roadSoil": {
         "fx": "hit_81_105mm_dirt_he"
-      },
-      "bricks_red": {
-        "fx": "hit_81_105mm_stone_he"
       },
       "sand": {
         "fx": "hit_81_105mm_sand_he"

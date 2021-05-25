@@ -1,5 +1,4 @@
 local { getAllModsCost } = require("scripts/weaponry/itemInfo.nut")
-local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local unitsTable = {} //unitName - unitBlock
 
@@ -25,7 +24,7 @@ purchaseModifications = function(unitsArray)
   }
 
   local curUnit = unitsArray.remove(0)
-  weaponsPurchase(
+  ::WeaponsPurchase(
     curUnit,
     {
       afterSuccessfullPurchaseCb = ::Callback(@() purchaseModifications(unitsArray), this),

@@ -602,10 +602,7 @@ class ::ChatHandler
         timeString,
         ::loc(message.text))
 
-    local text = message.isAutomatic
-      ? message.text
-      : ::g_chat.filterMessageText(message.text, message.isMyself)
-
+    local text = ::g_chat.filterMessageText(message.text, message.isMyself)
     if (!message.isMyself && !message.isAutomatic)
     {
       if (::isPlayerNickInContacts(message.sender, ::EPL_BLOCKLIST))

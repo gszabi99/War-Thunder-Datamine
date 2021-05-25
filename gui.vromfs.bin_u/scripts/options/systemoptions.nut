@@ -1,7 +1,5 @@
 local { set_blk_value_by_path, get_blk_value_by_path, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local { get_primary_screen_info } = require("dagor.system")
-local { eachBlock, eachParam } = require("std/datablock.nut")
-
 //------------------------------------------------------------------------------
 local mSettings = {}
 local mShared = {}
@@ -74,7 +72,6 @@ local mUiStruct = [
       "anisotropy"
       "msaa"
       "antialiasing"
-      "taau_ratio"
       "ssaa"
       "latency"
       "latencyFlash"
@@ -116,8 +113,6 @@ local mUiStruct = [
       "compatibilityMode"
       "enableHdr"
       "enableVr"
-      "vrMirror"
-      "vrStreamerMode"
     ]
   }
 ]
@@ -393,11 +388,11 @@ local function getListOption(id, desc, cb, needCreateList = true) {
 //------------------------------------------------------------------------------
 mShared = {
   setQualityPreset = function(preset) {
-    eachBlock(mQualityPresets, function(v, k) {
+    foreach (k, v in mQualityPresets) {
       local value = v?[preset] ?? v?["medium"]
       if (value != null)
         setGuiValue(k, value)
-    })
+    }
   }
 
   setGraphicsQuality = function() {
@@ -421,18 +416,18 @@ mShared = {
   setCompatibilityMode = function() {
     if (getGuiValue("compatibilityMode")) {
       setGuiValue("backgroundScale",2)
-      eachBlock(mQualityPresets, function(_, k) {
+      foreach (k, v in mQualityPresets) {
         local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].compMode ?? false
         mShared.enableByCompMode(k, enabled)
-      })
+      }
       foreach (id, v in compModeGraphicsOptions.standaloneOptions)
         mShared.enableByCompMode(id, v?.compMode ?? true)
     }
     else {
-      eachBlock(mQualityPresets, function(_, k) {
+      foreach (k, v in mQualityPresets) {
         local enabled = compModeGraphicsOptions.qualityPresetsOptions?[k].fullMode ?? true
         mShared.enableByCompMode(k, enabled)
-      })
+      }
       foreach (id, v in compModeGraphicsOptions.standaloneOptions)
         mShared.enableByCompMode(id, v?.fullMode ?? true)
       setGuiValue("compatibilityMode", false)
@@ -593,16 +588,16 @@ mShared = {
     local sortFunc = @(a,b) a.w <=> b.w  || a.h <=> b.h
     data.sort(sortFunc)
 
-    // Fixing the truncated list when working via Remote Desktop (RDP).
-    if (isListTruncated && ::is_platform_windows) {
-      local resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
-        "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
+    // Debug: Fixing the truncated list when working via Remote Desktop.
+    if (isListTruncated && ::is_dev_version && ::is_platform_pc) {
+      local debugResolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
+        "1920 x 1080", "2520 x 1080", "3840 x 1080", "2560 x 1440", "3840 x 2160" ]
       local psi = ::is_platform_windows ? get_primary_screen_info() : {}
       local maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
       local maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
-      ::u.appendOnce($"{maxW} x {maxH}", resolutions)
-      local bonus = resolutions.map(parseResolution).filter(@(r)
-        (r.w <= maxW && r.h <= maxH) && !list.contains(r.resolution))
+      ::u.appendOnce($"{maxW} x {maxH}", debugResolutions)
+      local bonus = debugResolutions.map(parseResolution).filter(@(r)
+        (r.w <= maxW || r.h <= maxH) && !list.contains(r.resolution))
       data.extend(bonus)
       data.sort(sortFunc)
     }
@@ -702,7 +697,7 @@ mSettings = {
     init = function(blk, desc) {
       desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
     }
-    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost" && !getGuiValue("enableVr", false)
+    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
   }
   graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
@@ -743,21 +738,14 @@ mSettings = {
       local msaa = (val=="on")? 2 : 0
       set_blk_value_by_path(blk, desc.blk, msaa)
     }
-    enabled = @() !getGuiValue("enableVr", false)
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
     values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
     enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
   }
-  taau_ratio = { widgetType="slider" def=100 min=50 max=100 blk="video/temporalResolutionScale" restart=false
-    enabled = @() !getGuiValue("compatibilityMode")
-                  && (getGuiValue("antialiasing") == "low_taa" || getGuiValue("antialiasing") == "high_taa")
-    getFromBlk = function(blk, desc) { return (get_blk_value_by_path(blk, desc.blk, desc.def/100.0)*100.0).tointeger() }
-    setToBlk = function(blk, desc, val) { set_blk_value_by_path(blk, desc.blk, val.tofloat()/100.0) }
-  }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && !getGuiValue("enableVr", false)
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off"
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       local val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -938,19 +926,7 @@ mSettings = {
     onChanged = "compatibilityModeClick"
   }
   enableHdr = { widgetType="checkbox" def=false blk="directx/enableHdr" restart=true enabled=@() ::is_hdr_available() }
-  enableVr = {
-    widgetType="checkbox"
-    def=false
-    blk="gameplay/enableVR"
-    restart=true
-    enabled=@() ::is_platform_windows && (::target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
-  }
-  vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false
-    values = [ "left", "right", "both" ] enabled = @() getGuiValue("enableVr", false)
-  }
-  vrStreamerMode = { widgetType="checkbox" def=false blk="video/vrStreamerMode" restart=false
-    enabled = @() getGuiValue("enableVr", false)
-  }
+  enableVr = { widgetType="checkbox" def=false blk="video/vrMode" restart=true enabled=@() ::is_platform_windows }
   displacementQuality = { widgetType="slider" def=2 min=0 max=3 blk="graphics/displacementQuality" restart=false
   }
   contactShadowsQuality = { widgetType="slider" def=0 min=0 max=2 blk="graphics/contactShadowsQuality" restart=false
@@ -1027,26 +1003,28 @@ local function validateInternalConfigs() {
     }
   }
 
-  eachBlock(mQualityPresets, function(v, k) {
+  foreach (k, v in mQualityPresets)
+  {
     if (v.paramCount() == 0)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
        $"Quality presets - 'qualityPresets' k='{k}' contains invalid data."))
     if (!(k in mSettings))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Quality presets - k='{k}' is not found in 'settings' table."))
-    if (("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality))
+    if (type(v)=="table" && ("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality))
     {
       local qualityValues = mSettings.graphicsQuality.values
-      eachParam(v, function(value, qualityId) {
+      foreach (qualityId, value in v)
+      {
         if (!isInArray(qualityId, qualityValues))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             $"Quality presets - k='{k}', graphics quality '{qualityId}' not exists."))
         if (value != validateGuiValue(k, value))
           errorsList.append(logError("sysopt.validateInternalConfigs()",
             $"Quality presets - k='{k}', v.{qualityId}='{value}' is invalid value for '{k}'."))
-      })
+      }
     }
-  })
+  }
 
   foreach (sectIndex, section in mUiStruct)
   {
@@ -1474,5 +1452,4 @@ return {
   onSystemOptionsApply = onConfigApply
   canUseGraphicsOptions = canUseGraphicsOptions
   systemOptionsMaintain = configMaintain
-  overrideUiStruct = @(struct) mUiStruct = struct
 }

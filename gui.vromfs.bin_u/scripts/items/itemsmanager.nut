@@ -8,9 +8,6 @@ local { boosterEffectType }= require("scripts/items/boosterEffect.nut")
 local seenList = require("scripts/seen/seenList.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
-// Independent Modules
-require("scripts/items/roulette/bhvRoulette.nut")
-
 local seenInventory = seenList.get(SEEN.INVENTORY)
 local seenItems = seenList.get(SEEN.ITEMS_SHOP)
 local OUT_OF_DATE_DAYS_ITEMS_SHOP = 28

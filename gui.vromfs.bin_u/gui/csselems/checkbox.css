@@ -158,16 +158,14 @@ CheckBox.with_image[text] > CheckBoxImg {
   left:1.5ph - 0.5h;
 }
 
-CheckBox[text][type=rightSideCb] {
+CheckBox.with_image[text][type=rightSideCb] {
   height:1@buttonHeight;
-  padding-left:1@blockInterval;
 }
 
 CheckBox.with_image[text][type=rightSideCb] {
   padding-left:1h;
 }
-
-CheckBox[text][type=rightSideCb] > CheckBoxImg {
+CheckBox.with_image[text][type=rightSideCb] > CheckBoxImg {
   left:pw-h-1@blockInterval;
 }
 
@@ -183,8 +181,8 @@ CheckBox.with_image:checked > infoImg {
   background-color:#eeeeee;
 }
 
-CheckBox[text][type=rightSideCb]:focus,
-CheckBox[text][type=rightSideCb]:hover {
+CheckBox.with_image[text][type=rightSideCb]:focus,
+CheckBox.with_image[text][type=rightSideCb]:hover {
   background-color: @buttonColor;
   color:@activeTextColor;
 }

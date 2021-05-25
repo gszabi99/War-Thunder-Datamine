@@ -9,7 +9,7 @@ local function askHotasPresetChange()
   if ((!isPlatformSony && !isPlatformXboxOne) || ::loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
-  local preset = ::g_controls_presets.getCurrentPresetInfo()
+  local preset = ::g_controls_presets.getCurrentPreset()
   local is_ps4_non_gamepad_preset = isPlatformSony
     && preset.name.indexof("dualshock4") == null
     && preset.name.indexof("default") == null

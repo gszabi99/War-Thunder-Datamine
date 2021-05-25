@@ -160,10 +160,7 @@
         "ex_armor_turret_r_09_dm": [],
         "ex_armor_turret_r_10_dm": [],
         "ex_armor_turret_01_dm": [],
-        "ex_armor_turret_02_dm": [],
-        "turret_05_top_dm": {
-          "armorThickness": 12.7
-        }
+        "ex_armor_turret_02_dm": []
       },
       "RHHA_add_6mm_parts": {
         "armorClass": "RHAHH_tank",
@@ -313,6 +310,9 @@
         },
         "turret_01_front_dm": {
           "armorThickness": 25.4
+        },
+        "turret_05_top_dm": {
+          "armorThickness": 127.0
         },
         "body_top_dm": {
           "armorThickness": 25.4
@@ -510,7 +510,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -877,14 +876,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -906,10 +897,10 @@
       "EngineName": "engine_m3_bradley",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_lt_modern",
-      "TrackSoundNameCockpit": "tracks_lt_modern_interior",
+      "TrackSoundName": "tracks_light",
+      "TrackSoundNameCockpit": "tracks_light_interior",
       "EngineNameAi": "engine_tank_ai_light",
-      "TrackSoundNameAi": "tracks_ai_lt_modern"
+      "TrackSoundNameAi": "tracks_ai_light"
     }
   },
   {
@@ -2054,7 +2045,7 @@
           "speedPitch": 20.0,
           "bullets": 600,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2140,7 +2131,7 @@
             "bullets": 16
           },
           {
-            "fireConeAngle": 5.0
+            "fireConeAngle": 15.0
           },
           {
             "ChainfireTime": 0.5
@@ -2973,9 +2964,6 @@
         "image": "#ui/gameuiskin#tank_reinforcement_us"
       },
       "airstrike": [],
-      "art_support": {
-        "tier": 3
-      },
       "improved_optics": [],
       "modern_tank_laser_rangefinder": [],
       "night_vision_system": {
@@ -2987,7 +2975,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,
@@ -3145,7 +3133,7 @@
                 "triggerGroup": "machinegun",
                 "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
                 "emitter": "bone_mg_aa_v_01",
-                "flash": "bone_mg_aa_flame_01",
+                "flash": "emtr_mg_flame_04",
                 "barrelDP": "gun_barrel_01_dm",
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3154,7 +3142,7 @@
                 "speedPitch": 20.0,
                 "bullets": 600,
                 "isBulletBelt": true,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3700,28 +3688,6 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "ger_camo_carc*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "usa_modern_red_desert",
-      "nameLocId": "skin/usa_modern_red_desert",
-      "descLocId": "skin/usa_modern_red_desert/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_red_desert*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "usa_modern_summer_verdant",
-      "nameLocId": "skin/usa_modern_summer_verdant",
-      "descLocId": "skin/usa_modern_summer_verdant/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_summer_verdant*"
       }
     }
   }

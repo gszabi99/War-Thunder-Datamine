@@ -3082,7 +3082,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
-        "genericDamageMult": 0.2,
+        "genericDamageMult": 0.5,
         "compartment_01_dm": {
           "hp": 3000.0
         },
@@ -3125,7 +3125,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
         "hidableInViewer": true,
-        "genericDamageMult": 0.1,
+        "genericDamageMult": 0.5,
         "cover_01_dm": {
           "hp": 5682.0
         },
@@ -3242,39 +3242,38 @@
           "hp": 3000.0
         }
       },
-      "boiler_rooms": {
-        "fireParamsPreset": "ship_boiler_room",
-        "armorClass": "ship_structural_steel",
+      "engine": {
+        "fireParamsPreset": "cruier_engine",
+        "armorClass": "armor_tank_engine",
         "armorThickness": 10.0,
         "fireProtectionHp": 6.0,
-        "armorThrough": 250.0,
         "engine_room_01_dm": {
+          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_02_dm": {
+          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_03_dm": {
+          "armorThrough": 250.0,
           "hp": 3000.0
-        }
-      },
-      "engine_rooms": {
-        "fireParamsPreset": "ship_engine_room",
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 25.4,
-        "fireProtectionHp": 10.0,
-        "armorThrough": 200.0,
+        },
         "transmission_01_dm": {
-          "hp": 2500.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1000.0
         },
         "transmission_02_dm": {
-          "hp": 2500.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1000.0
         },
         "transmission_03_dm": {
-          "hp": 2500.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1000.0
         },
         "transmission_04_dm": {
-          "hp": 2500.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1000.0
         }
       },
       "funnels": {
@@ -4026,8 +4025,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
-              "fire": 0.4,
               "expl": 0.6,
+              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -4042,8 +4041,8 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "expl": 0.15,
               "fire": 0.85,
+              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -4080,7 +4079,6 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
-              "fire": 0.24,
               "expl": 0.76,
               "fHitCritical": false
             }
@@ -4184,19 +4182,31 @@
         ]
       },
       {
-        "ammunition_torpedoes": {
-          "onKill": {
-            "expl": 0.07,
-            "nothing": 0.93,
-            "fHitCritical": false
+        "ammunition_torpedoes": [
+          {
+            "onKill": {
+              "expl": 0.03,
+              "nothing": 0.04,
+              "fHitCritical": false
+            }
           },
-          "onHit": {
-            "damageType": "fire",
-            "expl": 0.1,
-            "damage": 50.0,
-            "fHitCritical": false
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.85,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.9,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
           }
-        }
+        ]
       },
       {
         "ammunition_mines": [

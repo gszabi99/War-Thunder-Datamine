@@ -2,14 +2,10 @@ local { hasPremium, requestPremiumStatusUpdate, reportPremiumFeatureUsage } = re
 local { isPlatformPS5 } = require("scripts/clientState/platform.nut")
 local { suggest_psplus } = require("sony.store")
 local { isCrossPlayEnabled } = require("scripts/social/crossplay.nut")
-local { subscribe } = require("eventbus")
-
-
-subscribe("psPlusSuggested", @(r) requestPremiumStatusUpdate(@(r) null))
 
 local function suggestAndAllowPsnPremiumFeatures() {
   if (isPlatformPS5 && !::ps4_is_production_env() && !hasPremium()) {
-    suggest_psplus("psPlusSuggested", {})
+    suggest_psplus(@(r) requestPremiumStatusUpdate(@(r) null))
     return false
   }
   return true

@@ -51,16 +51,6 @@ modBlockHeaderRow {
       <</needDivLine>>
       <<#isSmallFont>>smallFont:t='yes'<</isSmallFont>>
       text:t='<<name>>'
-      <<#haveWarning>>
-      warning_icon{
-        id:t='<<warningId>>_warning'
-        size:t='@cIco, @cIco'
-        pos:t='1@modCellWidth-w, 0.5ph-0.5h'
-        position:t='absolute'
-        background-image:t='#ui/gameuiskin#new_icon'
-        bgcolor:t='#FFFFFF'
-      }
-      <</haveWarning>>
     }
     <</name>>
   <</columnsList>>

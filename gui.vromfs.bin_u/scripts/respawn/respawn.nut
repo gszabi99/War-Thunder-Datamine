@@ -25,7 +25,6 @@ local { setMousePointerInitialPos } = require("scripts/controls/mousePointerInit
 local { isTripleColorSmokeAvailable } = require("scripts/options/optionsManager.nut")
 local { DECORATION } = require("scripts/utils/genericTooltipTypes.nut")
 local { getEventSlotbarHint } = require("scripts/events/eventInfo.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::last_ca_aircraft <- null
 ::used_planes <- {}
@@ -64,7 +63,7 @@ enum ESwitchSpectatorTarget
     user_option = ::USEROPT_ROCKET_FUSE_DIST, isShowForRandomUnit =false },
   {id = "torpedo_dive_depth",  hint = "options/torpedo_dive_depth",
     user_option = ::USEROPT_TORPEDO_DIVE_DEPTH, isShowForRandomUnit =false,
-    isVisible = @() !::get_option_torpedo_dive_depth_auto() },
+    isVisible = @() !get_option_torpedo_dive_depth_auto() },
   {id = "fuel",        hint = "options/fuel_amount",
     user_option = ::USEROPT_LOAD_FUEL_AMOUNT, isShowForRandomUnit =false },
   {id = "countermeasures_periods",        hint = "options/countermeasures_periods",
@@ -2249,7 +2248,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
     setOrdersEnabled(isSpectate)
     updateSpectatorRotationForced()
 
-    shouldBlurSceneBg = !isSpectate ? needUseHangarDof() : false
+    shouldBlurSceneBg = !isSpectate
     ::handlersManager.updateSceneBgBlur()
 
     updateTacticalMapUnitType()
@@ -2308,6 +2307,7 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
 
     scene.findObject("spectator_mode_title").show(status)
     scene.findObject("flight_menu_bgd").show(!status)
+    scene.findObject("bg-shade").show(!status)
     scene.findObject("spectator_controls").show(status)
     scene.findObject("btn_show_hud").enable(status)
     updateButtons()

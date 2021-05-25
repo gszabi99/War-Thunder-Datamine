@@ -102,7 +102,7 @@
           }
         },
         {
-          "__triggerEnable": {
+          "triggerEnable": {
             "target": "lbt_damage_restart"
           }
         },
@@ -5542,24 +5542,24 @@
           },
           {
             "comment": {
-              "value": "creating var name for counting team A dead units"
+              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
             }
           },
           {
-            "__varSetString": {
+            "varSetString": {
               "value": "lbt_damage_",
               "var": "lbt_end_t1_counter_var_name"
             }
           },
           {
-            "__varAddString": {
+            "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
               "var": "lbt_end_t1_counter_var_name"
             }
           },
           {
-            "__varAddString": {
+            "varAddString": {
               "value": "_t1_death_counter",
               "digits": 2,
               "var": "lbt_end_t1_counter_var_name"
@@ -5567,24 +5567,24 @@
           },
           {
             "comment": {
-              "value": "creating var name for counting team B dead units"
+              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
             }
           },
           {
-            "__varSetString": {
+            "varSetString": {
               "value": "lbt_damage_",
               "var": "lbt_end_t2_counter_var_name"
             }
           },
           {
-            "__varAddString": {
+            "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
               "var": "lbt_end_t2_counter_var_name"
             }
           },
           {
-            "__varAddString": {
+            "varAddString": {
               "value": "_t2_death_counter",
               "digits": 2,
               "var": "lbt_end_t2_counter_var_name"
@@ -5668,41 +5668,17 @@
           },
           {
             "comment": {
-              "value": "gaining number of active units for team A"
+              "value": "получаем счетчик для команды 2 согласно ратио"
             }
           },
           {
-            "getUnitsCount": {
-              "target": "@lbt_end_t1_battle_squad_name",
-              "target_type": "isActive",
-              "var": "lbt_end_t1_active_units_count"
-            }
-          },
-          {
-            "comment": {
-              "value": "gaining number of active units for team B"
-            }
-          },
-          {
-            "getUnitsCount": {
-              "target": "@lbt_end_t2_battle_squad_name",
-              "target_type": "isActive",
-              "var": "lbt_end_t2_active_units_count"
-            }
-          },
-          {
-            "comment": {
-              "value": "getting value with ratio"
-            }
-          },
-          {
-            "__varSetReal": {
+            "varSetReal": {
               "value": 0.0,
               "var": "lbt_end_t2_result_counter"
             }
           },
           {
-            "__varModify": {
+            "varModify": {
               "operator": "add",
               "value": 0.0,
               "var": "lbt_end_t2_result_counter",
@@ -5711,7 +5687,7 @@
             }
           },
           {
-            "__varModify": {
+            "varModify": {
               "operator": "mul",
               "value": 1.0,
               "var": "lbt_end_t2_result_counter",
@@ -5750,11 +5726,11 @@
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "lbt_end_t1_active_units_count",
-            "value": 0,
-            "comparasion_func": "more",
-            "var_value_other": "lbt_end_t2_active_units_count"
+          "varCompareReal": {
+            "var_value": "@lbt_end_t1_counter_var_name",
+            "value": 0.0,
+            "comparasion_func": "less",
+            "var_value_other": "lbt_end_t2_result_counter"
           }
         },
         "actions": [
@@ -5823,11 +5799,11 @@
           }
         },
         "conditions": {
-          "varCompareInt": {
-            "var_value": "lbt_end_t2_active_units_count",
-            "value": 0,
+          "varCompareReal": {
+            "var_value": "@lbt_end_t1_counter_var_name",
+            "value": 0.0,
             "comparasion_func": "more",
-            "var_value_other": "lbt_end_t1_active_units_count"
+            "var_value_other": "lbt_end_t2_result_counter"
           }
         },
         "actions": [
@@ -7304,9 +7280,7 @@
     "lbt_counter_attack_t2_heat_var_name": "",
     "lbt_heat_battle_check_idx": 0,
     "lbt_heat_battle_check_from_var_name": "",
-    "lbt_heat_battle_check_to_var_name": "",
-    "lbt_end_t1_active_units_count": 0,
-    "lbt_end_t2_active_units_count": 0
+    "lbt_heat_battle_check_to_var_name": ""
   },
   "dialogs": [],
   "airfields": [],

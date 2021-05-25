@@ -13,6 +13,7 @@ local function mkVersionFromString(version){
 }
 
 local function mkVersionFromInt(version){
+  ::assert(version.len()==4)
   return [version>>24, ((version>>16)&255), ((version>>8)&255), (version&255)]
 }
 

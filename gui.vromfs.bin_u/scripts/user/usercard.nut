@@ -3,15 +3,177 @@ local { isXBoxPlayerName,
         isPlatformSony,
         isPlatformXboxOne,
         isPlayerFromPS4 } = require("scripts/clientState/platform.nut")
+local time = require("scripts/time.nut")
 local { hasAllFeatures } = require("scripts/user/features.nut")
 local externalIDsService = require("scripts/user/externalIdsService.nut")
+local avatars = require("scripts/user/avatars.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local psnSocial = require("sony.social")
+local { getStringWidthPx } = require("scripts/viewUtils/daguiFonts.nut")
 local popupFilter = require("scripts/popups/popupFilter.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
 local { getMedalRibbonImg, hasMedalRibbonImg } = require("scripts/unlocks/unlockInfo.nut")
-local { fillProfileSummary, getCountryMedals, getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
+
+local getAirsStatsFromBlk = function (blk)
+{
+  local res = {}
+  foreach(diffName, diffBlk in blk)
+  {
+    if (!diffBlk || typeof(diffBlk)!="instance")
+      continue
+
+    local diffData = {}
+    foreach(typeName, typeBlk in diffBlk)
+    {
+      if (!typeBlk || typeof(typeBlk)!="instance")
+        continue
+
+      local typeData = []
+      foreach(airName, airBlk in typeBlk)
+      {
+        if (!airBlk || typeof(airBlk)!="instance")
+          continue
+
+        local airData = { name = airName }
+        foreach(stat in ::air_stats_list)
+        {
+          if ("reqFeature" in stat && !hasAllFeatures(stat.reqFeature))
+            continue
+
+          if ("countFunc" in stat)
+            airData[stat.id] <- stat.countFunc(airBlk)
+          else
+            airData[stat.id] <- airBlk?[stat.id] ?? 0
+        }
+        typeData.append(airData)
+      }
+      if (typeData.len() > 0)
+        diffData[typeName] <- typeData
+    }
+    if (diffData.len() > 0)
+      res[diffName] <- diffData
+  }
+  return res
+}
+
+::stats_fm <- ["fighter", "bomber", "assault"]
+::stats_tanks <- ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
+::stats_ships <- [
+  "torpedo_boat"
+  "gun_boat"
+  "torpedo_gun_boat"
+  "submarine_chaser"
+  "destroyer"
+  "naval_ferry_barge"
+  "cruiser"
+]
+::stats_helicopters <- ["helicopter"]
+::stats_fm.extend(::stats_helicopters)
+::stats_fm.extend(::stats_tanks)
+::stats_fm.extend(::stats_ships)
+::stats_config <- [
+  {
+    name = "mainmenu/titleVersus"
+    header = true
+  }
+  {
+    id = "victories"
+    name = "stats/missions_wins"
+    mode = "pvp_played"  //!! mode incoming by ::get_player_public_stats
+  }
+  {
+    id = "missionsComplete"
+    name = "stats/missions_completed"
+    mode = "pvp_played"
+  }
+  {
+    id = "respawns"
+    name = "stats/flights"
+    mode = "pvp_played"
+  }
+  {
+    id = "timePlayed"
+    name = "stats/time_played"
+    mode = "pvp_played"
+    separateRowsByFm = true
+    timeFormat = true
+  }
+  {
+    id = "air_kills"
+    name = "stats/kills_air"
+    mode = "pvp_played"
+  }
+  {
+    id = "ground_kills"
+    name = "stats/kills_ground"
+    mode = "pvp_played"
+  }
+  {
+    id = "naval_kills"
+    name = "stats/kills_naval"
+    mode = "pvp_played"
+    reqFeature = ["Ships"]
+  }
+
+  {
+    name = "mainmenu/btnSkirmish"
+    header = true
+  }
+  {
+    id = "victories"
+    name = "stats/missions_wins"
+    mode = "skirmish_played"
+  }
+  {
+    id = "missionsComplete"
+    name = "stats/missions_completed"
+    mode = "skirmish_played"
+  }
+  {
+    id = "timePlayed"
+    name = "stats/time_played"
+    mode = "skirmish_played"
+    timeFormat = true
+  }
+
+  {
+    name = "mainmenu/btnPvE"
+    header = true
+  }
+  {
+    id = "victories"
+    name = "stats/missions_wins"
+    mode = ["dynamic_played", "builder_played", "single_played"] //"campaign_played"
+  }
+  {
+    id = "missionsComplete"
+    name = "stats/missions_completed"
+    mode = ["dynamic_played", "builder_played", "single_played"]
+  }
+  {
+    id = "timePlayed"
+    name = "stats/time_played"
+    mode = ["dynamic_played", "builder_played", "single_played"]
+    timeFormat = true
+  }
+]
+
+::default_summary_item <- {
+  id = ""
+  name = ""
+  mode = null
+  fm = null
+  header = false
+  separateRowsByFm = false
+  timeFormat = false
+  reqFeature = null
+}
+foreach(idx, stat in ::stats_config)
+  foreach(param, value in ::default_summary_item)
+    if (!(param in stat))
+      ::stats_config[idx][param] <- value
+
 
 ::gui_modal_userCard <- function gui_modal_userCard(playerInfo)  // uid, id (in session), name
 {
@@ -60,6 +222,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   curPlayerExternalIds = null
   isFilterVisible = false
+  maxUtypeNameWidth = 0
+  maxCountryNameWidth = 0
 
   ribbonsRowLength = 3
 
@@ -200,7 +364,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
       return
     }
 
-    player = getPlayerStatsFromBlk(blk)
+    player = ::get_player_stats_from_blk(blk);
     if ("uid" in player)
       externalIDsService.reqPlayerExternalIDsByUserId(player.uid)
 
@@ -281,7 +445,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     curMode = value
     ::set_current_wnd_difficulty(curMode)
     updateCurrentStatsMode(curMode)
-    fillProfileSummary(scene.findObject("stats_table"), player.summary, curMode)
+    ::fill_profile_summary(scene.findObject("stats_table"), player.summary, curMode)
   }
 
   function onEventContactsGroupUpdate(p)
@@ -453,7 +617,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!countryId)
       return
 
-    local medalsList = getCountryMedals(countryId, player)
+    local medalsList = ::get_country_medals(countryId, player)
     showSceneBtn("medals_empty", !medalsList.len())
 
     local view = {
@@ -625,7 +789,8 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     fillCountriesCheckBoxes(sObj)
 
     local nestObj = scene.findObject("filter_nest")
-    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView())
+    local filter = popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView())
+    nestObj.setUserData(filter)
 
     airStatsInited = true
     fillAirStats()
@@ -636,12 +801,15 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     availableUTypes = {}
     local fillStatsUnits = unitStats.len() == 0
 
+    maxUtypeNameWidth = getStringWidthPx(::loc("all_units"), "fontNormal")
     foreach(unitType in unitTypes.types)
     {
       if (!unitType.isAvailable())
         continue
 
       local armyId = unitType.armyId
+      maxUtypeNameWidth = ::max(maxUtypeNameWidth,
+        getStringWidthPx(unitType.getArmyLocName(), "fontNormal"))
       local typeIdx = unitType.esUnitType
       availableUTypes[unitType.armyId] <- {
         id    = $"unit_{typeIdx}"
@@ -656,14 +824,20 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function fillCountriesCheckBoxes(sObj)
   {
+    maxCountryNameWidth = getStringWidthPx(::loc("all_countries"), "fontNormal")
     availableCountries = {}
     foreach (idx, inst in ::shopCountriesList)
+    {
       availableCountries[inst] <- {
         id    = inst
         idx   = idx
         image = ::get_country_icon(inst)
-        text  = ::loc(inst)
+        text  = $"#{inst}"
       }
+
+      maxCountryNameWidth = ::max(maxCountryNameWidth,
+        getStringWidthPx(::loc($"#{inst}"), "fontNormal"))
+    }
 
     if (!countryStats)
       countryStats = [::get_profile_country_sq()]
@@ -689,8 +863,9 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
         id = "all_items"
         idx = -1
         image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
-        text = ::loc($"all_{isUnitType ? "units" : "countries"}")
+        text = $"#all_{isUnitType ? "units" : "countries"}"
         value = isAllSelected
+        textWidth = isUnitType ? maxUtypeNameWidth : maxCountryNameWidth
       }
       local view = { checkbox = [cbView]}
       foreach(idx, inst in referenceArr)
@@ -1113,8 +1288,7 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
     psnSocial?.open_player_profile(
       psnId.tointeger(),
       psnSocial.PlayerAction.DISPLAY,
-      "",
-      {}
+      @(r) null
     )
   }
 
@@ -1145,4 +1319,176 @@ class ::gui_handlers.UserCardHandler extends ::gui_handlers.BaseGuiHandlerWT
         { appId = ::WT_APPID, name = player.name}),
       false, false, "profile_page")
   }
+}
+
+::build_profile_summary_rowData <- function build_profile_summary_rowData(config, summary, diffCode, textId = "")
+{
+  local row = [{ id = textId, text = "#" + config.name, tdalign = "left" }]
+  local modeList = (typeof config.mode == "array") ? config.mode : [config.mode]
+  local diff = ::g_difficulty.getDifficultyByDiffCode(diffCode)
+  if (diff == ::g_difficulty.UNKNOWN)
+    return
+
+  local value = 0
+  foreach(mode in modeList)
+  {
+    local sumData = summary?[mode]?[diff.name]
+    if (!sumData)
+      continue
+
+    if (config.fm == null)
+    {
+      if (config.id in sumData)
+        value += sumData[config.id]
+      else
+        for (local i = 0; i < ::stats_fm.len(); i++)
+          if ((::stats_fm[i] in sumData) && (config.id in sumData[::stats_fm[i]]))
+            value += sumData[::stats_fm[i]][config.id]
+    } else
+      if ((config.fm in sumData) && (config.id in sumData[config.fm]))
+        value += sumData[config.fm][config.id]
+  }
+  local s = config.timeFormat? time.hoursToString(time.secondsToHours(value), false) : value
+  local tooltip = diff.getLocName()
+  row.append({text = s.tostring(), tooltip = tooltip})
+  return buildTableRowNoPad("", row)
+}
+
+::fill_profile_summary <- function fill_profile_summary(sObj, summary, diff)
+{
+  if (!::checkObj(sObj))
+    return
+
+  local guiScene = sObj.getScene()
+  local data = ""
+  local textsToSet = {}
+  foreach(idx, item in ::stats_config)
+  {
+    if (!hasAllFeatures(item.reqFeature))
+      continue
+
+    if (item.header)
+      data += buildTableRowNoPad("", ["#" + item.name], null,
+                  format("headerRow:t='%s'; ", idx? "yes" : "first"))
+    else if (item.separateRowsByFm)
+      for (local i = 0; i < ::stats_fm.len(); i++)
+      {
+        if (::isInArray(::stats_fm[i], ::stats_tanks) && !::has_feature("Tanks"))
+          continue
+        if (::isInArray(::stats_fm[i], ::stats_ships) && !::has_feature("Ships"))
+          continue
+
+        local rowId = "row_" + idx + "_" + i
+        item.fm = ::stats_fm[i]
+        data += ::build_profile_summary_rowData(item, summary, diff, rowId)
+        textsToSet["txt_" + rowId] <- ::loc(item.name) + " (" + ::loc("mainmenu/type_"+ ::stats_fm[i].tolower()) +")"
+      }
+    else
+      data += ::build_profile_summary_rowData(item, summary, diff)
+  }
+
+  guiScene.replaceContentFromText(sObj, data, data.len(), this)
+  foreach(id, text in textsToSet)
+    sObj.findObject(id).setValue(text)
+}
+
+::get_country_medals <- function get_country_medals(countryId, profileData = null)
+{
+  local res = []
+  local medalsList = profileData?.unlocks?.medal ?? []
+  local unlocks = ::g_unlocks.getUnlocksByTypeInBlkOrder("medal")
+  foreach (cb in unlocks)
+    if (cb?.country == countryId)
+      if ((!profileData && ::is_unlocked_scripted(::UNLOCKABLE_MEDAL, cb.id)) || (medalsList?[cb.id] ?? 0) > 0)
+        res.append(cb.id)
+  return res
+}
+
+::get_player_stats_from_blk <- function get_player_stats_from_blk(blk)
+{
+  local player = {
+    name = blk?.nick
+    lastDay = blk?.lastDay
+    registerDay = blk?.registerDay
+    title = blk?.title ?? ""
+    titles = (blk?.titles ?? ::DataBlock()) % "name"
+    clanTag = blk?.clanTag ?? ""
+    clanName = blk?.clanName ?? ""
+    clanType = blk?.clanType ?? 0
+    exp = blk?.exp ?? 0
+
+    rank = 0
+    rankProgress = 0
+    prestige = 0
+
+    unlocks = {}
+    countryStats = {}
+
+    icon = avatars.getIconById(blk?.icon)
+
+    aircrafts = []
+    crews = []
+
+    //stats & leaderboards
+    summary = blk?.summary? ::buildTableFromBlk(blk.summary) : {}
+    userstat = blk?.userstat? getAirsStatsFromBlk(blk.userstat) : {}
+    leaderboard = blk?.leaderboard? ::buildTableFromBlk(blk.leaderboard) : {}
+  }
+
+  if (blk?.userid != null)
+    player.uid <- blk.userid
+
+  player.rank = ::get_rank_by_exp(player.exp)
+  player.rankProgress = ::calc_rank_progress(player)
+
+  player.prestige = ::get_prestige_by_rank(player.rank)
+
+  //unlocks
+  if (blk?.unlocks != null)
+    foreach(unlock, uBlk in blk.unlocks)
+    {
+      local uType = uBlk?.type
+      if (!uType)
+        continue
+
+      if (!(uType in player.unlocks))
+        player.unlocks[uType] <- {}
+      player.unlocks[uType][unlock] <- uBlk?.stage ?? 1
+    }
+
+  foreach(i, country in ::shopCountriesList)
+  {
+    local cData = {
+      medalsCount = ::get_country_medals(country, player).len()
+      unitsCount = 0
+      eliteUnitsCount = 0
+    }
+    if (blk?.aircrafts?[country])
+    {
+      cData.unitsCount = blk.aircrafts[country].paramCount()
+      foreach(unitName, unitEliteStatus in blk.aircrafts[country])
+      {
+        if (::isUnitEliteByStatus(unitEliteStatus))
+          cData.eliteUnitsCount++
+      }
+    }
+    player.countryStats[country] <- cData
+  }
+
+  //aircrafts list
+  if (blk?.aircrafts != null)
+    foreach(airName, airRank in blk.aircrafts)
+      player.aircrafts.append(airName)
+
+  //same with ::g_crews_list.get()
+  if (blk?.slots != null)
+    foreach(country, crewBlk in blk.slots)
+    {
+      local countryData = { country = country, crews = [] }
+      foreach(airName, rank in crewBlk)
+        countryData.crews.append({ aircraft = airName })
+      player.crews.append(countryData)
+    }
+
+  return player
 }

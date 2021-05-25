@@ -6,7 +6,6 @@ local avatars = require("scripts/user/avatars.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
 local { WEAPON_TAG } = require("scripts/weaponry/weaponryInfo.nut")
 local { setMousePointerInitialPosOnChildByValue } = require("scripts/controls/mousePointerInitialPos.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -1946,7 +1945,6 @@ class ::gui_handlers.MPStatScreen extends ::gui_handlers.MPStatistics
 {
   sceneBlkName = "gui/mpStatistics.blk"
   sceneNavBlkName = "gui/navMpStat.blk"
-  shouldBlurSceneBgFn = needUseHangarDof
   keepLoaded = true
 
   wasTimeLeft = -1

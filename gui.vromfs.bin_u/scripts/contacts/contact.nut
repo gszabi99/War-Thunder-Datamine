@@ -9,18 +9,10 @@ local { getXboxChatEnableStatus,
 local { updateContacts } = require("scripts/contacts/contactsManager.nut")
 local { isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { isEmpty, isInteger } = require("sqStdLibs/helpers/u.nut")
-local { subscribe } = require("eventbus")
 
 local psnSocial = require("sony.social")
 
 local contactsByName = {}
-
-subscribe("playerProfileDialogClosed", function(r) {
-  if (r?.result.wasCanceled)
-    return
-
-  updateContacts(true)
-})
 
 ::Contact <- class
 {
@@ -182,8 +174,12 @@ subscribe("playerProfileDialogClosed", function(r) {
     updatePSNIdAndDo(@() psnSocial?.open_player_profile(
       psnId.tointeger(),
       action,
-      "PlayerProfileDialogClosed",
-      {}
+      function(r) {
+        if (r?.wasCanceled)
+          return
+
+        updateContacts(true)
+      }
     ))
   }
 

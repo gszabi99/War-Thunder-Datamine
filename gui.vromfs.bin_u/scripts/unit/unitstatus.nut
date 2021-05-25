@@ -113,12 +113,8 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
     return false
 
   availableWeapons = clone defaultPrimaryWeaponsMod
-  if (unitBlk?.modifications != null) {
-    local modificationsCount = unitBlk.modifications.blockCount()
-    for (local i = 0; i < modificationsCount; i++)
-    {
-      local modification = unitBlk.modifications.getBlock(i)
-      local modName = modification.getBlockName()
+  if (unitBlk?.modifications != null)
+    foreach(modName, modification in unitBlk.modifications) {
       local commonWeapons = modification?.effects?.commonWeapons
       if (commonWeapons == null)
         continue
@@ -137,7 +133,7 @@ local function isAvailablePrimaryWeapon(unit, weaponName) {
           availableWeapons.flares = modName
       }
     }
-  }
+
   availablePrimaryWeaponsMod[unit.name] <-availableWeapons
   return getLastPrimaryWeapon(unit) == availableWeapons[weaponName]
 }

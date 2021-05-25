@@ -127,7 +127,7 @@ if (isPlatformXboxOne)
 {
   //calls from c++ code, no event on PS4 or XBoxOne
   ::call_darg("updateExtWatched", { haveXinputDevice = ::have_xinput_device() })
-  if (!::isInMenu() || !::has_feature("ControlsDeviceChoice"))
+  if (!::isInMenu())
     return
   local action = function() { ::gui_start_controls_type_choice() }
   local buttons = [{

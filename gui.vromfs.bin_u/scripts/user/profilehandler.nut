@@ -12,7 +12,6 @@ local { startLogout } = require("scripts/login/logout.nut")
 local { canAcquireDecorator, askAcquireDecorator } = require("scripts/customization/decoratorAcquire.nut")
 local { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("scripts/user/viralAcquisition.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
-local { fillProfileSummary } = require("scripts/user/userInfoStats.nut")
 
 enum profileEvent {
   AVATAR_CHANGED = "AvatarChanged"
@@ -1391,7 +1390,7 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
 
     ::set_current_wnd_difficulty(curMode)
     updateCurrentStatsMode(curMode)
-    fillProfileSummary(scene.findObject("stats_table"), myStats.summary, curMode)
+    ::fill_profile_summary(scene.findObject("stats_table"), myStats.summary, curMode)
     fillLeaderboard()
   }
 

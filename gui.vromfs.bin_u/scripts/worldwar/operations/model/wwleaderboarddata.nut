@@ -70,16 +70,12 @@ local function requestWwLeaderboardData(modeName, dataParams, cb, headersParams 
 
   local requestData = {
     add_token = true
+    headers = { appid = mode.appId }.__update(headersParams)
     action = ("userId" in headersParams) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
-
-    headers = {
-      appid  = mode.appId
-      format = "json"    // TODO: remove me after leaderboard update
-    }.__update(headersParams)
-
     data = {
-      valueType   = LEADERBOARD_VALUE_TOTAL
+      valueType = LEADERBOARD_VALUE_TOTAL
       resolveNick = true
+      format = "json"  // TODO: remove me after leaderboard update
     }.__update(dataParams)
   }
 

@@ -1,5 +1,5 @@
 local { clearBorderSymbols } = require("std/string.nut")
-local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
+local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { setFocusToNextObj } = require("sqDagui/daguiUtil.nut")
 

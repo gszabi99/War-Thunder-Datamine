@@ -88,15 +88,6 @@ local function getAmmoAmountData(unit, ammoName, ammoType)
   return res
 }
 
-local function checkAmmoAmount(unit, ammoName, ammoType)
-{
-  local data = getAmmoAmountData(unit, ammoName, ammoType)
-  if (data.warning)
-    return data.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
-
-  return UNIT_WEAPONS_READY
-}
-
 local function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WARNING)
 {
   local res = []
@@ -120,14 +111,13 @@ local function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAP
 }
 
 return {
-  AMMO
-  getUnitNotReadyAmmoList
-  getAmmoAmount
-  getAmmoMaxAmount
-  getAmmoMaxAmountInSession
-  getAmmoCost
-  isAmmoFree
-  getAmmoWarningMinimum
-  getAmmoAmountData
-  checkAmmoAmount
+  AMMO                            = AMMO
+  getUnitNotReadyAmmoList         = getUnitNotReadyAmmoList
+  getAmmoAmount                   = getAmmoAmount
+  getAmmoMaxAmount                = getAmmoMaxAmount
+  getAmmoMaxAmountInSession       = getAmmoMaxAmountInSession
+  getAmmoCost                     = getAmmoCost
+  isAmmoFree                      = isAmmoFree
+  getAmmoWarningMinimum           = getAmmoWarningMinimum
+  getAmmoAmountData               = getAmmoAmountData
 }

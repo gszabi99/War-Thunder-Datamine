@@ -13,7 +13,6 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
 
   //init params
   filterTypes          = null
-  btnName              = null
   btnTitle             = null
   onChangeFn           = null
 
@@ -27,7 +26,7 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
       rowsCount = ::max(rowsCount, fType.checkbox.len())
       foreach (cb in fType.checkbox)
         if (cb?.text)
-          maxTextWidth = ::max(maxTextWidth, getStringWidthPx(cb.text, "fontMedium"))
+          maxTextWidth = ::max(maxTextWidth, getStringWidthPx(cb.text, "fontNormal"))
     }
 
     local columns = filterTypes.map(function(fType, idx) {
@@ -64,7 +63,6 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
     return {
       rowsCount = rowsCount
       columns = columns
-      btnName = btnName ?? "Y"
       btnTitle = btnTitle ?? ::loc("stats_filter_show")
       underPopupClick    = "onShowFilterBtnClick"
       underPopupDblClick = "onShowFilterBtnClick"
@@ -135,19 +133,17 @@ class ::gui_handlers.popupFilter extends ::gui_handlers.BaseGuiHandlerWT
   function onShowFilterBtnClick(obj)
   {
     isFilterVisible = !isFilterVisible
-    showSceneBtn("filter_popup", isFilterVisible)
+    ::showBtn("filter_popup", isFilterVisible)
   }
 }
 
 return {
-  open = function (scene, onChangeFn, filterTypes, btnName = null, btnTitle = null) {
+  open = function (scene, onChangeFn, filterTypes) {
     ::handlersManager.loadHandler(::gui_handlers.popupFilter,
       {
-        scene
-        onChangeFn
-        filterTypes
-        btnName
-        btnTitle
+        scene = scene
+        onChangeFn = onChangeFn
+        filterTypes = filterTypes
       })
   }
 }

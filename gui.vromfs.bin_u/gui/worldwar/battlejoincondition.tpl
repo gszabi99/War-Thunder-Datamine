@@ -7,9 +7,10 @@ root {
   frame {
     id:t='wnd_frame'
     size:t='0.7@sf, 0.6@sf'
+    pos:t='50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
+    position:t='absolute'
     class:t='wndNav'
     largeNavBarHeight:t='help'
-    isCenteredUnderLogo:t='yes'
 
     frame_header {
       activeText { caption:t='yes'; text:t='#worldwar/help/title' }

@@ -6,9 +6,10 @@ root {
     width:t='<<maxCountX>>@mapPreferenceIconNestWidth + 1@mapPreferencePreviewFullWidth + <<#hasScroll>>1@scrollBarSize<</hasScroll>>';
     height:t='1@maxWindowHeight'
     max-width:t='1@rw'
+    pos:t='0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
+    position:t='absolute'
     class:t='wnd'
     css-hier-invalidate:t='yes'
-    isCenteredUnderLogo:t='yes'
     frame_header {
       activeText {
         caption:t='yes'

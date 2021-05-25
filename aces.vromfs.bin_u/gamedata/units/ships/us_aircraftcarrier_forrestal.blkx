@@ -892,8 +892,8 @@
       "ammunition_storage_shells": [
         {
           "onKill": {
-            "fire": 0.4,
             "expl": 0.6,
+            "fire": 0.61,
             "fHitCritical": false
           }
         },
@@ -908,8 +908,8 @@
         {
           "onHit": {
             "damageType": "explosion",
-            "expl": 0.15,
             "fire": 0.85,
+            "expl": 0.95,
             "damage": 1000.0,
             "fHitCritical": false
           }
@@ -946,8 +946,8 @@
       "ammunition_storage_aux": [
         {
           "onKill": {
-            "fire": 0.14,
             "expl": 0.76,
+            "fire": 0.75,
             "fHitCritical": false
           }
         },
@@ -996,19 +996,31 @@
       ]
     },
     {
-      "ammunition_torpedoes": {
-        "onKill": {
-          "expl": 0.07,
-          "nothing": 0.93,
-          "fHitCritical": false
+      "ammunition_torpedoes": [
+        {
+          "onKill": {
+            "expl": 0.15,
+            "nothing": 0.16,
+            "fHitCritical": false
+          }
         },
-        "onHit": {
-          "damageType": "fire",
-          "expl": 0.1,
-          "damage": 50.0,
-          "fHitCritical": false
+        {
+          "onHit": {
+            "damageType": "explosion",
+            "expl": 0.85,
+            "damage": 400.0,
+            "fHitCritical": false
+          }
+        },
+        {
+          "onHit": {
+            "damageType": "fire",
+            "expl": 0.9,
+            "damage": 75.0,
+            "fHitCritical": false
+          }
         }
-      }
+      ]
     },
     {
       "handling_room": [

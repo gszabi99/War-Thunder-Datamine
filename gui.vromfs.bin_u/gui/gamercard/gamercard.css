@@ -18,9 +18,9 @@ TopMenuPanelBg {
 
 BottomMenuPanel {
   re-type:9rect;
-  pos:1@bwInVr, sh-h - 1@bh;
+  pos:0, sh-h - 1@bh;
   position:root;
-  size:1@swOrRwInVr, @bottomMenuPanelHeight;
+  size:sw, @bottomMenuPanelHeight;
   background-color:@bottomBarBackgroundColor;
 }
 
@@ -31,7 +31,7 @@ BottomMenuPanel > line {
 }
 
 shadowSafeArea {
-  size:pw, 1@bh - 1@bhInVr;
+  size:pw, 1@bh;
   pos:0, 0;
   position: "absolute";
   background-color:'@gameModeColor';
@@ -79,8 +79,8 @@ TopMenuPanelBGPlace[needRedShadow=no] > * > Red_shadow_light {
 }
 
 TopMenuPanel > TopMenuPanelBGPlace {
-  size:1@swOrRwInVr, ph-1@bh+1@topGamercardDarkLineHeight;
-  pos:1@bwInVr, 1@bh-1@topGamercardDarkLineHeight;
+  size:"pw, ph-1@bh+1@topGamercardDarkLineHeight";
+  pos:"0, 1@bh-1@topGamercardDarkLineHeight";
   position:absolute;
   css-hier-invalidate:yes;
 }
@@ -152,21 +152,10 @@ topMenuButtons > line {
   background-color:@frameDarkBackgroundColor;
 }
 
-gamercardShadePlace {
-  size:1@swOrRwInVr, 1@shOrRhInVr;
-  pos:0.5sw-0.5w, 1@bhInVr;
-  position:root;
-  overflow: hidden;
-}
-
-gamercardShadePlace[isBottom=yes] {
-  pos:0.5sw-0.5w, sh - 1@bhInVr - h;
-}
-
 gamercardShade {
-  size:2*sw, sh/2 - 1@bhInVr;
+  size:2*sw, sh/2;
   pos:50%sw-50%w, 0;
-  position:absolute;
+  position:root;
   background-color:@black;
   background-image:#ui/gameuiskin#optionlist_background_top;
   background-position:4;

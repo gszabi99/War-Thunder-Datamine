@@ -1,12 +1,11 @@
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { saveProfile, forceSaveProfile } = require("scripts/clientState/saveProfile.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 class ::gui_handlers.GenericOptions extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/options/genericOptions.blk"
   sceneNavBlkName = "gui/options/navOptionsBack.blk"
-  shouldBlurSceneBgFn = needUseHangarDof
+  shouldBlurSceneBg = true
 
   currentContainerName = "generic_options"
   options = null

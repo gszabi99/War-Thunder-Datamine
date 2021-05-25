@@ -3,7 +3,7 @@
 local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
 local dbgExportToFile = require("scripts/debugTools/dbgExportToFile.nut")
 local shopSearchCore = require("scripts/shop/shopSearchCore.nut")
-local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
+local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { getWeaponInfoText, getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
 local { getVideoModes } = require("scripts/options/systemOptions.nut")
 local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
@@ -472,7 +472,6 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 {
   local blk = ::DataBlock()
   blk.load(path || "debugDirtyWords.blk")
-  dirtyWordsFilter.setDebugLogFunc(::dagor.debug)
   local failed = 0
   for (local i = 0; i < blk.paramCount(); i++)
   {
@@ -484,7 +483,6 @@ require("scripts/debugTools/dbgLongestUnitTooltip.nut")
       failed++
     }
   }
-  dirtyWordsFilter.setDebugLogFunc(null)
   dlog("DIRTYWORDS: FINISHED, checked " + blk.paramCount() + ", failed check " + failed)
 }
 

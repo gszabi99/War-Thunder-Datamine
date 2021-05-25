@@ -17,16 +17,16 @@
       "secondaryShattersPreset": "ap"
     },
     {
-      "stabilityThreshold": 0.5
+      "stabilityThreshold": 0.1
     },
     {
-      "stabilityCaliberToArmorThreshold": 5.0
+      "stabilityCaliberToArmorThreshold": 100.0
     },
     {
       "stabilityReductionAfterRicochet": 0.3
     },
     {
-      "stabilityReductionAfterPenetration": 0.15
+      "stabilityReductionAfterPenetration": 0.01
     },
     {
       "bulletType": "atgm_tandem_tank"
@@ -269,11 +269,17 @@
       "iconType": "atgm_type1_x4"
     },
     {
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
-      }
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ]
     },
     {
       "pressureDamage": {

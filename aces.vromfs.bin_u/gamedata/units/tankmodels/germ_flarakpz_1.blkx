@@ -39,7 +39,13 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "radarAnimVar": "radar_drive"
+  },
+  {
     "radarDeployTime": 3.0
+  },
+  {
+    "radarAntenaSpeed": 720.0
   },
   {
     "subclass": "heavyVehicle"
@@ -203,7 +209,7 @@
           "armorThickness": 32.0
         },
         "body_top_dm": {
-          "armorThickness": 11.0
+          "armorThickness": 32.0
         },
         "superstructure_front_dm": {
           "armorThickness": 32.0
@@ -304,7 +310,7 @@
           "armorThickness": 10.0
         },
         "turret_06_front_dm": {
-          "armorThickness": 11.0
+          "armorThickness": 32.0
         },
         "gun_barrel_armor_dm": {
           "armorThickness": 51.0
@@ -475,7 +481,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -824,47 +829,19 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
-  },
-  {
-    "radarAnimations": [
-      {
-        "anim": {
-          "animatedRadarIdx": 0,
-          "radarAnimVar": "radar_drive",
-          "radarAntenaSpeed": 720.0
-        }
-      },
-      {
-        "anim": {
-          "animatedRadarIdx": 0,
-          "radarElevationScan": true,
-          "pitchByTurret": true,
-          "radarAntenaSpeed": 50.0,
-          "radarAnimPitchVar": "target_tagging_pitch_rotate"
-        }
-      }
-    ]
   },
   {
     "sound": {
       "EngineName": "engine_m3_bradley",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_lt_modern",
-      "TrackSoundNameCockpit": "tracks_lt_modern_interior",
-      "EngineNameAi": "engine_tank_ai_light",
-      "TrackSoundNameAi": "tracks_ai_lt_modern",
+      "TrackSoundName": "tracks",
+      "TrackSoundNameCockpit": "tracks_interior",
       "turret_turn": "turret_turn_servo",
+      "EngineNameAi": "engine_tank_ai_middle",
+      "TrackSoundNameAi": "tracks_ai_middle",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -2439,17 +2416,16 @@
         "autoLoader": true,
         "speedYaw": 85.0,
         "speedPitch": 40.0,
+        "fireConeAngle": 1.0,
         "bullets": 10,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
-        "DelayAfterShoot": 2.0,
-        "fireConeAngle": 1.0,
-        "targetAngularRateMax": 5.0,
-        "AttackMaxDistance": 10000.0,
-        "AttackMaxRadius": 10000.0,
-        "AttackMaxHeight": 4000.0,
-        "accuracyAir": 1.5,
-        "accuracyGnd": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
         "errMeasureVelFwdShift": 0.0,
@@ -2461,7 +2437,17 @@
           "head": "bone_turret",
           "gun": "bone_gun_01",
           "gunnerDm": "gunner_dm",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "selfDirectedPart": {
+            "node": "antenna_target_tagging_mount",
+            "limits": [-180.0,180.0],
+            "turnSpeed": 80.0
+          },
+          "linkedAnimPart": {
+            "verNode": "antenna_target_tagging",
+            "verLimits": [0.0,90.0],
+            "verOriginLimits": [-0.0,85.0]
+          }
         },
         "limits": {
           "yaw": [-180.0,180.0],
@@ -3240,17 +3226,16 @@
                 "autoLoader": true,
                 "speedYaw": 85.0,
                 "speedPitch": 40.0,
+                "fireConeAngle": 1.0,
                 "bullets": 10,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
-                "DelayAfterShoot": 2.0,
-                "fireConeAngle": 1.0,
-                "targetAngularRateMax": 5.0,
-                "AttackMaxDistance": 10000.0,
-                "AttackMaxRadius": 10000.0,
-                "AttackMaxHeight": 4000.0,
-                "accuracyAir": 1.5,
-                "accuracyGnd": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
                 "errMeasureVel": 0.0,
                 "errMeasureVelFast": 0.0,
                 "errMeasureVelFwdShift": 0.0,
@@ -3262,7 +3247,17 @@
                   "head": "bone_turret",
                   "gun": "bone_gun_01",
                   "gunnerDm": "gunner_dm",
-                  "rotatedTurret": "bone_turret"
+                  "rotatedTurret": "bone_turret",
+                  "selfDirectedPart": {
+                    "node": "antenna_target_tagging_mount",
+                    "limits": [-180.0,180.0],
+                    "turnSpeed": 80.0
+                  },
+                  "linkedAnimPart": {
+                    "verNode": "antenna_target_tagging",
+                    "verLimits": [0.0,90.0],
+                    "verOriginLimits": [-0.0,85.0]
+                  }
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],

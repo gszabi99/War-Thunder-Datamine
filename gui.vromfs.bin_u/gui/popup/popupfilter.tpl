@@ -1,11 +1,12 @@
 tdiv {
   flow:t='horizontal'
+  height:t='1@popupFilterHeight'
   Button_text {
     id:t='filter_button'
-    noMargin:t='yes'
+    margin-left:t='0'
     text:t='<<btnTitle>>'
     on_click:t='onShowFilterBtnClick'
-    btnName:t='<<btnName>>'
+    btnName:t='Y'
     ButtonImg{}
   }
   tdiv {
@@ -26,7 +27,6 @@ popup_menu {
   flow:t='horizontal'
   not-input-transparent:t='yes'
   css-hier-invalidate:t='yes'
-  order-popup:t='yes'
 
   rootUnderPopupMenu {
     on_click:t='<<underPopupClick>>'

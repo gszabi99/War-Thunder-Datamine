@@ -41,7 +41,6 @@ shopFilter {
     countryId:t='<<country>>'
     value:t='{"viewId": "COUNTRY_SQUADRON_EXP_ICON"}'
     type:t='slotbarCountry'
-    display:t='hide'
   }
   discountIcon {
     countryId:t='<<country>>'

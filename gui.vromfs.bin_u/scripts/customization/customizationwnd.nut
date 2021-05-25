@@ -68,37 +68,6 @@ enum decalTwoSidedMode
   ::handlersManager.loadHandler(::gui_handlers.DecalMenuHandler, params)
 }
 
-::delayed_download_enabled_msg <- function delayed_download_enabled_msg()
-{
-  local skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
-  if (!skip)
-  {
-    ::gui_start_modal_wnd(::gui_handlers.SkipableMsgBox,
-    {
-      parentHandler = ::handlersManager.getActiveBaseHandler()
-      message = ::loc("msgbox/delayedDownloadContent")
-      ableToStartAndSkip = true
-      startBtnText = ::loc("msgbox/confirmDelayedDownload")
-      onStartPressed = function() {
-        ::set_option_delayed_download_content(true)
-        ::save_local_account_settings("delayDownloadContent", true)
-      }
-      cancelFunc = function(){
-        ::set_option_delayed_download_content(false)
-        ::save_local_account_settings("delayDownloadContent", false)
-      }
-      skipFunc = function(value) {
-        ::save_local_account_settings("skipped_msg/delayedDownloadContent", value)
-      }
-    })
-  }
-  else
-  {
-    local choosenDDC = ::load_local_account_settings("delayDownloadContent", true)
-    ::set_option_delayed_download_content(choosenDDC)
-  }
-}
-
 class ::gui_handlers.DecalMenuHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/customization/customization.blk"

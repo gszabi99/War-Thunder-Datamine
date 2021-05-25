@@ -15,6 +15,8 @@ local RocketAimY = Watched(0.0)
 local RocketAimVisible = Watched(false)
 local RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
 
+local TATargetX = Watched(0.0)
+local TATargetY = Watched(0.0)
 local TATargetVisible = Watched(false)
 
 local GunDirectionX = Watched(0.0)
@@ -48,10 +50,15 @@ local IRCMState                    = Watched(0)
 local IsInsideLaunchZoneYawPitch = Watched(false)
 local IsInsideLaunchZoneDist = Watched(false)
 
+local IsSightLocked = Watched(false)
+local IsTargetTracked = Watched(false)
+local HasTargetTracker = Watched(false)
 local IsLaserDesignatorEnabled = Watched(false)
 local IsATGMOutOfTrackerSector = Watched(false)
 local NoLosToATGM = Watched(false)
 local AtgmTrackerRadius = Watched(0.0)
+local TargetRadius = Watched(0.0)
+local TargetAge = Watched(0.0)
 
 local MainMask = Watched(0)
 local SightMask = Watched(0)
@@ -182,6 +189,7 @@ local RwrPosSize = [0, 0, 20, 20]
 local MlwsLwsForMfd = Watched(false)
 local MfdSightPosSize = [0, 0, 0, 0]
 local IlsPosSize = [0, 0, 0, 0]
+local AimCorrectionEnabled = Watched(false)
 local DetectAllyProgress = Watched(-1)
 local DetectAllyState = Watched(false)
 
@@ -202,6 +210,8 @@ local helicopterState = {
   RocketAimVisible,
   RocketSightMode,
 
+  TATargetX,
+  TATargetY,
   TATargetVisible,
 
   GunDirectionX,
@@ -235,10 +245,15 @@ local helicopterState = {
   IsInsideLaunchZoneYawPitch,
   IsInsideLaunchZoneDist,
 
+  IsSightLocked,
+  IsTargetTracked,
+  HasTargetTracker,
   IsLaserDesignatorEnabled,
   IsATGMOutOfTrackerSector,
   NoLosToATGM,
   AtgmTrackerRadius,
+  TargetRadius,
+  TargetAge,
 
   MainMask,
   SightMask,
@@ -315,6 +330,7 @@ local helicopterState = {
   MlwsLwsForMfd,
   MfdSightPosSize,
   IlsPosSize,
+  AimCorrectionEnabled,
   DetectAllyProgress,
   DetectAllyState,
 

@@ -2327,15 +2327,6 @@
     ]
   },
   {
-    "commanderView": {
-      "aimModeAvailable": true,
-      "optics": "commander_optics_square",
-      "zoomOutFov": 30.0,
-      "zoomInFov": 7.4,
-      "sightSize": [0.57,0.4]
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 9.217,
       "zoomInFov": 6.141,
@@ -2539,16 +2530,36 @@
       "formatVersion": 2,
       "armorClass": "RHA_tank",
       "hp": 10000.0,
-      "RHAHH_parts": {
-        "armorClass": "RHAHH_tank",
-        "body_side_dm": {
-          "armorThickness": 15.0
-        },
+      "hull": {
         "superstructure_front_dm": {
           "armorThickness": 15.0
         },
         "body_front_dm": {
+          "armorThickness": 35.0
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_01_top_dm": {
+          "armorThickness": 10.0
+        },
+        "turret_01_side_dm": {
+          "armorThickness": 20.0
+        },
+        "turret_01_front_dm": {
+          "armorThickness": 20.0
+        },
+        "body_side_dm": {
+          "armorThickness": 25.0
+        },
+        "superstructure_top_dm": {
+          "armorThickness": 20.0
+        },
+        "body_bottom_dm": {
           "armorThickness": 15.0
+        },
+        "body_back_dm": {
+          "armorThickness": 20.0
         },
         "ex_armor_02_dm": {
           "armorThickness": 15.0
@@ -2556,41 +2567,35 @@
         "superstructure_bottom_dm": {
           "armorThickness": 15.0
         },
-        "body_back_dm": {
-          "armorThickness": 15.0
+        "gun_mask_dm": {
+          "armorThickness": 30.0
         },
-        "turret_01_side_dm": {
-          "armorThickness": 15.0
+        "gun_mask_01_dm": {
+          "armorThickness": 40.0
         },
-        "superstructure_top_dm": {
-          "armorThickness": 15.0
+        "gun_mask_02_dm": {
+          "armorThickness": 40.0
+        },
+        "gun_mask_03_dm": {
+          "armorThickness": 40.0
+        },
+        "gun_mask_04_dm": {
+          "armorThickness": 40.0
         },
         "turret_side_dm": {
+          "armorThickness": 25.0
+        },
+        "turret_back_dm": {
           "armorThickness": 15.0
         },
         "turret_top_dm": {
           "armorThickness": 15.0
         },
         "turret_bottom_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 10.0
         },
-        "turret_back_dm": {
-          "armorThickness": 15.0
-        },
-        "gun_mask_dm": {
-          "armorThickness": 15.0
-        },
-        "gun_mask_01_dm": {
-          "armorThickness": 20.0
-        },
-        "gun_mask_02_dm": {
-          "armorThickness": 20.0
-        },
-        "gun_mask_03_dm": {
-          "armorThickness": 20.0
-        },
-        "gun_mask_04_dm": {
-          "armorThickness": 20.0
+        "turret_front_dm": {
+          "armorThickness": 25.0
         },
         "turret_02_front_dm": {
           "armorThickness": 15.0
@@ -2599,29 +2604,7 @@
           "armorThickness": 15.0
         },
         "turret_commander_dm": {
-          "armorThickness": 15.0
-        },
-        "turret_01_front_dm": {
-          "armorThickness": 15.0
-        }
-      },
-      "hull": {
-        "turret_01_bottom_dm": {
-          "armorThickness": 10.0
-        },
-        "body_bottom_dm": {
-          "armorThickness": 15.0
-        },
-        "turret_front_dm": {
           "armorThickness": 25.0
-        },
-        "turret_01_back_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "hull_side_special_armor",
-          "hidableInViewer": true
-        },
-        "turret_01_top_dm": {
-          "armorThickness": 5.0
         },
         "turret_02_back_dm": {
           "armorThickness": 10.0
@@ -2706,6 +2689,7 @@
         "turret_03_side_dm": {
           "armorThickness": 10.0
         },
+        "turret_01_back_dm": [],
         "turret_03_top_dm": {
           "armorThickness": 10.0
         }
@@ -3142,14 +3126,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -3735,7 +3711,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3759,52 +3735,6 @@
           "limitsTable": {
             "lim1": [-120.0,70.0,-8.0,20.0],
             "lim2": [70.0,120.0,-5.0,20.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 40.0,
-          "speedPitch": 30.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-10.0,20.0]
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": false,
-            "forceEnabled": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 75.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 75.0,
-            "speedFromVehicleVerticalMult": -1.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.0]
-              },
-              {
-                "row": [45.0,0.00015]
-              },
-              {
-                "row": [80.0,0.0002]
-              }
-            ]
           }
         }
       }
@@ -3867,7 +3797,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,

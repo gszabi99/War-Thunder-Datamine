@@ -1,6 +1,5 @@
 local { get_blk_by_path_array } = require("sqStdLibs/helpers/datablockUtils.nut")
 local personalDiscount = require("scripts/discounts/personalDiscount.nut")
-local { eachBlock } = require("std/datablock.nut")
 
 //you can use array in any path part - in result will be max discount from them.
 ::getDiscountByPath <- function getDiscountByPath(path, blk = null, idx = 0)
@@ -28,21 +27,19 @@ local { eachBlock } = require("std/datablock.nut")
 
   local discount = 0
   discountTypes = discountTypes ?? ["weapons", "mods", "spare"]
-  if (discountTypes.contains("weapons"))
-    eachBlock(unitTable?.weapons, function(table, name) {
+  if (discountTypes.contains("weapons") && unitTable?.weapons)
+    foreach (name, table in unitTable.weapons)
       if (!::shop_is_weapon_purchased(unitName, name))
         discount = ::max(discount,
           ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_weapon(unitName, name))
-    })
 
-  if (discountTypes.contains("mods"))
-    eachBlock(unitTable?.mods, function(table, name) {
+  if (discountTypes.contains("mods") && unitTable?.mods)
+    foreach (name, table in unitTable.mods)
       if (!::shop_is_modification_purchased(unitName, name))
         discount = ::max(discount,
           ::getTblValue("discount", table, 0),
           ::item_get_personal_discount_for_mod(unitName, name))
-    })
 
   if (discountTypes.contains("spare") && unitTable?.spare)
     discount = ::max(discount, ::getTblValue("discount", unitTable.spare, 0))

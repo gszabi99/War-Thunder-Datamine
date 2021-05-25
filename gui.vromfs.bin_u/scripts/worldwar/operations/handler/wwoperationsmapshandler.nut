@@ -1,7 +1,9 @@
 local time = require("scripts/time.nut")
 local seenWWMapsAvailable = require("scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 local bhvUnseen = require("scripts/seen/bhvUnseen.nut")
+local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
 local { getAllUnlocks, unlocksChapterName } = require("scripts/worldWar/unlocks/wwUnlocks.nut")
+local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local globalBattlesListData = require("scripts/worldWar/operations/model/wwGlobalBattlesList.nut")
 local { isMatchFilterMask } = require("scripts/worldWar/handler/wwBattlesFilterMenu.nut")
 local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isRecievedGlobalStatusMaps
@@ -9,9 +11,6 @@ local { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue
 local { refreshGlobalStatusData } = require("scripts/worldWar/operations/model/wwGlobalStatus.nut")
 local { addClanTagToNameInLeaderbord } = require("scripts/leaderboard/leaderboardView.nut")
 local stdMath = require("std/math.nut")
-local { animBgLoad } = require("scripts/loading/animBg.nut")
-local { getBgFullPath, loadBgData } = require("scripts/worldWar/wwAnimBg.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 local WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
@@ -22,7 +21,6 @@ local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName   = "gui/worldWar/wwOperationsMaps.blk"
-  shouldBlurSceneBgFn = needUseHangarDof
   backSceneFunc = @() ::gui_start_mainmenu()
   handlerLocId = "mainmenu/btnWorldwar"
 
@@ -70,6 +68,7 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     foreach (timerObjId in [
         "ww_status_check_timer",  // periodic ww status updates check
         "queues_wait_timer",      // frequent queues wait time text update
+        "globe_hint",             // globe tooltip update
         "begin_map_wait_timer",    // frequent map begin wait time text update
         "global_battles_update_timer" // update global battles list for battle buttons status updated
       ])
@@ -96,7 +95,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     collectMaps()
     findMapForSelection()
-    animBgLoad(getBgFullPath(selMap?.name), null, loadBgData())
     updateRewardsPanel()
     onClansQueue()
   }
@@ -343,6 +341,9 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
 
     if (!isSelChanged && _wasSelectedOnce)
       return updateButtons()
+
+    if (selMap && isSelChanged && (!isFillingList || !_wasSelectedOnce))
+      ::pick_globe_operation(selMap.getId(), false)
 
     _wasSelectedOnce = true
 
@@ -837,9 +838,6 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     updateWindow()
   }
 
-  /*!!! Will be used in further tasks !!!
-  local wwLeaderboardData = require("scripts/worldWar/operations/model/wwLeaderboardData.nut")
-  local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
   function onEventWWGlobeMarkerHover(params)
   {
     local obj = scene.findObject("globe_hint")
@@ -937,11 +935,25 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
     }
 
     return view
-  }*/
+  }
 
   function onEventWWCreateOperation(params)
   {
     onClansQueue()
+  }
+
+  function onGlobeHintTimer(obj, dt)
+  {
+    placeHint(obj)
+  }
+
+  function placeHint(obj)
+  {
+    if(!::checkObj(obj))
+      return
+    local cursorPos = ::get_dagui_mouse_cursor_pos_RC()
+    cursorPos[0] += "+0.04sh"
+    ::g_dagui_utils.setObjPosition(obj, cursorPos, ["@bw", "@bh"])
   }
 
   function getWndHelpConfig()
@@ -1130,4 +1142,14 @@ class ::gui_handlers.WwOperationsMapsHandler extends ::gui_handlers.BaseGuiHandl
   function onEventUpdateClansInfoList(p) {
     addClanTagToNameInLeaderbord(scene.findObject("top_global_managers"), p?.clansInfoList ?? {})
   }
+}
+
+::on_globe_marker_hover <- function on_globe_marker_hover(id, hover) // called from client
+{
+  ::ww_event("GlobeMarkerHover", { id = id, hover = hover })
+}
+
+::on_globe_marker_click <- function on_globe_marker_click(id) // called from client
+{
+  ::ww_event("GlobeMarkerClick", { id = id })
 }

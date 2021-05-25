@@ -30,7 +30,8 @@ local function text(val, params={}, addchildren = null) { //warning disable: -id
   local ret = {
     size = SIZE_TO_CONTENT
     halign = ALIGN_LEFT
-  }.__update(params, {text = txt, rendObj})
+    font = ::Fonts.medium_text
+  }.__update(params).__update({text = txt, rendObj = rendObj})
   ret.__update({children=children})
   if (watch || watchedtext)
     return @() ret

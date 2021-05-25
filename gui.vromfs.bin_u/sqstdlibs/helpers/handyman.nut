@@ -30,7 +30,7 @@
 #no-plus-concat
 
 local g_string =  require("std/string.nut")
-local regexp = ::getroottable()?.regexp ?? require("string").regexp
+
 /**
  * A simple string scanner that is used by the template parser to find
  * tokens in template strings.
@@ -166,13 +166,13 @@ local Writer = class {
   cache = {}
   tags = ["<<", ">>"]
 
-  static whiteRe  = regexp(@"\s*")
-  static spaceRe  = regexp(@"\s+")
-  static equalsRe = regexp(@"\s*=")
-  static curlyRe  = regexp(@"\s*\}")
-  static tagRe    = regexp(@"#|\^|\/|>|\{|&|=|!|@|?")
-  static escapeRe = regexp(@"[\-\[\]{}()*+?.,\\\^$|#\s]")
-  static nonSpaceRe = regexp(@"\S")
+  static whiteRe  = ::regexp(@"\s*")
+  static spaceRe  = ::regexp(@"\s+")
+  static equalsRe = ::regexp(@"\s*=")
+  static curlyRe  = ::regexp(@"\s*\}")
+  static tagRe    = ::regexp(@"#|\^|\/|>|\{|&|=|!|@|?")
+  static escapeRe = ::regexp(@"[\-\[\]{}()*+?.,\\\^$|#\s]")
+  static nonSpaceRe = ::regexp(@"\S")
 
   constructor() {
     this.cache = {}
@@ -358,8 +358,8 @@ local Writer = class {
     }
 
     return [
-      regexp("".concat(escapeRegExp(tags[0]), "\\s*")),
-      regexp("".concat("\\s*", escapeRegExp(tags[1])))
+      ::regexp("".concat(escapeRegExp(tags[0]), "\\s*")),
+      ::regexp("".concat("\\s*", escapeRegExp(tags[1])))
     ]
   }
 

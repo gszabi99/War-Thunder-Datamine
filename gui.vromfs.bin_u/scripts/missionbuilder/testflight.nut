@@ -56,10 +56,8 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     needSlotbar = !::g_decorator.isPreviewingLiveSkin() && ::isUnitInSlotbar(unit)
     if (needSlotbar)
     {
-      local frameObj = scene.findObject("wnd_frame")
-      frameObj.size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
-      frameObj.pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
-      frameObj.withSlotbar = "yes"
+      scene.findObject("wnd_frame").size = "1@slotbarWidthFull, 1@maxWindowHeightWithSlotbar"
+      scene.findObject("wnd_frame").pos = "50%pw-50%w, 1@battleBtnBottomOffset-h"
     }
 
     showSceneBtn("unit_weapons_selector", true)
@@ -707,7 +705,7 @@ class ::gui_handlers.TestFlight extends ::gui_handlers.GenericOptionsModal
     if (!option)
       return
 
-    showOptionRow(option, !::get_option_torpedo_dive_depth_auto()
+    showOptionRow(option, !get_option_torpedo_dive_depth_auto()
       && unit.isShipOrBoat()
       && unit.getAvailableSecondaryWeapons().hasTorpedoes)
   }

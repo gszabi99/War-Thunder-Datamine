@@ -428,7 +428,7 @@ class ::gui_handlers.trophyRewardWnd extends ::gui_handlers.BaseGuiHandlerWT
     if (animFinished)
       return true
 
-    if (!trophyItem?.isAllowSkipOpeningAnim())
+    if (!trophyItem?.isAllowSkipOpeningAnim() ?? false)
       return false
 
     local animObj = scene.findObject("open_chest_animation")

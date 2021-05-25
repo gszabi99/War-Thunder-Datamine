@@ -108,6 +108,18 @@
     "type": "typeMediumTank"
   },
   {
+    "irProjectorNode": "ex_decor_01"
+  },
+  {
+    "irBeamRadius": [1400.0,100.0]
+  },
+  {
+    "irProjectorPower": [0.02,0.07]
+  },
+  {
+    "irProjectorGlowOffset": [0.65,0.3,-0.7]
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -1774,23 +1786,6 @@
     ]
   },
   {
-    "commanderView": {
-      "aimModeAvailable": true,
-      "optics": "commander_optics_square",
-      "zoomOutFov": 80.0,
-      "zoomInFov": 9.2,
-      "sightSize": [1.775,1.25]
-    }
-  },
-  {
-    "ircmProjector": {
-      "node": "ex_decor_01",
-      "beamRadius": [1400.0,100.0],
-      "projectorPower": [0.02,0.07],
-      "glowOffset": [0.65,0.3,-0.7]
-    }
-  },
-  {
     "DamageParts": {
       "formatVersion": 2,
       "armorClass": "RHA_tank",
@@ -1932,7 +1927,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -2281,14 +2275,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -2879,7 +2865,7 @@
           "speedYaw": 90.0,
           "speedPitch": 42.0,
           "bullets": 340,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2985,7 +2971,7 @@
           "speedYaw": 90.0,
           "speedPitch": 42.0,
           "bullets": 340,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3324,7 +3310,7 @@
                 "speedYaw": 90.0,
                 "speedPitch": 42.0,
                 "bullets": 340,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3430,7 +3416,7 @@
                 "speedYaw": 90.0,
                 "speedPitch": 42.0,
                 "bullets": 340,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3597,7 +3583,7 @@
                   "bullets": 8
                 },
                 {
-                  "fireConeAngle": 5.0
+                  "fireConeAngle": 15.0
                 },
                 {
                   "ChainfireTime": 0.5

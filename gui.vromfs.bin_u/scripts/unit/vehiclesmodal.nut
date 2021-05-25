@@ -43,7 +43,8 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
     restoreLastUnitSelection(listObj)
 
     local nestObj = scene.findObject("filter_nest")
-    popupFilter.open(nestObj, onChangeFilterItem.bindenv(this), getFiltersView())
+    local filter = popupFilter.open(nestObj, onChangeFilterItem.bindenv(this), getFiltersView())
+    nestObj.setUserData(filter)
   }
 
   getWndTitle = @() ::loc(wndTitleLocId)
@@ -96,7 +97,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
         id = "all_items"
         idx = -1
         image = $"#ui/gameuiskin#{isUnitType ? "all_unit_types" : "flag_all_nations"}.svg"
-        text = ::loc($"all_{isUnitType ? "units" : "countries"}")
+        text = $"#all_{isUnitType ? "units" : "countries"}"
         value = true
       }
       local view = { checkbox = [cbView] }
@@ -109,7 +110,7 @@ local handlerClass = class extends ::gui_handlers.BaseGuiHandlerWT
           id = isUnitType ? $"unit_{inst.unitType.esUnitType}" : inst.id
           idx = isUnitType ? inst.unitType.esUnitType : inst.idx
           image = isUnitType ? inst.unitType.testFlightIcon : ::get_country_icon(inst.id)
-          text = isUnitType ? inst.unitType.getArmyLocName() : ::loc(inst.id)
+          text = isUnitType ? inst.unitType.getArmyLocName() : $"#{inst.id}"
           value = inst.value
         })
       }

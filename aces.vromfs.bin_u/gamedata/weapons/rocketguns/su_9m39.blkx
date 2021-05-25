@@ -10,10 +10,10 @@
   "tags": [],
   "rocket": [
     {
-      "normalizationPreset": "heat"
+      "normalizationPreset": "default"
     },
     {
-      "ricochetPreset": "he"
+      "ricochetPreset": "defaultExt"
     },
     {
       "secondaryShattersPreset": "ap"
@@ -64,10 +64,7 @@
       "length": 1.68
     },
     {
-      "wingAreaMult": 1.05
-    },
-    {
-      "distFromCmToStab": 0.022
+      "distFromCmToStab": 0.034
     },
     {
       "CxK": 2.2
@@ -76,10 +73,10 @@
       "WdK": [0.1,0.1,0.1]
     },
     {
-      "finsAoaHor": 0.1
+      "finsAoaHor": 0.045
     },
     {
-      "finsAoaVer": 0.1
+      "finsAoaVer": 0.045
     },
     {
       "force": 3000.0
@@ -103,7 +100,7 @@
       "explosionEffect": "explosion_midair_medium"
     },
     {
-      "groundCollisionEffect": "hit_59_80mm_dirt_he"
+      "groundCollisionEffect": "explosion_midair_tiny"
     },
     {
       "ricochetEffect": "cannon_ricochet"
@@ -398,13 +395,12 @@
         },
         "guidanceAutopilot": {
           "timeOut": 0.5,
+          "baseIndSpeed": 2000.0,
           "propNavMult": 4.0,
-          "reqAccelMax": 10.0,
-          "baseIndSpeed": 1700.0,
-          "accelControlProp": 0.0082,
-          "accelControlIntg": 0.0032,
-          "accelControlIntgLim": 0.7,
-          "accelControlDiff": 0.0
+          "accelControlProp": 0.016,
+          "accelControlIntg": 0.0028,
+          "accelControlIntgLim": 0.5,
+          "accelControlDiff": 0.0015
         }
       }
     },

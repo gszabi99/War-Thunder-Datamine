@@ -1,7 +1,6 @@
 local seenTitles = require("scripts/seen/seenList.nut").get(SEEN.TITLES)
 local { getUnitClassTypesByEsUnitType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { getPlayerStatsFromBlk } = require("scripts/user/userInfoStats.nut")
 
 /*
 my_stats API
@@ -95,7 +94,7 @@ local summaryNameArray = [
     if (!blk)
       return
 
-    _my_stats = getPlayerStatsFromBlk(blk)
+    _my_stats = ::get_player_stats_from_blk(blk)
 
     seenTitles.onListChanged()
     ::broadcastEvent("MyStatsUpdated")
@@ -270,20 +269,6 @@ local summaryNameArray = [
     _maxUnitsUsedRank[unitType.tostring()] = unitRank
     ::saveLocalByAccount("tutor/newbieBattles/unitsRank", _maxUnitsUsedRank)
     _needRecountNewbie = true
-  }
-
-  function getUserstat(paramName) {
-    local res = 0
-    foreach (diffName, block in _my_stats?.userstat ?? {})
-      foreach (unitData in block?.total ?? [])
-        res += (unitData?[paramName] ?? 0)
-
-    return res
-  }
-
-  function getPvpPlayed()
-  {
-    return getUserstat("sessions")
   }
 
   /**

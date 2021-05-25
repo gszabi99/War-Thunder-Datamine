@@ -5,9 +5,10 @@ root {
 
   frame {
     size:t='<<wndWidth>>, 1@maxWindowHeight'
+    pos:t='0.5pw-0.5w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
+    position:t='absolute'
     class:t='wndNav'
     css-hier-invalidate:t='yes'
-    isCenteredUnderLogo:t='yes'
     frame_header {
       activeText {
         caption:t='yes'
@@ -54,23 +55,6 @@ root {
       }
     }
     navBar {
-      navLeft {
-        Button_text {
-          id:t='btn_buyAll'
-          btnName:t='L3'
-          _on_click:t='onBuyAll'
-          hideText:t='yes'
-          display:t='hide'
-          visualStyle:t='purchase'
-          buttonWink{}
-          buttonGlance{}
-          textarea {
-            id:t='btn_buyAll_text'
-            class:t='buttonText'
-          }
-          ButtonImg {}
-        }
-      }
       navRight {
         Button_text{
           id:t='favoriteBtn'
@@ -83,10 +67,10 @@ root {
         Button_text{
           id:t='altActionBtn'
           text:t=''
-          on_click:t='onAltModAction'
           display:t='hide'
           tooltip:t='<<altBtnTooltip>>'
           btnName:t='X'
+          on_click:t='onAltModAction'
           ButtonImg {}
         }
         Button_text{

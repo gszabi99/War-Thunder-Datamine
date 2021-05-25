@@ -1,7 +1,7 @@
 local penalties = require("scripts/penitentiary/penalties.nut")
 local systemMsg = require("scripts/utils/systemMsg.nut")
 local playerContextMenu = require("scripts/user/playerContextMenu.nut")
-local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
+local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { clearBorderSymbolsMultiline } = require("std/string.nut")
 
 global enum chatUpdateState {

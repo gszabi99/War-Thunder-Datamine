@@ -1,5 +1,4 @@
 ::g_script_reloader.loadOnce("scripts/options/bhvHarmonizedImage.nut")
-local { eachParam } = require("std/datablock.nut")
 
 ::country_flags_preset <- {}
 
@@ -50,10 +49,9 @@ local { eachParam } = require("std/datablock.nut")
     if (!block || typeof(block)!="instance" || !(block instanceof ::DataBlock))
       continue
 
-    eachParam(block, function(value, name) {
+    foreach(name, value in block)
       if (!(name in ::country_flags_preset) && typeof(value) == "string")
         ::country_flags_preset[name] <- value
-    })
   }
 }
 
