@@ -114,7 +114,8 @@ return {
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
     settings = [
       {id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50}, //50 - 500
-      {id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true} //0.5 - 2
+      {id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true}, //0.5 - 2
+      {id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true}
   ]})
   needShowHdrSettingsOnStart = @() ::is_hdr_enabled() && !::loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
 }
