@@ -231,6 +231,9 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
   AerobaticTricolorSmoke = ::disable_network()
 
   XRayDescription = ::disable_network()
+
+  ControlsDeviceChoice = true
+  ControlsAdvancedSettings = true
   ControlsHelp = true
 
   SeparateTopMenuButtons = false
@@ -273,6 +276,7 @@ local defaults = ::Watched({  //def value when feature not found in game_setting
 
   FpsCounterOverride = false
   BulletAnimation = true
+  BuyAllPresets = false
 })
 
 local override = ::Watched({})

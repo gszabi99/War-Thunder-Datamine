@@ -3,6 +3,7 @@ local { easyDailyTaskProgressWatchObj,
   mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj
 } = require("scripts/battlePass/watchObjInfoConfig.nut")
 local { stashBhvValueConfig } = require("sqDagui/guiBhv/guiBhvValueConfig.nut")
+local { copyParamsToTable } = require("std/datablock.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
 ::dagui_propid.add_name_id("task_id")
@@ -64,7 +65,7 @@ class ::gui_handlers.BattleTasksPromoHandler extends ::gui_handlers.BaseGuiHandl
 
     local showProgressBar = false
     local currentWarbond = null
-    local promoView = ::u.copy(::getTblValue(id, ::g_promo.getConfig(), {}))
+    local promoView = copyParamsToTable(::g_promo.getConfig()?[id])
     local view = {}
 
     if (reqTask)

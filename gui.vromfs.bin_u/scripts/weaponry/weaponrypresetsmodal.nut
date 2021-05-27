@@ -6,9 +6,12 @@ local { TIERS_NUMBER,
         getWeaponryByPresetInfo } = require("scripts/weaponry/weaponryPresetsParams.nut")
 local { getLastWeapon,
         setLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
-local { getItemAmount } = require("scripts/weaponry/itemInfo.nut")
+local { getItemAmount, getItemCost, getItemStatusTbl } = require("scripts/weaponry/itemInfo.nut")
 local { getWeaponItemViewParams } = require("scripts/weaponry/weaponryVisual.nut")
 local { getTierDescTbl, updateWeaponTooltip } = require("scripts/weaponry/weaponryTooltipPkg.nut")
+local { weaponsPurchase, canBuyItem } = require("scripts/weaponry/weaponsPurchase.nut")
+local { placePriceTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+
 
 class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerWT
 {
@@ -34,6 +37,10 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   initLastWeapon       = null
 
   presetIdxToChildIdx  = null
+
+  isAllBuyProcess      = false
+  totalCost            = null
+  multiPurchaseList    = null
 
   function getSceneTplView()
   {
@@ -66,6 +73,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
   function initScreen()
   {
     selectPreset(chosenPresetIdx)
+    updateMultiPurchaseList()
     ::move_mouse_on_obj(scene.findObject($"presetHeader_{chosenPresetIdx}"))
   }
 
@@ -231,7 +239,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     if (!::shop_is_weapon_available(unit.name, item.name, false, true))
       return
     checkSaveBulletsAndDo(::Callback((@(unit, item) function() {
-      ::WeaponsPurchase(unit, {modItem = item, open = false})
+      weaponsPurchase(unit, {modItem = item, open = false})
     })(unit, item), this))
   }
 
@@ -274,7 +282,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     local idx = curPresetIdx
     local itemParams = ::u.search(presetsMarkup, @(i) i?.presetId == idx)
     local btnText = itemParams?.weaponryItem.actionBtnText ?? ""
-    local canBuy = weaponryByPresetInfo.presets[idx].cost > 0
+    local canBuy = presetsList[idx].cost > 0
     local actionBtnObj = showSceneBtn("actionBtn", btnText != ""
       && (idx != chosenPresetIdx || canBuy))
     if (btnText != "" && ::check_obj(actionBtnObj))
@@ -293,6 +301,9 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
 
   function updateAllItems()
   {
+    if (isAllBuyProcess)
+      return
+
     presetsMarkup = getPresetsMarkup()
     local data = ::handyman.renderCached("gui/weaponry/weaponryPreset", {
         wndWidth = wndWidth
@@ -307,7 +318,7 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
     selectPreset(curPresetIdx)
   }
 
-  function onEventWeaponPurchased(params) { updateAllItems() }
+  function onEventWeaponPurchased(params) { updateAllItems(); updateMultiPurchaseList() }
   function onEventUnitWeaponChanged(params) { updateAllItems() }
 
   function onCollapse(obj)
@@ -405,6 +416,61 @@ class ::gui_handlers.weaponryPresetsModal extends ::gui_handlers.BaseGuiHandlerW
       @(w) w.name == (isChosen ? preset.id : chosenPresetName)) ?? 0
     updateAllItems()
     selectPreset(presetsList.findindex(@(w) w.name == preset.id) ?? 0)
+  }
+
+// DEVELOPERS OPTION ONLY
+  function updateBuyAllBtn()
+  {
+    local isShow = multiPurchaseList.len() > 0
+    if (isShow)
+      placePriceTextToButton(scene, "btn_buyAll", ::loc("mainmenu/btnBuyAll"), totalCost)
+
+    showSceneBtn("btn_buyAll", isShow)
+  }
+
+  onBuyAll = @() buyAll()
+  onEventProfileUpdated = @ (p) updateBuyAllBtn()
+
+  function updateMultiPurchaseList()
+  {
+    multiPurchaseList = []
+    if (isAllBuyProcess || !::has_feature("BuyAllPresets"))
+      return
+
+    totalCost = ::Cost()
+    foreach (item in presetsList)
+    {
+      local statusTbl = getItemStatusTbl(unit, item)
+      if (!::shop_is_weapon_available(unit.name, item.name, false, true) || !statusTbl.canBuyMore)
+        continue
+
+      multiPurchaseList.append(item)
+      totalCost += getItemCost(unit, item).multiply(statusTbl.maxAmount - statusTbl.amount)
+    }
+
+    updateBuyAllBtn()
+  }
+
+  function buyAll()
+  {
+    if (!multiPurchaseList.len())
+    {
+      isAllBuyProcess = false
+      ::save_online_single_job(SAVE_WEAPON_JOB_DIGIT)
+      updateAllItems()
+      updateMultiPurchaseList()
+      return
+    }
+
+    if (!canBuyItem(totalCost, unit))
+      return
+
+    local item = multiPurchaseList.pop()
+    local statusTbl = getItemStatusTbl(unit, item)
+    totalCost -= getItemCost(unit, item).multiply(statusTbl.maxAmount - statusTbl.amount)
+    isAllBuyProcess = true
+    weaponsPurchase(unit, {modItem = item, open = false, silent = true, isAllPresetPurchase = true,
+      afterSuccessfullPurchaseCb = ::Callback(@() buyAll(), this)})
   }
 }
 

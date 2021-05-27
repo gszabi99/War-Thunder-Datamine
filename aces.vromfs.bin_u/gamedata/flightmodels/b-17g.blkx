@@ -115,9 +115,6 @@
         "armor6_dm": {
           "hp": 35.0
         },
-        "armor7_dm": {
-          "hp": 35.0
-        },
         "armor8_dm": {
           "hp": 35.0
         }
@@ -171,6 +168,12 @@
           "hp": 59.5
         },
         "stab_dm": {
+          "hp": 30.0
+        },
+        "stab2_dm": {
+          "hp": 30.0
+        },
+        "stab1_dm": {
           "hp": 93.8
         }
       },
@@ -260,6 +263,9 @@
         }
       },
       "glass38": {
+        "armor7_dm": {
+          "hp": 100.0
+        },
         "armor9_dm": {
           "hp": 100.0
         }
@@ -1622,6 +1628,108 @@
         "part": [
           {
             "name": "stab_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab1_dm"
+          },
+          {
+            "onHit": {
+              "tailcontrol_dm": 0.001
+            }
+          },
+          {
+            "onHit": {
+              "damage": 30.0,
+              "cut": 0.6
+            }
+          },
+          {
+            "onHit": {
+              "damage": 60.0,
+              "cut": 1.0
+            }
+          },
+          {
+            "onKill": {
+              "tailcontrol_dm": 1.0,
+              "nothing": 9.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 10.0,
+              "cut": 1.0,
+              "nothing": 10.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 30.0,
+              "cut": 2.0,
+              "nothing": 5.0
+            }
+          },
+          {
+            "onKill": {
+              "damage": 50.0,
+              "cut": 1.0,
+              "nothing": 0.0
+            }
+          }
+        ]
+      },
+      {
+        "part": [
+          {
+            "name": "stab2_dm"
           },
           {
             "onHit": {
@@ -3233,8 +3341,8 @@
             "gun": "gun1"
           },
           "limits": {
-            "yaw": [-60.0,60.0],
-            "pitch": [-45.0,30.0]
+            "yaw": [-86.0,86.0],
+            "pitch": [-46.0,26.0]
           }
         }
       },
@@ -3253,8 +3361,8 @@
             "gun": "gun1"
           },
           "limits": {
-            "yaw": [-60.0,60.0],
-            "pitch": [-45.0,30.0]
+            "yaw": [-86.0,86.0],
+            "pitch": [-46.0,26.0]
           }
         }
       },

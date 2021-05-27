@@ -28,8 +28,6 @@ local frameHeader = @(headerParams) {
 local frameHandler = ::kwarg(function(content, frameParams = {}, headerParams = {}) {
   return @(){
     size = flex()
-    rendObj = ROBJ_SOLID
-    color = colors.menu.modalShadeColor
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     watch = [srw, maxWindowHeight]

@@ -681,6 +681,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -1014,6 +1015,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -1114,7 +1123,7 @@
       "TrackSoundNameCockpit": "tracks_t72_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle"
+      "TrackSoundNameAi": "tracks_ai_t72"
     }
   },
   {
@@ -2109,10 +2118,17 @@
         "role": "driver",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2710,6 +2726,9 @@
               "gunnerDm": "gunner_dm"
             },
             {
+              "secondGunnerDm": "commander_dm"
+            },
+            {
               "linkedAnimPart": {
                 "verNode": "bone_gun_roller_02",
                 "verLimits": [-6.0,17.0],
@@ -2834,7 +2853,8 @@
             "turret": {
               "head": "bone_mg_twin",
               "gun": "bone_mg_twin",
-              "gunnerDm": "gunner_dm"
+              "gunnerDm": "gunner_dm",
+              "secondGunnerDm": "commander_dm"
             }
           },
           {
@@ -2860,7 +2880,7 @@
           "speedPitch": 20.0,
           "bullets": 500,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3616,6 +3636,9 @@
                     "gunnerDm": "gunner_dm"
                   },
                   {
+                    "secondGunnerDm": "commander_dm"
+                  },
+                  {
                     "linkedAnimPart": {
                       "verNode": "bone_gun_roller_02",
                       "verLimits": [-6.0,17.0],
@@ -3632,12 +3655,12 @@
                 ],
                 "limits": {
                   "yaw": [-180.0,180.0],
-                  "pitch": [-6.5,14.0]
+                  "pitch": [-5.4,12.8]
                 },
                 "limitsTable": {
-                  "lim1": [-180.0,-140.0,-4.0,13.78],
-                  "lim2": [-140.0,120.0,-6.5,14.0],
-                  "lim3": [120.0,180.0,-4.0,13.78]
+                  "lim1": [-180.0,-140.0,-4.0,12.8],
+                  "lim2": [-140.0,120.0,-5.4,12.8],
+                  "lim3": [120.0,180.0,-4.0,12.8]
                 },
                 "gunStabilizer": {
                   "hasVerticalGunFreeMode": false,
@@ -3740,7 +3763,8 @@
                   "turret": {
                     "head": "bone_mg_twin",
                     "gun": "bone_mg_twin",
-                    "gunnerDm": "gunner_dm"
+                    "gunnerDm": "gunner_dm",
+                    "secondGunnerDm": "commander_dm"
                   }
                 },
                 {
@@ -3766,7 +3790,7 @@
                 "speedPitch": 20.0,
                 "bullets": 500,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3848,7 +3872,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,

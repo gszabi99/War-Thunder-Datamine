@@ -114,15 +114,6 @@
     "type": "typeSPAA"
   },
   {
-    "irProjectorNode": "ex_lantern_01"
-  },
-  {
-    "irBeamRadius": [1400.0,100.0]
-  },
-  {
-    "irProjectorPower": [0.02,0.07]
-  },
-  {
     "drowningCheckHeightMultiplier": 0.45
   },
   {
@@ -382,6 +373,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -713,6 +705,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -728,11 +728,11 @@
       "EngineName": "engine_su100",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_su100",
-      "TrackSoundNameCockpit": "tracks_su100_interior",
+      "TrackSoundName": "tracks_mbt",
+      "TrackSoundNameCockpit": "tracks_mbt_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle"
+      "TrackSoundNameAi": "tracks_ai_mbt"
     }
   },
   {
@@ -2318,7 +2318,7 @@
           "speedYaw": 80.0,
           "speedPitch": 80.0,
           "bullets": 484,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2430,7 +2430,7 @@
           "speedYaw": 80.0,
           "speedPitch": 80.0,
           "bullets": 484,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2512,7 +2512,7 @@
           "speedYaw": 80.0,
           "speedPitch": 80.0,
           "bullets": 484,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2593,7 +2593,7 @@
           "speedYaw": 80.0,
           "speedPitch": 80.0,
           "bullets": 484,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2717,6 +2717,73 @@
           },
           {
             "node": "antenna_target_tagging_mount"
+          }
+        ]
+      },
+      {
+        "Weapon": [
+          {
+            "trigger": "gunner2"
+          },
+          {
+            "triggerGroup": "commander"
+          },
+          {
+            "blk": "gameData/Weapons/dummy_weapon.blk"
+          },
+          {
+            "emitter": "bone_commander_sight_v"
+          },
+          {
+            "defaultYaw": 0.0
+          },
+          {
+            "defaultPitch": 0.0
+          },
+          {
+            "parkInDeadzone": false
+          },
+          {
+            "speedYaw": 30.0
+          },
+          {
+            "speedPitch": 20.0
+          },
+          {
+            "turret": {
+              "head": "bone_commander_sight_h",
+              "gun": "bone_commander_sight_v",
+              "gunnerDm": "commander_dm",
+              "verDriveDm": "commander_panoramic_sight_dm",
+              "horDriveDm": "commander_panoramic_sight_dm"
+            }
+          },
+          {
+            "limits": {
+              "yaw": [-180.0,180.0],
+              "pitch": [-5.0,10.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_roll_01",
+              "verLimits": [2.0,-23.0],
+              "verOriginLimits": [-6.0,16.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_roll_02",
+              "verLimits": [-4.0,16.0],
+              "verOriginLimits": [-6.0,16.0]
+            }
+          },
+          {
+            "linkedAnimPart": {
+              "verNode": "bone_roll_03",
+              "verLimits": [-5.0,15.0],
+              "verOriginLimits": [-6.0,16.0]
+            }
           }
         ]
       }
@@ -3413,6 +3480,19 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 15.0,
+      "zoomInFov": 14.7,
+      "sightSize": [0.29,0.2],
+      "ircmProjector": {
+        "node": "bone_commander_sight_v",
+        "beamRadius": [600.0,50.0],
+        "projectorPower": [0.02,0.04]
+      }
+    }
+  },
+  {
     "cockpit": {
       "headPos": [0.0,4.5,-9.0],
       "headPosOnShooting": [0.8,3.95,0.26],
@@ -3421,6 +3501,13 @@
       "sightFov": 5.0,
       "sightName": "poo_2",
       "detectionHeight": 3.76
+    }
+  },
+  {
+    "ircmProjector": {
+      "node": "ex_lantern_01",
+      "beamRadius": [1400.0,100.0],
+      "projectorPower": [0.02,0.07]
     }
   },
   {
@@ -3455,6 +3542,12 @@
         "tier": 3,
         "effects": {
           "nightVision": {
+            "commanderViewIr": {
+              "resolution": [800,600],
+              "lightMult": 8.0,
+              "ghosting": 0.75,
+              "noiseFactor": 0.2
+            },
             "commanderIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
@@ -3504,7 +3597,7 @@
                 "speedYaw": 80.0,
                 "speedPitch": 80.0,
                 "bullets": 484,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3616,7 +3709,7 @@
                 "speedYaw": 80.0,
                 "speedPitch": 80.0,
                 "bullets": 484,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3698,7 +3791,7 @@
                 "speedYaw": 80.0,
                 "speedPitch": 80.0,
                 "bullets": 484,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3779,7 +3872,7 @@
                 "speedYaw": 80.0,
                 "speedPitch": 80.0,
                 "bullets": 484,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3905,6 +3998,30 @@
                   "node": "antenna_target_tagging_mount"
                 }
               ]
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner2",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
+                "turret": {
+                  "head": "bone_commander_sight_h",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm"
+                },
+                "limits": {
+                  "yaw": [-180.0,180.0],
+                  "pitch": [-5.0,10.0]
+                }
+              }
             }
           ],
           "nightVision": {
@@ -3912,7 +4029,7 @@
               "resolution": [1200,800],
               "noiseFactor": 0.04
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,
@@ -4087,11 +4204,11 @@
   {
     "skin": {
       "name": "ussr_camo_finland_polygonal_threecolor",
-      "nameLocId": "skin/ussr_camo_finland_polygonal_threecolor",
-      "descLocId": "skin/ussr_camo_finland_polygonal_threecolor/desc",
+      "nameLocId": "skin/fin_camo_black_green_dark",
+      "descLocId": "skin/fin_camo_black_green_dark/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_finland_polygonal_threecolor*"
+        "to": "fin_camo_black_green_dark*"
       }
     }
   },

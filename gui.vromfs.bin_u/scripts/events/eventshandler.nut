@@ -11,6 +11,7 @@ local { suggestAndAllowPsnPremiumFeatures } = require("scripts/user/psnFeatures.
 local { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
 local { resetSlotbarOverrided, updateOverrideSlotbar } = require("scripts/slotbar/slotbarOverride.nut")
 local { needShowOverrideSlotbar, getCustomViewCountryData } = require("scripts/events/eventInfo.nut")
+local { eachParam } = require("std/datablock.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 local { addPromoButtonConfig } = require("scripts/promo/promoButtonsConfig.nut")
 
@@ -635,8 +636,7 @@ class ::gui_handlers.EventsHandler extends ::gui_handlers.BaseGuiHandlerWT
     eventsListObj.setValue(selectedIdx)
     onItemSelectAction(false)
 
-    foreach (chapterId, value in getCollapsedChapters())
-      collapseChapter(chapterId)
+    eachParam(getCollapsedChapters(), @(_, chapterId) collapseChapter(chapterId), this)
   }
 
   function getEventNameForListBox(event)

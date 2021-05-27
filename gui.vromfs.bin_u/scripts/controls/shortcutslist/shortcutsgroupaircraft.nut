@@ -2,7 +2,6 @@ local globalEnv = require("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
-local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 local isMouseAimSelected = @() (::g_controls_utils.getMouseUsageMask() & AIR_MOUSE_USAGE.AIM)
@@ -396,7 +395,15 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_SENSOR_TYPE_SWITCH"
+    checkAssign = false
+  }
+  {
     id = "ID_SENSOR_MODE_SWITCH"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_ACM_SWITCH"
     checkAssign = false
   }
   {
@@ -635,8 +642,8 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
-    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    checkAssign = @() ::is_xinput_device()
   }
   {
     id = "wheelmenu_y"
@@ -644,8 +651,8 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.AIR
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
-    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
+    checkAssign = @() ::is_xinput_device()
   }
 //-------------------------------------------------------
   {

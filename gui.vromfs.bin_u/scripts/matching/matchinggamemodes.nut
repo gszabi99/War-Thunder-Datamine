@@ -32,7 +32,7 @@ local requestedGameModes = []
     __gameModes.clear()
     __fetching = true
     __fetch_counter++
-    ::fetch_game_modes_digest(null,
+    ::fetch_game_modes_digest({timeout = 60},
       function (result)
       {
         if (!this)
@@ -175,7 +175,7 @@ local requestedGameModes = []
 
   function __loadGameModesFromList(gm_list)
   {
-    ::fetch_game_modes_info({byId = gm_list},
+    ::fetch_game_modes_info({byId = gm_list, timeout = 60},
       function (result)
       {
         if (!::checkMatchingError(result))

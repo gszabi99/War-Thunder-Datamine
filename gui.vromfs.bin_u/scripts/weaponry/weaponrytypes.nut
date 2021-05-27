@@ -1,6 +1,7 @@
 local enums = require("sqStdLibs/helpers/enums.nut")
 local { getWeaponNameText } = require("scripts/weaponry/weaponryDescription.nut")
-local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getModificationName } = require("scripts/weaponry/bulletsVisual.nut")
+local { getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
 local { getByCurBundle } = require("scripts/weaponry/itemInfo.nut")
 local { canBuyMod } = require("scripts/weaponry/modificationInfo.nut")
 local { getLastWeapon } = require("scripts/weaponry/weaponryInfo.nut")
@@ -95,7 +96,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //*********************** BULLETS **********************************************
   BULLETS = {
     type = weaponsItem.bullets
-    getLocName = function(unit, item, limitedName = false) { return getModificationName(unit, item.name, limitedName) }
+    getLocName = @(unit, item, limitedName = false)
+      getModificationName(unit, item.name, getBulletsSetData(unit, item.name), limitedName)
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount
     getMaxAmount = function(unit, item) { return ::wp_get_modification_max_count(unit.name, item.name) }
@@ -105,7 +107,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************* MODIFICATION *******************************************
   MODIFICATION = {
     type = weaponsItem.modification
-    getLocName = function(unit, item, limitedName = false) { return getModificationName(unit, item.name, limitedName) }
+    getLocName = @(unit, item, limitedName = false)
+      getModificationName(unit, item.name, getBulletsSetData(unit, item.name), limitedName)
     getUnlockCost = ::g_weaponry_types._getUnlockCost
     getCost = ::g_weaponry_types._getCost
     getAmount = @(unit, item) getUnlockCost(unit, item).isZero()
@@ -136,7 +139,8 @@ enums.addTypesByGlobalName("g_weaponry_types", {
 //********************* EXPENDABLES *******************************************
   EXPENDABLES = {
     type = weaponsItem.expendables
-    getLocName = function(unit, item, limitedName = false) { return getModificationName(unit, item.name, limitedName) }
+    getLocName = @(unit, item, limitedName = false)
+      getModificationName(unit, item.name, getBulletsSetData(unit, item.name), limitedName)
     getUnlockCost = ::g_weaponry_types._getUnlockCost
     getCost = ::g_weaponry_types._getCost
     getAmount = ::g_weaponry_types._getAmount

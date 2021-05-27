@@ -6,14 +6,11 @@ local defValue  = 1.0
 local values    = [ 1.0, 0.95, 0.9 ]
 local items     = ["100%", "95%", "90%"]
 
-local getFixedValue = function() //return -1 when not fixed
-{
-  if (isPlatformSony)
-    return sony.getDisplaySafeArea()
-  if (::is_low_width_screen())
-    return 1.0
-  return -1
-}
+local getFixedValue = @() //return -1 when not fixed
+  ::is_stereo_mode() ? 0.8
+  : isPlatformSony ? sony.getDisplaySafeArea()
+  : ::is_low_width_screen() ? 1.0
+  : -1
 
 local compatibleGetValue = function()
 {

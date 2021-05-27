@@ -305,6 +305,18 @@
           "hp": 20.0
         }
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 120.0,
+        "armorThickness": 20.0,
+        "gun_barrel_01_dm": [],
+        "gun_barrel_02_dm": [],
+        "gun_barrel_03_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 5.0,
+          "hp": 50.0
+        }
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
@@ -347,19 +359,9 @@
           "ex_armor_02_dm": []
         }
       },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 100.0,
-        "armorThickness": 10.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": [],
-        "gun_barrel_02_dm": [],
-        "gun_barrel_03_dm": [],
-        "gun_barrel_04_dm": [],
-        "gun_barrel_05_dm": []
-      },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -708,6 +710,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -716,10 +726,10 @@
       "EngineName": "engine_strv103",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
+      "TrackSoundName": "tracks_strv103",
+      "TrackSoundNameCockpit": "tracks_strv103_interior",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle"
+      "TrackSoundNameAi": "tracks_ai_strv103"
     }
   },
   {
@@ -2297,7 +2307,7 @@
           "speedYaw": 85.0,
           "speedPitch": 45.0,
           "bullets": 210,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2374,7 +2384,7 @@
           "speedYaw": 85.0,
           "speedPitch": 45.0,
           "bullets": 210,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2464,7 +2474,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,

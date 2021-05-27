@@ -4,6 +4,7 @@ local psnStore = require("sony.store")
 local psnUser = require("sony.user")
 local statsd = require("statsd")
 local { serviceLabel } = require("sonyLib/webApi.nut")
+local { subscribe } = require("eventbus")
 
 local IMAGE_TYPE = "TAM_JACKET"
 local BQ_DEFAULT_ACTION_ERROR = -1
@@ -47,6 +48,17 @@ local function sendBqRecord(metric, itemId, result = null) {
     }))
   )
 }
+
+
+local function reportRecord(data, record_name) {
+  sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
+  if (data.result.action == psnStore.Action.PURCHASED)
+    handleNewPurchase(data.ctx.itemId)
+}
+
+subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))
+subscribe("storeDescriptionClosed", @(data) reportRecord(data, "description.close"))
+
 
 local psnV2ShopPurchasableItem = class {
   defaultIconStyle = "default_chest_debug"
@@ -182,29 +194,24 @@ local psnV2ShopPurchasableItem = class {
   canBeUnseen = @() isBought
   showDetails = function(metricPlaceCall = "ingame_store.v2") {
     local itemId = id
+    local eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "checkout.open"], itemId)
     psnStore.open_checkout(
       [itemId],
       serviceLabel,
-      function(result) {
-        sendBqRecord([metricPlaceCall, "checkout.close"], itemId, result)
-        if (result.action == psnStore.Action.PURCHASED)
-          handleNewPurchase(itemId)
-      }
+      "storeCheckoutClosed",
+      eventData
     )
   }
-
   showDescription = function(metricPlaceCall = "ingame_store.v2") {
     local itemId = id
+    local eventData = {itemId = itemId, metricPlaceCall = metricPlaceCall}
     sendBqRecord([metricPlaceCall, "description.open"], itemId)
     psnStore.open_product(
       itemId,
       serviceLabel,
-      function(result) {
-        sendBqRecord([metricPlaceCall, "description.close"], itemId, result)
-        if (result.action == psnStore.Action.PURCHASED)
-          handleNewPurchase(itemId)
-      }
+      "storeDescriptionClosed",
+      eventData
     )
   }
 }

@@ -39,12 +39,12 @@
       }
     },
     "armor16": {
-      "armor3_dm": {
+      "armor4_dm": {
         "hp": 45.0
       }
     },
     "armor25": {
-      "armor4_dm": {
+      "armor3_dm": {
         "hp": 50.0
       }
     },
@@ -164,8 +164,13 @@
         "hp": 60.5
       }
     },
-    "glass60": {
+    "glass4_5": {
       "armor1_dm": {
+        "hp": 100.0
+      }
+    },
+    "glass8": {
+      "armor2_dm": {
         "hp": 100.0
       }
     },
@@ -2150,7 +2155,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2159,7 +2167,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2907,6 +2918,10 @@
         }
       }
     },
+    "q5_countermeasures_launcher_chaff_only": [],
+    "q5_countermeasures_launcher_flare_only": [],
+    "q5_countermeasures_launcher_chaff_priority": [],
+    "q5_countermeasures_launcher_flare_priority": [],
     "q_5b_ltc": {
       "turn_it_off": false,
       "invertEnableLogic": false,

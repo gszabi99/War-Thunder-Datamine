@@ -1,7 +1,7 @@
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { hasFeature } = require("scripts/user/features.nut")
 
-::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId, latency = -1, latencyA = -1, latencyR = -1)
+::update_status_string <- function update_status_string(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 {
   ::fpsDrawer.updateStatus(fps, ping, packetLoss, sessionId, latency, latencyA, latencyR)
 }

@@ -274,10 +274,15 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
+        "ex_armor_01_dm": [],
+        "ex_armor_02_dm": [],
         "ex_decor_l_01_dm": [],
         "ex_decor_r_01_dm": [],
         "ex_decor_l_02_dm": [],
         "ex_decor_r_02_dm": [],
+        "ex_decor_04_dm": [],
+        "ex_decor_05_dm": [],
+        "ex_decor_08_dm": [],
         "turret_02_back_dm": []
       },
       "mask": {
@@ -362,6 +367,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -707,6 +713,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -721,7 +735,12 @@
       "ex_decor_l_07_dm": true,
       "ex_decor_r_07_dm": true,
       "ex_decor_r_05_dm": true,
-      "ex_decor_l_06_dm": true
+      "ex_decor_l_06_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_decor_05_dm": true,
+      "ex_decor_08_dm": true,
+      "ex_armor_01_dm": true,
+      "ex_armor_02_dm": true
     }
   },
   {
@@ -2340,9 +2359,9 @@
             "pitch": [-14.0,20.0]
           },
           "limitsTable": {
-            "lim1": [-180.0,-170.0,-6.0,20.0],
+            "lim1": [-180.0,-170.0,-8.0,20.0],
             "lim2": [-170.0,159.0,-14.0,20.0],
-            "lim3": [159.0,180.0,-6.0,20.0]
+            "lim3": [159.0,180.0,-8.0,20.0]
           }
         }
       },

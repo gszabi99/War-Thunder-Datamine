@@ -1,6 +1,7 @@
 local contentStateModule = require("scripts/clientState/contentState.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { startLogout } = require("scripts/login/logout.nut")
+local { eachBlock } = require("std/datablock.nut")
 local exitGame = require("scripts/utils/exitGame.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
@@ -81,15 +82,10 @@ local { addPromoAction } = require("scripts/promo/promoActions.nut")
     if (::have_package(reqPacksList[i]))
       reqPacksList.remove(i)
 
-  local pblk = ::DataBlock()
-  ::get_shop_prices(pblk)
-  foreach (ename, ent in pblk)
-    ::u.appendOnce(checkReqContent(ename, ent), reqPacksList, true)
-
-  local fBlk = ::get_game_settings_blk()?.features
-  if (fBlk)
-    foreach (fname, fdata in fBlk)
-      ::u.appendOnce(checkReqContent(fname, fdata), reqPacksList, true)
+  eachBlock(::OnlineShopModel.getPriceBlk(),
+    @(b, n) ::u.appendOnce(::checkReqContent(n, b), reqPacksList, true))
+  eachBlock(::get_game_settings_blk()?.features,
+    @(b, n) ::u.appendOnce(::checkReqContent(n, b), reqPacksList, true))
 
   //workaround - reqPack is missing again in ents
   ::u.appendOnce(checkReqContentByName("usa_pacific_41_43", "hc_pacific"), reqPacksList, true)

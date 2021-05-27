@@ -27,7 +27,7 @@ local hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
 local hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
 local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
 local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
-local hasNightVision = ::memoize(@(unitId) vehicleModel.hasNightVision())
+local hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
 local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
 local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
 local canUseTargetTracking = memoizeByMission(@(unitId) vehicleModel.canUseTargetTracking())
@@ -186,8 +186,12 @@ local cfg = {
           "ID_SENSOR_TARGET_SWITCH_TANK", "ID_SENSOR_TARGET_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_TARGET_LOCK", "ID_SENSOR_TARGET_LOCK_HELICOPTER",
           "ID_SENSOR_TARGET_LOCK_TANK", "ID_SENSOR_TARGET_LOCK_SHIP" ] }
+      { shortcut = [ "ID_SENSOR_TYPE_SWITCH", "ID_SENSOR_TYPE_SWITCH_HELICOPTER",
+          "ID_SENSOR_TYPE_SWITCH_TANK", "ID_SENSOR_TYPE_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_MODE_SWITCH", "ID_SENSOR_MODE_SWITCH_HELICOPTER",
           "ID_SENSOR_MODE_SWITCH_TANK", "ID_SENSOR_MODE_SWITCH_SHIP" ] }
+      { shortcut = [ "ID_SENSOR_ACM_SWITCH", "ID_SENSOR_ACM_SWITCH_HELICOPTER",
+          "ID_SENSOR_ACM_SWITCH_TANK", "ID_SENSOR_ACM_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_SCAN_PATTERN_SWITCH", "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER",
           "ID_SENSOR_SCAN_PATTERN_SWITCH_TANK", "ID_SENSOR_SCAN_PATTERN_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_RANGE_SWITCH", "ID_SENSOR_RANGE_SWITCH_HELICOPTER",

@@ -4,6 +4,7 @@
 
 local shortcutsAxisListModule = require("scripts/controls/shortcutsList/shortcutsAxis.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
+local { eachBlock } = require("std/datablock.nut")
 
 ::g_controls_manager <- {
   [PERSISTENT_DATA_PARAMS] = ["curPreset"]
@@ -101,7 +102,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
     local blkDeviceMapping = ::DataBlock()
     ::fill_joysticks_desc(blkDeviceMapping)
 
-    foreach (blkJoy in blkDeviceMapping)
+    eachBlock(blkDeviceMapping, @(blkJoy)
       realMapping.append({
         name          = blkJoy["name"]
         devId         = blkJoy["devId"]
@@ -110,7 +111,7 @@ local { isPlatformSony } = require("scripts/clientState/platform.nut")
         axesOffset    = blkJoy["axesOfs"]
         axesCount     = blkJoy["axesCnt"]
         connected     = !::getTblValue("disconnected", blkJoy, false)
-      })
+      }))
 
     if (getCurPreset().updateDeviceMapping(realMapping))
       ::broadcastEvent("ControlsPresetChanged")

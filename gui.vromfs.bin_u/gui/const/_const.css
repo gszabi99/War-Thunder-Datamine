@@ -2,7 +2,10 @@
 
 @const rw: (@_safearea_menu_w)*sw $min (sw -2*@debugRowHeight);
 @const rh: (@_safearea_menu_h)*sh $min (sh -2*@debugRowHeight);
-@const bw:0.5(sw-1@rw);  @const bh:0.5(sh-1@rh);  
+@const bw:0.5(sw-1@rw);  @const bh:0.5(sh-1@rh);  @const bwInVr:1@bw*@isInVr;  @const bhInVr:1@bh*@isInVr;  @const swOrRwInVr:sw-2@bwInVr;
+@const shOrRhInVr:sh-2@bhInVr;
+
+
 @const srw:16/9*1@sf $min 1@rw;
 @const srh:1@sf $min 1@rh;
 @const sbw:0.5(sw-1@srw);
@@ -305,7 +308,7 @@
 @const minMisObjHeight:0.08@scrn_tgt;  @const optimalMisObjHeight:0.22@scrn_tgt;
 @const minChatMisObjHeight:1@minChatHeight + 1@minMisObjHeight + 0.07@scrn_tgt;
 @const respawnOptListContainerWidth:(1@slotbarWidthFullExt -8*@sf/@pf_outdated) $max (1@rw * (1-1@isWide));
-@const gameChatWidth:(0.4 + 0.13@isWide)@shHud;
+@const gameChatWidth:(0.4 + 0.13@isWide)@rhHud;
 
 @const topMenuHoverMenuIndent: 0.01@sf;
 
@@ -324,7 +327,7 @@
 @const tooltipPadding: 12@sf/@pf;
 
 @const weaponIconPadding: 4*@sf/@pf;
-@const briefingBackgroundWidth: 1.8*sh;
+@const briefingBackgroundWidth: 1.8*@rh;
 @const briefingScreenWidth: 1@briefingBackgroundWidth $min sw;
 @const briefingScreenWPad: (sw-@briefingScreenWidth)/2 $max 0;
 @const briefingMapWidth: 0.39*@briefingBackgroundWidth;

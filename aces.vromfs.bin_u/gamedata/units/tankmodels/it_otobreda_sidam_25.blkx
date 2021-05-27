@@ -291,6 +291,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -606,6 +607,14 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
       "cannon_breech": {
         "armorClass": "tank_structural_steel",
         "hp": 150.0,
@@ -625,10 +634,11 @@
       "EngineName": "engine_stuart_m5a",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_light",
-      "TrackSoundNameCockpit": "tracks_light_interior",
+      "TrackSoundName": "tracks_lt_modern",
+      "TrackSoundNameCockpit": "tracks_lt_modern_interior",
       "EngineNameAi": "engine_tank_ai_light",
-      "TrackSoundNameAi": "tracks_ai_light"
+      "TrackSoundNameAi": "tracks_ai_lt_modern",
+      "turret_turn": "turret_turn_servo"
     }
   },
   {
@@ -2195,7 +2205,7 @@
           "speedYaw": 120.0,
           "speedPitch": 90.0,
           "bullets": 165,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2307,7 +2317,7 @@
           "speedYaw": 120.0,
           "speedPitch": 90.0,
           "bullets": 165,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2391,7 +2401,7 @@
           "speedYaw": 120.0,
           "speedPitch": 90.0,
           "bullets": 165,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2473,7 +2483,7 @@
           "speedYaw": 120.0,
           "speedPitch": 90.0,
           "bullets": 165,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3154,10 +3164,10 @@
       "openedCockpit": true,
       "headPos": [0.0,4.0,-7.0],
       "headPosOnShooting": [-0.4,3.7,0.0],
-      "zoomOutFov": 40.0,
-      "zoomInFov": 21.0,
-      "sightFov": 20.0,
-      "sightName": "default_tank_spg",
+      "zoomOutFov": 15.7,
+      "zoomInFov": 14.7,
+      "sightFov": 8.0,
+      "sightName": "sfl_zf_1a",
       "detectionHeight": 2.98
     }
   },

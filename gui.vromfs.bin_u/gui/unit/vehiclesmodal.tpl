@@ -4,9 +4,7 @@ root {
   type:t="big"
 
   frame {
-    pos:t='0.5pw-0.5w, 1@titleLogoPlateHeight + 0.3(sh - 1@titleLogoPlateHeight - h)'
-    position:t='absolute'
-
+    isCenteredUnderLogo:t='yes'
     <<#navBar>>
     class:t='wndNav'
     <</navBar>>
@@ -25,13 +23,16 @@ root {
       <</needCloseBtn>>
     }
 
+    popupFilter {
+      margin-bottom:t="1@buttonMargin"
+    }
+
     frameBlock {
       id:t = 'units_list'
       width:t='<<slotCountX>>(@slot_width+2@slotPaddingNoTable)+2@blockInterval<<#hasScrollBar>>+@scrollBarSize<</hasScrollBar>>'
       height:t='<<slotCountY>>(@slot_height+2@slotPaddingNoTable)+2@blockInterval+2@dp'
       padding:t='@blockInterval'
       position:t='relative'
-      top:t='1@popupFilterHeight'
       overflow-y:t='auto'
       flow:t='h-flow'
       behaviour:t='posNavigator'
@@ -52,7 +53,7 @@ root {
       <<@unitsList>>
     }
 
-    popupFilter { top:t='1@frameHeaderHeight' }
+
 
     <<#navBar>>
     navBar {

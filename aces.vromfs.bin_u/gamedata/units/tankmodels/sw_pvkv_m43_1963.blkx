@@ -380,6 +380,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -725,7 +726,23 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_armor_10_dm": true,
+      "ex_armor_11_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_armor_01_dm": true
     }
   },
   {
@@ -2368,7 +2385,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3007,7 +3024,7 @@
   {
     "cockpit": {
       "zoomOutFov": 9.2,
-      "zoomInFov": 4.6,
+      "zoomInFov": 4.63,
       "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,2.85,-6.5],

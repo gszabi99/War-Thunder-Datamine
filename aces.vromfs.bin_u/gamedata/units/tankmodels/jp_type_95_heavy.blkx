@@ -259,13 +259,14 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 150.0,
+        "hp": 120.0,
         "gun_barrel_01_dm": {
-          "armorThickness": 10.0,
-          "hp": 100.0
+          "armorThickness": 20.0,
+          "hp": 120.0
         },
         "gun_barrel_02_dm": {
-          "armorThickness": 15.0
+          "armorThickness": 10.0,
+          "hp": 100.0
         },
         "gun_barrel_03_dm": {
           "armorThrough": 10.0,
@@ -273,11 +274,6 @@
           "hp": 50.0
         },
         "gun_barrel_04_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_05_dm": {
           "armorThrough": 10.0,
           "armorThickness": 5.0,
           "hp": 50.0
@@ -336,6 +332,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -681,6 +678,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },

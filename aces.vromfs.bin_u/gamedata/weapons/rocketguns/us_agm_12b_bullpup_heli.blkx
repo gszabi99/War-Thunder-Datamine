@@ -9,10 +9,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.1,
-    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.01,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "atgm_tank",
     "cumulativeSecondaryShattersPreset": "atgm",
     "explodeOnRendinst": true,
@@ -37,6 +37,10 @@
     "waterCollisionEffect": "120-203_he_water_splash",
     "explosionPatchRadius": 3.4,
     "maxDeltaAngle": 2.55,
+    "fireEffect": "",
+    "smokeEffect": "rocket_fire_short_nofire",
+    "hazeEffect": "",
+    "endSmokeViscosity": 0.05,
     "maxDistance": 11000.0,
     "minDistance": 30.0,
     "mass": 260.0,
@@ -78,17 +82,11 @@
     "tracerTrailEmitter": [-0.15,-0.2,-0.04],
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni",
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.0]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod2": [30.0,0.2]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -207,8 +205,6 @@
       }
     },
     "tracerTrail": {
-      "smokeEffect": "fx1400_smoke",
-      "hazeEffect": "",
       "visual": {
         "traceFreq": 1,
         "tracer": "100mmRed",

@@ -1,9 +1,8 @@
-@const promoButtonPadding: (@bw $max @blockInterval);
 @const arrowButtonHeight: 0.042@sf;
 @const arrowBaseBtnWidth: 1/3@mIco;
 @const contentRightPadding: 1@arrowButtonHeight + 1@blockInterval;
 @const arrowButtonWidth: 4@smallItemHeight;
-@const maxPromoButtonWidth: 1@promoButtonPadding + 1@arrowButtonWidth + 1@arrowBaseBtnWidth + 1@newWidgetIconHeight + 1@scrollBarSize + 0.13@sf;
+@const maxPromoButtonWidth: 1@arrowButtonWidth + 1@arrowBaseBtnWidth + 1@newWidgetIconHeight + 1@scrollBarSize + 0.13@sf;
 @const promoButtonMinHeight: 1@smallItemHeight + 1@arrowButtonHeight + 2@dp;
 
 @const promoButtonSizeWithOffsets: 1@mIco;
@@ -23,7 +22,7 @@ promoButton {
   css-hier-invalidate:yes;
   total-input-transparent:yes;
   input-transparent:yes;
-  pos: pw-w-1@promoButtonPadding, 0;
+  pos: pw-w, 0;
   position: relative;
   margin: 0, 1@blockInterval;
   overflow: hidden;
@@ -351,7 +350,7 @@ promoButton > baseToggleButton {
 }
 
 promoButton[type=battleTask] > baseToggleButton {
-  left: pw - w - 1@promoButtonPadding - 1@blockInterval;
+  left: pw - w - 1@blockInterval;
   position:absolute;
 }
 

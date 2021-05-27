@@ -5,7 +5,7 @@ local {IsMlwsLwsHudVisible, IsRwrHudVisible, IsTwsActivated, CollapsedIcon} = re
 local radarComponent = require("radarComponent.nut")
 local {GunOverheatState, IsCannonEmpty, IndicatorsVisible,
       FixedGunSightMode, FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY,
-      CurrentTime, TATargetX, TATargetY, MainMask, SightMask,
+      CurrentTime, MainMask, SightMask,
       IsAgmEmpty, AtgmTrackerRadius, IsATGMOutOfTrackerSector, NoLosToATGM,
       GunDirectionX, GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode, IsPilotHudVisible,
       IsWeaponHudVisible, IsLaserDesignatorEnabled, Agm, IsMainHudVisible, IsSightHudVisible, IsGunnerHudVisible,
@@ -14,6 +14,8 @@ local aamAim = require("rocketAamAim.nut")
 local agmAim = require("agmAim.nut")
 local hudElems = require("helicopterHudElems.nut")
 local {hudFontHgt, backgroundColor, fontOutlineColor, fontOutlineFxFactor} = require("style/airHudStyle.nut")
+local { TargetX, TargetY } = require("reactiveGui/hud/targetTrackerState.nut")
+
 
 local compassWidth = hdpx(420)
 local compassHeight = hdpx(40)
@@ -233,7 +235,7 @@ local function helicopterCCRP(line_style, isBackground){
       rendObj = ROBJ_VECTOR_CANVAS
       size = [sh(0.625), sh(0.625)]
       color = getColor(isBackground)
-      commands = [[VECTOR_LINE, 0,0, TATargetX.value, TATargetY.value]]
+      commands = [[VECTOR_LINE, 0,0, TargetX.value, TargetY.value]]
     })
 
     return @() {
@@ -421,7 +423,7 @@ local function helicopterSightHud(elemStyle, isBackground) {
       hudElems.launchDistanceMax(elemStyle, hdpx(150), hdpx(150), sw(50), sh(90), isBackground)
       helicopterSightParamsTable(elemStyle, isBackground)
       hudElems.lockSight(elemStyle, hdpx(150), hdpx(100), sw(50), sh(50), isBackground)
-      hudElems.targetSize(elemStyle, sw(100), sh(100), isBackground)
+      hudElems.targetSize(elemStyle, sw(100), sh(100))
       agmTrackZoneComponent(elemStyle, isBackground)
       laserDesignatorComponent(elemStyle, isBackground)
       hudElems.sight(elemStyle, sw(50), sh(50), hdpx(500), isBackground)

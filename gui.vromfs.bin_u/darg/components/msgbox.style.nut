@@ -91,7 +91,10 @@ local styling = {
       valign = ALIGN_CENTER
       padding = [sh(2), 0]
       children = {
-        rendObj = ROBJ_DTEXT
+        size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXTAREA
+        behavior = Behaviors.TextArea
+        halign = ALIGN_CENTER
         text = params?.text
       }
     }

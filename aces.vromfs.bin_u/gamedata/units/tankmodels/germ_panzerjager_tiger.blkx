@@ -290,6 +290,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -672,6 +673,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -1488,6 +1497,30 @@
             }
           }
         ]
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "turret": {
+            "head": "bone_commander_sight_h",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-90.0,90.0],
+            "pitch": [-10.0,15.0]
+          }
+        }
       },
       {
         "hideNodes": [
@@ -3142,6 +3175,14 @@
     ]
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 7.47,
+      "zoomInFov": 7.37,
+      "sightSize": [0.146,0.103]
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 8.0,
       "zoomInFov": 7.37,
@@ -3335,6 +3376,30 @@
               ]
             },
             {
+              "Weapon": {
+                "trigger": "gunner2",
+                "triggerGroup": "commander",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "bone_commander_sight_v",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "parkInDeadzone": false,
+                "speedYaw": 30.0,
+                "speedPitch": 20.0,
+                "turret": {
+                  "head": "bone_commander_sight_h",
+                  "gun": "bone_commander_sight_v",
+                  "gunnerDm": "commander_dm",
+                  "verDriveDm": "commander_panoramic_sight_dm",
+                  "horDriveDm": "commander_panoramic_sight_dm"
+                },
+                "limits": {
+                  "yaw": [-90.0,90.0],
+                  "pitch": [-10.0,15.0]
+                }
+              }
+            },
+            {
               "hideNodes": [
                 {
                   "node": "gun_barrel_02"
@@ -3457,6 +3522,28 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
     }
   },

@@ -18,9 +18,8 @@ local systemColor = "@chatInfoColor"
 
 ::g_script_reloader.registerPersistentData("MenuChatMessagesGlobals", persistent, ["lastCreatedMessageIndex"])
 
-local function filterSystemUserMsg(msg)
+local function localizeSystemMsg(msg)
 {
-  msg = ::g_chat.filterMessageText(msg, false)
   local localized = false
   foreach(ending in ["is set READONLY", "is set BANNED"])
   {
@@ -107,7 +106,7 @@ local function newMessage(from, msg, privateMsg = false, myPrivate = false, over
 
   if (::g_chat.isSystemUserName(from)) {
     from = ""
-    msg = filterSystemUserMsg(msg)
+    msg = localizeSystemMsg(msg)
   }
 
   if (from == "") {

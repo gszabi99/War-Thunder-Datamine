@@ -1,6 +1,4 @@
 local defStyle = require("textButton.style.nut")
-local fa = require("fontawesome.map.nut")
-local Fonts = ::Fonts
 local hdpx = ::hdpx
 local pw = ::pw
 
@@ -48,12 +46,9 @@ local textButton = @(fill_color, border_width) function(text, handler, params={}
   local btnMargin =  params?.margin ?? defStyle.btnMargin
   local textMargin = params?.textMargin ?? defStyle.textMargin
 
-  local font = params?.font ?? Fonts.medium_text //!!FIX ME: why real font name in general library?
-  local size = params?.size ?? SIZE_TO_CONTENT
-  local {halign = ALIGN_LEFT, valign = ALIGN_CENTER} = params
+  local {halign = ALIGN_LEFT, valign = ALIGN_CENTER, font=null, fontSize=null, size=SIZE_TO_CONTENT} = params
   local sound = params?.style.sound
   local textCtor = params?.textCtor ?? defTextCtor
-
   local function builder(sf) {
     return {
       watch = stateFlags
@@ -85,6 +80,7 @@ local textButton = @(fill_color, border_width) function(text, handler, params={}
         ellipsis = false
         margin = textMargin
         font
+        fontSize
         group
         behavior = [Behaviors.Marquee]
         color = textColor(sf, style, isEnabled)
@@ -104,9 +100,6 @@ local export = class{
   Underline = textButton(fillColor, [0,0,hdpx(1),0])
   Flat = textButton(fillColor, 0)
   Transp = textButton(fillColorTransp, 0)
-  FA =          @(fa_key, handler, params={}) Flat     ((fa?[fa_key] ?? "N"), handler, {margin = 0 font = Fonts.fontawesome halign = ALIGN_CENTER valign=ALIGN_CENTER}.__update(params))
-  FA_Bordered = @(fa_key, handler, params={}) Bordered ((fa?[fa_key] ?? "N"), handler, {margin = 0 font = Fonts.fontawesome halign = ALIGN_CENTER valign=ALIGN_CENTER}.__update(params))
-  FA_Transp   = @(fa_key, handler, params={}) Transp   ((fa?[fa_key] ?? "N"), handler, {margin = 0 font = Fonts.fontawesome halign = ALIGN_CENTER valign=ALIGN_CENTER}.__update(params))
 
   _call = @(self, text, handler, params={}) Flat(text, handler, params)
 }()

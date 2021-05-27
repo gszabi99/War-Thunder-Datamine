@@ -2280,7 +2280,10 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2]
+          "flexionDir": [0.0,-1.0,0.2],
+          "type": "leftHand",
+          "detachedNodeYpr": [0.0,-15.0,-90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -2289,7 +2292,10 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5]
+          "flexionDir": [0.0,-1.0,-0.5],
+          "type": "rightHand",
+          "detachedNodeYpr": [0.0,-15.0,90.0],
+          "detachedNodeScale": [1.0,-1.0,1.0]
         }
       },
       {
@@ -3213,11 +3219,20 @@
         }
       },
       {
-        "preset": {
-          "name": "buccaneer_s2_rp3_1000lb",
-          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_1000lb.blk",
-          "reqModification": "uk_mk_10_1000lb"
-        }
+        "preset": [
+          {
+            "name": "buccaneer_s2_rp3_1000lb"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_1000lb.blk"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "reqModification": "uk_rp3_mk12"
+          }
+        ]
       },
       {
         "preset": [
@@ -3317,59 +3332,70 @@
         }
       },
       {
-        "preset": {
-          "name": "buccaneer_s2_1000lb_bombs_aim_9b",
-          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_aim_9b.blk",
-          "reqModification": "us_aim_9b",
-          "weaponConfig": [
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
-                },
-                {
-                  "iconType": "bombs_large_group"
-                },
-                {
-                  "amountPerTier": 3.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
+        "preset": [
+          {
+            "name": "buccaneer_s2_1000lb_bombs_aim_9b"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_aim_9b.blk"
+          },
+          {
+            "reqModification": "us_aim_9b"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large_group"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
                   }
-                },
-                {
-                  "tier": {
-                    "idx": 7
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
+                  },
+                  {
+                    "iconType": "missile_air_to_air"
+                  },
+                  {
+                    "amountPerTier": 1.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 4
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8
+                    }
                   }
-                }
-              ]
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/rocketGuns/us_aim9b_sidewinder.blk"
-                },
-                {
-                  "iconType": "missile_air_to_air"
-                },
-                {
-                  "amountPerTier": 1.0
-                },
-                {
-                  "tier": {
-                    "idx": 4
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 8
-                  }
-                }
-              ]
-            }
-          ]
-        }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         "preset": [
@@ -3824,57 +3850,68 @@
         }
       },
       {
-        "preset": {
-          "name": "buccaneer_s2_1000lb_bombs_ltc",
-          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc.blk",
-          "reqModification": "countermeasures_belt_pack",
-          "weaponConfig": [
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
-                },
-                {
-                  "iconType": "bombs_large_group"
-                },
-                {
-                  "amountPerTier": 3.0
-                },
-                {
-                  "tier": {
-                    "idx": 5
+        "preset": [
+          {
+            "name": "buccaneer_s2_1000lb_bombs_ltc"
+          },
+          {
+            "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_1000lb_bombs_ltc.blk"
+          },
+          {
+            "reqModification": "countermeasures_belt_pack"
+          },
+          {
+            "reqModification": "uk_mk_10_1000lb"
+          },
+          {
+            "weaponConfig": [
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk"
+                  },
+                  {
+                    "iconType": "bombs_large_group"
+                  },
+                  {
+                    "amountPerTier": 3.0
+                  },
+                  {
+                    "tier": {
+                      "idx": 5
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 7
+                    }
                   }
-                },
-                {
-                  "tier": {
-                    "idx": 7
+                ]
+              },
+              {
+                "Weapon": [
+                  {
+                    "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk"
+                  },
+                  {
+                    "tier": {
+                      "idx": 4,
+                      "iconType": "ltc",
+                      "amountPerTier": 52.0
+                    }
+                  },
+                  {
+                    "tier": {
+                      "idx": 8,
+                      "iconType": "ltc",
+                      "amountPerTier": 52.0
+                    }
                   }
-                }
-              ]
-            },
-            {
-              "Weapon": [
-                {
-                  "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher_jet.blk"
-                },
-                {
-                  "tier": {
-                    "idx": 4,
-                    "iconType": "ltc",
-                    "amountPerTier": 52.0
-                  }
-                },
-                {
-                  "tier": {
-                    "idx": 8,
-                    "iconType": "ltc",
-                    "amountPerTier": 52.0
-                  }
-                }
-              ]
-            }
-          ]
-        }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         "preset": [
@@ -4660,7 +4697,8 @@
       {
         "preset": {
           "name": "buccaneer_s2_rp3_500lb",
-          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_500lb.blk"
+          "blk": "gameData/FlightModels/weaponPresets/buccaneer_s2_rp3_500lb.blk",
+          "reqModification": "uk_rp3_mk12"
         }
       },
       {

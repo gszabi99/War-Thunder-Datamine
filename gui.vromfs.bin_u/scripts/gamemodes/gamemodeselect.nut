@@ -8,13 +8,14 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
 local {
   checkAndShowMultiplayerPrivilegeWarning,
   isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
-
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::dagui_propid.add_name_id("modeId")
 
 class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneTplName = "gui/gameModeSelect/gameModeSelect"
+  shouldBlurSceneBgFn = needUseHangarDof
   backSceneFunc = @() ::gui_start_mainmenu()
   needAnimatedSwitchScene = false
 
@@ -226,7 +227,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
         isMode = true
         text  = mode.text
         textDescription = mode.textDescription
-        value = mode.modeId
         hasCountries = false
         isWide = mode.isWide
         image = mode.image()
@@ -291,11 +291,11 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       modeId = gameMode.id
       hasContent = true
       isMode = true
+      isConsoleBtn = ::show_console_buttons
       text = gameMode.text
       getEvent = gameMode?.getEvent
       textDescription = ::getTblValue("textDescription", gameMode, null)
       tooltip = gameMode.getTooltipText()
-      value = gameMode.id
       hasCountries = countries.len() != 0
       countries = countries
       isCurrentGameMode = gameMode.id == ::game_mode_manager.getCurrentGameModeId()
@@ -438,7 +438,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       return
 
     markGameModeSeen(obj)
-    local gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.value)
+    local gameModeView = u.search(filledGameModes, @(gm) gm.isMode && gm?.hasContent && gm.modeId == obj.modeId)
     performGameModeSelect(gameModeView.gameMode)
   }
 
@@ -531,7 +531,7 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
 
   function onEventDescription(obj)
   {
-    openEventDescription(::game_mode_manager.getGameModeById(obj.value))
+    openEventDescription(::game_mode_manager.getGameModeById(obj.modeId))
   }
 
   function onGamepadEventDescription(obj)

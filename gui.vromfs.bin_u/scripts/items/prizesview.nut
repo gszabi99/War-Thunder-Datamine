@@ -3,7 +3,8 @@ local { cutPostfix } = require("std/string.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local globalCallbacks = require("sqDagui/globalCallbacks/globalCallbacks.nut")
 local { getUnitRole } = require("scripts/unit/unitInfoTexts.nut")
-local { getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getModificationName } = require("scripts/weaponry/bulletsVisual.nut")
+local { getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
 local { getEntitlementConfig, getEntitlementName } = require("scripts/onlineShop/entitlements.nut")
 local { getPrizeChanceConfig } = require("scripts/items/prizeChance.nut")
 local { MODIFICATION, SPARE } = require("scripts/weaponry/weaponryTooltips.nut")
@@ -987,7 +988,8 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
     icon = icon
     icon2 = ::get_unit_country_icon(unit)
     title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
-          + ::colorize("userlogColoredText", getModificationName(unit, modName))
+      + ::colorize("userlogColoredText",
+        getModificationName(unit, modName, getBulletsSetData(unit, modName)))
     tooltipId = MODIFICATION.getTooltipId(unitName, modName)
   }
 }

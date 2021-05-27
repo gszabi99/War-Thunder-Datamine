@@ -209,6 +209,9 @@
           "setEnabled": {
             "value": true
           },
+          "setWeaponDetectionAllowance": {
+            "source": "targetDesignation"
+          },
           "setTransiver": {
             "transiver": "track"
           },
@@ -225,6 +228,10 @@
           "setEnabled": {
             "value": true
           },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
+            "value": true
+          },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 1000.0
@@ -235,6 +242,10 @@
             "name": "track"
           },
           "setEnabled": {
+            "value": true
+          },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
             "value": true
           },
           "setScanPatternSet": [],
@@ -252,6 +263,10 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -498,6 +513,10 @@
               "source": "continuousScale",
               "width": 0.0
             },
+            "setRelSpeedGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
             "detectTarget": []
           }
         },
@@ -544,6 +563,12 @@
           },
           {
             "setEnabled": {
+              "value": true
+            }
+          },
+          {
+            "setWeaponDetectionAllowance": {
+              "source": "const",
               "value": true
             }
           },
@@ -738,6 +763,10 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

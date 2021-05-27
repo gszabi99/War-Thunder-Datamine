@@ -28,7 +28,7 @@ gameModeBlock {
   <<#hasContent>>
   id:t='<<id>>';
   tooltip:t='<<#crossplayTooltip>><<crossplayTooltip>>\n<</crossplayTooltip>><<tooltip>>'
-  value:t='<<value>>';
+  modeId:t='<<modeId>>'
 
   <<#isFeatured>>
   featured:t='yes';
@@ -46,9 +46,12 @@ gameModeBlock {
   <<#isCurrentGameMode>>
     current_mode:t='yes';
   <</isCurrentGameMode>>
-
-  behavior:t='button';
-  focusBtnName:t='A'
+  <<^isConsoleBtn>>
+    behavior:t='posNavigator'
+    navigatorShortcuts:t='active'
+    move-only-hover:t='yes'
+  <</isConsoleBtn>>
+  behavior:t='button'
   background-color:t='@white';
   background-repeat:t='expand';
   background-image:t='#ui/gameuiskin#item';

@@ -1,6 +1,9 @@
 local interopGen = require("reactiveGui/interopGen.nut")
 local { floor } = require("std/math.nut")
 
+local IndicatorsVisible = Watched(false)
+local CurrentTime = Watched(false)
+
 local IsCommanderViewAimModeActive = Watched(false)
 
 local activeProtectionSystemModules = []
@@ -28,7 +31,11 @@ local function resizeActiveProtectionSystemModules(count) {
 ActiveProtectionSystemModulesCount.subscribe(resizeActiveProtectionSystemModules)
 
 local tankState = {
+  IndicatorsVisible,
+  CurrentTime,
+
   IsCommanderViewAimModeActive
+
   ActiveProtectionSystemModulesCount
   activeProtectionSystemModules
 }

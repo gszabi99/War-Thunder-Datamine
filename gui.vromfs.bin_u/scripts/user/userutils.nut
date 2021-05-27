@@ -2,41 +2,11 @@ local crossplayModule = require("scripts/social/crossplay.nut")
 local mapPreferencesParams = require("scripts/missions/mapPreferencesParams.nut")
 local slotbarPresets = require("scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
-local { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("scripts/clientState/platform.nut")
+local { isPlatformSony, targetPlatform } = require("scripts/clientState/platform.nut")
 local { getMyCrewUnitsState } = require("scripts/slotbar/crewsListInfo.nut")
 local { addPromoAction } = require("scripts/promo/promoActions.nut")
 
-local needShowRateWnd = false //need this, because debriefing data destroys after debriefing modal is closed
-
 ::g_user_utils <- {
-  function setNeedShowRate(val)
-  {
-    needShowRateWnd = val
-  }
-
-  function checkShowRateWnd()
-  {
-    //can be on any platform in future,
-    //no need to specify platform in func name
-    //but now only for xbox have such ability.
-    if (!isPlatformXboxOne)
-      return
-
-    //show only if player win last mp battle
-    if (!needShowRateWnd)
-      return
-
-    local path = "seen/rateWnd"
-    if (::load_local_account_settings(path, false))
-      return
-
-    if (::xbox_show_rate_and_review()) //if success - save show status
-      ::save_local_account_settings(path, true)
-
-    // in case of error, show in next launch.
-    needShowRateWnd = false
-  }
-
   function getMyStateData()
   {
     local profileInfo = ::get_profile_info()
@@ -143,7 +113,7 @@ local needShowRateWnd = false //need this, because debriefing data destroys afte
   {
     ::gui_modal_editbox_wnd({
       title = ::loc("mainmenu/XboxOneEmailRegistration")
-      editboxHeaderText = ::loc("mainmenu/XboxOneEmailRegistration/desc")
+      label = ::loc("mainmenu/XboxOneEmailRegistration/desc")
       checkWarningFunc = ::g_string.validateEmail
       allowEmpty = false
       needOpenIMEonInit = false

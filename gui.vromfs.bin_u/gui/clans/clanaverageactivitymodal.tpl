@@ -6,8 +6,8 @@ root {
 
   frame {
     width:t= '70*@scrn_tgt/100'
-    pos:t='0.5pw-0.5w, 1@titleLogoPlateHeight + 0.3*(sh - 1@titleLogoPlateHeight - h)'
-    position:t='absolute'
+    isCenteredUnderLogo:t='yes'
+
     class:t='wnd'
     frame_header {
       activeText {

@@ -33,7 +33,7 @@ local mkSelItem = @(state, onClickCtor=null, isCurrent=null, textCtor=null, elem
           : selected
             ? textActiveColor
             : textCommonColor,
-        padding = borderRadius, font=Fonts.medium_text
+        padding = borderRadius
       }
       onClick = onClick
       borderColor = borderColor

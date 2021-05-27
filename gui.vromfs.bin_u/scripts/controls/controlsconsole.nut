@@ -2,6 +2,9 @@ local { setBreadcrumbGoBackParams } = require("scripts/breadcrumb.nut")
 
 ::gui_start_controls_console <- function gui_start_controls_console()
 {
+  if (!::has_feature("ControlsAdvancedSettings"))
+    return
+
   ::gui_start_modal_wnd(::gui_handlers.ControlsConsole)
 }
 

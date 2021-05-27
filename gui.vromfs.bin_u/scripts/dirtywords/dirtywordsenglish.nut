@@ -42,6 +42,13 @@ excludesdata =
     ]
   },
   {
+    key = "n",
+    arr =
+    [
+      "^negat[ie]"
+    ]
+  },
+  {
     key = "t",
     arr =
     [
@@ -390,7 +397,7 @@ fouldata =
     key = "n",
     arr =
     [
-      "^n(|[aeiu14])[qg6](|q|g|6)([e3]r|[ag46])(|man|z|let)",
+      "^n(|[aeilu14])[qg6](|q|g|6)([e3]r|[ag46])(|man|z|let)",
       "^n[g13]gr",
       "^nastt",
       "^n[a4](|t)z[i1l]",
@@ -442,6 +449,7 @@ fouldata =
       "^phag(|g)o[rt]",
       "^phu[ck]",
       "^pi(|c)k(a|ey)",
+      "^pid(|[oea])r",
       "^pierdol",
       "^pillu",
       "^pimmel",

@@ -7,7 +7,8 @@
   "emitR": 3.0,
   "emitTime": 0.03,
   "aimMinDist": 0.1,
-  "aimMaxDist": 3000.0,
+  "aimMaxDist": 4500.0,
+  "attackMaxDist": 3000.0,
   "maxDeltaAngle": 0.08,
   "maxDeltaAngleVertical": 0.08,
   "shotFreq": 9.16,
@@ -51,9 +52,9 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.05,
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "he_i_t",
     "slopeEffectPreset": "ap",
@@ -69,20 +70,11 @@
     "ricochetEffect": "hit_28_38mm_metal_ap",
     "waterCollisionEffect": "hit_28_38mm_water",
     "explosionPatchRadius": 1.0,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.05]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod3": [30.0,0.2]
-      },
-      {
-        "mod3": [45.0,0.3]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -146,6 +138,9 @@
       },
       "roadSoil": {
         "fx": "hit_28_38mm_dirt_he"
+      },
+      "bricks_red": {
+        "fx": "hit_28_38mm_red_brick_he"
       },
       "sand": {
         "fx": "hit_28_38mm_sand_he"
@@ -218,9 +213,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_i_t",
       "slopeEffectPreset": "ap",
@@ -236,20 +231,11 @@
       "ricochetEffect": "hit_28_38mm_metal_ap",
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 1.0,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.05]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod3": [30.0,0.2]
-        },
-        {
-          "mod3": [45.0,0.3]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -313,6 +299,9 @@
         },
         "roadSoil": {
           "fx": "hit_28_38mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_28_38mm_red_brick_he"
         },
         "sand": {
           "fx": "hit_28_38mm_sand_he"
@@ -388,10 +377,12 @@
       "normalizationPreset": "apcr",
       "ricochetPreset": "apds",
       "secondaryShattersPreset": "apds",
-      "stabilityThreshold": 0.0,
-      "stabilityCaliberToArmorThreshold": 10.0,
-      "stabilityReductionAfterRicochet": 0.15,
-      "stabilityReductionAfterPenetration": 0.2,
+      "stabilityThreshold": 0.05,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterPenetration": 0.15,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
       "bulletType": "apds_autocannon",
       "slopeEffectPreset": "apds",
       "fresnel": [0.23,0.1,2.0],
@@ -408,23 +399,10 @@
       "ricochetEffect": "hit_28_38mm_metal_ap",
       "waterCollisionEffect": "hit_28_38mm_water",
       "explosionPatchRadius": 0.4,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.25]
-        },
-        {
-          "mod2": [20.0,0.3]
-        },
-        {
-          "mod3": [30.0,0.45]
-        },
-        {
-          "mod3": [45.0,0.5]
-        },
-        {
-          "mod4": [50.0,0.7]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.2],
+        "mod2": [20.0,0.45]
+      },
       "tracePattern": {
         "caliber": 10.0,
         "circleCount": 2,
@@ -468,6 +446,9 @@
         },
         "roadSoil": {
           "fx": "hit_28_38mm_dirt_ap"
+        },
+        "bricks_red": {
+          "fx": "hit_28_38mm_red_brick_ap"
         },
         "sand": {
           "fx": "hit_28_38mm_sand_ap"

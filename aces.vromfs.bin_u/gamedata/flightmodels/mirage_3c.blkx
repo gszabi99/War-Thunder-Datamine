@@ -2055,7 +2055,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2064,7 +2067,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2282,7 +2288,6 @@
       "preset": {
         "name": "mirage_3c_2xaim9b",
         "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2xaim9b.blk",
-        "reqModification": "us_aim_9b",
         "weaponConfig": {
           "presetType": "AIR_TO_AIR"
         }
@@ -2319,25 +2324,14 @@
       }
     },
     {
-      "preset": [
-        {
-          "name": "mirage_3c_1xr530e_2xaim9b"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530e_2xaim9b.blk"
-        },
-        {
-          "reqModification": "us_aim_9b"
-        },
-        {
-          "reqModification": "fr_matra_r_530e"
-        },
-        {
-          "weaponConfig": {
-            "presetType": "AIR_TO_AIR"
-          }
+      "preset": {
+        "name": "mirage_3c_1xr530e_2xaim9b",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530e_2xaim9b.blk",
+        "reqModification": "fr_matra_r_530e",
+        "weaponConfig": {
+          "presetType": "AIR_TO_AIR"
         }
-      ]
+      }
     },
     {
       "preset": [
@@ -2369,9 +2363,6 @@
           "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530e_2xaim9b_2xjl100r.blk"
         },
         {
-          "reqModification": "us_aim_9b"
-        },
-        {
           "reqModification": "fr_matra_r_530e"
         },
         {
@@ -2399,25 +2390,14 @@
       ]
     },
     {
-      "preset": [
-        {
-          "name": "mirage_3c_1xr530_2xaim9b"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530_2xaim9b.blk"
-        },
-        {
-          "reqModification": "us_aim_9b"
-        },
-        {
-          "reqModification": "fr_matra_r_530"
-        },
-        {
-          "weaponConfig": {
-            "presetType": "AIR_TO_AIR"
-          }
+      "preset": {
+        "name": "mirage_3c_1xr530_2xaim9b",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530_2xaim9b.blk",
+        "reqModification": "fr_matra_r_530",
+        "weaponConfig": {
+          "presetType": "AIR_TO_AIR"
         }
-      ]
+      }
     },
     {
       "preset": [
@@ -2447,9 +2427,6 @@
         },
         {
           "blk": "gameData/FlightModels/weaponPresets/mirage_3c_1xr530_2xaim9b_2xjl100r.blk"
-        },
-        {
-          "reqModification": "us_aim_9b"
         },
         {
           "reqModification": "fr_matra_r_530"
@@ -2539,29 +2516,18 @@
       }
     },
     {
-      "preset": [
-        {
-          "name": "mirage_3c_2x250kg_2xaim9b"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x250kg_2xaim9b.blk"
-        },
-        {
-          "reqModification": "us_aim_9b"
-        },
-        {
-          "reqModification": "fr_250kg_type_25c"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
-              "amountPerTier": 2.0,
-              "iconType": "bombs_middle_group_x2"
-            }
+      "preset": {
+        "name": "mirage_3c_2x250kg_2xaim9b",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x250kg_2xaim9b.blk",
+        "reqModification": "fr_250kg_type_25c",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/fr_250_samp_type_25.blk",
+            "amountPerTier": 2.0,
+            "iconType": "bombs_middle_group_x2"
           }
         }
-      ]
+      }
     },
     {
       "preset": [
@@ -2639,29 +2605,18 @@
       ]
     },
     {
-      "preset": [
-        {
-          "name": "mirage_3c_2x400kg_2xaim9b"
-        },
-        {
-          "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x400kg_2xaim9b.blk"
-        },
-        {
-          "reqModification": "us_aim_9b"
-        },
-        {
-          "reqModification": "fr_400kg_type_21b"
-        },
-        {
-          "weaponConfig": {
-            "Weapon": {
-              "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
-              "amountPerTier": 2.0,
-              "iconType": "bombs_large_group_x2"
-            }
+      "preset": {
+        "name": "mirage_3c_2x400kg_2xaim9b",
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2x400kg_2xaim9b.blk",
+        "reqModification": "fr_400kg_type_21b",
+        "weaponConfig": {
+          "Weapon": {
+            "blk": "gameData/Weapons/BombGuns/fr_400_samp_type_21.blk",
+            "amountPerTier": 2.0,
+            "iconType": "bombs_large_group_x2"
           }
         }
-      ]
+      }
     },
     {
       "preset": [
@@ -2741,8 +2696,7 @@
     {
       "preset": {
         "name": "mirage_3c_2xaim9b_sepr_844",
-        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2xaim9b_sepr_844.blk",
-        "reqModification": "us_aim_9b"
+        "blk": "gameData/FlightModels/weaponPresets/mirage_3c_2xaim9b_sepr_844.blk"
       }
     },
     {
@@ -2878,14 +2832,9 @@
       "modClass": "weapon",
       "reqModification": "fr_lr_f1"
     },
-    "us_aim_9b": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
     "fr_matra_r_530": {
       "tier": 2,
-      "modClass": "weapon",
-      "reqModification": "us_aim_9b"
+      "modClass": "weapon"
     },
     "fr_matra_r_530e": {
       "tier": 3,

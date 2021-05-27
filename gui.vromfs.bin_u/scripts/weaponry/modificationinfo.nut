@@ -98,8 +98,9 @@ local function getModificationBulletsGroup(modifName)
     if (!modification?.group)
       return "" //new_gun etc. - not a bullets list
     if (modification?.effects)
-      foreach (effectType, effect in modification.effects)
+      for (local i = 0; i < modification.effects.paramCount(); i++)
       {
+        local effectType = modification.effects.getParamName(i)
         if (effectType == "additiveBulletMod")
         {
           local underscore = modification.group.indexof("_")
@@ -116,6 +117,30 @@ local function getModificationBulletsGroup(modifName)
   return ""
 }
 
+local function updateRelationModificationList(unit, modifName)
+{
+  local mod = getModificationByName(unit, modifName)
+  if (mod && !("relationModification" in mod))
+  {
+    local blk = ::get_modifications_blk();
+    mod.relationModification <- [];
+    foreach(ind, m in unit.modifications)
+    {
+      if ("reqModification" in m && ::isInArray(modifName, m.reqModification))
+      {
+        local modification = blk?.modifications?[m.name]
+        if (modification?.effects)
+          for (local i = 0; i < modification.effects.paramCount(); i++)
+            if (modification.effects.getParamName(i) == "additiveBulletMod")
+            {
+              mod.relationModification.append(m.name)
+              break
+            }
+      }
+    }
+  }
+}
+
 return {
   canBuyMod
   isModResearched
@@ -129,4 +154,5 @@ return {
   getModificationByName
   getModificationBulletsGroup
   isReqModificationsUnlocked
+  updateRelationModificationList
 }

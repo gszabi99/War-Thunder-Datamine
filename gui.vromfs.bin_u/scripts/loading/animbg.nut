@@ -9,7 +9,7 @@ const MODIFY_NO_FILE = -2
 
 local lastBg = ""
 
-local getFullFileName = @(name) $"config/loadingbg/{name}.blk"
+local getFullFileName = @(name) name.split(".").len() > 1 ? name : $"config/loadingbg/{name}.blk"
 local getLastBgFileName = @() lastBg.len() ? getFullFileName(lastBg) : ""
 
 local isDebugMode = false
@@ -40,23 +40,24 @@ local function loadBgBlk(name) {
   return res
 }
 
-local function load(animBgBlk = "", obj = null) {
+local function load(blkFilePath = "", obj = null, curBgData = null) {
   if (!obj)
     obj = ::get_cur_gui_scene()["animated_bg_picture"]
   if (!::check_obj(obj))
     return
 
-  local curBgData = getCurLoadingBgData()
+  curBgData = curBgData ?? getCurLoadingBgData()
   local curBgList = curBgData.list
   if (!curBgList.len())
     return
 
-  if (animBgBlk!="")
-    lastBg = animBgBlk
+  if (blkFilePath != "")
+    lastBg = blkFilePath
   else
-    if (::g_login.isLoggedIn() || lastBg=="") //no change bg during first load
+    if (::g_login.isLoggedIn() || lastBg == "") //no change bg during first load
     {
-      if (::has_feature("LoadingBackgroundFilter") && ::g_login.isProfileReceived() && ::havePremium())
+      if (::has_feature("LoadingBackgroundFilter")
+        && ::g_login.isProfileReceived() && ::havePremium())
       {
         local filteredCurBgList = curBgList.filter(@(v, id) !isLoadingScreenBanned(id))
         if (filteredCurBgList.len() > 0)
@@ -118,14 +119,14 @@ local function enableDebugUpdate() {
     false)
 }
 
-//animBgBlk == null - swith debug mode off.
-local function debugLoad(animBgBlk = "") {
-  isDebugMode = animBgBlk != null
+//blkFilePath == null - swith debug mode off.
+local function debugLoad(blkFilePath = "") {
+  isDebugMode = blkFilePath != null
   if (!isDebugMode)
     return
 
   ::gui_start_loading()
-  load(animBgBlk)
+  load(blkFilePath)
   enableDebugUpdate()
 }
 

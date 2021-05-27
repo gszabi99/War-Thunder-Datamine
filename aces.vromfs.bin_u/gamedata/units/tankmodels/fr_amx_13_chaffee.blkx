@@ -411,7 +411,8 @@
         "wheel_l_top_02_dm": [],
         "wheel_l_top_03_dm": [],
         "wheel_l_top_04_dm": [],
-        "ex_armor_02_dm": []
+        "ex_armor_02_dm": [],
+        "wheel_support_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -474,6 +475,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -819,6 +821,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -833,6 +843,17 @@
       "EngineNameAi": "engine_tank_ai_light",
       "TrackSoundNameAi": "tracks_ai_light",
       "gun_turn": "turret_turn_mg_light"
+    }
+  },
+  {
+    "attachables": {
+      "ex_decor_01_dm": true,
+      "ex_armor_02_dm": true,
+      "ex_armor_09_dm": true,
+      "ex_armor_10_dm": true,
+      "ex_armor_11_dm": true,
+      "ex_armor_12_dm": true,
+      "ex_armor_13_dm": true
     }
   },
   {
@@ -2549,7 +2570,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3513,7 +3534,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,

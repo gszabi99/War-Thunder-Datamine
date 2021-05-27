@@ -13,11 +13,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
 {
   rootHandlerClass = topMenuHandlerClass.getHandler()
 
-  onlyDevicesChoice    = true
-  startControlsWizard  = false
-  timeToAutoQuickMatch = 0.0
-  timeToChooseCountry  = 0.0
-
   unitInfoPanel = null
   promoHandler = null
 
@@ -95,8 +90,6 @@ class ::gui_handlers.MainMenu extends ::gui_handlers.InstantDomination
         ["no", function() { }]
       ], "no", { cancel_fn = function() {}})
   }
-
-  function onProfileChange() {}  //changed country
 
   function onLoadModels()
   {

@@ -490,15 +490,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getIcon = function (killStreakTag = null, unit = null) {
       switch (::get_ai_gunners_state())
       {
-        case AI_GUNNERS_DISABLED:
+        case ::AI_GUNNERS_DISABLED:
           return "#ui/gameuiskin#ship_gunner_state_hold_fire"
-        case AI_GUNNERS_ALL_TARGETS:
+        case ::AI_GUNNERS_ALL_TARGETS:
           return "#ui/gameuiskin#ship_gunner_state_fire_at_will"
-        case AI_GUNNERS_AIR_TARGETS:
+        case ::AI_GUNNERS_AIR_TARGETS:
           return "#ui/gameuiskin#ship_gunner_state_air_targets"
-        case AI_GUNNERS_GROUND_TARGETS:
+        case ::AI_GUNNERS_GROUND_TARGETS:
           return "#ui/gameuiskin#ship_gunner_state_naval_targets"
-        case AI_GUNNERS_SHELL:
+        case ::AI_GUNNERS_SHELL:
           return "#ui/gameuiskin#bomb_mark"
       }
       return _icon
@@ -515,15 +515,15 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     getIcon = function (killStreakTag = null, unit = null) {
       switch (::get_autoturret_state())
       {
-        case AI_GUNNERS_DISABLED:
+        case ::AI_GUNNERS_DISABLED:
           return "#ui/gameuiskin#ship_gunner_state_hold_fire"
-        case AI_GUNNERS_ALL_TARGETS:
+        case ::AI_GUNNERS_ALL_TARGETS:
           return "#ui/gameuiskin#autogun_state_fire_at_will"
-        case AI_GUNNERS_AIR_TARGETS:
+        case ::AI_GUNNERS_AIR_TARGETS:
           return "#ui/gameuiskin#autogun_state_air_targets"
-        case AI_GUNNERS_GROUND_TARGETS:
+        case ::AI_GUNNERS_GROUND_TARGETS:
           return "#ui/gameuiskin#ship_gunner_state_naval_targets"
-        case AI_GUNNERS_SHELL:
+        case ::AI_GUNNERS_SHELL:
           return "#ui/gameuiskin#autogun_state_rocket_targets"
       }
       return _icon
@@ -556,6 +556,17 @@ enums.addTypesByGlobalName("g_hud_action_bar_type", {
     isForWheelMenu = @() true
     getShortcut = @(actionItem, unit = null) "ID_WEAPON_LOCK_TANK"
   }
+
+  //
+
+
+
+
+
+
+
+
+
 })
 
 g_hud_action_bar_type.getTypeByCode <- function getTypeByCode(code)

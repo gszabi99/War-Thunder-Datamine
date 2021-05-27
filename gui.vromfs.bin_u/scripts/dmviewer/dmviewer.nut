@@ -72,6 +72,14 @@ const AFTERBURNER_CHAMBER = 3
     { pattern = ::regexp2(@"_+$"),       replace = "" },
   ]
 
+  crewMemberToRole = {
+    commander = "commander"
+    driver = "driver"
+    gunner_tank = "tank_gunner"
+    loader = "loader"
+    machine_gunner = "radio_gunner"
+  }
+
   xrayDescriptionCache = {}
   isDebugMode = false
   isSecondaryModsValid = false
@@ -621,6 +629,17 @@ const AFTERBURNER_CHAMBER = 3
     return result ?? defValue
   }
 
+  function getCrewMemberBlkByDMPart(crewBlk, dmPart)
+  {
+    local l = crewBlk.blockCount()
+    for (local i = 0; i < l; i++) {
+      local memberBlk = crewBlk.getBlock(i)
+      if (dmPart == memberBlk.dmPart)
+        return memberBlk
+    }
+    return null
+  }
+
   function getDescriptionInXrayMode(params)
   {
     if (!unit || !unitBlk)
@@ -637,6 +656,22 @@ const AFTERBURNER_CHAMBER = 3
 
     switch (partId)
     {
+      case "commander":
+      case "driver":
+      case "gunner_tank":
+      case "machine_gunner":
+      case "loader":
+        if (unit.esUnitType != ::ES_UNIT_TYPE_TANK)
+          break
+        local memberBlk = getCrewMemberBlkByDMPart(unitBlk.tank_crew, partName)
+        local memberRole = crewMemberToRole[partId]
+        local duplicateRoles = (memberBlk % "role")
+          .filter(@(r) r != memberRole)
+          .map(@(r) ::loc($"duplicate_role/{r}", ""))
+          .filter(@(n) n != "")
+        desc.extend(duplicateRoles)
+        break
+
       case "engine":              // Engines
         switch (unit.esUnitType)
         {
@@ -1128,23 +1163,11 @@ const AFTERBURNER_CHAMBER = 3
       case "optic_gun":
         local info = unitBlk?.cockpit
         if (info?.sightName)
-        {
-          local fovToZoom = @(fov) (2*::asin(::sin((80/2)/(180/PI))/fov))*(180/PI)
-          local fovOutIn = [info.zoomOutFov, info.zoomInFov]
-          local zoom = ::u.map(fovOutIn, @(fov) fovToZoom(fov))
-          if (::abs(zoom[0] - zoom[1]) < 0.1) {
-            zoom.remove(0)
-            fovOutIn.remove(0)
-          }
-          local zoomTexts = ::u.map(zoom, @(zoom) zoom ? ::format("%.1fx", zoom) : "")
-          zoomTexts = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
-          desc.append(::loc("sight_model/" + info.sightName, ""))
-          desc.append(::loc("optic/zoom") + ::loc("ui/colon") + zoomTexts)
-
-          local fovTexts = fovOutIn.map(@(fov) ::format("%d", fov))
-          fovTexts = ::g_string.implode(fovTexts, ::loc("ui/mdash"))
-          desc.append($"{::loc("optic/fov")}{::loc("ui/colon")}{fovTexts}")
-        }
+          desc.extend(getOpticsDesc(info))
+        break
+      case "commander_panoramic_sight":
+        if (unitBlk?.commanderView)
+          desc.extend(getOpticsDesc(unitBlk.commanderView))
         break
     }
 
@@ -1157,6 +1180,27 @@ const AFTERBURNER_CHAMBER = 3
 
     local description = ::g_string.implode(desc, "\n")
     return description
+  }
+
+  function getOpticsDesc(info)
+  {
+    local desc = []
+    local fovToZoom = @(fov) ::sin(80/2*PI/180)/::sin(fov/2*PI/180)
+    local fovOutIn = [info.zoomOutFov, info.zoomInFov]
+    local zoom = ::u.map(fovOutIn, @(fov) fovToZoom(fov))
+    if (::abs(zoom[0] - zoom[1]) < 0.1) {
+      zoom.remove(0)
+      fovOutIn.remove(0)
+    }
+    local zoomTexts = ::u.map(zoom, @(zoom) zoom ? ::format("%.1fx", zoom) : "")
+    zoomTexts = ::g_string.implode(zoomTexts, ::loc("ui/mdash"))
+    if (info?.sightName)
+      desc.append(::loc("sight_model/" + info.sightName, ""))
+    desc.append(::loc("optic/zoom") + ::loc("ui/colon") + zoomTexts)
+
+    local fovTexts = fovOutIn.map(@(fov) $"{::format("%d", fov)}{::loc("measureUnits/deg")}")
+    fovTexts = ::g_string.implode(fovTexts, ::loc("ui/mdash"))
+    return desc.append($"{::loc("optic/fov")}{::loc("ui/colon")}{fovTexts}")
   }
 
   function getWeaponTotalBulletCount(partId, weaponInfoBlk)

@@ -11,7 +11,7 @@ local crewModalByVehiclesGroups = require("scripts/crew/crewModalByVehiclesGroup
 local { getBundleId } = require("scripts/onlineShop/onlineBundles.nut")
 local { openUrl } = require("scripts/onlineShop/url.nut")
 local weaponryPresetsModal = require("scripts/weaponry/weaponryPresetsModal.nut")
-local { checkUnitWeapons,
+local { checkUnitWeapons, checkUnitSecondaryWeapons,
         needSecondaryWeaponsWnd } = require("scripts/weaponry/weaponryInfo.nut")
 local { canBuyNotResearched, isUnitHaveSecondaryWeapons } = require("scripts/unit/unitStatus.nut")
 
@@ -110,7 +110,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 
       actionText = ::loc("options/secondary_weapons")
       icon       = "#ui/gameuiskin#slot_preset.svg"
-      haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
+      haveWarning = checkUnitSecondaryWeapons(unit) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name, ["weapons"]) > 0
       showAction = inMenu &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
@@ -123,7 +123,7 @@ local getActions = ::kwarg(function getActions(unitObj, unit, actionsNames, crew
 
       actionText = ::loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
-      haveWarning = checkUnitWeapons(unit) != UNIT_WEAPONS_READY
+      haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
       haveDiscount = ::get_max_weaponry_discount_by_unitName(unit.name) > 0
       showAction = inMenu
       actionFunc = @() ::open_weapons_for_unit(unit, {

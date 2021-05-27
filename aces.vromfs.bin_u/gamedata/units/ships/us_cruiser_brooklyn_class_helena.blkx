@@ -2934,7 +2934,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
-        "genericDamageMult": 0.5,
+        "genericDamageMult": 0.2,
         "compartment_01_dm": {
           "hp": 4484.0
         },
@@ -2974,7 +2974,7 @@
         "armorClass": "ship_STS",
         "armorThickness": 16.0,
         "hidableInViewer": true,
-        "genericDamageMult": 0.5,
+        "genericDamageMult": 0.1,
         "cover_01_dm": {
           "hp": 8000.0
         },
@@ -3085,42 +3085,42 @@
           "hp": 3000.0
         }
       },
-      "engine": {
-        "fireParamsPreset": "cruier_engine",
-        "armorClass": "armor_tank_engine",
+      "boiler_rooms": {
+        "fireParamsPreset": "ship_boiler_room",
+        "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "fireProtectionHp": 6.0,
+        "armorThrough": 250.0,
         "engine_room_01_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_02_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_03_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
         },
         "engine_room_04_dm": {
-          "armorThrough": 250.0,
           "hp": 3000.0
-        },
+        }
+      },
+      "engine_rooms": {
+        "fireParamsPreset": "ship_engine_room",
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 25.4,
+        "fireProtectionHp": 10.0,
+        "armorThrough": 200.0,
         "transmission_01_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2500.0
         },
         "transmission_02_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2500.0
         },
         "transmission_03_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2500.0
         },
         "transmission_04_dm": {
-          "secondaryShatterDamageMult": 0.1,
-          "hp": 1000.0
+          "hp": 2500.0
         }
       },
       "funnels": {
@@ -3206,14 +3206,6 @@
         "armor_cit_07_dm": {
           "armorThickness": 152.0,
           "hp": 10000.0
-        },
-        "armor_cit_08_dm": {
-          "armorThickness": 127.0,
-          "hp": 10000.0
-        },
-        "armor_cit_09_dm": {
-          "armorThickness": 57.15,
-          "hp": 10000.0
         }
       },
       "belt_armor": {
@@ -3268,43 +3260,43 @@
           "hp": 10000.0
         },
         "turret_01_side_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "turret_02_side_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "turret_03_side_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "turret_04_side_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "turret_05_side_dm": {
-          "armorThickness": 76.0,
+          "armorThickness": 31.75,
           "hp": 10000.0
         },
         "turret_01_top_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 50.8,
           "hp": 10000.0
         },
         "turret_02_top_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 50.8,
           "hp": 10000.0
         },
         "turret_03_top_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 50.8,
           "hp": 10000.0
         },
         "turret_04_top_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 50.8,
           "hp": 10000.0
         },
         "turret_05_top_dm": {
-          "armorThickness": 51.0,
+          "armorThickness": 50.8,
           "hp": 10000.0
         },
         "turret_01_back_dm": {
@@ -4008,7 +4000,7 @@
         "sailor5": {
           "dmPart": "compartment_04_dm",
           "role": "sailor",
-          "crew": 65
+          "crew": 66
         }
       },
       {
@@ -4029,7 +4021,7 @@
         "sailor8": {
           "dmPart": "compartment_07_dm",
           "role": "sailor",
-          "crew": 72
+          "crew": 71
         }
       },
       {
@@ -4341,8 +4333,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
+              "fire": 0.4,
               "expl": 0.6,
-              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -4357,8 +4349,8 @@
           {
             "onHit": {
               "damageType": "explosion",
+              "expl": 0.15,
               "fire": 0.85,
-              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -4395,6 +4387,7 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
+              "fire": 0.24,
               "expl": 0.76,
               "fHitCritical": false
             }
@@ -4498,31 +4491,19 @@
         ]
       },
       {
-        "ammunition_torpedoes": [
-          {
-            "onKill": {
-              "expl": 0.03,
-              "nothing": 0.04,
-              "fHitCritical": false
-            }
+        "ammunition_torpedoes": {
+          "onKill": {
+            "expl": 0.07,
+            "nothing": 0.93,
+            "fHitCritical": false
           },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.85,
-              "damage": 400.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "expl": 0.9,
-              "damage": 50.0,
-              "fHitCritical": false
-            }
+          "onHit": {
+            "damageType": "fire",
+            "expl": 0.1,
+            "damage": 50.0,
+            "fHitCritical": false
           }
-        ]
+        }
       },
       {
         "ammunition_mines": [
@@ -5265,20 +5246,20 @@
             "gunnerDm": "main_caliber_turret_01_dm",
             "linkedAnimPart": {
               "horNode": "ex_armor_02",
-              "horLimits": [-150.0,150.0],
-              "horOriginLimits": [-150.0,150.0]
+              "horLimits": [-147.0,147.0],
+              "horOriginLimits": [-147.0,147.0]
             }
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-147.0,147.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-145.0,-3.0,40.0],
+            "lim1": [-147.0,-145.0,-3.0,40.0],
             "lim2": [-145.0,-45.0,-5.0,40.0],
             "lim3": [-45.0,45.0,-1.0,40.0],
             "lim4": [45.0,145.0,-5.0,40.0],
-            "lim5": [145.0,150.0,-3.0,40.0]
+            "lim5": [145.0,147.0,-3.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -5429,24 +5410,24 @@
               "gunnerDm": "main_caliber_turret_01_dm",
               "linkedAnimPart": {
                 "horNode": "ex_armor_02",
-                "horLimits": [-150.0,150.0],
-                "horOriginLimits": [-150.0,150.0]
+                "horLimits": [-147.0,147.0],
+                "horOriginLimits": [-147.0,147.0]
               }
             }
           },
           {
             "limits": {
-              "yaw": [-150.0,150.0],
+              "yaw": [-147.0,147.0],
               "pitch": [-5.0,40.0]
             }
           },
           {
             "limitsTable": {
-              "lim1": [-150.0,-145.0,-3.0,40.0],
+              "lim1": [-147.0,-145.0,-3.0,40.0],
               "lim2": [-145.0,-45.0,-5.0,40.0],
               "lim3": [-45.0,45.0,-1.0,40.0],
               "lim4": [45.0,145.0,-5.0,40.0],
-              "lim5": [145.0,150.0,-3.0,40.0]
+              "lim5": [145.0,147.0,-3.0,40.0]
             }
           },
           {
@@ -5602,17 +5583,17 @@
           },
           {
             "limits": {
-              "yaw": [-150.0,150.0],
+              "yaw": [-147.0,147.0],
               "pitch": [-5.0,40.0]
             }
           },
           {
             "limitsTable": {
-              "lim1": [-150.0,-145.0,-3.0,40.0],
+              "lim1": [-147.0,-145.0,-3.0,40.0],
               "lim2": [-145.0,-45.0,-5.0,40.0],
               "lim3": [-45.0,45.0,-1.0,40.0],
               "lim4": [45.0,145.0,-5.0,40.0],
-              "lim5": [145.0,150.0,-3.0,40.0]
+              "lim5": [145.0,147.0,-3.0,40.0]
             }
           },
           {
@@ -5676,18 +5657,18 @@
             "gunnerDm": "main_caliber_turret_02_dm",
             "linkedAnimPart": {
               "horNode": "ex_armor_04",
-              "horLimits": [-150.0,150.0],
-              "horOriginLimits": [-150.0,150.0]
+              "horLimits": [-159.0,159.0],
+              "horOriginLimits": [-159.0,159.0]
             }
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-159.0,159.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-30.0,-5.0,40.0],
+            "lim1": [-159.0,-30.0,-5.0,40.0],
             "lim2": [-30.0,30.0,0.0,40.0],
-            "lim3": [30.0,150.0,-5.0,40.0]
+            "lim3": [30.0,159.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -5748,13 +5729,13 @@
             "gunnerDm": "main_caliber_turret_02_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-159.0,159.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-30.0,-5.0,40.0],
+            "lim1": [-159.0,-30.0,-5.0,40.0],
             "lim2": [-30.0,30.0,0.0,40.0],
-            "lim3": [30.0,150.0,-5.0,40.0]
+            "lim3": [30.0,159.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -5815,13 +5796,13 @@
             "gunnerDm": "main_caliber_turret_02_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-159.0,159.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-30.0,-5.0,40.0],
+            "lim1": [-159.0,-30.0,-5.0,40.0],
             "lim2": [-30.0,30.0,0.0,40.0],
-            "lim3": [30.0,150.0,-5.0,40.0]
+            "lim3": [30.0,159.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -5889,17 +5870,17 @@
             "gunnerDm": "main_caliber_turret_03_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-152.0,152.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-140.0,-3.0,40.0],
+            "lim1": [-152.0,-140.0,-3.0,40.0],
             "lim2": [-140.0,-39.0,-5.0,40.0],
             "lim3": [-39.0,-35.0,-1.0,0.0],
             "lim4": [-35.0,35.0,0.0,20.0],
             "lim5": [35.0,39.0,-1.0,0.0],
             "lim6": [39.0,140.0,-5.0,40.0],
-            "lim7": [140.0,150.0,-3.0,40.0]
+            "lim7": [140.0,152.0,-3.0,40.0]
           },
           "limitsDeadzone": {
             "yaw": [-35.0,35.0],
@@ -5971,17 +5952,17 @@
             "gunnerDm": "main_caliber_turret_03_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-152.0,152.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-140.0,-3.0,40.0],
+            "lim1": [-152.0,-140.0,-3.0,40.0],
             "lim2": [-140.0,-39.0,-5.0,40.0],
             "lim3": [-39.0,-35.0,-1.0,0.0],
             "lim4": [-35.0,35.0,0.0,20.0],
             "lim5": [35.0,39.0,-1.0,0.0],
             "lim6": [39.0,140.0,-5.0,40.0],
-            "lim7": [140.0,150.0,-3.0,40.0]
+            "lim7": [140.0,152.0,-3.0,40.0]
           },
           "limitsDeadzone": {
             "yaw": [-35.0,35.0],
@@ -6053,17 +6034,17 @@
             "gunnerDm": "main_caliber_turret_03_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-152.0,152.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-140.0,-3.0,40.0],
+            "lim1": [-152.0,-140.0,-3.0,40.0],
             "lim2": [-140.0,-39.0,-5.0,40.0],
             "lim3": [-39.0,-35.0,-1.0,0.0],
             "lim4": [-35.0,35.0,0.0,20.0],
             "lim5": [35.0,39.0,-1.0,0.0],
             "lim6": [39.0,140.0,-5.0,40.0],
-            "lim7": [140.0,150.0,-3.0,40.0]
+            "lim7": [140.0,152.0,-3.0,40.0]
           },
           "limitsDeadzone": {
             "yaw": [-35.0,35.0],
@@ -6347,20 +6328,18 @@
             "gunnerDm": "main_caliber_turret_05_dm",
             "linkedAnimPart": {
               "horNode": "ex_armor_08",
-              "horLimits": [-150.0,150.0],
-              "horOriginLimits": [-150.0,150.0]
+              "horLimits": [-144.0,144.0],
+              "horOriginLimits": [-144.0,144.0]
             }
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-144.0,144.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-145.0,-3.0,40.0],
-            "lim2": [-145.0,-57.0,-5.0,40.0],
-            "lim3": [-57.0,57.0,3.0,40.0],
-            "lim4": [57.0,145.0,-5.0,40.0],
-            "lim5": [145.0,150.0,-3.0,40.0]
+            "lim1": [-144.0,-57.0,-5.0,40.0],
+            "lim2": [-57.0,57.0,3.0,40.0],
+            "lim3": [57.0,144.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -6428,15 +6407,13 @@
             "gunnerDm": "main_caliber_turret_05_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-144.0,144.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-145.0,-3.0,40.0],
-            "lim2": [-145.0,-57.0,-5.0,40.0],
-            "lim3": [-57.0,57.0,3.0,40.0],
-            "lim4": [57.0,145.0,-5.0,40.0],
-            "lim5": [145.0,150.0,-3.0,40.0]
+            "lim1": [-144.0,-57.0,-5.0,40.0],
+            "lim2": [-57.0,57.0,3.0,40.0],
+            "lim3": [57.0,144.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -6504,15 +6481,13 @@
             "gunnerDm": "main_caliber_turret_05_dm"
           },
           "limits": {
-            "yaw": [-150.0,150.0],
+            "yaw": [-144.0,144.0],
             "pitch": [-5.0,40.0]
           },
           "limitsTable": {
-            "lim1": [-150.0,-145.0,-3.0,40.0],
-            "lim2": [-145.0,-57.0,-5.0,40.0],
-            "lim3": [-57.0,57.0,3.0,40.0],
-            "lim4": [57.0,145.0,-5.0,40.0],
-            "lim5": [145.0,150.0,-3.0,40.0]
+            "lim1": [-144.0,-57.0,-5.0,40.0],
+            "lim2": [-57.0,57.0,3.0,40.0],
+            "lim3": [57.0,144.0,-5.0,40.0]
           },
           "gunStabilizer": {
             "hasVerticalGunFreeMode": true,
@@ -9224,12 +9199,14 @@
       },
       "152mm_us_mk34_radio_fuse_navy_he": [],
       "152mm_us_mk34_radio_fuse_navy_he_ammo_pack": {
-        "prevModification": "127mm_usa_mk31_aavt_radio_fuse_ammo_pack"
+        "prevModification": "ship_rangefinder"
       },
       "127mm_usa_mk34_common_he": [],
       "127mm_usa_mk31_aavt_radio_fuse": [],
+      "127mm_usa_mk46_special_common_sap": [],
+      "127mm_usa_mk46_special_common_sap_ammo_pack": [],
       "127mm_usa_mk31_aavt_radio_fuse_ammo_pack": {
-        "prevModification": "152mm_us_mk34_base_fuse_navy_he_ammo_pack"
+        "prevModification": "127mm_usa_mk46_special_common_sap_ammo_pack"
       },
       "new_aa_caliber_turrets": [],
       "new_aux_caliber_turrets": {
@@ -9238,7 +9215,9 @@
       "new_main_caliber_turrets": {
         "reqModification": "new_aux_caliber_turrets"
       },
-      "ship_rangefinder": []
+      "ship_rangefinder": {
+        "prevModification": "152mm_us_mk34_base_fuse_navy_he_ammo_pack"
+      }
     }
   },
   {

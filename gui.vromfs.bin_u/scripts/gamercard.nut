@@ -230,9 +230,9 @@ local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/it
                              gc_items_shop_button = ::ItemsManager.isEnabled() && ::isInMenu()
                                && ::has_feature("ItemsShop")
                              gc_online_shop_button = ::has_feature("OnlineShopPacks")
-                             gc_clanAlert = ::g_clans.getUnseenCandidatesCount() > 0
+                             gc_clanAlert = ::has_feature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
                              gc_invites_btn = !::is_platform_xbox || ::has_feature("XboxCrossConsoleInteraction")
-                             gc_userlog_btn = true
+                             gc_userlog_btn = ::has_feature("UserLog")
                            }
 
   foreach(id, status in buttonsShowTable)
@@ -376,7 +376,7 @@ local { boosterEffectType, haveActiveBonusesByEffectType } = require("scripts/it
 
 ::update_clan_alert_icon <- function update_clan_alert_icon()
 {
-  local needAlert = ::g_clans.getUnseenCandidatesCount() > 0
+  local needAlert = ::has_feature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
   ::do_with_all_gamercards(
     (@(needAlert) function(scene) {
       ::showBtn("gc_clanAlert", needAlert, scene)

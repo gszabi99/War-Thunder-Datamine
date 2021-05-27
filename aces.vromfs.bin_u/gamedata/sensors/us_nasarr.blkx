@@ -334,6 +334,12 @@
             }
           },
           {
+            "setRelSpeedGatePos": {
+              "source": "targetDesignation",
+              "width": 30.0
+            }
+          },
+          {
             "setScanPatternSet": []
           },
           {
@@ -477,6 +483,12 @@
             }
           },
           {
+            "setRelSpeedGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          },
+          {
             "setFsmActive": {
               "fsm": "track",
               "active": true
@@ -607,7 +619,7 @@
         },
         "boresightLockFromSearch": {
           "stateFrom": "search",
-          "command": "modeSwitch",
+          "command": "acmSwitch",
           "stateTo": "boresightLock",
           "actions": {
             "resetSearchMode": [],
@@ -655,7 +667,7 @@
             "command": "switch"
           },
           {
-            "command": "modeSwitch"
+            "command": "acmSwitch"
           },
           {
             "stateTo": "search"
@@ -731,6 +743,10 @@
           "event": "targetInSight",
           "actions": {
             "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "continuousScale",
               "width": 0.0
             },
@@ -825,6 +841,10 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

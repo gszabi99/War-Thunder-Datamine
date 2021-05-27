@@ -32,7 +32,7 @@ colors.menu <- {
 
   voiceChatIconActiveColor = Color(134, 216, 8)
 
-  modalShadeColor = Color(8, 10, 13, 102)
+  blurBgrColor = Color(8, 10, 13, 102)
   frameBackgroundColor = Color(17, 24, 33, 204)
   frameBorderColor = Color(32, 38, 44, 178)
   frameHeaderColor = Color(45, 52, 60)

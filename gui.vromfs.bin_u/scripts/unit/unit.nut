@@ -1,4 +1,5 @@
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { eachBlock } = require("std/datablock.nut")
 local { isDataBlock, isString, isArray, isTable, isFunction, isEmpty } = require("sqStdLibs/helpers/u.nut")
 local time = require("scripts/time.nut")
 local contentPreview = require("scripts/customization/contentPreview.nut")
@@ -202,24 +203,22 @@ local Unit = class
       initWeaponryUpgrades(this, uWpCost)
     }
 
-    if (isDataBlock(uWpCost?.modifications))
-      foreach(modName, modBlk in uWpCost.modifications)
-      {
-        local mod = { name = modName, type = ::g_weaponry_types.MODIFICATION.type }
-        modifications.append(mod)
-        initWeaponry(mod, modBlk)
-        initWeaponryUpgrades(mod, modBlk)
-        if (isModClassExpendable(mod))
-          mod.type = ::g_weaponry_types.EXPENDABLES.type
+    eachBlock(uWpCost?.modifications, function(modBlk, modName) {
+      local mod = { name = modName, type = ::g_weaponry_types.MODIFICATION.type }
+      modifications.append(mod)
+      initWeaponry(mod, modBlk)
+      initWeaponryUpgrades(mod, modBlk)
+      if (isModClassExpendable(mod))
+        mod.type = ::g_weaponry_types.EXPENDABLES.type
 
-        if (modBlk?.maxToRespawn)
-          mod.maxToRespawn <- modBlk.maxToRespawn
+      if (modBlk?.maxToRespawn)
+        mod.maxToRespawn <- modBlk.maxToRespawn
 
-        //validate prevModification. it used in gui only.
-        if (("prevModification" in mod) && !(uWpCost?.modifications[mod.prevModification]))
-          errorsTextArray.append(format("Not exist prevModification '%s' for '%s' (%s)",
-                                 delete mod.prevModification, modName, name))
-      }
+      //validate prevModification. it used in gui only.
+      if (("prevModification" in mod) && !(uWpCost?.modifications[mod.prevModification]))
+        errorsTextArray.append(format("Not exist prevModification '%s' for '%s' (%s)",
+                               delete mod.prevModification, modName, name))
+    }, this)
 
     if (isDataBlock(uWpCost?.spare))
     {

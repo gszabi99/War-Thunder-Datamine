@@ -1600,7 +1600,8 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
         local locId = wasPasswordEntered ? "chat/wrongPassword" : "chat/enterPassword"
         local params = {
           title = roomId.slice(1)
-          editboxHeaderText = ::format(::loc(locId), roomId.slice(1))
+          label = ::format(::loc(locId), roomId.slice(1))
+          isPassword = true
           allowEmpty = false
           okFunc = ::Callback(@(pass) joinRoom(roomId, pass), ::menu_chat_handler)
         }

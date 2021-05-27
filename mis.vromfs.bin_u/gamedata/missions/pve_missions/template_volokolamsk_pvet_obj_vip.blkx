@@ -1,0 +1,1400 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "type": "singleMission",
+      "level": "levels/water.bin",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": [],
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "secondary_vip_roll": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "varSetInt": {
+          "value": 100,
+          "var": "secondary_vip_probability",
+          "fromDescriptor": "secondary_vip_probability"
+        },
+        "varSetRandomInt": {
+          "var": "secondary_vip_dice",
+          "from": 0,
+          "to_not_including": 100
+        },
+        "triggerEnable": {
+          "target": "secondary_vip_init"
+        }
+      },
+      "else_actions": []
+    },
+    "secondary_vip_init": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": []
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "secondary_vip_dice",
+          "value": 0,
+          "comparasion_func": "less",
+          "var_value_other": "secondary_vip_probability"
+        }
+      },
+      "actions": [
+        {
+          "moAddMissionObjective": {
+            "target": "secondary_vip_destroy",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "unitSetRoute": [
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "route": "secondary_vip_way_VIP"
+            },
+            {
+              "teleportToStart": true
+            },
+            {
+              "object": "secondary_vip_target"
+            },
+            {
+              "object": "secondary_vip_quard_01"
+            },
+            {
+              "object": "secondary_vip_quard_02"
+            }
+          ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "secondary_vip_target"
+            },
+            {
+              "object": "secondary_vip_quard_01"
+            },
+            {
+              "object": "secondary_vip_quard_02"
+            },
+            {
+              "speed": 40.0
+            },
+            {
+              "lockSpeed": true
+            },
+            {
+              "waypointReachedDist": 10.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "secondary_vip_quard_01",
+            "speed": 30.0
+          }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "secondary_vip_target"
+            },
+            {
+              "target": "secondary_vip_quard_01"
+            },
+            {
+              "target": "secondary_vip_quard_02"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "secondary_vip_checkpoints"
+            },
+            {
+              "target": "secondary_vip_destroyed"
+            },
+            {
+              "target": "secondary_vip_escaped"
+            }
+          ]
+        }
+      ],
+      "else_actions": {
+        "triggerDisable": {
+          "target": "secondary_vip_init"
+        }
+      }
+    },
+    "secondary_vip_checkpoints": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "secondary_vip_target",
+          "target": "@secondary_vip_str"
+        }
+      },
+      "actions": [
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "@secondary_vip_str"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "secondary_vip_cp"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "secondary_vip_wp_",
+            "var": "secondary_vip_str"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "secondary_vip_str",
+            "input_var": "secondary_vip_cp"
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "@secondary_vip_str"
+          }
+        }
+      ],
+      "else_actions": []
+    },
+    "secondary_vip_destroyed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isKilled",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "secondary_vip_target"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "secondary_vip_destroy",
+          "status": 2,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "triggerEnable": {
+          "target": "secondary_vip_conclude"
+        }
+      },
+      "else_actions": []
+    },
+    "secondary_vip_escaped": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenInArea": {
+          "math": "3D",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "check_objects": "any",
+          "object": "secondary_vip_target",
+          "target": "secondary_vip_escape"
+        }
+      },
+      "actions": {
+        "moSetObjectiveStatus": {
+          "target": "secondary_vip_destroy",
+          "status": 3,
+          "object_var_comp_op": "equal",
+          "object_var_name": ""
+        },
+        "triggerEnable": {
+          "target": "secondary_vip_conclude"
+        }
+      },
+      "else_actions": []
+    },
+    "secondary_vip_conclude": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": [],
+      "actions": {
+        "triggerDisable": {
+          "target": "secondary_vip_checkpoints"
+        },
+        "missionMarkAsWaypoint": {
+          "visible": false,
+          "primary": true,
+          "oriented": false,
+          "ignoreDifficulty": false,
+          "scale": 0.0,
+          "target": "@secondary_vip_str"
+        },
+        "unitPutToSleep": [
+          {
+            "target": "secondary_vip_target"
+          },
+          {
+            "target": "secondary_vip_quard_01"
+          },
+          {
+            "target": "secondary_vip_quard_02"
+          }
+        ]
+      },
+      "else_actions": []
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "secondary_vip_destroy": {
+      "is_enabled": false,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": false,
+        "timeLimit": 1800
+      },
+      "onSuccess": [],
+      "onFailed": []
+    }
+  },
+  "variables": {
+    "secondary_vip_cp": 0,
+    "secondary_vip_str": "secondary_vip_wp_00",
+    "secondary_vip_dice": 0,
+    "secondary_vip_probability": 0
+  },
+  "dialogs": [],
+  "airfields": [],
+  "effects": [],
+  "units": [
+    {
+      "tankModels": {
+        "name": "secondary_vip_target",
+        "tm": [
+          [-0.855628,0.0,-0.51759],
+          [0.0,1.0,0.0],
+          [0.51759,0.0,-0.855628],
+          [211.0,55.05,-287.15]
+        ],
+        "unit_class": "ussr_t_34_1941",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "secondary_vip_quard_01",
+        "tm": [
+          [-0.855628,0.0,-0.51759],
+          [0.0,1.0,0.0],
+          [0.51759,0.0,-0.855628],
+          [201.05,55.05,-293.85]
+        ],
+        "unit_class": "ussr_kv_1_L_11",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "secondary_vip_quard_02",
+        "tm": [
+          [-0.855628,0.0,-0.51759],
+          [0.0,1.0,0.0],
+          [0.51759,0.0,-0.855628],
+          [220.95,55.05,-280.7]
+        ],
+        "unit_class": "ussr_kv_1_L_11",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    }
+  ],
+  "areas": {
+    "secondary_vip_wp_01": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [163.8,53.45,-301.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_02": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [106.05,53.45,-301.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_03": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [42.25,53.45,-306.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_04": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-28.2,62.35,-307.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_05": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-98.6,63.75,-307.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_06": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-161.15,63.55,-301.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_07": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-218.9,64.4,-290.6]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_08": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-255.0,70.3,-257.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_09": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-275.9,71.3,-213.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_10": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-306.4,67.15,-172.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_11": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-360.8,67.1,-160.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_12": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-410.15,65.85,-173.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_13": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-436.35,66.2,-217.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_14": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-429.7,66.95,-262.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_15": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-402.3,67.6,-319.3]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_16": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-393.6,65.15,-368.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_17": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-378.3,67.95,-425.35]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_18": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-358.65,68.25,-487.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_19": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-418.7,66.15,-513.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_20": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-490.25,70.4,-497.25]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_21": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-552.0,70.5,-479.85]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_22": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-616.45,73.1,-463.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_23": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-681.75,73.45,-444.45]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_24": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-743.7,73.55,-428.5]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_00": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [210.45,53.45,-290.0]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_escape": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-1206.85,66.65,-251.1]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_25": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-803.75,76.85,-409.55]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_26": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-871.45,76.85,-386.7]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_27": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-931.7,76.85,-368.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_28": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-994.9,76.85,-344.15]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_29": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-1056.75,76.85,-317.2]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_30": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-1121.55,76.85,-289.4]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_31": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-1179.45,76.85,-262.05]
+      ],
+      "objLayer": 0,
+      "props": []
+    },
+    "secondary_vip_wp_32": {
+      "type": "Sphere",
+      "tm": [
+        [40.0,0.0,0.0],
+        [0.0,40.0,0.0],
+        [0.0,0.0,40.0],
+        [-1231.4,76.85,-235.9]
+      ],
+      "objLayer": 0,
+      "props": []
+    }
+  },
+  "objLayers": [
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    },
+    {
+      "layer": {
+        "enabled": true
+      }
+    }
+  ],
+  "wayPoints": {
+    "secondary_vip_way_VIP": {
+      "closed_waypoints": false,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "secondary_vip_way_VIP_wp_01": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [194.0,54.95,-297.05]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_02": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [117.05,50.65,-300.8]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_03": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [10.95,54.45,-306.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_04": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-46.55,57.8,-306.1]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_05": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-111.7,62.05,-303.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_06": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-157.95,62.85,-300.25]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_07": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-196.8,64.1,-294.1]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_08": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-228.35,63.75,-284.5]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_09": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-245.05,63.8,-271.85]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_10": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-254.55,63.75,-254.25]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_11": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-267.85,63.8,-221.6]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_12": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-283.05,63.8,-199.1]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_13": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-297.05,63.95,-177.05]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_14": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-311.55,63.85,-167.95]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_15": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-344.8,63.75,-160.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_16": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-371.8,63.8,-159.15]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_17": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-402.8,64.45,-166.9]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_18": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-423.4,63.95,-189.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_19": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-436.85,64.45,-217.2]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_20": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-439.55,65.7,-235.35]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_21": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-432.15,66.15,-257.05]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_22": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-411.75,66.3,-289.5]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_23": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-405.8,66.15,-308.5]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_24": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-383.8,64.85,-403.15]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_25": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-359.2,65.15,-484.8]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_26": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-361.5,65.45,-512.25]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_27": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-380.35,64.65,-523.4]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_28": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-752.15,73.5,-425.05]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_29": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-976.7,75.25,-349.05]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "secondary_vip_way_VIP_wp_30": {
+          "type": "normal",
+          "tm": [
+            [1.0,0.0,0.0],
+            [0.0,1.0,0.0],
+            [0.0,0.0,1.0],
+            [-1234.45,64.55,-239.75]
+          ],
+          "props": {
+            "speed": 300.0,
+            "tas": false,
+            "moveType": "MOVETO_STRAIGHT",
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    }
+  }
+}

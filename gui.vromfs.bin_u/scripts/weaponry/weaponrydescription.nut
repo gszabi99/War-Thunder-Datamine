@@ -6,7 +6,8 @@ local { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLast
   getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeaponsBlk, getLastPrimaryWeapon,
   getWeaponExtendedInfo
 } = require("scripts/weaponry/weaponryInfo.nut")
-local { getBulletsSetData, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
+local { getModificationName } = require("scripts/weaponry/bulletsVisual.nut")
 local { getModificationBulletsGroup } = require("scripts/weaponry/modificationInfo.nut")
 
 
@@ -321,7 +322,8 @@ local function getReqModsText(unit, item)
             reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
           else
           if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getModificationName(unit, req)
+            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon")
+              + getModificationName(unit, req, getBulletsSetData(unit, req))
   return reqText
 }
 

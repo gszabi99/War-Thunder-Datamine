@@ -502,6 +502,12 @@
         "body_back_dm": {
           "armorThickness": 15.0
         },
+        "turret_front_dm": {
+          "armorThickness": 25.0
+        },
+        "turret_back_dm": {
+          "armorThickness": 15.0
+        },
         "superstructure_front_dm": {
           "armorThickness": 25.0
         },
@@ -525,6 +531,12 @@
         "body_front_hatch_dm": {
           "armorThickness": 25.0,
           "hp": 300.0
+        },
+        "turret_01_bottom_dm": {
+          "armorThickness": 15.0
+        },
+        "turret_02_side_dm": {
+          "armorThickness": 10.0
         }
       },
       "optics": {
@@ -564,8 +576,14 @@
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
+        "turret_side_dm": [],
+        "turret_top_dm": [],
+        "turret_bottom_dm": [],
         "turret_01_top_dm": [],
         "ex_decor_01_dm": [],
+        "ex_armor_09_dm": [],
+        "ex_decor_11_dm": [],
+        "ex_decor_12_dm": [],
         "ex_decor_14_dm": [],
         "ex_decor_16_dm": [],
         "ex_decor_18_dm": []
@@ -641,6 +659,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -986,6 +1005,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -998,7 +1025,7 @@
       "TrackSoundNameCockpit": "tracks_su76_interior",
       "turret_turn": "turret_turn_manual",
       "EngineNameAi": "engine_tank_ai_light",
-      "TrackSoundNameAi": "tracks_ai_light"
+      "TrackSoundNameAi": "tracks_ai_su76"
     }
   },
   {

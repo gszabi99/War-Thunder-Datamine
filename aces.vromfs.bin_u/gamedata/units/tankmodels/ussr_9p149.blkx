@@ -289,6 +289,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -615,6 +616,14 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
       "crew": {
         "armorClass": "steel_tankman",
         "hp": 40.0,
@@ -642,11 +651,11 @@
       "EngineName": "engine_pt76",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_pt76",
-      "TrackSoundNameCockpit": "tracks_pt76_interior",
-      "turret_turn": "turret_rocket_turn",
+      "TrackSoundName": "tracks_bmp_modern",
+      "TrackSoundNameCockpit": "tracks_bmp_modern_interior",
       "EngineNameAi": "engine_tank_ai_pt76",
-      "TrackSoundNameAi": "tracks_ai_pt76"
+      "TrackSoundNameAi": "tracks_ai_bmp_modern",
+      "turret_turn": "turret_rocket_turn"
     }
   },
   {
@@ -3043,11 +3052,11 @@
   {
     "skin": {
       "name": "ussr_camo_finland_polygonal_threecolor",
-      "nameLocId": "skin/ussr_camo_finland_polygonal_threecolor",
-      "descLocId": "skin/ussr_camo_finland_polygonal_threecolor/desc",
+      "nameLocId": "skin/fin_camo_black_green_dark",
+      "descLocId": "skin/fin_camo_black_green_dark/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "ussr_camo_finland_polygonal_threecolor*"
+        "to": "fin_camo_black_green_dark*"
       }
     }
   },
@@ -3087,7 +3096,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,

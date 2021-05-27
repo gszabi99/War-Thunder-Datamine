@@ -2,8 +2,10 @@ local modUpgradeElem = require("scripts/weaponry/elems/modUpgradeElem.nut")
 local { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
   getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
 } = require("scripts/weaponry/itemInfo.nut")
-local { isBullets, isFakeBullet, getBulletsSetData, getBulletsIconItem, getBulletsIconView
-} = require("scripts/weaponry/bulletsInfo.nut")
+local { isBullets, isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
+local { updateRelationModificationList,
+  getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
+local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
 local { weaponItemTplPath } = require("scripts/weaponry/getWeaponItemTplPath.nut")
 local { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
 local { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON } = require("scripts/weaponry/weaponryTooltips.nut")
@@ -57,6 +59,17 @@ local getTooltipId = @(unitName, mod, params)
     : mod.type == weaponsItem.spare ? SPARE.getTooltipId(unitName)
     : mod.type == weaponsItem.primaryWeapon ? PRIMARY_WEAPON.getTooltipId(unitName, mod.name)
     : MODIFICATION.getTooltipId(unitName, mod.name)
+
+local function getModifIconItem(unit, item)
+{
+  if (item.type == weaponsItem.modification)
+  {
+    updateRelationModificationList(unit, item.name)
+    if ("relationModification" in item && item.relationModification.len() == 1)
+      return getModificationByName(unit, item.relationModification[0])
+  }
+  return null
+}
 
 local function getWeaponItemViewParams(id, unit, item, params = {})
 {
@@ -133,7 +146,7 @@ local function getWeaponItemViewParams(id, unit, item, params = {})
   res.nameText = getModItemName(unit, visualItem, params?.limitedName ?? true)
   res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params)
   local isForceHidePlayerInfo = params?.isForceHidePlayerInfo ?? false
-  local bIcoItem = getBulletsIconItem(unit, visualItem)
+  local bIcoItem = isBullets(visualItem) ? visualItem : getModifIconItem(unit, visualItem)
   if (bIcoItem)
   {
     local bulletsSet = getBulletsSetData(unit, bIcoItem.name)

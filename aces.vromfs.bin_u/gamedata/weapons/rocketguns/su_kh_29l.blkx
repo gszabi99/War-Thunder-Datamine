@@ -11,10 +11,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.1,
-    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.001,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
@@ -54,7 +54,7 @@
     "explodeTreshold": 0.1,
     "statType": "hydra",
     "fireEffect": "rocket_fire_light",
-    "smokeEffect": "",
+    "smokeEffect": "rocket_fire_short_nofire",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "useStartSpeed": false,
@@ -70,8 +70,9 @@
     "hasTracerTrail": true,
     "tracerTrailEmitter": [0.3,-0.15,0.0],
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.0],
-      "mod2": [20.0,1.0]
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"

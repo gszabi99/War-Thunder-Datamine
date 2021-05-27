@@ -302,7 +302,7 @@ class ::items_classes.Discount extends ::BaseItem
 
   function getIcon(addItemName = true)
   {
-    local layers = ::LayersIcon.getIconData(iconStyle + "_shop", defaultIcon, 1.0, defaultIconStyle)
+    local layers = base.getIcon()
     if (addItemName && !needHideTextOnIcon)
       layers += _getTextLayer()
     return layers

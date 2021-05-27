@@ -12,7 +12,7 @@ local { getBulletsList,
         getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { UNIT } = require("scripts/utils/genericTooltipTypes.nut")
-local { WEAPON, MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
+local { WEAPON, MODIFICATION, SINGLE_BULLET } = require("scripts/weaponry/weaponryTooltips.nut")
 local { hasUnitAtRank } = require("scripts/airInfo.nut")
 
 local options = {
@@ -253,7 +253,6 @@ options.addTypes({
 
       local curGunIdx = -1
       local groupsCount = getBulletsGroupCount(unit)
-      local shouldSkipBulletBelts = false
 
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++)
       {
@@ -278,10 +277,6 @@ options.addTypes({
           if (visibleTypes.indexof(bulletsSet?.weaponType) == null)
             continue
 
-          if (shouldSkipBulletBelts && isBulletBelt)
-            continue
-          shouldSkipBulletBelts = shouldSkipBulletBelts || !isBulletBelt
-
           local searchName = getBulletsSearchName(unit, value)
           local useDefaultBullet = searchName != value
           local bulletParameters = ::calculate_tank_bullet_parameters(unit.name,
@@ -293,36 +288,37 @@ options.addTypes({
             foreach (params in bulletParameters)
               bulletNames.append(params?.bulletType ?? "")
 
-          local bulletName
-          local bulletParams
-          local maxPiercing = 0
-          foreach (idx, params in bulletParameters)
+          foreach (idx, bulletName in bulletNames)
           {
-            local curPiercing = params?.armorPiercing?[0]?[0] ?? 0
-            if (maxPiercing < curPiercing)
-            {
-              bulletName   = bulletNames?[idx]
-              bulletParams = params
-              maxPiercing  = curPiercing
-            }
+            local locName = isBulletBelt
+              ? " ".join([::format(::loc("caliber/mm"), bulletsSet.caliber),
+                ::loc($"{bulletName}/name/short")])
+              : bulletsList.items[i].text
+
+            if(::isInArray(locName, bulletNamesSet))
+              continue
+
+            local bulletParams = bulletParameters[idx]
+            local addDiv = isBulletBelt
+              ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
+                locName,
+                bSet = (clone bulletsSet).map(//Get rid of all bullets in set excluding current one
+                  @(val, p) p == "bullets" ? [val[idx]] : p != "bulletNames" ? val : null),
+                bulletParams })
+              : MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
+
+            bulletNamesSet.append(locName)
+            values.append({
+              bulletName = bulletName || ""
+              weaponBlkName = weaponBlkName
+              bulletParams = bulletParams
+            })
+
+            items.append({
+              text = locName
+              addDiv = addDiv
+            })
           }
-
-          local locName = bulletsList.items[i].text
-          if(::isInArray(locName, bulletNamesSet))
-            continue
-          bulletNamesSet.append(locName)
-
-          values.append({
-            bulletName = bulletName || ""
-            weaponBlkName = weaponBlkName
-            bulletParams = bulletParams
-          })
-
-          items.append({
-            text = bulletsList.items[i]
-            addDiv = MODIFICATION.getMarkup(unit.name, value,
-              { hasPlayerInfo = false })
-          })
         }
       }
 
