@@ -96,8 +96,8 @@
     "lightColor": [0.62,0.3,0.21],
     "lightAttenuation": 10.0,
     "devices": {
-      "stick_ailerons": [-2.0,2.0],
-      "stick_elevator": [-2.5,2.5],
+      "speed": [0.0,222.222],
+      "compass": [0.0,360.0],
       "pedals": [-1.4,1.4],
       "pedals1": [-1.4,1.4],
       "pedals2": [-1.4,1.4],
@@ -107,10 +107,9 @@
       "pedals6": [-1.4,1.4],
       "pedals7": [-1.4,1.4],
       "pedals8": [-1.4,1.4],
+      "stick_ailerons": [-2.0,2.0],
+      "stick_elevator": [-2.5,2.5],
       "throttle": [-1.0,1.8],
-      "trimmer": [-1.0,1.0],
-      "speed": [0.0,222.222],
-      "compass": [0.0,360.0],
       "vario": [-30.0,30.0],
       "altitude_hour": [0.0,10000.0],
       "altitude_min": [0.0,1000.0],
@@ -288,12 +287,6 @@
         "hp": 22.0
       },
       "stab_dm": {
-        "hp": 30.0
-      },
-      "stab2_dm": {
-        "hp": 30.0
-      },
-      "stab1_dm": {
         "hp": 18.1
       }
     },
@@ -1308,108 +1301,6 @@
       "part": [
         {
           "name": "stab_dm"
-        },
-        {
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "stab1_dm"
-        },
-        {
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "stab2_dm"
         },
         {
           "onHit": {

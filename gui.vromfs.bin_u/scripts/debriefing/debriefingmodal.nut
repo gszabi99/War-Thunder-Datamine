@@ -19,8 +19,7 @@ local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 local { boosterEffectType, getBoostersEffects } = require("scripts/items/boosterEffect.nut")
 local { fillItemDescr, getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
-local { setNeedShowRate } = require("scripts/user/suggestionRateGame.nut")
+
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -150,7 +149,6 @@ local statTooltipColumnParamByType = {
 class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 {
   sceneBlkName = "gui/debriefing/debriefing.blk"
-  shouldBlurSceneBgFn = needUseHangarDof
 
   static awardsListsConfig = {
     streaks = {
@@ -1865,11 +1863,9 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getEntitlementWithAward()
   {
-    local priceBlk = ::OnlineShopModel.getPriceBlk()
-    local l = priceBlk.blockCount()
-    for (local i = 0; i < l; i++)
-      if (priceBlk.getBlock(i)?.allowBuyWithAward)
-        return priceBlk.getBlock(i).getBlockName()
+    foreach (name, block in ::OnlineShopModel.getPriceBlk())
+      if (block?.allowBuyWithAward)
+        return name
     return null
   }
 
@@ -2139,7 +2135,11 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     return true
   }
 
-  function getMyPlace() {
+  function showMyPlaceInTable()
+  {
+    if (!is_show_my_stats())
+      return
+
     local place = 0
     if (playersTbl)
       foreach(t, tbl in playersTbl)
@@ -2152,15 +2152,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
             break
           }
 
-    return place
-  }
-
-  function showMyPlaceInTable()
-  {
-    if (!is_show_my_stats())
-      return
-
-    local place = getMyPlace()
     local hasPlace = place != 0
 
     local label = hasPlace && isTeamplay ? ::loc("debriefing/placeInMyTeam")
@@ -2611,7 +2602,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function is_show_battle_tasks_list(isNeedBattleTasksList = true)
   {
-    return (::has_feature("DebriefingBattleTasks") && ::g_battle_tasks.isAvailableForUser()) &&
+    return (::g_battle_tasks.isAvailableForUser() && ::has_feature("DebriefingBattleTasks")) &&
       (!isNeedBattleTasksList || battleTasksConfigs.len() > 0)
   }
 
@@ -2871,8 +2862,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (::go_debriefing_next_func != ::gui_start_dynamic_summary)
       ::destroy_session_scripted()
 
-    if (is_show_my_stats())
-      setNeedShowRate(::debriefing_result, getMyPlace())
+    ::g_user_utils.setNeedShowRate(::debriefing_result?.isSucceed && (::debriefing_result?.gm == ::GM_DOMINATION))
 
     ::debriefing_result = null
     playCountSound(false)

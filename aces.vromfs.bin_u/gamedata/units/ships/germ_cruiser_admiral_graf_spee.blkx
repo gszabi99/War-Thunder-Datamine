@@ -2638,7 +2638,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
-        "genericDamageMult": 0.3,
+        "genericDamageMult": 0.5,
         "compartment_01_dm": {
           "hp": 9434.0
         },
@@ -2801,39 +2801,40 @@
           "hp": 5000.0
         }
       },
-      "boiler_rooms": {
+      "engine": {
         "fireParamsPreset": "ship_engine",
-        "armorClass": "ship_structural_steel",
+        "armorClass": "armor_tank_engine",
         "armorThickness": 10.0,
         "fireProtectionHp": 12.0,
-        "armorThrough": 300.0,
         "engine_room_01_dm": {
+          "armorThrough": 300.0,
           "hp": 2760.0
         },
         "engine_room_02_dm": {
+          "armorThrough": 300.0,
           "hp": 2658.0
         },
         "engine_room_03_dm": {
+          "armorThrough": 300.0,
           "hp": 2500.0
         },
         "engine_room_04_dm": {
+          "armorThrough": 300.0,
           "hp": 2876.0
         },
         "engine_room_05_dm": {
+          "armorThrough": 300.0,
           "hp": 2628.0
-        }
-      },
-      "engine_rooms": {
-        "fireParamsPreset": "ship_engine",
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 25.4,
-        "fireProtectionHp": 12.0,
-        "armorThrough": 300.0,
+        },
         "transmission_01_dm": {
-          "hp": 3000.0
+          "armorThrough": 300.0,
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1400.0
         },
         "transmission_02_dm": {
-          "hp": 3000.0
+          "armorThrough": 300.0,
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 1400.0
         }
       },
       "funnels": {
@@ -3729,7 +3730,7 @@
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 64
+        "crew": 65
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
@@ -3744,7 +3745,7 @@
       "sailor6": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 39
+        "crew": 38
       },
       "sailor7": {
         "dmPart": "compartment_06_dm",
@@ -3959,8 +3960,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
-              "fire": 0.4,
               "expl": 0.6,
+              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -3975,8 +3976,8 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "expl": 0.15,
               "fire": 0.85,
+              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -4013,7 +4014,6 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
-              "fire": 0.24,
               "expl": 0.76,
               "fHitCritical": false
             }
@@ -4117,19 +4117,31 @@
         ]
       },
       {
-        "ammunition_torpedoes": {
-          "onKill": {
-            "expl": 0.07,
-            "nothing": 0.93,
-            "fHitCritical": false
+        "ammunition_torpedoes": [
+          {
+            "onKill": {
+              "expl": 0.03,
+              "nothing": 0.04,
+              "fHitCritical": false
+            }
           },
-          "onHit": {
-            "damageType": "fire",
-            "expl": 0.1,
-            "damage": 50.0,
-            "fHitCritical": false
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.85,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.9,
+              "damage": 50.0,
+              "fHitCritical": false
+            }
           }
-        }
+        ]
       },
       {
         "ammunition_mines": [

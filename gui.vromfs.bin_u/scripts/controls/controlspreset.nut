@@ -1,6 +1,5 @@
 ::g_script_reloader.loadOnce("scripts/controls/controlsPresets.nut")
 local { blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
-local { copyParamsToTable, eachBlock, eachParam } = require("std/datablock.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
@@ -497,7 +496,8 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
         ::dagor.debug("ControlsPreset: Compatibility preset added to base presets")
       }
 
-      eachParam(blkBasePresetPaths, function(presetPath, presetGroup) {
+      foreach (presetGroup, presetPath in blkBasePresetPaths)
+      {
         local actualPresetPath = compatibility.getActualBasePresetPaths(presetPath)
         if (actualPresetPath != presetPath) {
           presetPath = actualPresetPath
@@ -505,7 +505,7 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
         }
         ::dagor.debug("ControlsPreset: BasePreset." + presetGroup + " = " + presetPath)
         applyBasePreset(presetPath, presetGroup, presetChain)
-      }, this)
+      }
     }
 
     if (presetChain.len() == 1)
@@ -601,15 +601,19 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     if (!::u.isDataBlock(blkAxes))
       return
 
-    eachBlock(blkAxes, function(blkAxis, name) {
-      if (::g_string.startsWith(name, "square") || name == "mouse" || name == "devices" || name == "hangar")
-        return
+    foreach (name, blkAxis in blkAxes)
+    {
+      if (!::u.isDataBlock(blkAxis) || ::g_string.startsWith(name, "square") ||
+          name == "mouse" || name == "devices" || name == "hangar")
+        continue
+
       if (version < PRESET_ACTUAL_VERSION)
         resetAxis(name)
-
-      copyParamsToTable(blkAxis, getAxis(name))
-    }, this)
-
+      local axis = getAxis(name)
+      foreach (key, value in blkAxis)
+        if (!::u.isDataBlock(value))
+          axis[key] <- value
+    }
     // Load mouse axes saved before 1.63
     if (version < PRESET_ACTUAL_VERSION)
     {
@@ -638,7 +642,12 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     if (blkParams == null)
       return
 
-    params.__update(copyParamsToTable(blkParams))
+    local paramList = {}
+    foreach (name, blkValue in blkParams)
+      if (!::u.isInstance(blkValue))
+        paramList[name] <- blkValue
+
+    u.extend(params, paramList)
   }
 
 
@@ -781,10 +790,13 @@ const BACKUP_OLD_CONTROLS_DEFAULT = 0 // false
     })
   }
 
+  function setDefaultBasePresetName(presetName)
+  {
+    basePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename(presetName)
+  }
+
   getBasePresetInfo = @(groupName = "default")
     ::g_controls_presets.parsePresetFileName(basePresetPaths?[groupName] ?? "")
-
-  getBasePresetFileName = @() getBasePresetInfo().fileName
 
   function getNumButtons()
   {

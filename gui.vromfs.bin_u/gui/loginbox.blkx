@@ -1,7 +1,7 @@
 {
   "img": {
     "position": "absolute",
-    "size": "3sw - 3sw*@isInVr, sh/3+1",
+    "size": "3sw, sh/3+1",
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down"
   },
@@ -75,74 +75,61 @@
       }
     },
     {
-      "TopMenuPanel": [
-        {
-          "input-transparent": "yes"
+      "TopMenuPanel": {
+        "input-transparent": "yes",
+        "shadowSafeArea": [],
+        "TopMenuPanelBg": {
+          "width": "pw"
         },
-        {
-          "shadowSafeArea": []
-        },
-        {
+        "tdiv": {
+          "pos": "pw-w-1@bw, 1@bh",
+          "position": "absolute",
           "tdiv": {
-            "size": "1@swOrRwInVr, ph-(1@bh+1@topGamercardDarkLineHeight)*1@isInVr",
-            "pos": "1@bwInVr, (1@bh-1@topGamercardDarkLineHeight)*1@isInVr",
-            "position": "absolute",
-            "TopMenuPanelBg": {
-              "width": "pw"
-            }
-          }
-        },
-        {
-          "tdiv": {
-            "pos": "pw-w-1@bw, 1@bh",
-            "position": "absolute",
-            "tdiv": {
-              "id": "language_selector",
+            "id": "language_selector",
+            "pos": "0, ph/2-h/2",
+            "position": "relative",
+            "display": "hide",
+            "text": {
+              "id": "label_language",
+              "text": "#profile/language",
               "pos": "0, ph/2-h/2",
               "position": "relative",
-              "display": "hide",
-              "text": {
-                "id": "label_language",
-                "text": "#profile/language",
-                "pos": "0, ph/2-h/2",
-                "position": "relative",
-                "talign": "left",
-                "margin": "@sIco/8, 0, @sIco/4, 0",
-                "input-transparent": "yes",
-                "inactive": "yes"
-              },
-              "Button_text": {
-                "id": "btn_language",
-                "position": "relative",
-                "noMargin": "yes",
-                "visualStyle": "noFrame",
-                "imgSize": "big",
-                "on_click": "onPopupLanguages",
-                "popupMenuBrightIcons": "yes",
-                "popupMenuWithoutHover": "yes",
-                "btnName": "Y",
-                "ButtonImg": [],
-                "cardImg": {
-                  "id": "btn_language_icon",
-                  "background-image": "#ui/gameuiskin#lang_usa"
-                },
-                "btnText": {
-                  "id": "btn_language_text",
-                  "text": "#profile/language/en",
-                  "pos": "@blockInterval, 50%ph-50%h",
-                  "position": "relative",
-                  "text-align": "left"
-                }
-              }
+              "talign": "left",
+              "margin": "@sIco/8, 0, @sIco/4, 0",
+              "input-transparent": "yes",
+              "inactive": "yes"
             },
-            "Button_close": {
-              "id": "button_exit",
-              "_on_click": "goBack",
-              "relative": "yes"
+            "Button_text": {
+              "id": "btn_language",
+              "position": "relative",
+              "noMargin": "yes",
+              "visualStyle": "noFrame",
+              "imgSize": "big",
+              "on_click": "onPopupLanguages",
+              "popupMenuBrightIcons": "yes",
+              "popupMenuWithoutHover": "yes",
+              "btnName": "Y",
+              "ButtonImg": [],
+              "cardImg": {
+                "id": "btn_language_icon",
+                "background-image": "#ui/gameuiskin#lang_usa"
+              },
+              "btnText": {
+                "id": "btn_language_text",
+                "text": "#profile/language/en",
+                "pos": "@blockInterval, 50%ph-50%h",
+                "position": "relative",
+                "text-align": "left"
+              }
             }
+          },
+          "Button_close": {
+            "id": "button_exit",
+            "_on_click": "goBack",
+            "relative": "yes"
           }
         }
-      ]
+      }
     },
     {
       "BottomMenuPanel": {

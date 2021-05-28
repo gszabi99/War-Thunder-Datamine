@@ -25,15 +25,12 @@
   "saclosMissileLineOfSight": true,
   "saclosMissileTreesDeadZone": 0.0,
   "saclosMissileTreesTransparencyTreshold": 0.5,
-  "saclosAimAngleMax": 20.0,
   "saclosMissileClientOnlyMoveCompensation": false,
-  "preciseSaclosMoveAim": true,
   "guidedMissileAutopilotVelFrameReference": true,
   "resyncGuidedMissilesOnClient": true,
   "seekerPostArretTimeOut": 0.5,
   "minFreeCrewIntegrity": -1.0,
   "avionicsDamageTreshold": 0.7,
-  "maxShipCalcDistanceTimeout": 0.01,
   "ai": {
     "outerSphereMul": 3.0,
     "effectiveness": {
@@ -3085,7 +3082,7 @@
     "radiusFadeSpeed": 4.0,
     "alphaFadeSpeed": 1.0,
     "isFarAwayTanksEnabled": true,
-    "minSilhouetteElemSize": 2,
+    "minSilhouetteElemSize": 4,
     "maxSilhouetteElemSize": 12,
     "silhouetteFadeDist": 200.0,
     "silhouetteFadeSize": 2.0
@@ -3102,16 +3099,14 @@
   },
   "instructor": {
     "minOnGroundSpeed": 0.1,
-    "adaptivePitchPropCoeffBase": 1.0,
-    "adaptivePitchDerrCoeffBase": 1.0,
+    "pitchPropCoeffBase": 0.12,
+    "pitchDerrCoeffBase": 5.0,
     "ailDegToPredict": 14.0,
     "elevonDegToPredict": -10.0,
     "maxCvtAngle": 1.5,
     "instructorSmoothness": 0.29,
     "instructorAlphaPrediction": 5.0,
-    "instructorCritAngleK": 0.2,
-    "constPitchPropCoeffBase": 1.0,
-    "constPitchDerrCoeffBase": 12.0
+    "instructorCritAngleK": 0.2
   },
   "mouseAim": {
     "mouseAimDisableControlTreshold": 0.8,
@@ -3549,321 +3544,127 @@
     "torpedoReloadCooldownTime": 100.0,
     "gunnersReloadCooldownTime": 60.0
   },
-  "sensorsConstants": [
-    {
-      "engineInfraRedBrightnessAspectMultFront": 0.0006
-    },
-    {
-      "engineInfraRedBrightnessAspectMultSide": 0.06
-    },
-    {
-      "engineInfraRedBrightnessAspectMultRear": 1.0
-    },
-    {
-      "engineInfraRedBrightnessSourcesMask": 1
-    },
-    {
-      "engineAfterburnerInfraRedBrightnessAspectMultFront": 0.0006
-    },
-    {
-      "engineAfterburnerInfraRedBrightnessAspectMultSide": 0.06
-    },
-    {
-      "engineAfterburnerInfraRedBrightnessAspectMultRear": 1.0
-    },
-    {
-      "engineAfterburnerInfraRedBrightnessSourcesMask": 1
-    },
-    {
-      "airframeInfraRedBrightnessMult": 200.0
-    },
-    {
-      "airframeInfraRedBrightnessSourcesMask": 2
-    },
-    {
-      "sunInfraRedBrightnessMult": 0.0001
-    },
-    {
-      "sunInfraRedBrightnessSourcesMask": 4
-    },
-    {
-      "rocketEngineInfraRedBrightnessSourcesMask": 4
-    },
-    {
-      "saclosMissileBeaconInfraRedBrightnessMult": 0.1
-    },
-    {
-      "saclosMissileBeaconInfraRedBrightnessSourceBand": 4
-    },
-    {
-      "opticalTreesTransparencyTreshold": 0.02
-    },
-    {
-      "laserDesignatorTreesTransparencyTreshold": 0.25
-    },
-    {
-      "opticalCloudsTransparencyTreshold": 1
-    },
-    {
-      "radarSelectedTargetLockFromOptics": true
-    },
-    {
-      "propellerRadarCrossSectionMult": 1.0
-    },
-    {
-      "radarCrossSectionAspectMultFrontFront": 1.0
-    },
-    {
-      "radarCrossSectionAspectMultFrontSide": 1.2
-    },
-    {
-      "radarCrossSectionAspectMultFrontRear": 1.0
-    },
-    {
-      "airframeRadarCrossSectionSourcesMask": 1
-    },
-    {
-      "propellersRadarCrossSectionSourcesMask": 2
-    },
-    {
-      "radarDetectRockets": true
-    },
-    {
-      "radarDetectBombs": true
-    },
-    {
-      "radarErrorSpeed": 0.25
-    },
-    {
-      "radarErrorGain": 7.5
-    },
-    {
-      "radarAntipodEffect": [0.0,1.0,100.0,0.0]
-    },
-    {
-      "radarModeName": "standby"
-    },
-    {
-      "radarModeName": "search"
-    },
-    {
-      "radarModeName": "acquisition"
-    },
-    {
-      "radarModeName": "ACM"
-    },
-    {
-      "radarModeName": "track"
-    },
-    {
-      "radarModeName": "PD VS standby"
-    },
-    {
-      "radarModeName": "PD VS search"
-    },
-    {
-      "radarModeName": "PD VS acquisition"
-    },
-    {
-      "radarModeName": "PD VS ACM"
-    },
-    {
-      "radarModeName": "PD standby"
-    },
-    {
-      "radarModeName": "PD search"
-    },
-    {
-      "radarModeName": "PD acquisition"
-    },
-    {
-      "radarModeName": "PD ACM"
-    },
-    {
-      "radarModeName": "PD track"
-    },
-    {
-      "radarModeName": "LD standby"
-    },
-    {
-      "radarModeName": "LD search"
-    },
-    {
-      "radarModeName": "LD acquisition"
-    },
-    {
-      "radarModeName": "LD ACM"
-    },
-    {
-      "radarModeName": "LD track"
-    },
-    {
-      "radarModeName": "MTI standby"
-    },
-    {
-      "radarModeName": "MTI search"
-    },
-    {
-      "radarModeName": "MTI acquisition"
-    },
-    {
-      "radarModeName": "MTI ACM"
-    },
-    {
-      "radarModeName": "MTI track"
-    },
-    {
-      "radarModeName": "IRST standby"
-    },
-    {
-      "radarModeName": "IRST search"
-    },
-    {
-      "radarModeName": "IRST acquisition"
-    },
-    {
-      "radarModeName": "IRST ACM"
-    },
-    {
-      "radarModeName": "IRST track"
-    },
-    {
-      "radarModeName": "air_search"
-    },
-    {
-      "radarModeName": "ground_search"
-    },
-    {
-      "correctRadarAnimation": true
-    },
-    {
-      "monostaticRadarBackScatteringMult": 1.0
-    },
-    {
-      "bistaticRadarBackScatteringMult": 1.0
-    },
-    {
-      "bistaticRadarRangeGateBeamToAreaMult": [7.0,7.0]
-    },
-    {
-      "bistaticRadarRangeGateAreaMin": [45.0,45.0]
-    },
-    {
-      "bistaticRadarRangeGateAreaMax": [90.0,90.0]
-    },
-    {
-      "bistaticRadarSpeedGateBeamToAreaMult": [10.0,10.0]
-    },
-    {
-      "bistaticRadarSpeedGateAreaMin": [0.0,0.0]
-    },
-    {
-      "bistaticRadarSpeedGateAreaMax": [90.0,90.0]
-    },
-    {
-      "bistaticRadarRangeGateBeamToSectorMult": [1.0,0.2]
-    },
-    {
-      "bistaticRadarRangeGateSectorMin": [10.0,10.0]
-    },
-    {
-      "bistaticRadarRangeGateSectorMax": [90.0,90.0]
-    },
-    {
-      "bistaticRadarSpeedGateBeamToSectorMult": [1.0,1.0]
-    },
-    {
-      "bistaticRadarSpeedGateSectorMin": [0.0,0.0]
-    },
-    {
-      "bistaticRadarSpeedGateSectorMax": [90.0,90.0]
-    },
-    {
-      "radarDetectedTargetActivityTimeMult": 2.0
-    },
-    {
-      "radarDetectedTargetSelectionRelSpeedMin": 20.0
-    },
-    {
-      "radarTargetsMaxTime": 2.0
-    },
-    {
-      "activeSonarReflectionMult": 40000000000.0
-    },
-    {
-      "radarFrequencyBandCrossSection0": {
-        "band10": true,
-        "band11": true,
-        "band12": true,
-        "crossSectionMult": 1.0,
-        "backScattering0": [3.0,-28.0],
-        "backScattering1": [10.0,-12.0],
-        "backScattering2": [20.0,-11.0],
-        "backScattering3": [50.0,-8.0],
-        "backScattering4": [70.0,-4.0],
-        "backScattering5": [90.0,-1.7],
-        "treesNonTransparencyMult": 0.001
-      }
-    },
-    {
-      "radarFrequencyBandCrossSection1": {
-        "band7": true,
-        "band8": true,
-        "band9": true,
-        "crossSectionMult": 1.0,
-        "backScattering0": [3.0,-35.0],
-        "backScattering1": [10.0,-16.0],
-        "backScattering2": [20.0,-15.0],
-        "backScattering3": [50.0,-12.0],
-        "backScattering4": [70.0,-7.0],
-        "backScattering5": [90.0,-2.0],
-        "treesNonTransparencyMult": 0.004
-      }
-    },
-    {
-      "radarFrequencyBandCrossSection2": {
-        "band6": true,
-        "band5": true,
-        "band4": true,
-        "crossSectionMult": 1.0,
-        "backScattering0": [3.0,-35.0],
-        "backScattering1": [10.0,-20.0],
-        "backScattering2": [20.0,-19.0],
-        "backScattering3": [50.0,-16.0],
-        "backScattering4": [70.0,-10.0],
-        "backScattering5": [90.0,-2.0],
-        "treesNonTransparencyMult": 0.008
-      }
-    },
-    {
-      "radarFrequencyBandCrossSection3": {
-        "band3": true,
-        "crossSectionMult": 1.0,
-        "backScattering0": [3.0,-40.0],
-        "backScattering1": [10.0,-28.0],
-        "backScattering2": [20.0,-25.0],
-        "backScattering3": [50.0,-20.0],
-        "backScattering4": [70.0,-15.0],
-        "backScattering5": [90.0,-3.0],
-        "treesNonTransparencyMult": 0.016
-      }
-    },
-    {
-      "radarFrequencyBandCrossSection4": {
-        "band0": true,
-        "band1": true,
-        "band2": true,
-        "crossSectionMult": 1.0,
-        "backScattering0": [3.0,-55.0],
-        "backScattering1": [10.0,-50.0],
-        "backScattering2": [20.0,-48.0],
-        "backScattering3": [50.0,-42.0],
-        "backScattering4": [70.0,-25.0],
-        "backScattering5": [90.0,-5.0],
-        "treesNonTransparencyMult": 0.25
-      }
+  "sensorsConstants": {
+    "engineInfraRedBrightnessAspectMultFront": 0.0006,
+    "engineInfraRedBrightnessAspectMultSide": 0.06,
+    "engineInfraRedBrightnessAspectMultRear": 1.0,
+    "engineInfraRedBrightnessSourcesMask": 1,
+    "engineAfterburnerInfraRedBrightnessAspectMultFront": 0.0006,
+    "engineAfterburnerInfraRedBrightnessAspectMultSide": 0.06,
+    "engineAfterburnerInfraRedBrightnessAspectMultRear": 1.0,
+    "engineAfterburnerInfraRedBrightnessSourcesMask": 1,
+    "airframeInfraRedBrightnessMult": 200.0,
+    "airframeInfraRedBrightnessSourcesMask": 2,
+    "sunInfraRedBrightnessMult": 0.0001,
+    "sunInfraRedBrightnessSourcesMask": 4,
+    "rocketEngineInfraRedBrightnessSourcesMask": 4,
+    "saclosMissileBeaconInfraRedBrightnessMult": 0.1,
+    "saclosMissileBeaconInfraRedBrightnessSourceBand": 4,
+    "opticalTreesTransparencyTreshold": 0.02,
+    "laserDesignatorTreesTransparencyTreshold": 0.25,
+    "opticalCloudsTransparencyTreshold": 1,
+    "radarSelectedTargetLockFromOptics": true,
+    "propellerRadarCrossSectionMult": 1.0,
+    "radarCrossSectionAspectMultFrontFront": 1.0,
+    "radarCrossSectionAspectMultFrontSide": 1.2,
+    "radarCrossSectionAspectMultFrontRear": 1.0,
+    "airframeRadarCrossSectionSourcesMask": 1,
+    "propellersRadarCrossSectionSourcesMask": 2,
+    "radarDetectRockets": true,
+    "radarDetectBombs": true,
+    "radarErrorSpeed": 0.25,
+    "radarErrorGain": 7.5,
+    "radarAntipodEffect": [0.0,1.0,100.0,0.0],
+    "radarModeName0": "standby",
+    "radarModeName1": "search",
+    "radarModeName2": "acquisition",
+    "radarModeName3": "ACM",
+    "radarModeName4": "track",
+    "radarModeName5": "air_search",
+    "radarModeName6": "ground_search",
+    "correctRadarAnimation": true,
+    "monostaticRadarBackScatteringMult": 1.0,
+    "bistaticRadarBackScatteringMult": 1.0,
+    "bistaticRadarRangeGateBeamToAreaMult": [7.0,7.0],
+    "bistaticRadarRangeGateAreaMin": [0.0,0.0],
+    "bistaticRadarRangeGateAreaMax": [90.0,90.0],
+    "bistaticRadarSpeedGateBeamToAreaMult": [10.0,10.0],
+    "bistaticRadarSpeedGateAreaMin": [0.0,0.0],
+    "bistaticRadarSpeedGateAreaMax": [90.0,90.0],
+    "bistaticRadarRangeGateBeamToSectorMult": [1.0,0.2],
+    "bistaticRadarRangeGateSectorMin": [0.0,0.0],
+    "bistaticRadarRangeGateSectorMax": [90.0,90.0],
+    "bistaticRadarSpeedGateBeamToSectorMult": [1.0,1.0],
+    "bistaticRadarSpeedGateSectorMin": [0.0,0.0],
+    "bistaticRadarSpeedGateSectorMax": [90.0,90.0],
+    "radarDetectedTargetActivityTimeMult": 2.0,
+    "radarDetectedTargetSelectionRelSpeedMin": 20.0,
+    "radarTargetsMaxTime": 2.0,
+    "activeSonarReflectionMult": 40000000000.0,
+    "radarFrequencyBandCrossSection0": {
+      "band10": true,
+      "band11": true,
+      "band12": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-28.0],
+      "backScattering1": [10.0,-12.0],
+      "backScattering2": [20.0,-11.0],
+      "backScattering3": [50.0,-8.0],
+      "backScattering4": [70.0,-4.0],
+      "backScattering5": [90.0,-1.7],
+      "treesNonTransparencyMult": 0.001
+    },
+    "radarFrequencyBandCrossSection1": {
+      "band7": true,
+      "band8": true,
+      "band9": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-35.0],
+      "backScattering1": [10.0,-16.0],
+      "backScattering2": [20.0,-15.0],
+      "backScattering3": [50.0,-12.0],
+      "backScattering4": [70.0,-7.0],
+      "backScattering5": [90.0,-2.0],
+      "treesNonTransparencyMult": 0.004
+    },
+    "radarFrequencyBandCrossSection2": {
+      "band6": true,
+      "band5": true,
+      "band4": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-35.0],
+      "backScattering1": [10.0,-20.0],
+      "backScattering2": [20.0,-19.0],
+      "backScattering3": [50.0,-16.0],
+      "backScattering4": [70.0,-10.0],
+      "backScattering5": [90.0,-2.0],
+      "treesNonTransparencyMult": 0.008
+    },
+    "radarFrequencyBandCrossSection3": {
+      "band3": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-40.0],
+      "backScattering1": [10.0,-28.0],
+      "backScattering2": [20.0,-25.0],
+      "backScattering3": [50.0,-20.0],
+      "backScattering4": [70.0,-15.0],
+      "backScattering5": [90.0,-3.0],
+      "treesNonTransparencyMult": 0.016
+    },
+    "radarFrequencyBandCrossSection4": {
+      "band0": true,
+      "band1": true,
+      "band2": true,
+      "crossSectionMult": 1.0,
+      "backScattering0": [3.0,-55.0],
+      "backScattering1": [10.0,-50.0],
+      "backScattering2": [20.0,-48.0],
+      "backScattering3": [50.0,-42.0],
+      "backScattering4": [70.0,-25.0],
+      "backScattering5": [90.0,-5.0],
+      "treesNonTransparencyMult": 0.25
     }
-  ],
+  },
   "fmConstants": {
     "oilLeakSpeed": 0.0024,
     "oilLeakTime": [420.0,210.0,20.0],

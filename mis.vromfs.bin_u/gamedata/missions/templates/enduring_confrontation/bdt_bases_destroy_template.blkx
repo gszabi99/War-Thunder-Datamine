@@ -283,7 +283,7 @@
           {
             "varAddString": {
               "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
+              "value": "@bdt_t1_cur_base_spawn_idx",
               "var": "bdt_t1_cur_spawn_aaa_name"
             }
           },
@@ -555,6 +555,10 @@
           }
         ],
         "actions": {
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "comment": {
             "value": "имя зоны - валидно"
           },
@@ -1131,7 +1135,7 @@
           {
             "varAddString": {
               "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
+              "value": "@bdt_t2_cur_base_spawn_idx",
               "var": "bdt_t2_cur_spawn_aaa_name"
             }
           },
@@ -1396,6 +1400,10 @@
           }
         ],
         "actions": {
+          "__missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": false
+          },
           "comment": {
             "value": "имя зоны - валидно"
           },
@@ -1783,7 +1791,8 @@
             "varCompareInt": {
               "var_value": "bdt_t1_aaa_spawn_idx",
               "value": 4,
-              "comparasion_func": "less"
+              "comparasion_func": "less",
+              "var_value_other": "bdt_t1_total_bases_max_count"
             }
           },
           "actions": {
@@ -1904,7 +1913,8 @@
             "varCompareInt": {
               "var_value": "bdt_t2_aaa_spawn_idx",
               "value": 4,
-              "comparasion_func": "less"
+              "comparasion_func": "less",
+              "var_value_other": "bdt_t2_total_bases_max_count"
             }
           },
           "actions": {
@@ -1989,7 +1999,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 10.0
+            "time": 1.0
           }
         },
         "conditions": [],
@@ -2152,55 +2162,8 @@
             }
           },
           {
-            "__getOwnArea": {
-              "name": "@bdt_capture_t1_bombing_zone_name",
-              "template": "flt_area_",
-              "out_var": "bdt_capture_t1_own_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "checking zone name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_capture_t1_zone_check"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "index is out of range, restarting"
-          },
-          "triggerEnable": {
-            "target": "bdt_capture_t1_start"
-          }
-        }
-      },
-      "bdt_capture_t1_zone_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "objectExists": {
-            "target": "@bdt_capture_t1_bombing_zone_name",
-            "type": "area"
-          }
-        },
-        "actions": [
-          {
             "getOwnArea": {
-              "name": "@bdt_capture_t1_bombing_zone_name",
+              "name": "@bdt_capture_t1_bombing_zone_target_name",
               "template": "flt_area_",
               "out_var": "bdt_capture_t1_own_area_name"
             }
@@ -2249,10 +2212,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "zone doesn't exist"
-          },
-          "triggerEnable": {
-            "target": "bdt_capture_t1_rotator"
+            "value": "индекс вышел за диапазон. ничего не делаем"
           }
         }
       },
@@ -2328,16 +2288,6 @@
               "partName": "body",
               "delayForObjects": [2.0,5.0]
             }
-          },
-          {
-            "comment": {
-              "value": "continue rotator"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_capture_t1_rotator"
-            }
           }
         ],
         "else_actions": [
@@ -2368,7 +2318,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 10.0
+            "time": 1.0
           }
         },
         "conditions": [],
@@ -2531,55 +2481,8 @@
             }
           },
           {
-            "__getOwnArea": {
-              "name": "@bdt_capture_t2_bombing_zone_name",
-              "template": "flt_area_",
-              "out_var": "bdt_capture_t2_own_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "checking zone name"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_capture_t2_zone_check"
-            }
-          }
-        ],
-        "else_actions": {
-          "comment": {
-            "value": "index is out of range, restarting"
-          },
-          "triggerEnable": {
-            "target": "bdt_capture_t2_start"
-          }
-        }
-      },
-      "bdt_capture_t2_zone_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "objectExists": {
-            "target": "@bdt_capture_t2_bombing_zone_name",
-            "type": "area"
-          }
-        },
-        "actions": [
-          {
             "getOwnArea": {
-              "name": "@bdt_capture_t2_bombing_zone_name",
+              "name": "@bdt_capture_t2_bombing_zone_target_name",
               "template": "flt_area_",
               "out_var": "bdt_capture_t2_own_area_name"
             }
@@ -2628,10 +2531,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "zone doesn't exist"
-          },
-          "triggerEnable": {
-            "target": "bdt_capture_t2_rotator"
+            "value": "индекс вышел за диапазон. ничего не делаем"
           }
         }
       },
@@ -2706,16 +2606,6 @@
               "target": "@bdt_capture_t2_aaa_name",
               "partName": "body",
               "delayForObjects": [2.0,5.0]
-            }
-          },
-          {
-            "comment": {
-              "value": "continue rotator"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_capture_t2_rotator"
             }
           }
         ],
@@ -2957,21 +2847,6 @@
             },
             {
               "target": "bdt_t2_restore_start"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "capturing routine"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bdt_capture_t1_start"
-            },
-            {
-              "target": "bdt_capture_t2_start"
             }
           ]
         }

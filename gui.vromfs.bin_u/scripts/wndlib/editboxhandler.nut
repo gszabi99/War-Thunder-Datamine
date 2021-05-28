@@ -17,12 +17,11 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   maxLen = 0
   multiline = false
   charMask = null
-  isPassword = false
   editBoxEnableFunc = null
   editBoxTextOnDisable = null
 
-  title = ""
-  label = ""
+  title = ::loc("mainmenu/password")
+  editboxHeaderText = ""
   editboxWarningTooltip = ""
   canCancel = true
   allowEmpty = true
@@ -36,7 +35,7 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
   function initScreen()
   {
     scene.findObject("edit_box_window_header").setValue(title)
-    scene.findObject("editbox_label").setValue(label)
+    scene.findObject("editbox_header").setValue(editboxHeaderText)
     checkWarningFunc = checkWarningFunc || @(...) true
 
     editBoxObj = showSceneBtn(multiline ? "edit_box_window_text_multiline" : "edit_box_window_text", true)
@@ -53,10 +52,6 @@ class ::gui_handlers.EditBoxHandler extends ::BaseGuiHandler
       editBoxObj["char-mask"] = charMask
     if (needOpenIMEonInit)
       editBoxObj.setValue(true) //opens IME, not change text.
-    if (isPassword) {
-      editBoxObj["type"] = "password"
-      editBoxObj["password-smb"] = ::loc("password_mask_char")
-    }
 
     updateBtnByValue(value || "")
     value = null

@@ -1,7 +1,6 @@
 local interopGen = require("interopGen.nut")
 
 local compassState = {
-  HasCompass = Watched(true)
   CompassValue = Watched(0)
 }
 

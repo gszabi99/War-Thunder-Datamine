@@ -221,5 +221,4 @@ return {
   setLoadingBgPath
   removeLoadingBgFromLists
   isLoadingBgUnlock
-  createBgData
 }

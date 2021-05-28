@@ -20,6 +20,13 @@ local { addPromoAction } = require("scripts/promo/promoActions.nut")
  *    ---
  * */
 
+enum ONLINE_SHOP_TYPES {
+  WARPOINTS = "warpoints"
+  PREMIUM = "premium"
+  BUNDLE = "bundle"
+  EAGLES = "eagles"
+}
+
 ::OnlineShopModel <- {
   priceBlk = null
   purchaseDataCache = {}
@@ -196,16 +203,12 @@ OnlineShopModel.getPurchaseData <- function getPurchaseData(goodsName)
   _purchaseDataRecursion++
   //search in gifts or fingerPrints
   local res = null
-  local priceBlk = getPriceBlk()
-  local numBlocks = priceBlk.blockCount()
-  for (local i = 0; i < numBlocks; i++)
+  foreach(entitlement, blk in getPriceBlk())
   {
-    local blk = priceBlk.getBlock(i)
     if (!::isInArray(goodsName, blk % "entitlementGift")
         && !::isInArray(goodsName, blk % "fingerprintController"))
       continue
 
-    local entitlement = blk.getBlockName()
     local purchData = getPurchaseData(entitlement)
     if (!purchData.canBePurchased)
       continue

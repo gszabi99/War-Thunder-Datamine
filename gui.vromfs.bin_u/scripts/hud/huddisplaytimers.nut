@@ -119,12 +119,6 @@ local REPAIR_SHOW_TIME_THRESHOLD = 1.5
       icon = "#ui/gameuiskin#icon_battery_in_progress.svg"
       needTimeText = true
     },
-    {
-      id = "extinguish_assist"
-      color = "#DD1111"
-      icon = "#ui/gameuiskin#fire_indicator.svg"
-      needTimeText = true
-    },
   ]
 
   scene = null
@@ -155,7 +149,6 @@ local REPAIR_SHOW_TIME_THRESHOLD = 1.5
     ::g_hud_event_manager.subscribe("TankDebuffs:Repair", onRepair, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:MoveCooldown", onMoveCooldown, this)
     ::g_hud_event_manager.subscribe("TankDebuffs:Battery", onBattery, this)
-    ::g_hud_event_manager.subscribe("TankDebuffs:ExtinguishAssist", onExtinguishAssist, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Rearm", onRearm, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Repair", onRepair, this)
     ::g_hud_event_manager.subscribe("ShipDebuffs:Cooldown", onMoveCooldown, this)
@@ -488,15 +481,6 @@ local REPAIR_SHOW_TIME_THRESHOLD = 1.5
   function onCancelRepairBreaches(debuffs_data)
   {
     local placeObj = scene.findObject("cancel_repair_breaches_status")
-    if (!::checkObj(placeObj))
-      return
-
-    onCancelAction(debuffs_data, placeObj)
-  }
-
-  function onExtinguishAssist(debuffs_data)
-  {
-    local placeObj = scene.findObject("extinguish_assist")
     if (!::checkObj(placeObj))
       return
 

@@ -1,4 +1,4 @@
-local { actionByLogType, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
+local { actionByLogType } = require("scripts/userLog/userlogUtils.nut")
 
 ::hidden_userlogs <- [
   ::EULT_NEW_STREAK,
@@ -102,6 +102,11 @@ local { actionByLogType, saveOnlineJob } = require("scripts/userLog/userlogUtils
     show = [::EULT_WW_START_OPERATION, ::EULT_WW_CREATE_OPERATION, ::EULT_WW_END_OPERATION, ::EULT_WW_AWARD]
   }
 ]
+
+::save_online_job <- function save_online_job()
+{
+  return ::save_online_single_job(223) //super secure digit for job tag :)
+}
 
 ::gui_modal_userLog <- function gui_modal_userLog()
 {
@@ -276,7 +281,7 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
 
   function saveOnlineJobWithUpdate()
   {
-    taskId = saveOnlineJob()
+    taskId = ::save_online_job()
     dagor.debug("saveOnlineJobWithUpdate")
     if (taskId >= 0)
     {

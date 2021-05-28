@@ -27,6 +27,85 @@
         "size": "sw,sh"
       },
       {
+        "img": {
+          "position": "absolute",
+          "size": "3sw, sh/3+1",
+          "pos": "-sw,sh-h-1@bh",
+          "background-image": "#ui/gameuiskin#optionlist_background_down"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "respawn_order_status",
+          "width": "0.8@itemInfoWidth",
+          "position": "root",
+          "pos": "pw - w - 10/720*@scrn_tgt, 50/720*@scrn_tgt",
+          "flow": "vertical"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "bg-shade",
+          "size": "sw,sh",
+          "position": "root",
+          "background-color": "@shadeBackgroundColor"
+        }
+      },
+      {
+        "tdiv": [
+          {
+            "position": "absolute"
+          },
+          {
+            "pos": "@bw, @bh"
+          },
+          {
+            "flow": "vertical"
+          },
+          {
+            "textareaNoTab": {
+              "id": "respawn_title",
+              "overlayTextColor": "active",
+              "textShade": "yes",
+              "text": ""
+            }
+          },
+          {
+            "textareaNoTab": {
+              "id": "respawn_time_end",
+              "overlayTextColor": "premiumNotEarned",
+              "textShade": "yes",
+              "text": ""
+            }
+          },
+          {
+            "textareaNoTab": {
+              "id": "respawn_score_limit",
+              "overlayTextColor": "premiumNotEarned",
+              "textShade": "yes",
+              "text": ""
+            }
+          },
+          {
+            "textareaNoTab": {
+              "id": "respawn_time_to_kick",
+              "overlayTextColor": "premiumNotEarned",
+              "textShade": "yes",
+              "text": ""
+            }
+          }
+        ]
+      },
+      {
+        "tdiv": {
+          "id": "mission_texts_block_right",
+          "pos": "sw - w - 1@bw, @bh",
+          "position": "absolute",
+          "flow": "vertical",
+          "total-input-transparent": "yes"
+        }
+      },
+      {
         "optionlist_container": [
           {
             "id": "flight_menu_bgd"
@@ -36,14 +115,6 @@
           },
           {
             "flow": "vertical"
-          },
-          {
-            "tdiv": {
-              "size": "sw, sh",
-              "position": "root",
-              "blur": [],
-              "blur_foreground": []
-            }
           },
           {
             "tdiv": {
@@ -386,69 +457,6 @@
         ]
       },
       {
-        "tdiv": {
-          "id": "respawn_order_status",
-          "width": "0.8@itemInfoWidth",
-          "position": "root",
-          "pos": "sw - w - 1@bw, 1@bh + 1@multiplayerScoreHeightWithOffset",
-          "flow": "vertical"
-        }
-      },
-      {
-        "tdiv": [
-          {
-            "position": "absolute"
-          },
-          {
-            "pos": "@bw+1@blockInterval*@isInVr, @bh+1@blockInterval*@isInVr"
-          },
-          {
-            "flow": "vertical"
-          },
-          {
-            "textareaNoTab": {
-              "id": "respawn_title",
-              "overlayTextColor": "active",
-              "textShade": "yes",
-              "text": ""
-            }
-          },
-          {
-            "textareaNoTab": {
-              "id": "respawn_time_end",
-              "overlayTextColor": "premiumNotEarned",
-              "textShade": "yes",
-              "text": ""
-            }
-          },
-          {
-            "textareaNoTab": {
-              "id": "respawn_score_limit",
-              "overlayTextColor": "premiumNotEarned",
-              "textShade": "yes",
-              "text": ""
-            }
-          },
-          {
-            "textareaNoTab": {
-              "id": "respawn_time_to_kick",
-              "overlayTextColor": "premiumNotEarned",
-              "textShade": "yes",
-              "text": ""
-            }
-          }
-        ]
-      },
-      {
-        "tdiv": {
-          "id": "mission_texts_block_right",
-          "pos": "sw - w - 1@bw, @bh",
-          "position": "absolute",
-          "flow": "vertical",
-          "total-input-transparent": "yes"
-        }
-      },
-      {
         "activeText": {
           "id": "spectator_mode_title",
           "pos": "pw/2-w/2, @bh + 0.08@scrn_tgt",
@@ -464,7 +472,7 @@
         "tdiv": {
           "id": "spectator_controls",
           "width": "@rw",
-          "pos": "pw/2-w/2, sh -1@bh -1@bottomMenuPanelHeight -h -@sIco",
+          "pos": "pw/2-w/2, sh -1@bh -(1@bottomBarHeight+3*@sf/@pf_outdated) -h -@sIco",
           "position": "absolute",
           "flow": "vertical",
           "textareaNoTab": {
@@ -520,8 +528,8 @@
       {
         "tdiv": {
           "id": "mpChatInSpectator",
-          "size": "0.33@rw, 0.25@scrn_tgt",
-          "pos": "@bw, sh -1@bh -1@bottomMenuPanelHeight -h",
+          "size": "0.33sw, 0.25@scrn_tgt",
+          "pos": "@bw, sh -1@bh -(1@bottomBarHeight+3*@sf/@pf_outdated) -h",
           "position": "root"
         }
       },

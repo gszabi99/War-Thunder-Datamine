@@ -4,10 +4,11 @@ root {
   on_click:t='goBack'
 
   frame {
+    pos:t='50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
+    position:t='relative'
     class:t='wnd'
     max-height:t = '1@maxWindowHeight'
     css-hier-invalidate:t='yes'
-    isCenteredUnderLogo:t='yes'
     frame_header {
       activeText {
         caption:t='yes'
@@ -97,7 +98,7 @@ root {
     id:t='chatPopupNest';
     size:t='0.4@sf+10, 0.075*@sf+10';
     position:t='absolute';
-    pos:t='1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight'
+    pos:t='0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight'
     flow:t='vertical'
   }
 }

@@ -1,8 +1,7 @@
 local { unixtime_to_utc_timetbl } = require("dagor.time")
 local time = require("scripts/time.nut")
 local clanRewardsModal = require("scripts/rewards/clanRewardsModal.nut")
-local dirtyWordsFilter = require("scripts/dirtyWordsFilter.nut")
-local { copyParamsToTable, eachBlock } = require("std/datablock.nut")
+local dirtyWordsFilter = require("scripts/dirtyWords/dirtyWords.nut")
 local { getPlayerName, isPlatformSony } = require("scripts/clientState/platform.nut")
 
 const CLAN_ID_NOT_INITED = ""
@@ -964,7 +963,11 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
   if ( membReqs )
     clan.membershipRequirements.setFrom( membReqs );
 
-  clan.astat <- copyParamsToTable(clanInfo?.astat)
+  clan.astat <- {}
+
+  if (clanInfo?.astat)
+    foreach(stat, value in clanInfo.astat)
+      clan.astat[stat] <- value
 
   local clanMembersInfo = clanInfo % "members"
   local clanActivityInfo = clanInfo?.activity
@@ -976,15 +979,22 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
   local member_ratings = ::getTblValue("member_ratings", clanInfo, {})
   local getTotalActivityPerPeriod = function(expActivity)
   {
+    if (!expActivity)
+      return 0
+
     local res = 0
-    eachBlock(expActivity, @(period) res += period.activity)
+    foreach(period in expActivity)
+      res += period.activity
+
     return res
   }
-
   foreach(member in clanMembersInfo)
   {
+    local memberItem = {}
+
     //get common members data
-    local memberItem = copyParamsToTable(member)
+    foreach(key, value in member)
+      memberItem[key] <- value
 
     //get members ELO
     local ratingTable = ::getTblValue(memberItem.uid, member_ratings, {})
@@ -1034,10 +1044,11 @@ g_clans.checkSquadronExpChangedEvent <- function checkSquadronExpChangedEvent()
       return []
 
     local log = []
-    eachBlock(clanInfo[rewardBlockId], function(season, idx) {
+    foreach (idx, season in clanInfo[rewardBlockId])
+    {
       foreach (title in season % "titles")
         log.append(titleClass.createFromClanReward(title, idx, season, clan))
-    })
+    }
     return log
   })(clan)
 
@@ -1374,8 +1385,5 @@ local function getSeasonName(blk)
 {
   gui_start_modal_wnd(::gui_handlers.ClansModalHandler, {startPage = startPage})
 }
-
-// Independent Modules
-require("scripts/slotbar/elems/squadronExpIconElem.nut")
 
 ::subscribe_handler(::g_clans, ::g_listener_priority.DEFAULT_HANDLER)

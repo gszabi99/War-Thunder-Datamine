@@ -8,22 +8,22 @@ local join = string.join //like join, but skip emptylines
 local function print_(val, separator="\n"){
   ::print($"{val}{separator}")
 }
-const DEF_MAX_DEEPLEVEL = 4
+
 local function Log(tostringfunc=null) {
   local function vlog(...){
     local out = ""
     if (vargv.len()==1)
-      out = tostring_r(vargv[0],{splitlines=false, compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL, tostringfunc=tostringfunc})
+      out = tostring_r(vargv[0],{splitlines=false, compact=true, maxdeeplevel=4, tostringfunc=tostringfunc})
     else
-      out = join(vargv.map(@(val) tostring_r(val,{splitlines=false, compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL, tostringfunc=tostringfunc}))," ")
+      out = join(vargv.map(@(val) tostring_r(val,{splitlines=false, compact=true, maxdeeplevel=4, tostringfunc=tostringfunc}))," ")
     dagorDebug.screenlog(out.slice(0,::min(out.len(),200)))
   }
 
   local function log(...) {
     if (vargv.len()==1)
-      print_(tostring_r(vargv[0],{compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc}))
+      print_(tostring_r(vargv[0],{compact=true, maxdeeplevel=4 tostringfunc=tostringfunc}))
     else
-      print_(" ".join(vargv.map(@(v) tostring_r(v,{compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc}))))
+      print_(" ".join(vargv.map(@(v) tostring_r(v,{compact=true, maxdeeplevel=4 tostringfunc=tostringfunc}))))
   }
 
   local function dlog(...) {
@@ -57,11 +57,11 @@ local function Log(tostringfunc=null) {
   }
 
   local function console_print(...) {
-    dagorDebug.console_print(" ".join(vargv.map(@(v) tostring_r(v, {maxdeeplevel=DEF_MAX_DEEPLEVEL, showArrIdx=false, tostringfunc=tostringfunc}))))
+    dagorDebug.console_print(" ".join(vargv.map(@(v) tostring_r(v, {maxdeeplevel=4, showArrIdx=false, tostringfunc=tostringfunc}))))
   }
 
   local function with_prefix(prefix) {
-    return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc})))))
+    return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=4 tostringfunc=tostringfunc})))))
   }
   local function dlog_prefix(prefix) {
     return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn

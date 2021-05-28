@@ -926,7 +926,7 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
     }
 
     refMarkerObj.show(true)
-    local left = ::min((refer - vMin) / (vMax - vMin), 1)
+    local left = (refer - vMin) / (vMax - vMin)
     refMarkerObj.left = ::format("%.3fpw - 0.5w)", left)
   }
 }

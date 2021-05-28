@@ -1,0 +1,215 @@
+[
+  {
+    "rocketGun": true
+  },
+  {
+    "preset_cost": 25
+  },
+  {
+    "shotFreq": 1000.25
+  },
+  {
+    "sound_pathStudio": "toon/weapon"
+  },
+  {
+    "sound": "toon_rocket"
+  },
+  {
+    "sound_inside": "toon_rocket_inside"
+  },
+  {
+    "sound": "weapon.rocketgun_132"
+  },
+  {
+    "helicopterGroup": 2
+  },
+  {
+    "mesh": "toon_ros_82_497_rocket"
+  },
+  {
+    "rocket": {
+      "caliber": 0.082,
+      "mass": 6.0,
+      "explosiveType": "tnt",
+      "explosiveMass": 0.36,
+      "massEnd": 6.82,
+      "maxDeltaAngle": 3.5,
+      "dragCx": 0.021,
+      "length": 0.62,
+      "distFromCmToStab": 0.01,
+      "CxK": 0.01,
+      "WdK": [0.1,0.1,0.1],
+      "spinOffset": 3.0,
+      "spinFreq": 15.0,
+      "spawnExplosionFx": false,
+      "spawnExplosionWreckage": false,
+      "explosionEffect": "explosion_midair_tiny",
+      "groundCollisionEffect": "explosion_midair_tiny",
+      "ricochetEffect": "cannon_ricochet",
+      "waterCollisionEffect": "120-203_he_water_splash",
+      "explosionPatchRadius": 3.4,
+      "fireEffect": "fires_rocket_tail_cartoon",
+      "smokeEffect": "",
+      "hazeEffect": "haze_missile",
+      "endSmokeViscosity": 0.2,
+      "maxDistance": 6500.0,
+      "minDistance": 30.0,
+      "rotationRocketX": 5.0,
+      "force": 3500.0,
+      "timeFire": 20.0,
+      "hitPowerMult": 1.0,
+      "nearHitPower": [1.0,50.0],
+      "midHitPower": [0.9,400.0],
+      "farHitPower": [0.1,1000.0],
+      "endHitPower": [0.01,1500.0],
+      "relativeVelHitShift": [300.0,1000.0],
+      "nearArmorPower": [10.0,50.0],
+      "midArmorPower": [7.0,400.0],
+      "farArmorPower": [0.2,700.0],
+      "relativeVelArmorShift": [200.0,1000.0],
+      "explodeTreshold": 0.0,
+      "explodeHitPower": 70.0,
+      "explodeArmorPower": 23.0,
+      "explodeRadius": [0.3,1.0],
+      "rendinstDamageRadius": 7.0,
+      "hasProximityFuse": true,
+      "statType": "hydra",
+      "shutterDamage": true,
+      "shutterDamageRadius": 17.0,
+      "shutterAmount": 1000,
+      "shutterArmorPower": 7.0,
+      "shutterHit": 20.0,
+      "useStartSpeed": true,
+      "startSpeed": 30.0,
+      "endSpeed": 800.0,
+      "maxSpeed": 320.0,
+      "advancedMissiles": false,
+      "autoaimEnabled": false,
+      "aiGroundOnly": false,
+      "aiAirOnly": false,
+      "amountPerTier": 1.0,
+      "iconType": "rockets_he_middle",
+      "damage": {
+        "shatter": [
+          {
+            "useRealShatters": true
+          },
+          {
+            "countPortion": 0.5
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.4,
+              "damageScale": 1.0,
+              "angles": [0.0,30.0],
+              "countPortion": 0.1
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [31.0,74.0],
+              "countPortion": 0.2
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.8,
+              "damageScale": 1.5,
+              "angles": [75.0,100.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [101.0,180.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [181.0,259.0],
+              "countPortion": 0.15
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.8,
+              "damageScale": 1.5,
+              "angles": [260.0,285.0],
+              "countPortion": 0.05
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [286.0,329.0],
+              "countPortion": 0.2
+            }
+          },
+          {
+            "segment": {
+              "radiusScale": 1.0,
+              "penetrationScale": 1.4,
+              "damageScale": 1.0,
+              "angles": [330.0,359.0],
+              "countPortion": 0.1
+            }
+          }
+        ]
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
+      },
+      "collisions": {
+        "steel": {
+          "fx": "explosion_midair_tiny"
+        },
+        "armor": {
+          "fx": "explosion_midair_tiny"
+        },
+        "buildings": {
+          "fx": "explosion_midair_tiny"
+        },
+        "wood": {
+          "fx": "explosion_midair_tiny"
+        }
+      },
+      "DamageParts": {
+        "body": {
+          "hp": 5.0,
+          "armorClass": "tank_structural_steel",
+          "armorThickness": 1.0
+        }
+      },
+      "proximityFuse": {
+        "radius": 1.5,
+        "armDistance": 300.0,
+        "detectAirUnits": true,
+        "detectGroundUnits": false,
+        "detectGround": false,
+        "minimalAltitude": 1.0
+      },
+      "tracerTrail": {
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "100mmRed",
+          "trail": "noTrail"
+        }
+      }
+    }
+  }
+]

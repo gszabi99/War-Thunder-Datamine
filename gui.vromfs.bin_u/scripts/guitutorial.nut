@@ -39,11 +39,9 @@ guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handle
     darkBlocks = []
   }
 
-  local rootXPad = isFullscreen ? -::to_pixels("1@bwInVr") : 0
-  local rootYPad = isFullscreen ? -::to_pixels("1@bhInVr") : 0
   local darkBoxes = []
   if (view.darkBlock && view.darkBlock != "")
-    darkBoxes.append(rootBox.cloneBox(rootXPad, rootYPad).incPos(rootPosCompensation))
+    darkBoxes.append(rootBox.cloneBox().incPos(rootPosCompensation))
 
   foreach(config in objDataArray)
   {

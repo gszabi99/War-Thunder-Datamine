@@ -1,6 +1,6 @@
 [
   {
-    "model": "pzkpfw_IV_ausf_H"
+    "model": "pzkpfw_IV_ausf_h"
   },
   {
     "hasExpl": false
@@ -1374,51 +1374,65 @@
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
         "hidableInViewer": true,
-        "hp": 400.0,
         "ex_armor_body_r_04_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_r_05_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_r_06_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_r_07_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_r_08_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_04_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_05_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_06_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_07_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_08_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_l_09_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_body_r_09_dm": {
-          "armorThickness": 5.0
+          "armorThickness": 5.0,
+          "hp": 100.0
         },
         "ex_armor_turret_01_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 8.0,
+          "hp": 100.0
         },
         "ex_armor_turret_r_01_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 8.0,
+          "hp": 100.0
         },
         "ex_armor_turret_l_01_dm": {
-          "armorThickness": 8.0
+          "armorThickness": 8.0,
+          "hp": 100.0
         }
       },
       "mask": {
@@ -1605,7 +1619,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -1954,14 +1967,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -3212,7 +3217,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3231,7 +3236,7 @@
           },
           "limits": {
             "yaw": [-180.0,180.0],
-            "pitch": [-10.0,20.0]
+            "pitch": [-10.0,25.0]
           }
         }
       }
@@ -3327,28 +3332,6 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
     }
   },

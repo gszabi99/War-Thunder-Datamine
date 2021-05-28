@@ -87,9 +87,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
     "ID_FUEL_TANKS"
     "ID_AIR_DROP"
     "ID_SENSOR_SWITCH"
-    "ID_SENSOR_TYPE_SWITCH"
     "ID_SENSOR_MODE_SWITCH"
-    "ID_SENSOR_ACM_SWITCH"
     "ID_SENSOR_SCAN_PATTERN_SWITCH"
     "ID_SENSOR_RANGE_SWITCH"
     "ID_SENSOR_TARGET_SWITCH"
@@ -256,9 +254,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
     "ID_ACTION_BAR_ITEM_6"
     "ID_SHOOT_ARTILLERY"
     "ID_SENSOR_SWITCH_TANK"
-    "ID_SENSOR_TYPE_SWITCH_TANK"
     "ID_SENSOR_MODE_SWITCH_TANK"
-    "ID_SENSOR_ACM_SWITCH_TANK"
     "ID_SENSOR_SCAN_PATTERN_SWITCH_TANK"
     "ID_SENSOR_RANGE_SWITCH_TANK"
     "ID_SENSOR_TARGET_LOCK_SWITCH"
@@ -1559,8 +1555,8 @@ class ::gui_handlers.controlsWizardModalHandler extends ::gui_handlers.BaseGuiHa
     if (presetValue in opdata.values)
     {
       presetSelected = opdata.values[presetValue]
-      showSceneBtn("btn_controlsWizard", presetSelected == "custom")
-      showSceneBtn("btn_selectPreset", presetSelected != "custom")
+      showSceneBtn("btn_controlsWizard", presetSelected == "")
+      showSceneBtn("btn_selectPreset", presetSelected != "")
     }
   }
 

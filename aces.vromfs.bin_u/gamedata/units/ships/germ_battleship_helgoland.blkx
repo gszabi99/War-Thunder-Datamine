@@ -1510,7 +1510,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.45,
         "oneSided": true,
-        "genericDamageMult": 0.3,
+        "genericDamageMult": 0.5,
         "compartment_01_dm": {
           "hp": 13000.0
         },
@@ -1991,7 +1991,7 @@
           "hp": 100.0
         },
         "torpedo_06_dm": {
-          "hp": 163.0
+          "hp": 100.0
         },
         "torpedo_07_dm": {
           "hp": 100.0
@@ -2003,7 +2003,7 @@
           "hp": 100.0
         },
         "torpedo_10_dm": {
-          "hp": 100.0
+          "hp": 163.0
         },
         "torpedo_11_dm": {
           "hp": 100.0
@@ -2024,8 +2024,8 @@
           "hp": 100.0
         }
       },
-      "boiler_rooms": {
-        "fireParamsPreset": "ship_boiler_room",
+      "engine": {
+        "fireParamsPreset": "cruier_engine",
         "armorClass": "armor_tank_engine",
         "armorThickness": 10.0,
         "armorThrough": 500.0,
@@ -2038,22 +2038,18 @@
         },
         "engine_room_03_dm": {
           "hp": 5000.0
-        }
-      },
-      "engine_rooms": {
-        "fireParamsPreset": "ship_engine_room",
-        "armorClass": "armor_tank_engine",
-        "armorThickness": 25.4,
-        "armorThrough": 500.0,
-        "fireProtectionHp": 10.0,
+        },
         "transmission_01_dm": {
-          "hp": 4000.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 5000.0
         },
         "transmission_02_dm": {
-          "hp": 4000.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 5000.0
         },
         "transmission_03_dm": {
-          "hp": 4000.0
+          "secondaryShatterDamageMult": 0.1,
+          "hp": 5000.0
         }
       },
       "pumps": {
@@ -2099,7 +2095,7 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 25.4,
         "hidableInViewer": true,
-        "genericDamageMult": 0.1,
+        "genericDamageMult": 0.5,
         "cover_01_dm": {
           "hp": 10000.0
         },
@@ -2803,62 +2799,62 @@
       "sailor3": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 75
+        "crew": 74
       },
       "sailor4": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor5": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor6": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 75
+        "crew": 74
       },
       "sailor7": {
         "dmPart": "compartment_05_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor8": {
         "dmPart": "compartment_06_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor9": {
         "dmPart": "compartment_07_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor10": {
         "dmPart": "compartment_08_dm",
         "role": "sailor",
-        "crew": 44
+        "crew": 43
       },
       "sailor11": {
         "dmPart": "compartment_09_dm",
         "role": "sailor",
-        "crew": 56
+        "crew": 55
       },
       "sailor12": {
         "dmPart": "compartment_10_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 38
       },
       "sailor13": {
         "dmPart": "compartment_11_dm",
         "role": "sailor",
-        "crew": 75
+        "crew": 74
       },
       "sailor14": {
         "dmPart": "compartment_12_dm",
         "role": "sailor",
-        "crew": 37
+        "crew": 36
       },
       "sailor15": {
         "dmPart": "main_caliber_turret_01_dm",
@@ -3128,8 +3124,8 @@
         "ammunition_storage_shells": [
           {
             "onKill": {
-              "fire": 0.4,
               "expl": 0.6,
+              "fire": 0.61,
               "fHitCritical": false
             }
           },
@@ -3144,8 +3140,8 @@
           {
             "onHit": {
               "damageType": "explosion",
-              "expl": 0.15,
               "fire": 0.85,
+              "expl": 0.95,
               "damage": 1000.0,
               "fHitCritical": false
             }
@@ -3182,8 +3178,8 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
-              "fire": 0.14,
               "expl": 0.76,
+              "fire": 0.75,
               "fHitCritical": false
             }
           },
@@ -3232,19 +3228,31 @@
         ]
       },
       {
-        "ammunition_torpedoes": {
-          "onKill": {
-            "expl": 0.07,
-            "nothing": 0.93,
-            "fHitCritical": false
+        "ammunition_torpedoes": [
+          {
+            "onKill": {
+              "expl": 0.15,
+              "nothing": 0.16,
+              "fHitCritical": false
+            }
           },
-          "onHit": {
-            "damageType": "fire",
-            "expl": 0.1,
-            "damage": 50.0,
-            "fHitCritical": false
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.85,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.9,
+              "damage": 75.0,
+              "fHitCritical": false
+            }
           }
-        }
+        ]
       },
       {
         "handling_room": [
@@ -8508,9 +8516,6 @@
       ],
       "ammo14": {
         "weaponTrigger": "gunner34",
-        "replenishmentDelay": 10.0,
-        "replenishmentTime": 20.0,
-        "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
         "fireEvent": "torpedo_fire",
@@ -8530,15 +8535,6 @@
           "weaponTrigger": "gunner35"
         },
         {
-          "replenishmentDelay": 10.0
-        },
-        {
-          "replenishmentTime": 20.0
-        },
-        {
-          "removeLoadedAmmo": false
-        },
-        {
           "fatalFire": false
         },
         {
@@ -8561,7 +8557,6 @@
         },
         {
           "shells": {
-            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_02_dm": {
               "count": 1
@@ -8571,7 +8566,7 @@
         {
           "shells": {
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_15_dm": {
+            "torpedo_03_dm": {
               "count": 1
             }
           }
@@ -8582,15 +8577,6 @@
           "weaponTrigger": "gunner36"
         },
         {
-          "replenishmentDelay": 10.0
-        },
-        {
-          "replenishmentTime": 20.0
-        },
-        {
-          "removeLoadedAmmo": false
-        },
-        {
           "fatalFire": false
         },
         {
@@ -8613,9 +8599,8 @@
         },
         {
           "shells": {
-            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_03_dm": {
+            "torpedo_04_dm": {
               "count": 1
             }
           }
@@ -8623,7 +8608,7 @@
         {
           "shells": {
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_16_dm": {
+            "torpedo_05_dm": {
               "count": 1
             }
           }
@@ -8667,13 +8652,14 @@
           "shells": {
             "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_04_dm": {
+            "torpedo_06_dm": {
               "count": 1
             }
           }
         },
         {
           "shells": {
+            "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
             "torpedo_07_dm": {
               "count": 1
@@ -8683,7 +8669,7 @@
         {
           "shells": {
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_08_dm": {
+            "torpedo_14_dm": {
               "count": 1
             }
           }
@@ -8691,7 +8677,7 @@
         {
           "shells": {
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_09_dm": {
+            "torpedo_15_dm": {
               "count": 1
             }
           }
@@ -8699,7 +8685,7 @@
         {
           "shells": {
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_10_dm": {
+            "torpedo_16_dm": {
               "count": 1
             }
           }
@@ -8743,7 +8729,16 @@
           "shells": {
             "autoLoad": true,
             "damageEffect": "ammunition_torpedoes",
-            "torpedo_05_dm": {
+            "torpedo_08_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "shells": {
+            "autoLoad": true,
+            "damageEffect": "ammunition_torpedoes",
+            "torpedo_09_dm": {
               "count": 1
             }
           }
@@ -8771,19 +8766,10 @@
               "count": 1
             }
           }
-        },
-        {
-          "shells": {
-            "damageEffect": "ammunition_torpedoes",
-            "torpedo_14_dm": {
-              "count": 1
-            }
-          }
         }
       ],
       "ammo19": {
         "weaponTrigger": "gunner39",
-        "removeLoadedAmmo": false,
         "fatalFire": false,
         "fatalExplosion": false,
         "fireEvent": "torpedo_fire",
@@ -8793,7 +8779,7 @@
         "shatterRadiusConstraint": 15.0,
         "shells": {
           "damageEffect": "ammunition_torpedoes",
-          "torpedo_06_dm": {
+          "torpedo_10_dm": {
             "count": 1
           }
         }

@@ -1,6 +1,6 @@
 local Unit = require("scripts/unit/unit.nut")
 local optionsMeasureUnits = require("scripts/options/optionsMeasureUnits.nut")
-local { initBulletIcons } = require("scripts/weaponry/bulletsVisual.nut")
+local { initBulletIcons } = require("scripts/weaponry/bulletsInfo.nut")
 
 ::all_units <- {}
 ::show_aircraft <- null

@@ -166,12 +166,6 @@
           "hp": 30.5
         },
         "stab_dm": {
-          "hp": 30.0
-        },
-        "stab2_dm": {
-          "hp": 30.0
-        },
-        "stab1_dm": {
           "hp": 50.5
         }
       },
@@ -1318,108 +1312,6 @@
           },
           {
             "onHit": {
-              "tailcontrol_dm": 0.001
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "tailcontrol_dm": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "stab1_dm"
-          },
-          {
-            "onHit": {
-              "tailcontrol_dm": 0.001
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "tailcontrol_dm": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "stab2_dm"
-          },
-          {
-            "onHit": {
               "damage": 30.0,
               "cut": 0.6
             }
@@ -2250,10 +2142,7 @@
           "midNode": "Bip01 L Forearm",
           "upNode": "Bip01 L UpperArm",
           "targetNode": "throttle_lhand_1",
-          "flexionDir": [0.0,-1.0,0.2],
-          "type": "leftHand",
-          "detachedNodeYpr": [0.0,-15.0,-90.0],
-          "detachedNodeScale": [1.0,-1.0,1.0]
+          "flexionDir": [0.0,-1.0,0.2]
         }
       },
       {
@@ -2262,10 +2151,7 @@
           "midNode": "Bip01 R Forearm",
           "upNode": "Bip01 R UpperArm",
           "targetNode": "stick_rhand_1",
-          "flexionDir": [0.0,-1.0,-0.5],
-          "type": "rightHand",
-          "detachedNodeYpr": [0.0,-15.0,90.0],
-          "detachedNodeScale": [1.0,-1.0,1.0]
+          "flexionDir": [0.0,-1.0,-0.5]
         }
       },
       {
@@ -2581,7 +2467,7 @@
           "flash": "flare3",
           "shell": "emtr_shellrejection1",
           "dm": "mgun1_dm",
-          "bullets": 300,
+          "bullets": 1500,
           "spread": 1.35,
           "traceOffset": 1
         }
@@ -2757,48 +2643,14 @@
         "preset": {
           "name": "leo_451_100kg_6x200kg",
           "blk": "gameData/FlightModels/weaponPresets/leo_451_100kg_6x200kg.blk",
-          "reqModification": "fr_f222_s",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/fr_100kg.blk",
-                "iconType": "bombs_middle"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/fr_200kg.blk",
-                "iconType": "bombs_large"
-              }
-            }
-          ]
+          "reqModification": "fr_f222_s"
         }
       },
       {
         "preset": {
           "name": "leo_451_2x500kg_100kg_4x200kg",
           "blk": "gameData/FlightModels/weaponPresets/leo_451_2x500kg_100kg_4x200kg.blk",
-          "reqModification": "fr_f222_tgpu",
-          "weaponConfig": [
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/fr_100kg.blk",
-                "iconType": "bombs_middle"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/fr_200kg.blk",
-                "iconType": "bombs_large"
-              }
-            },
-            {
-              "Weapon": {
-                "blk": "gameData/Weapons/BombGuns/fr_500kg_3_1.blk",
-                "iconType": "bombs_special"
-              }
-            }
-          ]
+          "reqModification": "fr_f222_tgpu"
         }
       }
     ]
@@ -2908,7 +2760,7 @@
   },
   {
     "Aircraft": {
-      "gunnersCount": 2
+      "gunnersCount": 3
     }
   },
   {

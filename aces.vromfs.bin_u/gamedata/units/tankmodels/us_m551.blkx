@@ -314,7 +314,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -660,14 +659,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -1706,17 +1697,10 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "commander"
-        }
-      ]
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander"
+      }
     }
   },
   {
@@ -2288,9 +2272,7 @@
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm",
-            "secondGunnerDm": "commander_dm"
+            "barrel": "bone_gun_barrel"
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -2408,8 +2390,7 @@
             "turret": {
               "head": "bone_mg_gun_twin",
               "gun": "bone_mg_gun_twin",
-              "gunnerDm": "gunner_dm",
-              "secondGunnerDm": "commander_dm"
+              "gunnerDm": "gunner_dm"
             }
           },
           {
@@ -2435,7 +2416,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3286,9 +3267,7 @@
                 "turret": {
                   "head": "bone_turret",
                   "gun": "bone_gun",
-                  "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm",
-                  "secondGunnerDm": "commander_dm"
+                  "barrel": "bone_gun_barrel"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3406,8 +3385,7 @@
                   "turret": {
                     "head": "bone_mg_gun_twin",
                     "gun": "bone_mg_gun_twin",
-                    "gunnerDm": "gunner_dm",
-                    "secondGunnerDm": "commander_dm"
+                    "gunnerDm": "gunner_dm"
                   }
                 },
                 {
@@ -3433,7 +3411,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3514,7 +3492,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,
@@ -3701,28 +3679,6 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "ger_camo_carc*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "usa_modern_red_desert",
-      "nameLocId": "skin/usa_modern_red_desert",
-      "descLocId": "skin/usa_modern_red_desert/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_red_desert*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "usa_modern_summer_verdant",
-      "nameLocId": "skin/usa_modern_summer_verdant",
-      "descLocId": "skin/usa_modern_summer_verdant/desc",
-      "replace_tex": {
-        "from": "us_camo_olive*",
-        "to": "usa_modern_summer_verdant*"
       }
     }
   }

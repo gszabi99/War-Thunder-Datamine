@@ -19,7 +19,7 @@
   "defGame": "master",
   "waitForMenuMusic": true,
   "useOneshotForAirGunSound": true,
-  "minShotStep": 0.1,
+  "minShotStep": 0.037,
   "maxAltFallBullets": 20.0,
   "maxSpeedFallBullets": 50.0,
   "event_time_to_live": 12.0,
@@ -68,6 +68,10 @@
         "masterbank.strings": {
           "async": false,
           "preload": true
+        },
+        "hangar": {
+          "async": false,
+          "preload": false
         },
         "aircraft_ambient": {
           "async": true,
@@ -512,10 +516,6 @@
     "eventTankCollisionBuilding": "collision_building",
     "eventTankCollisionWood": "collision_wood",
     "eventTankCollisionBushes": "collision_bushes",
-    "eventTankCollisionSuspension": "collision_suspension",
-    "eventTankCollisionWheels": "collision_wheels",
-    "suspensionShockImpulseLimits": [0.34,1.5],
-    "shockImpulseLimits": [0.5,3.0],
     "eventTankKillSceneBulletFlyStart": "killscene/shell_flight",
     "eventTankKillSceneBulletFlyEnd": "killscene/stop_hit_camera",
     "eventTankKillScenePierce": "killscene/pierce",

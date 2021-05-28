@@ -555,7 +555,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -890,14 +889,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -1950,17 +1941,10 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "commander"
-        }
-      ]
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander"
+      }
     }
   },
   {
@@ -2510,10 +2494,10 @@
       "EngineName": "engine_leo1",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_mbt",
-      "TrackSoundNameCockpit": "tracks_mbt_interior",
+      "TrackSoundName": "tracks",
+      "TrackSoundNameCockpit": "tracks_interior",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_mbt",
+      "TrackSoundNameAi": "tracks_ai_middle",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -2555,9 +2539,7 @@
           "turret": {
             "head": "bone_turret",
             "gun": "bone_gun",
-            "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm",
-            "secondGunnerDm": "commander_dm"
+            "barrel": "bone_gun_barrel"
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -2676,7 +2658,6 @@
               "head": "bone_mg_gun_twin",
               "gun": "bone_mg_gun_twin",
               "gunnerDm": "gunner_dm",
-              "secondGunnerDm": "commander_dm",
               "verDriveDm": "drive_turret_v_dm",
               "horDriveDm": "drive_turret_h_dm"
             }
@@ -2704,7 +2685,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2728,30 +2709,6 @@
           "limitsTable": {
             "lim1": [-120.0,70.0,-8.0,20.0],
             "lim2": [70.0,120.0,-5.0,20.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-90.0,90.0],
-            "pitch": [-10.0,15.0]
           }
         }
       }
@@ -3391,15 +3348,6 @@
     ]
   },
   {
-    "commanderView": {
-      "aimModeAvailable": true,
-      "optics": "commander_optics_square",
-      "zoomOutFov": 18.5,
-      "zoomInFov": 3.68,
-      "sightSize": [0.355,0.25]
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 18.5,
       "zoomInFov": 6.14,
@@ -3481,9 +3429,7 @@
                 "turret": {
                   "head": "bone_turret",
                   "gun": "bone_gun",
-                  "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm",
-                  "secondGunnerDm": "commander_dm"
+                  "barrel": "bone_gun_barrel"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3602,7 +3548,6 @@
                     "head": "bone_mg_gun_twin",
                     "gun": "bone_mg_gun_twin",
                     "gunnerDm": "gunner_dm",
-                    "secondGunnerDm": "commander_dm",
                     "verDriveDm": "drive_turret_v_dm",
                     "horDriveDm": "drive_turret_h_dm"
                   }
@@ -3630,7 +3575,7 @@
                 "speedPitch": 20.0,
                 "bullets": 2000,
                 "isBulletBelt": true,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3658,33 +3603,9 @@
               }
             },
             {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
-                "turret": {
-                  "head": "bone_commander_sight_h",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "limits": {
-                  "yaw": [-90.0,90.0],
-                  "pitch": [-10.0,15.0]
-                }
-              }
-            },
-            {
               "Weapon": [
                 {
-                  "trigger": "gunner4"
+                  "trigger": "gunner3"
                 },
                 {
                   "triggerGroup": "smoke"
@@ -3741,7 +3662,7 @@
                   "bullets": 8
                 },
                 {
-                  "fireConeAngle": 5.0
+                  "fireConeAngle": 15.0
                 },
                 {
                   "ChainfireTime": 0.5
@@ -3802,7 +3723,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,
@@ -3925,60 +3846,15 @@
             },
             "ammo_turret_14_dm": {
               "count": 1
+            },
+            "ammo_turret_15_dm": {
+              "count": 1
             }
           }
         },
         {
           "shells": {
             "reloadTimeMult": 1.28,
-            "ammo_turret_15_dm": {
-              "count": 1
-            },
-            "ammo_turret_16_dm": {
-              "count": 1
-            },
-            "ammo_turret_17_dm": {
-              "count": 1
-            },
-            "ammo_turret_18_dm": {
-              "count": 1
-            },
-            "ammo_turret_19_dm": {
-              "count": 1
-            },
-            "ammo_turret_20_dm": {
-              "count": 1
-            },
-            "ammo_turret_21_dm": {
-              "count": 1
-            },
-            "ammo_turret_22_dm": {
-              "count": 1
-            },
-            "ammo_turret_23_dm": {
-              "count": 1
-            },
-            "ammo_turret_24_dm": {
-              "count": 1
-            },
-            "ammo_turret_25_dm": {
-              "count": 1
-            },
-            "ammo_turret_26_dm": {
-              "count": 1
-            },
-            "ammo_turret_27_dm": {
-              "count": 1
-            },
-            "ammo_turret_28_dm": {
-              "count": 1
-            },
-            "ammo_turret_29_dm": {
-              "count": 1
-            },
-            "ammo_turret_30_dm": {
-              "count": 1
-            },
             "ammo_body_01_dm": {
               "count": 1
             },
@@ -4067,6 +3943,36 @@
               "count": 1
             },
             "ammo_body_30_dm": {
+              "count": 1
+            },
+            "ammo_body_31_dm": {
+              "count": 1
+            },
+            "ammo_body_32_dm": {
+              "count": 1
+            },
+            "ammo_body_33_dm": {
+              "count": 1
+            },
+            "ammo_body_34_dm": {
+              "count": 1
+            },
+            "ammo_body_35_dm": {
+              "count": 1
+            },
+            "ammo_body_36_dm": {
+              "count": 1
+            },
+            "ammo_body_37_dm": {
+              "count": 1
+            },
+            "ammo_body_38_dm": {
+              "count": 1
+            },
+            "ammo_body_39_dm": {
+              "count": 1
+            },
+            "ammo_body_40_dm": {
               "count": 1
             }
           }

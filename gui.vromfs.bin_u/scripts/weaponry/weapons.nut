@@ -19,15 +19,18 @@ local { getItemAmount,
 local { getModItemName, getReqModsText, getBulletsListHeader
 } = require("scripts/weaponry/weaponryDescription.nut")
 local { updateModItem, createModItem, createModBundle } = require("scripts/weaponry/weaponryVisual.nut")
-local { isBullets, getBulletsList, setUnitLastBullets,
-  getBulletGroupIndex, getBulletsItemsList, getBulletsSetData, isWeaponTierAvailable,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
-local { getModificationName } = require("scripts/weaponry/bulletsVisual.nut")
+local { isBullets,
+        getBulletsList,
+        setUnitLastBullets,
+        getBulletGroupIndex,
+        getBulletsItemsList,
+        getModificationName,
+        isWeaponTierAvailable,
+        getLastFakeBulletsIndex,
+        isBulletsGroupActiveByMod } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TAG,
         getLastWeapon,
         setLastWeapon,
-        checkUnitBullets,
-        checkUnitSecondaryWeapons,
         getLastPrimaryWeapon,
         getPrimaryWeaponsList,
         getSecondaryWeaponsList,
@@ -37,7 +40,6 @@ local tutorAction = require("scripts/tutorials/tutorialActions.nut")
 local { setDoubleTextToButton, placePriceTextToButton
 } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { MODIFICATION_DELAYED_TIER } = require("scripts/weaponry/weaponryTooltips.nut")
-local { weaponsPurchase } = require("scripts/weaponry/weaponsPurchase.nut")
 
 local timerPID = ::dagui_propid.add_name_id("_size-timer")
 ::header_len_per_cell <- 17
@@ -226,7 +228,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local modIdx = customPosIdx
     if (modIdx < 0)
     {
-      local finishedResearch = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      local finishedResearch = ::getTblValue(::researchedModForCheck, researchBlock, "")
       foreach(item in items)
         if (isModInResearch(air, item))
         {
@@ -249,11 +251,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
 
     local titleText = ::loc("mainmenu/btnWeapons") + " " + ::loc("ui/mdash") + " " + ::getUnitName(air)
     if (researchMode)
-    {
-      local modifName = researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
       titleText = ::loc("modifications/finishResearch",
-          {modName = getModificationName(air, modifName, getBulletsSetData(air, modifName))})
-    }
+          {modName = getModificationName(air, ::getTblValue(::researchedModForCheck, researchBlock, "CdMin_Fuse"))})
     titleObj.setValue(titleText)
   }
 
@@ -300,8 +299,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (finIdx < 0 || newIdx < 0)
       return
 
-    local newModName = getModificationName(air, items[newIdx].name,
-      getBulletsSetData(air, items[newIdx].name), true)
+    local newModName = getModificationName(air, items[newIdx].name, true)
     local steps = [
       {
         obj = ["item_" + newIdx]
@@ -325,8 +323,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     balance.setFromTbl(::get_balance())
     if (getItemAmount(air, finItem) < 1 && getItemCost(air, finItem) <= balance)
     {
-      local finModName = getModificationName(air, items[finIdx].name,
-        getBulletsSetData(air, items[finIdx].name), true)
+      local finModName = getModificationName(air, items[finIdx].name, true)
       steps.insert(0,
         {
           obj = ["item_" + finIdx]
@@ -427,12 +424,8 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
       purchasedModifications.append(modName)
 
     updateAllItems()
-    updateBulletsWarning()
   }
-  function onEventWeaponPurchased(params) {
-    updateAllItems()
-    updateWeaponsWarning()
-  }
+  function onEventWeaponPurchased(params) { updateAllItems() }
   function onEventSparePurchased(params) { updateAllItems() }
   function onEventSlotbarPresetLoaded(params) { onSlotbarSelect() }
   function onEventCrewsListChanged(params) { onSlotbarSelect() }
@@ -909,12 +902,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
           createItem(selWeapon, weaponsItem.weapon, mainModsObj, offsetX, offsetY)
       } else
         createBundle(secondaryWeapons, weaponsItem.weapon, 0, mainModsObj, offsetX, offsetY)
-      columnsList.append(getWeaponsColumnData(
-        ::g_weaponry_types.WEAPON.getHeader(air)).__merge(
-          {
-            haveWarning = checkUnitSecondaryWeapons(air) != UNIT_WEAPONS_READY
-            warningId = "weapons"
-          }))
+      columnsList.append(getWeaponsColumnData(::g_weaponry_types.WEAPON.getHeader(air)))
       offsetX++
     }
 
@@ -936,11 +924,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
         weaponsItem.bullets, groupIndex, mainModsObj, offsetX, offsetY)
 
       local name = getBulletsListHeader(air, bulletsList)
-      columnsList.append(getWeaponsColumnData(name).__merge(
-        {
-          haveWarning = checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY
-          warningId = $"bullets{groupIndex}"
-        }))
+      columnsList.append(getWeaponsColumnData(name))
       offsetX++
     }
 
@@ -957,29 +941,6 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     }
 
     createTreeBlocks(modsBgObj, columnsList, 1, 0, offsetY)
-  }
-
-  function updateWeaponsWarning()
-  {
-    local iconObj = scene.findObject("weapons_warning")
-    if (iconObj?.isValid())
-      iconObj.display = (checkUnitSecondaryWeapons(air) != UNIT_WEAPONS_READY) ? "show" : "hide"
-  }
-
-  function updateBulletsWarning()
-  {
-    for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(air); groupIndex++)
-    {
-      local bulletsList = getBulletsList(air.name, groupIndex, {
-        needCheckUnitPurchase = false, needOnlyAvailable = false })
-      if (!bulletsList.values.len() || bulletsList.duplicate)
-        continue
-
-      local iconObj = scene.findObject($"bullets{groupIndex}_warning")
-        if (iconObj?.isValid())
-          iconObj.display = (checkUnitBullets(air, true, bulletsList.values) != UNIT_WEAPONS_READY)
-            ? "show" : "hide"
-    }
   }
 
   function canBomb(checkPurchase)
@@ -1403,7 +1364,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
   function onBuyAll(forceOpen = true, silent = false)
   {
     checkSaveBulletsAndDo(::Callback((@(air, forceOpen, silent) function() {
-      weaponsPurchase(air, {open = forceOpen, silent = silent})
+      ::WeaponsPurchase(air, {open = forceOpen, silent = silent})
     })(air, forceOpen, silent), this))
   }
 
@@ -1427,7 +1388,7 @@ class ::gui_handlers.WeaponsModalHandler extends ::gui_handlers.BaseGuiHandlerWT
     local listObj = mainModsObj
     local curValue = mainModsObj.getValue()
     checkSaveBulletsAndDo(::Callback(function() {
-      weaponsPurchase(air, {
+      ::WeaponsPurchase(air, {
         modItem = modItem,
         open = open,
         onFinishCb = @() ::move_mouse_on_child(listObj, curValue)
@@ -1722,14 +1683,6 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     sceneUpdate()
   }
 
-  function updateButtonPriceText()
-  {
-    local buyValue = curValue - minValue
-    local wpCost = buyValue * itemCost.wp
-    local eaCost = buyValue * itemCost.gold
-    placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
-  }
-
   function sceneUpdate()
   {
     scene.findObject("skillSlider").setValue(curValue)
@@ -1741,7 +1694,10 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("buttonInc").enable(curValue < maxUserValue)
     scene.findObject("buttonMax").enable(curValue != maxUserValue)
     scene.findObject("buttonDec").enable(curValue > minUserValue)
-    updateButtonPriceText()
+
+    local wpCost = buyValue * itemCost.wp
+    local eaCost = buyValue * itemCost.gold
+    placePriceTextToButton(scene, "item_price", ::loc("mainmenu/btnBuy"), wpCost, eaCost)
   }
 
   function onBuy(obj)
@@ -1757,8 +1713,7 @@ class ::gui_handlers.MultiplePurchase extends ::gui_handlers.BaseGuiHandlerWT
     base.goBack()
   }
 
-  onEventModificationPurchased = @(p) goBack()
-  onEventWeaponPurchased = @(p) goBack()
-  onEventSparePurchased = @(p) goBack()
-  onEventProfileUpdated = @(p) updateButtonPriceText()
+  function onEventModificationPurchased(params) { goBack() }
+  function onEventWeaponPurchased(params) { goBack() }
+  function onEventSparePurchased(params) { goBack() }
 }

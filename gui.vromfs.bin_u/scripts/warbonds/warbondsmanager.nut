@@ -13,6 +13,8 @@ local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   isFontIconsValid = false
   defaultWbFontIcon = "currency/warbond/green"
 
+  visibleSeenIds = null
+
   maxAllowedWarbondsBalance = MAX_ALLOWED_WARBONDS_BALANCE //default value as on server side, MAX_ALLOWED_WARBONDS_BALANCE
 
   WARBOND_ID = "WarBond"
@@ -24,8 +26,6 @@ local OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
       return ::u.filter(list, filterFunc)
     return list
   }
-
-  getUnseenAwardIds = @() getList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
 }
 
 g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null)
@@ -70,6 +70,7 @@ g_warbonds.validateList <- function validateList()
     return 0
   })
 
+  visibleSeenIds = null
   seenWarbondsShop.setDaysToUnseen(OUT_OF_DATE_DAYS_WARBONDS_SHOP)
   seenWarbondsShop.onListChanged()
 }
@@ -195,6 +196,20 @@ g_warbonds.onEventPriceUpdated <- function onEventPriceUpdated(p)
 g_warbonds.onEventInitConfigs <- function onEventInitConfigs(p)
 {
   isFontIconsValid = false
+}
+
+g_warbonds.getUnseenAwardIds <- function getUnseenAwardIds()
+{
+  if (!visibleSeenIds)
+  {
+    visibleSeenIds = []
+    foreach(wbClass in getList())
+      visibleSeenIds.extend(::u.map(
+        wbClass.getAwardsList().filter(@(award) !award.isItemLocked()),
+        @(award) award.getSeenId()))
+  }
+
+  return visibleSeenIds
 }
 
 ::subscribe_handler(::g_warbonds ::g_listener_priority.CONFIG_VALIDATION)

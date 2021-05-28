@@ -10,7 +10,6 @@ local DataBlock = require("DataBlock")
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
 const mpsToFpm = 196.8504
-const mpsToKmh = 3.6
 local baseLineWidth = 4 * LINE_WIDTH
 
 enum GuidanceLockResult {
@@ -31,7 +30,6 @@ local ilsSetting = Computed(function() {
     isBuccaneerIls = false
     is410SUM1Ils = false
     isLCOSS = false
-    isASP23 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -47,7 +45,6 @@ local ilsSetting = Computed(function() {
     isBuccaneerIls = blk.getBool("isBuccaneerIls", false)
     is410SUM1Ils = blk.getBool("is410SUM1Ils", false)
     isLCOSS = blk.getBool("ilsLCOSS", false)
-    isASP23 = blk.getBool("ilsASP23", false)
   }
 })
 
@@ -348,32 +345,6 @@ local generateCompassMarkSUM = function(num) {
   }
 }
 
-local generateCompassMarkASP = function(num) {
-  return {
-    size = [pw(20), ph(100)]
-    flow = FLOW_VERTICAL
-    children = [
-      @() {
-        watch = IlsColor
-        rendObj = ROBJ_DTEXT
-        color = IlsColor.value
-        hplace = ALIGN_CENTER
-        fontSize = 40
-        font = Fonts.hud
-        text = num % 10 == 0 ? (num / 10).tostring() : ""
-      }
-      @() {
-        watch = IlsColor
-        size = [baseLineWidth, baseLineWidth * 6]
-        rendObj = ROBJ_SOLID
-        color = IlsColor.value
-        lineWidth = baseLineWidth
-        hplace = ALIGN_CENTER
-      }
-    ]
-  }
-}
-
 local function compass(width, generateFunc) {
   const step = 5.0
   local children = []
@@ -399,12 +370,12 @@ local function compass(width, generateFunc) {
   }
 }
 
-local function compassWrap(width, height, pos, generateFunc, scale = 1.0) {
+local function compassWrap(width, height, pos, generateFunc) {
   return {
-    size = [width * 0.6 * scale, height * 0.2]
-    pos = [width * (1 - 0.6 * scale) * 0.5, height * pos]
+    size = [width * 0.6, height * 0.2]
+    pos = [width * 0.2, height * pos]
     clipChildren = true
-    children = compass(width * 0.6 * scale, generateFunc)
+    children = compass(width * 0.6, generateFunc)
   }
 }
 
@@ -1320,104 +1291,6 @@ local function LCOSS(width, height) {
   }
 }
 
-local ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
-local ASPSpeed = @() {
-  watch = ASPSpeedValue
-  size = SIZE_TO_CONTENT
-  rendObj = ROBJ_DTEXT
-  pos = [pw(20), ph(35)]
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.hud
-  text = ASPSpeedValue.value.tostring()
-}
-
-local ASPAltValue = Computed(@() (Altitude.value).tointeger())
-local ASPAltitude = @() {
-  watch = ASPAltValue
-  size = SIZE_TO_CONTENT
-  rendObj = ROBJ_DTEXT
-  pos = [pw(70), ph(35)]
-  color = IlsColor.value
-  fontSize = 50
-  font = Fonts.hud
-  text = ASPAltValue.value.tostring()
-}
-
-local ASPAirSymbol = @() {
-  size = [pw(70), ph(70)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, -100, 0, -30, 0],
-    [VECTOR_LINE, -40, 0, -40, 10],
-    [VECTOR_LINE, 100, 0, 30, 0],
-    [VECTOR_LINE, 40, 0, 40, 10],
-    [VECTOR_LINE, 0, -30, 0, -70],
-  ]
-}
-
-local ASPAirSymbolWrap = @() {
-  size = flex()
-  children = ASPAirSymbol
-  behavior = Behaviors.RtPropUpdate
-  update = @() {
-    transform = {
-      rotate = Roll.value
-      pivot = [0, 0]
-    }
-  }
-}
-
-local ASPRoll = @() {
-  size = [pw(15), ph(15)]
-  pos = [pw(50), ph(50)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth
-  color = IlsColor.value
-  commands = [
-    [VECTOR_LINE, -100, 0, -80, 0],
-    [VECTOR_LINE, -96.6, 25.9, -77.3, 20.7],
-    [VECTOR_LINE, -86.6, 50, -69.3, 40],
-    [VECTOR_LINE, -50, 86.6, -40, 69.3],
-    [VECTOR_LINE, 50, 86.6, 40, 69.3],
-    [VECTOR_LINE, 86.6, 50, 69.3, 40],
-    [VECTOR_LINE, 96.6, 25.9, 77.3, 20.7],
-    [VECTOR_LINE, 100, 0, 80, 0],
-    [VECTOR_LINE, -15, 0, -5, 0],
-    [VECTOR_LINE, 15, 0, 5, 0],
-    [VECTOR_LINE, 0, -15, 0, -5],
-    [VECTOR_LINE, 0, 15, 0, 5]
-  ]
-  children = ASPAirSymbolWrap
-}
-
-local ASPCompassMark = @() {
-  size = flex()
-  rendObj = ROBJ_VECTOR_CANVAS
-  lineWidth = baseLineWidth
-  color = IlsColor.value
-  fillColor = IlsColor.value
-  commands = [
-    [VECTOR_LINE, 32, 33, 68, 33],
-    [VECTOR_POLY, 49, 36, 50, 33, 51, 36]
-  ]
-}
-
-local function basicASP23(width, height) {
-  return @() {
-    size = [width, height]
-    children = [
-      compassWrap(width, height, 0.25, generateCompassMarkASP, 0.6),
-      ASPCompassMark,
-      ASPSpeed,
-      ASPAltitude,
-      ASPRoll
-    ]
-  }
-}
-
 local function planeIls(width, height) {
   return @() {
     watch = [BombingMode, CCIPMode, TrackerVisible]
@@ -1434,8 +1307,7 @@ local function planeIls(width, height) {
       (ilsSetting.value.is410SUM1Ils && TrackerVisible.value ? SumAAMMode(width, height) : null),
       (ilsSetting.value.is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
       (ilsSetting.value.is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
-      (ilsSetting.value.isLCOSS ? LCOSS(width, height) : null),
-      (ilsSetting.value.isASP23 ? basicASP23(width, height) : null)
+      (ilsSetting.value.isLCOSS ? LCOSS(width, height) : null)
     ]
   }
 }

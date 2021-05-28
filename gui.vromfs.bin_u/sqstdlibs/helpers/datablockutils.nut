@@ -1,9 +1,32 @@
-local {isTable, isDataBlock, isInstance, isEqual} = require("u.nut")
-local {  getBlkByPathArray,
-  getBlkValueByPath,
-  setFuncBlkByArrayPath
-} = require("std/datablock.nut")
+local {isTable, isDataBlock, isInstance, isEqual, isFunction} = require("u.nut")
 local { DataBlock } = require("datablockWrapper.nut")
+
+local function get_blk_by_path_array(path, blk, defaultValue = null) {
+  local currentBlk = blk
+  foreach (p in path) {
+    if (!(currentBlk instanceof DataBlock))
+      return defaultValue
+    currentBlk = currentBlk?[p]
+  }
+  return currentBlk ?? defaultValue
+}
+
+local function get_blk_value_by_path(blk, path, defVal=null) {
+  if (!blk || !path)
+    return defVal
+
+  local nodes = path.split("/")
+  local key = nodes.len() ? nodes.pop() : null
+  if (!key || !key.len())
+    return defVal
+
+  blk = get_blk_by_path_array(nodes, blk, defVal)
+  if (blk == defVal || !isDataBlock(blk))
+    return defVal
+  local val = blk?[key]
+  val = (val!=null && (defVal == null || type(val) == type(defVal))) ? val : defVal
+  return val
+}
 
  //blk in path shoud exist and be correct
 local function blkFromPath(path){
@@ -22,7 +45,6 @@ local function blkOptFromPath(path) {
   return blk
 }
 
-
 local blkTypes = [ "string", "bool", "float", "integer", "int64", "instance", "null"]
 
 /**
@@ -31,8 +53,7 @@ local blkTypes = [ "string", "bool", "float", "integer", "int64", "instance", "n
  * If value in specified slot was changed returns true. Otherwise return false.
  */
 
-
-local function setBlkValueByPath(blk, path, val) {
+local function set_blk_value_by_path(blk, path, val) {
   if (!blk || !path)
     return false
 
@@ -65,7 +86,7 @@ local function setBlkValueByPath(blk, path, val) {
   else if (isTable(val)) {
     blk = blk.addBlock(key)
     foreach(k,v in val)
-      setBlkValueByPath(blk, k, v)
+      set_blk_value_by_path(blk, k, v)
   }
   else {
     assert(false, $"Data type not suitable for writing to blk: {type(val)}")
@@ -73,6 +94,26 @@ local function setBlkValueByPath(blk, path, val) {
   }
 
   return true
+}
+
+local function setFuncBlkByArrayPath(blk, path, func){
+  assert(isFunction(func))
+  if (::type(path) != "array")
+    path = [path]
+  assert(path.len()>0)
+  local valForSet = path[path.len()-1]
+  assert(::type(valForSet)=="string")
+
+  local got = blk
+  foreach (p in path.slice(-1)){
+    assert(::type(p) == "string")
+    if (got?[p] != null)
+      got = got[p]
+    else
+      got[p] = DataBlock()
+  }
+  got[valForSet]=func(got?[valForSet])
+  return got
 }
 
 local function copyFromDataBlock(fromDataBlock, toDataBlock, override = true) {
@@ -99,10 +140,6 @@ local function copyFromDataBlock(fromDataBlock, toDataBlock, override = true) {
 
 return {
   copyFromDataBlock, blkOptFromPath, blkFromPath,
-  set_blk_value_by_path = setBlkValueByPath,
-  get_blk_value_by_path = getBlkValueByPath,
-  get_blk_by_path_array = getBlkByPathArray,
-  isDataBlock,
-  DataBlock,
-  setFuncBlkByArrayPath
+  set_blk_value_by_path, get_blk_value_by_path, get_blk_by_path_array,
+  isDataBlock, DataBlock, setFuncBlkByArrayPath
 }

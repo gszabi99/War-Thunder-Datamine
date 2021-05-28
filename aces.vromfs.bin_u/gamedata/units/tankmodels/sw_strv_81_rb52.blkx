@@ -207,9 +207,6 @@
         },
         "turret_01_bottom_dm": {
           "armorThickness": 67.0
-        },
-        "turret_03_side_dm": {
-          "armorThickness": 38.1
         }
       },
       "body_shields": {
@@ -387,18 +384,6 @@
         "wheel_l_05_dm": [],
         "wheel_l_06_dm": [],
         "wheel_l_07_dm": [],
-        "wheel_r_top_01_dm": [],
-        "wheel_r_top_02_dm": [],
-        "wheel_r_top_03_dm": [],
-        "wheel_r_top_04_dm": [],
-        "wheel_r_top_05_dm": [],
-        "wheel_r_top_06_dm": [],
-        "wheel_l_top_01_dm": [],
-        "wheel_l_top_02_dm": [],
-        "wheel_l_top_03_dm": [],
-        "wheel_l_top_04_dm": [],
-        "wheel_l_top_05_dm": [],
-        "wheel_l_top_06_dm": [],
         "wheel_r_drive_dm": [],
         "wheel_l_drive_dm": [],
         "wheel_l_front_dm": [],
@@ -414,7 +399,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -763,14 +747,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -1507,16 +1483,6 @@
     }
   },
   {
-    "attachables": {
-      "ex_decor_r_12_dm": true,
-      "ex_decor_l_13_dm": true,
-      "ex_decor_l_06_dm": true,
-      "ex_armor_turret_01_dm": true,
-      "ex_armor_turret_l_02_dm": true,
-      "ex_armor_turret_l_01_dm": true
-    }
-  },
-  {
     "sound": {
       "EngineName": "engine_centurion",
       "TrackSoundPath": "tanks/engines_tanks",
@@ -1762,30 +1728,6 @@
           "limits": {
             "yaw": [0.0,0.0],
             "pitch": [0.0,0.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-5.0,10.0]
           }
         }
       },
@@ -2481,14 +2423,6 @@
     ]
   },
   {
-    "commanderView": {
-      "optics": "commander_optics_square",
-      "zoomOutFov": 7.47,
-      "zoomInFov": 7.37,
-      "sightSize": [0.146,0.103]
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 15.0,
       "zoomInFov": 12.3,
@@ -3011,37 +2945,13 @@
               }
             },
             {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
-                "turret": {
-                  "head": "bone_commander_sight_h",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-5.0,10.0]
-                }
-              }
-            },
-            {
               "hideNodes": {
                 "node": "ex_decor_l_04"
               }
             },
             {
               "Weapon": {
-                "trigger": "gunner4",
+                "trigger": "gunner3",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/66mm_uk_smoke_grenade_launcher.blk",
                 "weaponType": "rockets",

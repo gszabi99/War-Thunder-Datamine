@@ -66,7 +66,7 @@ local function mfdSightHud(elemStyle, isBackground) {
       hudElems.sight(mfdStyle, sightSw(50), sightSh(50), sightHdpx(500), isBackground)
       hudElems.rangeFinder(mfdStyle, sightSw(50), sightSh(58), isBackground)
       hudElems.lockSight(mfdStyle, sightHdpx(150), sightHdpx(100), sightSw(50), sightSh(50), isBackground)
-      hudElems.targetSize(mfdStyle, sightSw(100), sightSh(100))
+      hudElems.targetSize(mfdStyle, sightSw(100), sightSh(100), isBackground)
       mfdSightParamsTable(mfdStyle, isBackground)
     ]
     : null

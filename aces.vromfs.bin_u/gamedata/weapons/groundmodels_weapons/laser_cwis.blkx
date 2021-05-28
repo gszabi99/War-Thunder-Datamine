@@ -1,0 +1,69 @@
+{
+  "beamGun": true,
+  "beamTracer": "beamRed",
+  "beamTracerMaxDist": 3000.0,
+  "beamFxType": "ufo_hit",
+  "beamDamageCooldown": 0.1,
+  "weaponType": 3,
+  "bUseHookAsRel": true,
+  "shotFreq": 10.0,
+  "bullets": 10000,
+  "bulletsCluster": 1,
+  "aimMaxDist": 1000.0,
+  "sound_pathStudio": "toon/weapon",
+  "sound": "laser_ir",
+  "sound_inside": "laser_ir_inside",
+  "soundLoop": true,
+  "bullet": {
+    "mass": 0.0001,
+    "speed": 1.0,
+    "maxDistance": 3000.0,
+    "normalizationPreset": "default",
+    "ricochetPreset": "defaultExt",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "frag_i_t",
+    "stabilityRicochetModifier": [
+      {
+        "mod1": [0.0,0.05]
+      },
+      {
+        "mod2": [20.0,0.1]
+      },
+      {
+        "mod3": [30.0,0.2]
+      },
+      {
+        "mod3": [45.0,0.3]
+      }
+    ],
+    "hitpower": {
+      "HitPower0m": [1.0,1000.0],
+      "HitPower10000m": [0.8,10000.0]
+    },
+    "damage": {
+      "beam": {
+        "damageType": "laserBeam",
+        "penetration": 10.0,
+        "damage": 100.0,
+        "dispersion": 0.0001
+      }
+    },
+    "visual": {
+      "range_percent_of_ammo": [100.0,0.0],
+      "traceFreq": 1,
+      "tracer": "noColor"
+    }
+  },
+  "overheat": [
+    {
+      "overheat": [1000.0,0.0]
+    },
+    {
+      "overheat": [10000.0,0.1]
+    }
+  ]
+}

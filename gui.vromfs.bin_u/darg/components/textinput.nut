@@ -113,7 +113,7 @@ local interactiveValidTypes = ["num","lat","integer","float"]
 
 local function textInput(text_state, options={}, handlers={}, frameCtor=defaultFrame) {
   local group = ::ElemGroup()
-  local {font=null, fontSize=null} = options
+  local font = options?.font ?? Fonts.medium_text
   local colors = {}
   local inputType = options?.inputType
   local function isValidResultByInput(new_value) {
@@ -142,8 +142,7 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
     if (options?.placeholder && !text_state.value.len()) {
       placeholder = {
         rendObj = ROBJ_DTEXT
-        font
-        fontSize
+        font = font
         color = colors.placeHolderColor
         text = options.placeholder
         animations = [failAnim(text_state)]
@@ -177,10 +176,9 @@ local function textInput(text_state, options={}, handlers={}, frameCtor=defaultF
       behavior = Behaviors.TextInput
 
       size = options?.size ?? [flex(), fontH(100)]
-      font
-      fontSize
+      font = font
       color = colors.textColor
-      group
+      group = group
       margin = options?.textmargin ?? [sh(1), sh(0.5)]
       valign = options?.valignText ?? ALIGN_BOTTOM
 

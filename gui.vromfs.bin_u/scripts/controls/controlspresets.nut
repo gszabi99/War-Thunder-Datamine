@@ -1,5 +1,4 @@
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
-local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 /**
  * Functions to work with controls presets
  */
@@ -31,11 +30,12 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
    */
   function isNewerControlsPresetVersionAvailable()
   {
-    local currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPreset()
+    local controlsPresetsList = getControlsPresetsList()
+
     if (currentPreset.name == "")
       return false
 
-    local controlsPresetsList = getControlsPresetsList()
     local highestDisplayedVersion = getHighestDisplayedPresetVersion(currentPreset.name)
 
     foreach (value in controlsPresetsList)
@@ -81,7 +81,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
   function setHighestVersionOfCurrentPreset()
   {
-    local currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPreset()
     if (currentPreset.name == "")
       return
 
@@ -91,7 +91,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
 
   function rejectHighestVersionOfCurrentPreset()
   {
-    local currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPreset()
     if (currentPreset.name == "")
       return
 
@@ -125,7 +125,7 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
   function getPatchNoteTextForCurrentPreset()
   {
     local result = ""
-    local currentPreset = getCurrentPresetInfo()
+    local currentPreset = getCurrentPreset()
     local versions = getNewerVersions(currentPreset)
 
     foreach (version in versions)
@@ -141,9 +141,9 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
   /**
    * Returns current players preset in format { name, version, filename }.
    */
-  function getCurrentPresetInfo()
+  function getCurrentPreset()
   {
-    return parsePresetFileName(::g_controls_manager.getCurPreset().getBasePresetFileName() ?? "")
+    return parsePresetFileName(::get_controls_preset())
   }
 
   /**
@@ -199,14 +199,11 @@ local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platf
         ? blk[::target_platform] % "preset"
         : blk % "preset"
     }
-    local result = (!isPlatformSony && !isPlatformXboxOne) ? ["custom"] : []
-    result.extend(presetsListCached)
-    local curPresetInfo = getCurrentPresetInfo()
-    if (curPresetInfo.id == "" || curPresetInfo.name == "empty"
-      || presetsListCached.indexof(curPresetInfo.id) != null)
-        return result
-
-    return result.append(curPresetInfo.id)
+    local result = [].extend(presetsListCached)
+    local currentPreset = getCurrentPreset()
+    if (currentPreset.id != "" && presetsListCached.indexof(currentPreset.id) == null)
+      result.append(currentPreset.id)
+    return result
   }
 
   /**

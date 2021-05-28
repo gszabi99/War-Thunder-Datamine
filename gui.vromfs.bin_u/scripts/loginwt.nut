@@ -365,7 +365,7 @@ g_login.statsdOnLogin <- function statsdOnLogin()
 {
   statsd.send_counter("sq.game_start.login", 1)
 
-  if (::g_controls_manager.getCurPreset().getBasePresetFileName() == "")
+  if (::get_controls_preset() == "")
   {
     ::dagor.debug("statsd_on_login customcontrols")
     statsd.send_counter("sq.customcontrols", 1)

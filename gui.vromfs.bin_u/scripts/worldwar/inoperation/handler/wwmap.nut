@@ -6,13 +6,10 @@ local QUEUE_TYPE_BIT = require("scripts/queue/queueTypeBit.nut")
 local { getCustomViewCountryData } = require("scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 local { getOperationById } = require("scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 local { subscribeOperationNotifyOnce } = require("scripts/worldWar/services/wwService.nut")
-local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 class ::gui_handlers.WwMap extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/worldWar/worldWarMap.blk"
-  shouldBlurSceneBgFn = needUseHangarDof
-
   operationStringTpl = "gui/worldWar/operationString"
   handlerLocId = "mainmenu/operationsMap"
 

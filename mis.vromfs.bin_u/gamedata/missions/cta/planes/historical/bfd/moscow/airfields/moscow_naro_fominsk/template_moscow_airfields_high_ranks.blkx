@@ -9,78 +9,31 @@
       "army": 2
     },
     "mission": {
-      "level": "levels/moscow.bin",
+      "level": "levels/hurtgen.bin",
       "type": "domination",
       "environment": "Day",
-      "weather": "clear"
+      "weather": "clear",
+      "locName": "missions/hurtgen_BfD_norespawn",
+      "locDesc": "missions/_BfD_norespawn/desc",
+      "scoreLimit": 2900,
+      "timeLimit": 60,
+      "deathPenaltyMul": 0.0,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
     }
   },
   "imports": [],
   "triggers": {
     "isCategory": true,
-    "is_enabled": true,
-    "airfileds_high_init": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": [],
-      "actions": {
-        "unitSetProperties": [
-          {
-            "object_marking": 0
-          },
-          {
-            "object_var_name": ""
-          },
-          {
-            "object_var_comp_op": "equal"
-          },
-          {
-            "object_var_value": 0
-          },
-          {
-            "object": "t1_def_aaa_high_squad"
-          },
-          {
-            "object": "t2_def_aaa_high_squad"
-          },
-          {
-            "accuracy": 0.9
-          },
-          {
-            "checkVisibilityTarget": true
-          },
-          {
-            "effShootingRate": 1.0
-          },
-          {
-            "airEffShootingRate": 1.0
-          },
-          {
-            "useSearchRadar": true
-          },
-          {
-            "fireRandom": true
-          },
-          {
-            "targetChangeInterval": 5.0
-          },
-          {
-            "targetChangeProb": 0.25
-          }
-        ]
-      },
-      "else_actions": []
-    }
+    "is_enabled": true
   },
   "mission_objectives": {
     "isCategory": true,
@@ -126,7 +79,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_aaa_high_light_01",
         "tm": [
           [0.882065,0.0,0.471125],
@@ -134,7 +87,7 @@
           [-0.471125,0.0,0.882065],
           [8718.84,278.632,11336.8]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "uk_40mm_bofors_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -148,8 +101,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -164,7 +115,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_aaa_high_heavy_01",
         "tm": [
           [0.882065,0.0,0.471125],
@@ -172,7 +123,7 @@
           [-0.471125,0.0,0.882065],
           [8224.04,262.464,12307.4]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "us_90mm_versus",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -186,8 +137,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -202,7 +151,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_aaa_high_light_02",
         "tm": [
           [-0.860676,0.0,-0.509153],
@@ -210,7 +159,7 @@
           [0.509153,0.0,-0.860676],
           [7998.41,276.45,12352.2]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "uk_40mm_bofors_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -224,8 +173,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -240,7 +187,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_aaa_high_light_03",
         "tm": [
           [0.882065,0.0,0.471125],
@@ -248,7 +195,7 @@
           [-0.471125,0.0,0.882065],
           [8334.07,280.291,11127.5]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "uk_40mm_bofors_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -262,8 +209,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -278,7 +223,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t1_aaa_high_light_04",
         "tm": [
           [-0.759186,0.0,-0.650873],
@@ -286,7 +231,7 @@
           [0.650873,0.0,-0.759186],
           [7360.72,279.877,12062.3]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "uk_40mm_bofors_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -300,8 +245,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -316,15 +259,15 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t1_aaa_high_heavy_02",
+      "air_defence": {
+        "name": "t1_aaa_high_light_05",
         "tm": [
-          [-0.860676,0.0,-0.509153],
+          [0.882065,0.0,0.471125],
           [0.0,1.0,0.0],
-          [0.509153,0.0,-0.860676],
-          [8561.88,280.648,11260.5]
+          [-0.471125,0.0,0.882065],
+          [7817.46,274.644,10959.6]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "uk_40mm_bofors_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -338,8 +281,150 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_high_heavy_02",
+        "tm": [
+          [-0.860676,0.0,-0.509153],
+          [0.0,1.0,0.0],
+          [0.509153,0.0,-0.860676],
+          [8561.88,280.648,11260.5]
+        ],
+        "unit_class": "us_90mm_versus",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_high_heavy_03",
+        "tm": [
+          [0.882065,0.0,0.471125],
+          [0.0,1.0,0.0],
+          [-0.471125,0.0,0.882065],
+          [7720.87,276.652,12048.0]
+        ],
+        "unit_class": "us_90mm_versus",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_high_heavy_04",
+        "tm": [
+          [-0.759186,0.0,-0.650873],
+          [0.0,1.0,0.0],
+          [0.650873,0.0,-0.759186],
+          [7978.64,276.754,10973.2]
+        ],
+        "unit_class": "us_90mm_versus",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_aaa_high_heavy_05",
+        "tm": [
+          [0.882065,0.0,0.471125],
+          [0.0,1.0,0.0],
+          [-0.471125,0.0,0.882065],
+          [7162.78,275.482,11659.5]
+        ],
+        "unit_class": "us_90mm_versus",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
         "props": {
           "army": 1,
           "count": 1,
@@ -382,13 +467,25 @@
             "squad_members": "t1_aaa_high_light_04"
           },
           {
+            "squad_members": "t1_aaa_high_light_05"
+          },
+          {
             "squad_members": "t1_aaa_high_heavy_02"
+          },
+          {
+            "squad_members": "t1_aaa_high_heavy_03"
+          },
+          {
+            "squad_members": "t1_aaa_high_heavy_04"
+          },
+          {
+            "squad_members": "t1_aaa_high_heavy_05"
           }
         ]
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_aaa_high_light_01",
         "tm": [
           [0.867333,0.0,-0.497728],
@@ -396,7 +493,7 @@
           [0.497728,0.0,0.867333],
           [-39676.2,291.989,-18228.2]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -410,8 +507,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -426,7 +521,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_aaa_high_heavy_01",
         "tm": [
           [0.867333,0.0,-0.497728],
@@ -434,7 +529,7 @@
           [0.497728,0.0,0.867333],
           [-39757.9,298.374,-18692.6]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "germ_88mm_flak36",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -448,8 +543,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -464,7 +557,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_aaa_high_light_02",
         "tm": [
           [-0.844795,0.0,0.535087],
@@ -472,7 +565,7 @@
           [-0.535087,0.0,-0.844795],
           [-39557.3,332.653,-18826.1]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -486,8 +579,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -502,7 +593,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_aaa_high_light_03",
         "tm": [
           [0.867333,0.0,-0.497728],
@@ -510,7 +601,7 @@
           [0.497728,0.0,0.867333],
           [-39105.3,323.727,-18341.2]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -524,8 +615,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -540,7 +629,7 @@
       }
     },
     {
-      "tankModels": {
+      "air_defence": {
         "name": "t2_aaa_high_light_04",
         "tm": [
           [-0.88822,0.0,0.459421],
@@ -548,7 +637,7 @@
           [-0.459421,0.0,-0.88822],
           [-38805.3,311.937,-18884.2]
         ],
-        "unit_class": "us_m247",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -562,8 +651,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -578,15 +665,15 @@
       }
     },
     {
-      "tankModels": {
-        "name": "t2_aaa_high_heavy_02",
+      "air_defence": {
+        "name": "t2_aaa_high_light_05",
         "tm": [
-          [-0.844795,0.0,0.535087],
+          [0.867333,0.0,-0.497728],
           [0.0,1.0,0.0],
-          [-0.535087,0.0,-0.844795],
-          [-39349.6,313.832,-18154.2]
+          [0.497728,0.0,0.867333],
+          [-38209.5,269.33,-18314.6]
         ],
-        "unit_class": "fr_amx_30_roland",
+        "unit_class": "germ_37mm_flak43_airfield",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -600,8 +687,150 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_high_heavy_02",
+        "tm": [
+          [-0.844795,0.0,0.535087],
+          [0.0,1.0,0.0],
+          [-0.535087,0.0,-0.844795],
+          [-39349.6,313.832,-18154.2]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_high_heavy_03",
+        "tm": [
+          [0.867333,0.0,-0.497728],
+          [0.0,1.0,0.0],
+          [0.497728,0.0,0.867333],
+          [-39215.9,326.564,-18800.5]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_high_heavy_04",
+        "tm": [
+          [-0.88822,0.0,0.459421],
+          [0.0,1.0,0.0],
+          [-0.459421,0.0,-0.88822],
+          [-38617.8,271.92,-18280.9]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t2_aaa_high_heavy_05",
+        "tm": [
+          [0.867333,0.0,-0.497728],
+          [0.0,1.0,0.0],
+          [0.497728,0.0,0.867333],
+          [-38369.2,279.145,-19053.3]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
         "props": {
           "army": 2,
           "count": 1,
@@ -622,7 +851,7 @@
           [0.97985,0.0,0.19973],
           [0.0,1.0,0.0],
           [-0.19973,0.0,0.97985],
-          [-40277.6,331.623,-12721.0]
+          [-40277.6,331.623,-18233.0]
         ],
         "props": [
           {
@@ -644,7 +873,19 @@
             "squad_members": "t2_aaa_high_light_04"
           },
           {
+            "squad_members": "t2_aaa_high_light_05"
+          },
+          {
             "squad_members": "t2_aaa_high_heavy_02"
+          },
+          {
+            "squad_members": "t2_aaa_high_heavy_03"
+          },
+          {
+            "squad_members": "t2_aaa_high_heavy_04"
+          },
+          {
+            "squad_members": "t2_aaa_high_heavy_05"
           }
         ]
       }

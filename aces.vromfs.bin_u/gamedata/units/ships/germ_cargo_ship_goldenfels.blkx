@@ -517,33 +517,27 @@
       "formatVersion": 2,
       "createSecondaryShatters": false,
       "compartments": {
-        "fireParamsPreset": "ship_compartment_destroyer",
+        "fireParamsPreset": "ship_cover_destroyer",
+        "stopChanceOnDeadPart": 0.9,
         "armorClass": "ship_structural_steel",
-        "armorThickness": 1.45,
-        "oneSided": true,
-        "genericDamageMult": 0.2,
-        "armorThrough": 35.0,
+        "armorThickness": 16.0,
+        "hidableInViewer": true,
+        "oneSided": false,
+        "genericDamageMult": 0.4,
         "compartment_01_dm": {
-          "hp": 3000.0
+          "hp": 4000.0
         },
         "compartment_02_dm": {
-          "hp": 3000.0
+          "hp": 4000.0
         },
         "compartment_03_dm": {
-          "hp": 3000.0
+          "hp": 4000.0
         },
         "bridge_dm": {
           "armorThickness": 1.45,
           "genericDamageMult": 1.0,
           "hp": 500.0
         }
-      },
-      "cover": {
-        "stopChanceOnDeadPart": 0.7,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 16.0,
-        "hidableInViewer": true,
-        "genericDamageMult": 0.1
       },
       "superstructures": {
         "fireParamsPreset": "ship_superstructure",
@@ -622,16 +616,21 @@
         }
       },
       "engine": {
-        "fireParamsPreset": "ship_boiler_room",
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 16.0,
+        "fireParamsPreset": "ship_engine",
+        "genericDamageMult": 1.0,
+        "shatterDamageMult": 1.0,
+        "secondaryShatterDamageMult": 1.0,
+        "armorClass": "armor_tank_engine",
+        "armorThickness": 10.0,
         "fireProtectionHp": 6.0,
-        "armorThrough": 150.0,
         "engine_room_01_dm": {
-          "hp": 3500.0
+          "armorThrough": 150.0,
+          "hp": 2500.0
         },
         "transmission_01_dm": {
-          "hp": 3500.0
+          "fireProtectionHp": 30.0,
+          "armorThrough": 150.0,
+          "hp": 2500.0
         }
       },
       "funnels": {
@@ -918,22 +917,22 @@
       "sailor1": {
         "dmPart": "bridge_dm",
         "role": "sailor",
-        "crew": 5
+        "crew": 10
       },
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 25
+        "crew": 24
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 26
+        "crew": 24
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 25
+        "crew": 23
       }
     }
   },
@@ -1822,7 +1821,7 @@
     "MetaParts": [
       {
         "cover": {
-          "part": "cover_01_dm",
+          "part": "compartment_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1833,7 +1832,7 @@
       },
       {
         "cover": {
-          "part": "cover_02_dm",
+          "part": "compartment_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1844,7 +1843,7 @@
       },
       {
         "cover": {
-          "part": "cover_03_dm",
+          "part": "compartment_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1855,7 +1854,7 @@
       },
       {
         "cover": {
-          "part": "cover_04_dm",
+          "part": "compartment_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1866,7 +1865,7 @@
       },
       {
         "cover": {
-          "part": "cover_05_dm",
+          "part": "compartment_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1877,7 +1876,7 @@
       },
       {
         "cover": {
-          "part": "cover_06_dm",
+          "part": "compartment_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1888,7 +1887,7 @@
       },
       {
         "cover": {
-          "part": "cover_07_dm",
+          "part": "compartment_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -1899,7 +1898,7 @@
       },
       {
         "cover": {
-          "part": "cover_08_dm",
+          "part": "compartment_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,

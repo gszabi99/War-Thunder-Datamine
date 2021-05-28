@@ -1,7 +1,8 @@
 frame {
   size:t='1.1@scrn_tgt, 1@maxWindowHeight'
+  pos:t='50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
+  position:t='absolute'
   class:t='wndNav'
-  isCenteredUnderLogo:t='yes'
 
   frame_header {
     HorizontalListBox {

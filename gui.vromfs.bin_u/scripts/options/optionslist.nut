@@ -16,16 +16,14 @@ local getSystemOptions = @() {
   options = []
 }
 
-local overrideMainOptionsFn = null
-
 local getMainOptions = function()
 {
-  if (overrideMainOptionsFn != null)
-    return overrideMainOptionsFn()
-
   local isFirstTutorial = (::current_campaign_name == "tutorial_pacific_41") &&
     (::current_campaign_mission == "tutorial01")
-  local canChangeViewType = !isFirstTutorial && (::get_player_cur_unit()?.unitType.canChangeViewType ?? false)
+  local curUnit = ::get_player_cur_unit()
+  local canChangeViewType = false
+  if ( ! isFirstTutorial && curUnit)
+    canChangeViewType = curUnit.unitType.canChangeViewType
 
   return {
     name = ::is_in_flight() ? "main" : "mainParameters"
@@ -45,7 +43,6 @@ local getMainOptions = function()
                                       || ::getSystemConfigOption("video/mode") == "fullscreen") ],
       [::USEROPT_AUTOLOGIN, "spinner", ! ::is_in_flight() && !(isPlatformSony || isPlatformXboxOne)],
       [::USEROPT_PRELOADER_SETTINGS, "button", ::has_feature("LoadingBackgroundFilter") && !::is_in_flight()],
-      [::USEROPT_REVEAL_NOTIFICATIONS, "button"],
 
       ["options/header/commonBattleParameters"],
       [::USEROPT_HUD_SHOW_BONUSES, "spinner"],
@@ -110,7 +107,9 @@ local getMainOptions = function()
       [::USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [::USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [::USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
-      [::USEROPT_COMMANDER_CAMERA_IN_VIEWS, "spinner"],
+//
+
+
 
       ["options/header/ship"],
       [::USEROPT_DEPTHCHARGE_ACTIVATION_TIME, "spinner", ! ::is_in_flight()],
@@ -198,7 +197,6 @@ local getMainOptions = function()
       [::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, "combobox",
         contentPreset.getContentPresets().len() &&
         ::g_difficulty.SIMULATOR.isAvailable(::GM_DOMINATION)],
-      [::USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner"],
 
       ["options/header/privacy", null, ::has_feature("PrivacySettings")],
       [::USEROPT_REPLACE_MY_NICK_LOCAL, "editbox", ::has_feature("PrivacySettings")],
@@ -215,9 +213,7 @@ local getMainOptions = function()
   }
 }
 
-local overrideSoundOptionsFn = null
-
-local getSoundOptions = @() overrideSoundOptionsFn?() ?? {
+local getSoundOptions = @() {
   name = "sound"
   options = [
     [::USEROPT_SOUND_ENABLE, "switchbox", ::is_platform_pc],
@@ -300,6 +296,4 @@ local getOptionsList = function() {
 
 return {
   getOptionsList = getOptionsList
-  overrideMainOptions = @(fn) overrideMainOptionsFn = fn
-  overrideSoundOptions = @(fn) overrideSoundOptionsFn = fn
 }

@@ -79,7 +79,6 @@ local ItemExternal = class extends ::BaseItem
     blkType = itemDefDesc?.tags?.type ?? ""
     maxAmount = (itemDefDesc?.tags?.maxCount ?? -1).tointeger()
     requirement = itemDefDesc?.tags?.showWithFeature
-    lottieAnimation = itemDefDesc?.tags?.lottieAnimation
     updateSubstitutionItemDataOnce()
 
     aditionalConfirmationMsg = {}
@@ -224,7 +223,7 @@ local ItemExternal = class extends ::BaseItem
   function getIcon(addItemName = true)
   {
     return isDisguised ? ::LayersIcon.getIconData("disguised_item")
-      : ::LayersIcon.getIconData(null, getLottieImage() ?? itemDef.icon_url)
+      : ::LayersIcon.getIconData(null, itemDef.icon_url)
   }
 
   function getBigIcon()
@@ -232,9 +231,9 @@ local ItemExternal = class extends ::BaseItem
     if (isDisguised)
       return ::LayersIcon.getIconData("disguised_item")
 
-    local image = getLottieImage("1@itemIconBlockWidth")
-      ?? (!::u.isEmpty(itemDef.icon_url_large) ? itemDef.icon_url_large : itemDef.icon_url)
-    return ::LayersIcon.getIconData(null, image)
+    local url = !::u.isEmpty(itemDef.icon_url_large) ?
+      itemDef.icon_url_large : itemDef.icon_url
+    return ::LayersIcon.getIconData(null, url)
   }
 
   function getOpeningCaption()

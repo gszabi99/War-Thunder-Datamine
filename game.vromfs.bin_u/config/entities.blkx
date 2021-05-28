@@ -174,7 +174,6 @@
       "slope_factor": [1.0,0.0],
       "shader_graph": "",
       "hardness": 1.0,
-      "sparse_weight": 0.0,
       "decal": false,
       "transparent": false,
       "ri_placer_list:array": [],
@@ -729,17 +728,6 @@
       "weather": "hazy"
     }
   },
-  "render_view_cam": {
-    "camera.active": false,
-    "transform": [
-      [1.0,0.0,0.0],
-      [0.0,1.0,0.0],
-      [0.0,0.0,1.0],
-      [0.0,0.0,0.0]
-    ],
-    "_singleton": true,
-    "camera_view:tag": []
-  },
   "static_cam": {
     "camera.active": false,
     "fov": 90.0,
@@ -762,22 +750,6 @@
         "stationary_mg42": 0.4,
         "chimney_exhaust": 0.15
       }
-    }
-  },
-  "smoke": {
-    "_extends": "replicating",
-    "_replicated": "^smoke\\.(activate_time|time|pos|radius|visibility_type_flags|transparent_for_thermal|fx_id)$",
-    "smoke:_namespace": {
-      "activate_time": 0.0,
-      "time": 0.0,
-      "pos": [0.0,0.0,0.0],
-      "radius": 0.0,
-      "visibility_type_flags": 0,
-      "transparent_for_thermal": false,
-      "fx_id": -1
-    },
-    "smoke.smoke_fx": {
-      "_tags": "render"
     }
   }
 }

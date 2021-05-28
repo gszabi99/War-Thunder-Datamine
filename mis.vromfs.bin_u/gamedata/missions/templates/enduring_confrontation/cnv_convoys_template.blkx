@@ -61,7 +61,6 @@
             "allowOvertakeMode": true,
             "keep_leader_dist": true,
             "movementTraceRI": true,
-            "useSearchRadar": true,
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
@@ -1049,39 +1048,6 @@
           },
           {
             "comment": {
-              "value": "check does spawn exist"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "cnv_t1_generate_check_spawn"
-            }
-          }
-        ],
-        "else_actions": []
-      },
-      "cnv_t1_generate_check_spawn": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "objectExists": {
-            "target": "@cnv_t1_spawn_cur_spawn_name",
-            "type": "area"
-          }
-        },
-        "actions": [
-          {
-            "comment": {
               "value": "запускаем выбор типа конвоя"
             }
           },
@@ -1102,14 +1068,7 @@
             }
           }
         ],
-        "else_actions": {
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "cnv_t1_generate_rotator"
-          }
-        }
+        "else_actions": []
       },
       "cnv_t1_generate_spawn_cargo": {
         "is_enabled": false,
@@ -2729,39 +2688,6 @@
           },
           {
             "comment": {
-              "value": "check does spawn exist"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "cnv_t2_generate_check_spawn"
-            }
-          }
-        ],
-        "else_actions": []
-      },
-      "cnv_t2_generate_check_spawn": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "objectExists": {
-            "target": "@cnv_t2_spawn_cur_spawn_name",
-            "type": "area"
-          }
-        },
-        "actions": [
-          {
-            "comment": {
               "value": "запускаем выбор типа конвоя"
             }
           },
@@ -2782,14 +2708,7 @@
             }
           }
         ],
-        "else_actions": {
-          "comment": {
-            "value": ""
-          },
-          "triggerEnable": {
-            "target": "cnv_t2_generate_rotator"
-          }
-        }
+        "else_actions": []
       },
       "cnv_t2_generate_spawn_cargo": {
         "is_enabled": false,

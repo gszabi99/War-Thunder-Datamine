@@ -8,8 +8,8 @@
   "mesh": "aa20",
   "tags": [],
   "rocket": {
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
+    "normalizationPreset": "default",
+    "ricochetPreset": "defaultExt",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
@@ -52,10 +52,6 @@
     "ricochetEffect": "hit_133_160mm_metal_ap",
     "waterCollisionEffect": "hit_133_160mm_water",
     "explosionPatchRadius": 4.0,
-    "fireEffect": "",
-    "smokeEffect": "rocket_fire_short_nofire",
-    "hazeEffect": "",
-    "endSmokeViscosity": 0.05,
     "maxDistance": 7000.0,
     "minDistance": 30.0,
     "hasProximityFuse": true,
@@ -238,9 +234,6 @@
       "roadSoil": {
         "fx": "hit_133_160mm_dirt_he"
       },
-      "bricks_red": {
-        "fx": "hit_133_160mm_stone_he"
-      },
       "sand": {
         "fx": "hit_133_160mm_sand_he"
       },
@@ -305,6 +298,8 @@
       "detectShells": false
     },
     "tracerTrail": {
+      "smokeEffect": "fx1400_smoke",
+      "hazeEffect": "",
       "visual": {
         "traceFreq": 1,
         "tracer": "100mmRed",

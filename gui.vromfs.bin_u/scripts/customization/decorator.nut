@@ -4,7 +4,6 @@ local contentPreview = require("scripts/customization/contentPreview.nut")
 local skinLocations = require("scripts/customization/skinLocations.nut")
 local stdMath = require("std/math.nut")
 local { isMarketplaceEnabled } = require("scripts/items/itemsMarketplace.nut")
-local { copyParamsToTable, eachParam } = require("std/datablock.nut")
 
 ::Decorator <- class
 {
@@ -71,10 +70,9 @@ local { copyParamsToTable, eachParam } = require("std/datablock.nut")
     if ("countries" in blk)
     {
       countries = []
-      eachParam(blk.countries, function(access, country) {
+      foreach (country, access in blk.countries)
         if (access == true)
-          countries.append($"country_{country}")
-      }, this)
+          countries.append("country_" + country)
     }
 
     units = []
@@ -84,7 +82,11 @@ local { copyParamsToTable, eachParam } = require("std/datablock.nut")
     allowedUnitTypes = blk?.unitType ? (blk % "unitType") : []
 
     if ("tags" in blk)
-      tags = copyParamsToTable(blk.tags)
+    {
+      tags = {}
+      foreach (tag, val in blk.tags)
+        tags[tag] <- val
+    }
 
     rarity  = itemRarity.get(blk?.item_quality, blk?.name_color)
 

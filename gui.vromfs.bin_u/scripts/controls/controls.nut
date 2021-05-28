@@ -12,6 +12,7 @@ local { resetFastVoiceMessages } = require("scripts/wheelmenu/voiceMessages.nut"
 local { unitClassType } = require("scripts/unit/unitClassType.nut")
 local controlsPresetConfigPath = require("scripts/controls/controlsPresetConfigPath.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isMultifuncMenuAvailable, isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC } = require("scripts/clientState/platform.nut")
 local { checkTutorialsList } = require("scripts/tutorials/tutorialsData.nut")
 local { blkOptFromPath, blkFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
@@ -111,7 +112,7 @@ local shortcutsNotChangeByPreset = [
 ::apply_joy_preset_xchange <- function apply_joy_preset_xchange(preset, updateHelpersMode = true)
 {
   if (!preset)
-    preset = ::g_controls_manager.getCurPreset().getBasePresetFileName()
+    preset = ::get_controls_preset()
 
   if (!preset || preset == "")
     return
@@ -209,8 +210,6 @@ local axisMappedOnMouse = {
 
 ::gui_start_advanced_controls <- function gui_start_advanced_controls()
 {
-  if (!::has_feature("ControlsAdvancedSettings"))
-    return
   ::gui_start_modal_wnd(::gui_handlers.Hotkeys)
 }
 
@@ -2646,8 +2645,9 @@ local function getWeaponFeatures(weaponsBlkList)
 
   if (unitType.wheelmenuAxis.len())
   {
-    controls.append("ID_SHOW_MULTIFUNC_WHEEL_MENU")
-    if (::is_xinput_device())
+    if (isMultifuncMenuAvailable())
+      controls.append("ID_SHOW_MULTIFUNC_WHEEL_MENU")
+    if (::is_xinput_device() && isWheelmenuAxisConfigurable())
       controls.extend(unitType.wheelmenuAxis)
   }
 

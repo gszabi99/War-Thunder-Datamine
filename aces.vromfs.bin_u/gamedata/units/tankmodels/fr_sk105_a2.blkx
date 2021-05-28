@@ -464,7 +464,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -799,14 +798,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -826,11 +817,11 @@
       "EngineName": "engine_chieftain",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_mbt",
-      "TrackSoundNameCockpit": "tracks_mbt_interior",
+      "TrackSoundName": "tracks",
+      "TrackSoundNameCockpit": "tracks_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_mbt",
+      "TrackSoundNameAi": "tracks_ai_middle",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -1815,27 +1806,29 @@
   {
     "tank_crew": {
       "changeTimeMult": 1.0,
-      "gunner": {
-        "dmPart": "gunner_dm",
-        "role": "tank_gunner",
-        "substitute": "commander"
-      },
-      "driver": {
-        "dmPart": "driver_dm",
-        "role": "driver",
-        "substitute": "commander"
-      },
-      "commander": [
+      "gunner": [
         {
-          "dmPart": "commander_dm"
+          "dmPart": "gunner_dm"
         },
         {
           "role": "tank_gunner"
         },
         {
-          "role": "commander"
+          "role": "loader"
+        },
+        {
+          "substitute": "commander"
         }
-      ]
+      ],
+      "driver": {
+        "dmPart": "driver_dm",
+        "role": "driver",
+        "substitute": "commander"
+      },
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander"
+      }
     }
   },
   {
@@ -3000,15 +2993,6 @@
     ]
   },
   {
-    "commanderView": {
-      "aimModeAvailable": true,
-      "optics": "commander_optics_square",
-      "zoomOutFov": 47.37,
-      "zoomInFov": 9.83,
-      "sightSize": [0.95,0.67]
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 10.8,
       "zoomInFov": 9.21,
@@ -3163,18 +3147,6 @@
             },
             "ammo_body_21_dm": {
               "count": 1
-            },
-            "ammo_body_22_dm": {
-              "count": 1
-            },
-            "ammo_body_23_dm": {
-              "count": 1
-            },
-            "ammo_body_24_dm": {
-              "count": 1
-            },
-            "ammo_body_25_dm": {
-              "count": 1
             }
           }
         }
@@ -3196,7 +3168,6 @@
           "sleevesLifeTime": 10.0,
           "sleeveImpulse": [5.0,0.0,0.0],
           "sleeveExtractSound": "shell_eject",
-          "linkSleeveToGun": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -3226,9 +3197,7 @@
             "head": "bone_turret",
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel",
-            "gunnerDm": "gunner_dm",
-            "secondGunnerDm": "commander_dm",
-            "rotatedTurret": "bone_turret"
+            "gunnerDm": "gunner_dm"
           },
           "limits": {
             "yaw": [-180.0,180.0],
@@ -3317,8 +3286,7 @@
             "turret": {
               "head": "bone_mg_gun_twin",
               "gun": "bone_mg_gun_twin",
-              "gunnerDm": "gunner_dm",
-              "secondGunnerDm": "commander_dm"
+              "gunnerDm": "gunner_dm"
             }
           },
           {
@@ -3328,31 +3296,6 @@
             }
           }
         ]
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner2",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "speedYaw": 0.0,
-          "speedPitch": 0.0,
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "turret": {
-            "head": "bone_turret",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "drive_turret_h_dm",
-            "rotatedTurret": "bone_turret"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-6.0,13.0]
-          }
-        }
       },
       {
         "hideNodes": {
@@ -3414,7 +3357,6 @@
                 "sleevesLifeTime": 10.0,
                 "sleeveImpulse": [5.0,0.0,0.0],
                 "sleeveExtractSound": "shell_eject",
-                "linkSleeveToGun": true,
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,
@@ -3444,9 +3386,7 @@
                   "head": "bone_turret",
                   "gun": "bone_gun",
                   "barrel": "bone_gun_barrel",
-                  "gunnerDm": "gunner_dm",
-                  "secondGunnerDm": "commander_dm",
-                  "rotatedTurret": "bone_turret"
+                  "gunnerDm": "gunner_dm"
                 },
                 "limits": {
                   "yaw": [-180.0,180.0],
@@ -3535,8 +3475,7 @@
                   "turret": {
                     "head": "bone_mg_gun_twin",
                     "gun": "bone_mg_gun_twin",
-                    "gunnerDm": "gunner_dm",
-                    "secondGunnerDm": "commander_dm"
+                    "gunnerDm": "gunner_dm"
                   }
                 },
                 {
@@ -3546,31 +3485,6 @@
                   }
                 }
               ]
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner2",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "speedYaw": 0.0,
-                "speedPitch": 0.0,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "turret": {
-                  "head": "bone_turret",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "drive_turret_h_dm",
-                  "rotatedTurret": "bone_turret"
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-6.0,13.0]
-                }
-              }
             },
             {
               "hideNodes": {
@@ -3634,7 +3548,7 @@
               "resolution": [1200,800],
               "noiseFactor": 0.04
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,

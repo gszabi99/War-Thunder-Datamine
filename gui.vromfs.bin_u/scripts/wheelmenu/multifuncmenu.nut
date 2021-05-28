@@ -1,4 +1,5 @@
 local cfg = require("scripts/wheelmenu/multifuncmenuCfg.nut")
+local { isMultifuncMenuAvailable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 
 local getHandler = @() ::handlersManager.findHandlerClassInScene(::gui_handlers.multifuncMenuHandler)
 local callbackFunc = null
@@ -26,6 +27,9 @@ local function isEnabledByUnit(c, unitId)
 
 local function open(curSectionId = null, isForward = true)
 {
+  if (!isMultifuncMenuAvailable())
+    return false
+
   local joyParams = ::joystick_get_cur_settings()
   local unit = ::get_player_cur_unit()
   local unitId = unit?.name

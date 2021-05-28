@@ -2,10 +2,9 @@ local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
 local { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("scripts/weaponry/itemInfo.nut")
-local { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getModificationBulletsEffect,
-  getBulletsSearchName, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
-local { getModificationInfo, getModificationName, addBulletsParamToDesc,
-  buildPiercingData } = require("scripts/weaponry/bulletsVisual.nut")
+local { isBullets, buildPiercingData, getModificationInfo, getModificationName, addBulletsParamToDesc,
+  isWeaponTierAvailable, isBulletsGroupActiveByMod
+} = require("scripts/weaponry/bulletsInfo.nut")
 local { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
 } = require("scripts/weaponry/weaponryInfo.nut")
 local { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText } = require("weaponryDescription.nut")
@@ -171,31 +170,25 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
         {
           if(upgrade == null)
             continue
-          addDesc += "\n" + (::shop_is_modification_enabled(unit.name, upgrade)
-            ? "<color=@goodTextColor>"
-            : "<color=@commonTextColor>")
-              + getModificationName(unit, upgrade, getBulletsSetData(unit, upgrade)) + "</color>"
+          addDesc += "\n" + (::shop_is_modification_enabled(unit.name, upgrade) ?"<color=@goodTextColor>" : "<color=@commonTextColor>") + getModificationName(unit, upgrade) + "</color>"
         }
     }
   }
   else if (item.type==weaponsItem.modification || item.type==weaponsItem.expendables)
   {
-    local bulletsSet = getBulletsSetData(unit, item.name)
     if (effect)
     {
-      desc = getModificationInfo(unit, item.name, bulletsSet).desc
+      desc = getModificationInfo(unit, item.name).desc;
       addDesc = weaponryEffects.getDesc(unit, effect);
     }
     else
     {
-      local info = getModificationInfo(unit, item.name, bulletsSet, false, false, this, updateEffectFunc)
+      local info = getModificationInfo(unit, item.name, false, false, this, updateEffectFunc)
       desc = info.desc
       res.delayed = info.delayed
     }
 
-    local searchName = getBulletsSearchName(unit, item.name)
-    local modEffect = getModificationBulletsEffect(searchName)
-    addBulletsParamToDesc(res, unit, item, bulletsSet, searchName, modEffect)
+    addBulletsParamToDesc(res, unit, item)
   }
   else if (item.type==weaponsItem.spare)
     desc = ::loc("spare/"+item.name + "/desc")

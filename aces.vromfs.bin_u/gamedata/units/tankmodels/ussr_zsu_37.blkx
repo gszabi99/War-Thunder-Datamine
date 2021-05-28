@@ -581,12 +581,6 @@
         "body_side_dm": {
           "armorThickness": 15.0
         },
-        "turret_side_dm": {
-          "armorThickness": 10.0
-        },
-        "turret_top_dm": {
-          "armorThickness": 6.0
-        },
         "superstructure_top_dm": {
           "armorThickness": 6.0
         },
@@ -603,6 +597,9 @@
       "turret": {
         "turret_back_dm": {
           "armorThickness": 8.0
+        },
+        "turret_side_dm": {
+          "armorThickness": 15.0
         },
         "turret_front_dm": {
           "armorThickness": 15.0
@@ -625,8 +622,6 @@
         "createSecondaryShatters": false,
         "ex_decor_01_dm": [],
         "ex_decor_02_dm": [],
-        "ex_decor_14_dm": [],
-        "ex_decor_15_dm": [],
         "ex_decor_r_01_dm": [],
         "ex_decor_r_02_dm": [],
         "ex_decor_r_03_dm": [],
@@ -636,8 +631,7 @@
         "ex_decor_l_02_dm": [],
         "ex_decor_l_03_dm": [],
         "ex_decor_l_04_dm": [],
-        "ex_decor_l_05_dm": [],
-        "turret_01_top_dm": []
+        "ex_decor_l_05_dm": []
       },
       "optics": {
         "armorClass": "optics_tank",
@@ -729,7 +723,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -1055,14 +1048,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -2765,7 +2750,7 @@
         "speedYaw": 30.0,
         "speedPitch": 20.0,
         "bullets": 290,
-        "fireConeAngle": 5.0,
+        "fireConeAngle": 15.0,
         "ChainfireTime": 0.5,
         "DelayAfterShoot": 2.0,
         "accuracyAir": 1.5,

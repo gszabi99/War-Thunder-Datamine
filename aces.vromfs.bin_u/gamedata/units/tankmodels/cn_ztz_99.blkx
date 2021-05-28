@@ -196,6 +196,15 @@
         "ex_armor_turret_02_dm": {
           "armorThickness": 20.0
         },
+        "ex_armor_turret_03_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_armor_turret_04_dm": {
+          "armorThickness": 5.0
+        },
+        "ex_armor_12_dm": {
+          "armorThickness": 5.0
+        },
         "turret_03_back_dm": {
           "armorThickness": 5.0
         },
@@ -251,10 +260,6 @@
         },
         "turret_07_front_dm": {
           "armorThickness": 5.0
-        },
-        "composite_armor_hull_02_dm": {
-          "armorThickness": 0.2,
-          "hidableInXrayViewer": true
         }
       },
       "turret_composite_armor": {
@@ -547,20 +552,9 @@
         "ex_armor_09_dm": [],
         "ex_armor_10_dm": [],
         "ex_armor_11_dm": [],
-        "ex_armor_12_dm": [],
         "superstructure_bottom_dm": [],
         "ex_armor_turret_r_02_dm": [],
-        "ex_armor_turret_l_02_dm": [],
-        "ex_armor_turret_03_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hp": 10000.0
-        },
-        "ex_armor_turret_04_dm": {
-          "armorThickness": 5.0,
-          "armorClass": "RHA_tank_modern",
-          "hp": 10000.0
-        }
+        "ex_armor_turret_l_02_dm": []
       },
       "timber": {
         "armorClass": "ship_wood",
@@ -692,7 +686,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -1026,14 +1019,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       }
     }
   },
@@ -1107,17 +1092,6 @@
             }
           }
         }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "titleLoc": "RHA_tank",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "turret_03_back_dm"
-            }
-          }
-        }
       }
     ]
   },
@@ -1142,7 +1116,7 @@
       "TrackSoundNameCockpit": "tracks_t72_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_t72"
+      "TrackSoundNameAi": "tracks_ai_middle"
     }
   },
   {
@@ -2137,17 +2111,10 @@
         "role": "driver",
         "substitute": "commander"
       },
-      "commander": [
-        {
-          "dmPart": "commander_dm"
-        },
-        {
-          "role": "tank_gunner"
-        },
-        {
-          "role": "commander"
-        }
-      ]
+      "commander": {
+        "dmPart": "commander_dm",
+        "role": "commander"
+      }
     }
   },
   {
@@ -2745,9 +2712,6 @@
               "gunnerDm": "gunner_dm"
             },
             {
-              "secondGunnerDm": "commander_dm"
-            },
-            {
               "linkedAnimPart": {
                 "verNode": "bone_gun_roller_02",
                 "verLimits": [-6.0,17.0],
@@ -2872,8 +2836,7 @@
             "turret": {
               "head": "bone_mg_twin",
               "gun": "bone_mg_twin",
-              "gunnerDm": "gunner_dm",
-              "secondGunnerDm": "commander_dm"
+              "gunnerDm": "gunner_dm"
             }
           },
           {
@@ -2899,7 +2862,7 @@
           "speedPitch": 20.0,
           "bullets": 500,
           "isBulletBelt": true,
-          "fireConeAngle": 5.0,
+          "fireConeAngle": 15.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2923,52 +2886,6 @@
           "limitsTable": {
             "lim1": [-180.0,-110.0,5.0,60.0],
             "lim2": [-110.0,180.0,-5.0,60.0]
-          }
-        }
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 40.0,
-          "speedPitch": 30.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "gunStabilizer": {
-            "hasVerticalGunFreeMode": false,
-            "forceEnabled": true,
-            "hasHorizontal": true,
-            "horizontalOmegaMult": 1.0,
-            "horizontalSpeedLimitKPH": 75.0,
-            "hasVertical": true,
-            "verticalOmegaMult": 1.0,
-            "verticalSpeedLimitKPH": 75.0,
-            "speedFromVehicleVerticalMult": -1.0,
-            "errorKPHToDegrees": [
-              {
-                "row": [5.0,0.0]
-              },
-              {
-                "row": [45.0,0.00015]
-              },
-              {
-                "row": [80.0,0.0002]
-              }
-            ]
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-10.0,60.0]
           }
         }
       }
@@ -3603,15 +3520,6 @@
     ]
   },
   {
-    "commanderView": {
-      "aimModeAvailable": true,
-      "optics": "commander_optics_square",
-      "zoomOutFov": 24.7,
-      "zoomInFov": 6.9,
-      "sightSize": [0.45,0.32]
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 10.21,
       "zoomInFov": 9.21,
@@ -3996,9 +3904,6 @@
                     "gunnerDm": "gunner_dm"
                   },
                   {
-                    "secondGunnerDm": "commander_dm"
-                  },
-                  {
                     "linkedAnimPart": {
                       "verNode": "bone_gun_roller_02",
                       "verLimits": [-6.0,17.0],
@@ -4123,8 +4028,7 @@
                   "turret": {
                     "head": "bone_mg_twin",
                     "gun": "bone_mg_twin",
-                    "gunnerDm": "gunner_dm",
-                    "secondGunnerDm": "commander_dm"
+                    "gunnerDm": "gunner_dm"
                   }
                 },
                 {
@@ -4150,7 +4054,7 @@
                 "speedPitch": 20.0,
                 "bullets": 500,
                 "isBulletBelt": true,
-                "fireConeAngle": 5.0,
+                "fireConeAngle": 15.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -4180,52 +4084,6 @@
             {
               "Weapon": {
                 "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 40.0,
-                "speedPitch": 30.0,
-                "turret": {
-                  "head": "bone_commander_sight_h",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "gunStabilizer": {
-                  "hasVerticalGunFreeMode": false,
-                  "forceEnabled": true,
-                  "hasHorizontal": true,
-                  "horizontalOmegaMult": 1.0,
-                  "horizontalSpeedLimitKPH": 75.0,
-                  "hasVertical": true,
-                  "verticalOmegaMult": 1.0,
-                  "verticalSpeedLimitKPH": 75.0,
-                  "speedFromVehicleVerticalMult": -1.0,
-                  "errorKPHToDegrees": [
-                    {
-                      "row": [5.0,0.0]
-                    },
-                    {
-                      "row": [45.0,0.00015]
-                    },
-                    {
-                      "row": [80.0,0.0002]
-                    }
-                  ]
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-10.0,60.0]
-                }
-              }
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner4",
                 "triggerGroup": "smoke",
                 "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
                 "weaponType": "rockets",
@@ -4282,7 +4140,7 @@
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
-            "commanderViewThermal": {
+            "commanderThermal": {
               "resolution": [800,600],
               "noiseFactor": 0.04
             },

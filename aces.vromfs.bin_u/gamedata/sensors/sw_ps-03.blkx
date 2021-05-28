@@ -228,10 +228,6 @@
             "source": "targetDesignation",
             "width": 500.0
           },
-          "setRelSpeedGatePos": {
-            "source": "targetDesignation",
-            "width": 30.0
-          },
           "setScanPatternSet": [],
           "setScanPattern": {
             "scanPattern": "designationLock"
@@ -308,10 +304,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -427,7 +419,7 @@
         },
         "boresightLockFromSearch": {
           "stateFrom": "search",
-          "command": "acmSwitch",
+          "command": "modeSwitch",
           "stateTo": "boresightLock",
           "actions": {
             "resetSearchMode": [],
@@ -475,7 +467,7 @@
             "command": "switch"
           },
           {
-            "command": "acmSwitch"
+            "command": "modeSwitch"
           },
           {
             "stateTo": "search"
@@ -551,10 +543,6 @@
           "event": "targetInSight",
           "actions": {
             "setDistGatePos": {
-              "source": "continuousScale",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "continuousScale",
               "width": 0.0
             },
@@ -649,10 +637,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

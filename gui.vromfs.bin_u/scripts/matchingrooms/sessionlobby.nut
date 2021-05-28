@@ -1821,9 +1821,7 @@ SessionLobby.joinRoomWithPassword <- function joinRoomWithPassword(joinRoomId, p
 
   ::gui_modal_editbox_wnd({
     value = prevPass
-    title = ::loc("mainmenu/password")
-    label = wasEntered ? ::loc("matching/SERVER_ERROR_ROOM_PASSWORD_MISMATCH") : ""
-    isPassword = true
+    editboxHeaderText = wasEntered ? ::loc("matching/SERVER_ERROR_ROOM_PASSWORD_MISMATCH") : ""
     allowEmpty = false
     okFunc = @(pass) ::SessionLobby.joinRoom(joinRoomId, "", pass)
   })

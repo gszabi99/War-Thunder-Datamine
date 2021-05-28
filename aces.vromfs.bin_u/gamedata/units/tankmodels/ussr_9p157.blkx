@@ -396,7 +396,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -585,14 +584,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       },
       "ammo": {
         "armorClass": "tank_structural_steel",
@@ -1770,11 +1761,12 @@
       "EngineName": "engine_pt76",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_bmp_modern",
-      "TrackSoundNameCockpit": "tracks_bmp_modern_interior",
-      "EngineNameAi": "engine_tank_ai_pt76",
-      "TrackSoundNameAi": "tracks_ai_bmp_modern",
-      "turret_turn": "turret_rocket_turn"
+      "TrackSoundName": "tracks",
+      "TrackSoundNameCockpit": "tracks_interior",
+      "turret_turn": "turret_rocket_turn",
+      "EngineNameAi": "engine_tank_ai_middle",
+      "TrackSoundNameAi": "tracks_ai_middle",
+      "gun_turn": "turret_turn_mg_light"
     }
   },
   {
@@ -1830,7 +1822,7 @@
           "barrelDP": "gun_barrel_dm",
           "brokenBarrelAllowShoot": false,
           "autoLoader": true,
-          "speedYaw": 40.0,
+          "speedYaw": 25.0,
           "speedPitch": 25.0,
           "fireConeAngle": 1.0,
           "bullets": 16,
@@ -2635,7 +2627,7 @@
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
-            "commanderViewThermal": {
+            "commanderThermal": {
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
@@ -2727,11 +2719,11 @@
   {
     "skin": {
       "name": "ussr_camo_finland_polygonal_threecolor",
-      "nameLocId": "skin/fin_camo_black_green_dark",
-      "descLocId": "skin/fin_camo_black_green_dark/desc",
+      "nameLocId": "skin/ussr_camo_finland_polygonal_threecolor",
+      "descLocId": "skin/ussr_camo_finland_polygonal_threecolor/desc",
       "replace_tex": {
         "from": "ussr_camo_green*",
-        "to": "fin_camo_black_green_dark*"
+        "to": "ussr_camo_finland_polygonal_threecolor*"
       }
     }
   },

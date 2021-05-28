@@ -1,6 +1,5 @@
 local { getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
-local { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
-local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
+local { isFakeBullet, getBulletsSetData, getBulletsIconView } = require("scripts/weaponry/bulletsInfo.nut")
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 
 const LONG_ACTIONBAR_TEXT_LEN = 6;

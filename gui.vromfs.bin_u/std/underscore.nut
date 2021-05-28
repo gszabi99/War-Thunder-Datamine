@@ -11,23 +11,6 @@
 /**
   make common iteratee function
 */
-
-local isTable = @(v) typeof(v)=="table"
-local isArray = @(v) typeof(v)=="array"
-local isString = @(v) typeof(v)=="string"
-local isFunction = @(v) typeof(v)=="function"
-local function isDataBlock(obj) {
-  //prefer this as it can handle any DataBlock binding and implementation
-  if (obj?.paramCount!=null && obj?.blockCount != null)
-    return true
-  return false
-}
-
-local callableTypes = ["function","table","instance"]
-local function isCallable(v) {
-  return callableTypes.indexof(::type(v)) != null && (v.getfuncinfos() != null)
-}
-
 local function mkIteratee(func){
   local infos = func.getfuncinfos()
   local params = infos.parameters.len()-1
@@ -275,25 +258,6 @@ local function chunk(list, count) {
   return result
 }
 
-/**
- * Given a array, and an iteratee function that returns a key for each
- * element in the array (or a property name), returns an object with an index
- * of each item.
- */
-local function indexBy(list, iteratee) {
-  local res = {}
-  if (isString(iteratee)){
-    foreach (idx, val in list)
-      res[val[iteratee]] <- val
-  }
-  else if (isFunction(iteratee)){
-    foreach (idx, val in list)
-      res[iteratee(val, idx, list)] <- val
-  }
-
-  return res
-}
-
 return {
   invert
   tablesCombine
@@ -308,11 +272,4 @@ return {
   unique
   arrayByRows
   chunk
-  isTable
-  isArray
-  isString
-  isFunction
-  isCallable
-  isDataBlock
-  indexBy
 }

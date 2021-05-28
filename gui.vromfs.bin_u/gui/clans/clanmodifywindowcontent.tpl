@@ -1,8 +1,9 @@
 frame{
-  width:t='0.9@scrn_tgt'
-  flow:t='vertical'
-  class:t='wndNav'
-  isCenteredUnderLogo:t='yes'
+  width:t='0.9@scrn_tgt';
+  pos:t='50%pw-50%w, 1@minYposWindow + 0.02@scrn_tgt'
+  position:t='absolute';
+  flow:t='vertical';
+  class:t='wndNav';
 
   frame_header {
     activeText {

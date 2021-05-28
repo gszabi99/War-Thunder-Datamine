@@ -2,6 +2,10 @@
   "selected_tag": "",
   "bin_dump_file": "",
   "mission_settings": {
+    "atmosphere": {
+      "pressure": 760.0,
+      "temperature": 22.0
+    },
     "player": [
       {
         "army": 1
@@ -114,27 +118,23 @@
     "mission": {
       "level": "levels/arcade_phiphi_crater_rocks.bin",
       "type": "domination",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "clear",
-      "locName": "missions/_GS/ship;location/arcade_phiphi_crater_rocks",
-      "locDesc": "missions/_GS/desc",
       "scoreLimit": 5000,
       "timeLimit": 25,
       "deathPenaltyMul": 0.0,
       "country_axis": "japan",
       "country_allies": "ussr",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
+      "locName": "missions/_GS/ship;location/arcade_phiphi_crater_rocks",
+      "locDesc": "missions/_GS/desc",
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
         "isShipsAllowed": false,
         "isHelicoptersAllowed": false
       }
-    },
-    "atmosphere": {
-      "pressure": 760.0,
-      "temperature": 22.0
     },
     "spectator_points": [
       {
@@ -416,7 +416,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
             "offset": [0.0,0.0,0.0],
@@ -443,7 +442,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
             "offset": [0.0,0.0,0.0],
@@ -552,9 +550,6 @@
             "name_for_respawn_base": "",
             "timeMultiplier": 12.0,
             "disableZone": false,
-            "showBorderOnMap": false,
-            "borderWidthCoef": 1.0,
-            "borderTransparencyCoef": 1.0,
             "target": "capture_zone",
             "canCaptureOnGround": false,
             "canCaptureInAir": false,
@@ -614,7 +609,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_airfield",
             "team": "A",
             "offset": [0.0,0.0,0.0],
@@ -641,7 +635,6 @@
             "onlyOnePlayerPerSpawnPoint": false,
             "forceCreate": false,
             "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_airfield",
             "team": "B",
             "offset": [0.0,0.0,0.0],
@@ -1307,8 +1300,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1405,8 +1396,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1442,8 +1431,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1479,8 +1466,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1516,8 +1501,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1606,7 +1589,7 @@
           [0.0436194,0.0,-0.999048],
           [0.0,1.0,0.0],
           [0.999048,0.0,0.0436194],
-          [-6821.64,-0.67779,-2670.13]
+          [-6821.64,6.0,-2670.13]
         ],
         "unit_class": "dynAF_pacific_phi_phi",
         "props": {
@@ -1622,7 +1605,7 @@
           [3.68804e-07,0.0,1.0],
           [0.0,1.0,0.0],
           [-1.0,0.0,3.68804e-07],
-          [8217.18,-7.46845,2488.85]
+          [8217.18,5.99939,2488.85]
         ],
         "unit_class": "dynAF_pacific_phi_phi",
         "props": {
@@ -1683,8 +1666,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1720,8 +1701,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1757,8 +1736,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1794,8 +1771,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1831,8 +1806,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1868,8 +1841,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -1905,8 +1876,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 7,
@@ -2103,8 +2072,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 7,
@@ -2333,8 +2300,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 7,
@@ -2547,8 +2512,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 7,
@@ -2777,8 +2740,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 7,
@@ -2975,8 +2936,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 7,
@@ -3174,7 +3133,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6729.03,38.4167,-3398.34]
+          [-6729.03,45.0945,-3398.34]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3189,8 +3148,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3211,7 +3168,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6828.34,38.4167,-1989.37]
+          [-6828.34,45.0945,-1989.37]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3226,8 +3183,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3248,7 +3203,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6719.94,38.4167,-2316.61]
+          [-6719.94,45.0945,-2316.61]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3263,8 +3218,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3285,7 +3238,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6658.76,38.4167,-2645.86]
+          [-6658.76,45.0945,-2645.86]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3300,8 +3253,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3322,7 +3273,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6689.52,38.4167,-2968.76]
+          [-6689.52,45.0945,-2968.76]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3337,8 +3288,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3359,7 +3308,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6617.46,38.4167,-3181.1]
+          [-6617.46,45.0945,-3181.1]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3374,8 +3323,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -3442,7 +3389,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8147.22,20.3592,2294.82]
+          [8147.22,72.7273,2294.82]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3457,8 +3404,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3479,7 +3424,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8159.51,15.9224,3036.63]
+          [8159.51,62.3586,3036.63]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3494,8 +3439,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3516,7 +3459,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8181.61,16.504,2791.0]
+          [8181.61,62.3586,2791.0]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3531,8 +3474,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3553,7 +3494,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8132.86,8.73436,2632.37]
+          [8132.86,62.3586,2632.37]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -3568,8 +3509,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3590,7 +3529,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8112.59,11.4866,2424.98]
+          [8112.59,62.3586,2424.98]
         ],
         "unit_class": "germ_37mm_flak43",
         "closed_waypoints": false,
@@ -3605,8 +3544,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3627,7 +3564,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8086.42,24.414,2914.55]
+          [8086.42,62.3586,2914.55]
         ],
         "unit_class": "germ_37mm_flak43",
         "closed_waypoints": false,
@@ -3642,8 +3579,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3664,7 +3599,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8711.31,-11.6139,2678.59]
+          [8711.31,0.0,2678.59]
         ],
         "props": [
           {
@@ -3725,8 +3660,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 21,
@@ -3827,8 +3760,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 21,
@@ -3914,7 +3845,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8163.15,21.9056,3288.55]
+          [8163.15,149.684,3288.55]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3929,8 +3860,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3951,7 +3880,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8123.56,21.3061,2169.29]
+          [8123.56,149.684,2169.29]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -3966,8 +3895,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -3988,7 +3915,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [7964.1,70.3998,2274.97]
+          [7964.1,152.437,2274.97]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -4003,8 +3930,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4025,7 +3950,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [8003.95,81.136,2660.18]
+          [8003.95,152.437,2660.18]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -4040,8 +3965,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4062,7 +3985,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6546.89,70.3314,-3445.1]
+          [-6546.89,77.0092,-3445.1]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -4077,8 +4000,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4099,7 +4020,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6547.75,70.3314,-2434.3]
+          [-6547.75,77.0092,-2434.3]
         ],
         "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
@@ -4114,8 +4035,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4136,7 +4055,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6600.3,38.4167,-2087.8]
+          [-6600.3,45.0945,-2087.8]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -4151,8 +4070,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4173,7 +4090,7 @@
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-6543.5,38.4167,-2820.8]
+          [-6543.5,45.0945,-2820.8]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
         "closed_waypoints": false,
@@ -4188,8 +4105,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -4225,8 +4140,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 3,
@@ -4262,8 +4175,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 3,
@@ -4410,8 +4321,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -4712,7 +4621,7 @@
         [-254.947,0.0,-11.1312],
         [0.0,450.0,0.0],
         [89.2344,0.0,-2043.8],
-        [-6895.45,-38.3778,-2677.05]
+        [-6895.45,-31.7,-2677.05]
       ],
       "objLayer": 0,
       "props": []
@@ -4723,7 +4632,7 @@
         [-254.947,0.0,11.1312],
         [0.0,450.0,0.0],
         [-89.2343,0.0,-2043.8],
-        [8303.2,-20.1684,2463.75]
+        [8303.2,-8.7,2463.75]
       ],
       "objLayer": 0,
       "props": []
@@ -4754,7 +4663,7 @@
         [11954.3,0.0,1045.87],
         [0.0,12000.0,0.0],
         [-1045.87,0.0,11954.3],
-        [-45.25,1993.32,153.3]
+        [-45.25,2000.0,153.3]
       ],
       "props": []
     },
@@ -4764,7 +4673,7 @@
         [7969.56,0.0,697.244],
         [0.0,8000.0,0.0],
         [-697.244,0.0,7969.56],
-        [-45.25,1993.32,153.3]
+        [-45.25,2000.0,153.3]
       ],
       "props": []
     },
@@ -4984,7 +4893,7 @@
         [21916.3,0.0,1917.42],
         [0.0,22000.0,0.0],
         [-1917.42,0.0,21916.3],
-        [-45.25,1993.32,153.3]
+        [-45.25,2000.0,153.3]
       ],
       "props": []
     },

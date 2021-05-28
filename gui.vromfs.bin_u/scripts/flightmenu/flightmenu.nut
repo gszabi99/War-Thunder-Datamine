@@ -297,11 +297,6 @@ class ::gui_handlers.FlightMenu extends ::gui_handlers.BaseGuiHandlerWT
     ::gui_modal_help(false, HELP_CONTENT_SET.MISSION)
   }
 
-  function onStats()
-  {
-    ::gui_start_mpstatscreen()
-  }
-
   function onMenuBtnHover(obj)
   {
     if (!::check_obj(obj))

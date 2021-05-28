@@ -1,5 +1,6 @@
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
@@ -210,17 +211,7 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_SENSOR_TYPE_SWITCH_TANK"
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-  }
-  {
     id = "ID_SENSOR_MODE_SWITCH_TANK"
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_ACM_SWITCH_TANK"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
   }
@@ -261,11 +252,13 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
   }
-  {
-    id = "ID_COMMANDER_AIM_MODE"
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-  }
+//
+
+
+
+
+
+
 //-------------------------------------------------------
   {
     id = "ID_TANK_VIEW_HEADER"
@@ -291,13 +284,7 @@ return [
     checkGroup = ctrlGroups.TANK
     checkAssign = false
   }
-  {
-    id = "ID_CAMERA_COMMANDER"
-    checkGroup = ctrlGroups.TANK
-    checkAssign = false
-  }
-  //
-
+//
 
 
 
@@ -555,14 +542,6 @@ return [
     checkAssign = false
     showFunc = @() ::can_add_tank_alt_crosshair() && ::has_feature("TankAltCrosshair")
   }
-  //
-
-
-
-
-
-
-
   {
     id = "gm_sight_distance"
     type = CONTROL_TYPE.AXIS
@@ -576,8 +555,8 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
-    checkAssign = @() ::is_xinput_device()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
     id = "gm_wheelmenu_y"
@@ -585,7 +564,7 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.TANK
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
-    checkAssign = @() ::is_xinput_device()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 ]

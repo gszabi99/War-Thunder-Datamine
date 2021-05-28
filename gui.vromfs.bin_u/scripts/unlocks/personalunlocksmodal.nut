@@ -1,5 +1,4 @@
 local { getPersonalUnlocks } = require("scripts/unlocks/personalUnlocks.nut")
-local { eachParam } = require("std/datablock.nut")
 local { getSelectedChild } = require("sqDagui/daguiUtil.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "personal_unlocks_collapsed_chapters"
@@ -102,7 +101,8 @@ local class personalUnlocksModal extends ::gui_handlers.BaseGuiHandlerWT {
     local data = ::handyman.renderCached("gui/missions/missionBoxItemsList", view)
     guiScene.replaceContentFromText(chaptersObj, data, data.len(), this)
 
-    eachParam(getCollapsedChapters(), @(_, chapterId) collapseChapter(chapterId), this)
+    foreach (chapterId, value in getCollapsedChapters())
+      collapseChapter(chapterId)
 
     if (view.items.len() == 0) {
       fillUnlocksList()

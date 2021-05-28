@@ -1,6 +1,7 @@
 local globalEnv = require("globalEnv")
 local controlsOperations = require("scripts/controls/controlsOperations.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { isWheelmenuAxisConfigurable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony, isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 
 return [
@@ -268,17 +269,7 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_SENSOR_TYPE_SWITCH_HELICOPTER"
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-  }
-  {
     id = "ID_SENSOR_MODE_SWITCH_HELICOPTER"
-    checkGroup = ctrlGroups.HELICOPTER
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_ACM_SWITCH_HELICOPTER"
     checkGroup = ctrlGroups.HELICOPTER
     checkAssign = false
   }
@@ -645,8 +636,8 @@ return [
     axisDirection = AxisDirection.X
     checkGroup = ctrlGroups.HELICOPTER
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
-    checkAssign = @() ::is_xinput_device()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
   {
     id = "helicopter_wheelmenu_y"
@@ -654,8 +645,8 @@ return [
     axisDirection = AxisDirection.Y
     checkGroup = ctrlGroups.HELICOPTER
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device())
-    checkAssign = @() ::is_xinput_device()
+    showFunc = @() (isPlatformSony || isPlatformXboxOne || ::is_xinput_device()) && isWheelmenuAxisConfigurable()
+    checkAssign = @() ::is_xinput_device() && isWheelmenuAxisConfigurable()
   }
 //-------------------------------------------------------
   {

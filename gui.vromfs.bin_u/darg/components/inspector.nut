@@ -1,6 +1,6 @@
 local string = require("string")
 local utf8 = require_optional("utf8")
-local clipboard = require("daRg.clipboard")
+local clipboard = require("darg.clipboard")
 local {DONT_CHECK_NESTED} = require("frp")
 
 local shown          = persist("shown", @() ::Watched(false))
@@ -31,22 +31,22 @@ local function textButton(text, action, isEnabled = true) {
 
   return function() {
     local sf = stateFlags.value
-    local color = !isEnabled ? Color(80, 80, 80, 200)
-      : (sf & S_ACTIVE)   ? Color(100, 120, 200, 255)
-      : (sf & S_HOVER)    ? Color(110, 135, 220, 255)
-      : (sf & S_KB_FOCUS) ? Color(110, 135, 220, 255)
-                          : Color(100, 120, 160, 255)
+    local color = !isEnabled ? Color(0, 0, 0, 50)
+      : (sf & S_ACTIVE)   ? Color(100, 120, 200, 120)
+      : (sf & S_HOVER)    ? Color(110, 110, 150, 50)
+      : (sf & S_KB_FOCUS) ? Color(130, 130, 150, 120)
+                          : Color(100, 120, 160, 80)
     return {
       rendObj = ROBJ_SOLID
       size = SIZE_TO_CONTENT
       behavior = Behaviors.Button
       focusOnClick = true
       color = color
-      padding = [hdpx(5), hdpx(10)]
+      padding = 5
       children = {
         rendObj = ROBJ_DTEXT
         text = text
-        color = isEnabled ? 0xFFFFFFFF : 0xFFBBBBBB
+        color = isEnabled ? 0xFFFFFFFF : 0x40404040
       }
     }.__update(override)
   }
@@ -65,7 +65,7 @@ local function mkDirBtn(text, dir) {
 local invAlign = @(align) align == ALIGN_LEFT ? ALIGN_RIGHT : ALIGN_LEFT
 local function panelToolbar() {
   local pickBtn = textButton("Pick", @() pickerActive(true))
-  local alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<|" : "|>", @() wndHalign(invAlign(wndHalign.value)))
+  local alignBtn = textButton(wndHalign.value == ALIGN_RIGHT ? "<-" : "->", @() wndHalign(invAlign(wndHalign.value)))
   local prev = mkDirBtn("Prev", -1)
   local next = mkDirBtn("Next", 1)
   return {
@@ -124,12 +124,7 @@ local textColor = @(sf) sf & S_ACTIVE ? 0xFFFFFF00
   : 0xFFFFFFFF
 
 local function propPanel(desc) {
-  local pKeys = []
-  if (typeof desc == "class")
-    foreach (key, _ in desc)
-      pKeys.append(key)
-  else
-    pKeys = desc.keys()
+  local pKeys = desc.keys()
   pKeys.sort()
 
   return pKeys.map(function(k) {
@@ -176,7 +171,7 @@ local function details() {
     rendObj = ROBJ_SOLID
     color = Color(0,0,50,200)
     flow = FLOW_VERTICAL
-    padding = [hdpx(5), hdpx(10)]
+
     children = propPanel(sel.componentDesc)
       .append(summaryText)
   })

@@ -145,7 +145,7 @@ local function openPlayerReviewDialog() {
   // Currently we only have Team matches set up
   local id = match.lastId || match.id
   if (id != null)
-    open_player_review(id, PlayerReviewMode.TEAM_ONLY, "", {})
+    open_player_review(id, PlayerReviewMode.TEAM_ONLY, @(r) null)
 }
 
 return {

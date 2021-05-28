@@ -6,9 +6,9 @@
     {
       "movingRoot": {
         "id": "slide-place",
-        "size": "1@rw,1@rh",
+        "size": "pw,ph",
         "animShow": "hide",
-        "pos": "1@bw, 1@bh",
+        "left": "pw",
         "_pos-timer": "0",
         "img": {
           "id": "slide-img",
@@ -20,16 +20,16 @@
     },
     {
       "tdiv": {
-        "size": "@briefingScreenWPad, 1@rh",
-        "pos": "0, 0.5ph-0.5h",
+        "size": "@briefingScreenWPad, sh",
+        "pos": "0, 0",
         "position": "root",
         "background-color": "@black"
       }
     },
     {
       "tdiv": {
-        "size": "@briefingScreenWPad, 1@rh",
-        "pos": "sw-w, 0.5ph-0.5h",
+        "size": "@briefingScreenWPad, sh",
+        "pos": "sw-w, 0",
         "position": "root",
         "background-color": "@black"
       }
@@ -40,7 +40,7 @@
           "id": "map-background"
         },
         {
-          "size": "1@briefingBackgroundWidth, 1@rh"
+          "size": "1@briefingBackgroundWidth,sh"
         },
         {
           "pos": "50%sw-50%@briefingScreenWidth,50%sh-50%h"
@@ -59,7 +59,7 @@
         },
         {
           "img": {
-            "size": "1@briefingBackgroundWidth,1@rh",
+            "size": "1@briefingBackgroundWidth,sh",
             "pos": "0, 0",
             "position": "absolute",
             "style": "background-image:ui/campaign_back;background-color:@white;"
@@ -67,7 +67,7 @@
         },
         {
           "img": {
-            "size": "1@briefingMapWidth,0.65@rh",
+            "size": "1@briefingMapWidth,65%sh",
             "pos": "1@briefingMapLeftPos, 50%ph-50%h",
             "position": "absolute",
             "background-image": "ui/map_back",
@@ -82,16 +82,16 @@
         },
         {
           "img": {
-            "size": "0.3@rh,0.15@rh",
-            "pos": "1@briefingMapLeftPos + 1@briefingMapWidth +2%@briefingScreenWidth, 0.18@rh",
+            "size": "30%sh,15%sh",
+            "pos": "1@briefingMapLeftPos + 1@briefingMapWidth +2%@briefingScreenWidth, 18%sh",
             "position": "absolute",
             "background-image": "ui/decor2"
           }
         },
         {
           "img": {
-            "size": "0.25@rh,0.64@rh",
-            "pos": "1@briefingScreenWidth -90%w,0.18@rh",
+            "size": "25%sh,64%sh",
+            "pos": "1@briefingScreenWidth -90%w,18%sh",
             "position": "absolute",
             "background-image": "ui/decor3"
           }
@@ -99,8 +99,8 @@
         {
           "img": {
             "id": "briefing-flag",
-            "size": "0.32@rh,0.64@rh",
-            "pos": "-2*sw/sh,0.18@rh",
+            "size": "32%sh,64%sh",
+            "pos": "-2*sw/sh,18%sh",
             "position": "absolute",
             "background-image": ""
           }
@@ -111,9 +111,9 @@
             "behavior": "textarea",
             "style": "font:@fontNormal;color:@white;",
             "_transp-timer": "0",
-            "max-width": "1@briefingScreenWidth - 1@briefingMissionTextLeftPos - 0.13@rh",
-            "max-height": "ph - 0.52@rh",
-            "pos": "1@briefingMissionTextLeftPos, 0.35@rh",
+            "max-width": "1@briefingScreenWidth - 1@briefingMissionTextLeftPos - 13%sh",
+            "max-height": "ph - 52%sh",
+            "pos": "1@briefingMissionTextLeftPos, 35%sh",
             "position": "absolute",
             "overflow-y": "auto",
             "scrollbarShortcuts": "yes"
@@ -133,8 +133,8 @@
           "img": {
             "id": "briefing_shadow_top",
             "position": "absolute",
-            "size": "1@rw, 0.2@rh",
-            "pos": "0.5pw-0.5w, 0.1@rh",
+            "size": "sw, 20%sh",
+            "pos": "0,10%sh",
             "background-image": "#ui/gameuiskin#optionlist_background_top"
           }
         },
@@ -142,16 +142,16 @@
           "img": {
             "id": "briefing_shadow_down",
             "position": "absolute",
-            "size": "1@rw, 0.2@rh",
-            "pos": "0.5pw-0.5w, 0.9ph-h",
+            "size": "sw, 20%sh",
+            "pos": "0,90%sh-h",
             "rotation": "180",
             "background-image": "#ui/gameuiskin#optionlist_background_top"
           }
         },
         {
           "img": {
-            "size": "0.4@briefingScreenWidth,0.64@rh+1",
-            "pos": "-0.25@rh,0.5ph-0.5h+1",
+            "size": "0.4@briefingScreenWidth,64%sh+1",
+            "pos": "-25%sh,50%sh-50%h+1",
             "position": "absolute",
             "rotation": "180",
             "background-image": "ui/shadeside"
@@ -159,8 +159,8 @@
         },
         {
           "img": {
-            "size": "0.4@briefingScreenWidth,0.64@rh+1",
-            "pos": "1@briefingScreenWidth+0.25@rh-w,0.5ph-0.5h+1",
+            "size": "0.4@briefingScreenWidth,64%sh+1",
+            "pos": "1@briefingScreenWidth+25%sh-w,50%sh-50%h+1",
             "position": "absolute",
             "background-repeat": "expand",
             "background-image": "ui/shadeside"
@@ -182,10 +182,10 @@
           "id": "briefingglow"
         },
         {
-          "size": "1@rw,0.64@rh+2"
+          "size": "sw,sh-36%sh+2"
         },
         {
-          "pos": "0.5pw-0.5w, 50%ph-50%h"
+          "pos": "0, 50%ph-50%h"
         },
         {
           "position": "root"
@@ -197,7 +197,7 @@
           "img": {
             "id": "briefing_shadow_top",
             "position": "absolute",
-            "size": "pw, 0.2@rh",
+            "size": "sw, 20%sh",
             "pos": "0,0",
             "background-image": "#ui/gameuiskin#optionlist_background_top"
           }
@@ -206,8 +206,8 @@
           "img": {
             "id": "briefing_shadow_down",
             "position": "absolute",
-            "size": "pw, 0.2@rh",
-            "pos": "0,ph-h+3",
+            "size": "sw, 20%sh",
+            "pos": "0,64%sh-h+3",
             "background-image": "#ui/gameuiskin#optionlist_background_down"
           }
         },
@@ -233,8 +233,8 @@
     {
       "briefingglow": {
         "id": "briefingsmallglow",
-        "size": "1@rw, 0.64@rh+2",
-        "pos": "0.5pw-0.5w, 50%ph-50%h",
+        "size": "sw,sh-36%sh+2",
+        "pos": "0, 50%ph-50%h",
         "position": "root",
         "_transp-timer": "0",
         "style": "background-color:#88888888;"
@@ -242,28 +242,22 @@
     },
     {
       "tdiv": {
-        "size": "1@swOrRwInVr, 1@bh -1@bhInVr + 0.18@rh",
-        "pos": "1@bwInVr,1@bhInVr",
+        "size": "sw+4, 18%sh+1",
+        "pos": "-2,-2",
         "position": "root",
         "background-color": "@black",
-        "tdiv": {
-          "size": "pw, 1@dp",
-          "pos": "0,ph-h",
-          "position": "relative",
-          "background-color": "@commonMenuButtonColor"
-        }
+        "border": "yes",
+        "border-color": "@commonMenuButtonColor"
       }
     },
     {
       "tdiv": {
-        "size": "1@swOrRwInVr, 1@bh -1@bhInVr + 0.18@rh",
-        "pos": "1@bwInVr,sh-h-1@bhInVr",
+        "size": "sw+4, 18%sh+1",
+        "pos": "-2,sh-h+4",
         "position": "root",
         "background-color": "@black",
-        "tdiv": {
-          "size": "pw, 1@dp",
-          "background-color": "@commonMenuButtonColor"
-        }
+        "border": "yes",
+        "border-color": "@commonMenuButtonColor"
       }
     },
     {
@@ -278,7 +272,7 @@
       "subtitlesHint": {
         "id": "scene-info",
         "width": "@rw-30%sh",
-        "pos": "@bw, 1@bh + 0.83@rh",
+        "pos": "@bw, 83%sh",
         "position": "absolute",
         "_transp-timer": "0",
         "behaviour": "bhvHint",
@@ -290,7 +284,7 @@
       "subtitles": {
         "id": "scene-subtitles",
         "width": "sw-4@bw",
-        "pos": "50%pw-50%w, ph - 1@bh - 0.20@rh - h",
+        "pos": "50%pw-50%w, ph-20%sh-h",
         "position": "absolute",
         "text-align": "center",
         "_transp-timer": "0"
@@ -301,7 +295,7 @@
         "id": "scene-help",
         "text": "",
         "style": "color:@helpF1Color;",
-        "pos": "sw-w-1@bw, 1@bh + 0.17@rh -h",
+        "pos": "sw-w-1@bw, 17%sh-h",
         "position": "absolute",
         "text-align": "right",
         "width": "pw"
@@ -310,7 +304,7 @@
     {
       "Button_text": {
         "id": "btn_help",
-        "pos": "1@bw, 1@bh + 0.17@rh - h",
+        "pos": "1@bw, 17%sh-h",
         "position": "absolute",
         "text": "#flightmenu/btnControlsHelp",
         "btnName": "Y",
@@ -324,7 +318,7 @@
       "tdiv": {
         "id": "loadanim",
         "position": "absolute",
-        "pos": "pw - w - @bw, 1@bh + 0.83@rh",
+        "pos": "pw - w - @bw, 83%sh",
         "animated_wait_icon": {
           "pos": "0, 50%h-50%h",
           "position": "absolute",
@@ -358,10 +352,7 @@
             {
               "tdiv": [
                 {
-                  "size": "1@swOrRwInVr, 1@topBarHeight + 0.015@sf - 1@bhInVr"
-                },
-                {
-                  "pos": "1@bwInVr, 1@bhInVr"
+                  "size": "sw, 1@topBarHeight + 0.015@sf"
                 },
                 {
                   "position": "root"
@@ -462,13 +453,11 @@
                         "GameLogoPlate": {
                           "id": "gamercard_logo",
                           "padding": "1@titleLogoPlatePadding, 1@topGamercardDarkLineHeight, 1@titleLogoPlatePadding, 0",
-                          "top": "1@titleLogoPlatePaddingTop*@isInVr",
-                          "position": "relative",
                           "Shadow": {
                             "redPlate": {
                               "pattern": {
                                 "type": "dark_diag_lines",
-                                "padding-top": "1@titleLogoPlatePaddingTop-1@titleLogoPlatePaddingTop*@isInVr",
+                                "padding-top": "1@titleLogoPlatePaddingTop",
                                 "img": {
                                   "id": "titleLogo",
                                   "size": "1@titleLogoPlateWidth, 1@titleLogoPlateHeight",
@@ -913,7 +902,7 @@
                     "id": "chatPopupNest",
                     "size": "0.4@sf+10, 0.075*@sf+10",
                     "position": "absolute",
-                    "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                    "pos": "0.5@rw-w-0.55@titleLogoPlateWidth-0.019@scrn_tgt, @topBarHeight",
                     "flow": "vertical"
                   }
                 }

@@ -124,8 +124,7 @@
             "varSetRandomInt": {
               "var": "cr_t1_carrier_random_idx",
               "from": 1,
-              "to_not_including": 5,
-              "var_to_not_including": "cr_t1_num_ways_count_plus_one"
+              "to_not_including": 5
             }
           },
           {
@@ -277,8 +276,7 @@
             "varSetRandomInt": {
               "var": "cr_t2_carrier_random_idx",
               "from": 1,
-              "to_not_including": 5,
-              "var_to_not_including": "cr_t2_num_ways_count_plus_one"
+              "to_not_including": 5
             }
           },
           {
@@ -456,7 +454,7 @@
               "formation": {
                 "formation_type": "rows",
                 "formation_div": 1,
-                "formation_step": [20.0,4.0],
+                "formation_step": [26.0,4.0],
                 "formation_noise": [0.3,0.2]
               }
             }
@@ -612,7 +610,7 @@
               "formation": {
                 "formation_type": "rows",
                 "formation_div": 1,
-                "formation_step": [20.0,4.0],
+                "formation_step": [26.0,4.0],
                 "formation_noise": [0.3,0.2]
               }
             }
@@ -807,16 +805,6 @@
             }
           },
           {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@cr_t1_carrier_squad_name",
-              "enableShipCollisionAvoidance": true
-            }
-          },
-          {
             "setHeadSquad": [
               {
                 "name": "@cr_t1_carrier_squad_name"
@@ -847,20 +835,6 @@
             }
           },
           {
-            "unitSetRoute": {
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "route": "@cr_t1_carrier_route_name",
-              "teleportToStart": false,
-              "object": "@cr_t1_carrier_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitLoadBehTree": {
               "name": "shipBot",
               "objects": "@cr_t1_carrier_squad_name"
@@ -872,13 +846,21 @@
             }
           },
           {
+            "unitSetRoute": {
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "route": "@cr_t1_carrier_route_name",
+              "teleportToStart": false,
+              "object": "@cr_t1_carrier_squad_name"
+            }
+          },
+          {
             "unitSetFormation": {
               "formation_type": "rows",
-              "formation_div": 1,
-              "formation_step": [6.0,3.0],
-              "formation_noise": [0.3,0.4],
-              "object": "@cr_t1_carrier_squad_name",
-              "allUnitsInOneFormation": true
+              "formation_div": 2,
+              "formation_step": [12.0,4.0],
+              "formation_noise": [0.3,0.2],
+              "object": "@cr_t1_carrier_squad_name"
             }
           }
         ],
@@ -972,16 +954,6 @@
             }
           },
           {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@cr_t2_carrier_squad_name",
-              "enableShipCollisionAvoidance": true
-            }
-          },
-          {
             "setHeadSquad": [
               {
                 "name": "@cr_t2_carrier_squad_name"
@@ -1012,20 +984,6 @@
             }
           },
           {
-            "unitSetRoute": {
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "route": "@cr_t2_carrier_route_name",
-              "teleportToStart": false,
-              "object": "@cr_t2_carrier_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitLoadBehTree": {
               "name": "shipBot",
               "objects": "@cr_t2_carrier_squad_name"
@@ -1037,13 +995,21 @@
             }
           },
           {
+            "unitSetRoute": {
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "route": "@cr_t2_carrier_route_name",
+              "teleportToStart": false,
+              "object": "@cr_t2_carrier_squad_name"
+            }
+          },
+          {
             "unitSetFormation": {
               "formation_type": "rows",
-              "formation_div": 1,
-              "formation_step": [6.0,3.0],
-              "formation_noise": [0.3,0.4],
-              "object": "@cr_t2_carrier_squad_name",
-              "allUnitsInOneFormation": true
+              "formation_div": 2,
+              "formation_step": [12.0,4.0],
+              "formation_noise": [0.3,0.2],
+              "object": "@cr_t2_carrier_squad_name"
             }
           }
         ],
@@ -2418,9 +2384,7 @@
     "cr_t1_carrier_squad_name": "",
     "cr_t2_carrier_squad_name": "",
     "cr_t1_fleet_spawn_name": "",
-    "cr_t2_fleet_spawn_name": "",
-    "cr_t1_num_ways_count_plus_one": 5,
-    "cr_t2_num_ways_count_plus_one": 5
+    "cr_t2_fleet_spawn_name": ""
   },
   "dialogs": [],
   "airfields": [],

@@ -63,8 +63,7 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
       : !countGlobal ? ::loc("shop/search/global/notFound")
       : countLocal ? ::loc("shop/search/local/found", { count = countLocal })
       : ::loc("shop/search/local/notFound")
-    //With IME window with all variants wil be open automatically
-    if (countGlobal > countLocal && !::show_console_buttons)
+    if (countGlobal > countLocal)
       hintText += "\n" + ::loc("shop/search/global/found", { count = countGlobal })
     local obj = scene.findObject("search_hint_text")
     if (::check_obj(obj))
@@ -129,11 +128,9 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
       return
     isActive = _isActive
 
-    if (!::show_console_buttons) {
-      local btnsObj = scene.findObject("search_buttons")
-      if (::check_obj(btnsObj))
-        btnsObj.show(isActive)
-    }
+    local btnsObj = scene.findObject("search_buttons")
+    if (::check_obj(btnsObj))
+      btnsObj.show(isActive)
 
     if (!isActive)
       searchCancel()
@@ -142,13 +139,6 @@ class ::gui_handlers.ShopSearchBox extends ::gui_handlers.BaseGuiHandlerWT
   function onSearchEditBoxFocusChanged(obj)
   {
     guiScene.performDelayed(this, @() ::check_obj(obj) && onActiveStateChanged(obj.isFocused()))
-  }
-
-  function onSearchEditBoxMouseChanged(obj) {
-    if (!::show_console_buttons || !::check_obj(obj))
-      return
-
-    onActiveStateChanged(obj.isMouseOver())
   }
 
   function onAccesskeyActivateSearch(obj)

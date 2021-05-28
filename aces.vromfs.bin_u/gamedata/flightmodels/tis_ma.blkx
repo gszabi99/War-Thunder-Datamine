@@ -185,12 +185,6 @@
           "hp": 39.5
         },
         "stab_dm": {
-          "hp": 30.0
-        },
-        "stab2_dm": {
-          "hp": 30.0
-        },
-        "stab1_dm": {
           "hp": 39.5
         }
       },
@@ -1558,108 +1552,6 @@
         "part": [
           {
             "name": "stab_dm"
-          },
-          {
-            "onHit": {
-              "tailcontrol_dm": 0.001
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "tailcontrol_dm": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "stab1_dm"
-          },
-          {
-            "onHit": {
-              "tailcontrol_dm": 0.001
-            }
-          },
-          {
-            "onHit": {
-              "damage": 30.0,
-              "cut": 0.6
-            }
-          },
-          {
-            "onHit": {
-              "damage": 60.0,
-              "cut": 1.0
-            }
-          },
-          {
-            "onKill": {
-              "tailcontrol_dm": 1.0,
-              "nothing": 9.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 10.0,
-              "cut": 1.0,
-              "nothing": 10.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 30.0,
-              "cut": 2.0,
-              "nothing": 5.0
-            }
-          },
-          {
-            "onKill": {
-              "damage": 50.0,
-              "cut": 1.0,
-              "nothing": 0.0
-            }
-          }
-        ]
-      },
-      {
-        "part": [
-          {
-            "name": "stab2_dm"
           },
           {
             "onHit": {
@@ -3066,14 +2958,8 @@
     "modifications": {
       "cd_98": [],
       "CdMin_Fuse": [],
-      "tis_ma_new_cover": {
-        "tier": 4,
-        "prevModification": "cd_98"
-      },
-      "tis_ma_structure_str": {
-        "tier": 2,
-        "prevModification": "CdMin_Fuse"
-      },
+      "new_cover": [],
+      "structure_str": [],
       "hp_105": [],
       "new_radiator": [],
       "new_compressor": [],
@@ -3108,14 +2994,9 @@
         "tier": 2,
         "reqModification": "ns37_belt_pack"
       },
-      "ns45_belt_pack": {
-        "tier": 1
-      },
-      "ns45_air_target": [],
-      "ns45_armor_target": [],
       "tis_ns_45_mod": {
-        "prevModification": "ns45_belt_pack",
-        "tier": 2,
+        "prevModification": "ns37_new_gun",
+        "tier": 3,
         "invertEnableLogic": false,
         "turn_it_off": false,
         "effects": {
@@ -3287,7 +3168,7 @@
       },
       "ns45_new_gun": {
         "reqModification": "tis_ns_45_mod",
-        "tier": 3
+        "tier": 4
       },
       "mi_4_fab_100": {
         "modClass": "weapon",

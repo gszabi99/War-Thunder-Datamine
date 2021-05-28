@@ -81,14 +81,12 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     local idx = 0
     local isGold = chapter == "eagles"
     local curChapter = ""
-    local eblk = ::OnlineShopModel.getPriceBlk()
+    local eblk = ::DataBlock()
+    ::get_shop_prices(eblk)
 
     local first = true
-    local numBlocks = eblk.blockCount()
-    for (local i = 0; i < numBlocks; i++)
+    foreach (name, ib in eblk)
     {
-      local ib = eblk.getBlock(i)
-      local name = ib.getBlockName()
       if (chapter == null && ::isInArray(ib?.chapter, skipChapters))
         continue
       if (chapter != null && ib?.chapter != chapter)
@@ -470,6 +468,7 @@ class ::gui_handlers.OnlineShopHandler extends ::gui_handlers.BaseGuiHandlerWT
     local taskSuccessCallback = ::Callback(function ()
       {
         goForward(startFunc)
+        ::broadcastEvent("PurchaseSuccess")
       }, this)
     ::g_tasker.addTask(taskId, taskOptions, taskSuccessCallback)
   }

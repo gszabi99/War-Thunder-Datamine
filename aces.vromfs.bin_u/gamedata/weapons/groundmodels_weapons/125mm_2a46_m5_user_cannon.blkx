@@ -40,10 +40,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
+    "stabilityReductionAfterPenetration": 0.001,
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
@@ -62,9 +62,8 @@
     "waterCollisionEffect": "hit_106_132mm_water",
     "explosionPatchRadius": 3.5,
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -204,9 +203,6 @@
       "roadSoil": {
         "fx": "hit_106_132mm_dirt_he"
       },
-      "bricks_red": {
-        "fx": "hit_106_132mm_stone_he"
-      },
       "sand": {
         "fx": "hit_106_132mm_sand_he"
       },
@@ -278,10 +274,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
+      "stabilityThreshold": 0.4,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.45,
+      "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "he_frag_fs_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
@@ -299,8 +295,8 @@
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -426,9 +422,6 @@
         },
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_he"
-        },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_he"
         },
         "sand": {
           "fx": "hit_106_132mm_sand_he"
@@ -570,9 +563,6 @@
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_ap"
         },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_ap"
-        },
         "sand": {
           "fx": "hit_106_132mm_sand_ap"
         },
@@ -637,25 +627,23 @@
     "bullet": {
       "mass": 4.85,
       "caliber": 0.125,
-      "damageCaliber": 0.022,
-      "ballisticCaliber": 0.022,
-      "Cx": 0.8,
-      "speed": 1660.0,
+      "damageCaliber": 0.025,
+      "ballisticCaliber": 0.031,
+      "Cx": 0.35,
+      "speed": 1700.0,
       "maxDistance": 10000.0,
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_long",
-      "stabilityThreshold": 0.05,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "stucking": 0.7,
-      "stuckingAngle": 45.0,
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.1,
+      "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "125mm_3bm60",
+      "bulletName": "125mm_3bm42",
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -664,10 +652,23 @@
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.45]
-      },
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.25]
+        },
+        {
+          "mod2": [20.0,0.3]
+        },
+        {
+          "mod3": [30.0,0.45]
+        },
+        {
+          "mod3": [45.0,0.5]
+        },
+        {
+          "mod4": [50.0,0.7]
+        }
+      ],
       "tracePattern": {
         "caliber": 10.0,
         "circleCount": 2,
@@ -678,15 +679,31 @@
         "HitPower10000m": [0.8,10000.0]
       },
       "armorpower": {
-        "ArmorPower0m": [580.0,10.0],
-        "ArmorPower100m": [576.0,100.0],
-        "ArmorPower500m": [567.0,500.0],
-        "ArmorPower1000m": [555.0,1000.0],
-        "ArmorPower1500m": [543.0,1500.0],
-        "ArmorPower2000m": [532.0,2000.0],
-        "ArmorPower3000m": [519.0,3000.0],
+        "ArmorPower0m": [479.0,10.0],
+        "ArmorPower100m": [477.0,100.0],
+        "ArmorPower500m": [470.0,500.0],
+        "ArmorPower1000m": [462.0,1000.0],
+        "ArmorPower1500m": [453.0,1500.0],
+        "ArmorPower2000m": [445.0,2000.0],
+        "ArmorPower3000m": [428.0,3000.0],
         "ArmorPower10000m": [5.0,10000.0],
         "ArmorPower20000m": [0.0,20000.0]
+      },
+      "ballistics": {
+        "slopeEffect": {
+          "table": {
+            "t1": {
+              "caliberToArmor": 1.0,
+              "slopeEffect0deg": [0.0,20.0],
+              "slopeEffect10deg": [10.0,5.3],
+              "slopeEffect20deg": [20.0,2.4],
+              "slopeEffect30deg": [30.0,1.93],
+              "slopeEffect50deg": [50.0,1.305],
+              "slopeEffect70deg": [70.0,1.064],
+              "slopeEffect90deg": [90.0,1.0]
+            }
+          }
+        }
       },
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
@@ -712,9 +729,6 @@
         },
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_ap"
-        },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_ap"
         },
         "sand": {
           "fx": "hit_106_132mm_sand_ap"
@@ -788,10 +802,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
+      "stabilityReductionAfterPenetration": 0.001,
       "bulletType": "heat_fs_tank",
       "cumulativeSecondaryShattersPreset": "heat_fs",
       "explodeOnRendinst": true,
@@ -810,9 +824,8 @@
       "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod1": [0.0,0.0],
+        "mod2": [20.0,1.0]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -952,9 +965,6 @@
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_he"
         },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_he"
-        },
         "sand": {
           "fx": "hit_106_132mm_sand_he"
         },
@@ -1017,27 +1027,25 @@
   },
   "125mm_ussr_APDS_FS": {
     "bullet": {
-      "mass": 4.85,
+      "mass": 4.83,
       "caliber": 0.125,
       "damageCaliber": 0.025,
-      "ballisticCaliber": 0.031,
-      "Cx": 0.35,
-      "speed": 1700.0,
-      "maxDistance": 10000.0,
-      "normalizationPreset": "default",
-      "ricochetPreset": "apds_fs_long",
-      "secondaryShattersPreset": "apds_fs_long",
-      "stabilityThreshold": 0.05,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "stucking": 0.7,
-      "stuckingAngle": 45.0,
-      "bulletType": "apds_fs_long_tank",
-      "slopeEffectPreset": "apds_fs_long",
+      "ballisticCaliber": 0.1,
+      "Cx": 0.01,
+      "speed": 1760.0,
+      "maxDistance": 20000.0,
+      "normalizationPreset": "apcr",
+      "ricochetPreset": "apds_fs",
+      "secondaryShattersPreset": "apds_fs",
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.15,
+      "stabilityReductionAfterPenetration": 0.05,
+      "bulletType": "apds_fs_tungsten_small_core_tank",
+      "slopeEffectPreset": "apds_fs_tungsten_small_core_tank",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "125mm_3bm42",
+      "shellAnimation": "video/shells_animations/apfsds_early_ussr.ivf",
+      "bulletName": "125mm_3bm22",
       "onHitChanceMultExplFuel": 0.1,
       "relativeVelHitShift": [300.0,1000.0],
       "relativeVelArmorShift": [200.0,1000.0],
@@ -1046,10 +1054,23 @@
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.45]
-      },
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.25]
+        },
+        {
+          "mod2": [20.0,0.3]
+        },
+        {
+          "mod3": [30.0,0.45]
+        },
+        {
+          "mod3": [45.0,0.5]
+        },
+        {
+          "mod4": [50.0,0.7]
+        }
+      ],
       "tracePattern": {
         "caliber": 10.0,
         "circleCount": 2,
@@ -1060,14 +1081,14 @@
         "HitPower10000m": [0.8,10000.0]
       },
       "armorpower": {
-        "ArmorPower0m": [479.0,10.0],
-        "ArmorPower100m": [477.0,100.0],
-        "ArmorPower500m": [470.0,500.0],
-        "ArmorPower1000m": [462.0,1000.0],
-        "ArmorPower1500m": [453.0,1500.0],
-        "ArmorPower2000m": [445.0,2000.0],
-        "ArmorPower3000m": [428.0,3000.0],
-        "ArmorPower10000m": [5.0,10000.0],
+        "ArmorPower0m": [425.0,10.0],
+        "ArmorPower100m": [420.0,100.0],
+        "ArmorPower500m": [415.0,500.0],
+        "ArmorPower1000m": [405.0,1000.0],
+        "ArmorPower2000m": [380.0,2000.0],
+        "ArmorPower3000m": [360.0,3000.0],
+        "ArmorPower4000m": [340.0,4000.0],
+        "ArmorPower10000m": [10.0,10000.0],
         "ArmorPower20000m": [0.0,20000.0]
       },
       "ballistics": {
@@ -1076,11 +1097,14 @@
             "t1": {
               "caliberToArmor": 1.0,
               "slopeEffect0deg": [0.0,20.0],
-              "slopeEffect10deg": [10.0,5.3],
-              "slopeEffect20deg": [20.0,2.4],
-              "slopeEffect30deg": [30.0,1.93],
-              "slopeEffect50deg": [50.0,1.305],
+              "slopeEffect10deg": [10.0,6.9],
+              "slopeEffect20deg": [20.0,2.9],
+              "slopeEffect30deg": [30.0,2.2],
+              "slopeEffect40deg": [40.0,1.6],
+              "slopeEffect50deg": [50.0,1.41],
+              "slopeEffect60deg": [60.0,1.18],
               "slopeEffect70deg": [70.0,1.064],
+              "slopeEffect80deg": [80.0,1.015],
               "slopeEffect90deg": [90.0,1.0]
             }
           }
@@ -1110,9 +1134,6 @@
         },
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_ap"
-        },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_ap"
         },
         "sand": {
           "fx": "hit_106_132mm_sand_ap"
@@ -1180,10 +1201,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityThreshold": 0.1,
+      "stabilityCaliberToArmorThreshold": 100.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
+      "stabilityReductionAfterPenetration": 0.01,
       "bulletType": "atgm_tandem_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
@@ -1198,11 +1219,17 @@
       "sfxReloadBullet": "grd_cannon_reload_auto",
       "recoilMultiplier": 0.05,
       "shotFxType": "muzzle_ground_40mm_slow",
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
-      },
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.0]
+        },
+        {
+          "mod2": [20.0,0.1]
+        },
+        {
+          "mod2": [30.0,0.2]
+        }
+      ],
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -1215,10 +1242,10 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
-        "stabilityThreshold": 0.5,
-        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityThreshold": 0.1,
+        "stabilityCaliberToArmorThreshold": 100.0,
         "stabilityReductionAfterRicochet": 0.3,
-        "stabilityReductionAfterPenetration": 0.15,
+        "stabilityReductionAfterPenetration": 0.01,
         "bulletType": "atgm_tandem_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
@@ -1269,11 +1296,17 @@
         "endSpeed": 350.0,
         "price": 3000.0,
         "mesh": "125mm_9m119m",
-        "stabilityRicochetModifier": {
-          "mod1": [0.0,0.5],
-          "mod2": [15.0,0.7],
-          "mod3": [30.0,0.99]
-        },
+        "stabilityRicochetModifier": [
+          {
+            "mod1": [0.0,0.0]
+          },
+          {
+            "mod2": [20.0,0.1]
+          },
+          {
+            "mod2": [30.0,0.2]
+          }
+        ],
         "pressureDamage": {
           "damageType": "pressure"
         },
@@ -1298,9 +1331,6 @@
           },
           "roadSoil": {
             "fx": "hit_106_132mm_dirt_he"
-          },
-          "bricks_red": {
-            "fx": "hit_106_132mm_stone_he"
           },
           "sand": {
             "fx": "hit_106_132mm_sand_he"

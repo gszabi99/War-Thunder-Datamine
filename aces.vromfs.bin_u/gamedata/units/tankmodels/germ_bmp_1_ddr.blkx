@@ -123,6 +123,15 @@
     "cruiseVelocity": 3.0
   },
   {
+    "irProjectorNode": "ex_lantern_02"
+  },
+  {
+    "irBeamRadius": [1400.0,100.0]
+  },
+  {
+    "irProjectorPower": [0.02,0.07]
+  },
+  {
     "rearmSmokeTimeOnField": 60.0
   },
   {
@@ -326,8 +335,8 @@
       },
       "gun": {
         "armorClass": "tank_barrel",
-        "hp": 120.0,
-        "armorThickness": 20.0,
+        "hp": 150.0,
+        "armorThickness": 30.0,
         "gun_barrel_dm": [],
         "gun_barrel_01_dm": {
           "armorThrough": 10.0,
@@ -357,7 +366,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -683,14 +691,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       },
       "crew": {
         "armorClass": "steel_tankman",
@@ -2547,30 +2547,6 @@
         ]
       },
       {
-        "Weapon": {
-          "trigger": "gunner3",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-5.0,10.0]
-          }
-        }
-      },
-      {
         "hideNodes": {
           "node": "ex_decor_01"
         }
@@ -3325,19 +3301,6 @@
     ]
   },
   {
-    "commanderView": {
-      "optics": "commander_optics_square",
-      "zoomOutFov": 15.0,
-      "zoomInFov": 14.7,
-      "sightSize": [0.29,0.2],
-      "ircmProjector": {
-        "node": "bone_commander_sight_v",
-        "beamRadius": [600.0,50.0],
-        "projectorPower": [0.02,0.04]
-      }
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 13.2,
       "zoomInFov": 12.2,
@@ -3346,13 +3309,6 @@
       "headPos": [0.0,4.0,-8.0],
       "headPosOnShooting": [-0.7,3.0,-0.3],
       "detectionHeight": 2.068
-    }
-  },
-  {
-    "ircmProjector": {
-      "node": "ex_lantern_02",
-      "beamRadius": [1400.0,100.0],
-      "projectorPower": [0.02,0.07]
     }
   },
   {
@@ -3659,33 +3615,9 @@
               }
             },
             {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "commander",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "bone_commander_sight_v",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "parkInDeadzone": false,
-                "speedYaw": 30.0,
-                "speedPitch": 20.0,
-                "turret": {
-                  "head": "bone_commander_sight_h",
-                  "gun": "bone_commander_sight_v",
-                  "gunnerDm": "commander_dm",
-                  "verDriveDm": "commander_panoramic_sight_dm",
-                  "horDriveDm": "commander_panoramic_sight_dm"
-                },
-                "limits": {
-                  "yaw": [-180.0,180.0],
-                  "pitch": [-5.0,10.0]
-                }
-              }
-            },
-            {
               "Weapon": [
                 {
-                  "trigger": "gunner4"
+                  "trigger": "gunner3"
                 },
                 {
                   "triggerGroup": "smoke"
@@ -3739,7 +3671,7 @@
                   "bullets": 6
                 },
                 {
-                  "fireConeAngle": 5.0
+                  "fireConeAngle": 15.0
                 },
                 {
                   "ChainfireTime": 0.5
@@ -3879,7 +3811,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,

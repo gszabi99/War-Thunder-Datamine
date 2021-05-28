@@ -129,7 +129,7 @@ local function saveTutorialToCheckReward(mission) {
   local isComplete = progress >= 0 && progress < 3
 
   local presetFilename = ""
-  local preset = ::g_controls_presets.getCurrentPresetInfo()
+  local preset = ::g_controls_presets.getCurrentPreset()
   if (preset.name.indexof("hotas4") != null
       && checkJoystickThustmasterHotas(false)
       && ! ::has_feature("DisableSwitchPresetOnTutorialForHotas4"))

@@ -111,6 +111,15 @@
     "type": "typeMediumTank"
   },
   {
+    "irProjectorNode": "emtr_lantern_05"
+  },
+  {
+    "irBeamRadius": [1400.0,100.0]
+  },
+  {
+    "irProjectorPower": [0.02,0.07]
+  },
+  {
     "rearmTimeOnField": 45.0
   },
   {
@@ -351,7 +360,6 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
-        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -520,14 +528,6 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
-      },
-      "commander_panoramic_sight": {
-        "commander_panoramic_sight_dm": {
-          "armorClass": "optics_tank",
-          "armorThrough": 20.0,
-          "armorThickness": 10.0,
-          "hp": 100.0
-        }
       },
       "ammo": {
         "armorClass": "tank_structural_steel",
@@ -2363,30 +2363,6 @@
             }
           }
         ]
-      },
-      {
-        "Weapon": {
-          "trigger": "gunner2",
-          "triggerGroup": "commander",
-          "blk": "gameData/Weapons/dummy_weapon.blk",
-          "emitter": "bone_commander_sight_v",
-          "defaultYaw": 0.0,
-          "defaultPitch": 0.0,
-          "parkInDeadzone": false,
-          "speedYaw": 30.0,
-          "speedPitch": 20.0,
-          "turret": {
-            "head": "bone_commander_sight_h",
-            "gun": "bone_commander_sight_v",
-            "gunnerDm": "commander_dm",
-            "verDriveDm": "commander_panoramic_sight_dm",
-            "horDriveDm": "commander_panoramic_sight_dm"
-          },
-          "limits": {
-            "yaw": [-180.0,180.0],
-            "pitch": [-5.0,10.0]
-          }
-        }
       }
     ]
   },
@@ -3024,19 +3000,6 @@
     ]
   },
   {
-    "commanderView": {
-      "optics": "commander_optics_square",
-      "zoomOutFov": 15.0,
-      "zoomInFov": 14.7,
-      "sightSize": [0.29,0.2],
-      "ircmProjector": {
-        "node": "bone_commander_sight_v",
-        "beamRadius": [600.0,50.0],
-        "projectorPower": [0.02,0.04]
-      }
-    }
-  },
-  {
     "cockpit": {
       "zoomOutFov": 18.494,
       "zoomInFov": 9.217,
@@ -3045,13 +3008,6 @@
       "headPos": [0.0,3.5,-7.5],
       "headPosOnShooting": [-0.2,2.95,-0.6],
       "detectionHeight": 2.2
-    }
-  },
-  {
-    "ircmProjector": {
-      "node": "emtr_lantern_05",
-      "beamRadius": [1400.0,100.0],
-      "projectorPower": [0.02,0.07]
     }
   },
   {
@@ -3084,7 +3040,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderViewIr": {
+            "commanderIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,

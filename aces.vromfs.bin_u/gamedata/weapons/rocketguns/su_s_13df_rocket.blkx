@@ -10,10 +10,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
+    "stabilityReductionAfterPenetration": 0.001,
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
@@ -38,7 +38,7 @@
     "maxDeltaAngle": 2.5,
     "maxDistance": 3000.0,
     "minDistance": 30.0,
-    "mass": 68.0,
+    "mass": 69.0,
     "massEnd": 50.0,
     "force": 58800.0,
     "timeFire": 2.0,
@@ -61,8 +61,8 @@
     "CxK": 0.01,
     "useStartSpeed": true,
     "startSpeed": 50.0,
-    "endSpeed": 590.0,
-    "maxSpeed": 590.0,
+    "endSpeed": 530.0,
+    "maxSpeed": 530.0,
     "advancedMissiles": false,
     "autoaimEnabled": false,
     "aiGroundOnly": false,
@@ -70,9 +70,8 @@
     "amountPerTier": 5.0,
     "iconType": "nar_he_special",
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
     },
     "pressureDamage": {
       "damageType": "pressure"

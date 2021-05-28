@@ -167,9 +167,7 @@ local messageComponent = @(message) function() {
       ::cross_call.mp_chat_mode.getModeNameText(message.mode),
       ::cross_call.platform.getPlayerName(message.sender),
       getMessageColor(message),
-      message.isAutomatic
-        ? message.text
-        : ::cross_call.filter_chat_message(message.text, message.isMyself)
+      ::cross_call.filter_chat_message(message.text, message.isMyself)
     )
   }
   return {

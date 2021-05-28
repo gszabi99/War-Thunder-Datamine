@@ -42,15 +42,15 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
+    "stabilityThreshold": 0.4,
+    "stabilityCaliberToArmorThreshold": 10.0,
+    "stabilityReductionAfterRicochet": 0.45,
+    "stabilityReductionAfterPenetration": 1.0,
     "bulletType": "sap_hei_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
     "explodeOnRendinst": true,
-    "shellAnimation": "video/shells_animations/sap.ivf",
+    "shellAnimation": "video/shells_animations/aphe.ivf",
     "guiCustomIcon": "sapcbc_tank",
     "bulletName": "76mm_sapom_sap",
     "relativeVelHitShift": [300.0,1000.0],
@@ -65,8 +65,8 @@
     "explosionPatchRadius": 1.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
     },
     "hitpower": {
       "HitPower0m": [1.0,0.0],
@@ -190,9 +190,6 @@
       "roadSoil": {
         "fx": "hit_28_38mm_dirt_he"
       },
-      "bricks_red": {
-        "fx": "hit_28_38mm_red_brick_he"
-      },
       "sand": {
         "fx": "hit_28_38mm_sand_he"
       },
@@ -263,15 +260,15 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
+      "stabilityThreshold": 0.4,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.45,
+      "stabilityReductionAfterPenetration": 1.0,
       "bulletType": "sap_hei_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/sap.ivf",
+      "shellAnimation": "video/shells_animations/aphe.ivf",
       "guiCustomIcon": "sapcbc_tank",
       "bulletName": "76mm_sapom_sap",
       "relativeVelHitShift": [300.0,1000.0],
@@ -286,8 +283,8 @@
       "explosionPatchRadius": 1.0,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [15.0,0.7],
-        "mod3": [30.0,0.99]
+        "mod2": [20.0,0.6],
+        "mod3": [30.0,1.0]
       },
       "hitpower": {
         "HitPower0m": [1.0,0.0],
@@ -410,9 +407,6 @@
         },
         "roadSoil": {
           "fx": "hit_28_38mm_dirt_he"
-        },
-        "bricks_red": {
-          "fx": "hit_28_38mm_red_brick_he"
         },
         "sand": {
           "fx": "hit_28_38mm_sand_he"
@@ -613,9 +607,6 @@
         "roadSoil": {
           "fx": "hit_39_58mm_dirt_he"
         },
-        "bricks_red": {
-          "fx": "hit_39_58mm_red_brick_he"
-        },
         "sand": {
           "fx": "hit_39_58mm_sand_he"
         },
@@ -689,12 +680,10 @@
       "normalizationPreset": "default",
       "ricochetPreset": "apds_fs_long",
       "secondaryShattersPreset": "apds_fs_25_76mm",
-      "stabilityThreshold": 0.05,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "stucking": 0.7,
-      "stuckingAngle": 45.0,
+      "stabilityThreshold": 0.0,
+      "stabilityCaliberToArmorThreshold": 10.0,
+      "stabilityReductionAfterRicochet": 0.1,
+      "stabilityReductionAfterPenetration": 0.05,
       "bulletType": "apds_fs_long_tank",
       "slopeEffectPreset": "apds_fs_long",
       "fresnel": [0.23,0.1,2.0],
@@ -708,10 +697,23 @@
       "ricochetEffect": "hit_106_132mm_metal_ap",
       "waterCollisionEffect": "hit_106_132mm_water",
       "explosionPatchRadius": 2.8,
-      "stabilityRicochetModifier": {
-        "mod1": [0.0,0.2],
-        "mod2": [20.0,0.45]
-      },
+      "stabilityRicochetModifier": [
+        {
+          "mod1": [0.0,0.25]
+        },
+        {
+          "mod2": [20.0,0.3]
+        },
+        {
+          "mod3": [30.0,0.45]
+        },
+        {
+          "mod3": [45.0,0.5]
+        },
+        {
+          "mod4": [50.0,0.7]
+        }
+      ],
       "tracePattern": {
         "caliber": 10.0,
         "circleCount": 2,
@@ -757,9 +759,6 @@
         },
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_ap"
-        },
-        "bricks_red": {
-          "fx": "hit_106_132mm_stone_ap"
         },
         "sand": {
           "fx": "hit_106_132mm_sand_ap"

@@ -24,16 +24,15 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "bulletName": "114mm_m8",
     "caliber": 0.114,
     "mass": 19.8,
@@ -76,8 +75,8 @@
     "price": 3000.0,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod2": [20.0,0.6],
+      "mod3": [30.0,1.0]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -100,9 +99,6 @@
       },
       "roadSoil": {
         "fx": "hit_106_132mm_dirt_he"
-      },
-      "bricks_red": {
-        "fx": "hit_106_132mm_stone_he"
       },
       "sand": {
         "fx": "hit_106_132mm_sand_he"

@@ -139,7 +139,7 @@ class ::gui_handlers.Ps4Shop extends ::gui_handlers.IngameConsoleStore
   {
     local isStoreEmpty = !isLoadingInProgress && !itemsCatalog.len()
     if (isStoreEmpty)
-      psnSystem.show_message(psnSystem.Message.EMPTY_STORE, "", {})
+      psnSystem.show_message(psnSystem.Message.EMPTY_STORE, @(_) null)
     return !isStoreEmpty
   }
 

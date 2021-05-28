@@ -10,8 +10,6 @@
 // Result: "何かがおかしい******フラップが壊れています"
 //
 
-local debugLogFunc = null
-
 local dict = {
   excludesdata    = null
   excludescore    = null
@@ -26,7 +24,13 @@ local dictAsian = {
 }
 
 // Collect language tables
-local function init(langSources) {
+{
+  local langSources = [
+    require("scripts/dirtyWords/dirtyWordsEnglish.nut"),
+    require("scripts/dirtyWords/dirtyWordsRussian.nut"),
+    require("scripts/dirtyWords/dirtyWordsJapanese.nut"),
+  ]
+
   foreach (varName, val in dict)
   {
     dict[varName] = []
@@ -52,24 +56,12 @@ local function init(langSources) {
     }
   }
 
-  foreach (varName, val in dictAsian) {
-    local res = {}
-    local sources = langSources.map(@(v) v?[varName] ?? {}).sort(@(a, b) b.len() <=> a.len())
-    foreach (src in sources) {
-      if (res.len() == 0)
-        res = src
-      else
-        foreach (k, v in src)
-          if (!(k in res))
-            res[k] <- v
-          else
-            res[k].extend(v.filter(@(v) !res[k].contains(v)))
-    }
-    dictAsian[varName] = res
+  foreach (varName, val in dictAsian)
+  {
+    dictAsian[varName] = []
+    foreach (source in langSources)
+      dictAsian[varName].extend(source?[varName] ?? [])
   }
-
-  foreach (source in langSources)
-    source.clear()
 }
 
 local alphabet = {
@@ -209,11 +201,8 @@ local function prepareWord(word)
 local function checkRegexps(word, regexps, accuse)
 {
   foreach (reg in regexps)
-    if ((reg?.value ?? reg).match(word)) {
-      if (debugLogFunc)
-        debugLogFunc("DirtyWordsFilter: \"{0}\" matched pattern \"{1}\"".subst(word, (reg?.value ?? reg).pattern()))
+    if ((reg?.value ?? reg).match(word))
       return !accuse
-    }
   return accuse
 }
 
@@ -247,16 +236,6 @@ local function checkWord(word)
   return status
 }
 
-local function getUnicodeCharsArray(str) {
-  local res = []
-  local utfStr = utf8(str)
-  for (local i = 0; i < utfStr.charCount(); i++) {
-    local char = utfStr.slice(i, i + 1)
-    res.append(char)
-  }
-  return res
-}
-
 local function getMaskedWord(w, maskChar = "*")
 {
   return "".join(array(::utf8(w).charCount(), maskChar))
@@ -268,29 +247,9 @@ local function checkPhrase(text)
   local phrase = text
 
   // In Asian languages, there is no spaces to separate words.
-  local maskChars = null
-  local charsArray = getUnicodeCharsArray(phrase)
-  foreach (char in charsArray) {
-    foreach (segment in (dictAsian.badsegments?[char] ?? [])) {
-      if (!phrase.contains(segment))
-        continue
-
-      local utfPhrase = utf8(phrase)
-      maskChars = maskChars ?? array(utfPhrase.charCount(), false)
-      local length = utf8(segment).charCount()
-      local startIdx = 0
-      while (true) {
-        local idx = utfPhrase.indexof(segment, startIdx)
-        if (idx == null)
-          break
-        for (local i = idx; i < idx + length; i++)
-          maskChars[i] = true
-        startIdx = idx + length
-      }
-    }
-  }
-  if (maskChars != null)
-    phrase = "".join(charsArray.map(@(c, i) maskChars[i] ? "**" : c))
+  foreach (segment in dictAsian.badsegments)
+    if (phrase.indexof(segment) != null)
+      phrase = phrase.replace(segment, getMaskedWord(segment, "**"))
 
   local lowerPhrase = phrase.tolower()
   //To match a whole combination of words
@@ -313,15 +272,7 @@ local function isPhrasePassing(text)
   return checkPhrase(text) == text
 }
 
-// Set debug logging func to enable debug mode, or null to disable it.
-local function setDebugLogFunc(funcOrNull)
-{
-  debugLogFunc = funcOrNull
-}
-
 return {
-  init
-  checkPhrase
-  isPhrasePassing
-  setDebugLogFunc
+  checkPhrase = checkPhrase
+  isPhrasePassing = isPhrasePassing
 }

@@ -6,8 +6,6 @@ local {IsMlwsLwsHudVisible} = require("twsState.nut")
 local sightIndicators = require("hud/tankSightIndicators.nut")
 local activeProtectionSystem = require("reactiveGui/hud/activeProtectionSystem.nut")
 local { isVisibleDmgIndicator, dmgIndicatorStates } = require("reactiveGui/hudState.nut")
-local { CurrentTime, IndicatorsVisible } = require("reactiveGui/hud/tankState.nut")
-local { lockSight, targetSize } = require("reactiveGui/hud/targetTracker.nut")
 
 local greenColor = Color(10, 202, 10, 250)
 local redColor = Color(255, 35, 30, 255)
@@ -29,21 +27,12 @@ local function Root() {
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    watch = [IndicatorsVisible]
     size = [sw(100), sh(100)]
     children = [
       radarComponent.mkRadar()
       aamAim(styleAamAim, getColor)
       agmAim(styleAamAim, getColor)
-      IndicatorsVisible.value
-        ? @() {
-            children = [
-              sightIndicators(styleAamAim, getColor)
-              lockSight(styleAamAim, greenColor, hdpx(150), hdpx(100), sw(50), sh(50))
-              targetSize(styleAamAim, sw(100), sh(100), false, CurrentTime)
-            ]
-          }
-        : null
+      sightIndicators(styleAamAim, getColor)
     ]
   }
 }

@@ -70,12 +70,6 @@
         "hp": 19.5
       },
       "stab_dm": {
-        "hp": 30.0
-      },
-      "stab2_dm": {
-        "hp": 30.0
-      },
-      "stab1_dm": {
         "hp": 30.5
       }
     },
@@ -128,16 +122,16 @@
     },
     "dural40": {
       "spar1_l_dm": {
-        "hp": 35.1
+        "hp": 44.6
       },
       "spar1_r_dm": {
-        "hp": 35.1
+        "hp": 44.6
       },
       "spar2_l_dm": {
-        "hp": 22.8
+        "hp": 22.3
       },
       "spar2_r_dm": {
-        "hp": 22.8
+        "hp": 23.2
       },
       "spar_l_dm": {
         "hp": 60.5
@@ -150,14 +144,11 @@
       "tailcontrol_dm": {
         "hp": 60.5
       },
-      "wingcontrol_dm": {
-        "hp": 39.5
-      },
       "wingcontrol_l_dm": {
-        "hp": 48.5
+        "hp": 47.4
       },
       "wingcontrol_r_dm": {
-        "hp": 48.5
+        "hp": 47.4
       }
     },
     "steel": {
@@ -187,10 +178,10 @@
     },
     "steel_tank_s": {
       "tank1_dm": {
-        "hp": 42.9
+        "hp": 43.7
       },
       "tank2_dm": {
-        "hp": 42.9
+        "hp": 43.7
       },
       "tank3_dm": {
         "hp": 39.5
@@ -1148,108 +1139,6 @@
     {
       "part": [
         {
-          "name": "stab1_dm"
-        },
-        {
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
-          "name": "stab2_dm"
-        },
-        {
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.6
-          }
-        },
-        {
-          "onHit": {
-            "damage": 60.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "cut": 1.0,
-            "nothing": 10.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 2.0,
-            "nothing": 5.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 0.0
-          }
-        }
-      ]
-    },
-    {
-      "part": [
-        {
           "name": "tail_dm"
         },
         {
@@ -1929,11 +1818,6 @@
     },
     {
       "part": {
-        "name": "wingcontrol_dm"
-      }
-    },
-    {
-      "part": {
         "name": "wingcontrol_l_dm"
       }
     },
@@ -1971,10 +1855,7 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2],
-        "type": "leftHand",
-        "detachedNodeYpr": [0.0,-15.0,-90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "flexionDir": [0.0,-1.0,0.2]
       }
     },
     {
@@ -1983,10 +1864,7 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5],
-        "type": "rightHand",
-        "detachedNodeYpr": [0.0,-15.0,90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "flexionDir": [0.0,-1.0,-0.5]
       }
     },
     {

@@ -30,37 +30,17 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "DamageParts": {
-    "alum_alloy10": {
-      "armor11_dm": {
-        "hp": 35.0
-      },
-      "armor12_dm": {
-        "hp": 35.0
-      },
-      "armor13_dm": {
-        "hp": 35.0
-      },
-      "armor14_dm": {
-        "hp": 35.0
-      },
-      "armor1_dm": {
-        "hp": 35.0
-      },
+    "alum_alloy20": {
       "armor2_dm": {
-        "hp": 35.0
+        "hp": 40.0
+      },
+      "armor8_dm": {
+        "hp": 40.0
       }
     },
     "armor10": {
-      "armor10_dm": {
-        "hp": 40.0
-      },
       "cannon1_dm": {
         "hp": 15.0
-      }
-    },
-    "armor8": {
-      "armor15_dm": {
-        "hp": 40.0
       }
     },
     "armor_engine": {
@@ -109,9 +89,20 @@
         "hp": 50.5
       }
     },
-    "ceramic16": {
+    "composite16": {
+      "armor10_dm": {
+        "hp": 45.0
+      },
+      "armor4_dm": {
+        "hp": 45.0
+      },
       "armor9_dm": {
         "hp": 45.0
+      }
+    },
+    "composite26": {
+      "armor1_dm": {
+        "hp": 50.0
       }
     },
     "dural": {
@@ -129,21 +120,18 @@
       "armor3_dm": {
         "hp": 110.0
       },
-      "armor4_dm": {
+      "armor5_dm": {
         "hp": 110.0
       },
-      "armor5_dm": {
+      "armor6_dm": {
         "hp": 110.0
       },
       "armor7_dm": {
         "hp": 110.0
-      },
-      "armor8_dm": {
-        "hp": 110.0
       }
     },
-    "new_armor_glass42": {
-      "armor6_dm": {
+    "new_armor_glass44": {
+      "armor11_dm": {
         "hp": 110.0
       }
     },
@@ -207,26 +195,6 @@
     {
       "part": {
         "name": "armor11_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor12_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor13_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor14_dm"
-      }
-    },
-    {
-      "part": {
-        "name": "armor15_dm"
       }
     },
     {
@@ -1279,10 +1247,7 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2],
-        "type": "leftHand",
-        "detachedNodeYpr": [0.0,-15.0,-90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "flexionDir": [0.0,-1.0,0.2]
       }
     },
     {
@@ -1291,10 +1256,7 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5],
-        "type": "rightHand",
-        "detachedNodeYpr": [0.0,-15.0,90.0],
-        "detachedNodeScale": [1.0,-1.0,1.0]
+        "flexionDir": [0.0,-1.0,-0.5]
       }
     },
     {
@@ -1426,8 +1388,8 @@
   },
   "cockpit": {
     "textToShowInCockpit": "msg/textToShowInCockpit",
-    "headPos": [1.5,1.15,0.0],
-    "headPosOnShooting": [1.5,1.15,0.0],
+    "headPos": [1.3,1.15,0.0],
+    "headPosOnShooting": [1.3,1.15,0.0],
     "lightPos": [2.034966,0.575549,-0.026879],
     "lightColor": [0.01,0.6,0.1],
     "lightRadius": 0.45,
@@ -1836,6 +1798,18 @@
         "limits": {
           "yaw": [-110.0,110.0],
           "pitch": [-40.0,13.0]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": false,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 300.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 300.0,
+          "speedFromVehicleVerticalMult": -1.0,
+          "speedYaw": 25.0,
+          "speedPitch": 25.0
         }
       }
     },
@@ -5025,6 +4999,18 @@
               "limits": {
                 "yaw": [-110.0,110.0],
                 "pitch": [-40.0,13.0]
+              },
+              "gunStabilizer": {
+                "hasVerticalGunFreeMode": false,
+                "hasHorizontal": true,
+                "horizontalOmegaMult": 1.0,
+                "horizontalSpeedLimitKPH": 300.0,
+                "hasVertical": true,
+                "verticalOmegaMult": 1.0,
+                "verticalSpeedLimitKPH": 300.0,
+                "speedFromVehicleVerticalMult": -1.0,
+                "speedYaw": 25.0,
+                "speedPitch": 25.0
               }
             }
           },

@@ -14,8 +14,6 @@ local safeAreaHud = extWatched("safeAreaHud",
 local safeAreaMenu = extWatched("safeAreaMenu",
   @() ::cross_call.getMenuSafearea() ?? [ 1.0, 1.0 ])
 
-local isInVr = extWatched("isInVr", @() ::cross_call.isInVr())
-
 local recalculateHudSize = function(safeArea) {
   local borders = [
     ::max((sh((1.0 - safeArea[1]) *100) / 2).tointeger(), debugRowHeight),
@@ -49,8 +47,7 @@ foreach (w in [resolution, mode])
   w.subscribe(setOnVideoMode)
 
 return {
-  safeAreaSizeHud
-  safeAreaSizeMenu
-  rw
-  isInVr
+  safeAreaSizeHud = safeAreaSizeHud
+  safeAreaSizeMenu = safeAreaSizeMenu
+  rw = rw
 }

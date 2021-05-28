@@ -3,8 +3,6 @@
 @const itemIconWidth:      1@itemIconHeight;
 @const itemHeight:         1@itemIconHeight + 2@itemPadding;
 @const itemWidth:          1@itemIconWidth + 2@itemPadding;
-@const itemIconBlockHeight:2@itemHeight-4@itemPadding;
-@const itemIconBlockWidth: 2@itemWidth-4@itemPadding;
 @const periodRewardIconWidth: 0.75@itemWidth;
 @const periodRewardIconWidthInItem: 0.6@itemWidth;
 @const periodRewardProgressBarIconWidth: 36@sf/@pf;
@@ -329,14 +327,14 @@ itemHighlight[highlight=black] {
 
 itemIconBlock {
   input-transparent:yes;
-  size:1@itemIconBlockWidth, 1@itemIconBlockHeight;
+  size:2@itemWidth-4@itemPadding, 2@itemHeight-4@itemPadding;
 }
 
 itemIconBlock[doubleSize=no] {
   size:1@itemWidth-2@itemPadding, 1@itemHeight-2@itemPadding;
 }
 itemIconBlock[wideSize=yes] {
-  size:1@itemIconBlockWidth, 1@itemHeight-2@itemPadding;
+  size:2@itemWidth-4@itemPadding, 1@itemHeight-2@itemPadding;
 }
 
 itemIconBlock[debriefingSize=yes] {

@@ -52,7 +52,6 @@ shopFilter {
     id:t='<<squadronExpIconId>>'
     type:t='inTab'
     value:t='{"viewId": "SHOP_PAGES_SQUADRON_EXP_ICON"}'
-    display:t='hide'
   }
   <</squadronExpIconId>>
 

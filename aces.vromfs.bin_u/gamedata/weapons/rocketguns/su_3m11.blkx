@@ -9,10 +9,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
-    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityThreshold": 0.1,
+    "stabilityCaliberToArmorThreshold": 100.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.15,
+    "stabilityReductionAfterPenetration": 0.001,
     "bulletType": "heat_fs_tank",
     "cumulativeSecondaryShattersPreset": "heat_fs",
     "explodeOnRendinst": true,
@@ -55,7 +55,7 @@
     "rendinstDamageRadius": 2.0,
     "statType": "hydra",
     "fireEffect": "rocket_fire_short_doubleside",
-    "smokeEffect": "rocket_fire_short_nofire",
+    "smokeEffect": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "spawnExplosionFx": false,
@@ -71,21 +71,14 @@
     "autoaimEnabled": false,
     "aiGroundOnly": false,
     "aiAirOnly": false,
-    "hasTracerTrail": true,
-    "tracerTrailEmitter": [0.1,-0.01,0.0],
     "stabilityRicochetModifier": {
-      "mod1": [0.0,0.5],
-      "mod2": [15.0,0.7],
-      "mod3": [30.0,0.99]
+      "mod1": [0.0,0.0],
+      "mod2": [20.0,1.0]
     },
     "pressureDamage": {
       "damageType": "pressure"
     },
     "damage": {
-      "explosive": {
-        "radius": 0.4,
-        "offset": 0.2
-      },
       "shatter": [
         {
           "useRealShatters": true
@@ -213,6 +206,7 @@
       "onHitChanceMultFire": 15.0
     },
     "tracerTrail": {
+      "hazeEffect": "",
       "visual": {
         "traceFreq": 1,
         "tracer": "100mmBlue",

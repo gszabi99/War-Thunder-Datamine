@@ -1,70 +1,56 @@
-[
-  {
-    "position": "absolute"
-  },
-  {
-    "optionlist_container": {
-      "style": "size:1@swOrRwInVr,1@shOrRhInVr;background-color:#C0000000;overflow:hidden;",
-      "div": {
-        "id": "btn-credits-close",
-        "tabStop": "yes",
-        "size": "0.9@rw, 0.9@rh",
-        "pos": "50%pw-50%w,50%ph-50%h",
-        "position": "absolute",
-        "tdiv": {
-          "id": "credits-text",
-          "flow": "vertical",
-          "behavior": "CreditsScroll",
-          "position": "relative",
-          "cur_slide_offs": "1000000",
-          "top": "0.9sh+h",
-          "inited": "no",
-          "width": "pw",
-          "textarea": {
-            "id": "textarea",
-            "font-bold": "hud",
-            "input-transparent": "yes",
-            "halign": "center",
-            "text-align": "left",
-            "width": "@rw",
-            "style": "font-bold:@fontBigBold;font:@fontMedium;color:@creditsText;"
-          }
+{
+  "position": "absolute",
+  "optionlist_container": {
+    "style": "size:sw,sh;background-color:#C0000000;",
+    "div": {
+      "id": "btn-credits-close",
+      "tabStop": "yes",
+      "size": "90%sw, 90%sh",
+      "pos": "50%sw-50%w,50%sh-50%h",
+      "position": "absolute",
+      "tdiv": {
+        "id": "credits-text",
+        "flow": "vertical",
+        "behavior": "CreditsScroll",
+        "position": "relative",
+        "cur_slide_offs": "1000000",
+        "top": "0.9sh+h",
+        "inited": "no",
+        "width": "pw",
+        "textarea": {
+          "id": "textarea",
+          "font-bold": "hud",
+          "input-transparent": "yes",
+          "halign": "center",
+          "text-align": "left",
+          "width": "@rw",
+          "style": "font-bold:@fontBigBold;font:@fontMedium;color:@creditsText;"
         }
       }
     }
   },
-  {
-    "gamercardShadePlace": {
-      "optionlist_background_top": {
-        "id": "main_background_top",
-        "size": "1.5sw, 0.18@shOrRhInVr",
-        "pos": "0.5pw-0.5w, 0",
-        "position": "absolute"
-      }
-    }
+  "optionlist_background_top": {
+    "id": "main_background_top",
+    "width": "150%sw",
+    "left": "-25%sw",
+    "position": "absolute",
+    "height": "18%sh"
   },
-  {
-    "gamercardShadePlace": {
-      "isBottom": "yes",
-      "optionlist_background_down": {
-        "id": "main_background_down",
-        "size": "1.5sw, 0.5sh - 1@bhInVr",
-        "pos": "0.5pw-0.5w, ph-h",
-        "position": "absolute"
-      }
-    }
+  "optionlist_background_down": {
+    "id": "main_background_down",
+    "width": "150%sw",
+    "left": "-25%sw",
+    "position": "absolute",
+    "top": "sh-h",
+    "height": "50%sh"
   },
-  {
-    "navBar": []
-  },
-  {
-    "dummy": {
-      "id": "screen_button",
-      "size": "sw,sh",
-      "pos": "0,0",
-      "position": "absolute",
-      "_on_click": "onScreenClick",
-      "btnName": "B"
-    }
+  "navBar": [],
+  "dummy": {
+    "id": "screen_button",
+    "size": "sw,sh",
+    "pos": "0,0",
+    "position": "absolute",
+    "_on_click": "onScreenClick",
+    "btnName": "B"
   }
-]
+}
