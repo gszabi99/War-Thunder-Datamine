@@ -1,4 +1,5 @@
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::gui_start_dynamic_summary <- function gui_start_dynamic_summary()
 {
@@ -14,6 +15,7 @@ class ::gui_handlers.CampaignPreview extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = "gui/dynamicSummary.blk"
   sceneNavBlkName = "gui/dynamicSummaryNav.blk"
+  shouldBlurSceneBgFn = needUseHangarDof
 
   wndGameMode = ::GM_DYNAMIC
 

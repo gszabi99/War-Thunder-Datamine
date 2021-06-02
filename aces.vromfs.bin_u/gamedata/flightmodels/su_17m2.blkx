@@ -4,6 +4,9 @@
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "gearSinkRangeLR": 0.376,
   "gearSinkRangeC": 0.3,
+  "JetNozzlesAnim1": [0.3,0.5],
+  "JetNozzlesAnim2": [0.5,1.0],
+  "JetNozzlesAnim3": [1.0,0.0],
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "haveCCIPForGun": true,
@@ -208,7 +211,7 @@
         "hp": 60.5
       },
       "wingcontrol_dm": {
-        "hp": 39.5
+        "hp": 60.5
       },
       "wingcontrol_l_dm": {
         "hp": 60.5
@@ -2178,6 +2181,9 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0],
         "flexionDir": [0.0,-1.0,0.2]
       }
     },
@@ -2187,6 +2193,9 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0],
         "flexionDir": [0.0,-1.0,-0.5]
       }
     },
@@ -2364,6 +2373,12 @@
       "preset": {
         "name": "su_17m2_default",
         "blk": "gameData/FlightModels/weaponPresets/su_17m2_default.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "su_17m2_default_rocket_r60",
+        "blk": "gameData/FlightModels/weaponPresets/su_17m2_default_rocket_r60.blk"
       }
     },
     {

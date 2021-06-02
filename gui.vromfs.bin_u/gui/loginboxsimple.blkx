@@ -1,7 +1,7 @@
 {
   "img": {
     "position": "absolute",
-    "size": "3sw, sh/3+1",
+    "size": "3sw - 3sw*@isInVr, sh/3+1",
     "pos": "-sw,sh-h-1@bh",
     "background-image": "#ui/gameuiskin#optionlist_background_down"
   },
@@ -69,7 +69,7 @@
               "size": "50%pw, ph"
             },
             "tdiv": {
-              "pos": "50%pw-50%w, -0.5@bh",
+              "pos": "50%pw-50%w, -0.5@bh + 0.5@bhInVr",
               "position": "absolute",
               "padding": "1@titleLogoPlatePadding",
               "GameLogoPlate": {
@@ -78,7 +78,7 @@
                   "redPlate": {
                     "pattern": {
                       "type": "dark_diag_lines",
-                      "padding-top": "0.5@bh",
+                      "padding-top": "0.5@bh - 0.5@bhInVr",
                       "img": {
                         "id": "titleLogo",
                         "size": "256*@loginLogoScale,128*@loginLogoScale",

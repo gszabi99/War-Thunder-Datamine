@@ -3,10 +3,9 @@ frame {
   width:t='<<width>> + 1@trophiesGroupItemsInfoBlockWidth';
   height:t='<<height>> + 1@frameTopPadding + 1@frameFooterHeight + 1@itemSpacing'
   min-height:t='3@itemHeight + 1@frameTopPadding + 1@frameFooterHeight'
-  pos:t='50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)';
-  position:t='absolute'
   class:t='wndNav'
   style:t='flow:horizontal;'
+  isCenteredUnderLogo:t='yes'
 
   frame_header {
     activeText{ id:t='group_trophy_header'; caption:t='yes' }

@@ -248,6 +248,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -573,6 +574,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       },
       "crew": {
         "armorClass": "steel_tankman",
@@ -1634,9 +1643,6 @@
         },
         {
           "part": "drive_turret_h_02_dm"
-        },
-        {
-          "part": "transmission_dm"
         },
         {
           "part": "ammo_turret_dm"
@@ -2860,6 +2866,14 @@
     }
   },
   {
+    "commanderView": {
+      "optics": "commander_optics_square",
+      "zoomOutFov": 80.0,
+      "zoomInFov": 14.7,
+      "sightSize": [1.775,1.25]
+    }
+  },
+  {
     "cockpit": {
       "zoomOutFov": 22.0,
       "zoomInFov": 18.5,
@@ -2952,6 +2966,30 @@
           "limits": {
             "yaw": [-0.0,0.0],
             "pitch": [0.0,0.0]
+          }
+        }
+      },
+      {
+        "Weapon": {
+          "trigger": "gunner2",
+          "triggerGroup": "commander",
+          "blk": "gameData/Weapons/dummy_weapon.blk",
+          "emitter": "bone_commander_sight_v",
+          "defaultYaw": 0.0,
+          "defaultPitch": 0.0,
+          "parkInDeadzone": false,
+          "speedYaw": 30.0,
+          "speedPitch": 20.0,
+          "turret": {
+            "head": "bone_commander_sight_h",
+            "gun": "bone_commander_sight_v",
+            "gunnerDm": "commander_dm",
+            "verDriveDm": "commander_panoramic_sight_dm",
+            "horDriveDm": "commander_panoramic_sight_dm"
+          },
+          "limits": {
+            "yaw": [-180.0,180.0],
+            "pitch": [-5.0,10.0]
           }
         }
       }

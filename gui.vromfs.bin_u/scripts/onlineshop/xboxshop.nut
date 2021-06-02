@@ -64,6 +64,7 @@ class ::gui_handlers.XboxShop extends ::gui_handlers.IngameConsoleStore
 
     if (wasPurchasePerformed)
     {
+      broadcastEvent("EntitlementStoreItemPurchased", {id = curItem.id})
       statsd.send_counter("sq.close_product.purchased", 1)
       ::add_big_query_record("close_product",
         ::save_to_json({

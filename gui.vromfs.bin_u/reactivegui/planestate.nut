@@ -37,6 +37,8 @@ local IsLaserDesignatorEnabled = Watched(false)
 local IsWeaponHudVisible = Watched(false)
 local LaserPoint = [0, 0]
 local RadarTargetDist = Watched(0.0)
+local RadarTargetPosValid = Watched(false)
+local RadarTargetPos = [0, 0]
 
 local planeState = {
   BlkFileName,
@@ -75,7 +77,9 @@ local planeState = {
   IsLaserDesignatorEnabled,
   IsWeaponHudVisible,
   LaserPoint,
-  RadarTargetDist
+  RadarTargetDist,
+  RadarTargetPosValid,
+  RadarTargetPos
 }
 
 ::interop.updatePlaneIlsPosSize <- function(x, y, w, h) {
@@ -95,6 +99,11 @@ local planeState = {
 ::interop.updatePlaneTargetPos <- function(x, y) {
   TargetPos[0] = x
   TargetPos[1] = y
+}
+
+::interop.updateRadarTargetPos <- function(x, y) {
+  RadarTargetPos[0] = x
+  RadarTargetPos[1] = y
 }
 
 ::interop.updateLaserPoint <- function(x, y) {

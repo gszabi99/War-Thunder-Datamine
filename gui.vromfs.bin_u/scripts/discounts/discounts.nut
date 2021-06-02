@@ -9,8 +9,9 @@ local { canUseIngameShop,
 local { getEntitlementId } = require("scripts/onlineShop/onlineBundles.nut")
 local { getEntitlementConfig } = require("scripts/onlineShop/entitlements.nut")
 
-local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
-local topMenuOnlineShopId = buttonsList.ONLINE_SHOP.id
+local buttonsList = require("scripts/mainmenu/topMenuButtons.nut").buttonsListWatch
+local topMenuOnlineShopId = ::Computed(@() buttonsList.value?.ONLINE_SHOP.id ?? "")
+local { eachBlock } = require("std/datablock.nut")
 
 local platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -36,7 +37,7 @@ local updateGiftUnitsDiscountTask = -1
       return
 
     local isDiscountAvailable = haveDiscount()
-    discountsList[topMenuOnlineShopId] = isDiscountAvailable
+    discountsList[topMenuOnlineShopId.value] = isDiscountAvailable
 
     if (isDiscountAvailable)
       foreach (label, item in getShopItemsTable()) {
@@ -110,7 +111,7 @@ local updateGiftUnitsDiscountTask = -1
 
 g_discount.clearDiscountsList <- function clearDiscountsList()
 {
-  foreach (button in buttonsList)
+  foreach (button in buttonsList.value)
     if (button.needDiscountIcon)
       discountsList[button.id] <- false
   discountsList.changeExp <- false
@@ -190,14 +191,12 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
         discountsList.airList[air.name] <- discount
     }
 
-  local eblk = ::get_entitlements_price_blk() || ::DataBlock()
-  foreach (entName, entBlock in eblk)
-    checkEntitlement(entName, entBlock, giftUnits)
+  eachBlock(::get_entitlements_price_blk(), @(b, n) checkEntitlement(n, b, giftUnits), this)
 
   updateGiftUnitsDiscountFromGuiBlk(giftUnits)  // !!!FIX ME Remove this function when gift units discount will received from char
 
   if (canUseIngameShop() && needEntStoreDiscountIcon)
-    discountsList[topMenuOnlineShopId] = haveDiscount()
+    discountsList[topMenuOnlineShopId.value] = haveDiscount()
 
   discountsList.entitlementUnits.__update(consoleEntitlementUnits)
 
@@ -242,11 +241,11 @@ g_discount.checkEntitlement <- function checkEntitlement(entName, entlBlock, gif
   if (chapter == "campaign" || chapter == "bonuses")
   {
     if (canUseIngameShop())
-      chapter = topMenuOnlineShopId
+      chapter = topMenuOnlineShopId.value
   }
 
   local chapterVal = true
-  if (chapter == topMenuOnlineShopId)
+  if (chapter == topMenuOnlineShopId.value)
     chapterVal = canUseIngameShop() || isPlatformPC
   discountsList[chapter] <- chapterVal
 
@@ -364,6 +363,9 @@ g_discount.getUnitDiscountList <- function getUnitDiscountList(countryId = null)
 
   return discountsList
 }
+
+// Independent Modules
+require("scripts/slotbar/elems/discountIconElem.nut")
 
 ::subscribe_handler(::g_discount, ::g_listener_priority.CONFIG_VALIDATION)
 ::g_script_reloader.registerPersistentDataFromRoot("g_discount")

@@ -19,7 +19,8 @@ local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 local { boosterEffectType, getBoostersEffects } = require("scripts/items/boosterEffect.nut")
 local { fillItemDescr, getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
-
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
+local { setNeedShowRate } = require("scripts/user/suggestionRateGame.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -149,6 +150,7 @@ local statTooltipColumnParamByType = {
 class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 {
   sceneBlkName = "gui/debriefing/debriefing.blk"
+  shouldBlurSceneBgFn = needUseHangarDof
 
   static awardsListsConfig = {
     streaks = {
@@ -201,6 +203,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
   isAllGiftItemsKnown = false
 
   isFirstWinInMajorUpdate = false
+  isForceShowMyStatsRightBlock = false
 
   debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
 
@@ -218,9 +221,12 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     playersInfo = ::debriefing_result.playersInfo
     isMp = ::debriefing_result.isMp
     isReplay = ::debriefing_result.isReplay
+    isForceShowMyStatsRightBlock = ::has_feature("Profile")
 
     if (::disable_network()) //for correct work in disable_menu mode
       ::update_gamercards()
+
+    scene.findObject("content_frame").width = isForceShowMyStatsRightBlock ? "1.4@sf" : "1.0@sf"
 
     showTab("") //hide all tabs
 
@@ -371,22 +377,6 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     local sessionIdObj = scene.findObject("txt_session_id")
     if (sessionIdObj?.isValid())
       sessionIdObj.setValue(::debriefing_result?.sessionId ?? "")
-  }
-
-  function alignObjHorizontalMarginsByObj(objId, alignObjId)
-  {
-    local obj = scene.findObject(objId)
-    local alignObj = scene.findObject(alignObjId)
-    if (!::check_obj(obj) || !::check_obj(alignObj))
-      return
-
-    local offsetLeft  = alignObj.getPosRC()[0] - obj.getPosRC()[0]
-    local offsetRight = (obj.getPosRC()[0] + obj.getSize()[0]) -
-      (alignObj.getPosRC()[0] + alignObj.getSize()[0])
-    if (offsetLeft > 0)
-      obj["margin-left"] = offsetLeft.tostring()
-    if (offsetRight > 0)
-      obj["margin-right"] = offsetRight.tostring()
   }
 
   function gatherAwardsLists()
@@ -1863,9 +1853,11 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function getEntitlementWithAward()
   {
-    foreach (name, block in ::OnlineShopModel.getPriceBlk())
-      if (block?.allowBuyWithAward)
-        return name
+    local priceBlk = ::OnlineShopModel.getPriceBlk()
+    local l = priceBlk.blockCount()
+    for (local i = 0; i < l; i++)
+      if (priceBlk.getBlock(i)?.allowBuyWithAward)
+        return priceBlk.getBlock(i).getBlockName()
     return null
   }
 
@@ -2135,11 +2127,7 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     return true
   }
 
-  function showMyPlaceInTable()
-  {
-    if (!is_show_my_stats())
-      return
-
+  function getMyPlace() {
     local place = 0
     if (playersTbl)
       foreach(t, tbl in playersTbl)
@@ -2152,16 +2140,21 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
             break
           }
 
+    return place
+  }
+
+  function showMyPlaceInTable()
+  {
+    if (!is_show_my_stats())
+      return
+
+    local place = getMyPlace()
     local hasPlace = place != 0
 
     local label = hasPlace && isTeamplay ? ::loc("debriefing/placeInMyTeam")
       : hasPlace && !isTeamplay ? (::loc("mainmenu/btnMyPlace") + ::loc("ui/colon"))
-      : isMp && !isDebriefingResultFull() ? ::loc("debriefing/preliminaryResults")
-      : !isMp ? ::loc(::debriefing_result.isSucceed ? "debriefing/victory" : "debriefing/defeat")
-      : ""
-
-    if (label == "")
-      return
+      : !isDebriefingResultFull() ? ::loc("debriefing/preliminaryResults")
+      : ::loc(::debriefing_result.isSucceed ? "debriefing/victory" : "debriefing/defeat")
 
     local objTarget = scene.findObject("my_place_move_box")
     objTarget.show(true)
@@ -2602,13 +2595,13 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
 
   function is_show_battle_tasks_list(isNeedBattleTasksList = true)
   {
-    return (::g_battle_tasks.isAvailableForUser() && ::has_feature("DebriefingBattleTasks")) &&
+    return (::has_feature("DebriefingBattleTasks") && ::g_battle_tasks.isAvailableForUser()) &&
       (!isNeedBattleTasksList || battleTasksConfigs.len() > 0)
   }
 
   function is_show_right_block()
   {
-    return is_show_research_list() || is_show_battle_tasks_list()
+    return isForceShowMyStatsRightBlock || is_show_research_list() || is_show_battle_tasks_list()
   }
 
   function onChangeTab(obj)
@@ -2862,7 +2855,8 @@ class ::gui_handlers.DebriefingModal extends ::gui_handlers.MPStatistics
     if (::go_debriefing_next_func != ::gui_start_dynamic_summary)
       ::destroy_session_scripted()
 
-    ::g_user_utils.setNeedShowRate(::debriefing_result?.isSucceed && (::debriefing_result?.gm == ::GM_DOMINATION))
+    if (is_show_my_stats())
+      setNeedShowRate(::debriefing_result, getMyPlace())
 
     ::debriefing_result = null
     playCountSound(false)

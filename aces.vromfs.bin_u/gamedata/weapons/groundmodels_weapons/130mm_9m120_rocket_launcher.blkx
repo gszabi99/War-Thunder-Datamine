@@ -5,8 +5,8 @@
   "shotFreq": 0.0833,
   "sound_path": "tanks/weapon_tanks/atgm",
   "sound_pathStudio": "ground/weapon/atgm",
-  "sound": "atgm_LPC",
-  "sound_inside": "atgm_LPC_interior",
+  "sound": "atgm_TOW",
+  "sound_inside": "atgm_TOW_interior",
   "reload_sound_path": "tanks/effects_tanks",
   "reload_sound_pathStudio": "ground/effects",
   "reload_sound": "reload_rocket",
@@ -34,16 +34,16 @@
       "secondaryShattersPreset": "ap"
     },
     {
-      "stabilityThreshold": 0.1
+      "stabilityThreshold": 0.5
     },
     {
-      "stabilityCaliberToArmorThreshold": 100.0
+      "stabilityCaliberToArmorThreshold": 5.0
     },
     {
       "stabilityReductionAfterRicochet": 0.3
     },
     {
-      "stabilityReductionAfterPenetration": 0.01
+      "stabilityReductionAfterPenetration": 0.15
     },
     {
       "bulletType": "atgm_tank"
@@ -289,17 +289,11 @@
       "iconType": "atgm_type1_x4"
     },
     {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      }
     },
     {
       "pressureDamage": {
@@ -308,6 +302,10 @@
     },
     {
       "damage": {
+        "explosive": {
+          "radius": 0.4,
+          "offset": 0.2
+        },
         "shatter": [
           {
             "useRealShatters": true
@@ -402,14 +400,12 @@
               "countPortion": 0.1
             }
           }
-        ],
-        "shatterDamage": {
-          "breachConeAngle": 45.0
-        },
-        "explosive": {
-          "radius": 0.15,
-          "offset": 0.9
-        }
+        ]
+      }
+    },
+    {
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       }
     },
     {

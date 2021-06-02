@@ -39,6 +39,9 @@
     "support_unit_tag": "artillery"
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -382,6 +385,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -720,6 +724,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       },
       "power_block": {
         "armorClass": "armor_tank_engine",
@@ -2331,7 +2343,9 @@
   },
   {
     "gunConvergence": {
-      "defaultDistance": 1200.0,
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2341,10 +2355,10 @@
       "EngineName": "engine_strv103",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
+      "TrackSoundName": "tracks_strv103",
+      "TrackSoundNameCockpit": "tracks_strv103_interior",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle",
+      "TrackSoundNameAi": "tracks_ai_strv103",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -3306,7 +3320,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,

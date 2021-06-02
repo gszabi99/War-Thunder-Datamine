@@ -2053,6 +2053,9 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0],
         "flexionDir": [0.0,-1.0,0.2]
       }
     },
@@ -2062,6 +2065,9 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0],
         "flexionDir": [0.0,-1.0,-0.5]
       }
     },
@@ -2210,6 +2216,12 @@
     },
     {
       "preset": {
+        "name": "mig_21_mf_default_2x_r3s",
+        "blk": "gameData/FlightModels/weaponPresets/mig_21_mf_default_2x_r3s.blk"
+      }
+    },
+    {
+      "preset": {
         "name": "mig_21_mf_4x_ub16",
         "blk": "gameData/FlightModels/weaponPresets/mig_21_mf_4x_ub16.blk",
         "reqModification": "mig_21_ub16",
@@ -2354,12 +2366,19 @@
       ]
     }
   ],
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/su_cd-30.blk",
-      "dmPart": "radar_dm"
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/su_cd-30.blk",
+        "dmPart": "radar_dm"
+      }
+    },
+    {
+      "sensor": {
+        "blk": "gameData/sensors/su_spo-10.blk"
+      }
     }
-  },
+  ],
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,

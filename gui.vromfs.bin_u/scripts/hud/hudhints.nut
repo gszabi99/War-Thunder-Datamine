@@ -682,6 +682,16 @@ enums.addTypesByGlobalName("g_hud_hints", {
     maskId = 0
   }
 
+  F1_CONTROLS_HINT_SCRIPTED = {
+    hintType = ::g_hud_hint_types.COMMON
+    locId = "hints/help_controls"
+    noKeyLocId = "hints/help_controls/nokey"
+    shortcuts = "ID_HELP"
+    showEvent = "hint:f1_controls_scripted:show"
+    hideEvent = "helpOpened"
+    lifeTime = 30.0
+  }
+
   FULL_THROTTLE_HINT = {
     hintType = ::g_hud_hint_types.COMMON
     locId = "hints/full_throttle"
@@ -840,16 +850,6 @@ enums.addTypesByGlobalName("g_hud_hints", {
     showEvent = "hint:you_can_exit:show"
     hideEvent = "hint:you_can_exit:hide"
     shouldBlink = true
-  }
-
-  CONTROLS_HELP_HINT = {
-    hintType = ::g_hud_hint_types.COMMON
-    locId = "hints/help_controls"
-    noKeyLocId = "hints/help_controls/nokey"
-    shortcuts = "ID_HELP"
-    showEvent = "hint:controlsHelp:offer"
-    hideEvent = "hint:controlsHelp:remove"
-    lifeTime = 30.0
   }
 
   ARTILLERY_MAP_HINT = {
@@ -1436,6 +1436,55 @@ enums.addTypesByGlobalName("g_hud_hints", {
     hideEvent = "hint:nuclear_killstreak_drop_the_bomb:hide"
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
+  }
+
+  EXTINGUISH_ASSIST = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId = "hints/extinguish_assist"
+    showEvent = "hint:have_potential_fire_assistee"
+    hideEvent = "hint:hide_potential_fire_assistee_hint"
+    getShortcuts =  function(data)
+    {
+      return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
+    }
+  }
+
+  NO_POTENTIAL_FIRE_ASSISTANT = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/no_potential_fire_assistant"
+    showEvent = "hint:no_potential_fire_assistant"
+    lifeTime = 5.0
+  }
+
+  REQUEST_EXTINGUISH_HELP_DONT_MOVE = {
+    hintType = ::g_hud_hint_types.REPAIR
+    locId     = "hints/request_extinguish_dont_move"
+    showEvent = "hint:request_extinguish_dont_move"
+    lifeTime = 5.0
+  }
+
+  REQUEST_EXTINGUISH_HELP_HINT = {
+    hintType = ::g_hud_hint_types.REPAIR
+    getLocId = function (data) {
+      if (::getTblValue("request", data, false))
+      {
+        return "hints/request_extinguish_help"
+      }
+      else if (::getTblValue("cancelRequest", data, false))
+      {
+        return "hints/request_extinguish_help_cancel"
+      }
+      return ""
+    }
+    noKeyLocId = "hints/ready_to_bailout_nokey"
+    showEvent = "hint:request_extinguish_help"
+    hideEvent = "hint:request_extinguish_help_hide"
+    isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+    getShortcuts =  function(data)
+    {
+      return ::g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
+    }
   }
 },
 function() {

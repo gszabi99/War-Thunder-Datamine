@@ -28,17 +28,9 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
   toBattleButtonObj = null
   gameModeChangeButtonObj = null
   newGameModesWidgetsPlaceObj = null
-  countriesListObj = null
   inited = false
   wndGameMode = ::GM_DOMINATION
-  clusters = null
-  curCluster = 0
   startEnabled = false
-  waitTime = 0
-  updateTimer = 0
-  timeToChooseCountry = 1.0
-  switcheHidden = false
-  lastBattleMode = null
   queueMask = QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
 
   curQueue = null
@@ -182,7 +174,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     }
     rootHandlerWeak.scene.findObject("gamercard_logo").show(false)
     gameModeChangeButtonObj = rootHandlerWeak.scene.findObject("game_mode_change_button")
-    countriesListObj = rootHandlerWeak.scene.findObject("countries_list")
 
     if (!::has_feature("GameModeSelector"))
     {
@@ -817,14 +808,8 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
       query = {
         mode = modeName
         country = getCurCountry()
-        //cluster = curCluster
       }
-
-      //if (team && isEventBattle)  //!!can choose team correct only with multiEvents support
-      //  query.team <- team
     }
-    /*if (!isEventBattle)
-      validateQuery(query)*/
 
     if (membersData)
       query.members <- membersData
@@ -877,29 +862,6 @@ class ::gui_handlers.InstantDomination extends ::gui_handlers.BaseGuiHandlerWT
     local tMsgBox = guiScene["req_tutorial_msgbox"]
     if (::checkObj(tMsgBox))
       guiScene.destroyElement(tMsgBox)
-
-    if (!getCurQueue())
-      return
-
-    if (!::checkObj(scene))
-    {
-      dagor.debug("No scene found on cancel requeue")
-      return
-    }
-
-    local qCountry = ::queues.getQueueCountry(getCurQueue())
-    local obj = countriesListObj
-    if (::checkObj(obj))
-    {
-      local option = ::get_option(::USEROPT_COUNTRY)
-      local value = 0
-      foreach(idx, c in option.values)
-        if (c == qCountry)
-          value = idx
-
-      if (qCountry != getCurCountry() || value != obj.getValue())
-        obj.setValue(value)
-    }
   }
 
   function testCurrentUnitForMode(country)

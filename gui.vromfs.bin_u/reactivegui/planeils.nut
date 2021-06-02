@@ -1,15 +1,18 @@
 local {IlsVisible, IlsPosSize, IlsColor, Speed, Altitude, ClimbSpeed, Tangage,
         Roll, CompassValue, BombingMode, TargetPosValid, TargetPos, TimeBeforeBombRelease,
         AimLocked, DistToSafety, Aos, Aoa, DistToTarget, CannonMode, RocketMode, BombCCIPMode,
-        BlkFileName, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked, RadarTargetDist} = require("planeState.nut")
-local {TrackerVisible, GuidanceLockState} = require("rocketAamAimState.nut")
+        BlkFileName, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked, RadarTargetDist,
+        RadarTargetPosValid, RadarTargetPos} = require("planeState.nut")
+local {IlsTrackerVisible, TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY} = require("rocketAamAimState.nut")
 local {floor, cos, sin, PI} = require("std/math.nut")
 local {cvt} = require("dagor.math")
 local DataBlock = require("DataBlock")
+local {state, mode} = require("radarComponent.nut")
 
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
 const mpsToFpm = 196.8504
+const mpsToKmh = 3.6
 local baseLineWidth = 4 * LINE_WIDTH
 
 enum GuidanceLockResult {
@@ -27,9 +30,11 @@ local ilsSetting = Computed(function() {
     isAVQ7 = false
     haveAVQ7CCIP = false
     haveAVQ7Bombing = false
+    haveJ7ERadar = false
     isBuccaneerIls = false
     is410SUM1Ils = false
     isLCOSS = false
+    isASP23 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -45,6 +50,8 @@ local ilsSetting = Computed(function() {
     isBuccaneerIls = blk.getBool("isBuccaneerIls", false)
     is410SUM1Ils = blk.getBool("is410SUM1Ils", false)
     isLCOSS = blk.getBool("ilsLCOSS", false)
+    isASP23 = blk.getBool("ilsASP23", false)
+    haveJ7ERadar = blk.getBool("ilsHaveJ7ERadar", false)
   }
 })
 
@@ -345,6 +352,32 @@ local generateCompassMarkSUM = function(num) {
   }
 }
 
+local generateCompassMarkASP = function(num) {
+  return {
+    size = [pw(20), ph(100)]
+    flow = FLOW_VERTICAL
+    children = [
+      @() {
+        watch = IlsColor
+        rendObj = ROBJ_DTEXT
+        color = IlsColor.value
+        hplace = ALIGN_CENTER
+        fontSize = 40
+        font = Fonts.ussr_ils
+        text = num % 10 == 0 ? (num / 10).tostring() : ""
+      }
+      @() {
+        watch = IlsColor
+        size = [baseLineWidth * 0.8, baseLineWidth * 6]
+        rendObj = ROBJ_SOLID
+        color = IlsColor.value
+        lineWidth = baseLineWidth
+        hplace = ALIGN_CENTER
+      }
+    ]
+  }
+}
+
 local function compass(width, generateFunc) {
   const step = 5.0
   local children = []
@@ -370,12 +403,12 @@ local function compass(width, generateFunc) {
   }
 }
 
-local function compassWrap(width, height, pos, generateFunc) {
+local function compassWrap(width, height, pos, generateFunc, scale = 1.0) {
   return {
-    size = [width * 0.6, height * 0.2]
-    pos = [width * 0.2, height * pos]
+    size = [width * 0.6 * scale, height * 0.2]
+    pos = [width * (1 - 0.6 * scale) * 0.5, height * pos]
     clipChildren = true
-    children = compass(width * 0.6, generateFunc)
+    children = compass(width * 0.6 * scale, generateFunc)
   }
 }
 
@@ -1291,6 +1324,453 @@ local function LCOSS(width, height) {
   }
 }
 
+local ASPSpeedValue = Computed(@() (Speed.value * mpsToKmh).tointeger())
+local ASPSpeed = @() {
+  watch = ASPSpeedValue
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_DTEXT
+  pos = [pw(21), ph(30)]
+  color = IlsColor.value
+  fontSize = 45
+  font = Fonts.ussr_ils
+  text = ASPSpeedValue.value.tostring()
+}
+
+local ASPAltValue = Computed(@() (Altitude.value).tointeger())
+local ASPAltitude = @() {
+  watch = ASPAltValue
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_DTEXT
+  pos = [pw(70), ph(30)]
+  color = IlsColor.value
+  fontSize = 45
+  font = Fonts.ussr_ils
+  text = ASPAltValue.value.tostring()
+}
+
+local ASPAirSymbol = @() {
+  size = [pw(70), ph(70)]
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, -100, 0, -30, 0],
+    [VECTOR_LINE, -40, 0, -40, 10],
+    [VECTOR_LINE, 100, 0, 30, 0],
+    [VECTOR_LINE, 40, 0, 40, 10],
+    [VECTOR_LINE, 0, -30, 0, -70],
+  ]
+}
+
+local ASPAirSymbolWrap = @() {
+  size = flex()
+  children = ASPAirSymbol
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = Roll.value
+      pivot = [0, 0]
+    }
+  }
+}
+
+local ASPRoll = @() {
+  size = [pw(15), ph(15)]
+  pos = [pw(50), ph(50)]
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, -100, 0, -80, 0],
+    [VECTOR_LINE, -96.6, 25.9, -77.3, 20.7],
+    [VECTOR_LINE, -86.6, 50, -69.3, 40],
+    [VECTOR_LINE, -50, 86.6, -40, 69.3],
+    [VECTOR_LINE, 50, 86.6, 40, 69.3],
+    [VECTOR_LINE, 86.6, 50, 69.3, 40],
+    [VECTOR_LINE, 96.6, 25.9, 77.3, 20.7],
+    [VECTOR_LINE, 100, 0, 80, 0],
+    [VECTOR_LINE, -15, 0, -5, 0],
+    [VECTOR_LINE, 15, 0, 5, 0],
+    [VECTOR_LINE, 0, -15, 0, -5],
+    [VECTOR_LINE, 0, 15, 0, 5]
+  ]
+  children = ASPAirSymbolWrap
+}
+
+local ASPCompassMark = @() {
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth * 0.8
+  color = IlsColor.value
+  fillColor = IlsColor.value
+  commands = [
+    [VECTOR_LINE, 32, 33, 68, 33],
+    [VECTOR_POLY, 49, 36, 50, 33, 51, 36]
+  ]
+}
+
+local function ASPTargetMark(width, height, is_radar, is_aam = false) {
+  local watchVar = is_aam ? IlsTrackerVisible : (is_radar ? RadarTargetPosValid : TargetPosValid)
+  local value = is_aam ? [IlsTrackerX.value, IlsTrackerY.value] : (is_radar ? RadarTargetPos : TargetPos)
+  return @() {
+    watch = watchVar
+    size = flex()
+    children = watchVar.value ?
+      @() {
+        watch = IlsColor
+        size = [pw(3), ph(3)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.value
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth
+        commands = [
+          [VECTOR_ELLIPSE, 0, 0, 100, 100],
+          (!is_radar ? [VECTOR_LINE, 0, 0, 0, 0] : [])
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = @() {
+          transform = {
+            translate = watchVar.value ? (is_aam ? [IlsTrackerX.value, IlsTrackerY.value] : value) : [width * 0.5, height * 0.575]
+          }
+        }
+      }
+      : null
+  }
+}
+
+local function basicASP23(width, height) {
+  return @() {
+    size = [width, height]
+    children = [
+      compassWrap(width, height, 0.25, generateCompassMarkASP, 0.6),
+      ASPCompassMark,
+      ASPSpeed,
+      ASPAltitude
+    ]
+  }
+}
+
+local ASPLRGrid = @() {
+  watch = IlsColor
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth * 0.8
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, 5, 0, 5, 100],
+    [VECTOR_LINE, 5, 0, 8, 0],
+    [VECTOR_LINE, 5, 16.5, 8, 16.5],
+    [VECTOR_LINE, 5, 33, 8, 33],
+    [VECTOR_LINE, 5, 50, 8, 50],
+    [VECTOR_LINE, 5, 66, 8, 66],
+    [VECTOR_LINE, 5, 83.5, 8, 83.5],
+    [VECTOR_LINE, 5, 100, 8, 100],
+    [VECTOR_LINE, 5, 50, 2, 48],
+    [VECTOR_LINE, 5, 50, 2, 52],
+    [VECTOR_LINE, 95, 0, 95, 100],
+    [VECTOR_LINE, 92, 0, 95, 0],
+    [VECTOR_LINE, 92, 20, 97, 20],
+    [VECTOR_LINE, 92, 40, 97, 40],
+    [VECTOR_LINE, 92, 60, 97, 60],
+    [VECTOR_LINE, 92, 80, 97, 80],
+    [VECTOR_LINE, 92, 100, 95, 100],
+    [VECTOR_LINE, 95, 50, 98, 48],
+    [VECTOR_LINE, 95, 50, 98, 52]
+  ]
+}
+
+local function ASPRadarDist(is_ru, w_pos) {
+  return @() {
+    watch = state.DistanceMax
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_DTEXT
+    pos = [pw(w_pos), ph(0)]
+    color = IlsColor.value
+    fontSize = 40
+    font = is_ru ? Fonts.ussr_ils : Fonts.usa_ils
+    text = (state.DistanceMax.value).tointeger().tostring()
+  }
+}
+
+local ASPRadarMode = @() {
+  watch = [state.RadarModeNameId, state.IsRadarVisible, state.Irst]
+  size = SIZE_TO_CONTENT
+  rendObj = ROBJ_DTEXT
+  pos = [state.Irst.value ? pw(-2) : pw(-7) , state.Irst.value ? ph(50) : ph(15)]
+  color = IlsColor.value
+  fontSize = 35
+  font = Fonts.hud
+  text = state.Irst.value ? "T" : mode(state.RadarModeNameId, state.IsRadarVisible)
+}
+
+local function createTargetDistASP23(index) {
+  local target = state.targets[index]
+  local distanceRel = state.HasDistanceScale.value ? target.distanceRel : 0.9
+
+  local angleRel = state.HasAzimuthScale.value ? target.azimuthRel : 0.5
+  local angularWidthRel = state.HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
+  local angleLeft = angleRel - 0.5 * angularWidthRel
+  local angleRight = angleRel + 0.5 * angularWidthRel
+
+  return {
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    lineWidth = baseLineWidth * 0.8
+    color = IlsColor.value
+    commands = [
+      [VECTOR_LINE,
+        !RadarTargetPosValid.value ? 100 * angleLeft : 10,
+        100 * (1 - distanceRel),
+        !RadarTargetPosValid.value ? 100 * angleRight : 15,
+        100 * (1 - distanceRel)
+      ],
+      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+        100 * angleLeft - 2,
+        100 * (1 - distanceRel) - 5,
+        100 * angleLeft - 2,
+        100 * (1 - distanceRel) + 5
+      ] : []),
+      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+        100 * angleRight + 2,
+        100 * (1 - distanceRel) - 5,
+        100 * angleRight + 2,
+        100 * (1 - distanceRel) + 5
+      ] : []),
+      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+        100 * angleLeft - 2,
+        100 * (1 - distanceRel) - 5,
+        100 * angleRight + 2,
+        100 * (1 - distanceRel) - 5
+      ] : []),
+      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+        100 * angleLeft - 2,
+        100 * (1 - distanceRel) + 5,
+        100 * angleRight + 2,
+        100 * (1 - distanceRel) + 5
+      ] : [])
+    ]
+  }
+}
+
+local targetsComponent = function(createTargetDistFunc) {
+  local getTargets = function() {
+    local targetsRes = []
+    for(local i = 0; i < state.targets.len(); ++i) {
+      if (!state.targets[i])
+        continue
+      targetsRes.append(createTargetDistFunc(i))
+    }
+    return targetsRes
+  }
+
+  return @() {
+    size = flex()
+    children = state.Irst.value && RadarTargetPosValid.value ? null : getTargets()
+    watch = state.TargetsTrigger
+  }
+}
+
+local ASPRadarRoll = @() {
+  size = flex()
+  rendObj = ROBJ_VECTOR_CANVAS
+  lineWidth = baseLineWidth * 0.8
+  color = IlsColor.value
+  commands = [
+    [VECTOR_LINE, 25, 50, 42, 50],
+    [VECTOR_LINE, 58, 50, 75, 50]
+  ]
+  behavior = Behaviors.RtPropUpdate
+  update = @() {
+    transform = {
+      rotate = Roll.value
+      pivot = [0.5, 0.5]
+    }
+  }
+}
+
+local function ASPLaunchPermitted(is_ru, l_pos) {
+  return @() {
+    watch = GuidanceLockState
+    size = flex()
+    children = (GuidanceLockState.value >= GuidanceLockResult.RESULT_TRACKING ?
+      @() {
+        size = flex()
+        rendObj = ROBJ_DTEXT
+        pos = [pw(l_pos), ph(80)]
+        color = IlsColor.value
+        fontSize = 40
+        font = Fonts.hud
+        text = is_ru ? "ПР" : "INRNG"
+      }
+      : null)
+  }
+}
+
+local ASPAzimuthMark = @() {
+  watch = state.Azimuth
+  size = [pw(5), baseLineWidth * 0.8]
+  pos = [pw(state.Azimuth.value * 100 - 2.5), ph(95)]
+  rendObj = ROBJ_SOLID
+  color = IlsColor.value
+  lineWidth = baseLineWidth
+}
+
+local function ASP23LongRange(width, height) {
+  return @() {
+    watch = state.Irst
+    size = [width * 0.5, height * 0.35]
+    pos = [width * 0.25, height * 0.4]
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * 0.8
+    color = IlsColor.value
+    commands = [
+      [VECTOR_LINE, 45, 50, 48, 50],
+      [VECTOR_LINE, 52, 50, 55, 50],
+      [VECTOR_LINE, 50, 44, 50, 48],
+      [VECTOR_LINE, 50, 52, 50, 56]
+    ]
+    children = [
+      (!state.Irst.value ? ASPLRGrid : null),
+      (!state.Irst.value ? ASPRadarDist(true, -5) : null),
+      ASPRadarMode,
+      ASPRadarRoll,
+      targetsComponent(createTargetDistASP23),
+      ASPLaunchPermitted(true, 48),
+      ASPAzimuthMark
+    ]
+  }
+}
+
+local function ASPCCIPDistanceGrid() {
+  local minDist = Altitude.value - DistToSafety.value
+  return @() {
+    watch = IlsColor
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * 0.8
+    size = flex()
+    color = IlsColor.value
+    commands = [
+      [VECTOR_LINE, 27, 38, 27, 80],
+      [VECTOR_LINE, 25, 38, 27, 38],
+      [VECTOR_LINE, 25, 46.4, 27, 46.4],
+      [VECTOR_LINE, 25, 54.8, 27, 54.8],
+      [VECTOR_LINE, 25, 63.2, 27, 63.2],
+      [VECTOR_LINE, 25, 72, 27, 72],
+      [VECTOR_LINE, 25, 80, 27, 80],
+      [VECTOR_WIDTH, baseLineWidth * 2.2],
+      [VECTOR_LINE, 27.5, (80 - minDist / 5000.0 * 42), 30, (80 - minDist / 5000.0 * 42)]
+    ]
+    children =
+    {
+      size = flex()
+      rendObj = ROBJ_DTEXT
+      pos = [pw(22), ph(36)]
+      color = IlsColor.value
+      fontSize = 40
+      font = Fonts.ussr_ils
+      text = "5"
+    }
+  }
+}
+
+local DistMarkPos = Computed(@() clamp((38 + (5000.0 - DistToTarget.value) / 5000.0 * 42), 38, 80).tointeger())
+local ASPCCIPDistanceMark = @() {
+  watch = DistMarkPos
+  size = [pw(3), ph(2)]
+  pos = [pw(27), ph(DistMarkPos.value)]
+  children = {
+    rendObj = ROBJ_VECTOR_CANVAS
+    lineWidth = baseLineWidth * 0.8
+    size = flex()
+    color = IlsColor.value
+    commands = [
+      [VECTOR_LINE, 0, 0, 40, -100],
+      [VECTOR_LINE, 0, 0, 40, 100],
+      [VECTOR_LINE, 40, -100, 40, -50],
+      [VECTOR_LINE, 40, -50, 100, -50],
+      [VECTOR_LINE, 40, 100, 40, 50],
+      [VECTOR_LINE, 40, 50, 100, 50],
+    ]
+  }
+}
+
+local function ASP23CCIP(width, height) {
+  return @() {
+    size = [width, height]
+    children = [
+      ASPTargetMark(width, height, false),
+      ASPCCIPDistanceGrid(),
+      ASPCCIPDistanceMark
+    ]
+  }
+}
+
+local function ASP23ModeSelector(width, height) {
+  return @() {
+    watch = [CCIPMode, state.IsRadarVisible]
+    size = [width, height]
+    children = [
+      basicASP23(width, height),
+      (state.IsRadarVisible.value && !CCIPMode.value ? ASP23LongRange(width, height) : ASPRoll),
+      (state.IsRadarVisible.value && !CCIPMode.value ? ASPTargetMark(width, height, true) : null),
+      (CCIPMode.value ? ASP23CCIP(width, height) : null)
+    ]
+  }
+}
+
+local function createTargetDistJ7E(index) {
+  local target = state.targets[index]
+  local distanceRel = state.HasDistanceScale.value ? target.distanceRel : 0.9
+
+  local angleRel = state.HasAzimuthScale.value ? target.azimuthRel : 0.5
+  local angularWidthRel = state.HasAzimuthScale.value ? target.azimuthWidthRel : 1.0
+  local angleLeft = angleRel - 0.15 * angularWidthRel
+  local angleRight = angleRel + 0.15 * angularWidthRel
+
+  return {
+    rendObj = ROBJ_VECTOR_CANVAS
+    size = flex()
+    lineWidth = baseLineWidth * 0.6
+    color = IlsColor.value
+    commands = !RadarTargetPosValid.value ? [
+      [VECTOR_LINE, 100 * angleLeft, 100 * (1 - distanceRel), 100 * angleRight, 100 * (1 - distanceRel)],
+      [VECTOR_LINE, 100 * angleLeft, 100 * (1 - distanceRel), 100 * angleRel, 100 * (1 - distanceRel) + 5],
+      [VECTOR_LINE, 100 * angleRight, 100 * (1 - distanceRel), 100 * angleRel, 100 * (1 - distanceRel) + 5],
+      (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleLeft - 2, 100 * (1 - distanceRel) - 2, 100 * angleLeft - 2, 100 * (1 - distanceRel) + 7] : []),
+      (target.isDetected || target.isSelected ? [VECTOR_LINE, 100 * angleRight + 2, 100 * (1 - distanceRel) - 2, 100 * angleRight + 2, 100 * (1 - distanceRel) + 7] : [])
+    ] : [
+      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 5 + angularWidthRel * 50, 100 * (1 - distanceRel)],
+      [VECTOR_LINE, 5, 100 * (1 - distanceRel), 5 + angularWidthRel * 25, 100 * (1 - distanceRel) + 5],
+      [VECTOR_LINE, 5 + angularWidthRel * 50, 100 * (1 - distanceRel), 5 + angularWidthRel * 25, 100 * (1 - distanceRel) + 5]
+    ]
+  }
+}
+
+local function J7ERadar(width, height) {
+  return @() {
+    size = [width * 0.7, height * 0.4]
+    pos = [width * 0.15, height * 0.3]
+    children = [
+      ASPRadarMode,
+      targetsComponent(createTargetDistJ7E),
+      ASPLaunchPermitted(false, 20),
+      ASPAzimuthMark,
+      ASPRadarDist(false, -10)
+    ]
+  }
+}
+
+local function J7EAdditionalHud(width, height) {
+  return @() {
+    size = [width, height]
+    children = [
+      J7ERadar(width, height),
+      (state.IsRadarVisible.value ? ASPTargetMark(width, height, true) : null),
+      ASPTargetMark(width, height, false, true)
+    ]
+  }
+}
+
 local function planeIls(width, height) {
   return @() {
     watch = [BombingMode, CCIPMode, TrackerVisible]
@@ -1307,7 +1787,10 @@ local function planeIls(width, height) {
       (ilsSetting.value.is410SUM1Ils && TrackerVisible.value ? SumAAMMode(width, height) : null),
       (ilsSetting.value.is410SUM1Ils && BombingMode.value ? SumBombingSight(width, height) : null),
       (ilsSetting.value.is410SUM1Ils && !BombingMode.value && !CCIPMode.value ? SUMGunReticle(width, height) : null),
-      (ilsSetting.value.isLCOSS ? LCOSS(width, height) : null)
+      (ilsSetting.value.isLCOSS ? LCOSS(width, height) : null),
+      (ilsSetting.value.isASP23 ? ASP23ModeSelector(width, height) : null),
+      (ilsSetting.value.haveJ7ERadar && (!BombingMode.value || !ilsSetting.value.haveAVQ7Bombing) &&
+       (!CCIPMode.value || !ilsSetting.value.haveAVQ7CCIP) ? J7EAdditionalHud(width, height) : null)
     ]
   }
 }

@@ -5,9 +5,8 @@ root {
   frame {
     id:t='wnd_frame'
     size:t='1@maxWindowWidth $min (<<countriesTotal>>*320@sf/@pf +1@scrollBarSize), 1@maxWindowHeightNoSrh'
-    pos:t='pw/2-w/2, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
-    position:t='absolute'
     class:t='wnd'
+    isCenteredUnderLogo:t='yes'
 
     frame_header {
       activeText { id:t='wnd_title'; caption:t='yes'; text:t='<<windowTitle>>' }

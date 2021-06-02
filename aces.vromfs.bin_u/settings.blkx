@@ -125,7 +125,9 @@
       "dlssQuality": -1,
       "perfMetrics": 1,
       "latencyFlash": false,
-      "latency": 0
+      "latency": 0,
+      "vreye": "left",
+      "vrStreamerMode": false
     },
     "texStreaming": {
       "enableStreaming": false,
@@ -251,7 +253,8 @@
       "multithreaded": false
     },
     "gameplay": {
-      "multipointVisibilityAgainstTrees": false
+      "multipointVisibilityAgainstTrees": false,
+      "enableVR": false
     },
     "export": {
       "__allow_all_params": true
@@ -674,13 +677,13 @@
     }
   ],
   "dlData": {
-    "timeoutSec": 120
+    "timeoutSec": 500
   },
   "ugc": {
     "enabled": true
   },
   "unitedVdata.dynModel": {
-    "use": false,
+    "use": true,
     "canRebuild": false,
     "ps4": {
       "IB": 68000,
@@ -749,5 +752,12 @@
       "VB1": 65536,
       "VB2": 0
     }
+  },
+  "terraform": {
+    "enabled": false,
+    "width": 32768,
+    "height": 32768,
+    "minLevel": -2.0,
+    "maxLevel": 1.5
   }
 }

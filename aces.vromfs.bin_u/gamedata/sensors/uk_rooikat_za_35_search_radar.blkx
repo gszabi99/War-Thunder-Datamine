@@ -1,0 +1,239 @@
+{
+  "type": "radar",
+  "transivers": {
+    "search": {
+      "power": 100.0,
+      "band": 4,
+      "rcs": 3.0,
+      "range": 12000.0,
+      "rangeMax": 12000.0,
+      "antenna": {
+        "angleHalfSens": 5.0,
+        "sideLobesSensitivity": -30.0
+      }
+    }
+  },
+  "scanPatterns": {
+    "search": {
+      "type": "pyramide",
+      "azimuthLimits": [-180.0,180.0],
+      "elevationLimits": [0.0,45.0],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 10.0,
+      "rollStabLimit": 10.0,
+      "period": 1.0,
+      "width": 22.5,
+      "barHeight": 4.0,
+      "barsCount": 90,
+      "rowMajor": false
+    }
+  },
+  "signals": {
+    "search": {
+      "groundClutter": false,
+      "friendFoeId": true,
+      "absDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 300.0,
+        "maxValue": 12000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 10.0,
+        "maxValue": 1000.0,
+        "signalWidthMin": 5.0,
+        "width": 0.0
+      }
+    }
+  },
+  "scopeRanges": {
+    "range1": 12000.0
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setSignal": {
+            "signal": "search"
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 22.5
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [-5.0,5.0],
+            "distanceRange": [0.0,6000.0]
+          }
+        },
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
+          },
+          "setEnabled": {
+            "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "clearTargets": []
+        },
+        "setSearchMode": {
+          "setModeName": {
+            "name": "search"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "clearTargets": [],
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
+          "setScanPattern": {
+            "scanPattern": "search"
+          },
+          "setScanDirectionPhase": {
+            "azimuth": -180.0,
+            "elevation": 0.0
+          }
+        },
+        "resetSearchMode": {
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": [],
+            "setStandbyMode": []
+          }
+        },
+        "switchOn": {
+          "stateFrom": "standby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "search",
+          "actions": {
+            "setSearchMode": []
+          }
+        },
+        "switchScanPattern": [
+          {
+            "stateFrom": "standby"
+          },
+          {
+            "stateFrom": "search"
+          },
+          {
+            "command": "scanPatternSwitch"
+          },
+          {
+            "actions": {
+              "setNextScanPattern": []
+            }
+          }
+        ],
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": []
+          }
+        },
+        "switchingOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "antennaParking",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": true
+            }
+          }
+        },
+        "switchOff": {
+          "stateFrom": "antennaParking",
+          "event": "inScanDirectionPhase",
+          "stateTo": "standby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            },
+            "setScanPattern": {
+              "scanPattern": "search"
+            },
+            "setScanDirectionPhase": {
+              "azimuth": -180.0,
+              "elevation": 0.0
+            },
+            "setStandbyMode": []
+          }
+        }
+      }
+    },
+    "search": {
+      "stateInit": "search",
+      "transitions": {
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": []
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "detectTarget": []
+          }
+        },
+        "addTarget": {
+          "event": "targetDetected",
+          "actions": {
+            "addTarget": []
+          }
+        }
+      }
+    },
+    "parkAntenna": {
+      "stateInit": "init",
+      "transitions": {
+        "checkAntennaParked": {
+          "event": "update",
+          "actions": {
+            "checkInScanDirectionPhase": {
+              "azimuth": -180.0,
+              "elevation": 0.0
+            }
+          }
+        }
+      }
+    }
+  }
+}

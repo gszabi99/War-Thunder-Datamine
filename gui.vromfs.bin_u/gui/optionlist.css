@@ -70,7 +70,8 @@ optionlist_container[type=mpstatistics][hasMissionResultPadding=yes] {
 }
 
 optionlist_container[type=artillerymap] {
-  height:@rh - 30%sh;
+  pos:50%pw-50%w, 1@minYposWindow + 2@fontHeightBigBold;
+  height:0.7@rh;
 }
 
 
@@ -81,9 +82,10 @@ optionlist_container[type=artillerymap] {
 }
 
 optionlist_container[type=respawn] {
-  pos:50%pw-50%w, 50%ph-50%h +0.08@scrn_tgt -1@bottomBarHeight;
-  height: 1@rh -0.08@scrn_tgt -(1@bottomBarHeight+3*@sf/@pf_outdated);
+  pos:50%pw-50%w, 1@bh + 1@multiplayerScoreHeightWithOffset;
+  height: 1@rh -0.08@scrn_tgt -(1@bottomMenuPanelHeight+1@blockInterval);
   max-height:1@respawnOptListContainerWidth -3@modCellWidth +1@slotbarHeight;
+  background-color:@transparent;
 }
 
 optionsBox {

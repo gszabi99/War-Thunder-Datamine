@@ -43,12 +43,14 @@
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
     "bulletType": "sapcbc_tank",
     "slopeEffectPreset": "apc",
     "fresnel": [0.23,0.1,2.0],
-    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "130mm_pb_46a",
     "relativeVelHitShift": [300.0,1000.0],
     "fuseDelayDist": 1.2,
@@ -61,16 +63,16 @@
     "explosionPatchRadius": 2.8,
     "stabilityRicochetModifier": [
       {
-        "mod1": [0.0,0.05]
+        "mod1": [0.0,0.2]
       },
       {
-        "mod2": [20.0,0.1]
+        "mod2": [20.0,0.4]
       },
       {
-        "mod3": [30.0,0.2]
+        "mod3": [30.0,0.6]
       },
       {
-        "mod3": [45.0,0.3]
+        "mod3": [45.0,0.9]
       }
     ],
     "hitpower": {
@@ -86,6 +88,9 @@
         "demarreMassPow": 0.71,
         "demarreCaliberPow": 1.07
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
@@ -111,6 +116,9 @@
       },
       "roadSoil": {
         "fx": "hit_106_132mm_dirt_ap"
+      },
+      "bricks_red": {
+        "fx": "hit_106_132mm_stone_ap"
       },
       "sand": {
         "fx": "hit_106_132mm_sand_ap"
@@ -184,10 +192,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.4,
-      "stabilityCaliberToArmorThreshold": 10.0,
-      "stabilityReductionAfterRicochet": 0.45,
-      "stabilityReductionAfterPenetration": 1.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "he_frag_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
@@ -205,8 +213,8 @@
       "explosionPatchRadius": 3.5,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -333,6 +341,9 @@
         },
         "roadSoil": {
           "fx": "hit_106_132mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_106_132mm_stone_he"
         },
         "sand": {
           "fx": "hit_106_132mm_sand_he"

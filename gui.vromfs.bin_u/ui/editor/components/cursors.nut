@@ -66,7 +66,16 @@ local function mkPcCursor(children){
 
 cursors.normal <- ::Cursor(@() mkPcCursor([tooltipCmp]))
 
-local helpSign = {rendObj = ROBJ_STEXT text = "?" fontSize = ::hdpx(20) vplace = ALIGN_CENTER fontFx = FFT_GLOW fontFxFactor=48 fontFxColor = colorBack, pos = [::hdpx(25), ::hdpx(10)]}
+local helpSign = {
+  rendObj = ROBJ_STEXT
+  text = "?"
+  fontSize = ::hdpx(20)
+  vplace = ALIGN_CENTER
+  fontFx = FFT_GLOW
+  fontFxFactor=48
+  fontFxColor = colorBack
+  pos = [::hdpx(25), ::hdpx(10)]
+}
 
 cursors.help <- ::Cursor(function(){
   return mkPcCursor([

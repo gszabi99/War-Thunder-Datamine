@@ -1,5 +1,4 @@
 local { chatStatesCanUseVoice } = require("scripts/chat/chatStates.nut")
-local { isMultifuncMenuAvailable } = require("scripts/wheelmenu/multifuncmenuShared.nut")
 local { isPlatformSony } = require("scripts/clientState/platform.nut")
 
 return [
@@ -24,7 +23,6 @@ return [
     checkGroup = ctrlGroups.COMMON
     checkAssign = ::is_platform_pc
     needShowInHelp = true
-    showFunc = isMultifuncMenuAvailable
   }
   {
     id = "ID_BAILOUT"

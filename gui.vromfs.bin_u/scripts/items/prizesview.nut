@@ -987,7 +987,8 @@ PrizesView.getViewDataMod <- function getViewDataMod(unitName, modName, params)
     icon = icon
     icon2 = ::get_unit_country_icon(unit)
     title = ::colorize("activeTextColor", ::getUnitName(unitName, true)) + ::loc("ui/colon")
-          + ::colorize("userlogColoredText", getModificationName(unit, modName))
+      + ::colorize("userlogColoredText",
+        getModificationName(unit, modName))
     tooltipId = MODIFICATION.getTooltipId(unitName, modName)
   }
 }

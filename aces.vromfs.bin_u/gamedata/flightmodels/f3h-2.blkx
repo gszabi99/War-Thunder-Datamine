@@ -48,9 +48,6 @@
       },
       "armor3_dm": {
         "hp": 40.0
-      },
-      "armor1_dm": {
-        "hp": 40.0
       }
     },
     "armor6_35": {
@@ -179,6 +176,11 @@
     "dural5": {
       "radar_dm": {
         "hp": 35.0
+      }
+    },
+    "glass60": {
+      "armor1_dm": {
+        "hp": 100.0
       }
     },
     "protected_controls": {
@@ -2171,7 +2173,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2180,7 +2185,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2417,6 +2425,12 @@
       "preset": {
         "name": "f3h-2_default",
         "blk": "gameData/FlightModels/weaponPresets/f3h-2_default.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "f3h-2_default_aim_9b",
+        "blk": "gameData/flightModels/weaponPresets/f3h-2_default_aim_9b.blk"
       }
     },
     {
@@ -2956,6 +2970,189 @@
           "reqModification": "us_aim_9b"
         }
       ]
+    },
+    {
+      "preset": {
+        "name": "f3h-2_aim_7c",
+        "blk": "gameData/flightModels/weaponPresets/f3h-2_aim_7c.blk",
+        "reqModification": "us_aim_7c"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "f3h-2_aim_7c_aim9b"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f3h-2_aim_7c_aim9b.blk"
+        },
+        {
+          "reqModification": "us_aim_7c"
+        },
+        {
+          "reqModification": "us_aim_9b"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f3h-2_bomb_mk83_aim7c"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f3h-2_bomb_mk83_aim7c.blk"
+        },
+        {
+          "reqModification": "us_1000lb_mk83"
+        },
+        {
+          "reqModification": "us_aim_7c"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "bombs_large"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim7c_sparrow.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 4
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 8
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f3h-2_bomb_m118_aim7c"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f3h-2_bomb_m118_aim7c.blk"
+        },
+        {
+          "reqModification": "us_3000lb_mk118"
+        },
+        {
+          "reqModification": "us_aim_7c"
+        },
+        {
+          "weaponConfig": [
+            {
+              "Weapon": {
+                "blk": "gameData/Weapons/BombGuns/us_3000lb_m118.blk",
+                "amountPerTier": 1.0,
+                "iconType": "bombs_heavy",
+                "tier": {
+                  "idx": 6
+                }
+              }
+            },
+            {
+              "Weapon": [
+                {
+                  "blk": "gameData/Weapons/rocketGuns/us_aim7c_sparrow.blk"
+                },
+                {
+                  "amountPerTier": 1.0
+                },
+                {
+                  "iconType": "missile_air_to_air_special"
+                },
+                {
+                  "tier": {
+                    "idx": 5
+                  }
+                },
+                {
+                  "tier": {
+                    "idx": 7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f3h-2_aero_6_aim7c"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f3h-2_aero_6_aim7c.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_aero_6a"
+        },
+        {
+          "reqModification": "us_aim_7c"
+        },
+        {
+          "weaponConfig": {
+            "Weapon": {
+              "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse.blk",
+              "amountPerTier": 7.0,
+              "iconType": "nar_ap_small"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "f3h-2_aero_7_aim7c"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/f3h-2_aero_7_aim7c.blk"
+        },
+        {
+          "reqModification": "us_2_75_in_ffar_aero_7d"
+        },
+        {
+          "reqModification": "us_aim_7c"
+        }
+      ]
     }
   ],
   "jetwash": {
@@ -3111,16 +3308,21 @@
       "tier": 3
     },
     "us_2_75_in_ffar_aero_6a": {
-      "tier": 2,
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_2_75_in_ffar_aero_7d": {
       "reqModification": "us_2_75_in_ffar_aero_6a",
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon"
     },
     "us_aim_9b": {
       "reqModification": "us_2_75_in_ffar_aero_7d",
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_7c": {
+      "reqModification": "us_aim_9b",
       "tier": 4,
       "modClass": "weapon"
     },

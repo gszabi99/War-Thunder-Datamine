@@ -40,7 +40,12 @@ enums.addTypes(buttons, {
   CONTROLS = {
     idx = idx++
     name = "Controls"
-    isAvailableInMission = @() ::get_game_mode() != ::GM_BENCHMARK
+    isAvailableInMission = @() ::get_game_mode() != ::GM_BENCHMARK && ::has_feature("ControlsAdvancedSettings")
+  }
+  STATS = {
+    idx = idx++
+    name = "Stats"
+    isAvailableInMission = @() ::is_multiplayer()
   }
   CONTROLS_HELP = {
     idx = idx++

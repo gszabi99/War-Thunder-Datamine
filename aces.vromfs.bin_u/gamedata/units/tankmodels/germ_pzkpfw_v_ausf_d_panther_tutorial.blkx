@@ -897,7 +897,16 @@
       "tracks": {
         "animationMultiplier": 0.68,
         "width": 0.66,
-        "height": 0.04
+        "height": 0.1,
+        "tracksTensionK": [6.0,8.0,1.5],
+        "trackMesh": "ger_kgs64_660_150_phys_track_line",
+        "trackLen": 0.15,
+        "trackCount": 87,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.1,
+        "trackMaxHeight": 1.35,
+        "trackStartOffset": 0.14
       },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
@@ -954,7 +963,11 @@
         "frontBackGearRadius": 0.32,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.399,
+        "wheel_l_drive": 0.399,
+        "wheel_r_back": 0.312,
+        "wheel_l_back": 0.312
       }
     }
   },
@@ -2470,8 +2483,17 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,

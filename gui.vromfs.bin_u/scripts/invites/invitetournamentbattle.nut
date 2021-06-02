@@ -3,6 +3,7 @@ local { getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 local { checkAndShowMultiplayerPrivilegeWarning,
         isMultiplayerPrivilegeAvailable } = require("scripts/user/xboxFeatures.nut")
+local { saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 
 class ::g_invites_classes.TournamentBattle extends ::BaseInvite
 {
@@ -90,7 +91,7 @@ class ::g_invites_classes.TournamentBattle extends ::BaseInvite
     if (needSave)
     {
       ::dagor.debug("Invites: Tournament: invite - needSave")
-      ::save_online_job()
+      saveOnlineJob()
     }
   }
 

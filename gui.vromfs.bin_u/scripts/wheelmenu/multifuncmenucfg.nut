@@ -27,12 +27,12 @@ local hasCCIPSightMode = ::memoize(@(unitId) vehicleModel.hasCCIPSightMode())
 local hasCCRPSightMode = ::memoize(@(unitId) vehicleModel.hasCCRPSightMode())
 local hasBallisticComputer = ::memoize(@(unitId) vehicleModel.hasBallisticComputer())
 local hasLaserDesignator = ::memoize(@(unitId) vehicleModel.hasLaserDesignator())
-local hasNightVision = ::memoize(@(unitId) vehicleModel.hasNightVision())
+local hasNightVision = memoizeByMission(@(unitId) vehicleModel.hasNightVision())
 local hasInfraredProjector = ::memoize(@(unitId) vehicleModel.hasInfraredProjector())
 local canUseRangefinder = memoizeByMission(@(unitId) vehicleModel.canUseRangefinder())
 local canUseTargetTracking = memoizeByMission(@(unitId) vehicleModel.canUseTargetTracking())
 local hasMissileLaunchWarningSystem = ::memoize(@(unitId) vehicleModel.hasMissileLaunchWarningSystem())
-local getCockpitDisplaysCount = ::memoize(@(unitId) vehicleModel.getCockpitDisplaysCount())
+local getDisplaysWithTogglablePagesBitMask = ::memoize(@(unitId) vehicleModel.getDisplaysWithTogglablePagesBitMask())
 
 local hasAiGunners = memoizeByMission(@(unitId) vehicleModel.hasAiGunners())
 local hasGunStabilizer = ::memoize(@(unitId) vehicleModel.hasGunStabilizer())
@@ -106,7 +106,7 @@ local cfg = {
       { section = "camera_air" }
       { section = "engine_air" }
       { section = "cockpit" }
-      null // TODO: { section = "displays" }
+      { section = "displays" }
       voiceMessagesMenuFunc
     ]
   },
@@ -168,7 +168,7 @@ local cfg = {
   },
 
   ["radar"] = {
-    title = "radar"
+    title = "hotkeys/ID_SENSORS_HEADER"
     enable = ::memoize(function(unitId) {
       local unitBlk = ::get_full_unit_blk(unitId)
       if (unitBlk?.sensors)
@@ -186,8 +186,12 @@ local cfg = {
           "ID_SENSOR_TARGET_SWITCH_TANK", "ID_SENSOR_TARGET_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_TARGET_LOCK", "ID_SENSOR_TARGET_LOCK_HELICOPTER",
           "ID_SENSOR_TARGET_LOCK_TANK", "ID_SENSOR_TARGET_LOCK_SHIP" ] }
+      { shortcut = [ "ID_SENSOR_TYPE_SWITCH", "ID_SENSOR_TYPE_SWITCH_HELICOPTER",
+          "ID_SENSOR_TYPE_SWITCH_TANK", "ID_SENSOR_TYPE_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_MODE_SWITCH", "ID_SENSOR_MODE_SWITCH_HELICOPTER",
           "ID_SENSOR_MODE_SWITCH_TANK", "ID_SENSOR_MODE_SWITCH_SHIP" ] }
+      { shortcut = [ "ID_SENSOR_ACM_SWITCH", "ID_SENSOR_ACM_SWITCH_HELICOPTER",
+          "ID_SENSOR_ACM_SWITCH_TANK", "ID_SENSOR_ACM_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_SCAN_PATTERN_SWITCH", "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER",
           "ID_SENSOR_SCAN_PATTERN_SWITCH_TANK", "ID_SENSOR_SCAN_PATTERN_SWITCH_SHIP" ] }
       { shortcut = [ "ID_SENSOR_RANGE_SWITCH", "ID_SENSOR_RANGE_SWITCH_HELICOPTER",
@@ -448,10 +452,14 @@ local cfg = {
   ["displays"] = {
     title = "hotkeys/ID_MFD_AND_NVD_DISPLAYS_HEADER"
     items = [
-      { shortcut = [ "ID_MFD_1_PAGE" ], enable = @(unitId) getCockpitDisplaysCount(unitId) >= 1 }
-      { shortcut = [ "ID_MFD_2_PAGE" ], enable = @(unitId) getCockpitDisplaysCount(unitId) >= 2 }
-      { shortcut = [ "ID_MFD_3_PAGE" ], enable = @(unitId) getCockpitDisplaysCount(unitId) >= 3 }
-      { shortcut = [ "ID_MFD_ZOOM" ],   enable = @(unitId) getCockpitDisplaysCount(unitId) >  0 }
+      { shortcut = [ "ID_MFD_1_PAGE_PLANE", "ID_MFD_1_PAGE" ],
+        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 0) }
+      { shortcut = [ "ID_MFD_2_PAGE_PLANE", "ID_MFD_2_PAGE" ],
+        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 1) }
+      { shortcut = [ "ID_MFD_3_PAGE_PLANE", "ID_MFD_3_PAGE" ],
+        enable = @(unitId) is_bit_set(getDisplaysWithTogglablePagesBitMask(unitId), 2) }
+      { shortcut = [ "ID_MFD_ZOOM_PLANE", "ID_MFD_ZOOM" ],
+        enable = @(unitId) getDisplaysWithTogglablePagesBitMask(unitId) != 0 }
       { shortcut = [ "ID_HELI_GUNNER_NIGHT_VISION" ],  enable = hasNightVision }
       { shortcut = [ "ID_THERMAL_WHITE_IS_HOT_HELI" ], enable = hasNightVision }
       null

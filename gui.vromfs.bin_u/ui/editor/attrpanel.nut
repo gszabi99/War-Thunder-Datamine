@@ -88,6 +88,7 @@ local mkCompNameText = @(comp_name_text, group=null) {
 }
 
 local toggleBg = makeBgToggle()
+
 local function panelCompRow(params={}) {
   local comp_name_ext = params?.comp_name_ext
   local comp_flags = params?.comp_flags ?? 0
@@ -195,10 +196,20 @@ local function isKeyInFilter(key, filterStr=null){
 local rightArrow = {rendObj = ROBJ_DTEXT text = "^" transform = {rotate=90}}
 local downArrow = {rendObj = ROBJ_DTEXT text = "^" transform = {rotate=180}}
 local mkTagFromTextColor = @(text, fillColor = Color(100,100,100), size = SIZE_TO_CONTENT, textColor = Color(0,0,0)) {
-  rendObj = ROBJ_BOX borderWidth = 0 borderRadius = hdpx(4) fillColor = fillColor padding=[0,hdpx(1)]
-  size = size
-  vplace =ALIGN_CENTER
-  children = {rendObj = ROBJ_STEXT text = text fontSize = hdpx(10), color =textColor size=size}
+  rendObj = ROBJ_BOX
+  size
+  borderWidth = 0
+  borderRadius = hdpx(4)
+  fillColor
+  padding = [0,hdpx(1)]
+  vplace = ALIGN_CENTER
+  children = {
+    rendObj = ROBJ_DTEXT
+    size
+    text
+    fontSize = hdpx(10)
+    color = textColor
+  }
 }
 
 local mkTagFromText = @(text) mkTagFromTextColor(text)
@@ -276,6 +287,7 @@ local mkFlagTags = @(eid, rawComponentName)
 mkCompObject = function(eid, rawComponentName, rawObject, caption=null, onChange = null, path = null){
   local isFirst = caption==null
   caption = caption ?? rawComponentName
+  isFirst = isFirst || rawComponentName==caption
   onChange = onChange ?? (@() ::ecs.update_component(eid, rawComponentName) ?? true)
   local object = getValFromObj(rawObject, path)
   local objData = object?.getAll() ?? object
@@ -320,7 +332,7 @@ local compTypeName = function(object){
 }
 
 mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=null, path = null){
-  local isFirst = caption != null //FIXME
+  local isFirst = caption == null
   caption = caption ?? rawComponentName
   onChange = onChange ?? (@() ::ecs.update_component(eid, rawComponentName) ?? true)
   local object = getValFromObj(rawObject, path)

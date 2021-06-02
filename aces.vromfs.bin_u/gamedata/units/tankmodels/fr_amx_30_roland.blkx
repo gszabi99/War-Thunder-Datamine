@@ -348,7 +348,13 @@
         "createSecondaryShatters": false,
         "hidableInViewer": true,
         "turret_03_back_dm": [],
-        "ex_armor_03_dm": []
+        "ex_armor_03_dm": [],
+        "ex_armor_r_04_dm": [],
+        "ex_armor_l_04_dm": [],
+        "ex_decor_l_05_dm": [],
+        "ex_decor_r_05_dm": [],
+        "ex_decor_l_01_dm": [],
+        "ex_decor_r_01_dm": []
       },
       "sensor": {
         "armorClass": "tank_structural_steel",
@@ -429,6 +435,7 @@
         "wheel_l_top_03_dm": [],
         "wheel_l_top_04_dm": [],
         "wheel_l_top_05_dm": [],
+        "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
           "armorThickness": 20.0,
@@ -455,6 +462,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -803,7 +811,21 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
+    }
+  },
+  {
+    "attachables": {
+      "ex_armor_01_dm": true,
+      "ex_armor_02_dm": true
     }
   },
   {
@@ -811,12 +833,11 @@
       "EngineName": "engine_chieftain",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
+      "TrackSoundName": "tracks_mbt",
+      "TrackSoundNameCockpit": "tracks_mbt_interior",
       "turret_turn": "turret_turn_servo",
       "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle",
-      "gun_turn": "turret_turn_mg_light"
+      "TrackSoundNameAi": "tracks_ai_mbt"
     }
   },
   {
@@ -2383,16 +2404,17 @@
         "autoLoader": true,
         "speedYaw": 85.0,
         "speedPitch": 40.0,
-        "fireConeAngle": 1.0,
         "bullets": 10,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
+        "DelayAfterShoot": 2.0,
+        "fireConeAngle": 1.0,
+        "targetAngularRateMax": 5.0,
+        "AttackMaxDistance": 10000.0,
+        "AttackMaxRadius": 10000.0,
+        "AttackMaxHeight": 4000.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
         "errMeasureVelFwdShift": 0.0,
@@ -3180,16 +3202,17 @@
                 "autoLoader": true,
                 "speedYaw": 85.0,
                 "speedPitch": 40.0,
-                "fireConeAngle": 1.0,
                 "bullets": 10,
                 "salvoAmount": 100.0,
                 "ChainfireTime": 0.0,
-                "DelayAfterShoot": 5.0,
-                "AttackMaxDistance": 1000.0,
-                "AttackMaxRadius": 1000.0,
-                "AttackMaxHeight": 1000.0,
-                "accuracyAir": 0.0,
-                "accuracyGnd": 1.5,
+                "DelayAfterShoot": 2.0,
+                "fireConeAngle": 1.0,
+                "targetAngularRateMax": 5.0,
+                "AttackMaxDistance": 10000.0,
+                "AttackMaxRadius": 10000.0,
+                "AttackMaxHeight": 4000.0,
+                "accuracyAir": 1.5,
+                "accuracyGnd": 0.0,
                 "errMeasureVel": 0.0,
                 "errMeasureVelFast": 0.0,
                 "errMeasureVelFwdShift": 0.0,

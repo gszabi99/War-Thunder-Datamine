@@ -19,8 +19,8 @@
   "scanPatterns": {
     "searchMinBars": {
       "type": "pyramide",
-      "azimuthLimits": [-80.0,80.0],
-      "elevationLimits": [-20.0,40.0],
+      "azimuthLimits": [-90.0,90.0],
+      "elevationLimits": [-30.0,50.0],
       "rollStabLimit": 45.0,
       "period": 1.0,
       "width": 75.0,
@@ -31,8 +31,8 @@
     },
     "searchMidBars": {
       "type": "pyramide",
-      "azimuthLimits": [-80.0,80.0],
-      "elevationLimits": [-20.0,40.0],
+      "azimuthLimits": [-90.0,90.0],
+      "elevationLimits": [-30.0,50.0],
       "rollStabLimit": 45.0,
       "period": 2.0,
       "width": 75.0,
@@ -210,6 +210,10 @@
           "event": "targetInSight",
           "actions": {
             "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "continuousScale",
               "width": 0.0
             },

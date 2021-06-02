@@ -68,7 +68,8 @@
     },
     "boron_carbide20": {
       "armor1_dm": {
-        "hp": 40.0
+        "hp": 40.0,
+        "armorEffectiveThicknessMax": 10.0
       }
     },
     "c_dural10": {
@@ -340,7 +341,20 @@
         {
           "onHit": {
             "damage": 100.0,
+            "tail_dm": 0.9
+          }
+        },
+        {
+          "onHit": {
+            "damage": 200.0,
             "tail_dm": 1.0
+          }
+        },
+        {
+          "onHit": {
+            "damage": 300.0,
+            "tail_dm": 1.0,
+            "expl": 1.0
           }
         },
         {
@@ -401,7 +415,22 @@
         {
           "onKill": {
             "damage": 100.0,
-            "tail_dm": 1.0
+            "tail_dm": 1.0,
+            "expl": 0.5
+          }
+        },
+        {
+          "onKill": {
+            "damage": 200.0,
+            "tail_dm": 1.0,
+            "expl": 0.5
+          }
+        },
+        {
+          "onKill": {
+            "damage": 300.0,
+            "tail_dm": 1.0,
+            "expl": 1.0
           }
         }
       ]
@@ -642,59 +671,65 @@
         },
         {
           "onHit": {
-            "damage": 30.0,
+            "damage": 50.0,
             "cut": 0.25
           }
         },
         {
           "onHit": {
-            "damage": 50.0,
+            "damage": 70.0,
             "cut": 0.5
           }
         },
         {
           "onHit": {
-            "damage": 65.0,
+            "damage": 100.0,
+            "cut": 0.75
+          }
+        },
+        {
+          "onHit": {
+            "damage": 200.0,
+            "cut": 0.8
+          }
+        },
+        {
+          "onHit": {
+            "damage": 300.0,
             "cut": 1.0
           }
         },
         {
           "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 19.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 10.0,
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
             "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 7.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 70.0,
             "cut": 1.0,
             "nothing": 3.0
           }
         },
         {
           "onKill": {
-            "damage": 50.0,
+            "damage": 100.0,
             "cut": 1.0,
-            "nothing": 2.0
+            "nothing": 1.0
           }
         },
         {
           "onKill": {
-            "damage": 65.0,
+            "damage": 140.0,
             "cut": 1.0
           }
         }
@@ -1224,7 +1259,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1233,7 +1271,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {

@@ -290,7 +290,7 @@
                   "size": "pw, fh",
                   "flow": "horizontal",
                   "tdiv": {
-                    "size": "pw-2@slot_width-2.5@debrPad-1@scrollBarSize, ph",
+                    "size": "fw, ph",
                     "flow": "vertical",
                     "debrBlock": [
                       {
@@ -498,6 +498,9 @@
                             "size": "2@debriefingUnlockIconSize+1@debrPad, ph"
                           },
                           {
+                            "margin-right": "@debrBigGap"
+                          },
+                          {
                             "flow": "vertical"
                           },
                           {
@@ -619,9 +622,6 @@
                             "flow": "vertical"
                           },
                           {
-                            "padding-left": "1.5@debrPad"
-                          },
-                          {
                             "debrBlock": [
                               {
                                 "id": "pve_trophy_block"
@@ -630,7 +630,7 @@
                                 "size": "pw, 0.75@itemHeight"
                               },
                               {
-                                "padding": "1@debrPad, 1@debrPad, 0, 1@debrPad"
+                                "padding": "0, 1@debrPad"
                               },
                               {
                                 "display": "hide"
@@ -684,7 +684,7 @@
                             "debrBlock": {
                               "id": "no_awards_block",
                               "size": "pw, 0.12@scrn_tgt",
-                              "padding": "1@debrPad, 1@debrPad, 0, 1@debrPad",
+                              "padding": "0, 1@debrPad",
                               "display": "hide",
                               "tdiv": {
                                 "width": "pw",
@@ -734,7 +734,7 @@
                                 "tdiv": {
                                   "width": "pw",
                                   "min-height": "ph",
-                                  "margin": "1@debrPad, 1@debrPad, 0, 1@debrPad",
+                                  "margin": "0, 1@debrPad",
                                   "flow": "vertical",
                                   "table": {
                                     "id": "stat_table",
@@ -774,17 +774,17 @@
                   },
                   "debrBlock": {
                     "id": "right_block",
-                    "size": "2@slot_width+1@scrollBarSize, fh",
+                    "size": "2@slot_width+1@scrollBarSize, ph",
                     "pos": "0, 1@debrMyPlaceBlockOffset",
                     "position": "relative",
-                    "margin-left": "2.5@debrPad",
+                    "margin-left": "@debrBigGap",
                     "flow": "vertical",
+                    "display": "hide",
                     "debrBlock": {
                       "id": "battle_tasks_block",
                       "width": "pw",
                       "max-height": "0.5ph",
                       "margin-bottom": "1@debrPad",
-                      "background-color": "@frameDarkTransparentBgColor",
                       "flow": "vertical",
                       "tdiv": {
                         "size": "pw, 1@buttonHeight",
@@ -799,10 +799,11 @@
                       "listbox": {
                         "id": "current_battle_tasks",
                         "width": "pw",
-                        "margin-left": "1@debrPad",
+                        "padding-left": "1@debrPad",
                         "overflow-y": "auto",
                         "flow": "vertical",
-                        "scrollbarShortcuts": "left"
+                        "scrollbarShortcuts": "left",
+                        "background-color": "@frameDarkTransparentBgColor"
                       }
                     },
                     "tdiv": {

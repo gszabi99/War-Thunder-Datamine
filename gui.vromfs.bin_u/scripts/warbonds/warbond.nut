@@ -11,7 +11,6 @@ class ::Warbond
   isListValid = false
   awardsList = null
   levelsArray = null
-  visibleSeenIds = null
 
   expiredTime = -1 //time to which you can spend warbonds
   canEarnTime = -1 //time to which you can earn warbonds. (time to which isCurrent will be true)
@@ -74,7 +73,6 @@ class ::Warbond
 
     isListValid = true
     awardsList.clear()
-    visibleSeenIds = null
 
     local pBlk = ::get_price_blk()
     local config = get_blk_value_by_path(pBlk, blkListPath + "/shop")
@@ -266,14 +264,9 @@ class ::Warbond
     ::broadcastEvent("WarbondShopMarkSeenLevel")
   }
 
-  function getUnseenAwardIds()
-  {
-    if (!visibleSeenIds)
-      visibleSeenIds = ::u.map(
-        getAwardsList().filter(@(award) !award.isItemLocked()),
-        @(award) award.getSeenId())
-    return visibleSeenIds
-  }
+  getUnseenAwardIds = @() getAwardsList()
+    .filter(@(a) !a.isItemLocked())
+    .map(@(a) a.getSeenId())
 
   getSeenId = @() listId
 }

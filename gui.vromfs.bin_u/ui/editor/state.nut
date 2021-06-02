@@ -14,3 +14,4 @@ return {
   de4editMode = ::mkWatched(persist, "de4editMode", daEditor4?.getEditMode())
   extraPropPanelCtors = Watched([])
 }
+

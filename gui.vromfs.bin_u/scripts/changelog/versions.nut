@@ -10,8 +10,8 @@
 */
 
 return [
-   {version="2.5.0.00", type="major", title={
-    english="Update “Ixwa Strike”"
-    russian="Обновление «Удар копья»"
+  {version="2.7.0.00", type="major", title={
+    english="Update “Яed Skies”"
+    russian="Обновление «Красные небеса»"
   }}
 ]

@@ -1869,11 +1869,6 @@
         "AdvancedMass": true,
         "trackMass": 3300.0
       },
-      "tracks": {
-        "animationMultiplier": 0.68,
-        "width": 0.65,
-        "height": 0.06
-      },
       "collisionProps": {
         "cls_turret_01": "convex_hull",
         "cls_turret_02": "convex_hull",
@@ -1938,7 +1933,42 @@
         "frontBackGearRadius": 0.36,
         "defaultDampeningForce": [200000.0,200000.0],
         "dampeningRelaxationRatio": 0.4,
-        "dampeningCompressionRatio": 0.15
+        "dampeningCompressionRatio": 0.15,
+        "wheel_r_drive": 0.4,
+        "wheel_l_drive": 0.4,
+        "wheel_r_back": 0.36,
+        "wheel_l_back": 0.36,
+        "wheel_r_01": 0.405,
+        "wheel_r_02": 0.405,
+        "wheel_r_03": 0.405,
+        "wheel_r_04": 0.405,
+        "wheel_r_05": 0.405,
+        "wheel_r_06": 0.405,
+        "wheel_r_07": 0.405,
+        "wheel_r_08": 0.405,
+        "wheel_l_01": 0.405,
+        "wheel_l_02": 0.405,
+        "wheel_l_03": 0.405,
+        "wheel_l_04": 0.405,
+        "wheel_l_05": 0.405,
+        "wheel_l_06": 0.405,
+        "wheel_l_07": 0.405,
+        "wheel_l_08": 0.405
+      },
+      "tracks": {
+        "animationMultiplier": 0.68,
+        "width": 0.65,
+        "height": 0.1,
+        "tracksTensionK": [7.0,8.0,1.5],
+        "trackMesh": "ger_pzkpfw_vi_tiger_early_phys_track_line",
+        "nonSymmetricMesh": true,
+        "trackLen": 0.13,
+        "trackCount": 96,
+        "trackFadeTime": 0.5,
+        "trackCntPeriod": 2,
+        "trackMaxSinking": 0.05,
+        "trackMaxHeight": 1.25,
+        "trackStartOffset": 0.1
       }
     }
   },
@@ -2531,6 +2561,9 @@
         },
         "turret_02_side_dm": {
           "armorThickness": 30.0
+        },
+        "turret_04_top_dm": {
+          "armorThickness": 8.0
         }
       },
       "turret": {
@@ -2747,6 +2780,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -3094,6 +3128,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },

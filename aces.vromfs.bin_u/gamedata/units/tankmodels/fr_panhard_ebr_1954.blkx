@@ -261,9 +261,6 @@
         },
         "turret_04_bottom_dm": {
           "armorThickness": 5.0
-        },
-        "wheel_support_dm": {
-          "armorThickness": 5.0
         }
       },
       "turret_RHA": {
@@ -364,7 +361,7 @@
         "wheel_l_02_dm": [],
         "wheel_l_03_dm": [],
         "wheel_l_04_dm": [],
-        "ex_armor_03_dm": []
+        "wheel_support_dm": []
       },
       "body_shields": {
         "armorClass": "tank_structural_steel",
@@ -372,6 +369,8 @@
         "armorThickness": 4.0,
         "stopChanceOnDeadPart": 0.0,
         "createSecondaryShatters": false,
+        "ex_armor_03_dm": [],
+        "ex_armor_04_dm": [],
         "turret_03_side_dm": [],
         "turret_04_top_dm": [],
         "turret_05_top_dm": [],
@@ -754,6 +753,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -768,6 +775,12 @@
       "EngineNameAi": "engine_tank_ai_light",
       "TrackSoundNameAi": "tracks_ai_light",
       "gun_turn": "turret_turn_mg_light"
+    }
+  },
+  {
+    "attachables": {
+      "ex_decor_l_07_dm": true,
+      "ex_decor_r_07_dm": true
     }
   },
   {
@@ -2348,6 +2361,7 @@
           "sleevesLifeTime": 10.0,
           "sleeveImpulse": [5.0,0.0,0.0],
           "sleeveExtractSound": "shell_eject",
+          "linkSleeveToGun": true,
           "maxAdditionalPitch": 0.0,
           "defaultYaw": 0.0,
           "defaultPitch": 0.0,
@@ -3422,6 +3436,7 @@
                 "sleevesLifeTime": 10.0,
                 "sleeveImpulse": [5.0,0.0,0.0],
                 "sleeveExtractSound": "shell_eject",
+                "linkSleeveToGun": true,
                 "maxAdditionalPitch": 0.0,
                 "defaultYaw": 0.0,
                 "defaultPitch": 0.0,

@@ -512,6 +512,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -845,6 +846,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -1980,10 +1989,17 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2566,6 +2582,7 @@
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel",
             "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "rotatedTurret": "bone_turret",
             "linkedAnimPart": {
               "verNode": "bone_gun_roller_02",
@@ -2639,6 +2656,7 @@
             "head": "bone_gun_roller_02",
             "gun": "bone_gun_roller_02",
             "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "rotatedTurret": "bone_turret"
           },
           "limits": {
@@ -2720,7 +2738,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -2735,7 +2753,7 @@
           "turret": {
             "head": "bone_mg_aa_h_01",
             "gun": "bone_mg_aa_v_01",
-            "gunnerDm": "commander_dm"
+            "gunnerDm": "loader_dm"
           },
           "limits": {
             "yaw": [-120.0,120.0],
@@ -3649,7 +3667,7 @@
               "resolution": [500,300],
               "noiseFactor": 0.05
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [1600,1200],
               "lightMult": 9.0,
               "ghosting": 0.6,
@@ -3736,6 +3754,28 @@
       "replace_tex": {
         "from": "us_camo_olive*",
         "to": "usa_modern_snow_temperate*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "usa_modern_red_desert",
+      "nameLocId": "skin/usa_modern_red_desert",
+      "descLocId": "skin/usa_modern_red_desert/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_red_desert*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "usa_modern_summer_verdant",
+      "nameLocId": "skin/usa_modern_summer_verdant",
+      "descLocId": "skin/usa_modern_summer_verdant/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_summer_verdant*"
       }
     }
   }

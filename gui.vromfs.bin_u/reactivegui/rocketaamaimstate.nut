@@ -11,6 +11,10 @@ local aamAimState = {
   TrackerSize = Watched(0.0)
   TrackerVisible = Watched(false)
 
+  IlsTrackerX = Watched(0.0)
+  IlsTrackerY = Watched(0.0)
+  IlsTrackerVisible = Watched(false)
+
   GuidanceLockState = Watched(-1)
 }
 

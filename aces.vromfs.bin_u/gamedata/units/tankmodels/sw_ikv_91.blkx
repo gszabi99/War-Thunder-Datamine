@@ -416,7 +416,16 @@
           "ex_armor_turret_03_dm": [],
           "ex_armor_01_dm": [],
           "ex_armor_l_04_dm": [],
-          "ex_armor_r_04_dm": []
+          "ex_armor_r_04_dm": [],
+          "ex_decor_02_dm": [],
+          "ex_decor_03_dm": [],
+          "ex_decor_04_dm": [],
+          "ex_decor_06_dm": [],
+          "ex_decor_07_dm": [],
+          "ex_decor_l_01_dm": [],
+          "ex_decor_r_01_dm": [],
+          "ex_decor_l_06_dm": [],
+          "ex_decor_r_06_dm": []
         },
         "submodule": {
           "armorClass": "tank_traks",
@@ -459,6 +468,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -790,6 +800,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -806,7 +824,16 @@
       "ex_decor_15_dm": true,
       "ex_armor_turret_01_dm": true,
       "ex_armor_turret_02_dm": true,
-      "ex_armor_turret_03_dm": true
+      "ex_armor_turret_03_dm": true,
+      "ex_decor_02_dm": true,
+      "ex_decor_03_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_decor_06_dm": true,
+      "ex_decor_07_dm": true,
+      "ex_decor_l_01_dm": true,
+      "ex_decor_r_01_dm": true,
+      "ex_decor_l_06_dm": true,
+      "ex_decor_r_06_dm": true
     }
   },
   {
@@ -2456,7 +2483,7 @@
           "speedPitch": 20.0,
           "bullets": 2000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3203,7 +3230,7 @@
   {
     "cockpit": {
       "zoomOutFov": 9.2,
-      "zoomInFov": 4.6,
+      "zoomInFov": 4.63,
       "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,4.2,-8.5],
@@ -3299,7 +3326,7 @@
                 "speedPitch": 20.0,
                 "bullets": 2000,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3423,7 +3450,7 @@
                   "bullets": 12
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "fireConeAngle": 5.0
                 },
                 {
                   "ChainfireTime": 0.5

@@ -86,6 +86,12 @@
         "hp": 21.1
       },
       "stab_dm": {
+        "hp": 30.0
+      },
+      "stab2_dm": {
+        "hp": 30.0
+      },
+      "stab1_dm": {
         "hp": 18.7
       }
     },
@@ -1267,8 +1273,43 @@
         },
         {
           "onHit": {
-            "tailcontrol_dm": 0.001
+            "damage": 30.0,
+            "cut": 0.6
           }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "stab1_dm"
         },
         {
           "onHit": {
@@ -1284,8 +1325,42 @@
         },
         {
           "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "stab2_dm"
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
           }
         },
         {
@@ -2065,7 +2140,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2074,7 +2152,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2112,9 +2193,9 @@
     "mirror": true,
     "mirrorPos": [-0.229,0.878,0.0],
     "mirrorNorm": [-0.991,-0.13,0.0],
-    "lightPos": [0.107481,0.483388,-0.018731],
+    "lightPos": [0.093,0.392,-0.017],
     "lightColor": [0.0,0.1,0.0],
-    "lightRadius": 0.15,
+    "lightRadius": 0.25,
     "lightPos1": [0.110798,0.14757,-0.135901],
     "lightColor1": [0.0,0.1,0.0],
     "lightRadius1": 0.15,

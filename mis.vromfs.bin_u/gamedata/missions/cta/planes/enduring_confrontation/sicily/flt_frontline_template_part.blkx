@@ -400,16 +400,30 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 7,
-            "var": "flt_zones_in_row"
-          }
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_row"
+            },
+            {
+              "var": "flt_zones_in_col_real"
+            }
+          ]
         },
         {
-          "varSetInt": {
-            "value": 7,
-            "var": "flt_zones_in_col"
-          }
+          "varSetInt": [
+            {
+              "value": 8
+            },
+            {
+              "var": "flt_zones_in_col"
+            },
+            {
+              "var": "flt_zones_in_row_real"
+            }
+          ]
         },
         {
           "comment": {
@@ -451,22 +465,22 @@
               "value": 0
             },
             {
-              "var": "flt_area_01_state"
+              "var": "flt_area_51_state"
             },
             {
-              "var": "flt_area_08_state"
+              "var": "flt_area_52_state"
             },
             {
-              "var": "flt_area_09_state"
+              "var": "flt_area_57_state"
             },
             {
-              "var": "flt_area_15_state"
+              "var": "flt_area_58_state"
             },
             {
-              "var": "flt_area_16_state"
+              "var": "flt_area_59_state"
             },
             {
-              "var": "flt_area_22_state"
+              "var": "flt_area_60_state"
             }
           ]
         },
@@ -476,45 +490,34 @@
               "value": "sea"
             },
             {
-              "var": "flt_area_01_type"
+              "var": "flt_area_51_type"
             },
             {
-              "var": "flt_area_08_type"
+              "var": "flt_area_52_type"
             },
             {
-              "var": "flt_area_09_type"
+              "var": "flt_area_57_type"
             },
             {
-              "var": "flt_area_15_type"
+              "var": "flt_area_58_type"
             },
             {
-              "var": "flt_area_16_type"
+              "var": "flt_area_59_type"
             },
             {
-              "var": "flt_area_22_type"
+              "var": "flt_area_60_type"
             }
           ]
         },
         {
           "comment": {
-            "value": ""
-          }
-        },
-        {
-          "__varSetInt": {
-            "value": 0,
-            "var": "flt_area_06_state"
-          }
-        },
-        {
-          "__varSetString": {
-            "value": "unused",
-            "var": "flt_area_06_type"
-          }
-        },
-        {
-          "comment": {
             "value": "помечаем зоны команд (в цикле по алгоритму)"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "flt_mirrior_start"
           }
         },
         {
@@ -542,7 +545,8 @@
             "detectionArea": false,
             "killOutOfBattleArea": true,
             "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7
+            "newGridHorizontalCellCount": 7,
+            "gridCellCountVar": "flt_zones_in_row"
           }
         }
       ],

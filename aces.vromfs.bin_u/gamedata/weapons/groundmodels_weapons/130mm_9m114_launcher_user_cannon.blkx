@@ -25,8 +25,8 @@
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/atgm",
   "sound_pathStudio": "ground/weapon/atgm",
-  "sound": "atgm_LPC",
-  "sound_inside": "atgm_LPC_interior",
+  "sound": "atgm_TOW",
+  "sound_inside": "atgm_TOW_interior",
   "sfxReloadBullet": "grd_sturm_s_reload",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
@@ -41,10 +41,10 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.1,
-    "stabilityCaliberToArmorThreshold": 100.0,
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
-    "stabilityReductionAfterPenetration": 0.01,
+    "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "atgm_tank",
     "cumulativeSecondaryShattersPreset": "atgm",
     "explodeOnRendinst": true,
@@ -55,20 +55,14 @@
     "caliber": 0.13,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm",
-    "sound": "atgm_LPC",
-    "sound_inside": "atgm_LPC_interior",
+    "sound": "atgm_TOW",
+    "sound_inside": "atgm_TOW_interior",
     "recoilMultiplier": 0.05,
-    "stabilityRicochetModifier": [
-      {
-        "mod1": [0.0,0.0]
-      },
-      {
-        "mod2": [20.0,0.1]
-      },
-      {
-        "mod2": [30.0,0.2]
-      }
-    ],
+    "stabilityRicochetModifier": {
+      "mod1": [0.0,0.5],
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
+    },
     "pressureDamage": {
       "damageType": "pressure"
     },
@@ -80,10 +74,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.1,
-      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.01,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "atgm_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
@@ -99,7 +93,7 @@
       "timeFire": 2.0,
       "thrustDeviation": 0.01,
       "operated": true,
-      "operatedDist": 5000.0,
+      "operatedDist": 6000.0,
       "autoLeveling": true,
       "autoAiming": true,
       "explosionEffect": "hit_133_160mm_metal_he",
@@ -111,7 +105,7 @@
       "smokeEffect": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
-      "maxDistance": 5000.0,
+      "maxDistance": 6500.0,
       "minDistance": 30.0,
       "spawnExplosionWreckage": false,
       "spawnExplosionFx": false,
@@ -147,17 +141,11 @@
       "mesh": "9m114_rocket_deployed",
       "hasTracerTrail": true,
       "tracerTrailEmitter": [-0.5,0.0,0.0],
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -179,6 +167,9 @@
         },
         "roadSoil": {
           "fx": "hit_133_160mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_133_160mm_stone_he"
         },
         "sand": {
           "fx": "hit_133_160mm_sand_he"
@@ -246,6 +237,10 @@
         }
       },
       "damage": {
+        "explosive": {
+          "radius": 0.4,
+          "offset": 0.2
+        },
         "shatter": [
           {
             "useRealShatters": true
@@ -340,14 +335,10 @@
               "countPortion": 0.1
             }
           }
-        ],
-        "shatterDamage": {
-          "breachConeAngle": 45.0
-        },
-        "explosive": {
-          "radius": 0.1,
-          "offset": 0.9
-        }
+        ]
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "armorpower": {
         "ArmorPower0m": [2.0,10.0],
@@ -379,10 +370,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.1,
-      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.01,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "atgm_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
@@ -393,20 +384,14 @@
       "caliber": 0.13,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
-      "sound": "atgm_LPC",
-      "sound_inside": "atgm_LPC_interior",
+      "sound": "atgm_TOW",
+      "sound_inside": "atgm_TOW_interior",
       "recoilMultiplier": 0.05,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -418,10 +403,10 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
-        "stabilityThreshold": 0.1,
-        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityThreshold": 0.5,
+        "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
-        "stabilityReductionAfterPenetration": 0.01,
+        "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "atgm_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
@@ -437,7 +422,7 @@
         "timeFire": 2.0,
         "thrustDeviation": 0.01,
         "operated": true,
-        "operatedDist": 5000.0,
+        "operatedDist": 6000.0,
         "autoLeveling": true,
         "autoAiming": true,
         "explosionEffect": "hit_133_160mm_metal_he",
@@ -449,7 +434,7 @@
         "smokeEffect": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
-        "maxDistance": 5000.0,
+        "maxDistance": 6500.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,
         "spawnExplosionFx": false,
@@ -485,17 +470,11 @@
         "mesh": "9m114_rocket_deployed",
         "hasTracerTrail": true,
         "tracerTrailEmitter": [-0.5,0.0,0.0],
-        "stabilityRicochetModifier": [
-          {
-            "mod1": [0.0,0.0]
-          },
-          {
-            "mod2": [20.0,0.1]
-          },
-          {
-            "mod2": [30.0,0.2]
-          }
-        ],
+        "stabilityRicochetModifier": {
+          "mod1": [0.0,0.5],
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
+        },
         "pressureDamage": {
           "damageType": "pressure"
         },
@@ -517,6 +496,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
@@ -584,6 +566,10 @@
           }
         },
         "damage": {
+          "explosive": {
+            "radius": 0.4,
+            "offset": 0.2
+          },
           "shatter": [
             {
               "useRealShatters": true
@@ -678,14 +664,10 @@
                 "countPortion": 0.1
               }
             }
-          ],
-          "shatterDamage": {
-            "breachConeAngle": 45.0
-          },
-          "explosive": {
-            "radius": 0.1,
-            "offset": 0.9
-          }
+          ]
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "armorpower": {
           "ArmorPower0m": [2.0,10.0],
@@ -718,10 +700,10 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "atgm",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.1,
-      "stabilityCaliberToArmorThreshold": 100.0,
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.01,
+      "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "atgm_tandem_tank",
       "cumulativeSecondaryShattersPreset": "atgm",
       "explodeOnRendinst": true,
@@ -732,20 +714,14 @@
       "caliber": 0.13,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
-      "sound": "atgm_LPC",
-      "sound_inside": "atgm_LPC_interior",
+      "sound": "atgm_TOW",
+      "sound_inside": "atgm_TOW_interior",
       "recoilMultiplier": 0.05,
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ],
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      },
       "pressureDamage": {
         "damageType": "pressure"
       },
@@ -758,10 +734,10 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "atgm",
         "secondaryShattersPreset": "ap",
-        "stabilityThreshold": 0.1,
-        "stabilityCaliberToArmorThreshold": 100.0,
+        "stabilityThreshold": 0.5,
+        "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.3,
-        "stabilityReductionAfterPenetration": 0.01,
+        "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "atgm_tandem_tank",
         "cumulativeSecondaryShattersPreset": "atgm",
         "explodeOnRendinst": true,
@@ -827,17 +803,11 @@
         "mesh": "9m120_rocket_deployed",
         "hasTracerTrail": true,
         "tracerTrailEmitter": [-0.5,0.0,0.0],
-        "stabilityRicochetModifier": [
-          {
-            "mod1": [0.0,0.0]
-          },
-          {
-            "mod2": [20.0,0.1]
-          },
-          {
-            "mod2": [30.0,0.2]
-          }
-        ],
+        "stabilityRicochetModifier": {
+          "mod1": [0.0,0.5],
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
+        },
         "pressureDamage": {
           "damageType": "pressure"
         },
@@ -845,6 +815,10 @@
           "damageType": "tandemPrecharge"
         },
         "damage": {
+          "explosive": {
+            "radius": 0.4,
+            "offset": 0.2
+          },
           "shatter": [
             {
               "useRealShatters": true
@@ -939,14 +913,10 @@
                 "countPortion": 0.1
               }
             }
-          ],
-          "shatterDamage": {
-            "breachConeAngle": 45.0
-          },
-          "explosive": {
-            "radius": 0.1,
-            "offset": 0.9
-          }
+          ]
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {
@@ -966,6 +936,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
@@ -1063,9 +1036,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "atgm_he_tank",
       "slopeEffectPreset": "ap",
@@ -1077,13 +1050,13 @@
       "caliber": 0.13,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
-      "sound": "atgm_LPC",
-      "sound_inside": "atgm_LPC_interior",
+      "sound": "atgm_TOW",
+      "sound_inside": "atgm_TOW_interior",
       "recoilMultiplier": 0.05,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -1097,9 +1070,9 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
-        "stabilityThreshold": 0.05,
+        "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "atgm_he_tank",
         "slopeEffectPreset": "ap",
@@ -1116,7 +1089,7 @@
         "timeFire": 15.0,
         "thrustDeviation": 0.01,
         "operated": true,
-        "operatedDist": 5800.0,
+        "operatedDist": 6000.0,
         "autoLeveling": true,
         "autoAiming": true,
         "explosionEffect": "hit_133_160mm_metal_he",
@@ -1128,14 +1101,14 @@
         "smokeEffect": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
-        "maxDistance": 6000.0,
+        "maxDistance": 6500.0,
         "minDistance": 30.0,
         "spawnExplosionWreckage": false,
         "spawnExplosionFx": false,
         "explosionOffset": 0.05,
         "hitPowerMult": 100.0,
         "hitPower": 260.0,
-        "fuseDelayDist": 0.2,
+        "fuseDelayDist": 0.4,
         "nearHitPower": [1.0,50.0],
         "midHitPower": [0.9,400.0],
         "farHitPower": [0.1,1000.0],
@@ -1168,8 +1141,8 @@
         "tracerTrailEmitter": [-0.5,0.0,0.0],
         "stabilityRicochetModifier": {
           "mod1": [0.0,0.5],
-          "mod2": [20.0,0.6],
-          "mod3": [30.0,1.0]
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
         },
         "pressureDamage": {
           "damageType": "pressure"
@@ -1192,6 +1165,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
@@ -1259,6 +1235,10 @@
           }
         },
         "damage": {
+          "explosive": {
+            "radius": 0.4,
+            "offset": 0.2
+          },
           "shatter": [
             {
               "useRealShatters": true
@@ -1353,14 +1333,10 @@
                 "countPortion": 0.1
               }
             }
-          ],
-          "shatterDamage": {
-            "breachConeAngle": 45.0
-          },
-          "explosive": {
-            "radius": 0.2,
-            "offset": 0.3
-          }
+          ]
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "armorpower": {
           "ArmorPower0m": [50.0,10.0],
@@ -1382,27 +1358,27 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "atgm_vt_fuze_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
       "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_vt.ivf",
+      "shellAnimation": "video/shells_animations/atgm_he_vt.ivf",
       "bulletName": "130mm_9m220o",
       "mass": 49.5,
       "caliber": 0.13,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm",
-      "sound": "atgm_LPC",
-      "sound_inside": "atgm_LPC_interior",
+      "sound": "atgm_TOW",
+      "sound_inside": "atgm_TOW_interior",
       "recoilMultiplier": 0.05,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -1416,15 +1392,15 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
-        "stabilityThreshold": 0.05,
+        "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "atgm_vt_fuze_tank",
         "slopeEffectPreset": "ap",
         "fresnel": [0.23,0.1,2.0],
         "explodeOnRendinst": true,
-        "shellAnimation": "video/shells_animations/he_vt.ivf",
+        "shellAnimation": "video/shells_animations/atgm_he_vt.ivf",
         "maxDeltaAngle": 0.03,
         "dragCx": 0.027,
         "length": 1.15,
@@ -1486,8 +1462,8 @@
         "tracerTrailEmitter": [-0.5,0.0,0.0],
         "stabilityRicochetModifier": {
           "mod1": [0.0,0.5],
-          "mod2": [20.0,0.6],
-          "mod3": [30.0,1.0]
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
         },
         "pressureDamage": {
           "damageType": "pressure"
@@ -1616,6 +1592,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"

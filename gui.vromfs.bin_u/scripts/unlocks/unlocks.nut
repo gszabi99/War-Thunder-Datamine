@@ -9,6 +9,7 @@ local psnUser = require("sony.user");
 local { isLoadingBgUnlock,
         getLoadingBgName,
         getLoadingBgIdByUnlockId } = require("scripts/loading/loadingBgData.nut")
+local { statsTanks } = require("scripts/user/userInfoStats.nut")
 
 ::unlocks_punctuation_without_space <- ","
 ::map_mission_type_to_localization <- null
@@ -277,7 +278,7 @@ local unlockConditionUnitclasses = {
   config.unlockType = ::get_unlock_type(blk?.type ?? "")
   config.locId = blk.getStr("locId", "")
   config.locDescId = blk.getStr("locDescId", "")
-  config.link = ::g_promo.getLinkText(blk)
+  config.link = ::g_language.getLocTextFromConfig(blk, "link", "")
   config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
   config.playback = blk?.playback
 
@@ -587,7 +588,7 @@ local unlockConditionUnitclasses = {
       if (condition.type == "playerType")
       {
         foreach (unitType in condition % "unitType")
-          if (::isInArray(unitType, ::stats_tanks))
+          if (::isInArray(unitType, statsTanks))
             return true
         foreach (unitClass in condition % "unitClass")
           if ((unlockConditionUnitclasses?[unitClass] ?? ::ES_UNIT_TYPE_INVALID) == ::ES_UNIT_TYPE_TANK)
@@ -1096,7 +1097,7 @@ class ::gui_handlers.showUnlocksGroupModal extends ::gui_handlers.BaseGuiHandler
       res.progressBar <- progressData
     local description = ::build_unlock_desc(cond, {showProgress = haveProgress})
     res.desc = description.text
-    res.link = ::g_promo.getLinkText(unlockBlk)
+    res.link = ::g_language.getLocTextFromConfig(unlockBlk, "link", "")
     res.forceExternalBrowser = unlockBlk?.forceExternalBrowser ?? false
   }
   if (res.desc == "" && id != realId)
@@ -1894,8 +1895,9 @@ g_unlocks.loadFavorites <- function loadFavorites()
   local loaded = ::load_local_account_settings(FAVORITE_UNLOCKS_LIST_SAVE_ID)
   if (loaded)
   {
-    foreach(unlockId, unlockValue in loaded)
+    for (local i = 0; i < loaded.paramCount(); i++)
     {
+      local unlockId = loaded.getParamName(i)
       local unlock = ::g_unlocks.getUnlockById(unlockId)
       if (::is_unlock_visible(unlock, false))
       {

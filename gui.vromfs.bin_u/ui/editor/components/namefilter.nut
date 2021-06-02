@@ -29,12 +29,12 @@ local function nameFilter(watched_text, params) {
 
       children = {
         rendObj = ROBJ_DTEXT
-        size = [flex(), fontH(100)]
+        size = [flex(), SIZE_TO_CONTENT]
         margin = sh(0.5)
 
-        text = watched_text.value
+        text = watched_text.value ?? " "
         behavior = Behaviors.TextInput
-        group = group
+        group
 
         onChange = params?.onChange
         onEscape = params?.onEscape

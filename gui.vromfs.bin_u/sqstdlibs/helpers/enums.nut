@@ -28,8 +28,8 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
       propValue = propValue.tolower()
     else {
       assertOnce("bad propValue type",
-        "enums: Bad value type for getCachedType with no caseSensitive:\n" +
-        "propName = " + propName + ", propValue = " + propValue + ", propValueType = " + (typeof propValue))
+        "".concat("enums: Bad value type for getCachedType with no caseSensitive:\n",
+            $"propName = {propName}, propValue = {propValue}, propValueType = {(typeof propValue)}"))
       return defaultVal
     }
   }
@@ -42,7 +42,7 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
 
   if (!("types" in enumTable)) {
     assertOnce("!types",
-      ::format("Unable to get cached enum by property: '%s'. No 'types' array found.", propName))
+      $"Unable to get cached enum by property: '{propName}'. No 'types' array found.")
     enumTable.types <- []
   }
 
@@ -59,8 +59,8 @@ local function getCachedType(propName, propValue, cacheTable, enumTable, default
           value = value.tolower()
         else {
           assertOnce("bad value type",
-            "enums: Bad value in type for no caseSensitive cache:\n" +
-            "propName = " + propName + ", propValue = " + value + ", propValueType = " + (typeof value))
+            "".concat("enums: Bad value in type for no caseSensitive cache:\n",
+            $"propName = {propName}, propValue = {value}, propValueType = {(typeof value)}"))
           continue
         }
 
@@ -91,7 +91,7 @@ local function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTa
   else {
     assertOnce(
       "Not found types array",
-      ::format("Unable to find 'types' array in enum table (type: %s).", typeName))
+      $"Unable to find 'types' array in enum table (type: {typeName})." )
   }
   return typeTbl
 }
@@ -133,7 +133,7 @@ local function addTypesByGlobalName(enumTableName, typesToAdd, typeConstructor =
 
   local enumTable = ::getroottable()?[enumTableName]
   if (!isTable(enumTable)) {
-    assertOnce("not found enum table", "enums: not found enum table '" + enumTableName + "'")
+    assertOnce("not found enum table", $"enums: not found enum table '{enumTableName}'")
     return
   }
 

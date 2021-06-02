@@ -169,13 +169,14 @@ local unitTypes = require("scripts/unit/unitTypesList.nut")
   local skyquakePath = ::debug_get_skyquake_path()
   local filesList = dagor_fs.scan_folder({ root = $"{skyquakePath}/gameOnline",
     files_suffix = "*.blk", recursive = false, vromfs=false, realfs = true
-  }).filter(@(v) v.indexof("debug_dump_debriefing") != null).map(@(v) g_path.fileName(v)).sort().reverse()
+  }).filter(@(v) v.contains("debug_dump_debriefing") && !v.contains("_SKIP.blk"))
+    .map(@(v) g_path.fileName(v)).sort().reverse()
   local total = filesList.len()
   local function loadNext() {
     local count = filesList.len()
     if (!count) return
     local filename = filesList.pop()
-    dlog(::format("[%d/%d] %s", total - count + 1, total, filename))
+    ::clog($"[{total - count + 1}/{total}] {filename}")
     ::copy_to_clipboard(filename)
     ::debug_dump_debriefing_load(filename, loadNext)
   }

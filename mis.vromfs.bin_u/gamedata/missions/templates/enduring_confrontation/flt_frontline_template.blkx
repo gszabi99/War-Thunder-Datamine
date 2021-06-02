@@ -75,13 +75,16 @@
               "targetGnd": false
             },
             {
-              "accuracy": 0.1
+              "accuracy": 0.6
             },
             {
-              "effShootingRate": 0.1
+              "effShootingRate": 0.6
             },
             {
-              "airEffShootingRate": 0.1
+              "airEffShootingRate": 0.6
+            },
+            {
+              "useSearchRadar": true
             },
             {
               "fireRandom": true
@@ -132,13 +135,16 @@
               "targetGnd": false
             },
             {
-              "accuracy": 0.1
+              "accuracy": 0.3
             },
             {
-              "effShootingRate": 0.1
+              "effShootingRate": 0.3
             },
             {
-              "airEffShootingRate": 0.1
+              "airEffShootingRate": 0.3
+            },
+            {
+              "useSearchRadar": true
             },
             {
               "fireRandom": true
@@ -249,19 +255,25 @@
               "targetGnd": true
             },
             {
-              "accuracy": 0.6
+              "accuracy": 0.3
             },
             {
               "checkVisibilityTarget": false
             },
             {
-              "effShootingRate": 0.6
+              "effShootingRate": 0.3
+            },
+            {
+              "airEffShootingRate": 0.3
             },
             {
               "ignoresObstaclesAfterTime": true
             },
             {
               "movementTraceRI": true
+            },
+            {
+              "useSearchRadar": true
             },
             {
               "fireRandom": true
@@ -1726,12 +1738,6 @@
               "comment": {
                 "value": ""
               }
-            },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
-              }
             }
           ],
           "else_actions": {
@@ -2571,12 +2577,6 @@
             {
               "comment": {
                 "value": ""
-              }
-            },
-            {
-              "__missionSetTimeSpeed": {
-                "speed": 0.0,
-                "realtimeTriggers": false
               }
             }
           ],
@@ -6653,12 +6653,6 @@
           {
             "triggerEnable": {
               "target": "flt_draw_bottom_both_points_check"
-            }
-          },
-          {
-            "__missionSetTimeSpeed": {
-              "speed": 0.0,
-              "realtimeTriggers": false
             }
           }
         ],

@@ -2,6 +2,7 @@ local stdMath = require("std/math.nut")
 local { getSkillValue } = require("scripts/crew/crewSkills.nut")
 local { trainCrewUnitWithoutSwitchCurrUnit } = require("scripts/crew/crewActions.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
+local { eachBlock } = require("std/datablock.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -78,10 +79,7 @@ g_crew.getDiscountInfo <- function getDiscountInfo(countryId = -1, idInCountry =
   local unitNames = ::getTblValue("trained", crewSlot, [])
 
   local packNames = []
-  local blk = ::get_warpoints_blk()
-  if (blk?.crewSkillPointsCost)
-    foreach(block in blk.crewSkillPointsCost)
-      packNames.append(block.getBlockName())
+  eachBlock(::get_warpoints_blk()?.crewSkillPointsCost, @(_, n) packNames.append(n))
 
   local result = {}
   result.buyPoints <- ::getDiscountByPath(["skills", country, packNames], ::get_price_blk())
@@ -658,47 +656,41 @@ g_crew.hasSkillPointsToRunTutorial <- function hasSkillPointsToRunTutorial(crew,
   ::g_crew.crewLevelBySkill = blk?.skill_to_level_ratio ?? ::g_crew.crewLevelBySkill
   ::g_crew.totalSkillsSteps = blk?.max_skill_level_steps ?? ::g_crew.totalSkillsSteps
 
-  local dataBlk = blk?.crew_skills
-  if (dataBlk)
-    foreach (pName, pageBlk in dataBlk)
-    {
-      local unitTypeTag = pageBlk?.type ?? ""
-      local defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
-      local page = {
-        id = pName,
-        crewUnitTypeMask = defaultCrewUnitTypeMask
-        items = []
+  eachBlock(blk?.crew_skills, function(pageBlk, pName) {
+    local unitTypeTag = pageBlk?.type ?? ""
+    local defaultCrewUnitTypeMask = unitTypes.getTypeMaskByTagsString(unitTypeTag, "; ", "bitCrewType")
+    local page = {
+      id = pName,
+      crewUnitTypeMask = defaultCrewUnitTypeMask
+      items = []
+      isVisible = function(crewUnitType) { return (crewUnitTypeMask & (1 << crewUnitType)) != 0 }
+    }
+    eachBlock(pageBlk, function(itemBlk, sName) {
+      local item = {
+        name = sName,
+        memberName = page.id
+        crewUnitTypeMask = unitTypes.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
+                        || defaultCrewUnitTypeMask
+        costTbl = []
         isVisible = function(crewUnitType) { return (crewUnitTypeMask & (1 << crewUnitType)) != 0 }
       }
-      foreach(sName, itemBlk in pageBlk)
-      {
-        if (!::u.isInstance(itemBlk))
-          continue
-        local item = {
-          name = sName,
-          memberName = page.id
-          crewUnitTypeMask = unitTypes.getTypeMaskByTagsString(itemBlk?.type ?? "", "; ", "bitCrewType")
-                         || defaultCrewUnitTypeMask
-          costTbl = []
-          isVisible = function(crewUnitType) { return (crewUnitTypeMask & (1 << crewUnitType)) != 0 }
-        }
-        page.crewUnitTypeMask = page.crewUnitTypeMask | item.crewUnitTypeMask
+      page.crewUnitTypeMask = page.crewUnitTypeMask | item.crewUnitTypeMask
 
-        local costBlk = itemBlk?.skill_level_exp
-        local idx = 1
-        local totalCost = 0
-        while(costBlk?["level"+idx] != null)
-        {
-          totalCost += costBlk["level"+idx]
-          item.costTbl.append(totalCost)
-          idx++
-        }
-        item.useSpecializations <- itemBlk?.use_specializations ?? false
-        item.useLeadership <- itemBlk?.use_leadership ?? false
-        page.items.append(item)
+      local costBlk = itemBlk?.skill_level_exp
+      local idx = 1
+      local totalCost = 0
+      while(costBlk?["level"+idx] != null)
+      {
+        totalCost += costBlk["level"+idx]
+        item.costTbl.append(totalCost)
+        idx++
       }
-      ::crew_skills.append(page)
-    }
+      item.useSpecializations <- itemBlk?.use_specializations ?? false
+      item.useLeadership <- itemBlk?.use_leadership ?? false
+      page.items.append(item)
+    })
+    ::crew_skills.append(page)
+  })
 
   ::broadcastEvent("CrewSkillsReloaded")
 

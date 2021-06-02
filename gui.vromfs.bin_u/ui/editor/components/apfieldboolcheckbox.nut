@@ -28,7 +28,7 @@ local function fieldBoolCheckbox(params = {}) {
       mark = {
         rendObj = ROBJ_SOLID
         color = (stateFlags.value & S_HOVER) ? Hover : Interactive
-        group = group
+        group
         size = [pw(50), ph(50)]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
@@ -42,7 +42,7 @@ local function fieldBoolCheckbox(params = {}) {
       color = ControlBg
 
       behavior = Behaviors.Button
-      group = group
+      group
 
       watch = [curVal, stateFlags]
 
@@ -50,7 +50,7 @@ local function fieldBoolCheckbox(params = {}) {
 
       onElemState = @(sf) stateFlags.update(sf)
 
-      onClick = onClick
+      onClick
     }
   }
 }

@@ -46,12 +46,14 @@
     "secondaryShattersPreset": "ap_large_caliber",
     "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
+    "stucking": 0.7,
+    "stuckingAngle": 45.0,
     "bulletType": "sap_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
-    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "shellAnimation": "video/shells_animations/sap.ivf",
     "bulletName": "76mm_50_mk2_common",
     "dynamicKv": true,
     "relativeVelHitShift": [300.0,1000.0],
@@ -65,16 +67,16 @@
     "explosionPatchRadius": 2.2,
     "stabilityRicochetModifier": [
       {
-        "mod1": [0.0,0.05]
+        "mod1": [0.0,0.2]
       },
       {
-        "mod2": [20.0,0.1]
+        "mod2": [20.0,0.4]
       },
       {
-        "mod3": [30.0,0.2]
+        "mod3": [30.0,0.6]
       },
       {
-        "mod3": [45.0,0.3]
+        "mod3": [45.0,0.9]
       }
     ],
     "damage": {
@@ -90,80 +92,26 @@
           "useRealShatters": true
         },
         {
-          "countPortion": 0.2
+          "countPortion": 0.15
         },
         {
           "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.2,
-            "damageScale": 1.0,
-            "angles": [0.0,10.0],
-            "countPortion": 0.02
+            "radiusScale": 0.6,
+            "penetrationScale": 1.6,
+            "damageScale": 3.0,
+            "angles": [0.0,180.0],
+            "countPortion": 0.5,
+            "onHitChanceMultFire": 50.0
           }
         },
         {
           "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [11.0,39.0],
-            "countPortion": 0.1
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.7,
-            "damageScale": 1.5,
-            "angles": [40.0,70.0],
-            "countPortion": 0.1,
-            "onHitChanceMultFire": 10.0
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [71.0,180.0],
-            "countPortion": 0.28
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [181.0,289.0],
-            "countPortion": 0.28
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.7,
-            "damageScale": 1.8,
-            "angles": [290.0,320.0],
-            "countPortion": 0.1,
-            "onHitChanceMultFire": 10.0
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.0,
-            "damageScale": 1.0,
-            "angles": [321.0,349.0],
-            "countPortion": 0.1
-          }
-        },
-        {
-          "segment": {
-            "radiusScale": 1.0,
-            "penetrationScale": 1.2,
-            "damageScale": 1.5,
-            "angles": [350.0,359.0],
-            "countPortion": 0.02
+            "radiusScale": 0.6,
+            "penetrationScale": 1.6,
+            "damageScale": 3.0,
+            "angles": [181.0,359.0],
+            "countPortion": 0.5,
+            "onHitChanceMultFire": 50.0
           }
         }
       ]
@@ -176,7 +124,7 @@
     "visual": {
       "range_percent_of_ammo": [100.0,0.0],
       "traceFreq": 1,
-      "tracer": "76mmGreen",
+      "tracer": "76mmGreenShip",
       "trail": "black"
     },
     "collisions": {
@@ -197,6 +145,9 @@
       },
       "roadSoil": {
         "fx": "hit_81_105mm_dirt_ap"
+      },
+      "bricks_red": {
+        "fx": "hit_81_105mm_stone_ap"
       },
       "sand": {
         "fx": "hit_81_105mm_sand_ap"
@@ -272,12 +223,14 @@
       "secondaryShattersPreset": "ap_large_caliber",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
+      "stucking": 0.7,
+      "stuckingAngle": 45.0,
       "bulletType": "sap_tank",
       "slopeEffectPreset": "ap",
       "fresnel": [0.23,0.1,2.0],
-      "shellAnimation": "video/shells_animations/aphe.ivf",
+      "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "76mm_50_mk2_common",
       "dynamicKv": true,
       "relativeVelHitShift": [300.0,1000.0],
@@ -291,16 +244,16 @@
       "explosionPatchRadius": 2.2,
       "stabilityRicochetModifier": [
         {
-          "mod1": [0.0,0.05]
+          "mod1": [0.0,0.2]
         },
         {
-          "mod2": [20.0,0.1]
+          "mod2": [20.0,0.4]
         },
         {
-          "mod3": [30.0,0.2]
+          "mod3": [30.0,0.6]
         },
         {
-          "mod3": [45.0,0.3]
+          "mod3": [45.0,0.9]
         }
       ],
       "damage": {
@@ -316,80 +269,26 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.2
+            "countPortion": 0.15
           },
           {
             "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.2,
-              "damageScale": 1.0,
-              "angles": [0.0,10.0],
-              "countPortion": 0.02
+              "radiusScale": 0.6,
+              "penetrationScale": 1.6,
+              "damageScale": 3.0,
+              "angles": [0.0,180.0],
+              "countPortion": 0.5,
+              "onHitChanceMultFire": 50.0
             }
           },
           {
             "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [11.0,39.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.7,
-              "damageScale": 1.5,
-              "angles": [40.0,70.0],
-              "countPortion": 0.1,
-              "onHitChanceMultFire": 10.0
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [71.0,180.0],
-              "countPortion": 0.28
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [181.0,289.0],
-              "countPortion": 0.28
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.7,
-              "damageScale": 1.8,
-              "angles": [290.0,320.0],
-              "countPortion": 0.1,
-              "onHitChanceMultFire": 10.0
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.0,
-              "damageScale": 1.0,
-              "angles": [321.0,349.0],
-              "countPortion": 0.1
-            }
-          },
-          {
-            "segment": {
-              "radiusScale": 1.0,
-              "penetrationScale": 1.2,
-              "damageScale": 1.5,
-              "angles": [350.0,359.0],
-              "countPortion": 0.02
+              "radiusScale": 0.6,
+              "penetrationScale": 1.6,
+              "damageScale": 3.0,
+              "angles": [181.0,359.0],
+              "countPortion": 0.5,
+              "onHitChanceMultFire": 50.0
             }
           }
         ]
@@ -402,7 +301,7 @@
       "visual": {
         "range_percent_of_ammo": [100.0,0.0],
         "traceFreq": 1,
-        "tracer": "76mmGreen",
+        "tracer": "76mmGreenShip",
         "trail": "black"
       },
       "collisions": {
@@ -423,6 +322,9 @@
         },
         "roadSoil": {
           "fx": "hit_81_105mm_dirt_ap"
+        },
+        "bricks_red": {
+          "fx": "hit_81_105mm_stone_ap"
         },
         "sand": {
           "fx": "hit_81_105mm_sand_ap"

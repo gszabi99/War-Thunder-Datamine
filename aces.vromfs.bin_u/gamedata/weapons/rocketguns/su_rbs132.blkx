@@ -17,15 +17,16 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [0.23,0.1,2.0],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
+    "shellAnimation": "video/shells_animations/rocket_he.ivf",
     "massEnd": 43.77,
     "maxDeltaAngle": 3.5,
     "dragCx": 0.018,
@@ -36,7 +37,7 @@
     "force": 19600.0,
     "timeFire": 1.0,
     "explosionEffect": "explosion_midair_medium",
-    "groundCollisionEffect": "explosion_midair_tiny",
+    "groundCollisionEffect": "hit_59_80mm_dirt_he",
     "ricochetEffect": "cannon_ricochet",
     "waterCollisionEffect": "120-203_he_water_splash",
     "explosionPatchRadius": 3.4,
@@ -66,8 +67,8 @@
     "iconType": "rockets_ap_large",
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"

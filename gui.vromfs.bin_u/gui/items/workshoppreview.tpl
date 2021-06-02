@@ -4,11 +4,9 @@ root {
 
   frame {
     id:t='window_root'
-    pos:t='50%pw-50%w, 1@minYposWindow + 0.1*(sh - 1@minYposWindow - h)'
-    position:t='absolute'
     width:t='<<windowWidthScale>>@sf $min 1@maxWindowWidth'
-
     class:t='wnd'
+    isCenteredUnderLogo:t='yes'
 
     frame_header {
       activeText {

@@ -105,6 +105,14 @@
     "type": "typeMediumTank"
   },
   {
+    "attachables": {
+      "ex_decor_03_dm": true,
+      "ex_decor_04_dm": true,
+      "ex_decor_06_dm": true,
+      "ex_decor_05_dm": true
+    }
+  },
+  {
     "DamageEffects": [
       {
         "part": [
@@ -2810,6 +2818,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -3158,6 +3167,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -3322,7 +3339,7 @@
   {
     "cockpit": {
       "zoomOutFov": 9.2,
-      "zoomInFov": 4.6,
+      "zoomInFov": 4.63,
       "sightFov": 4.5,
       "sightName": "tzf_1a",
       "headPos": [0.0,4.2,-8.5],

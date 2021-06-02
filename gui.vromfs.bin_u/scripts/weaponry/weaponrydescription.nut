@@ -321,7 +321,8 @@ local function getReqModsText(unit, item)
             reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getWeaponNameText(unit.name, false, req, ", ")
           else
           if (rp == "reqModification" && !::shop_is_modification_purchased(unit.name, req))
-            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon") + getModificationName(unit, req)
+            reqText += ((reqText=="")?"":"\n") + ::loc(rp) + ::loc("ui/colon")
+              + getModificationName(unit, req)
   return reqText
 }
 

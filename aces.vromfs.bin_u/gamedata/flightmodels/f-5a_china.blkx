@@ -37,14 +37,19 @@
         "hp": 15.0
       }
     },
+    "armor12_7": {
+      "armor2_dm": {
+        "hp": 40.0
+      }
+    },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 36.8
+        "hp": 50.5
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 36.8
+        "hp": 50.5
       }
     },
     "c_dural3": {
@@ -137,6 +142,11 @@
       },
       "spar_r_dm": {
         "hp": 19.5
+      }
+    },
+    "glass64": {
+      "armor1_dm": {
+        "hp": 100.0
       }
     },
     "protected_controls": {
@@ -298,6 +308,16 @@
           }
         }
       ]
+    },
+    {
+      "part": {
+        "name": "armor1_dm"
+      }
+    },
+    {
+      "part": {
+        "name": "armor2_dm"
+      }
     },
     {
       "part": {
@@ -1722,7 +1742,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1731,7 +1754,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1860,11 +1886,11 @@
         "clock_hour": [0.0,12.0],
         "clock_min": [0.0,60.0],
         "clock_sec": [0.0,60.0],
-        "fuel_consume": [0.0,100.0],
-        "fuel_consume1": [0.0,100.0],
-        "rpm_hour": [0.0,7500.0],
+        "fuel_consume": [0.0,30.0],
+        "fuel_consume1": [0.0,30.0],
+        "rpm_hour": [0.0,16000.0],
         "rpm_min": [0.0,1000.0],
-        "rpm1_hour": [0.0,7500.0],
+        "rpm1_hour": [0.0,16000.0],
         "rpm1_min": [0.0,1000.0],
         "oil_pressure": [0.0,100.0],
         "oil_pressure1": [0.0,100.0],
@@ -1914,6 +1940,16 @@
       ]
     },
     {
+      "hideDmParts": [
+        {
+          "node": "armor1_dm"
+        },
+        {
+          "node": "armor2_dm"
+        }
+      ]
+    },
+    {
       "Weapon": {
         "trigger": "cannon",
         "blk": "gameData/Weapons/cannonM39A2.blk",
@@ -1945,6 +1981,12 @@
       "preset": {
         "name": "f_5a_default",
         "blk": "gameData/FlightModels/weaponPresets/f_5a_china_default.blk"
+      }
+    },
+    {
+      "preset": {
+        "name": "f_5a_default_aim_9b",
+        "blk": "gameData/FlightModels/weaponPresets/f_5a_default_aim_9b.blk"
       }
     },
     {

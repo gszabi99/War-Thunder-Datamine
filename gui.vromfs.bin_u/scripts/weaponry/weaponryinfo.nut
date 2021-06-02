@@ -1,11 +1,12 @@
 local { blkFromPath, blkOptFromPath } = require("sqStdLibs/helpers/datablockUtils.nut")
+local { eachBlock } = require("std/datablock.nut")
 local unitTypes = require("scripts/unit/unitTypesList.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
 local { AMMO,
         getAmmoCost,
         getAmmoAmount,
-        getAmmoMaxAmount,
-        getAmmoAmountData } = require("scripts/weaponry/ammoInfo.nut")
+        checkAmmoAmount,
+        getAmmoMaxAmount } = require("scripts/weaponry/ammoInfo.nut")
 local { getMissionEditSlotbarBlk } = require("scripts/slotbar/slotbarOverride.nut")
 
 global const UNIT_WEAPONS_ZERO    = 0
@@ -344,7 +345,7 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
                 item.seekerRangeRearAspect <- rangeRearAspect
                 item.seekerRangeAllAspect  <- rangeAllAspect
                 if (rangeRearAspect > 0 || rangeAllAspect > 0)
-                  item.allAspect <- rangeAllAspect * 1.0 >= 0.2 * rangeRearAspect
+                  item.allAspect <- rangeAllAspect >= 1000.0
               }
               else if (currentTypeName == WEAPON_TYPE.AGM && (itemBlk.guidance.irSeeker?.groundVehiclesAsTarget ?? false))
               {
@@ -358,6 +359,8 @@ local function addWeaponsFromBlk(weapons, block, unit, weaponsFilterFunc = null,
         if (currentTypeName == WEAPON_TYPE.AAM)
         {
           item.loadFactorMax <- itemBlk?.loadFactorMax ?? 0
+          if (weapon?.loadFactorLimit)
+            item.loadFactorLimit <- weapon.loadFactorLimit
         }
         else if (currentTypeName == WEAPON_TYPE.AGM)
         {
@@ -485,6 +488,9 @@ local function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine)
     if (weapon?.loadFactorMax)
       res.append("".concat(::loc("missile/loadFactorMax"), colon,
         ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorMax)))
+    if (weapon?.loadFactorLimit)
+      res.append("".concat(::loc("missile/loadFactorLimit"), colon,
+        ::g_measure_type.GFORCE.getMeasureUnitsText(weapon.loadFactorLimit)))
     if (weapon?.operatedDist)
       res.append("".concat(::loc("firingRange"), colon,
         ::g_measure_type.DISTANCE.getMeasureUnitsText(weapon.operatedDist)))
@@ -567,12 +573,13 @@ local function getPrimaryWeaponsList(unit)
   unit.primaryWeaponMods = [""]
 
   local airBlk = ::get_full_unit_blk(unit.name)
-  if(!airBlk || !airBlk?.modifications)
+  if(!airBlk?.modifications)
     return unit.primaryWeaponMods
 
-  foreach(modName, modification in airBlk.modifications)
-    if (modification?.effects?.commonWeapons)
+  eachBlock(airBlk.modifications, function(modification, modName) {
+    if (modification?.effects.commonWeapons)
       unit.primaryWeaponMods.append(modName)
+  })
 
   return unit.primaryWeaponMods
 }
@@ -592,14 +599,21 @@ local function getCommonWeaponsBlk(airBlk, primaryMod)
   if (primaryMod == "" && airBlk?.commonWeapons)
     return airBlk.commonWeapons
 
-  if (airBlk?.modifications)
-    foreach(modName, modification in airBlk.modifications)
-      if (modName == primaryMod)
-      {
-        if (modification?.effects.commonWeapons)
-          return modification.effects.commonWeapons
-        break
-      }
+  if (airBlk?.modifications == null)
+    return null
+
+  local modificationsCount = airBlk.modifications.blockCount()
+  for (local i = 0; i < modificationsCount; i++)
+  {
+    local modification = airBlk.modifications.getBlock(i)
+    if (modification.getBlockName() == primaryMod)
+    {
+      if (modification?.effects.commonWeapons)
+        return modification.effects.commonWeapons
+      break
+    }
+  }
+
   return null
 }
 
@@ -733,25 +747,47 @@ local function getLinkedGunIdx(groupIdx, totalGroups, bulletSetsQuantity, canBeD
   return (groupIdx.tofloat() * totalGroups / bulletSetsQuantity + 0.001).tointeger()
 }
 
-local function checkUnitWeapons(unit)
+local function checkUnitSecondaryWeapons(unit)
 {
-  local weapon = getLastWeapon(unit.name)
-  local weaponText = getAmmoAmountData(unit, weapon, AMMO.WEAPON)
-  if (weaponText.warning)
-    return weaponText.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
-
-  for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++)
-  {
-    local modifName = ::get_last_bullets(unit.name, i);
-    if (modifName && modifName != "" && ::shop_is_modification_enabled(unit.name, modifName))
+  foreach (weapon in getSecondaryWeaponsList(unit))
+    if (isWeaponEnabled(unit, weapon) ||
+      (::isUnitUsable(unit) && isWeaponUnlocked(unit, weapon)))
     {
-      local modificationText = getAmmoAmountData(unit, modifName, AMMO.MODIFICATION)
-      if (modificationText.warning)
-        return modificationText.amount? UNIT_WEAPONS_WARNING : UNIT_WEAPONS_ZERO
+      local res = checkAmmoAmount(unit, weapon.name, AMMO.WEAPON)
+      if (res != UNIT_WEAPONS_READY)
+        return res
+    }
+
+  return UNIT_WEAPONS_READY
+}
+
+local checkUnitLastWeapon = @(unit) checkAmmoAmount(unit, getLastWeapon(unit.name), AMMO.WEAPON)
+
+local function checkUnitBullets(unit, isCheckAll = false, bulletSet = null)
+{
+  local setLen = bulletSet?.len() ?? unit.unitType.bulletSetsQuantity
+  for (local i = 0; i < setLen; i++)
+  {
+    local modifName = bulletSet?[i] ?? ::get_last_bullets(unit.name, i)
+    if((modifName ?? "") == "")
+      continue
+
+    if ((!isCheckAll && ::shop_is_modification_enabled(unit.name, modifName))//Current mod
+      || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName))))//All unlocked mods
+    {
+      local res = checkAmmoAmount(unit, modifName, AMMO.MODIFICATION)
+      if (res != UNIT_WEAPONS_READY)
+        return res
     }
   }
 
   return UNIT_WEAPONS_READY
+}
+
+local function checkUnitWeapons(unit, isCheckAll = false)
+{
+  local weaponsState = isCheckAll ? checkUnitSecondaryWeapons(unit) : checkUnitLastWeapon(unit)
+  return weaponsState != UNIT_WEAPONS_READY ? weaponsState : checkUnitBullets(unit, isCheckAll)
 }
 
 local function checkBadWeapons()
@@ -774,7 +810,10 @@ local function getOverrideBullets(unit)
 {
   if (!unit)
     return null
-  local editSlotbarBlk = getMissionEditSlotbarBlk(::get_current_mission_name())
+  local missionName = ::get_current_mission_name()
+  if (missionName == "")
+    return null
+  local editSlotbarBlk = getMissionEditSlotbarBlk(missionName)
   local editSlotbarUnitBlk = editSlotbarBlk?[unit.shopCountry]?[unit.name]
   return editSlotbarUnitBlk?["bulletsCount0"] != null ? editSlotbarUnitBlk : null
 }
@@ -782,34 +821,36 @@ local function getOverrideBullets(unit)
 local needSecondaryWeaponsWnd = @(unit) (unit.isAir() || unit.isHelicopter()) && ::has_feature("ShowWeapPresetsMenu")
 
 return {
-  KGF_TO_NEWTON            = KGF_TO_NEWTON
-  TRIGGER_TYPE             = TRIGGER_TYPE
-  WEAPON_TYPE              = WEAPON_TYPE
-  WEAPON_TAG               = WEAPON_TAG
-  CONSUMABLE_TYPES         = CONSUMABLE_TYPES
-  WEAPON_TEXT_PARAMS       = WEAPON_TEXT_PARAMS
-  getLastWeapon            = getLastWeapon
-  setLastWeapon            = setLastWeapon
-  getSecondaryWeaponsList  = getSecondaryWeaponsList
-  getPresetsList           = getPresetsList
-  addWeaponsFromBlk        = addWeaponsFromBlk
-  getWeaponExtendedInfo    = getWeaponExtendedInfo
-  isWeaponAux              = isWeaponAux
-  getUnitWeaponry          = getUnitWeaponry
-  getWeaponsStatusName     = getWeaponsStatusName
-  getWeaponNameByBlkPath   = getWeaponNameByBlkPath
-  isCaliberCannon          = isCaliberCannon
-  getPrimaryWeaponsList    = getPrimaryWeaponsList
-  getLastPrimaryWeapon     = getLastPrimaryWeapon
-  getCommonWeaponsBlk      = getCommonWeaponsBlk
-  isWeaponUnlocked         = isWeaponUnlocked
-  getWeaponByName          = getWeaponByName
-  isUnitHaveAnyWeaponsTags = isUnitHaveAnyWeaponsTags
-  getLinkedGunIdx          = getLinkedGunIdx
-  checkUnitWeapons         = checkUnitWeapons
-  isWeaponEnabled          = isWeaponEnabled
-  isWeaponVisible          = isWeaponVisible
-  checkBadWeapons          = checkBadWeapons
-  getOverrideBullets       = getOverrideBullets
-  needSecondaryWeaponsWnd  = needSecondaryWeaponsWnd
+  KGF_TO_NEWTON
+  TRIGGER_TYPE
+  WEAPON_TYPE
+  WEAPON_TAG
+  CONSUMABLE_TYPES
+  WEAPON_TEXT_PARAMS
+  getLastWeapon
+  setLastWeapon
+  getSecondaryWeaponsList
+  getPresetsList
+  addWeaponsFromBlk
+  getWeaponExtendedInfo
+  isWeaponAux
+  getUnitWeaponry
+  getWeaponsStatusName
+  getWeaponNameByBlkPath
+  isCaliberCannon
+  getPrimaryWeaponsList
+  getLastPrimaryWeapon
+  getCommonWeaponsBlk
+  isWeaponUnlocked
+  getWeaponByName
+  isUnitHaveAnyWeaponsTags
+  getLinkedGunIdx
+  checkUnitWeapons
+  checkUnitSecondaryWeapons
+  checkUnitBullets
+  isWeaponEnabled
+  isWeaponVisible
+  checkBadWeapons
+  getOverrideBullets
+  needSecondaryWeaponsWnd
 }

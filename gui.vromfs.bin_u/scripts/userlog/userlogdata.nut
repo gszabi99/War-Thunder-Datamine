@@ -1,7 +1,7 @@
 local time = require("scripts/time.nut")
 local workshop = require("scripts/items/workshop/workshop.nut")
 local workshopPreview = require("scripts/items/workshop/workshopPreview.nut")
-local { disableSeenUserlogs } = require("scripts/userLog/userlogUtils.nut")
+local { disableSeenUserlogs, saveOnlineJob } = require("scripts/userLog/userlogUtils.nut")
 local { showEntitlement } = require("scripts/onlineShop/entitlementRewardWnd.nut")
 local { showUnlock } = require("scripts/unlocks/unlockRewardWnd.nut")
 local { getUserstatItemRewardData, removeUserstatItemRewardToShow,
@@ -681,7 +681,24 @@ local logNameByType = {
     if (skip)
       continue
 
-    logs.append(log)
+    local dubIdx = (log.type == ::EULT_OPEN_TROPHY  && log?.parentTrophyRandId)
+      ? logs.findindex(@(inst) inst.type == ::EULT_OPEN_TROPHY
+        && inst?.parentTrophyRandId == log.parentTrophyRandId
+          && inst?.id == log?.id && inst.time == log.time)
+      : null
+    if (dubIdx != null)
+    {
+      local curLog = logs[dubIdx]
+      // Stack all trophy rewards
+      if (curLog?.item && log?.item)
+        curLog.item = typeof(curLog.item) == "array" ? curLog.item.append(log.item)
+          : [curLog.item].append(log.item)
+      // Stack all identical trophies
+      if (!curLog?.item && !log?.item)
+        curLog.count <- (curLog?.count ?? 1) + (log?.count ?? 1)
+    }
+    else
+      logs.append(log)
 
     if ("disableVisible" in filter && filter.disableVisible)
     {
@@ -693,7 +710,7 @@ local logNameByType = {
   if (needSave)
   {
     dagor.debug("getUserLogsList - needSave")
-    ::save_online_job()
+    saveOnlineJob()
   }
-  return logs;
+  return logs
 }

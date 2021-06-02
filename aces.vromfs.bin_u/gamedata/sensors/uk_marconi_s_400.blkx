@@ -199,6 +199,12 @@
             }
           },
           {
+            "setWeaponDetectionAllowance": {
+              "source": "const",
+              "value": true
+            }
+          },
+          {
             "setCenterAzimuth": {
               "source": "constant",
               "value": 0.0
@@ -319,6 +325,9 @@
           "setEnabled": {
             "value": true
           },
+          "setWeaponDetectionAllowance": {
+            "source": "targetDesignation"
+          },
           "setTransiver": {
             "transiver": "track"
           },
@@ -336,6 +345,10 @@
             "name": "acquisition"
           },
           "setEnabled": {
+            "value": true
+          },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
             "value": true
           },
           "setTransiver": {
@@ -356,6 +369,10 @@
           "setEnabled": {
             "value": true
           },
+          "setWeaponDetectionAllowance": {
+            "source": "const",
+            "value": true
+          },
           "setScanPatternSet": [],
           "setScanPattern": {
             "scanPattern": "track"
@@ -371,6 +388,10 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -643,6 +664,10 @@
               "source": "continuousScale",
               "width": 0.0
             },
+            "setRelSpeedGatePos": {
+              "source": "continuousScale",
+              "width": 0.0
+            },
             "detectTarget": []
           }
         },
@@ -721,6 +746,10 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            },
+            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             },

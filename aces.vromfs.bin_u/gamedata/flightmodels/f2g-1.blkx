@@ -41,25 +41,23 @@
         "hp": 15.0
       }
     },
-    "armor8": {
+    "armor8_5": {
       "armor3_dm": {
         "hp": 40.0
       }
     },
-    "armor3": {
-      "armor5_dm": {
-        "hp": 40.0
-      }
-    },
-    "armor12_7": {
+    "armor9_5": {
       "armor2_dm": {
+        "hp": 40.0
+      },
+      "armor5_dm": {
         "hp": 40.0
       }
     },
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 70.5
+        "hp": 71.5
       }
     },
     "c_dural3": {
@@ -71,17 +69,13 @@
         "genericDamageMult": 0.3,
         "hp": 30.1
       },
-      "elevator_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 30.5
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.5
+        "hp": 26.7
       },
       "elevator1_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.5
+        "hp": 26.7
       },
       "fin_dm": {
         "hp": 30.5
@@ -109,6 +103,12 @@
         "hp": 30.5
       },
       "stab_dm": {
+        "hp": 30.0
+      },
+      "stab2_dm": {
+        "hp": 30.0
+      },
+      "stab1_dm": {
         "hp": 30.5
       }
     },
@@ -176,7 +176,7 @@
         "hp": 60.5
       }
     },
-    "glass38": {
+    "glass60": {
       "armor1_dm": {
         "hp": 100.0
       }
@@ -376,63 +376,6 @@
       "part": {
         "name": "cover2_dm"
       }
-    },
-    {
-      "part": [
-        {
-          "name": "elevator_dm"
-        },
-        {
-          "onHit": {
-            "damage": 10.0,
-            "cut": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damage": 20.0,
-            "cut": 0.4
-          }
-        },
-        {
-          "onHit": {
-            "damage": 30.0,
-            "cut": 0.7
-          }
-        },
-        {
-          "onHit": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "cut": 1.0,
-            "nothing": 4.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          }
-        },
-        {
-          "onKill": {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        }
-      ]
     },
     {
       "part": [
@@ -1442,23 +1385,26 @@
     },
     {
       "part": {
-        "name": "spar_l_dm"
+        "name": "spar_l_dm",
+        "onKill": {
+          "nothing": 2.0,
+          "cut": 4.0
+        }
       }
     },
     {
       "part": {
-        "name": "spar_r_dm"
+        "name": "spar_r_dm",
+        "onKill": {
+          "nothing": 2.0,
+          "cut": 4.0
+        }
       }
     },
     {
       "part": [
         {
           "name": "stab_dm"
-        },
-        {
-          "onHit": {
-            "tailcontrol_dm": 0.001
-          }
         },
         {
           "onHit": {
@@ -1474,8 +1420,82 @@
         },
         {
           "onKill": {
-            "tailcontrol_dm": 1.0,
-            "nothing": 9.0
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "stab1_dm"
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 10.0,
+            "cut": 1.0,
+            "nothing": 10.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 30.0,
+            "cut": 2.0,
+            "nothing": 5.0
+          }
+        },
+        {
+          "onKill": {
+            "damage": 50.0,
+            "cut": 1.0,
+            "nothing": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "part": [
+        {
+          "name": "stab2_dm"
+        },
+        {
+          "onHit": {
+            "damage": 30.0,
+            "cut": 0.6
+          }
+        },
+        {
+          "onHit": {
+            "damage": 60.0,
+            "cut": 1.0
           }
         },
         {
@@ -1721,9 +1741,6 @@
           "name": "wing1_l_dm"
         },
         {
-          "defaultEffectPart": "spar1_l_dm"
-        },
-        {
           "onHit": {
             "damage": 10.0,
             "cut": 0.0,
@@ -1833,9 +1850,6 @@
       "part": [
         {
           "name": "wing1_r_dm"
-        },
-        {
-          "defaultEffectPart": "spar1_r_dm"
         },
         {
           "onHit": {
@@ -1949,9 +1963,6 @@
           "name": "wing2_l_dm"
         },
         {
-          "defaultEffectPart": "spar2_l_dm"
-        },
-        {
           "onHit": {
             "damage": 10.0,
             "cut": 0.0,
@@ -2061,9 +2072,6 @@
       "part": [
         {
           "name": "wing2_r_dm"
-        },
-        {
-          "defaultEffectPart": "spar2_r_dm"
         },
         {
           "onHit": {
@@ -2177,9 +2185,6 @@
           "name": "wing_l_dm"
         },
         {
-          "defaultEffectPart": "spar_l_dm"
-        },
-        {
           "onHit": {
             "damage": 10.0,
             "cut": 0.0,
@@ -2289,9 +2294,6 @@
       "part": [
         {
           "name": "wing_r_dm"
-        },
-        {
-          "defaultEffectPart": "spar_r_dm"
         },
         {
           "onHit": {
@@ -2438,7 +2440,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2447,7 +2452,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {

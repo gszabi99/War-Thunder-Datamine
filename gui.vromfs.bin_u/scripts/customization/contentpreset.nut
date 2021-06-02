@@ -1,3 +1,5 @@
+local { eachBlock } = require("std/datablock.nut")
+
 local contentPresets = []
 local contentPresetIdxByName = {}
 local defaultPresetIdx = -1
@@ -8,10 +10,7 @@ local function getContentPresets() {
   if (contentPresets.len() > 0 || !::g_login.isLoggedIn())
     return contentPresets
 
-  local blk = ::get_ugc_blk()
-  if (blk?.presets)
-    foreach(preset in blk.presets)
-      contentPresets.append(preset.getBlockName())
+  eachBlock(::get_ugc_blk()?.presets, @(_, n) contentPresets.append(n))
 
   contentPresetIdxByName = u.invert(contentPresets)
   defaultPresetIdx = contentPresets.len()-1

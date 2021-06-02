@@ -6,12 +6,12 @@ local { isCrossPlayEnabled,
         getTextWithCrossplayIcon,
         needShowCrossPlayInfo } = require("scripts/social/crossplay.nut")
 local activityFeedPostFunc = require("scripts/social/activityFeed/activityFeedPostFunc.nut")
+local { boosterEffectType } = require("scripts/items/boosterEffect.nut")
+local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
 local imgFormat = "img {size:t='%s'; background-image:t='%s'; margin-right:t='0.01@scrn_tgt;'} "
 local textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
 local descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
-local { boosterEffectType } = require("scripts/items/boosterEffect.nut")
-local { getActiveBoostersDescription } = require("scripts/items/itemVisual.nut")
 
 local clanActionNames = {
   [ULC_CREATE]                  = "create",
@@ -287,9 +287,12 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         local fromExcessRP = ("merp" + idx) in log.rpEarned ? log.rpEarned["merp" + idx] : 0
         rp += mrp + fromExcessRP
 
-        local title = ::getUnitName(unitId) + (modId ? (" - " + getModificationName(getAircraftByName(unitId), modId)) : "")
-        local item = "\n" + title + ::loc("ui/colon") + "<color=@activeTextColor>" +
-          ::Cost().setRp(mrp).tostring() + "</color>"
+        local modText = ""
+        if (modId)
+          modText = $" - {getModificationName(getAircraftByName(unitId), modId)}"
+        local title = $"{::getUnitName(unitId)}{modText}"
+        local item = "".join(["\n", title, ::loc("ui/colon"),"<color=@activeTextColor>",
+          ::Cost().setRp(mrp).tostring(), "</color>"])
 
         if (fromExcessRP > 0)
           item += " + " + ::loc("userlog/excessExpEarned") + ::loc("ui/colon") +
@@ -559,7 +562,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         local desc = ""
         if(log.rawin("maname"+idx) && log.rawin("mname"+idx))
         {
-          desc += getModificationName(getAircraftByName(log["maname"+idx]), log["mname"+idx])
+        desc = $"{desc}{getModificationName(getAircraftByName(log["maname"+idx]), log["mname"+idx])}"
           local wpCost = 0
           local goldCost = 0
           if(log.rawin("mcount"+idx))
@@ -822,7 +825,8 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
         if ("wname" in blk)
           lineReward += getWeaponNameText(blk.aname, false, blk.wname, ::loc("ui/comma")) + " "
         if ("mname" in blk)
-          lineReward += getModificationName(getAircraftByName(blk.aname), blk.mname)+" "
+          lineReward = "".join([
+            lineReward, getModificationName(getAircraftByName(blk.aname), blk.mname), " "])
       }
 
       local blkWp = blk?.wpEarned ?? 0
@@ -1050,7 +1054,7 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
       local desc = ""
       if(log.rawin("maname"+idx) && log.rawin("mname"+idx))
       {
-        desc += getModificationName(getAircraftByName(log["maname"+idx]), log["mname"+idx])
+        desc = $"{desc}{getModificationName(getAircraftByName(log["maname"+idx]), log["mname"+idx])}"
         local wpCost = 0
         local goldCost = 0
         if(log.rawin("mcount"+idx))
@@ -1093,24 +1097,67 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (item)
     {
-      logName = item?.userlogOpenLoc ?? logName
+      local cost = item.getCost()
+      logName = (item?.userlogOpenLoc ?? logName) != logName ? item.userlogOpenLoc
+        : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
 
-      local usedText = ::loc("userlog/" + logName + "/short")
-      local rewardText = ::trophyReward.getRewardText(log)
-      local reward = ::loc("reward") + ::loc("ui/colon") + rewardText
-
-      res.name = usedText + " " + ::loc("trophy/unlockables_names/trophy")
-                          + " " + ::loc("ui/parentheses/space", {text = reward})
+      local usedText = ::loc($"userlog/{logName}/short")
+      res.name = " ".concat(
+          usedText,
+          ::loc("trophy/unlockables_names/trophy"),
+          cost.gold > 0
+            ? ::loc("ui/parentheses/space", {text = $"{cost.getTextAccordingToBalance()}"}) : ""
+        )
       res.logImg = item.getSmallIconName()
-      res.tooltip = usedText + ::loc("ui/colon") + item.getName() + "\n" + reward
 
-      res.descriptionBlk <- ::format(textareaFormat, ::g_string.stripTags(usedText) + ::loc("ui/colon"))
+      res.descriptionBlk <- ::format(textareaFormat,
+        $"{::g_string.stripTags(usedText)}{::loc("ui/colon")}")
       res.descriptionBlk += item.getNameMarkup()
-      res.descriptionBlk += ::format(textareaFormat, ::g_string.stripTags(::loc("reward") + ::loc("ui/colon")))
-      res.descriptionBlk += ::trophyReward.getRewardsListViewData(log)
+      res.descriptionBlk += ::format(textareaFormat,
+        ::g_string.stripTags($"{::loc("reward")}{::loc("ui/colon")}"))
+
+      local resTextArr = []
+      local rewards = {}
+      if (log?.item)
+      {
+        if (typeof(log.item) == "array")
+        {
+          local items = log.item
+          while(items.len())
+          {
+            local inst = items.pop()
+            if (inst in rewards)
+              rewards[inst] += 1
+            else
+              rewards[inst] <- 1
+          }
+        }
+        else
+          rewards = { [log.item] = 1 }
+        foreach (idx, val in rewards)
+        {
+          local data = {
+            type = log.type
+            item = idx
+            count = val
+          }
+          resTextArr.append(::trophyReward.getRewardText(data))
+          res.descriptionBlk = "".concat(res.descriptionBlk,
+            ::trophyReward.getRewardsListViewData(log.__merge(data)))
+        }
+      }
+      else
+      {
+        resTextArr = [::trophyReward.getRewardText(log)]
+        res.descriptionBlk = $"{res.descriptionBlk}{::trophyReward.getRewardsListViewData(log)}"
+      }
+
+      local rewardText = "\n".join(resTextArr, true)
+      local reward = $"{::loc("reward")}{::loc("ui/colon")}{rewardText}"
+      res.tooltip = $"{usedText}{::loc("ui/colon")}{item.getName()}\n{reward}"
     }
     else
-      res.name = ::loc("userlog/"+logName, { trophy = ::loc("userlog/no_trophy"),
+      res.name = ::loc($"userlog/{logName}", { trophy = ::loc("userlog/no_trophy"),
         reward = ::loc("userlog/trophy_deleted") })
 
     /*

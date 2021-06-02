@@ -1262,7 +1262,10 @@
         "midNode": "Bip01 L Forearm",
         "upNode": "Bip01 L UpperArm",
         "targetNode": "throttle_lhand_1",
-        "flexionDir": [0.0,-1.0,0.2]
+        "flexionDir": [0.0,-1.0,0.2],
+        "type": "leftHand",
+        "detachedNodeYpr": [0.0,-15.0,-90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -1271,7 +1274,10 @@
         "midNode": "Bip01 R Forearm",
         "upNode": "Bip01 R UpperArm",
         "targetNode": "stick_rhand_1",
-        "flexionDir": [0.0,-1.0,-0.5]
+        "flexionDir": [0.0,-1.0,-0.5],
+        "type": "rightHand",
+        "detachedNodeYpr": [0.0,-15.0,90.0],
+        "detachedNodeScale": [1.0,-1.0,1.0]
       }
     },
     {
@@ -2213,6 +2219,102 @@
               ]
             }
           ]
+        }
+      ]
+    },
+    {
+      "preset": {
+        "name": "mi_24p_german_rocket_9M114_4",
+        "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_9M114_4.blk",
+        "reqModification": "mi_24_su_9M114_2",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/su_9M114.blk"
+            },
+            {
+              "amountPerTier": 2.0
+            },
+            {
+              "tier": {
+                "idx": 3,
+                "iconType": "atgm_type2_x2"
+              }
+            },
+            {
+              "tier": {
+                "idx": 4,
+                "iconType": "atgm_type2_x2"
+              }
+            },
+            {
+              "tier": {
+                "idx": 8,
+                "iconType": "atgm_type2_x2"
+              }
+            },
+            {
+              "tier": {
+                "idx": 9,
+                "iconType": "atgm_type2_x2"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "preset": {
+        "name": "mi_24p_german_rocket_c_8_ko_9m114",
+        "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_c_8_ko_9m114.blk",
+        "reqModification": "mi_24_su_9M114_2"
+      }
+    },
+    {
+      "preset": [
+        {
+          "name": "mi_24p_german_rocket_9M114_4_250"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_9M114_4_250.blk"
+        },
+        {
+          "reqModification": "mi_24_fab_250"
+        },
+        {
+          "reqModification": "mi_24_su_9M114_2"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "mi_24p_german_rocket_9M114_4_500"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/mi_24p_german_rocket_9M114_4_500.blk"
+        },
+        {
+          "reqModification": "mi_24_fab_500"
+        },
+        {
+          "reqModification": "mi_24_su_9M114_2"
+        }
+      ]
+    },
+    {
+      "preset": [
+        {
+          "name": "mi_24p_german_upk_23_250_8_9m114"
+        },
+        {
+          "blk": "gameData/flightModels/weaponPresets/mi_24p_german_upk_23_250_8_9m114.blk"
+        },
+        {
+          "reqModification": "mi_24_su_9M114_2"
+        },
+        {
+          "reqModification": "il_28sh_upk23_gunpod"
         }
       ]
     }
@@ -4936,13 +5038,19 @@
     "mi_24_fab_500": {
       "modClass": "weapon",
       "reqModification": "mi_24_fab_250",
-      "tier": 3
+      "tier": 2
     },
     "mi_24_su_9M114": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "mi_24_fab_500"
+    },
+    "mi_24_su_9M114_2": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "mi_24_su_9M114"
     },
     "mi_24_r_60": {
       "deactivationIsAllowed": false,

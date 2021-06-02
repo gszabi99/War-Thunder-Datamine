@@ -402,8 +402,8 @@ class ::gui_handlers.mapPreferencesModal extends ::gui_handlers.BaseGuiHandlerWT
     scene.findObject("filter_edit_cancel_btn")?.show(value.len() != 0)
 
     local searchStr = ::g_string.utf8ToLower(::g_string.trim(value))
-    local visibleMapsList = mapsList.filter(@(inst)
-      ::g_string.utf8ToLower(inst.title).indexof(searchStr) != null)
+    local visibleMapsList = searchStr != "" ? mapsList.filter(@(inst)
+      ::g_string.utf8ToLower(inst.title).indexof(searchStr) != null) : mapsList
 
     local mlistObj = scene.findObject("maps_list")
     foreach (inst in mapsList)

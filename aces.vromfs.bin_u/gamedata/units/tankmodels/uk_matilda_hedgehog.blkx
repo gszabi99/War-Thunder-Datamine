@@ -185,12 +185,6 @@
         "ex_armor_01_dm": {
           "armorThickness": 20.0
         },
-        "ex_armor_r_06_dm": {
-          "armorThickness": 5.0
-        },
-        "ex_armor_l_06_dm": {
-          "armorThickness": 5.0
-        },
         "turret_01_top_dm": {
           "armorThickness": 40.0
         }
@@ -261,6 +255,16 @@
         },
         "ex_armor_r_05_dm": {
           "armorThickness": 20.0
+        },
+        "ex_armor_r_06_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "CHA_tank",
+          "hp": 10000.0
+        },
+        "ex_armor_l_06_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "CHA_tank",
+          "hp": 10000.0
         }
       },
       "ex_armor": {
@@ -371,6 +375,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 20.0,
         "armorEffectiveThicknessMax": 20.0,
         "hp": 300.0,
@@ -719,6 +724,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },

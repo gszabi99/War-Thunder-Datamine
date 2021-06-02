@@ -8,6 +8,7 @@ local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nu
 local { getUnitItemStatusText } = require("scripts/unit/unitInfoTexts.nut")
 local { showMsgboxIfSoundModsNotAllowed } = require("scripts/penitentiary/soundMods.nut")
 local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null)
 {
@@ -54,6 +55,8 @@ local { getToBattleLocId } = require("scripts/viewUtils/interfaceCustomization.n
 class ::gui_handlers.MPLobby extends ::gui_handlers.BaseGuiHandlerWT
 {
   sceneBlkName = mpLobbyBlkPath.value
+  shouldBlurSceneBgFn = needUseHangarDof
+  handlerLocId = "multiplayer/lobby"
 
   tblData = null
   tblMarkupData = null

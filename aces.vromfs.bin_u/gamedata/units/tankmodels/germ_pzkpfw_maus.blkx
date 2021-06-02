@@ -305,7 +305,7 @@
         "wheel_support_dm": [],
         "submodule": {
           "armorClass": "tank_traks",
-          "armorThickness": 60.0,
+          "armorThickness": 30.0,
           "hp": 400.0,
           "armorEffectiveThicknessMax": 90.0,
           "ex_armor_01_dm": [],
@@ -646,8 +646,17 @@
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
       },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
+      },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 30.0,
         "hp": 300.0,
         "genericEffectiveThicknessMax": 30.0,
@@ -3179,7 +3188,7 @@
     "cockpit": {
       "zoomOutFov": 8.0,
       "zoomInFov": 7.37,
-      "sightFov": 6.5,
+      "sightFov": 3.7,
       "sightName": "twz_f1",
       "headPos": [0.0,5.0,-9.5],
       "headPosOnShooting": [-1.7,3.9,0.45],
@@ -3584,6 +3593,28 @@
       "replace_tex": {
         "from": "ger_camo_dunkelgelb*",
         "to": "ger_camo_hinterhalt_daimler*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
+      }
+    }
+  },
+  {
+    "skin": {
+      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
       }
     }
   }

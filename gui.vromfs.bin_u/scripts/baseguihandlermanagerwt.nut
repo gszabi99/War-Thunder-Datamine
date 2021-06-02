@@ -11,6 +11,7 @@ local { startLogout } = require("scripts/login/logout.nut")
 local { isPlatformSony,
         isPlatformXboxOne,
         targetPlatform } = require("scripts/clientState/platform.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::dagui_propid.add_name_id("has_ime")
 ::dagui_propid.add_name_id("target_platform")
@@ -32,10 +33,10 @@ handlersManager[PERSISTENT_DATA_PARAMS].append("curControlsAllowMask", "isCurSce
 
 ::handlersManager.isCurSceneBgBlurred <- false
 ::handlersManager.sceneBgBlurDefaults <- {
-  [handlerType.ROOT]   = false,
-  [handlerType.BASE]   = false,
-  [handlerType.MODAL]  = false,
-  [handlerType.CUSTOM] = false,
+  [handlerType.ROOT]   = @() false,
+  [handlerType.BASE]   = @() false,
+  [handlerType.MODAL]  = needUseHangarDof,
+  [handlerType.CUSTOM] = @() false,
 }
 
 handlersManager.beforeClearScene <- function beforeClearScene(guiScene)
@@ -139,6 +140,7 @@ handlersManager.updatePostLoadCss <- function updatePostLoadCss()
     ::call_darg("updateExtWatched", {
       safeAreaHud = safearea
       safeAreaMenu = safeAreaMenu.getSafearea()
+      isInVr = ::is_stereo_mode()
     })
     haveChanges = true
   }
@@ -182,6 +184,7 @@ handlersManager.generatePreLoadCssString <- function generatePreLoadCssString()
     { name = "_safearea_hud_w",   value = ::format("%.2f", hudSafearea[0]) }
     { name = "_safearea_hud_h",   value = ::format("%.2f", hudSafearea[1]) }
     { name = "slotbarCountries",  value = countriesCount.tostring() }
+    { name = "isInVr",            value = (::is_stereo_mode() ? 1 : 0).tostring() }
   ]
 
   return generateCssString(config)
@@ -375,10 +378,10 @@ handlersManager.calcCurrentSceneBgBlur <- function calcCurrentSceneBgBlur()
 {
   foreach(wndType, group in handlers)
   {
-    local defValue = ::getTblValue(wndType, sceneBgBlurDefaults, false)
+    local defValue = sceneBgBlurDefaults?[wndType]() ?? false
     foreach(h in group)
       if (isHandlerValid(h, true) && h.isSceneActive())
-        if (::getTblValue("shouldBlurSceneBg", h, defValue))
+        if (h?.shouldBlurSceneBgFn() ?? h?.shouldBlurSceneBg ?? defValue)
           return true
   }
   return false

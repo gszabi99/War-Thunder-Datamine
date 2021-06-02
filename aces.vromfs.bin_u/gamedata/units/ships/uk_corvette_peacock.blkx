@@ -695,8 +695,8 @@
     {
       "ammunition_storage_shells": {
         "onKill": {
+          "fire": 0.4,
           "expl": 0.6,
-          "fire": 0.61,
           "fHitCritical": false
         },
         "onHit": {
@@ -725,8 +725,8 @@
       "ammunition_storage_aux": [
         {
           "onKill": {
+            "fire": 0.24,
             "expl": 0.76,
-            "fire": 0.75,
             "fHitCritical": false
           }
         },
@@ -800,56 +800,32 @@
       ]
     },
     {
-      "ammunition_torpedoes": [
-        {
-          "onKill": {
-            "expl": 0.03,
-            "nothing": 0.04,
-            "fHitCritical": false
-          }
+      "ammunition_torpedoes": {
+        "onKill": {
+          "expl": 0.07,
+          "nothing": 0.93,
+          "fHitCritical": false
         },
-        {
-          "onHit": {
-            "damageType": "explosion",
-            "expl": 0.85,
-            "damage": 400.0,
-            "fHitCritical": false
-          }
-        },
-        {
-          "onHit": {
-            "damageType": "fire",
-            "expl": 0.9,
-            "damage": 50.0,
-            "fHitCritical": false
-          }
+        "onHit": {
+          "damageType": "fire",
+          "expl": 0.1,
+          "damage": 50.0,
+          "fHitCritical": false
         }
-      ]
+      }
     },
     {
-      "ammunition_mines": [
-        {
-          "onKill": {
-            "expl": 0.1,
-            "nothing": 0.9
-          }
+      "ammunition_mines": {
+        "onKill": {
+          "expl": 0.1,
+          "nothing": 0.9
         },
-        {
-          "onHit": {
-            "damageType": "fire",
-            "damage": 50.0,
-            "expl": 0.1
-          }
-        },
-        {
-          "onHit": {
-            "damageType": "explosion",
-            "expl": 0.15,
-            "damage": 250.0,
-            "fHitCritical": false
-          }
+        "onHit": {
+          "damageType": "fire",
+          "damage": 30.0,
+          "expl": 0.1
         }
-      ]
+      }
     },
     {
       "part": {
@@ -1307,7 +1283,7 @@
   "MetaParts": [
     {
       "cover": {
-        "part": "compartment_01_dm",
+        "part": "cover_01_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1318,7 +1294,7 @@
     },
     {
       "cover": {
-        "part": "compartment_02_dm",
+        "part": "cover_02_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1329,7 +1305,7 @@
     },
     {
       "cover": {
-        "part": "compartment_03_dm",
+        "part": "cover_03_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1340,7 +1316,7 @@
     },
     {
       "cover": {
-        "part": "compartment_04_dm",
+        "part": "cover_04_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1351,7 +1327,7 @@
     },
     {
       "cover": {
-        "part": "compartment_05_dm",
+        "part": "cover_05_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1362,7 +1338,7 @@
     },
     {
       "cover": {
-        "part": "compartment_06_dm",
+        "part": "cover_06_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1373,7 +1349,7 @@
     },
     {
       "cover": {
-        "part": "compartment_07_dm",
+        "part": "cover_07_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1384,7 +1360,7 @@
     },
     {
       "cover": {
-        "part": "compartment_08_dm",
+        "part": "cover_08_dm",
         "effect": {
           "conditionDamageType": "explosion",
           "conditionDamage": 20000.0,
@@ -1540,6 +1516,7 @@
     {
       "anim": {
         "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
         "animatedRadarIdx": 1,
         "radarAnimPitchVar": "target_tagging_pitch_rotate"
       }

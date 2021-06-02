@@ -3,6 +3,9 @@
   "weaponType": 1,
   "maxDeltaAngle": 0.05,
   "maxDeltaAngleVertical": 0.05,
+  "aimMinDist": 0.05,
+  "aimMaxDist": 5500.0,
+  "attackMaxDist": 5000.0,
   "shotFreq": 3.33,
   "shotFreqRndK": 0.05,
   "bullets": 25,
@@ -20,6 +23,13 @@
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
+  "attackShipsPriority": {
+    "type_boat": true,
+    "type_heavy_boat": true,
+    "type_barge": true,
+    "type_frigate": true,
+    "type_destroyer": true
+  },
   "bullet": {
     "bulletCount": 300,
     "mass": 0.916,
@@ -70,13 +80,13 @@
           "useRealShatters": true
         },
         {
-          "countPortion": 0.5
+          "countPortion": 0.25
         },
         {
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "damageScale": 1.7,
             "angles": [0.0,179.0],
             "countPortion": 0.5
           }
@@ -85,7 +95,7 @@
           "segment": {
             "radiusScale": 1.0,
             "penetrationScale": 1.0,
-            "damageScale": 1.0,
+            "damageScale": 1.7,
             "angles": [180.0,359.0],
             "countPortion": 0.5
           }
@@ -121,6 +131,9 @@
       },
       "roadSoil": {
         "fx": "hit_39_58mm_dirt_he"
+      },
+      "bricks_red": {
+        "fx": "hit_39_58mm_red_brick_he"
       },
       "sand": {
         "fx": "hit_39_58mm_sand_he"
@@ -232,13 +245,13 @@
             "useRealShatters": true
           },
           {
-            "countPortion": 0.5
+            "countPortion": 0.25
           },
           {
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.0,
+              "damageScale": 1.7,
               "angles": [0.0,179.0],
               "countPortion": 0.5
             }
@@ -247,7 +260,7 @@
             "segment": {
               "radiusScale": 1.0,
               "penetrationScale": 1.0,
-              "damageScale": 1.0,
+              "damageScale": 1.7,
               "angles": [180.0,359.0],
               "countPortion": 0.5
             }
@@ -283,6 +296,9 @@
         },
         "roadSoil": {
           "fx": "hit_39_58mm_dirt_he"
+        },
+        "bricks_red": {
+          "fx": "hit_39_58mm_red_brick_he"
         },
         "sand": {
           "fx": "hit_39_58mm_sand_he"

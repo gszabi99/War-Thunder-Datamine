@@ -16,16 +16,16 @@
       "secondaryShattersPreset": "ap"
     },
     {
-      "stabilityThreshold": 0.1
+      "stabilityThreshold": 0.5
     },
     {
-      "stabilityCaliberToArmorThreshold": 100.0
+      "stabilityCaliberToArmorThreshold": 5.0
     },
     {
       "stabilityReductionAfterRicochet": 0.3
     },
     {
-      "stabilityReductionAfterPenetration": 0.01
+      "stabilityReductionAfterPenetration": 0.15
     },
     {
       "bulletType": "atgm_tandem_tank"
@@ -238,17 +238,11 @@
       "iconType": "atgm_type_helfire_x4"
     },
     {
-      "stabilityRicochetModifier": [
-        {
-          "mod1": [0.0,0.0]
-        },
-        {
-          "mod2": [20.0,0.1]
-        },
-        {
-          "mod2": [30.0,0.2]
-        }
-      ]
+      "stabilityRicochetModifier": {
+        "mod1": [0.0,0.5],
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
+      }
     },
     {
       "pressureDamage": {

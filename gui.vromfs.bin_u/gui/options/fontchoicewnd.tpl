@@ -3,9 +3,8 @@ root {
   blur_foreground {}
 
   frame {
-    pos:t='50%pw-50%w, 1@minYposWindow + 0.3*(sh - 1@minYposWindow - h)';
-    position:t='relative'
     class:t='wndNav'
+    isCenteredUnderLogo:t='yes'
 
     frame_header {
       activeText {

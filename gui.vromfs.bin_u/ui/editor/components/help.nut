@@ -1,6 +1,6 @@
 local {colors} = require("style.nut")
 local scrollbar = require("daRg/components/scrollbar.nut")
-local textButton = require("daRg/components/textButton.nut")
+local textButton = require("textButton.nut")
 
 
 local helpText = @"

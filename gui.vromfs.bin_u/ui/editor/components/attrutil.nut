@@ -1,6 +1,7 @@
 local string = require("string")
 local dagorMath = require("dagor.math")
 local {tostring_r} = require("std/string.nut")
+local {logerr} = require("dagor.debug")
 
 local rexFloat = string.regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 local rexInt = string.regexp(@"[\+\-]?[0-9]+")
@@ -43,7 +44,7 @@ local function call_strfunc(str, func){
     ret = func.pcall(str)
   }
   catch(e){
-    log_for_user("can't convert to string", str)
+    logerr($"can't convert to string {::type(str)} = {str}")
   }
   return ret
 }

@@ -18,7 +18,7 @@ local function image(val, params={}, addchildren = null) {
     rendObj = ROBJ_IMAGE
     image = val
     size=SIZE_TO_CONTENT
-  }.__update(params).__update({children=children})
+  }.__update(params, {children})
 }
 
 return image

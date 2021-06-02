@@ -107,6 +107,7 @@ local function fieldEditText(params={}){
   local function setVal(val) {
     if (path != null) {
       setValToObj(obj, path, val)
+      onChange?()
       return true
     }
     else {

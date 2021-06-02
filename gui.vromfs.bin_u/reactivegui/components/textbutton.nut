@@ -1,4 +1,4 @@
-local textButton = require("daRg/components/textButton.nut")
+local textButton = require("textButtonBase.nut")
 local fontsState = require("reactiveGui/style/fontsState.nut")
 local textButtonTextCtor = require("textButtonTextCtor.nut")
 

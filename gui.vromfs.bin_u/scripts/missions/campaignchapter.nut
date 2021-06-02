@@ -1,7 +1,11 @@
 local progressMsg = require("sqDagui/framework/progressMsg.nut")
+local unitTypes = require("scripts/unit/unitTypesList.nut")
+local popupFilter = require("scripts/popups/popupFilter.nut")
+local { getMissionGroup, getMissionGroupName } = require("scripts/missions/missionsFilterData.nut")
 local { missionsListCampaignId } = require("scripts/missions/getMissionsListCampaignId.nut")
 local { setDoubleTextToButton } = require("scripts/viewUtils/objectTextUpdate.nut")
 local { saveTutorialToCheckReward } = require("scripts/tutorials/tutorialsData.nut")
+local { needUseHangarDof } = require("scripts/viewUtils/hangarDof.nut")
 
 ::current_campaign <- null
 ::current_campaign_name <- ""
@@ -945,11 +949,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     goBack()
   }
 
-  function checkfilterData(filterData)
+  function checkFilterData(filterData)
   {
-    if (filterData.isHeader) //need update headers by missions content. see applyMissionsfilter
-      return true
-
     local res = !filterText.len() || filterData.locString.indexof(filterText) != null
     if (res && isOnlyFavorites)
       res = misListType.isMissionFavorite(filterData.mission)
@@ -969,7 +970,8 @@ class ::gui_handlers.CampaignChapter extends ::gui_handlers.BaseGuiHandlerWT
     for (local idx = filterDataArray.len() - 1; idx >= 0; --idx)
     {
       local filterData = filterDataArray[idx]
-      local filterCheck = checkfilterData(filterData)
+      //need update headers by missions content
+      local filterCheck = filterData.isHeader || checkFilterData(filterData)
       if (!filterData.isHeader)
       {
         if (filterCheck)
@@ -1027,7 +1029,7 @@ class ::gui_handlers.SingleMissions extends ::gui_handlers.CampaignChapter
 {
   sceneBlkName = "gui/chapter.blk"
   sceneNavBlkName = "gui/backSelectNavChapter.blk"
-  shouldBlurSceneBg = true
+  shouldBlurSceneBgFn = needUseHangarDof
 
   function initScreen()
   {
@@ -1042,6 +1044,11 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
   sceneBlkName = "gui/chapterModal.blk"
   sceneNavBlkName = "gui/backSelectNavChapter.blk"
   owner = null
+
+  filterMask = {
+    unit = -1
+    group = -1
+  }
 
   function initScreen()
   {
@@ -1065,6 +1072,98 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     }
 
     base.initScreen()
+
+    if (wndGameMode != ::GM_SKIRMISH)
+      return
+
+    local nestObj = scene.findObject("filter_nest")
+    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView(), "RB")
+  }
+
+  function checkFilterData(filterData)
+  {
+    if (!base.checkFilterData(filterData))
+      return false
+
+    if (wndGameMode != ::GM_SKIRMISH)
+      return true
+
+    return (filterData.allowedUnitTypesMask & filterMask.unit) != 0
+      && (filterData.group & filterMask.group) != 0
+  }
+
+  function createFilterDataArray()
+  {
+    base.createFilterDataArray()
+
+    if (wndGameMode != ::GM_SKIRMISH)
+      return
+
+    foreach (v in filterDataArray)
+    {
+      if (v.isHeader)
+        continue
+
+      v.allowedUnitTypesMask <- ::get_mission_allowed_unittypes_mask(v.mission.blk)
+      v.group <- getMissionGroup(v.mission)
+    }
+  }
+
+  getAvailableMissionGroups = @() filterDataArray
+    .reduce(@(acc, v) !v?.group || acc.contains(v.group) ? acc : acc.append(v.group), []) // -unwanted-modification
+    .sort(@(a, b) a <=> b)
+
+  getAvailableUnitTypes = @() unitTypes.types
+    .filter(@(u) u.isAvailable())
+    .sort(@(a, b) a.esUnitType <=> b.esUnitType)
+
+  function getFiltersView()
+  {
+    local availableUnitTypes = getAvailableUnitTypes()
+    local availableMissionGroups = getAvailableMissionGroups()
+    local mask = filterMask
+
+    local unitColumnView = [{
+      id    = "all_items"
+      image = $"#ui/gameuiskin#all_unit_types.svg"
+      text  = ::loc("all_units")
+      value = availableUnitTypes.findindex(@(u) !(u.bit & mask.unit)) == null
+    }]
+    .extend(availableUnitTypes.map(@(u) {
+      id    = $"unit_{u.bit}"
+      image = u.testFlightIcon
+      text  = u.getArmyLocName()
+      value = !!(u.bit & mask.unit)
+    }))
+
+    local groupColumnView = [{
+      id    = "all_items"
+      text  = ::loc("chapters/all")
+      value = availableMissionGroups.findindex(@(g) !(g & mask.group)) == null
+    }]
+    .extend(availableMissionGroups.map(@(g) {
+      id    = $"group_{g}"
+      text  = getMissionGroupName(g)
+      value = !!(g & mask.group)
+    }))
+
+    return [
+      { checkbox = unitColumnView }
+      { checkbox = groupColumnView }
+    ]
+  }
+
+  function onFilterCbChange(objId, typeName, value)
+  {
+    if (objId == "all_items")
+      filterMask[typeName] = value ? -1 : 0
+    else
+    {
+      local bit = objId.split("_")[1].tointeger()
+      filterMask[typeName] = filterMask[typeName] ^ bit
+    }
+    applyMissionFilter()
+    updateCollapsedItems()
   }
 
   function afterModalDestroy()

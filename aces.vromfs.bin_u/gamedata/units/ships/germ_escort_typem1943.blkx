@@ -1520,22 +1520,16 @@
         "hidableInViewer": true,
         "fireProtectionHp": 3.0,
         "compartment_01_dm": {
-          "hp": 1500.0
+          "hp": 500.0
         },
         "compartment_02_dm": {
-          "hp": 1410.0
+          "hp": 500.0
         },
         "compartment_03_dm": {
-          "hp": 1500.0
+          "hp": 500.0
         },
         "compartment_04_dm": {
-          "hp": 931.0
-        },
-        "compartment_05_dm": {
-          "hp": 1500.0
-        },
-        "compartment_06_dm": {
-          "hp": 1379.0
+          "hp": 500.0
         },
         "bridge_dm": {
           "armorThickness": 1.0,
@@ -1750,25 +1744,39 @@
         "fireProtectionHp": 5000.0,
         "armorThickness": 15.0,
         "turret_01_front_dm": {
-          "hp": 945.0
+          "armorClass": "ship_STS",
+          "armorThickness": 8.0,
+          "hp": 846.0
+        },
+        "turret_07_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 8.0,
+          "hp": 846.0
         },
         "turret_02_front_dm": {
-          "hp": 250.0
-        },
-        "turret_03_front_dm": {
-          "hp": 250.0
-        },
-        "turret_04_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 8.0,
           "hp": 250.0
         },
         "turret_05_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 8.0,
+          "hp": 250.0
+        },
+        "turret_03_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 12.0,
+          "hp": 250.0
+        },
+        "turret_04_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 12.0,
           "hp": 250.0
         },
         "turret_06_front_dm": {
+          "armorClass": "ship_STS",
+          "armorThickness": 12.0,
           "hp": 250.0
-        },
-        "turret_07_front_dm": {
-          "hp": 945.0
         }
       },
       "turrets": {
@@ -1779,6 +1787,18 @@
         },
         "turret_04_dm": {
           "hp": 250.0
+        },
+        "turret_05_dm": {
+          "hp": 250.0
+        },
+        "turret_06_dm": {
+          "hp": 250.0
+        },
+        "turret_07_dm": {
+          "hp": 250.0
+        },
+        "turret_08_dm": {
+          "hp": 250.0
         }
       },
       "gun_masks": {
@@ -1786,8 +1806,8 @@
         "armorThickness": 5.0
       },
       "turrets_main_caliber": {
-        "armorClass": "ship_STS",
-        "armorThickness": 8.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 15.0,
         "main_caliber_turret_01_dm": {
           "hp": 250.0
         },
@@ -1799,32 +1819,22 @@
         "armorClass": "ship_structural_steel",
         "armorThickness": 12.7,
         "auxiliary_caliber_turret_01_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "ship_Wsh",
-          "hp": 100.0
+          "hp": 150.0
         },
         "auxiliary_caliber_turret_02_dm": {
-          "armorThickness": 8.0,
-          "armorClass": "ship_Wsh",
-          "hp": 100.0
+          "hp": 150.0
         }
       },
       "turrets_aa_caliber": {
         "armorClass": "ship_structural_steel",
         "armorThickness": 10.0,
         "aa_turret_01_dm": {
-          "armorThickness": 12.0,
-          "armorClass": "ship_Wsh",
-          "hp": 50.0
+          "hp": 58.0
         },
         "aa_turret_02_dm": {
-          "armorThickness": 12.0,
-          "armorClass": "ship_Wsh",
-          "hp": 50.0
+          "hp": 58.0
         },
         "aa_turret_03_dm": {
-          "armorThickness": 12.0,
-          "armorClass": "ship_Wsh",
           "hp": 80.0
         }
       },
@@ -1909,6 +1919,9 @@
           "hp": 500.0
         },
         "coal_bunker_03_dm": {
+          "hp": 500.0
+        },
+        "coal_bunker_04_dm": {
           "hp": 500.0
         }
       },
@@ -2004,47 +2017,92 @@
       "sailor2": {
         "dmPart": "compartment_01_dm",
         "role": "sailor",
-        "crew": 17
+        "crew": 7
       },
       "sailor3": {
         "dmPart": "compartment_02_dm",
         "role": "sailor",
-        "crew": 16
+        "crew": 7
       },
       "sailor4": {
         "dmPart": "compartment_03_dm",
         "role": "sailor",
-        "crew": 18
+        "crew": 7
       },
       "sailor5": {
         "dmPart": "compartment_04_dm",
         "role": "sailor",
-        "crew": 11
+        "crew": 7
       },
       "sailor6": {
-        "dmPart": "compartment_05_dm",
-        "role": "sailor",
-        "crew": 17
-      },
-      "sailor7": {
-        "dmPart": "compartment_06_dm",
-        "role": "sailor",
-        "crew": 16
-      },
-      "sailor8": {
         "dmPart": "main_caliber_turret_01_dm",
         "role": "sailor",
         "crew": 3
       },
-      "sailor9": {
+      "sailor7": {
         "dmPart": "main_caliber_turret_02_dm",
         "role": "sailor",
         "crew": 3
       },
+      "sailor8": {
+        "dmPart": "auxiliary_caliber_turret_01_dm",
+        "role": "sailor",
+        "crew": 2
+      },
+      "sailor9": {
+        "dmPart": "auxiliary_caliber_turret_02_dm",
+        "role": "sailor",
+        "crew": 2
+      },
       "sailor10": {
+        "dmPart": "tt_01_dm",
+        "role": "sailor",
+        "crew": 3
+      },
+      "sailor11": {
+        "dmPart": "tt_02_dm",
+        "role": "sailor",
+        "crew": 3
+      },
+      "sailor12": {
         "dmPart": "radio_station_dm",
         "role": "sailor",
         "crew": 2
+      },
+      "sailor13": {
+        "dmPart": "ammunition_storage_shells_01_dm",
+        "role": "sailor",
+        "crew": 11
+      },
+      "sailor14": {
+        "dmPart": "ammunition_storage_shells_02_dm",
+        "role": "sailor",
+        "crew": 11
+      },
+      "sailor15": {
+        "dmPart": "ammunition_storage_aux_01_dm",
+        "role": "sailor",
+        "crew": 11
+      },
+      "sailor16": {
+        "dmPart": "engine_room_01_dm",
+        "role": "sailor",
+        "crew": 6
+      },
+      "sailor17": {
+        "dmPart": "engine_room_02_dm",
+        "role": "sailor",
+        "crew": 6
+      },
+      "sailor18": {
+        "dmPart": "transmission_01_dm",
+        "role": "sailor",
+        "crew": 6
+      },
+      "sailor19": {
+        "dmPart": "transmission_02_dm",
+        "role": "sailor",
+        "crew": 6
       }
     }
   },
@@ -2067,8 +2125,8 @@
       {
         "ammunition_storage_shells": {
           "onKill": {
+            "fire": 0.4,
             "expl": 0.6,
-            "fire": 0.61,
             "fHitCritical": false
           },
           "onHit": {
@@ -2097,8 +2155,8 @@
         "ammunition_storage_aux": [
           {
             "onKill": {
+              "fire": 0.24,
               "expl": 0.76,
-              "fire": 0.75,
               "fHitCritical": false
             }
           },
@@ -2172,56 +2230,32 @@
         ]
       },
       {
-        "ammunition_torpedoes": [
-          {
-            "onKill": {
-              "expl": 0.03,
-              "nothing": 0.04,
-              "fHitCritical": false
-            }
+        "ammunition_torpedoes": {
+          "onKill": {
+            "expl": 0.07,
+            "nothing": 0.93,
+            "fHitCritical": false
           },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.85,
-              "damage": 400.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "expl": 0.9,
-              "damage": 50.0,
-              "fHitCritical": false
-            }
+          "onHit": {
+            "damageType": "fire",
+            "expl": 0.1,
+            "damage": 50.0,
+            "fHitCritical": false
           }
-        ]
+        }
       },
       {
-        "ammunition_mines": [
-          {
-            "onKill": {
-              "expl": 0.1,
-              "nothing": 0.9
-            }
+        "ammunition_mines": {
+          "onKill": {
+            "expl": 0.1,
+            "nothing": 0.9
           },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "damage": 50.0,
-              "expl": 0.1
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.15,
-              "damage": 250.0,
-              "fHitCritical": false
-            }
+          "onHit": {
+            "damageType": "fire",
+            "damage": 30.0,
+            "expl": 0.1
           }
-        ]
+        }
       },
       {
         "part": {
@@ -2681,7 +2715,7 @@
     "MetaParts": [
       {
         "cover": {
-          "part": "compartment_01_dm",
+          "part": "cover_01_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2692,7 +2726,7 @@
       },
       {
         "cover": {
-          "part": "compartment_02_dm",
+          "part": "cover_02_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2703,7 +2737,7 @@
       },
       {
         "cover": {
-          "part": "compartment_03_dm",
+          "part": "cover_03_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2714,7 +2748,7 @@
       },
       {
         "cover": {
-          "part": "compartment_04_dm",
+          "part": "cover_04_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2725,7 +2759,7 @@
       },
       {
         "cover": {
-          "part": "compartment_05_dm",
+          "part": "cover_05_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2736,7 +2770,7 @@
       },
       {
         "cover": {
-          "part": "compartment_06_dm",
+          "part": "cover_06_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2747,7 +2781,7 @@
       },
       {
         "cover": {
-          "part": "compartment_07_dm",
+          "part": "cover_07_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -2758,7 +2792,7 @@
       },
       {
         "cover": {
-          "part": "compartment_08_dm",
+          "part": "cover_08_dm",
           "effect": {
             "conditionDamageType": "explosion",
             "conditionDamage": 20000.0,
@@ -3850,9 +3884,7 @@
               "compartment_01_dm": [],
               "compartment_02_dm": [],
               "compartment_03_dm": [],
-              "compartment_04_dm": [],
-              "compartment_05_dm": [],
-              "compartment_06_dm": []
+              "compartment_04_dm": []
             }
           }
         }
@@ -3867,9 +3899,7 @@
               "compartment_01_dm": [],
               "compartment_02_dm": [],
               "compartment_03_dm": [],
-              "compartment_04_dm": [],
-              "compartment_05_dm": [],
-              "compartment_06_dm": []
+              "compartment_04_dm": []
             }
           }
         }
@@ -4999,7 +5029,7 @@
     "shipCover": [
       {
         "cover": {
-          "part": "compartment_01_dm",
+          "part": "cover_01_dm",
           "weight": 0.55,
           "maxWaterAlive": 1.0,
           "innerParts": {
@@ -5012,7 +5042,7 @@
       },
       {
         "cover": {
-          "part": "compartment_02_dm",
+          "part": "cover_02_dm",
           "weight": 0.65,
           "maxWaterAlive": 1.0,
           "innerParts": [
@@ -5033,7 +5063,7 @@
       },
       {
         "cover": {
-          "part": "compartment_03_dm",
+          "part": "cover_03_dm",
           "weight": 1.0,
           "maxWaterAlive": 1.0,
           "innerParts": {
@@ -5046,7 +5076,7 @@
       },
       {
         "cover": {
-          "part": "compartment_04_dm",
+          "part": "cover_04_dm",
           "weight": 0.55,
           "maxWaterAlive": 1.0,
           "innerParts": {
@@ -5059,7 +5089,7 @@
       },
       {
         "cover": {
-          "part": "compartment_05_dm",
+          "part": "cover_05_dm",
           "weight": 0.9,
           "maxWaterAlive": 1.0,
           "innerParts": [
@@ -5092,7 +5122,7 @@
       },
       {
         "cover": {
-          "part": "compartment_06_dm",
+          "part": "cover_06_dm",
           "weight": 0.35,
           "maxWaterAlive": 1.0
         }

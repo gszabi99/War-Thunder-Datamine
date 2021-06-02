@@ -42,6 +42,7 @@
 
 local { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("scripts/time.nut")
 local { validateLink, openUrl } = require("scripts/onlineShop/url.nut")
+local lottie = require("scripts/utils/lottie.nut")
 
 ::items_classes <- {}
 
@@ -104,6 +105,7 @@ class ::BaseItem
   craftedFrom = ""
 
   maxAmount = -1 // -1 means no max item amount
+  lottieAnimation = null
 
 
   constructor(blk, invBlk = null, slotData = null)
@@ -117,6 +119,7 @@ class ::BaseItem
     canBuy = canBuy && !isInventoryItem && getCost(true) > ::zero_money
     isHideInShop = blk?.hideInShop ?? false
     iconStyle = blk?.iconStyle ?? id
+    lottieAnimation = blk?.lottieAnimation
     link = blk?.link ?? ""
     forceExternalBrowser = blk?.forceExternalBrowser ?? false
     shouldAutoConsume = blk?.shouldAutoConsume ?? false
@@ -212,6 +215,8 @@ class ::BaseItem
 
   function getIcon(addItemName = true)
   {
+    if (lottieAnimation != null)
+      return ::LayersIcon.getIconData(null, getLottieImage())
     return ::LayersIcon.getIconData(iconStyle + "_shop", defaultIcon, 1.0, defaultIconStyle)
   }
 
@@ -802,4 +807,7 @@ class ::BaseItem
   canRecraftFromRewardWnd = @() false
   canOpenForGold = @() false
   getTopPrize = @() null
+  getLottieImage = @(width = "1@itemWidth") lottieAnimation != null
+    ? lottie({ image = lottieAnimation, width })
+    : null
 }

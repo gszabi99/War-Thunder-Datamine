@@ -805,6 +805,7 @@
       },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -1150,6 +1151,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -1158,10 +1167,10 @@
       "EngineName": "engine_m3_bradley",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks_light",
-      "TrackSoundNameCockpit": "tracks_light_interior",
+      "TrackSoundName": "tracks_lt_modern",
+      "TrackSoundNameCockpit": "tracks_lt_modern_interior",
       "EngineNameAi": "engine_tank_ai_light",
-      "TrackSoundNameAi": "tracks_ai_light",
+      "TrackSoundNameAi": "tracks_ai_lt_modern",
       "turret_turn": "turret_turn_manual",
       "gun_turn": "turret_turn_mg_light"
     }
@@ -2905,7 +2914,7 @@
           "speedPitch": 20.0,
           "bullets": 1000,
           "isBulletBelt": true,
-          "fireConeAngle": 15.0,
+          "fireConeAngle": 5.0,
           "ChainfireTime": 0.5,
           "DelayAfterShoot": 2.0,
           "accuracyAir": 1.5,
@@ -3758,7 +3767,7 @@
                 "speedPitch": 20.0,
                 "bullets": 1000,
                 "isBulletBelt": true,
-                "fireConeAngle": 15.0,
+                "fireConeAngle": 5.0,
                 "ChainfireTime": 0.5,
                 "DelayAfterShoot": 2.0,
                 "accuracyAir": 1.5,
@@ -3798,7 +3807,7 @@
               "ghosting": 0.75,
               "noiseFactor": 0.2
             },
-            "commanderIr": {
+            "commanderViewIr": {
               "resolution": [800,600],
               "lightMult": 8.0,
               "ghosting": 0.75,

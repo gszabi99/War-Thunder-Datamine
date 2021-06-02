@@ -417,6 +417,21 @@
           "armorThickness": 5.0
         }
       },
+      "gun": {
+        "armorClass": "tank_barrel",
+        "hp": 120.0,
+        "armorThickness": 20.0,
+        "gun_barrel_dm": [],
+        "gun_barrel_01_dm": {
+          "armorThickness": 5.0,
+          "armorClass": "RHA_tank"
+        },
+        "gun_barrel_02_dm": {
+          "armorThrough": 10.0,
+          "armorThickness": 10.0,
+          "hp": 50.0
+        }
+      },
       "chassis": {
         "armorClass": "tank_steel_wheels",
         "hp": 250.0,
@@ -456,54 +471,9 @@
           "ex_armor_03_dm": []
         }
       },
-      "gun": {
-        "armorClass": "tank_barrel",
-        "hp": 200.0,
-        "armorThickness": 35.0,
-        "gun_barrel_dm": [],
-        "gun_barrel_01_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_02_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_03_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_04_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_05_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_06_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_07_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        },
-        "gun_barrel_08_dm": {
-          "armorThrough": 10.0,
-          "armorThickness": 5.0,
-          "hp": 50.0
-        }
-      },
       "tracks": {
         "armorClass": "tank_traks",
+        "allowRicochet": true,
         "armorThickness": 15.0,
         "hp": 250.0,
         "genericEffectiveThicknessMax": 15.0,
@@ -835,6 +805,14 @@
         "fuel_tank_exterior_01_dm": [],
         "fuel_tank_exterior_02_dm": [],
         "fuel_tank_exterior_03_dm": []
+      },
+      "commander_panoramic_sight": {
+        "commander_panoramic_sight_dm": {
+          "armorClass": "optics_tank",
+          "armorThrough": 20.0,
+          "armorThickness": 10.0,
+          "hp": 100.0
+        }
       }
     }
   },
@@ -1874,10 +1852,17 @@
         "role": "loader",
         "substitute": "commander"
       },
-      "commander": {
-        "dmPart": "commander_dm",
-        "role": "commander"
-      }
+      "commander": [
+        {
+          "dmPart": "commander_dm"
+        },
+        {
+          "role": "tank_gunner"
+        },
+        {
+          "role": "commander"
+        }
+      ]
     }
   },
   {
@@ -2450,10 +2435,11 @@
       "EngineName": "engine_strf90",
       "TrackSoundPath": "tanks/engines_tanks",
       "TrackSoundPathStudio": "ground/engines",
-      "TrackSoundName": "tracks",
-      "TrackSoundNameCockpit": "tracks_interior",
-      "EngineNameAi": "engine_tank_ai_middle",
-      "TrackSoundNameAi": "tracks_ai_middle",
+      "TrackSoundName": "tracks_bmp_modern",
+      "TrackSoundNameCockpit": "tracks_bmp_modern_interior",
+      "turret_turn": "turret_turn_servo",
+      "EngineNameAi": "engine_tank_ai_light",
+      "TrackSoundNameAi": "tracks_ai_bmp_modern",
       "gun_turn": "turret_turn_mg_light"
     }
   },
@@ -2502,6 +2488,8 @@
             "head": "bone_turret",
             "gun": "bone_gun",
             "barrel": "bone_gun_barrel",
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "linkedAnimPart": {
               "verNode": "bone_camera_gunner",
               "verLimits": [-10.0,20.0],
@@ -2575,7 +2563,8 @@
           "turret": {
             "head": "bone_mg_twin",
             "gun": "bone_mg_twin",
-            "gunnerDm": "gunner_dm"
+            "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm"
           },
           "limits": {
             "yaw": [-0.0,0.0],
@@ -2630,6 +2619,7 @@
             "head": "bone_gun_01",
             "gun": "bone_gun_01",
             "gunnerDm": "gunner_dm",
+            "secondGunnerDm": "commander_dm",
             "rotatedTurret": "bone_turret"
           },
           "limits": {
@@ -3729,6 +3719,8 @@
                   "head": "bone_turret",
                   "gun": "bone_gun",
                   "barrel": "bone_gun_barrel",
+                  "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm",
                   "linkedAnimPart": {
                     "verNode": "bone_camera_gunner",
                     "verLimits": [-10.0,20.0],
@@ -3802,7 +3794,8 @@
                 "turret": {
                   "head": "bone_mg_twin",
                   "gun": "bone_mg_twin",
-                  "gunnerDm": "gunner_dm"
+                  "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm"
                 },
                 "limits": {
                   "yaw": [-0.0,0.0],
@@ -3857,6 +3850,7 @@
                   "head": "bone_gun_01",
                   "gun": "bone_gun_01",
                   "gunnerDm": "gunner_dm",
+                  "secondGunnerDm": "commander_dm",
                   "rotatedTurret": "bone_turret"
                 },
                 "limits": {
@@ -3930,7 +3924,7 @@
                   "bullets": 3
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "fireConeAngle": 5.0
                 },
                 {
                   "ChainfireTime": 0.5
@@ -4001,7 +3995,7 @@
               "resolution": [800,600],
               "noiseFactor": 0.04
             },
-            "commanderThermal": {
+            "commanderViewThermal": {
               "resolution": [800,600],
               "noiseFactor": 0.04
             },

@@ -1,12 +1,13 @@
+local stubFunc = @(...) null
 local {
-  createPushContext,
-  deletePushContext,
-  subscribeWithContext,
-  unsubscribeFromContext,
-  setNotificationDispatcher
-} = require("sony.webapi")
-
-local activeSubscriptions = persist("activeSubscriptions", @() ::Watched({}))
+  createPushContext = stubFunc,
+  deletePushContext = stubFunc,
+  subscribeWithContext = stubFunc,
+  unsubscribeFromContext = stubFunc,
+  setNotificationDispatcher = stubFunc
+} = require_optional("sony.webapi")
+local {Watched} = require("frp")
+local activeSubscriptions = persist("activeSubscriptions", @() Watched({}))
 
 local wasDispatcherSet = false;
 local function dispatchPushNotification(notification) {

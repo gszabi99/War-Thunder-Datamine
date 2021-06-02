@@ -6,8 +6,9 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
-  "aimMinDist": 0.1,
-  "aimMaxDist": 2000.0,
+  "aimMinDist": 500.0,
+  "aimMaxDist": 10000.0,
+  "attackMaxDist": 8000.0,
   "maxDeltaAngle": 0.06,
   "maxDeltaAngleVertical": 0.08,
   "shotFreq": 2.4,
@@ -23,11 +24,11 @@
   "fxConcreteDust": "",
   "fxWaterShockWave": "",
   "shouldCollideWithRendinsts": true,
-  "sound_path": "tanks/weapon_tanks/atgm",
-  "sound_pathStudio": "ground/weapon/atgm/roland",
+  "sound_pathStudio": "ground/weapon/atgm",
   "sound": "atgm_LPC",
   "sound_inside": "atgm_LPC_interior",
-  "sfxReloadBullet": "grd_roland_reload",
+  "reload_sound_pathStudio": "ground/effects",
+  "reload_sound": "reload_rocket",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
   "bulletsCartridge": 2,
@@ -42,9 +43,9 @@
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
+    "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "sam_tank",
     "slopeEffectPreset": "ap",
@@ -54,15 +55,15 @@
     "bulletName": "163mm_roland_3",
     "mass": 77.0,
     "caliber": 0.163,
-    "sound_path": "tanks/weapon_tanks/atgm",
-    "sound_pathStudio": "ground/weapon/atgm/roland",
+    "speed": 550.0,
+    "sound_pathStudio": "ground/weapon/atgm",
     "sound": "atgm_LPC",
     "sound_inside": "atgm_LPC_interior",
     "recoilMultiplier": 0.05,
     "stabilityRicochetModifier": {
       "mod1": [0.0,0.5],
-      "mod2": [20.0,0.6],
-      "mod3": [30.0,1.0]
+      "mod2": [15.0,0.7],
+      "mod3": [30.0,0.99]
     },
     "pressureDamage": {
       "damageType": "pressure"
@@ -72,9 +73,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
       "slopeEffectPreset": "ap",
@@ -153,8 +154,8 @@
       },
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -282,6 +283,9 @@
         "roadSoil": {
           "fx": "hit_133_160mm_dirt_he"
         },
+        "bricks_red": {
+          "fx": "hit_133_160mm_stone_he"
+        },
         "sand": {
           "fx": "hit_133_160mm_sand_he"
         },
@@ -365,9 +369,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
       "slopeEffectPreset": "ap",
@@ -377,15 +381,15 @@
       "bulletName": "163mm_roland_3",
       "mass": 77.0,
       "caliber": 0.163,
-      "sound_path": "tanks/weapon_tanks/atgm",
-      "sound_pathStudio": "ground/weapon/atgm/roland",
+      "speed": 550.0,
+      "sound_pathStudio": "ground/weapon/atgm",
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -395,9 +399,9 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
-        "stabilityThreshold": 0.05,
+        "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "sam_tank",
         "slopeEffectPreset": "ap",
@@ -476,8 +480,8 @@
         },
         "stabilityRicochetModifier": {
           "mod1": [0.0,0.5],
-          "mod2": [20.0,0.6],
-          "mod3": [30.0,1.0]
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
         },
         "pressureDamage": {
           "damageType": "pressure"
@@ -604,6 +608,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
@@ -689,9 +696,9 @@
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "secondaryShattersPreset": "ap_rocket",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "sam_tank",
       "slopeEffectPreset": "ap",
@@ -699,17 +706,17 @@
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
       "bulletName": "165mm_vt_1",
-      "mass": 73.0,
+      "mass": 76.0,
       "caliber": 0.165,
       "sound_path": "tanks/weapon_tanks/atgm",
-      "sound_pathStudio": "ground/weapon/atgm/roland",
+      "sound_pathStudio": "ground/weapon/atgm",
       "sound": "atgm_LPC",
       "sound_inside": "atgm_LPC_interior",
       "recoilMultiplier": 0.05,
       "stabilityRicochetModifier": {
         "mod1": [0.0,0.5],
-        "mod2": [20.0,0.6],
-        "mod3": [30.0,1.0]
+        "mod2": [15.0,0.7],
+        "mod3": [30.0,0.99]
       },
       "pressureDamage": {
         "damageType": "pressure"
@@ -719,9 +726,9 @@
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "secondaryShattersPreset": "ap_rocket",
-        "stabilityThreshold": 0.05,
+        "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "sam_tank",
         "slopeEffectPreset": "ap",
@@ -729,21 +736,21 @@
         "explodeOnRendinst": true,
         "shellAnimation": "video/shells_animations/sam.ivf",
         "caliber": 0.165,
-        "mass": 73.0,
+        "mass": 76.0,
         "explosiveType": "comp_b",
         "explosiveMass": 6.0,
         "maxDeltaAngle": 0.01,
         "dragCx": 0.027,
-        "length": 2.29,
+        "length": 2.35,
         "distFromCmToStab": 0.005,
-        "CxK": 0.96,
+        "CxK": 0.92,
         "WdK": [0.1,0.1,0.1],
-        "force": 42000.0,
-        "timeFire": 1.7,
-        "force1": 100.0,
+        "force": 30000.0,
+        "timeFire": 1.8,
+        "force1": 3400.0,
         "timeFire1": 8.0,
-        "massEnd": 60.0,
-        "massEnd1": 41.6,
+        "massEnd": 58.0,
+        "massEnd1": 40.0,
         "thrustDeviation": 0.0,
         "operated": true,
         "operatedDist": 12000.0,
@@ -775,12 +782,12 @@
         "advancedMissiles": false,
         "useStartSpeed": true,
         "startSpeed": 55.0,
-        "endSpeed": 1250.0,
-        "maxSpeed": 1500.0,
+        "maxSpeed": 1250.0,
+        "endSpeed": 1500.0,
         "price": 3000.0,
-        "mesh": "roland_rocket_deployed",
+        "mesh": "vt_1_rocket_deployed",
         "proximityFuse": {
-          "radius": 6.0,
+          "radius": 8.0,
           "armDistance": 300.0,
           "detectAirUnits": true,
           "detectShells": true,
@@ -790,8 +797,8 @@
         },
         "stabilityRicochetModifier": {
           "mod1": [0.0,0.5],
-          "mod2": [20.0,0.6],
-          "mod3": [30.0,1.0]
+          "mod2": [15.0,0.7],
+          "mod3": [30.0,0.99]
         },
         "pressureDamage": {
           "damageType": "pressure"
@@ -918,6 +925,9 @@
           },
           "roadSoil": {
             "fx": "hit_133_160mm_dirt_he"
+          },
+          "bricks_red": {
+            "fx": "hit_133_160mm_stone_he"
           },
           "sand": {
             "fx": "hit_133_160mm_sand_he"
