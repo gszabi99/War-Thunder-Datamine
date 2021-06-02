@@ -2,9 +2,9 @@
 // warning disable: -file:const-never-declared
 return [
 "Rank VII for aviation, brand new commander's sight for selected vehicles, naval shell chase camera and almost 30 new machines are joining the game! Two new locations, new effects for the nuclear blast, updated sounds, and much more!"
-{t="h1" v="Ground vehicles"}
+{t="h2" v="Ground vehicles"}
 "11 new ground vehicles, including long awaited modern Chinese SPAA!"
-{t="horizontal" halign=ALIGN_CENTER padding=[fpx(8), fpx(10)] v=[
+{t="horizontal" halign=ALIGN_CENTER v=[
   {t="vertical" margin=[0, fpx(50)] v=[
     {t="emphasis" v="Germany"}
     {t="bullets" v=[
@@ -48,9 +48,9 @@ return [
     ]}
   ]}
 ]}
-{t="h1" v="Aircraft"}
+{t="h2" v="Aircraft"}
 "MiG-23M, Sea Vixen F.A.W. Mk.2 and more!"
-{t="horizontal" halign=ALIGN_CENTER padding=[fpx(8), fpx(10)] v=[
+{t="horizontal" halign=ALIGN_CENTER v=[
   {t="vertical" margin=[0, fpx(50)] v=[
     {t="emphasis" v="USSR"}
     {t="bullets" v=[
@@ -99,8 +99,8 @@ return [
     ]}
   ]}
 ]}
-{t="h1" v="Helicopters"}
-{t="horizontal" halign=ALIGN_CENTER padding=[fpx(8), fpx(10)] v=[
+{t="h2" v="Helicopters"}
+{t="horizontal" halign=ALIGN_CENTER v=[
   {t="vertical" margin=[0, fpx(50)] v=[
     {t="emphasis" v="Great Britain"}
     {t="bullets" v=[
@@ -117,8 +117,8 @@ return [
     ]}
   ]}
 ]}
-{t="h1" v="Naval Fleet"}
-{t="horizontal" halign=ALIGN_CENTER padding=[fpx(8), fpx(10)] v=[
+{t="h2" v="Naval Fleet"}
+{t="horizontal" halign=ALIGN_CENTER v=[
   {t="vertical" margin=[0, fpx(50)] v=[
     {t="emphasis" v="USA"}
     {t="bullets" v=[
@@ -147,7 +147,7 @@ return [
     ]}
   ]}
 ]}
-{t="h1" v="New locations and missions"}
+{t="h2" v="New locations and missions"}
 {t="bullets" v=[
   "New location for mixed battles 'Red desert'"
   "New naval location 'Drowned city'"
@@ -160,7 +160,7 @@ return [
   "The following missions now have the mechanics of different airfields for battles at different ranks: Operation 'Sicily', Operation 'Korea', Operation 'Ruhr', Operation 'Tunisia', Operation 'Zhengzhou', Operation 'China Civil War 1946'"
   "Overall rework of visuals in 'Pacific Hidden Base'"
 ]}
-{t="emphasis" v="Enduring Confrontation"}
+{t="h2" v="Enduring Confrontation"}
 {t="bullets" v=[
   "Migration to this logic will occur in stages, during this major update."
   "Modern AA systems, Including missiles, have been added to airfield protection in high rank battles in the following missions: 'Maginot Line', 'Tunisia', 'Zhengzhou', and 'China Civil War 1946'."
@@ -176,7 +176,7 @@ return [
 {t="bullets" v=[
   "Known bug: AI ships may ram and get stuck in each other."
 ]}
-{t="emphasis" v="Ground Vehicle model, damage model, characteristic and weaponry changes:"}
+{t="h2" v="Ground Vehicle model, damage model, characteristic and weaponry changes:"}
 {t="bullets" v=[
   "The aiming algorithm for semi-automatic missiles has been improved. The new algorithm takes into account movement of the vehicle and target much better, with improved accuracy and without swinging off the trajectory, both in automatic and manual modes. The algorithm works for all SAM SPAA’s with semi-automatic guidance, as well as for any ATGM launched from the ground or from helicopters."
   "The limit for launching missiles on the go has been removed for the Sidam Mistral SPAA."
@@ -194,7 +194,7 @@ return [
   "Challenger Mk.2, Challenger Mk.3, Challenger 2, Challenger 2 (2F) —  composite armour now consists of voluminous armour. "
   "M1, IPM1, M1A1 — turret and front hull armour now consists of voluminous armour."
 ]}
-{t="emphasis" v="Aircraft and helicopter model, damage model, characteristic and weaponry changes"}
+{t="h2" v="Aircraft and helicopter model, damage model, characteristic and weaponry changes"}
 {t="bullets" v=[
   "FJ-4B VMF-232 - 4х AIM-9B preset has been added."
   "F3H-2 — AIM-7C missile has been added."
@@ -204,7 +204,7 @@ return [
   "Mirage IIIE — AIM-9B modification has been removed, 2хAIM-9B preset is now available by default. RP or GE spent on this modification will be refunded."
   "Lightning F.6 — Firestreak modification has been removed, 2хFirestreaks preset is now available by default. RP or GE spent on this modification will be refunded."
   "For most aircraft of rank VI and above possessing air-to-air missiles, default missile presets have been introduced. These presets are available for aircraft with missiles of different types and those able to use more than two missiles of each type at a time."
-  "NS-45 cannon — AP-T round has been added (Source: сравнительная таблица основных характеристик 45-mm. авиационных автоматических пушек ОКБ-15 и ОКБ-16 по результатам государственных испытаний в НИИ АВ ВВС КА) "
+  "NS-45 cannon — AP-T round has been added (Source: сравнительная таблица основных характеристик 45-mm. авиационных автоматических пушек ОКБ-15 и ОКБ-16 по результатам государственных испытаний в НИИ АВ ВВС КА)."
   "Ho 229 v.3 — armour piercing composite rigid tracer shell has been added to 'armoured targets' belt."
   "P-63A-5, P-63C-5, P-63A-10 — 500 lb bomb has been changed to FAB-250 in the secondary weapon menu."
   "P-400 — 500 lb bomb has been added."
@@ -214,9 +214,9 @@ return [
   "F9F-8 — type of the 1000 lb bomb has been changed from AN-M65 to LDGP Mk 83."
   "F-4EJ Phantom II — a bug has been fixed that prevented the selection of belt type for the gun pods."
   "F.222.2 — an inconsistency between machine guns models and their names has been fixed."
-  "J35D —  a bug has been fixed , due to which the m/56d preset could be obtained by researching m/57d modification. "
+  "J35D — a bug has been fixed , due to which the m/56d preset could be obtained by researching m/57d modification."
   "Ka-29 — a bug has been fixed , due to which 2А42 gun wasn’t designated as secondary."
-  "Mi-24P (Germany) /  Mi-24P HFS 80 - additional reload of 9M114 ATGM has been added."
+  "Mi-24P (Germany) / Mi-24P HFS 80 - additional reload of 9M114 ATGM has been added."
   "A-4E Early — forward guns have been changed from Mk 12 Mod 3 to Mk 12 Mod 0. "
   "Buccaneer S.2 — incorrect display of some weapon presets have been corrected."
   "F-4E Phantom II —  AGM-65B Maverick has been added."
@@ -268,7 +268,7 @@ return [
   "J35D — 2х RB24 preset has been added."
   "T2 — 2х AIM-9B presets are now available without opening this modification."
 ]}
-"Other"
+{t="emphasis" v="Other"}
 {t="bullets" v=[
   "J-4, J-2 — a bug has been fixed due to which it was possible to activate the bomb sight after take off, when using OFAB-250 bombs."
   "Hornet Mk.III — modification '150 octane fuel' has been added."
@@ -286,12 +286,12 @@ return [
   "Correct bomb load images have been implemented to the suspended weaponry menu for the following aircraft: F.222.2, N.C.223.3, Potez 633, LeO 451 early, LeO 451 late, M.B.162."
   "Horizontal stabilizers have been split into two parts on the damage model for USA, USSR, German and French aircraft, as well as helicopters. Now if part of a stabilizer is damaged, it will rip off instead of destroying both parts. The remaining nations (Britain, Japan, Italy, Sweden) will be added later."
 ]}
-{t="emphasis" v="Flight Model changes"}
+{t="h2" v="Flight Model changes"}
 {t="bullets" v=[
   "G8N1, Ki-49 (all modifications), P-39 (all modifications), P-40 (all modifications) — The flight model has been updated. Engine operating modes have been clarified. The distribution of fuel across tanks has been corrected. The polars of the wings, fuselage and propeller blades have been recalculated and updated. The behavior of the aircraft when releasing mechanization has been clarified."
   "H8K (all modifications) — The flight model has been updated. Engine operating modes have been clarified. The distribution of fuel across tanks has been corrected. The polars of the wings, fuselage and propeller blades have been recalculated and updated. Seaworthiness has been improved. Takeoff and landing have been simplified."
 ]}
-{t="emphasis" v="Naval fleet model, damage model, characteristic and weaponry changes"}
+{t="h2" v="Naval fleet model, damage model, characteristic and weaponry changes"}
 {t="bullets" v=[
   "Sea mines — lifetime has been increased to 15 minutes. Mine ammo stowages have become unreplenishable for all vessels armed with mines. I.e. the ability to drop mines once in a battle."
   "Detection distance for mines and torpedoes has been increased. Enemy torpedo detection range now depends on the vessel’s size and height and approximately equals to:"
@@ -302,7 +302,7 @@ return [
   "Imperatritsa Maria, Poltava — characteristics of the 4500mm torpedo (1912) have been corrected."
   "IJN Agano — fire rate of the 80mm/60 Type 98 gun has been corrected to 25 rpm. Two triple-barreled 25mm guns have been removed from the superstructure. "
   "Aquilone — AI fire on aerial targets has been corrected. Fire distance and accuracy have been increased. A bug with the reduced distance limit of the main guns has been fixed."
-  "Pr.30 Ognevoy, Tashkent — number of first order shots have been increased to 24."
+  "Ognevoy, Tashkent — number of first order shots have been increased to 24."
   "For AP shells of the 152 mm/47 Mk.16 and 203-mm/55 Mk.14 cannons (USS Cleveland, USS New Orleans) the parameters of the frontal resistance have been corrected which leads to the changes in the armour penetration."
   "HMS Invincible — stern torpedo launcher and torpedo ammo rack have been added."
   "HMS Dreadnought — stern torpedo launcher and torpedo ammo rack have been added. Positioning of the bow torpedo launchers has been corrected in accordance with blueprints."
@@ -314,11 +314,11 @@ return [
   "SMS Von der Tann, SMS Helgoland, SMS Kaiser — one torpedo has been removed from the side torpedo launchers."
   "SMS Von der Tann, SMS Helgoland, SMS Kaiser — one torpedo has been removed from side torpedo launchers, where 'spoon' tube covers have been installed. Spare torpedoes have been moved to stowages."
 ]}
-"Naval modifications and crew skills"
+{t="emphasis" v="Naval modifications and crew skills"}
 {t="bullets" v=[
   "Elco 80 ft PT-109 — Unnecessary modification with depth charges has been removed."
 ]}
-"Naval characteristics, physics and damage model"
+{t="emphasis" v="Naval characteristics, physics and damage model"}
 {t="bullets" v=[
   "The damage model of destroyers has been changed and now corresponds to a 'cruiser' form. The hull is divided into compartments responsible for flooding and housing the remaining modules. The crew is located in several internal compartments, from where it can be replenished into crew-carrying modules. "
   "Explosive armour Breach - Explosive armour Breach has been implemented for naval battles for all high-explosive projectiles with an instant fuse. When the shell detonates on an obstacle, the explosion penetration will be checked. And if it is sufficient for a breach, a gap in the obstacle will be breached into which gases and a sheaf of debris will rush. This allows optimization of the number of calculations for explosions on the armour and leads to a unified calculation of the force and damage of fragments and sectors of their dispersion. HE shells have become more effective in hitting modules and crew inside the ship if they have enough blast penetration."
@@ -348,7 +348,7 @@ return [
   "Zheleznyakov, Sverdlov, Chapaev, HMCS Haida — an issue with internal modules outside the hull has been solved."
   "USS Helena - conning tower armour has been removed in accordance with historical data."
 ]}
-"Naval Visual models and visual parts"
+{t="emphasis" v="Naval Visual models and visual parts"}
 {t="bullets" v=[
   "A bug with the display of turret rotation when viewed from a distance has been fixed for the Soviet armoured boats. Turrets turning onboard were displayed in the stowed position."
   "Sparks for all hit effects have been optimized and unified."
@@ -374,12 +374,12 @@ return [
   "JDS Yūgure (DD-184) — transcription of the name and number has been corrected. Ship name has been added to the stern."
   "Effect of the shell blast in the air has been reworked."
 ]}
-"Localization"
+{t="emphasis" v="Localization"}
 {t="bullets" v=[
   "USS Helena — An error in the ship's name has been fixed. The St. Louis subtype is listed instead of the Brooklyn type."
   "Comandanti Medaglie d'Oro — Ship’s name has been fixed. Instead of the series Comandanti Medaglie d'Oro the ship has received the name Commandante Margottini."
 ]}
-"Interface"
+{t="emphasis" v="Interface"}
 {t="bullets" v=[
   "Ship names in the research tree, vehicle cards and in the battles have been changed. Some ships have received their own names. Some have received new designation numbers or an indication of the series or class. State naming has been redesigned according to the historical period. For example Italian ships from the monarchy period have received the letters RN as a prefix to the name. The following ships have received new names and titles: Type 1934a(1944) – Z15 Erich Steinbrinck, Type 1934a(1940) – Z12 Erich Giese"
   "Type 1936(1941) – Z22 Anton Schmidtt, 1940, Type 1936A(mob) – Z32, Type 1936b – Z43, Type 1936b – Z32, S-100 (1944) – S-100, S-100 (1945) – S-147, Type М(1943) – M-802, Pr.7U – Soobrazitelny, 1943, Pr.159 – SKR-1, Pr.35 – SKR-7, Clemson (DD-336) – USS Litchfield, Clemson (DD-213) – USS Barker, Farragut (DD-355) –  USS Aylwin, Town(L45) – HMS Churchill, G class – HMS Grafton, N class – HMS Nepal, K class – HMS Kelvin, J class – HMS Jervis, Battle (D14) – HMS Armada, Battle (D37) – HMAS Tobruk, Tribal – HMS Eskimo, Hunt (L71) – HMS Calpe, Hunt (L79) – HMS Brissenden, Dark(FPB 1101) – Dark Adventurer, Dark(FPB 1102) – Dark Aggressor, Isles class – HMS Liscomb, Flower class – HMS Brantford, River class – HMS Spey, SGB(S309) – SGB Grey Goose, SGB(S304) – SGB Grey Fox, Type Brave – Brave Borderer."
@@ -387,11 +387,11 @@ return [
   "Crew member roles, different from their main, have been added to the x-ray mode."
   "Delay for cannon elevation guidance has been removed in naval battles."
 ]}
-"Other"
+{t="emphasis" v="Other"}
 {t="bullets" v=[
   "Default shortcut for the keyboard for the ranging shot has been added -  L.Ctrl + LMB"
 ]}
-{t="h1" v="Economy and research"}
+{t="h2" v="Economy and research"}
 {t="bullets" v=[
   "Rank VII has been introduced for aviation. New max BR is 11.0. Br for the following aircraft has been changed from 10.7 to 11.0: F-4E Phantom II, MiG-21bis, Phantom FGR.2, Phantom FG.1, F-4EJ Phantom II, Mirage IIIE."
   "Rank changes:,F-4E Phantom II — moved from rank VI to VII, A-7D — moved after AV-8C from rank VI to VII, MiG-21MF — moved from rank VI to VII, MiG-21SMT — moved from rank VI to VII, MiG-21bis — moved from rank VI to VII, Su-17M2 — moved from rank VI to VII, Yak-38 — moved from rank V to VI, Phantom FGR.2 — moved from rank VI to VII, Phantom FG.1 — moved from rank VI to VII, Harrier GR1 — moved from rank V to VI, AV-8A — moved from rank V to VI, F-4EJ Phantom II — moved from rank VI to VII, F-104G — moved from rank VI to VII, F-5A — moved from rank VI to VII, Mirage IIIC — moved from rank VI to VII, Mirage IIIE — moved from rank VI to VII, J35D — moved from rank VI to VII, F-4F Early — moved from rank VI to VII, Bf 109 G-2 — moved to rank IV."
@@ -484,10 +484,10 @@ return [
   "Aircraft firing sounds have been improved, all shots now have increased density at low frequencies."
   "New sounds of the vehicle tracks have been added for the ground vehicles produced in the 80’s and later. There are 4 types in total: tracks for main battle tanks, tracks for light tanks, tracks for amphibians, tracks for infantry fighting vehicles."
   "Unique vehicle track sounds have been added for all enemy/allied ground vehicles in accordance with the sounds of the player's vehicles."
-  "Authentic track sounds for the STRV103 series have been introduced. "
+  "Authentic track sounds for the STRV103 series have been introduced."
   "New sounds for the ATGM TOW system have been created - sound of a launching missile's navigation system before launching and the sound of the missile firing."
   "A new mechanism for the sound of ground vehicles falling onto the suspension has been added."
-  "The system for managing the sound events of explosions has been improved so that an excess of explosions doesn’t cause the loss of some important sound events such as enemy engines and track sounds.  "
+  "The system for managing the sound events of explosions has been improved so that an excess of explosions doesn’t cause the loss of some important sound events such as enemy engines and track sounds."
   "Explosion sounds have been reworked so that they now fade out more clearly with distance to a listener and do not create local oversaturated areas that could potentially begin to overload the game sound mix in the low frequency area or suppress the overall sound level."
   "The global reverb system has been redesigned so as to improve the positioning of sound events and to make the game's sound mix cleaner."
   "Internal game sound channel routing has been redesigned for more correct sound reproduction on multi channel speaker systems. "

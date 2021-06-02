@@ -237,9 +237,8 @@ local function getBulletsSetData(air, modifName, noModList = null)
       }
     }
 
-    local isBulletBelt = (weaponType == WEAPON_TYPE.GUNS
-      || weaponType == WEAPON_TYPE.COUNTERMEASURES)  && (wBlk?.isBulletBelt != false ||
-        ((wBlk?.bulletsCartridge ?? 0) > 1 && !wBlk?.useSingleIconForBullet))
+    local isBulletBelt = (weaponType == WEAPON_TYPE.GUNS || weaponType == WEAPON_TYPE.COUNTERMEASURES)
+      && ((wBlk?.isBulletBelt != false || (wBlk?.bulletsCartridge ?? 0) > 1) && !wBlk?.useSingleIconForBullet)
 
     foreach (b in bulletsList)
     {

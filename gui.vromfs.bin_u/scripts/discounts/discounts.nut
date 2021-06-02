@@ -179,9 +179,10 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
         && !air.isBought()
         && air.isVisibleInShop())
     {
-      if (isPlatformPC && ::isUnitGift(air))
+      if (::isUnitGift(air))
       {
-        giftUnits[air.name] <- 0
+        if (isPlatformPC)
+          giftUnits[air.name] <- 0
         continue
       }
 

@@ -69,7 +69,7 @@ local function tryOpenXboxRateReviewWnd() {
 }
 
 local function tryOpenSteamRateReview() {
-  if (!::steam_is_running())
+  if (!::steam_is_running() || !::has_feature("SteamRateGame"))
     return
 
   ::scene_msg_box(

@@ -3,6 +3,7 @@ local colors = require("reactiveGui/style/colors.nut")
 local JB = require("reactiveGui/control/gui_buttons.nut")
 
 local blockInterval = ::fpx(6)
+local headerMargin = 2*blockInterval
 local borderWidth = ::dp(1)
 
 local defStyle = {
@@ -120,9 +121,9 @@ local formatters = {
   textArea = textArea,
   text=textArea,
   hangingText=@(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({ hangingIndent = hangingIndent }), style)
-  h1 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [0, 0, ::fpx(25), 0]}), style)
-  h2 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [0, 0, ::fpx(15), 0]}), style)
-  emphasis = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({color=style.emphasisColor, margin = [blockInterval,0]}), style)
+  h1 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h1Font, color=style.h1Color, margin = [headerMargin, 0]}), style)
+  h2 = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({font=style.h2Font, color=style.h2Color, margin = [headerMargin, 0]}), style)
+  emphasis = @(text, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(text.__merge({color=style.emphasisColor, margin = [headerMargin,0]}), style)
   image = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) {rendObj = ROBJ_IMAGE image=::Picture(obj.v) size = [flex(), ::fpx(200)], keepAspect=true padding=style.padding, hplace = ALIGN_CENTER}.__update(obj)
   url = url
   note = @(obj, formatTextFunc=noTextFormatFunc, style=defStyle) textArea(obj.__merge({font=style.noteFont, color=style.noteColor}), style)
