@@ -702,7 +702,7 @@ mSettings = {
     init = function(blk, desc) {
       desc.values <- ::is_gpu_nvidia() ? [ "vsync_off", "vsync_on", "vsync_adaptive" ] : [ "vsync_off", "vsync_on" ]
     }
-    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost" && !getGuiValue("enableVr", false)
+    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost" && !::is_stereo_mode()
   }
   graphicsQuality = { widgetType="tabs" def="high" blk="graphicsQuality" restart=false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
@@ -743,7 +743,7 @@ mSettings = {
       local msaa = (val=="on")? 2 : 0
       set_blk_value_by_path(blk, desc.blk, msaa)
     }
-    enabled = @() !getGuiValue("enableVr", false)
+    enabled = @() !::is_stereo_mode()
   }
   antialiasing = { widgetType="list" def="none" blk="video/postfx_antialiasing" restart=false
     values = [ "none", "fxaa", "high_fxaa", "low_taa", "high_taa" ]
@@ -757,7 +757,7 @@ mSettings = {
   }
   ssaa = { widgetType="list" def="none" blk="graphics/ssaa" restart=false
     values = [ "none", "4X" ]
-    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && !getGuiValue("enableVr", false)
+    enabled = @() !getGuiValue("compatibilityMode") && getGuiValue("dlss", "off") == "off" && !::is_stereo_mode()
     onChanged = "ssaaClick"
     getFromBlk = function(blk, desc) {
       local val = get_blk_value_by_path(blk, desc.blk, 1.0)
@@ -940,16 +940,19 @@ mSettings = {
   enableHdr = { widgetType="checkbox" def=false blk="directx/enableHdr" restart=true enabled=@() ::is_hdr_available() }
   enableVr = {
     widgetType="checkbox"
-    def=false
+    getFromBlk = function(blk, desc) { return ::is_stereo_mode() }
+    setToBlk = function(blk, desc, val) { return set_blk_value_by_path(blk, desc.blk, val) }
+    def=::is_stereo_mode()
     blk="gameplay/enableVR"
     restart=true
     enabled=@() ::is_platform_windows && (::target_platform == "win64" || ::is_dev_version) && !getGuiValue("compatibilityMode")
   }
   vrMirror = { widgetType="list" def="left" blk="video/vreye" restart=false
-    values = [ "left", "right", "both" ] enabled = @() getGuiValue("enableVr", false)
+    values = [ "left", "right", "both" ]
+    enabled = ::is_stereo_mode
   }
   vrStreamerMode = { widgetType="checkbox" def=false blk="video/vrStreamerMode" restart=false
-    enabled = @() getGuiValue("enableVr", false)
+    enabled = ::is_stereo_mode
   }
   displacementQuality = { widgetType="slider" def=2 min=0 max=3 blk="graphics/displacementQuality" restart=false
   }
