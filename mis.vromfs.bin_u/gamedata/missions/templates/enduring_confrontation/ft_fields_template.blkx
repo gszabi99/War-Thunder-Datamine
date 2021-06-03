@@ -154,6 +154,9 @@
             },
             {
               "target": "ft_matching_17_20_check"
+            },
+            {
+              "target": "ft_matching_21_50_check"
             }
           ]
         },
@@ -4054,6 +4057,9 @@
               },
               {
                 "target": "ft_matching_17_20_check"
+              },
+              {
+                "target": "ft_matching_21_50_check"
               }
             ]
           },
@@ -4131,6 +4137,9 @@
               },
               {
                 "target": "ft_matching_17_20_check"
+              },
+              {
+                "target": "ft_matching_21_50_check"
               }
             ]
           },
@@ -4208,6 +4217,9 @@
               },
               {
                 "target": "ft_matching_17_20_check"
+              },
+              {
+                "target": "ft_matching_21_50_check"
               }
             ]
           },
@@ -4285,6 +4297,9 @@
               },
               {
                 "target": "ft_matching_17_20_check"
+              },
+              {
+                "target": "ft_matching_21_50_check"
               }
             ]
           },
@@ -4332,13 +4347,22 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_balance_level",
-            "value": 16,
-            "comparasion_func": "more"
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level",
+              "value": 16,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level",
+              "value": 21,
+              "comparasion_func": "less"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "triggerDisable": [
@@ -4353,6 +4377,9 @@
               },
               {
                 "target": "ft_matching_12_16_check"
+              },
+              {
+                "target": "ft_matching_21_50_check"
               }
             ]
           },
@@ -4381,6 +4408,77 @@
           {
             "varSetReal": {
               "value": 3000.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ft_matching_21_50_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_balance_level",
+            "value": 20,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": [
+          {
+            "triggerDisable": [
+              {
+                "target": "ft_matching_0_3_check"
+              },
+              {
+                "target": "ft_matching_4_7_check"
+              },
+              {
+                "target": "ft_matching_8_11_check"
+              },
+              {
+                "target": "ft_matching_12_16_check"
+              },
+              {
+                "target": "ft_matching_17_20_check"
+              }
+            ]
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "varSetReal": {
+              "value": 160000.0,
+              "var": "ft_airfield_module_hp"
+            }
+          },
+          {
+            "varSetReal": {
+              "value": 240000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            }
+          },
+          {
+            "comment": {
+              "value": "количество хп, ремонитруемое за тик"
+            }
+          },
+          {
+            "varSetReal": {
+              "value": 4000.0,
               "var": "ft_damage_restore_base_hp"
             }
           }
