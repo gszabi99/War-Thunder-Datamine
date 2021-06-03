@@ -175,7 +175,6 @@ local function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false)
 {
   return !::isUnitBought(unit) && ::isUnitGift(unit) && unit.isVisibleInShop()
     && !::canBuyUnitOnMarketplace(unit)
-    && ::OnlineShopModel.searchEntitlementsByUnit(unit.name).len() > 0
 }
 
 ::canBuyUnitOnMarketplace <- function canBuyUnitOnMarketplace(unit)

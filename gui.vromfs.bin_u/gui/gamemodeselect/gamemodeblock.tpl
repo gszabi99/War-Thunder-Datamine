@@ -173,7 +173,7 @@ gameModeBlock {
     position:t='absolute'
     on_click:t='onEventDescription'
     tooltip:t='#mainmenu/titleEventDescription'
-    value:t='<<eventDescriptionValue>>'
+    modeId:t='<<modeId>>'
     display:t='hide'
     reduceWidthToHeight:t='yes'
     noMargin:t='yes'

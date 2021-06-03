@@ -70,6 +70,8 @@ enum decalTwoSidedMode
 
 ::delayed_download_enabled_msg <- function delayed_download_enabled_msg()
 {
+  if (!::g_login.isProfileReceived())
+    return
   local skip = ::load_local_account_settings("skipped_msg/delayedDownloadContent", false)
   if (!skip)
   {

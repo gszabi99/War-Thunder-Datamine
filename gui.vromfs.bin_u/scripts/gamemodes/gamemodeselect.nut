@@ -312,7 +312,6 @@ class ::gui_handlers.GameModeSelect extends ::gui_handlers.BaseGuiHandlerWT
       onHover = "markGameModeSeen"
       // Used to easily backtrack corresponding game mode.
       gameMode = gameMode
-      eventDescriptionValue = gameMode.id
       inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
       crossplayTooltip = getRestrictionTooltipText(event)
