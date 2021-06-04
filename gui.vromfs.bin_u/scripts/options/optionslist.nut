@@ -199,7 +199,7 @@ local getMainOptions = function()
       [::USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, "combobox",
         contentPreset.getContentPresets().len() &&
         ::g_difficulty.SIMULATOR.isAvailable(::GM_DOMINATION)],
-      [::USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner"],
+      [::USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner", ::has_feature("delayedDownloadContent")],
 
       ["options/header/privacy", null, ::has_feature("PrivacySettings")],
       [::USEROPT_REPLACE_MY_NICK_LOCAL, "editbox", ::has_feature("PrivacySettings")],

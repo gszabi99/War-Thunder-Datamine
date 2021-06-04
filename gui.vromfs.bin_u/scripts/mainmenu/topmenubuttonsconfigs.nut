@@ -211,6 +211,11 @@ local list = {
     onClickFunc = @(obj, handler) ::add_msg_box("debug unlock", "Debug unlock enabled", [["ok", ::gui_do_debug_unlock]], "ok")
     isHidden = @(...) !::is_dev_version
   }
+  DEBUG_URL = {
+    text = @() "Debug: Enter Url"
+    onClickFunc = @(obj, handler) ::debug_open_url()
+    isHidden = @(...) !::has_feature("DebugEnterUrl")
+  }
   ENCYCLOPEDIA = {
     text = @() "#mainmenu/btnEncyclopedia"
     onClickFunc = @(...) encyclopedia.open()

@@ -810,5 +810,5 @@ class ::BaseItem
   getLottieImage = @(width = "1@itemWidth") lottieAnimation != null
     ? lottie({ image = lottieAnimation, width })
     : null
-  isEveryDayAward = @() id.split(everyDayAwardPrefix).len() > 1
+  isEveryDayAward = @() id.tostring().split(everyDayAwardPrefix).len() > 1
 }

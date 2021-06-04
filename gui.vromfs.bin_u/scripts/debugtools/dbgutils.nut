@@ -9,6 +9,7 @@ local { getVideoModes } = require("scripts/options/systemOptions.nut")
 local { isWeaponAux, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 local { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats, refreshUserstatUnlocks
 } = require("scripts/userstat/userstat.nut")
+local { openUrl } = require("scripts/onlineShop/url.nut")
 
 require("scripts/debugTools/dbgLongestUnitTooltip.nut")
 
@@ -601,3 +602,9 @@ if (dbgFocusData.debugFocusTask != -1) {
   dbgFocusData.prevSelObj = null
   debug_focus()
 }
+
+::debug_open_url <- @() ::gui_modal_editbox_wnd({
+  title = "Enter url"
+  allowEmpty = false
+  okFunc = openUrl
+})

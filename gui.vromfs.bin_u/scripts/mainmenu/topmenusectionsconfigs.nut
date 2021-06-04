@@ -133,6 +133,7 @@ enums.addTypesByGlobalName("g_top_menu_right_side_sections", [
         buttonsList.WIKI
         buttonsList.FAQ
         buttonsList.SUPPORT
+        buttonsList.DEBUG_URL
       ]
     ]
   }
