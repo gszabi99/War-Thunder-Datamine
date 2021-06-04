@@ -626,7 +626,7 @@
         },
         {
           "triggerEnable": {
-            "target": "at_assaults_t1_check_target_name"
+            "target": "at_assaults_t1_check_target_name_for_bfd"
           }
         }
       ],
@@ -716,7 +716,7 @@
         },
         {
           "triggerEnable": {
-            "target": "at_assaults_t2_check_target_name"
+            "target": "at_assaults_t2_check_target_name_for_bfd"
           }
         }
       ],
@@ -747,55 +747,22 @@
           "var_value": "at_assault_game_type",
           "value": "jip",
           "comparasion_func": "equal"
-        },
-        "varCompareBool": {
-          "var_value": "lbt_battle_is_active",
-          "value": true,
-          "comparasion_func": "equal"
-        },
-        "objectExists": {
-          "target": "@lbt_damage_t2_battle_squad_name",
-          "type": "squad"
         }
       },
       "actions": [
         {
           "comment": {
-            "value": "режим: jip и бой активен"
+            "value": "it's EC mode and atleast one battle is active"
           }
         },
         {
           "comment": {
-            "value": "пробуем собрать имя цели с использованием текущей битвы"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "at_assaults_t1_target_name",
-            "input_var": "lbt_damage_t2_battle_squad_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "увеличиваем количество траев поиска цели"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "at_assaults_t1_tries_to_finding_target"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем проверку что есть цель"
+            "value": "trying to find target"
           }
         },
         {
           "triggerEnable": {
-            "target": "at_assaults_t1_check_target_name"
+            "target": "at_search_target_t1_restart_search"
           }
         }
       ],
@@ -830,55 +797,22 @@
           "var_value": "at_assault_game_type",
           "value": "jip",
           "comparasion_func": "equal"
-        },
-        "varCompareBool": {
-          "var_value": "lbt_battle_is_active",
-          "value": true,
-          "comparasion_func": "equal"
-        },
-        "objectExists": {
-          "target": "@lbt_damage_t1_battle_squad_name",
-          "type": "squad"
         }
       },
       "actions": [
         {
           "comment": {
-            "value": "режим: jip"
+            "value": "it's EC mode and atleast one battle is active"
           }
         },
         {
           "comment": {
-            "value": "пробуем собрать имя цели с использованием текущей битвы"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "",
-            "var": "at_assaults_t2_target_name",
-            "input_var": "lbt_damage_t1_battle_squad_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "увеличиваем количество траев поиска цели"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "at_assaults_t2_tries_to_finding_target"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем проверку что есть цель"
+            "value": "trying to find target"
           }
         },
         {
           "triggerEnable": {
-            "target": "at_assaults_t2_check_target_name"
+            "target": "at_search_target_t2_restart_search"
           }
         }
       ],
@@ -895,7 +829,7 @@
         }
       }
     },
-    "at_assaults_t1_check_target_name": {
+    "at_assaults_t1_check_target_name_for_bfd": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -940,7 +874,7 @@
         }
       }
     },
-    "at_assaults_t2_check_target_name": {
+    "at_assaults_t2_check_target_name_for_bfd": {
       "is_enabled": false,
       "comments": "",
       "props": {
@@ -1134,8 +1068,7 @@
           "value": 1,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object": "@at_assaults_t1_target_name",
-          "object_var_value": 0
+          "object": "@at_assaults_t1_target_name"
         }
       },
       "actions": [
@@ -6322,6 +6255,398 @@
         },
         "else_actions": []
       }
+    },
+    "at_search_target": {
+      "isCategory": true,
+      "is_enabled": true,
+      "at_search_target_t1_restart_search": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "at_assaults_t1_search_target_idx"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "at_search_target_t1_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "at_search_target_t1_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_assaults_t1_search_target_idx",
+            "value": 3,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": [
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "at_assaults_t1_search_target_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "creating squad name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t2_squad_",
+              "var": "at_assaults_t1_search_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@at_assaults_t1_search_target_idx",
+              "digits": 2,
+              "var": "at_assaults_t1_search_target_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "creating timer var name"
+            }
+          },
+          {
+            "__varSetString": {
+              "value": "lbt_battle_01_",
+              "var": "at_assaults_t1_search_timer_var_name"
+            }
+          },
+          {
+            "__varAddString": {
+              "value": "@at_assaults_t1_search_target_idx",
+              "digits": 2,
+              "var": "at_assaults_t1_search_timer_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking is it valid"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_time",
+              "digits": 0,
+              "var": "at_assaults_t1_search_timer_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking is all ok with names"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_search_target_t1_check_target"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "at_t1_is_active"
+          },
+          "triggerEnable": {
+            "target": "at_assaults_check_inactive"
+          }
+        }
+      },
+      "at_search_target_t1_check_target": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@at_assaults_t1_search_target_name",
+            "type": "squad"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 7,
+            "object": "@at_assaults_t1_search_target_name"
+          }
+        },
+        "actions": [
+          {
+            "varSetString": {
+              "value": "",
+              "var": "at_assaults_t1_target_name",
+              "input_var": "at_assaults_t1_search_target_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t1_activity_reset"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_assaults_t1_spawn"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "at_search_target_t1_rotator"
+          }
+        }
+      },
+      "at_search_target_t2_restart_search": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "varSetInt": {
+            "value": 0,
+            "var": "at_assaults_t2_search_target_idx"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "at_search_target_t2_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "at_search_target_t2_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "at_assaults_t1_search_target_idx",
+            "value": 3,
+            "comparasion_func": "less"
+          }
+        },
+        "actions": [
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "at_assaults_t2_search_target_idx"
+            }
+          },
+          {
+            "comment": {
+              "value": "creating squad name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t1_squad_",
+              "var": "at_assaults_t2_search_target_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@at_assaults_t2_search_target_idx",
+              "digits": 2,
+              "var": "at_assaults_t2_search_target_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "creating timer var name"
+            }
+          },
+          {
+            "__varSetString": {
+              "value": "lbt_battle_01_",
+              "var": "at_assaults_t2_search_timer_var_name"
+            }
+          },
+          {
+            "__varAddString": {
+              "value": "@at_assaults_t2_search_target_idx",
+              "digits": 2,
+              "var": "at_assaults_t2_search_timer_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking is it valid"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_time",
+              "digits": 0,
+              "var": "at_assaults_t2_search_timer_var_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking is all ok with names"
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_search_target_t2_check_target"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "varSetBool": {
+            "value": false,
+            "var": "at_t2_is_active"
+          },
+          "triggerEnable": {
+            "target": "at_assaults_check_inactive"
+          }
+        }
+      },
+      "at_search_target_t2_check_target": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@at_assaults_t2_search_target_name",
+            "type": "squad"
+          },
+          "unitWhenCountMatches": {
+            "object_type": "isActive",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "func": "more",
+            "value": 7,
+            "object": "@at_assaults_t2_search_target_name"
+          }
+        },
+        "actions": [
+          {
+            "varSetString": {
+              "value": "",
+              "var": "at_assaults_t2_target_name",
+              "input_var": "at_assaults_t2_search_target_name"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_t2_activity_reset"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "triggerEnable": {
+              "target": "at_assaults_t2_spawn"
+            }
+          }
+        ],
+        "else_actions": {
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "at_search_target_t2_rotator"
+          }
+        }
+      }
     }
   },
   "mission_objectives": {
@@ -6425,7 +6750,13 @@
     "at_army_both_zero": 0,
     "at_matching_type": 0,
     "at_matching_t1_move_trigger_name": "",
-    "at_matching_t2_move_trigger_name": ""
+    "at_matching_t2_move_trigger_name": "",
+    "at_assaults_t1_search_target_idx": 0,
+    "at_assaults_t2_search_target_idx": 0,
+    "at_assaults_t1_search_target_name": "",
+    "at_assaults_t2_search_target_name": "",
+    "at_assaults_t1_search_timer_var_name": "",
+    "at_assaults_t2_search_timer_var_name": ""
   },
   "dialogs": [],
   "airfields": [],

@@ -4949,6 +4949,8 @@
               "accuracy": 0.1,
               "effShootingRate": 0.1,
               "airEffShootingRate": 0.1,
+              "enableShipCollisionAvoidance": true,
+              "advancedCollisionAvoidance": true,
               "fireRandom": true,
               "targetChangeInterval": 5.0,
               "targetChangeProb": 0.25
@@ -5423,6 +5425,8 @@
               "accuracy": 0.1,
               "effShootingRate": 0.1,
               "airEffShootingRate": 0.1,
+              "enableShipCollisionAvoidance": true,
+              "advancedCollisionAvoidance": true,
               "fireRandom": true,
               "targetChangeInterval": 5.0,
               "targetChangeProb": 0.25
@@ -6841,16 +6845,6 @@
             ]
           },
           {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@pt_reinforcement_t1_squad_name",
-              "enableShipCollisionAvoidance": true
-            }
-          },
-          {
             "setHeadSquad": [
               {
                 "name": "@pt_reinforcement_t1_squad_name"
@@ -6917,6 +6911,17 @@
               "object": "@pt_reinforcement_t1_squad_name",
               "useForTriggerFiltered": true,
               "pos": "@pt_reinforcement_t1_spawn_name"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@pt_reinforcement_t1_squad_name",
+              "enableShipCollisionAvoidance": true,
+              "advancedCollisionAvoidance": true
             }
           },
           {
@@ -7761,16 +7766,6 @@
             ]
           },
           {
-            "unitSetProperties": {
-              "object_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "object": "@pt_reinforcement_t2_squad_name",
-              "enableShipCollisionAvoidance": true
-            }
-          },
-          {
             "setHeadSquad": [
               {
                 "name": "@pt_reinforcement_t2_squad_name"
@@ -7837,6 +7832,17 @@
               "object": "@pt_reinforcement_t2_squad_name",
               "useForTriggerFiltered": true,
               "pos": "@pt_reinforcement_t2_spawn_name"
+            }
+          },
+          {
+            "unitSetProperties": {
+              "object_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "object": "@pt_reinforcement_t2_squad_name",
+              "enableShipCollisionAvoidance": true,
+              "advancedCollisionAvoidance": true
             }
           },
           {
