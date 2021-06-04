@@ -2432,7 +2432,7 @@ class ::MenuChatHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!checkScene())
       return
 
-    if (user!=curRoom.id)
+    if (user!=curRoom?.id)
     {
       local userRoom = ::g_chat.getRoomById(user)
       if (!userRoom)

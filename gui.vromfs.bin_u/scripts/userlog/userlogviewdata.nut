@@ -1097,16 +1097,17 @@ local function getLinkMarkup(text, url, acccessKeyName=null)
 
     if (item)
     {
-      local cost = item.getCost()
-      logName = (item?.userlogOpenLoc ?? logName) != logName ? item.userlogOpenLoc
-        : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
+      local cost = item.isEveryDayAward() ? ::Cost() : item.getCost()
+      logName = (item?.userlogOpenLoc ?? logName) != logName
+        || item.isEveryDayAward() ? item.userlogOpenLoc
+          : $"{cost.gold > 0 ? "purchase_" : ""}{logName}"
 
       local usedText = ::loc($"userlog/{logName}/short")
       res.name = " ".concat(
           usedText,
           ::loc("trophy/unlockables_names/trophy"),
           cost.gold > 0
-            ? ::loc("ui/parentheses/space", {text = $"{cost.getTextAccordingToBalance()}"}) : ""
+            ? ::loc("ui/parentheses/space", {text = $"{cost.getGoldText(true, false)}"}) : ""
         )
       res.logImg = item.getSmallIconName()
 

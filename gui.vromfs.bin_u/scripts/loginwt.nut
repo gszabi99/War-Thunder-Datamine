@@ -308,7 +308,7 @@ g_login.firstMainMenuLoad <- function firstMainMenuLoad()
   else if (!fetch_devices_inited_once())
     handler.doWhenActive(function() { ::gui_start_controls_type_choice() })
 
-  if (::g_controls_presets.isNewerControlsPresetVersionAvailable())
+  if (::g_login.isProfileReceived() && ::g_controls_presets.isNewerControlsPresetVersionAvailable())
   {
     local patchNoteText = ::g_controls_presets.getPatchNoteTextForCurrentPreset()
     ::scene_msg_box("new_controls_version_msg_box", null,

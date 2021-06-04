@@ -20,7 +20,6 @@ class ::gui_handlers.EveryDayLoginAward extends ::gui_handlers.BaseGuiHandlerWT
   sceneBlkName = "gui/items/everyDayLoginAward.blk"
   needVoiceChat = false
 
-  stylePrefix = "every_day_award_trophy_"
   lastSavedDay = 0
   userlog = null
   isOpened = false

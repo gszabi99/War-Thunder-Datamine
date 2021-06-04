@@ -533,11 +533,13 @@ return [
     id = "ID_START_SUPPORT_PLANE"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
+    showFunc = @() ::has_feature("TankSupportPlane")
   }
   {
     id = "ID_TOGGLE_STEALTH"
     checkGroup = ctrlGroups.TANK
     checkAssign = false
+    showFunc = @() ::has_feature("TankStealth")
   }
   {
     id = "ID_RANGEFINDER"

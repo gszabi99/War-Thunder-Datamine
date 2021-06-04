@@ -59,7 +59,7 @@ class ::BaseItem
   static isPreferMarkupDescInTooltip = false
   static isDescTextBeforeDescDiv = true
   static itemExpiredLocId = "items/expired"
-
+  static everyDayAwardPrefix = "every_day_award_"
   static includeInRecentItems = true
   static hasRecentItemConfirmMessageBox = true
 
@@ -810,4 +810,5 @@ class ::BaseItem
   getLottieImage = @(width = "1@itemWidth") lottieAnimation != null
     ? lottie({ image = lottieAnimation, width })
     : null
+  isEveryDayAward = @() id.split(everyDayAwardPrefix).len() > 1
 }

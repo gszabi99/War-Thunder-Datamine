@@ -108,10 +108,10 @@ class ::gui_handlers.WarbondsShop extends ::gui_handlers.BaseGuiHandlerWT
     local itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
     local itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     local mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-0.08@scrn_tgt-1@blockInterval"
-    local itemsCountX = ::to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
-      / ::max(1, ::to_pixels(itemWidthWithSpace))
-    local itemsCountY = ::to_pixels(mainBlockHeight)
-      / ::max(1, ::to_pixels(itemHeightWithSpace))
+    local itemsCountX = ::max(::to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
+      / ::max(1, ::to_pixels(itemWidthWithSpace)), 1)
+    local itemsCountY = ::max(::to_pixels(mainBlockHeight)
+      / ::max(1, ::to_pixels(itemHeightWithSpace)), 1)
     local contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
     scene.findObject("main_block").height = mainBlockHeight
     showSceneBtn("nav_separator", false)
