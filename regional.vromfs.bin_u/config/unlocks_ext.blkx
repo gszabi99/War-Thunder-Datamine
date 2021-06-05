@@ -8459,13 +8459,52 @@
   },
   {
     "unlockable": {
-      "id": "04_06_2021_discount_30_uk_sherman_vc_firefly",
+      "id": "04_06_2021_discount_30_uk_sherman_ic_firefly",
       "type": "challenge",
       "hidden": true,
       "mode": {
         "type": "char_login_time_range",
         "beginDate": "2021-06-04 11:00:00",
         "endDate": "2021-06-05 10:59:00",
+        "condition": {
+          "type": "char_player_has_feature",
+          "feature": "ConsolesWorkshopExchange"
+        }
+      }
+    }
+  },
+  {
+    "unlockable": {
+      "id": "04_06_2021_discount_30_uk_sherman_ic_firefly_trophy_gift",
+      "userLogId": "discount_30_uk_sherman_ic_firefly_event_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "hidden": true,
+      "mode": [
+        {
+          "type": "char_unlocks"
+        },
+        {
+          "num": 1
+        },
+        {
+          "unlock": "04_06_2021_discount_30_uk_sherman_ic_firefly"
+        },
+        {
+          "unlock": "04_06_2021_discount_30_uk_sherman_vc_firefly"
+        }
+      ]
+    }
+  },
+  {
+    "unlockable": {
+      "id": "04_06_2021_discount_30_uk_sherman_vc_firefly",
+      "type": "challenge",
+      "hidden": true,
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2021-06-04 11:00:00",
+        "endDate": "2021-06-04 12:00:00",
         "condition": {
           "type": "char_player_has_feature",
           "feature": "ConsolesWorkshopExchange"

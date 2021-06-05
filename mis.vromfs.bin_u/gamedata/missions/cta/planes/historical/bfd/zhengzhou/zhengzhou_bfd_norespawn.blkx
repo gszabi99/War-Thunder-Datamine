@@ -474,22 +474,6 @@
     },
     {
       "import_record": {
-        "file": "gameData/missions/templates/destroy_bomb_areas_template.blk",
-        "importAreas": true,
-        "importUnits": true,
-        "importTriggers": true,
-        "importMissionObjectives": true,
-        "importWayPoints": true,
-        "showAreas": true,
-        "showUnits": true,
-        "showTriggers": true,
-        "showMissionObjectives": true,
-        "showWayPoints": true,
-        "excludes": []
-      }
-    },
-    {
-      "import_record": {
         "file": "gameData/missions/templates/air_templates/rb_air_spawns_template.blk",
         "importAreas": true,
         "importUnits": true,
@@ -535,6 +519,54 @@
         "showWayPoints": true,
         "excludes": []
       }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/planes/historical/BfD/zhengzhou/frontline/zhengzhou/at_assaults_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/templates/air_templates/gs/template_at_bfd_ussr_jpn_planeset.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
+    },
+    {
+      "import_record": {
+        "file": "gameData/missions/cta/planes/historical/BfD/zhengzhou/frontline/zhengzhou/bdt_bases_destroy_part.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "excludes": []
+      }
     }
   ],
   "triggers": {
@@ -553,6 +585,73 @@
       },
       "conditions": [],
       "actions": [
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "barabashka_enabled"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": false,
+            "var": "force_air_spawn"
+          }
+        },
+        {
+          "varSetBool": {
+            "value": true,
+            "var": "bMirrorSpawn"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "bfd",
+            "var": "bdt_game_mode"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "bfd",
+            "var": "at_game_mode"
+          }
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 11
+            },
+            {
+              "var": "bdt_t1_total_bases_max_count"
+            },
+            {
+              "var": "bdt_t2_total_bases_max_count"
+            }
+          ]
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 4
+            },
+            {
+              "var": "bdt_t1_active_bases_max_count"
+            },
+            {
+              "var": "bdt_t2_active_bases_max_count"
+            }
+          ]
+        },
+        {
+          "comment": {
+            "value": "настройка второстепенных юнитов"
+          }
+        },
+        {
+          "varSetReal": {
+            "value": 3600.0,
+            "var": "historical_destroy_timer"
+          }
+        },
         {
           "unitSetProperties": [
             {
@@ -16100,108 +16199,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "t1_bomb_target_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10716.0,115.35,-583.55]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1622.5,115.35,14559.3]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9865.25,115.35,-6613.15]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1244.95,112.1,-15080.5]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16391.0,112.1,-11519.2]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21477.3,112.1,37.2]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "squad": {
         "name": "bridge_units_squad",
         "tm": [
@@ -16520,72 +16517,6 @@
         [5456.0,398.7,437.95]
       ],
       "objLayer": 3,
-      "props": []
-    },
-    "t1_bomb_area_01": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [-10702.5,157.3,-592.55]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "t1_bomb_area_02": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [-1623.25,157.3,14560.1]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "t1_bomb_area_03": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [-9882.65,222.5,-6578.55]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "t2_bomb_area_01": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [1211.6,157.3,-15049.2]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "t2_bomb_area_02": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [16398.0,157.3,-11530.3]
-      ],
-      "objLayer": 0,
-      "props": []
-    },
-    "t2_bomb_area_03": {
-      "type": "Sphere",
-      "tm": [
-        [650.0,0.0,0.0],
-        [0.0,650.0,0.0],
-        [0.0,0.0,650.0],
-        [21449.1,157.3,16.5]
-      ],
-      "objLayer": 0,
       "props": []
     },
     "spectator_point_01": {
