@@ -1749,7 +1749,7 @@
             }
           },
           {
-            "airfieldSetProperties": {
+            "__airfieldSetProperties": {
               "object": "@ft_generate_t1_airfield_name",
               "repairMul": 1.0,
               "fuelMul": 1.0,
@@ -1770,8 +1770,15 @@
             }
           },
           {
+            "__airfieldGetModuleHP": {
+              "object": "@ft_generate_t1_airfield_name",
+              "module": "airfield",
+              "var": "ft_damage_t1_airfield_cur_hp"
+            }
+          },
+          {
             "comment": {
-              "value": "запускаем ротацию заново"
+              "value": "setting different spawns for bombers and other planes"
             }
           },
           {
@@ -3376,7 +3383,7 @@
             }
           },
           {
-            "airfieldSetProperties": {
+            "__airfieldSetProperties": {
               "object": "@ft_generate_t2_airfield_name",
               "repairMul": 1.0,
               "fuelMul": 1.0,
@@ -3398,7 +3405,19 @@
           },
           {
             "comment": {
-              "value": "запускаем ротацию заново"
+              "value": ""
+            }
+          },
+          {
+            "__airfieldGetModuleHP": {
+              "object": "@ft_generate_t2_airfield_name",
+              "module": "airfield",
+              "var": "ft_damage_t2_airfield_cur_hp"
+            }
+          },
+          {
+            "comment": {
+              "value": "setting different spawns for bombers and other planes"
             }
           },
           {
@@ -3838,7 +3857,7 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t1_airfield_rotator"
+              "target": "ft_generate_t1_airfield_set_properties"
             }
           }
         ],
@@ -3890,7 +3909,7 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t1_airfield_rotator"
+              "target": "ft_generate_t1_airfield_set_properties"
             }
           }
         ]
@@ -3962,7 +3981,7 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t2_airfield_rotator"
+              "target": "ft_generate_t2_airfield_set_properties"
             }
           }
         ],
@@ -4014,10 +4033,106 @@
           },
           {
             "triggerEnable": {
-              "target": "ft_generate_t2_airfield_rotator"
+              "target": "ft_generate_t2_airfield_set_properties"
             }
           }
         ]
+      },
+      "ft_generate_t1_airfield_set_properties": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "airfieldSetProperties": {
+            "object": "@ft_generate_t1_airfield_name",
+            "repairMul": 1.0,
+            "fuelMul": 1.0,
+            "reloadMul": 1.0,
+            "enemySurrenderOnLanding": true,
+            "airfield": {
+              "hp_var": "ft_airfield_module_spawn_hp"
+            },
+            "storage": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "parking": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "dwelling": {
+              "hp_var": "ft_airfield_module_hp"
+            }
+          },
+          "airfieldGetModuleHP": {
+            "object": "@ft_generate_t1_airfield_name",
+            "module": "airfield",
+            "var": "ft_damage_t1_airfield_cur_hp"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t1_airfield_rotator"
+          }
+        },
+        "else_actions": []
+      },
+      "ft_generate_t2_airfield_set_properties": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": [],
+        "actions": {
+          "airfieldSetProperties": {
+            "object": "@ft_generate_t2_airfield_name",
+            "repairMul": 1.0,
+            "fuelMul": 1.0,
+            "reloadMul": 1.0,
+            "enemySurrenderOnLanding": true,
+            "airfield": {
+              "hp_var": "ft_airfield_module_spawn_hp"
+            },
+            "storage": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "parking": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "dwelling": {
+              "hp_var": "ft_airfield_module_hp"
+            }
+          },
+          "airfieldGetModuleHP": {
+            "object": "@ft_generate_t2_airfield_name",
+            "module": "airfield",
+            "var": "ft_damage_t2_airfield_cur_hp"
+          },
+          "comment": {
+            "value": ""
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t2_airfield_rotator"
+          }
+        },
+        "else_actions": []
       }
     },
     "ft_matching_routine": {
@@ -4036,13 +4151,22 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_balance_level",
-            "value": 4,
-            "comparasion_func": "less"
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level",
+              "value": 4,
+              "comparasion_func": "less"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "triggerDisable": [
@@ -4120,6 +4244,13 @@
               "var_value": "ft_balance_level",
               "value": 8,
               "comparasion_func": "less"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
             }
           }
         ],
@@ -4201,6 +4332,13 @@
               "value": 12,
               "comparasion_func": "less"
             }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
           }
         ],
         "actions": [
@@ -4280,6 +4418,13 @@
               "var_value": "ft_balance_level",
               "value": 17,
               "comparasion_func": "less"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
             }
           }
         ],
@@ -4361,6 +4506,13 @@
               "value": 21,
               "comparasion_func": "less"
             }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
           }
         ],
         "actions": [
@@ -4427,13 +4579,22 @@
             "time": 1.0
           }
         },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_balance_level",
-            "value": 20,
-            "comparasion_func": "more"
+        "conditions": [
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level",
+              "value": 20,
+              "comparasion_func": "more"
+            }
+          },
+          {
+            "varCompareInt": {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
           }
-        },
+        ],
         "actions": [
           {
             "triggerDisable": [
@@ -4467,7 +4628,7 @@
           },
           {
             "varSetReal": {
-              "value": 240000.0,
+              "value": 280000.0,
               "var": "ft_airfield_module_spawn_hp"
             }
           },
@@ -4480,6 +4641,43 @@
             "varSetReal": {
               "value": 4000.0,
               "var": "ft_damage_restore_base_hp"
+            }
+          }
+        ],
+        "else_actions": []
+      },
+      "ft_matching_force_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_balance_level_forced",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": [
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_balance_level",
+              "input_var": "ft_balance_level_forced"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "ft_balance_level_forced"
             }
           }
         ],
@@ -11857,7 +12055,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -11902,7 +12100,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -11914,6 +12112,13 @@
           }
         },
         "actions": [
+          {
+            "airfieldGetModuleHP": {
+              "object": "@ft_damage_t1_airfield_name",
+              "module": "airfield",
+              "var": "ft_damage_t1_airfield_cur_hp"
+            }
+          },
           {
             "comment": {
               "value": "взлетка уничтожена, запрещаем спавн"
@@ -12022,7 +12227,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12130,7 +12335,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12210,7 +12415,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12318,7 +12523,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12396,7 +12601,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [
@@ -12514,7 +12719,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12845,7 +13050,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12890,7 +13095,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -12902,6 +13107,13 @@
           }
         },
         "actions": [
+          {
+            "airfieldGetModuleHP": {
+              "object": "@ft_damage_t2_airfield_name",
+              "module": "airfield",
+              "var": "ft_damage_t2_airfield_cur_hp"
+            }
+          },
           {
             "comment": {
               "value": "взлетка уничтожена, запрещаем спавн"
@@ -13010,7 +13222,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -13118,7 +13330,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -13198,7 +13410,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -13306,7 +13518,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -13384,7 +13596,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": [
@@ -13502,7 +13714,7 @@
         },
         "events": {
           "periodicEvent": {
-            "time": 1.0
+            "time": 0.0
           }
         },
         "conditions": {
@@ -14088,7 +14300,10 @@
     "ft_generate_t2_target_var_name": "",
     "ft_generate_t1_area_var_name": "",
     "ft_generate_t2_area_var_name": "",
-    "ft_generate_distance_between": 10000.0
+    "ft_generate_distance_between": 10000.0,
+    "ft_balance_level_forced": 0,
+    "ft_damage_t1_airfield_cur_hp": 0.0,
+    "ft_damage_t2_airfield_cur_hp": 0.0
   },
   "dialogs": [],
   "airfields": [],
