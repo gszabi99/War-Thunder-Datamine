@@ -373,8 +373,6 @@ local function getAvailableLatencyModes() {
     values.append("on")
   if (::is_low_latency_available(2))
     values.append("boost")
-  if (::is_low_latency_available(4))
-    values.append("experimental")
 
   return values;
 }
@@ -782,10 +780,8 @@ mSettings = {
       set_blk_value_by_path(blk, desc.blk, quality)
     }
     onChanged = "latencyClick"
-    isVisible = @() ::has_feature("ReflexLowLatency")
   }
   latencyFlash = { widgetType="checkbox" def=false blk="video/latencyFlash" restart=false
-    isVisible = @() ::has_feature("ReflexLowLatency")
   }
   perfMetrics = { widgetType="list" def="fps" blk="video/perfMetrics" restart=false
     init = function(blk, desc) {
@@ -799,7 +795,6 @@ mSettings = {
       // -1 will use the default value when loaded
       set_blk_value_by_path(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
-    isVisible = @() ::has_feature("ReflexLowLatency")
   }
   texQuality = { widgetType="list" def="high" blk="graphics/texquality" restart=true
     init = function(blk, desc) {
@@ -1115,16 +1110,6 @@ local function configWrite() {
   ::dagor.debug("[sysopt] Config saved.")
 }
 
-local function validateLatencyOpt() {
-  if (::has_feature("ReflexLowLatency"))
-    return
-
-  if (getGuiValue("latency", "off") != "off") {
-    setGuiValue("latency", "off", true)
-    configWrite()
-  }
-}
-
 local function init() {
   local blk = blkOptFromPath(::get_config_name())
   foreach (id, desc in mSettings) {
@@ -1140,8 +1125,6 @@ local function init() {
 
   validateInternalConfigs()
   configRead()
-
-  validateLatencyOpt()
 }
 
 local function configFree() {
