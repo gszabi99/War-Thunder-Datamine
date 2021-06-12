@@ -641,7 +641,7 @@ local B_ScopeSquareAzimuthComponent = function(width, height, valueWatched, dist
   local showPart1 = (!distWatched || !halfWidthWatched) ? null : Computed(@()distWatched.value == 1.0 && halfWidthWatched.value > 0)
   local isTank = Computed(@() AzimuthRange.value > PI)
   local show = Computed(@() !tanksOnly || isTank.value)
-  local translate = Computed(@() show.value ? [valueWatched.value * width, 0] : null)
+  local translate = Computed  (@() show.value ? [valueWatched.value * width, 0] : null)
   return @() {
     size = SIZE_TO_CONTENT
     children = !show.value ? null : showPart1?.value ? part1 : part2
@@ -954,39 +954,46 @@ local B_ScopeSquareMarkers = function(radarWidth, radarHeight, elemStyle) {
                       ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
             rendObj = ROBJ_DTEXT
             size = SIZE_TO_CONTENT
-            pos = [radarWidth * 0.30, - hdpx(20)]
+            pos = [radarWidth * 0.30, -hdpx(20)]
             hplace = ALIGN_RIGHT
             text = HasAzimuthScale.value && ScanAzimuthMax.value > ScanAzimuthMin.value
-              ? ::str( floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"), "x",
+              ? ::str( floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), "x",
                 floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"),
                 (ScanPatternsMax.value > 1 ? "*" : " "))
               : ""
           })
         }
-        @() elemStyle.__merge({
-          watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
-          rendObj = ROBJ_DTEXT
-          size = SIZE_TO_CONTENT
-          pos = [radarWidth * 0.75, -hdpx(20)]
-          text = HasDistanceScale.value ?
-            ::str(VelocitySearch.value ?
-                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false) :
-                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
-                  (DistanceScalesMax.value > 1 ? "*" : " "))
-            : ""
-        })
-        @() elemStyle.__merge({
-          watch = [ HasDistanceScale, VelocitySearch, DistanceMin ]
-          rendObj = ROBJ_DTEXT
-          size = SIZE_TO_CONTENT
-          pos = [radarWidth * 0.75, radarHeight + hdpx(6)]
-          text = HasDistanceScale.value
-            ? ( !isCollapsed ?
-                  VelocitySearch.value ?
-                    ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false) :
-                    ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false)
-                : null) : ""
-        })
+        {
+          size = [0, SIZE_TO_CONTENT]
+          children = @() elemStyle.__merge({
+            watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
+            rendObj = ROBJ_DTEXT
+            size = SIZE_TO_CONTENT
+            pos = [radarWidth, VelocitySearch.value ? -hdpx(40) : -hdpx(20)]
+            hplace = ALIGN_RIGHT
+            text = HasDistanceScale.value ?
+              ::str(VelocitySearch.value ?
+                      ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMax.value, true, false, false) :
+                      ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMax.value * 1000.0, true, false, false),
+                   (DistanceScalesMax.value > 1 ? "*" : " "))
+             : ""
+          })
+        }
+        {
+          size = [0, SIZE_TO_CONTENT]
+          children = @() elemStyle.__merge({
+            watch = [ HasDistanceScale, VelocitySearch, DistanceMax, DistanceScalesMax ]
+            rendObj = ROBJ_DTEXT
+            size = SIZE_TO_CONTENT
+            pos = [radarWidth, radarHeight + hdpx(6)]
+            hplace = ALIGN_RIGHT
+            text = HasDistanceScale.value ?
+              (VelocitySearch.value ?
+                ::cross_call.measureTypes.SPEED.getMeasureUnitsText(DistanceMin.value, true, false, false) :
+                ::cross_call.measureTypes.DISTANCE.getMeasureUnitsText(DistanceMin.value * 1000.0, true, false, false))
+             : ""
+          })
+        }
         @() elemStyle.__merge({
           watch = AzimuthMin
           rendObj = ROBJ_DTEXT
@@ -1391,15 +1398,14 @@ local B_ScopeCircleMarkers = function(radarWidth, radarHeight, elemStyle) {
           children = @() styleText.__merge({
             rendObj = ROBJ_DTEXT
             size = SIZE_TO_CONTENT
-            pos = [0 - hdpx(4), radarHeight * 0.5 + hdpx(5)]
+            pos = [hdpx(4), radarHeight * 0.5 + hdpx(5)]
             hplace = ALIGN_RIGHT
             watch = [ HasAzimuthScale, ScanAzimuthMin, ScanAzimuthMax,
                       ScanElevationMin, ScanElevationMax, ScanPatternsMax ]
             text = HasAzimuthScale.value && ScanAzimuthMax.value > ScanAzimuthMin.value
-              ? ::str(floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"), "x",
-                        floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"),
-                       (ScanPatternsMax.value > 1 ? "*" : " ")
-                     )
+              ? ::str(ScanPatternsMax.value > 1 ? "*" : " ",
+                      floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), "x",
+                        floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
               : ""
           })
         },
@@ -1628,10 +1634,9 @@ local B_ScopeHalfCircleMarkers = function(radarWidth, radarHeight, elemStyle) {
             pos = [scanRangeX, scanRangeY]
             hplace = ALIGN_RIGHT
             text = HasAzimuthScale.value && ScanAzimuthMax.value > ScanAzimuthMin.value
-              ? ::str( floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"), "x",
-                    floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"),
-                    (ScanPatternsMax.value > 1 ? "*" : " ")
-                )
+              ? ::str(ScanPatternsMax.value > 1 ? "*" : " ",
+                      floor((ScanAzimuthMax.value - ScanAzimuthMin.value) * radToDeg + 0.5), "x",
+                      floor((ScanElevationMax.value - ScanElevationMin.value) * radToDeg + 0.5), ::loc("measureUnits/deg"))
               : ""
           })
         }
