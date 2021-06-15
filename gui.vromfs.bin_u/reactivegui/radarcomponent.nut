@@ -2303,10 +2303,13 @@ local scanZoneElevationComponent = function mkScanZoneElevationComponent() {
       }
     }
   }
+
+  local isTank = Computed(@() AzimuthRange.value > PI)
+
   return function() {
     return {
       watch = IsScanZoneElevationVisible
-      children = IsScanZoneElevationVisible.value ? scanZoneElev : null
+      children = IsScanZoneElevationVisible.value && !isTank.value ? scanZoneElev : null
     }
   }
 }()
