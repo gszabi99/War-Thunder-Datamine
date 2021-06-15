@@ -39,6 +39,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -2441,7 +2444,9 @@
   },
   {
     "gunConvergence": {
-      "defaultDistance": 1200.0,
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -2646,9 +2651,9 @@
   {
     "VehiclePhys": {
       "Mass": {
-        "Empty": 51265.0,
-        "Fuel": 545.0,
-        "TakeOff": 51810.0,
+        "Empty": 53000.0,
+        "Fuel": 1000.0,
+        "TakeOff": 54000.0,
         "momentOfInertia": [4.0,5.0,6.0],
         "CenterOfGravity": [0.1,0.5,0.0],
         "AdvancedMass": true,

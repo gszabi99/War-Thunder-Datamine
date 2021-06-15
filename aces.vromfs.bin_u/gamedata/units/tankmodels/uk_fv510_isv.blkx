@@ -45,6 +45,9 @@
     "useSimpleDeathConditionsAndEffects": false
   },
   {
+    "autoSightDistanceCorrection": true
+  },
+  {
     "subclass": "heavyVehicle"
   },
   {
@@ -2313,7 +2316,9 @@
   },
   {
     "gunConvergence": {
-      "defaultDistance": 800.0,
+      "updateFromRangefinder": true,
+      "minDistance": 200.0,
+      "defaultDistance": 1000.0,
       "vertical": true,
       "horizontal": true
     }
@@ -4039,15 +4044,17 @@
       },
       "ammo2": {
         "weaponTrigger": "gunner2",
-        "removeLoadedAmmo": true,
-        "fatalFire": false,
-        "fatalExplosion": false,
+        "removeLoadedAmmo": false,
+        "fatalFire": true,
+        "fatalExplosion": true,
         "shells": {
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
           "ammo_body_l_01_dm": {
-            "count": 1
+            "count": 1,
+            "fatalFire": false,
+            "fatalExplosion": false
           },
           "ammo_body_l_02_dm": {
             "count": 1
