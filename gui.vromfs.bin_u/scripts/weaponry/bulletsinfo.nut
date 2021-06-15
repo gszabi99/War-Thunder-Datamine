@@ -884,6 +884,27 @@ local function getBulletGroupIndex(airName, bulletName)
   return group
 }
 
+local function getBulletSetNameByBulletName(unit, bulletName)
+{
+  local setName = unit.bulletsSets.findindex(@(s) s?.bulletNames.contains(bulletName))
+  if (setName != null)
+    return setName
+
+  local numGroups = getLastFakeBulletsIndex(unit)
+  for (local groupIndex = 0; groupIndex < numGroups; groupIndex++)
+  {
+    local bulletsList = getBulletsList(unit.name, groupIndex, {
+      needCheckUnitPurchase = false, needOnlyAvailable = false })
+    foreach(value in bulletsList.values)
+    {
+      local bulletSet = getBulletsSetData(unit, value)
+      if (bulletSet?.bulletNames.contains(bulletName))
+        return value
+    }
+  }
+  return null
+}
+
 local function getActiveBulletsGroupInt(air, checkPurchased = true)
 {
   local primaryWeapon = getLastPrimaryWeapon(air)
@@ -1046,4 +1067,5 @@ return {
   getModificationInfo
   getModificationName
   getBulletAnnotation
+  getBulletSetNameByBulletName
 }

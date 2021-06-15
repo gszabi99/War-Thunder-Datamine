@@ -8,7 +8,6 @@ bigMedalPlace {
   bigMedalImg {
     background-image:t='<<image>>'
     background-repeat:t='aspect-ratio'
-    status:t='<<status>>'
   }
 }
 

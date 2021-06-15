@@ -1235,7 +1235,6 @@ class ::gui_handlers.Profile extends ::gui_handlers.UserCardHandler
     local view = {
       title = ::loc(name + "/name")
       image = ::get_image_for_unlockable_medal(name, true)
-      status = isUnlocked ? "unlocked" : "locked"
       condition = condView
       rewardText = rewardText != "" ? rewardText : null
     }

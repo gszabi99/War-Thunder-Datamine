@@ -1045,10 +1045,7 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
   sceneNavBlkName = "gui/backSelectNavChapter.blk"
   owner = null
 
-  filterMask = {
-    unit = -1
-    group = -1
-  }
+  filterMask = {}
 
   function initScreen()
   {
@@ -1072,12 +1069,16 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     }
 
     base.initScreen()
+  }
 
-    if (wndGameMode != ::GM_SKIRMISH)
-      return
+  function getFilterMask()
+  {
+    local mask = filterMask?[misListType.id]
+    if (mask)
+      return mask
 
-    local nestObj = scene.findObject("filter_nest")
-    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView(), "RB")
+    filterMask[misListType.id] <- { unit = -1, group = -1 }
+    return filterMask[misListType.id]
   }
 
   function checkFilterData(filterData)
@@ -1085,11 +1086,12 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     if (!base.checkFilterData(filterData))
       return false
 
-    if (wndGameMode != ::GM_SKIRMISH)
+    if (wndGameMode != ::GM_SKIRMISH || misListType == ::g_mislist_type.URL)
       return true
 
-    return (filterData.allowedUnitTypesMask & filterMask.unit) != 0
-      && (filterData.group & filterMask.group) != 0
+    local mask = getFilterMask()
+    return (filterData.allowedUnitTypesMask & mask.unit) != 0
+      && (filterData.group & mask.group) != 0
   }
 
   function createFilterDataArray()
@@ -1099,14 +1101,22 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
     if (wndGameMode != ::GM_SKIRMISH)
       return
 
+    local isFilterVisible = misListType != ::g_mislist_type.URL && filterDataArray.len() != 0
+    local nestObj = showSceneBtn("filter_nest", isFilterVisible)
+
+    if (!isFilterVisible)
+      return
+
     foreach (v in filterDataArray)
     {
       if (v.isHeader)
         continue
 
-      v.allowedUnitTypesMask <- ::get_mission_allowed_unittypes_mask(v.mission.blk)
+      v.allowedUnitTypesMask <- ::get_mission_allowed_unittypes_mask(v.mission.blk) || -1
       v.group <- getMissionGroup(v.mission)
     }
+
+    popupFilter.open(nestObj, onFilterCbChange.bindenv(this), getFiltersView(), "RB")
   }
 
   getAvailableMissionGroups = @() filterDataArray
@@ -1121,7 +1131,7 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
   {
     local availableUnitTypes = getAvailableUnitTypes()
     local availableMissionGroups = getAvailableMissionGroups()
-    local mask = filterMask
+    local mask = getFilterMask()
 
     local unitColumnView = [{
       id    = "all_items"
@@ -1155,12 +1165,13 @@ class ::gui_handlers.SingleMissionsModal extends ::gui_handlers.SingleMissions
 
   function onFilterCbChange(objId, typeName, value)
   {
+    local mask = getFilterMask()
     if (objId == "all_items")
-      filterMask[typeName] = value ? -1 : 0
+      mask[typeName] = value ? -1 : 0
     else
     {
       local bit = objId.split("_")[1].tointeger()
-      filterMask[typeName] = filterMask[typeName] ^ bit
+      mask[typeName] = mask[typeName] ^ bit
     }
     applyMissionFilter()
     updateCollapsedItems()

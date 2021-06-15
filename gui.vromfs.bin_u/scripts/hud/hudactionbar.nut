@@ -1,5 +1,8 @@
 local { getDefaultBulletName } = require("scripts/weaponry/weaponryDescription.nut")
-local { isFakeBullet, getBulletsSetData } = require("scripts/weaponry/bulletsInfo.nut")
+local {
+  isFakeBullet,
+  getBulletsSetData,
+  getBulletSetNameByBulletName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getBulletsIconView } = require("scripts/weaponry/bulletsVisual.nut")
 local { MODIFICATION } = require("scripts/weaponry/weaponryTooltips.nut")
 
@@ -148,12 +151,9 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     viewItem.isXinput           <- showShortcut && isXinput
     viewItem.showShortcut       <- showShortcut
 
-    if ((item.type == ::EII_BULLET || item.type == ::EII_FORCED_GUN) && unit != null)
+    local modifName = getModificationName(item, unit)
+    if (modifName)
     {
-      local modifName = item.modificationName != null
-        ? item.modificationName
-        : getDefaultBulletName(unit)
-
       viewItem.bullets <- ::handyman.renderNested(::load_template_text("gui/weaponry/bullets"),
         function (text) {
           // if fake bullets are not generated yet, generate them
@@ -170,7 +170,8 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     {
       viewItem.activatedShortcutId <- "ID_SHOOT_ARTILLERY"
     }
-    if (item.type != ::EII_BULLET && item.type != ::EII_FORCED_GUN)
+
+    if (!modifName && item.type != ::EII_BULLET && item.type != ::EII_FORCED_GUN)
     {
       local killStreakTag = ::getTblValue("killStreakTag", item)
       local killStreakUnitTag = ::getTblValue("killStreakUnitTag", item)
@@ -178,11 +179,32 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       viewItem.name <- actionBarType.getTitle(killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
+
     if (item.count >= 0)
-      viewItem.amount <- item.count.tostring() + (item.countEx >= 0 ? "/" + item.countEx : "")
+      if (item.type == ::EII_SMOKE_GRENADE && "salvo" in item)
+        viewItem.amount <- $"{item.salvo}/{item.count}"
+      else
+        viewItem.amount <- item.count.tostring() + (item.countEx >= 0 ? "/" + item.countEx : "")
 
     viewItem.cooldown <- getWaitGaugeDegree(item.cooldown)
     return viewItem
+  }
+
+  function getModificationName(item, unit)
+  {
+    if (!unit)
+      return null
+
+    switch (item.type)
+    {
+      case ::EII_ROCKET:
+        return getBulletSetNameByBulletName(unit, item?.bulletName)
+      case ::EII_BULLET:
+      case ::EII_FORCED_GUN:
+        return item?.modificationName ?? getDefaultBulletName(unit)
+    }
+
+    return null
   }
 
   function isActionReady(action)
@@ -208,7 +230,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     local prevCount = typeof actionItems == "array" ? actionItems.len() : 0
     local prevKillStreaksActions = killStreaksActions
 
-    local prewActionItems = actionItems
+    local prevActionItems = actionItems
     actionItems = getActionBarItems()
 
     if (useWheelmenu)
@@ -218,10 +240,12 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
     if (!fullUpdate)
     {
       foreach (id, item in actionItems)
-        if (item.id != prewActionItems[id].id
-          || (item?.isStreakEx && item.count < 0 && prewActionItems[id].count >= 0)
+        if (item.id != prevActionItems[id].id
+          || (item?.isStreakEx && item.count < 0 && prevActionItems[id].count >= 0)
           || ((item.type == ::EII_BULLET || item.type == ::EII_FORCED_GUN)
-            && item?.modificationName != prewActionItems[id]?.modificationName))
+            && item?.modificationName != prevActionItems[id]?.modificationName)
+          || ((item.type == ::EII_ROCKET)
+            && item?.bulletName != prevActionItems[id]?.bulletName))
         {
           fullUpdate = true
           break
@@ -253,7 +277,7 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
       if (item.type != ::EII_BULLET && !itemObj.isEnabled() && isActionReady(item))
         blink(itemObj)
 
-      handleIncrementCount(item, prewActionItems, itemObj)
+      handleIncrementCount(item, prevActionItems, itemObj)
 
       itemObj.selected = item.selected ? "yes" : "no"
       itemObj.active = item.active ? "yes" : "no"
@@ -295,14 +319,20 @@ local sectorAngle1PID = ::dagui_propid.add_name_id("sector-angle-1")
   function getModAmountText(modData, isFull = false)
   {
     local count = modData?.count ?? 0
-    local countEx = modData?.countEx ?? 0
     if (count < 0)
       return ""
 
-    local countExText = modData?.isStreakEx ? ::loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
-    local text = count.tostring() + (countExText.len() ? "/" + countExText : "")
-    if (text.len() > LONG_ACTIONBAR_TEXT_LEN && !isFull)
-      text = count.tostring() + (countExText.len() ? "/" + ::loc("weapon/bigAmountNumberIcon") : "")
+    local text = ""
+    if (modData.type == ::EII_SMOKE_GRENADE && "salvo" in modData)
+      text = $"{modData.salvo}/{modData.count}"
+    else
+    {
+      local countEx = modData?.countEx ?? 0
+      local countExText = modData?.isStreakEx ? ::loc("icon/nuclear_bomb") : (countEx < 0 ? "" : countEx.tostring())
+      text = count.tostring() + (countExText.len() ? "/" + countExText : "")
+      if (text.len() > LONG_ACTIONBAR_TEXT_LEN && !isFull)
+        text = count.tostring() + (countExText.len() ? "/" + ::loc("weapon/bigAmountNumberIcon") : "")
+    }
 
     return isFull ? ::loc("options/count") + ::loc("ui/colon") + text : text
   }
