@@ -2323,11 +2323,20 @@
         "dmPart": "commander_dm",
         "role": "commander"
       },
-      "machine_gunner": {
-        "dmPart": "machine_gunner_dm",
-        "role": "radio_gunner",
-        "substitute": "commander"
-      },
+      "machine_gunner": [
+        {
+          "dmPart": "machine_gunner_dm"
+        },
+        {
+          "role": "radio_gunner"
+        },
+        {
+          "substitute": "machine_gunner1"
+        },
+        {
+          "substitute": "commander"
+        }
+      ],
       "machine_gunner1": {
         "dmPart": "machine_gunner_01_dm",
         "role": "radio_gunner"
