@@ -1,0 +1,34 @@
+@const steamButtonWidth: 0.3@sf\1;
+@const steamButtonHeight: 0.055@sf\1;
+
+@const buttonSteamColor: #304F70;
+@const buttonSteamHoverColor: #4A88A8;
+@const buttonSteamBorderColor: #304F70;
+
+@const buttonSteamFontColor: #68C1F5;
+@const buttonSteamFontPushedColor: #304F70;
+
+Button_text[visualStyle=steam] {
+  width: @steamButtonWidth;
+  height: @steamButtonHeight;
+  bigBoldFont: yes;
+
+  background-color: @transparent;
+  border-color: @buttonSteamColor;
+  color: @buttonSteamFontColor;
+}
+
+Button_text[visualStyle=steam][externalLink=yes] {
+  background-color: @buttonSteamColor;
+  border-color: @transparent;
+}
+
+Button_text[visualStyle=steam][selected=yes], Button_text[visualStyle=steam]:hover {
+  background-color: @buttonSteamHoverColor;
+  color: @white;
+}
+
+Button_text[visualStyle=steam]:pushed {
+  background-color: @white;
+  color: @buttonSteamFontPushedColor;
+}

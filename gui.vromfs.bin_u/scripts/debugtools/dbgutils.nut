@@ -608,3 +608,5 @@ if (dbgFocusData.debugFocusTask != -1) {
   allowEmpty = false
   okFunc = openUrl
 })
+
+::debug_show_steam_rate_wnd <- @() require("scripts/user/suggestionRateGame.nut").tryOpenSteamRateReview(true)

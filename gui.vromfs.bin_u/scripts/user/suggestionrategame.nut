@@ -1,7 +1,7 @@
-local { openUrl } = require("scripts/onlineShop/url.nut")
 local { isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
 local { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
+local steamRateGameWnd = require("steamRateGameWnd.nut")
 
 local log = require("std/log.nut")().with_prefix("[UserUtils] ")
 
@@ -68,25 +68,12 @@ local function tryOpenXboxRateReviewWnd() {
     ::save_local_account_settings(RATE_WND_SAVE_ID, true)
 }
 
-local function tryOpenSteamRateReview() {
-  if (!::steam_is_running() || !::has_feature("SteamRateGame"))
+local function tryOpenSteamRateReview(forceShow = false) {
+  if (!forceShow && (!::steam_is_running() || !::has_feature("SteamRateGame")))
     return
 
-  ::scene_msg_box(
-    "steam_rate_review",
-    null,
-    ::loc("msgbox/steam/rate_review"),
-    [
-      ["yes", function() {
-          ::save_local_account_settings(RATE_WND_SAVE_ID, true)
-          openUrl(::loc("url/steam/community", {appId = ::steam_get_app_id()} ))
-        }
-      ],
-      ["no"]
-    ],
-    "yes",
-    { cancel_fn = @() null }
-  )
+  ::save_local_account_settings(RATE_WND_SAVE_ID, true)
+  steamRateGameWnd.open()
 }
 
 local function checkShowRateWnd() {
@@ -119,4 +106,5 @@ addListenersWithoutEnv({
 return {
   setNeedShowRate
   checkShowRateWnd
+  tryOpenSteamRateReview
 }
