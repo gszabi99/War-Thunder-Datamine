@@ -1576,8 +1576,8 @@ local ASPRadarRoll = @() {
   lineWidth = baseLineWidth * 0.8
   color = IlsColor.value
   commands = [
-    [VECTOR_LINE, 25, 50, 42, 50],
-    [VECTOR_LINE, 58, 50, 75, 50]
+    [VECTOR_LINE, 25, 30, 42, 30],
+    [VECTOR_LINE, 58, 30, 75, 30]
   ]
   behavior = Behaviors.RtPropUpdate
   update = @() {
@@ -1624,10 +1624,10 @@ local function ASP23LongRange(width, height) {
     lineWidth = baseLineWidth * 0.8
     color = IlsColor.value
     commands = [
-      [VECTOR_LINE, 45, 50, 48, 50],
-      [VECTOR_LINE, 52, 50, 55, 50],
-      [VECTOR_LINE, 50, 44, 50, 48],
-      [VECTOR_LINE, 50, 52, 50, 56]
+      [VECTOR_LINE, 45, 30, 48, 30],
+      [VECTOR_LINE, 52, 30, 55, 30],
+      [VECTOR_LINE, 50, 24, 50, 28],
+      [VECTOR_LINE, 50, 32, 50, 36]
     ]
     children = [
       (!state.Irst.value ? ASPLRGrid : null),
