@@ -10,9 +10,9 @@
   "AlphaRudderMin": 0.1,
   "AlphaElevatorMin": 0.1,
   "AllowStrongControlsRestrictions": true,
-  "RudderSens": 0.35,
+  "RudderSens": 0.45,
   "ElevatorSens": 0.4,
-  "AileronSens": 0.34,
+  "AileronSens": 0.19,
   "RudderSensMultipler": 1.0,
   "ElevatorSensMultipler": 1.0,
   "AileronSensMultipler": 1.0,
@@ -145,13 +145,13 @@
     },
     "WingPlane": {
       "Span": 12.954,
-      "SweptAngle": -0.5,
-      "TaperRatio": 1.21,
+      "SweptAngle": 6.2,
+      "TaperRatio": 1.71,
       "Angle": 0.0,
       "VAngle": 6.0,
       "UseSpinLoss": false,
-      "SpinClLoss": 0.8,
-      "SpinCdLoss": 0.1,
+      "SpinCdloss": -1.0,
+      "SpinClloss": -1.0,
       "DownwashType": 2,
       "DownwashCoeff": 1.0,
       "Areas": {
@@ -306,7 +306,7 @@
       "Span": 4.8768,
       "Angle": 1.0,
       "Arm": [-6.5177,0.34,1.02],
-      "FlowInertia": 0.0695,
+      "FlowInertia": 0.0693,
       "Areas": {
         "Main": 3.49,
         "Elevator": 2.05
@@ -367,8 +367,8 @@
     "VerStabPlane": {
       "Span": 1.8958,
       "Angle": -0.7,
-      "Arm": [-6.5468,0.7,0.0],
-      "FlowInertia": 0.0993,
+      "Arm": [-6.5468,1.1,0.0],
+      "FlowInertia": 0.099,
       "SlipStreamDistance": 6.6,
       "Areas": {
         "Main": 1.691,
@@ -833,7 +833,7 @@
   "Propeller0": {
     "Type": 0,
     "AxisDirection": [-0.0,0.0],
-    "CyclicPitchAxisDirectionPitch": [-90.0,90.0],
+    "CyclicPitchAxisDirectionPitch": [90.0,90.0],
     "Pos": [3.25,0.0,0.0],
     "Geometry": {
       "RotationDirection": 1
@@ -863,7 +863,7 @@
     "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
     "Takeoff": 9380.0,
-    "CenterOfGravity": [0.0,0.0,0.0],
+    "CenterOfGravity": [-0.361839,-0.110905,0.000931351],
     "GearDestructionIndSpeed": 450.0,
     "AirbrakeDestructionIndSpeed": -1.0,
     "FlapsDestructionIndSpeedP0": [0.1,520.4],
@@ -958,7 +958,7 @@
   },
   "Gear": {
     "SinkFactor": 1400.0,
-    "SinkRateMult": 0.5208,
+    "SinkRateMult": 0.5241,
     "WaterFriction": 0.3,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
