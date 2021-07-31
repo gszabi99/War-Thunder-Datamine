@@ -301,7 +301,7 @@ options.addTypes({
             local bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletName)
             local addDiv = isBulletBelt
               ? SINGLE_BULLET.getMarkup(unit.name, bulletName, {
-                locName,
+                modName = value,
                 bSet = (clone bulletsSet).map(//Generate set of identical bullets by getting rid of all bullets excluding current.
                   @(val, p) p == "bullets"
                     ? [val[idx]]

@@ -1,6 +1,6 @@
 local { addTooltipTypes } = require("scripts/utils/genericTooltipTypes.nut")
 local { getModificationByName } = require("scripts/weaponry/modificationInfo.nut")
-local { getFakeBulletsModByName } = require("scripts/weaponry/bulletsInfo.nut")
+local { getFakeBulletsModByName, getModificationName } = require("scripts/weaponry/bulletsInfo.nut")
 local { getSingleBulletParamToDesc } = require("scripts/weaponry/bulletsVisual.nut")
 local { updateModType, getTierDescTbl, updateSpareType, updateWeaponTooltip
 } = require("scripts/weaponry/weaponryTooltipPkg.nut")
@@ -42,8 +42,10 @@ local tooltipTypes = {
       local unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      local { locName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
+      local { modName = "", bulletName = "", bulletParams = {}, bSet = {} } = params
 
+      local locName =" ".concat(::format(::loc("caliber/mm"), bSet.caliber),
+        getModificationName(unit, modName), ::loc($"{bulletName}/name/short"))
       local data = ::handyman.renderCached(("gui/weaponry/weaponTooltip"),
         getSingleBulletParamToDesc(unit, locName, bulletName, bSet, bulletParams))
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
