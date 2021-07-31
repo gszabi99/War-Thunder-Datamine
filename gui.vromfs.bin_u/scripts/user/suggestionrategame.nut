@@ -1,5 +1,6 @@
 local { isPlatformXboxOne } = require("scripts/clientState/platform.nut")
 local { addListenersWithoutEnv } = require("sqStdLibs/helpers/subscriptions.nut")
+local { TIME_HOUR_IN_SECONDS } = require("std/time.nut")
 local { getShopItem } = require("scripts/onlineShop/entitlementsStore.nut")
 local steamRateGameWnd = require("steamRateGameWnd.nut")
 
@@ -12,12 +13,27 @@ local haveMadeKills = persist("haveMadeKills", @() ::Watched(false))
 local havePurchasedSpecUnit = persist("havePurchasedSpecUnit", @() ::Watched(false))
 local havePurchasedPremium = persist("havePurchasedPremium", @() ::Watched(false))
 
-const TOTAL_BATTLES_CHECK = 7
-const MIN_PLACE_ON_WIN = 3
-const TOTAL_WINS_IN_A_ROW = 3
-const MIN_KILLS_NUM = 1
-
 const RATE_WND_SAVE_ID = "seen/rateWnd"
+
+local isConfigInited = false
+local cfg = { // Overridden by gui.blk values
+  totalPvpBattlesMin = 7
+  totalPlayedHoursMax = 300
+  minPlaceOnWin = 3
+  totalWinsInARow = 3
+  minKillsNum = 1
+}
+
+local function initConfig() {
+  if (isConfigInited)
+    return
+  isConfigInited = true
+
+  local guiBlk = ::configs.GUI.get()
+  local cfgBlk = guiBlk?.suggestion_rate_game
+  foreach (k, v in cfg)
+    cfg[k] = cfgBlk?[k] ?? cfg[k]
+}
 
 local function setNeedShowRate(debriefingResult, myPlace) {
   //can be on any platform in future,
@@ -30,11 +46,15 @@ local function setNeedShowRate(debriefingResult, myPlace) {
     return
   }
 
-  if (::my_stats.getPvpPlayed() < TOTAL_BATTLES_CHECK)
+  initConfig()
+
+  if (::my_stats.getPvpPlayed() < cfg.totalPvpBattlesMin) // Newbies
+    return
+  if (::my_stats.getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS > cfg.totalPlayedHoursMax) // Old players
     return
 
   local isWin = debriefingResult?.isSucceed && (debriefingResult?.gm == ::GM_DOMINATION)
-  if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= MIN_PLACE_ON_WIN)) {
+  if (isWin && (havePurchasedPremium.value || havePurchasedSpecUnit.value || myPlace <= cfg.minPlaceOnWin)) {
     log($"[ShowRate] Passed by win and prem {havePurchasedPremium.value || havePurchasedSpecUnit.value} or win and place {myPlace} condition")
     needShowRateWnd(true)
     return
@@ -49,7 +69,7 @@ local function setNeedShowRate(debriefingResult, myPlace) {
         totalKills += debriefingResult.exp?[$"num{b.id}"] ?? 0
     })
 
-    haveMadeKills(haveMadeKills.value || totalKills >= MIN_KILLS_NUM)
+    haveMadeKills(haveMadeKills.value || totalKills >= cfg.minKillsNum)
     log($"[ShowRate] Update kills count {totalKills}; haveMadeKills {haveMadeKills.value}")
   }
   else {
@@ -57,7 +77,7 @@ local function setNeedShowRate(debriefingResult, myPlace) {
     haveMadeKills(false)
   }
 
-  if (winsInARow.value >= TOTAL_WINS_IN_A_ROW && haveMadeKills.value) {
+  if (winsInARow.value >= cfg.totalWinsInARow && haveMadeKills.value) {
     log("[ShowRate] Passed by wins in a row and kills")
     needShowRateWnd(true)
   }

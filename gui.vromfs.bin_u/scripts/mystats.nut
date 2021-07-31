@@ -286,6 +286,16 @@ local summaryNameArray = [
     return getUserstat("sessions")
   }
 
+  function getTotalTimePlayedSec()
+  {
+    local sec = 0
+    foreach (modeBlock in _my_stats?.summary ?? {})
+      foreach (diffBlock in modeBlock)
+        foreach (unitTypeBlock in diffBlock)
+          sec += (unitTypeBlock?.timePlayed ?? 0)
+    return sec
+  }
+
   /**
    * Returns summ of specified fields in players statistic.
    * @summaryName - game mode. Available values:
