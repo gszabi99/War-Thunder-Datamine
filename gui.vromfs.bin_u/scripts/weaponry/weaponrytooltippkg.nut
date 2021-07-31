@@ -2,8 +2,8 @@ local weaponryEffects = require("scripts/weaponry/weaponryEffects.nut")
 local { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("scripts/weaponry/itemInfo.nut")
-local { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getModificationBulletsEffect,
-  getBulletsSearchName, getModificationInfo, getModificationName, getBulletsSetData, getModifIconItem
+local { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod,
+  getModificationInfo, getModificationName
 } = require("scripts/weaponry/bulletsInfo.nut")
 local { addBulletsParamToDesc, buildPiercingData } = require("scripts/weaponry/bulletsVisual.nut")
 local { TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled
@@ -192,10 +192,7 @@ getItemDescTbl = function(unit, item, params = null, effect = null, updateEffect
       res.delayed = info.delayed
     }
 
-    local modName = getModifIconItem(unit, item)?.name ?? item.name
-    local searchName = getBulletsSearchName(unit, modName)
-    local modEffect = getModificationBulletsEffect(searchName)
-    addBulletsParamToDesc(res, unit, item, getBulletsSetData(unit, modName), searchName, modEffect)
+    addBulletsParamToDesc(res, unit, item)
   }
   else if (item.type==weaponsItem.spare)
     desc = ::loc("spare/"+item.name + "/desc")

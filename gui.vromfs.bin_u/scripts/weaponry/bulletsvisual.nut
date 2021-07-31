@@ -1,6 +1,10 @@
 local stdMath = require("std/math.nut")
 local { copyParamsToTable } = require("std/datablock.nut")
-local { getBulletAnnotation } = require("scripts/weaponry/bulletsInfo.nut")
+local { getBulletsSetData,
+        getBulletAnnotation,
+        getBulletsSearchName,
+        getModifIconItem,
+        getModificationBulletsEffect } = require("scripts/weaponry/bulletsInfo.nut")
 local { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("scripts/weaponry/weaponryInfo.nut")
 
@@ -397,11 +401,16 @@ local buildPiercingData = ::kwarg(function buildPiercingData(bullet_parameters, 
   }
 })
 
-local function addBulletsParamToDesc(descTbl, unit, item, bulletsSet, searchName, modEffect)
+local function addBulletsParamToDesc(descTbl, unit, item)
 {
   if (!unit.unitType.canUseSeveralBulletsForGun && !::has_feature("BulletParamsForAirs"))
     return
 
+  local modName = getModifIconItem(unit, item)?.name ?? item.name
+  if (!modName)
+    return
+
+  local bulletsSet = getBulletsSetData(unit, modName)
   if (!bulletsSet)
     return
 
@@ -433,11 +442,12 @@ local function addBulletsParamToDesc(descTbl, unit, item, bulletsSet, searchName
   if (bulletsSet.weaponType == WEAPON_TYPE.COUNTERMEASURES)
     return
 
-  local useDefaultBullet = searchName != item.name
+  local searchName = getBulletsSearchName(unit, modName)
+  local useDefaultBullet = searchName != modName
   local bullet_parameters = ::calculate_tank_bullet_parameters(unit.name,
     useDefaultBullet && "weaponBlkName" in bulletsSet ?
       bulletsSet.weaponBlkName :
-      modEffect,
+      getModificationBulletsEffect(searchName),
     useDefaultBullet, false)
 
   buildPiercingData({
