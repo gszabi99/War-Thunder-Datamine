@@ -569,70 +569,6 @@
           ]
         },
         {
-          "unitMoveTo": {
-            "target": "evacuate_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "ally_he_111",
-            "speed": 600.0
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "ally_he_111"
-            },
-            {
-              "target": "squad_bombs_target_01"
-            },
-            {
-              "target": "squad_raf_air_def"
-            },
-            {
-              "target": "squad_bombs_target_02"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "ally_me_110",
-            "target": "squad_raf_air_def",
-            "fireRandom": true
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_britain_the_blitz_to_air_def_kill"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "squad_raf_air_def",
-            "stealthRadius": 50000.0
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "squad_raf_air_def"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "update_raf_air_def_indicator"
@@ -649,8 +585,15 @@
           ]
         },
         {
-          "wait": {
-            "time": 45.0
+          "unitMoveTo": {
+            "target": "evacuate_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object": "ally_he_111",
+            "speed": 600.0
           }
         },
         {
@@ -685,13 +628,33 @@
           ]
         },
         {
-          "wait": {
-            "time": 15.0
-          }
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "ally_he_111"
+            },
+            {
+              "target": "squad_bombs_target_01"
+            },
+            {
+              "target": "squad_raf_air_def"
+            },
+            {
+              "target": "squad_bombs_target_02"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
         },
         {
-          "unitWakeUp": {
-            "target": "raf_hurricane_02"
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "ally_me_110",
+            "target": "squad_raf_air_def",
+            "fireRandom": true
           }
         },
         {
@@ -743,6 +706,43 @@
               "fireRandom": true
             }
           ]
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "dlc_britain_the_blitz_to_air_def_kill"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 45.0
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object": "squad_raf_air_def",
+            "stealthRadius": 50000.0
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "squad_raf_air_def"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "raf_hurricane_02"
+          }
         }
       ]
     },
@@ -1244,13 +1244,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 1.0
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -1721,6 +1721,156 @@
       }
     },
     {
+      "structures": {
+        "name": "bomb_target_17",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6645.8,27.55,16788.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bomb_target_18",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6642.05,23.9,16898.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bomb_target_19",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6409.65,23.9,16811.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bomb_target_20",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6507.9,35.3,15976.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bomb_target_21",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6639.5,35.3,15871.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "bomb_target_22",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6671.05,35.3,16055.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "squad_bombs_target_01",
         "tm": [
@@ -1780,6 +1930,129 @@
           },
           {
             "squad_members": "bomb_target_16"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "squad_germ_planes",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20089.9,-1.0,-6322.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "ally_me_110"
+          },
+          {
+            "squad_members": "ally_he_111"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "squad_raf_air_def",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4687.35,52.15,16000.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "raf_air_def_01"
+          },
+          {
+            "squad_members": "raf_air_def_02"
+          },
+          {
+            "squad_members": "raf_air_def_03"
+          },
+          {
+            "squad_members": "raf_air_def_04"
+          },
+          {
+            "squad_members": "raf_air_def_05"
+          },
+          {
+            "squad_members": "raf_air_def_06"
+          },
+          {
+            "squad_members": "raf_air_def_07"
+          },
+          {
+            "squad_members": "raf_air_def_08"
+          },
+          {
+            "squad_members": "raf_air_def_09"
+          },
+          {
+            "squad_members": "raf_air_def_10"
+          },
+          {
+            "squad_members": "raf_air_def_11"
+          },
+          {
+            "squad_members": "raf_air_def_12"
+          },
+          {
+            "squad_members": "raf_air_def_13"
+          },
+          {
+            "squad_members": "raf_air_def_14"
+          },
+          {
+            "squad_members": "raf_air_def_15"
+          },
+          {
+            "squad_members": "raf_air_def_16"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "squad_bombs_target_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6213.7,48.3,16005.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "bomb_target_17"
+          },
+          {
+            "squad_members": "bomb_target_18"
+          },
+          {
+            "squad_members": "bomb_target_19"
+          },
+          {
+            "squad_members": "bomb_target_20"
+          },
+          {
+            "squad_members": "bomb_target_21"
+          },
+          {
+            "squad_members": "bomb_target_22"
           }
         ],
         "way": []
@@ -1894,29 +2167,6 @@
       }
     },
     {
-      "squad": {
-        "name": "squad_germ_planes",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20089.9,-1.0,-6322.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "ally_me_110"
-          },
-          {
-            "squad_members": "ally_he_111"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "raf_hurricane_01",
         "tm": [
@@ -1931,6 +2181,150 @@
         "props": {
           "army": 2,
           "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_hurricane_02",
+        "tm": [
+          [0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,0.0436195],
+          [6019.4,1475.4,19624.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hurricane_mk1",
+        "weapons": "hurricane_mk1_default",
+        "props": {
+          "army": 2,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_spitfire_02",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [8252.25,2475.4,5937.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_mk1",
+        "weapons": "spitfire_mk1_default",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_spitfire_01",
+        "tm": [
+          [-0.766044,0.0,0.642788],
+          [0.0,1.0,0.0],
+          [-0.642788,0.0,-0.766044],
+          [20904.0,3000.0,-1175.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_mk1",
+        "weapons": "spitfire_mk1_default",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "raf_hurricane_05",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [1491.15,3106.6,16305.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "hurricane_mk1",
+        "weapons": "hurricane_mk1_default",
+        "props": {
+          "army": 2,
+          "count": 6,
           "free_distance": 70.0,
           "floating_distance": 50.0,
           "minimum_distance_to_earth": 20.0,
@@ -2353,143 +2747,6 @@
       }
     },
     {
-      "squad": {
-        "name": "squad_raf_air_def",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4687.35,52.15,16000.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "raf_air_def_01"
-          },
-          {
-            "squad_members": "raf_air_def_02"
-          },
-          {
-            "squad_members": "raf_air_def_03"
-          },
-          {
-            "squad_members": "raf_air_def_04"
-          },
-          {
-            "squad_members": "raf_air_def_05"
-          },
-          {
-            "squad_members": "raf_air_def_06"
-          },
-          {
-            "squad_members": "raf_air_def_07"
-          },
-          {
-            "squad_members": "raf_air_def_08"
-          },
-          {
-            "squad_members": "raf_air_def_09"
-          },
-          {
-            "squad_members": "raf_air_def_10"
-          },
-          {
-            "squad_members": "raf_air_def_11"
-          },
-          {
-            "squad_members": "raf_air_def_12"
-          },
-          {
-            "squad_members": "raf_air_def_13"
-          },
-          {
-            "squad_members": "raf_air_def_14"
-          },
-          {
-            "squad_members": "raf_air_def_15"
-          },
-          {
-            "squad_members": "raf_air_def_16"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "raf_hurricane_02",
-        "tm": [
-          [0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,0.0436195],
-          [6019.4,1475.4,19624.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "hurricane_mk1",
-        "weapons": "hurricane_mk1_default",
-        "props": {
-          "army": 2,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "raf_spitfire_02",
-        "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [8252.25,2475.4,5937.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "spitfire_mk1",
-        "weapons": "spitfire_mk1_default",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "germ_navy_ships",
         "tm": [
@@ -2508,263 +2765,6 @@
           "formation_div": 8,
           "formation_step": [5.0,3.0],
           "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "raf_spitfire_01",
-        "tm": [
-          [-0.766044,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,-0.766044],
-          [20904.0,3000.0,-1175.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "spitfire_mk1",
-        "weapons": "spitfire_mk1_default",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "raf_hurricane_05",
-        "tm": [
-          [0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,0.5],
-          [1491.15,3106.6,16305.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "hurricane_mk1",
-        "weapons": "hurricane_mk1_default",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_17",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6645.8,27.55,16788.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_18",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6642.05,23.9,16898.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_19",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6409.65,23.9,16811.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "squad_bombs_target_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6213.7,48.3,16005.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "bomb_target_17"
-          },
-          {
-            "squad_members": "bomb_target_18"
-          },
-          {
-            "squad_members": "bomb_target_19"
-          },
-          {
-            "squad_members": "bomb_target_20"
-          },
-          {
-            "squad_members": "bomb_target_21"
-          },
-          {
-            "squad_members": "bomb_target_22"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_20",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6507.9,35.3,15976.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_21",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6639.5,35.3,15871.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "bomb_target_22",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6671.05,35.3,16055.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },

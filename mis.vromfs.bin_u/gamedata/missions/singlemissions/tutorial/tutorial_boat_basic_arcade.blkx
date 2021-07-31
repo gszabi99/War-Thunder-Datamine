@@ -233,16 +233,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPutToSleep": {
-            "target": "target_ship02_squad"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_hello_continue",
@@ -255,6 +245,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "target_ship02_squad"
           }
         },
         {
@@ -488,9 +488,30 @@
           ]
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_SHIP_TOGGLE_GUNNERS"
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_hello",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_hello_continue",
             "action": "show",
             "shouldFadeOut": false,
             "isOverFade": false,
@@ -513,21 +534,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_hello_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
           "__triggerEnable": {
             "target": "movement_controls_hint02"
           }
@@ -547,12 +553,6 @@
               "target": "buoys_squad"
             }
           ]
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_SHIP_TOGGLE_GUNNERS"
-          }
         },
         {
           "varSetInt": {
@@ -634,11 +634,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_about_water_movement",
@@ -654,11 +649,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_about_water_movement_continue",
@@ -671,6 +661,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -716,11 +716,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_use_controls",
@@ -735,6 +730,11 @@
             "object_var_value": 0,
             "item": "ship_main_engine+ship_steering",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -833,6 +833,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -846,18 +851,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_movement_info",
-            "show": true,
-            "time": -1
           }
         },
         {
@@ -875,6 +868,13 @@
             "object_var_value": 0,
             "item": "ship_main_engine+ship_steering",
             "shouldBlink": false
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_movement_info",
+            "show": true,
+            "time": -1
           }
         },
         {
@@ -1028,6 +1028,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.1,
+            "target": "waypoint_underground03"
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -1039,16 +1049,6 @@
             "scale": 1.0,
             "target": "waypoint02",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.1,
-            "target": "waypoint_underground03"
           }
         },
         {
@@ -1204,11 +1204,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_wait_for_full_stop",
@@ -1221,6 +1216,11 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -1291,6 +1291,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_spot_the_1st_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "unitSetStealth": {
             "set": true,
             "radius": 10000.0,
@@ -1329,6 +1344,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1344,29 +1364,9 @@
           }
         },
         {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
           "hudElementSelectionShade": {
             "element": "curTarget",
             "targetName": "target_ship01"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_spot_the_1st_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -1414,17 +1414,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_about_cursors",
@@ -1440,66 +1429,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "boat_tutorial_basic_shooting_screen01",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_cursor_location",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_markers_locations",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_white_cursor_explanation",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_grey_cursor_explanation",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_about_cursors_continue",
@@ -1512,6 +1441,77 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "boat_tutorial_basic_shooting_screen01",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_cursor_location",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_markers_locations",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_white_cursor_explanation",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_grey_cursor_explanation",
+            "show": true,
+            "time": -1
           }
         },
         {
@@ -1567,24 +1567,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "boat_tutorial_basic_shooting_screen01",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint01",
@@ -1600,11 +1582,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint01_continue",
@@ -1617,6 +1594,29 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "boat_tutorial_basic_shooting_screen01",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -1672,11 +1672,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint02",
@@ -1692,11 +1687,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint02_continue",
@@ -1709,6 +1699,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1754,11 +1754,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint03",
@@ -1774,11 +1769,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_turrets_aim_hint03_continue",
@@ -1791,6 +1781,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1836,17 +1836,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.2,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_wait_for_turrets",
@@ -1859,6 +1848,17 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.2,
+            "realtimeTriggers": true
           }
         },
         {
@@ -1905,6 +1905,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_shoot_at_first_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_WEAPON_ALL"
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": ""
           }
@@ -1938,22 +1954,6 @@
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_SHIP_WEAPON_ALL"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_shoot_at_first_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_WEAPON_ALL"
           }
         },
         {
@@ -2004,6 +2004,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "missionSetTimeSpeed": {
             "speed": 0.0,
             "realtimeTriggers": true
@@ -2040,11 +2045,6 @@
             "element": "hud_tutorial_boat_xray_explanation",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -2096,11 +2096,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "hudElementShow": {
             "element": "hud_tutorial_boat_own_damage_info",
             "show": true,
@@ -2115,15 +2110,20 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_xray",
             "show": true,
             "time": -1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2169,6 +2169,36 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_xray_crew_hint01",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_xray_crew_hint01_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_xray",
             "show": false,
@@ -2188,6 +2218,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "missionSetTimeSpeed": {
             "speed": 0.0,
             "realtimeTriggers": true
@@ -2196,41 +2231,6 @@
         {
           "hudElementSelectionShade": {
             "element": "tankHitCamera"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_xray_crew_hint01",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_xray_crew_hint01_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -2276,11 +2276,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_xray_crew_hint02",
@@ -2293,6 +2288,31 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_xray_crew_hint02_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2321,26 +2341,6 @@
             "element": "hud_tutorial_boat_xray_all_texts",
             "show": false,
             "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_xray_crew_hint02_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -2386,11 +2386,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_other_ways_to_kill_a_boat01",
@@ -2406,11 +2401,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_other_ways_to_kill_a_boat01_continue",
@@ -2423,6 +2413,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2468,11 +2468,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_other_ways_to_kill_a_boat02",
@@ -2488,11 +2483,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_other_ways_to_kill_a_boat02_continue",
@@ -2505,6 +2495,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2550,22 +2550,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_kill_1st_target_anyhow",
@@ -2579,6 +2563,22 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "ID_SHIP_WEAPON_ALL"
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -2632,6 +2632,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_1st_target_killed",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -2654,21 +2669,6 @@
             "delay": [1.0,1.0],
             "target": "target_ship01",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_1st_target_killed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -2714,6 +2714,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_spot_the_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -2734,6 +2749,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "playerOptions": {
             "stateAIGun": 0
           }
@@ -2741,6 +2763,16 @@
         {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -2764,23 +2796,6 @@
             "object": "player",
             "move_type": "teleport",
             "lookat": "target_ship03"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -2809,21 +2824,6 @@
           "hudElementSelectionShade": {
             "element": "enemy",
             "targetName": "target_ship03"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_spot_the_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -2871,26 +2871,6 @@
           }
         },
         {
-          "__unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "target_ship02",
-            "isImmortal": false
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedoing_hint01",
@@ -2906,11 +2886,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedoing_hint01_continue",
@@ -2923,6 +2898,31 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "__unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_ship02",
+            "isImmortal": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
           }
         },
         {
@@ -2968,17 +2968,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_SHIP_TORPEDO_SIGHT"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_sight",
@@ -2991,6 +2980,17 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_SHIP_TORPEDO_SIGHT"
           }
         },
         {
@@ -3036,17 +3036,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_SHIP_TORPEDO_SIGHT"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_sight_next",
@@ -3060,6 +3049,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "ID_SHIP_TORPEDO_SIGHT"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_SHIP_TORPEDO_SIGHT"
           }
         },
         {
@@ -3094,6 +3094,21 @@
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_torpedoing_hint02+use_torpedo",
+            "action": "show",
             "shouldFadeOut": false,
             "isOverFade": false,
             "time": -1.0,
@@ -3140,21 +3155,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_torpedoing_hint02+use_torpedo",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
           "triggerEnable": {
             "target": "torpedoing_torpedo_used+markers_hint"
           }
@@ -3197,17 +3197,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_colors_hint",
@@ -3220,11 +3209,6 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -3241,6 +3225,22 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -3286,11 +3286,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedoing_hint03",
@@ -3303,6 +3298,11 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -3358,8 +3358,27 @@
           }
         },
         {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "effect": "waypoint_ground",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "target": "waypoint04",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
           "wait": {
             "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -3378,8 +3397,19 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_goto_next_waypoint",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ship_main_engine+ship_steering"
           }
         },
         {
@@ -3399,25 +3429,15 @@
           ]
         },
         {
-          "varSetString": {
-            "value": "capture_zone",
-            "var": "lookat_point_name"
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ID_SHIP_WEAPON_TORPEDOES"
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_goto_next_waypoint",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ship_main_engine+ship_steering"
+          "varSetString": {
+            "value": "capture_zone",
+            "var": "lookat_point_name"
           }
         },
         {
@@ -3445,26 +3465,6 @@
             "set": true,
             "radius": 0.0,
             "target": "target_ship03"
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "effect": "waypoint_ground",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "attach": true,
-            "scale": 1.0,
-            "target": "waypoint04",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ID_SHIP_WEAPON_TORPEDOES"
           }
         },
         {
@@ -3516,22 +3516,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint01",
@@ -3547,11 +3531,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint01_continue",
@@ -3564,6 +3543,27 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -3609,11 +3609,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint02",
@@ -3629,11 +3624,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint02_continue",
@@ -3646,6 +3636,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -3691,11 +3691,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint02",
@@ -3711,11 +3706,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_flooding_hint02_continue",
@@ -3728,6 +3718,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -3773,6 +3773,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_kill_2nd_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": ""
           }
@@ -3786,21 +3801,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_kill_2nd_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -3854,6 +3854,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_1st_target_killed",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "unitSetStealth": {
             "set": true,
             "radius": 10000.0,
@@ -3878,21 +3893,6 @@
         {
           "playerEmulateShortcut": {
             "control": "ID_LOCK_TARGET"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_1st_target_killed",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -3944,22 +3944,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_explosion_hint01",
@@ -3975,11 +3959,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_explosion_hint01_continue",
@@ -3992,6 +3971,27 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -4037,11 +4037,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_explosion_hint02",
@@ -4057,11 +4052,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_torpedo_explosion_hint02_continue",
@@ -4074,6 +4064,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -4119,6 +4119,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_kill_3rd_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": ""
           }
@@ -4132,21 +4147,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_kill_3rd_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -4175,6 +4175,11 @@
         {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -4225,11 +4230,6 @@
               "target": "buoys_squad"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
         },
         {
           "playHint": {
@@ -4288,6 +4288,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.01,
+            "target": "waypoint_underground04.5"
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -4299,16 +4309,6 @@
             "scale": 1.0,
             "target": "waypoint04",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.01,
-            "target": "waypoint_underground04.5"
           }
         },
         {
@@ -4376,6 +4376,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_stop_the_boat",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_FULL_STOP"
+          }
+        },
+        {
           "missionMarkAsWaypoint": {
             "visible": false,
             "primary": true,
@@ -4408,22 +4424,6 @@
           "missionSetTimeSpeed": {
             "speed": 0.0,
             "realtimeTriggers": true
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_stop_the_boat",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_FULL_STOP"
           }
         },
         {
@@ -4480,6 +4480,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_wait_for_full_stop",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -4498,21 +4513,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_wait_for_full_stop",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         }
       ],
@@ -4585,8 +4585,25 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -4615,23 +4632,6 @@
         {
           "playerOptions": {
             "stateAIGun": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -4673,11 +4673,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_auto_gunners_hint01",
@@ -4690,6 +4685,36 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_auto_gunners_hint01_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -4710,33 +4735,8 @@
           }
         },
         {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
           "playerEmulateShortcut": {
             "control": "ID_LOCK_TARGET"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_auto_gunners_hint01_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -4782,11 +4782,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_auto_gunners_hint02",
@@ -4799,6 +4794,11 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -4852,6 +4852,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_switch_gunners_mode",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_TOGGLE_GUNNERS"
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -4888,22 +4904,6 @@
           "playerControls": {
             "setStatus": "disable",
             "control": "ID_SHIP_WEAPON_ALL"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_switch_gunners_mode",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_TOGGLE_GUNNERS"
           }
         },
         {
@@ -4986,6 +4986,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_gunners_killed_the_target",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "playerOptions": {
             "stateAIGun": 0
           }
@@ -5013,6 +5028,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
           "playerControls": {
             "setStatus": "disable",
             "control": "ID_SHIP_TOGGLE_GUNNERS"
@@ -5032,26 +5052,6 @@
             "onlyPlayersCanCapture": true,
             "useHUDMarkers": true,
             "zoneDefenders": []
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_gunners_killed_the_target",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -5103,16 +5103,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_capture_zone_hint01",
@@ -5128,11 +5118,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_capture_zone_hint01_continue",
@@ -5145,6 +5130,21 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5195,17 +5195,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_TOGGLE_VIEW_SHIP"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_capture_zone_hint02",
@@ -5218,6 +5207,22 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_TOGGLE_VIEW_SHIP"
           }
         },
         {
@@ -5267,11 +5272,6 @@
             "onlyPlayersCanCapture": false,
             "useHUDMarkers": true,
             "zoneDefenders": []
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -5327,11 +5327,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": [
             {
               "hintType": "tutorialHint"
@@ -5373,6 +5368,11 @@
               "item": "ID_ZOOM_TOGGLE"
             }
           ]
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
         },
         {
           "triggerEnable": {
@@ -5431,11 +5431,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint01",
@@ -5451,11 +5446,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint01_continue",
@@ -5468,6 +5458,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5513,11 +5513,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint02",
@@ -5533,11 +5528,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint02_continue",
@@ -5550,6 +5540,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5595,11 +5595,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint03",
@@ -5615,11 +5610,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint03_continue",
@@ -5632,6 +5622,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5677,11 +5677,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint04",
@@ -5697,11 +5692,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_hint04_continue",
@@ -5714,6 +5704,16 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5759,6 +5759,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_ranged_combat_hint05",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_WEAPON_ALL"
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": ""
           }
@@ -5789,22 +5805,6 @@
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_SHIP_WEAPON_ALL"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_ranged_combat_hint05",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_WEAPON_ALL"
           }
         },
         {
@@ -5858,18 +5858,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_boat_adjustment_fire_status",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_ranged_combat_target_killed",
@@ -5882,6 +5870,18 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_boat_adjustment_fire_status",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -5930,6 +5930,22 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_go_to_capture_zone",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ship_main_engine+ship_steering"
           }
         },
         {
@@ -6015,22 +6031,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_go_to_capture_zone",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ship_main_engine+ship_steering"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "captureZone_waypoint01"
@@ -6081,6 +6081,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.1,
+            "target": "waypoint_underground06"
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -6092,16 +6102,6 @@
             "scale": 1.0,
             "target": "waypoint06",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.1,
-            "target": "waypoint_underground06"
           }
         },
         {
@@ -6164,6 +6164,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.1,
+            "target": "waypoint_underground07"
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -6175,16 +6185,6 @@
             "scale": 1.0,
             "target": "waypoint07",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.1,
-            "target": "waypoint_underground07"
           }
         },
         {
@@ -6260,6 +6260,22 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_stop_the_boat",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SHIP_FULL_STOP"
           }
         },
         {
@@ -6345,22 +6361,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_stop_the_boat",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SHIP_FULL_STOP"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "captureZone_player_in_zone"
           }
@@ -6410,6 +6410,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_player_in_capture_zone",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_player_in_capture_zone_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -6443,6 +6475,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_tickets_all_texts",
             "show": true,
@@ -6473,43 +6510,6 @@
         {
           "hudElementSelectionShade": {
             "element": "screenTop"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_player_in_capture_zone",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_player_in_capture_zone_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -6569,6 +6569,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_go_to_circle_and_wait_until_capture_ends",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "__missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
@@ -6588,22 +6604,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_go_to_circle_and_wait_until_capture_ends",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -6731,6 +6731,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorialBoat_wait_for_capture",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_tickets_all_texts",
             "show": false,
@@ -6796,22 +6812,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorialBoat_wait_for_capture",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "captureZone_not_in_the_circle_hint"
@@ -6871,11 +6871,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -6889,14 +6884,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -6932,11 +6919,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_zone_colors_continue",
@@ -6951,6 +6933,24 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "wait": {
+            "time": 3.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": [
@@ -7001,14 +7001,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_captures_are_important",
@@ -7025,11 +7017,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_captures_are_important_continue",
@@ -7043,6 +7030,19 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -7089,14 +7089,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation02",
@@ -7110,6 +7102,35 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_tickets_explanation02_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -7136,27 +7157,6 @@
             "element": "tutorial_tank_arrow_enemy_tickets",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_tickets_explanation02_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -7203,19 +7203,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation03",
@@ -7232,11 +7219,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation03_continue",
@@ -7250,6 +7232,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -7301,18 +7301,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_tickets_all_texts",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialBoat_final_hint",
@@ -7326,62 +7314,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -25,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
           }
         },
         {
@@ -7401,8 +7333,76 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_tickets_all_texts",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -25,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
           }
         },
         {
@@ -7523,8 +7523,25 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -7533,11 +7550,6 @@
             "offset": [0.0,0.0,0.0],
             "object": "player",
             "target": "player_centering_point01"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -7566,18 +7578,6 @@
         {
           "playerOptions": {
             "stateAIGun": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
           }
         }
       ],
@@ -7646,8 +7646,25 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -7656,11 +7673,6 @@
             "offset": [0.0,0.0,0.0],
             "object": "player",
             "target": "player_centering_point01"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -7689,18 +7701,6 @@
         {
           "playerOptions": {
             "stateAIGun": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
           }
         }
       ],
@@ -7830,8 +7830,30 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -7840,11 +7862,6 @@
             "offset": [0.0,0.0,0.0],
             "object": "player",
             "target": "@waypoint_spawn_name"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -7873,23 +7890,6 @@
         {
           "playerOptions": {
             "stateAIGun": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         }
       ],
@@ -8041,37 +8041,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_ships_squad",
-        "tm": [
-          [-0.681388,0.0,0.731922],
-          [0.0,1.0,0.0],
-          [-0.731922,0.0,-0.681388],
-          [2756.39,0.00195313,1959.85]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_ship01_squad"
-          },
-          {
-            "squad_members": "target_ship02_squad"
-          },
-          {
-            "squad_members": "target_ship03_squad"
-          },
-          {
-            "squad_members": "target_ship04_squad"
-          },
-          {
-            "squad_members": "target_ship05_squad"
-          }
-        ]
-      }
-    },
-    {
       "ships": {
         "name": "target_ship02",
         "tm": [
@@ -8106,36 +8075,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "target_ship01_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2500.14,0.0,1788.29]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship01"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "target_ship02_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2715.21,0.0,1697.9]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship02"
-        }
       }
     },
     {
@@ -8176,21 +8115,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_ship03_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2612.17,0.0,1754.51]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship03"
-        }
-      }
-    },
-    {
       "ships": {
         "name": "target_ship04",
         "tm": [
@@ -8228,21 +8152,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_ship04_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2012.59,0.0,2091.09]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship04"
-        }
-      }
-    },
-    {
       "ships": {
         "name": "target_ship05",
         "tm": [
@@ -8277,85 +8186,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "target_ship05_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [746.487,0.0,2585.98]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "target_ship05"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "buoys_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [525.023,0.0,2369.26]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "buoy1101"
-          },
-          {
-            "squad_members": "buoy1102"
-          },
-          {
-            "squad_members": "buoy1103"
-          },
-          {
-            "squad_members": "buoy1104"
-          },
-          {
-            "squad_members": "buoy1109"
-          },
-          {
-            "squad_members": "buoy1110"
-          },
-          {
-            "squad_members": "buoy1111"
-          },
-          {
-            "squad_members": "buoy1108"
-          },
-          {
-            "squad_members": "buoy1116"
-          },
-          {
-            "squad_members": "buoy1117"
-          },
-          {
-            "squad_members": "buoy1118"
-          },
-          {
-            "squad_members": "buoy1115"
-          },
-          {
-            "squad_members": "buoy1123"
-          },
-          {
-            "squad_members": "buoy1124"
-          },
-          {
-            "squad_members": "buoy1125"
-          },
-          {
-            "squad_members": "buoy1122"
-          }
-        ]
       }
     },
     {
@@ -8948,6 +8778,176 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ships_squad",
+        "tm": [
+          [-0.681388,0.0,0.731922],
+          [0.0,1.0,0.0],
+          [-0.731922,0.0,-0.681388],
+          [2756.39,0.00195313,1959.85]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_ship01_squad"
+          },
+          {
+            "squad_members": "target_ship02_squad"
+          },
+          {
+            "squad_members": "target_ship03_squad"
+          },
+          {
+            "squad_members": "target_ship04_squad"
+          },
+          {
+            "squad_members": "target_ship05_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ship01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2500.14,0.0,1788.29]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "target_ship01"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ship02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2715.21,0.0,1697.9]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "target_ship02"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ship03_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2612.17,0.0,1754.51]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "target_ship03"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ship04_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2012.59,0.0,2091.09]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "target_ship04"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ship05_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [746.487,0.0,2585.98]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "target_ship05"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "buoys_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [525.023,0.0,2369.26]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "buoy1101"
+          },
+          {
+            "squad_members": "buoy1102"
+          },
+          {
+            "squad_members": "buoy1103"
+          },
+          {
+            "squad_members": "buoy1104"
+          },
+          {
+            "squad_members": "buoy1109"
+          },
+          {
+            "squad_members": "buoy1110"
+          },
+          {
+            "squad_members": "buoy1111"
+          },
+          {
+            "squad_members": "buoy1108"
+          },
+          {
+            "squad_members": "buoy1116"
+          },
+          {
+            "squad_members": "buoy1117"
+          },
+          {
+            "squad_members": "buoy1118"
+          },
+          {
+            "squad_members": "buoy1115"
+          },
+          {
+            "squad_members": "buoy1123"
+          },
+          {
+            "squad_members": "buoy1124"
+          },
+          {
+            "squad_members": "buoy1125"
+          },
+          {
+            "squad_members": "buoy1122"
+          }
+        ]
       }
     }
   ],

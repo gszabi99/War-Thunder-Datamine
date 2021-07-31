@@ -107,6 +107,18 @@
           }
         },
         {
+          "varSetString": {
+            "value": "t2_tanks_spawn01",
+            "var": "current_spawnpoint_str"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_tanks_spawn00",
+            "var": "prev_spawnpoint_str"
+          }
+        },
+        {
           "varSetInt": {
             "value": 0,
             "var": "have_to_kill_count",
@@ -128,18 +140,6 @@
               "target": "currentLineBlinkB"
             }
           ]
-        },
-        {
-          "varSetString": {
-            "value": "t2_tanks_spawn01",
-            "var": "current_spawnpoint_str"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_tanks_spawn00",
-            "var": "prev_spawnpoint_str"
-          }
         }
       ]
     },
@@ -367,21 +367,6 @@
           }
         },
         {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "linePointStr",
-            "input_var": "linePointCount"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "linePointCount"
-          }
-        },
-        {
           "varSetString": {
             "value": "convoy_waypoint",
             "var": "linPointStr_next"
@@ -391,8 +376,23 @@
           "varAddString": {
             "value": "",
             "digits": 2,
+            "var": "linePointStr",
+            "input_var": "linePointCount"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
             "var": "linPointStr_next",
             "input_var": "linePointCount"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "linePointCount"
           }
         },
         {
@@ -444,21 +444,6 @@
           }
         },
         {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "linePointStr",
-            "input_var": "linePointCount"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "linePointCount"
-          }
-        },
-        {
           "varSetString": {
             "value": "convoy_waypoint",
             "var": "linPointStr_next"
@@ -468,8 +453,23 @@
           "varAddString": {
             "value": "",
             "digits": 2,
+            "var": "linePointStr",
+            "input_var": "linePointCount"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
             "var": "linPointStr_next",
             "input_var": "linePointCount"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "linePointCount"
           }
         },
         {
@@ -517,20 +517,6 @@
           }
         },
         {
-          "missionShowMapIcon": {
-            "show": true,
-            "iconName": "ui/gameuiskin#radar_object_waypoint",
-            "areaName": "@prev_waypoint_str",
-            "colorCode": "Neutral",
-            "opacity": 120
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "@prev_waypoint_str",
             "areaNameTo": "@current_waypoint_str",
@@ -543,7 +529,21 @@
             "show": true,
             "iconName": "ui/gameuiskin#radar_object_waypoint",
             "areaName": "@prev_waypoint_str",
+            "colorCode": "Neutral",
+            "opacity": 120
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
             "colorCode": "Team A"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],
@@ -574,20 +574,6 @@
           }
         },
         {
-          "missionShowMapIcon": {
-            "show": true,
-            "iconName": "ui/gameuiskin#radar_object_waypoint",
-            "areaName": "@prev_waypoint_str",
-            "colorCode": "Neutral",
-            "opacity": 120
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "@prev_waypoint_str",
             "areaNameTo": "@current_waypoint_str",
@@ -600,7 +586,21 @@
             "show": true,
             "iconName": "ui/gameuiskin#radar_object_waypoint",
             "areaName": "@prev_waypoint_str",
+            "colorCode": "Neutral",
+            "opacity": 120
+          }
+        },
+        {
+          "missionShowMapIcon": {
+            "show": true,
+            "iconName": "ui/gameuiskin#radar_object_waypoint",
+            "areaName": "@prev_waypoint_str",
             "colorCode": "Team B"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],

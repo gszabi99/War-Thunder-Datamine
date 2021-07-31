@@ -102,7 +102,17 @@
       "actions": [
         {
           "comment": {
-            "value": "выбираем случайное событие"
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u0438\u043d\u0443\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0431\u043e\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430 - \u0434\u043b\u044f \u0442\u0435\u0441\u0442\u043e\u0432"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435\u0442 \u043b\u0438 \u0444\u043e\u0440\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -114,19 +124,9 @@
           }
         },
         {
-          "comment": {
-            "value": "принудительный выбор шаблона - для тестов"
-          }
-        },
-        {
           "__varSetInt": {
             "value": 5,
             "var": "to_randomizer"
-          }
-        },
-        {
-          "comment": {
-            "value": "проверяем нет ли форсирования шаблона"
           }
         },
         {
@@ -160,7 +160,12 @@
       "actions": [
         {
           "comment": {
-            "value": "принудительный вызов шаблона "
+            "value": "\u043f\u0440\u0438\u043d\u0443\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0432\u044b\u0437\u043e\u0432 \u0448\u0430\u0431\u043b\u043e\u043d\u0430 "
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043a\u0438\u043f\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0435\u0433\u043e \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -172,18 +177,13 @@
         },
         {
           "__comment": {
-            "value": "обнуляем форсирование"
+            "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0444\u043e\u0440\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435"
           }
         },
         {
           "__varSetInt": {
             "value": 0,
             "var": "to_force_template_idx"
-          }
-        },
-        {
-          "comment": {
-            "value": "скипаем проверку предыдущего шаблона"
           }
         },
         {
@@ -195,12 +195,12 @@
       "else_actions": [
         {
           "comment": {
-            "value": "нет принудительного вызова шаблона"
+            "value": "\u043d\u0435\u0442 \u043f\u0440\u0438\u043d\u0443\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0433\u043e \u0432\u044b\u0437\u043e\u0432\u0430 \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
           "comment": {
-            "value": "идем дальше по логике - заполняем армию (нужна некоторым шаблонам)"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u043b\u043e\u0433\u0438\u043a\u0435 - \u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e (\u043d\u0443\u0436\u043d\u0430 \u043d\u0435\u043a\u043e\u0442\u043e\u0440\u044b\u043c \u0448\u0430\u0431\u043b\u043e\u043d\u0430\u043c)"
           }
         },
         {
@@ -242,7 +242,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "текущий шабон выпал такой-же как предыдущий и это не зона захвата"
+          "value": "\u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0448\u0430\u0431\u043e\u043d \u0432\u044b\u043f\u0430\u043b \u0442\u0430\u043a\u043e\u0439-\u0436\u0435 \u043a\u0430\u043a \u043f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 \u0438 \u044d\u0442\u043e \u043d\u0435 \u0437\u043e\u043d\u0430 \u0437\u0430\u0445\u0432\u0430\u0442\u0430"
         },
         "triggerEnable": {
           "target": "to_template_choosing"
@@ -250,7 +250,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "текущий и предыдущий шаблоны не совпадают или это зона захвата"
+          "value": "\u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438 \u043f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 \u0448\u0430\u0431\u043b\u043e\u043d\u044b \u043d\u0435 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u044e\u0442 \u0438\u043b\u0438 \u044d\u0442\u043e \u0437\u043e\u043d\u0430 \u0437\u0430\u0445\u0432\u0430\u0442\u0430"
         },
         "varSetInt": {
           "value": 0,
@@ -278,7 +278,7 @@
       "conditions": [],
       "actions": {
         "comment": {
-          "value": "задаем армию для события 1 и 2 - соответсвующие армии"
+          "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0434\u043b\u044f \u0441\u043e\u0431\u044b\u0442\u0438\u044f 1 \u0438 2 - \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0432\u0443\u044e\u0449\u0438\u0435 \u0430\u0440\u043c\u0438\u0438"
         },
         "varSetRandomInt": {
           "var": "to_army",
@@ -315,7 +315,17 @@
       "actions": [
         {
           "comment": {
-            "value": "армия не совпала единожды запускаем проверки всех событий"
+            "value": "\u0430\u0440\u043c\u0438\u044f \u043d\u0435 \u0441\u043e\u0432\u043f\u0430\u043b\u0430 \u0435\u0434\u0438\u043d\u043e\u0436\u0434\u044b \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0432\u0441\u0435\u0445 \u0441\u043e\u0431\u044b\u0442\u0438\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u043f\u043e\u0441\u043b\u0435\u0434\u043d\u044e\u044e \u0430\u0440\u043c\u0438\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0442\u0440\u0438\u0433\u0433\u0435\u0440 \u0430\u043a\u0442\u0438\u0432\u0430\u0446\u0438\u0438 \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0435\u0433\u043e \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
           }
         },
         {
@@ -359,20 +369,10 @@
           }
         },
         {
-          "comment": {
-            "value": "запоминаем последнюю армию"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "to_last_army",
             "input_var": "to_army"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем триггер активации следующего задания"
           }
         },
         {
@@ -383,7 +383,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "армия совпала"
+          "value": "\u0430\u0440\u043c\u0438\u044f \u0441\u043e\u0432\u043f\u0430\u043b\u0430"
         },
         "triggerEnable": {
           "target": "to_template_fill_army"
@@ -415,6 +415,13 @@
             }
           },
           {
+            "varCompareInt": {
+              "var_value": "to_force_template_idx",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          },
+          {
             "varCompareBool": {
               "var_value": "lpt_is_launch_alowed",
               "value": true,
@@ -429,13 +436,6 @@
             }
           },
           {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
             "triggerStatus": {
               "status": "disabled",
               "target": "to_template_01_lpt_end"
@@ -445,7 +445,12 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем армию"
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0442\u0430\u0440\u0442\u0435\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
             }
           },
           {
@@ -453,11 +458,6 @@
               "value": 0,
               "var": "lpt_army_both_zero",
               "input_var": "to_army"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем стартер шаблона"
             }
           },
           {
@@ -492,18 +492,23 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c \u0444\u043b\u0430\u0433, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u043b\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
             }
           },
           {
             "varSetBool": {
               "value": true,
               "var": "lpt_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
             }
           },
           {
@@ -514,23 +519,18 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lpt_start"
             }
           },
           {
-            "wait": {
-              "time": 10.0
+            "triggerEnable": {
+              "target": "to_template_01_lpt_run"
             }
           },
           {
-            "triggerEnable": {
-              "target": "to_template_01_lpt_run"
+            "wait": {
+              "time": 10.0
             }
           }
         ],
@@ -552,7 +552,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "включаем проверку выключения шаблона"
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0432\u044b\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           },
           "triggerEnable": {
             "target": "to_template_01_lpt_end"
@@ -582,7 +582,7 @@
         },
         "actions": {
           "comment": {
-            "value": "шаблон разведчиков завершил работу"
+            "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u043e\u0432 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u043b \u0440\u0430\u0431\u043e\u0442\u0443"
           },
           "varModify": {
             "operator": "add",
@@ -618,6 +618,13 @@
             }
           },
           {
+            "varCompareInt": {
+              "var_value": "to_force_template_idx",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          },
+          {
             "varCompareBool": {
               "var_value": "bt_is_launch_alowed",
               "value": true,
@@ -632,13 +639,6 @@
             }
           },
           {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
             "triggerStatus": {
               "status": "disabled",
               "target": "to_template_02_bt_end"
@@ -647,7 +647,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u043f\u0430\u043b\u043e \u043b\u0438 \u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0435\u0441\u043b\u0438 \u0434\u0430 - \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0443\u044e \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
           },
           "varSetInt": {
             "value": 0,
@@ -684,18 +684,23 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c \u0444\u043b\u0430\u0433, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u043b\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
             }
           },
           {
             "varSetBool": {
               "value": true,
               "var": "bt_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
             }
           },
           {
@@ -706,29 +711,24 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bt_start"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
             }
           },
           {
             "triggerEnable": {
               "target": "to_template_02_bt_run"
             }
+          },
+          {
+            "wait": {
+              "time": 10.0
+            }
           }
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "\u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0443\u0436\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u043e - \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u043e\u043c \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0442\u0441\u044f \u043d\u043e\u0432\u043e\u0435"
           }
         }
       },
@@ -748,7 +748,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0442\u0430\u0440\u0442\u0435\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430, \u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
           },
           "triggerEnable": {
             "target": "to_template_02_bt_end"
@@ -811,6 +811,13 @@
             }
           },
           {
+            "varCompareInt": {
+              "var_value": "to_force_template_idx",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          },
+          {
             "varCompareBool": {
               "var_value": "at_is_launch_alowed",
               "value": true,
@@ -825,13 +832,6 @@
             }
           },
           {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
             "triggerStatus": {
               "status": "disabled",
               "target": "to_template_03_at_end"
@@ -840,7 +840,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u043f\u0430\u043b\u043e \u043b\u0438 \u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0435\u0441\u043b\u0438 \u0434\u0430 - \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0443\u044e \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
           },
           "varSetInt": {
             "value": 0,
@@ -877,18 +877,23 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c \u0444\u043b\u0430\u0433, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u043b\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
             }
           },
           {
             "varSetBool": {
               "value": true,
               "var": "at_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
             }
           },
           {
@@ -899,11 +904,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "to_template_03_at_run"
             }
@@ -911,7 +911,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "\u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0443\u0436\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u043e - \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u043e\u043c \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0442\u0441\u044f \u043d\u043e\u0432\u043e\u0435"
           }
         }
       },
@@ -932,18 +932,18 @@
         "actions": [
           {
             "comment": {
-              "value": "говорим что режим работы шаблона: jip"
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0431\u043e\u0442\u044b \u0448\u0430\u0431\u043b\u043e\u043d\u0430: jip"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0442\u0430\u0440\u0442\u0435\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430, \u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
             }
           },
           {
             "varSetString": {
               "value": "jip",
               "var": "at_assault_game_type"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
             }
           },
           {
@@ -1021,6 +1021,13 @@
             }
           },
           {
+            "varCompareInt": {
+              "var_value": "to_force_template_idx",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          },
+          {
             "varCompareBool": {
               "var_value": "ad_is_launch_alowed",
               "value": true,
@@ -1035,13 +1042,6 @@
             }
           },
           {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
             "triggerStatus": {
               "status": "disabled",
               "target": "to_template_04_ad_end"
@@ -1050,7 +1050,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u043f\u0430\u043b\u043e \u043b\u0438 \u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0435\u0441\u043b\u0438 \u0434\u0430 - \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0443\u044e \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
           },
           "triggerEnable": {
             "target": "to_template_04_ad_choose"
@@ -1082,18 +1082,23 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c \u0444\u043b\u0430\u0433, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u043b\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
             }
           },
           {
             "varSetBool": {
               "value": true,
               "var": "ad_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
             }
           },
           {
@@ -1104,11 +1109,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "to_template_04_ad_run"
             }
@@ -1116,7 +1116,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "\u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0443\u0436\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u043e - \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u043e\u043c \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0442\u0441\u044f \u043d\u043e\u0432\u043e\u0435"
           }
         }
       },
@@ -1136,7 +1136,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0442\u0430\u0440\u0442\u0435\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430, \u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
           },
           "triggerEnable": [
             {
@@ -1204,6 +1204,13 @@
             }
           },
           {
+            "varCompareInt": {
+              "var_value": "to_force_template_idx",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          },
+          {
             "varCompareBool": {
               "var_value": "sbt_is_launch_alowed",
               "value": true,
@@ -1218,13 +1225,6 @@
             }
           },
           {
-            "varCompareInt": {
-              "var_value": "to_force_template_idx",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          },
-          {
             "triggerStatus": {
               "status": "disabled",
               "target": "to_template_07_sbt_end"
@@ -1233,7 +1233,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверяем выпало ли событие если да - запускаем дальнейшую проверку"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u043f\u0430\u043b\u043e \u043b\u0438 \u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0435\u0441\u043b\u0438 \u0434\u0430 - \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0443\u044e \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
           },
           "varSetInt": {
             "value": 0,
@@ -1270,18 +1270,23 @@
           },
           {
             "comment": {
-              "value": "ставим флаг, что шаблон запустился"
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c \u0444\u043b\u0430\u0433, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0441\u0442\u0438\u043b\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0431\u044b\u0442\u0438\u0435"
             }
           },
           {
             "varSetBool": {
               "value": true,
               "var": "sbt_is_template_active"
-            }
-          },
-          {
-            "comment": {
-              "value": "задаем случайное время старта"
             }
           },
           {
@@ -1292,29 +1297,24 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем событие"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "sbt_start"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
             }
           },
           {
             "triggerEnable": {
               "target": "to_template_07_sbt_run"
             }
+          },
+          {
+            "wait": {
+              "time": 10.0
+            }
           }
         ],
         "else_actions": {
           "comment": {
-            "value": "событие уже запущено - автоматом сгенерится новое"
+            "value": "\u0441\u043e\u0431\u044b\u0442\u0438\u0435 \u0443\u0436\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u043e - \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u043e\u043c \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0442\u0441\u044f \u043d\u043e\u0432\u043e\u0435"
           }
         }
       },
@@ -1334,7 +1334,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем стартер шаблона, говорим, что шаблон запущен"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0442\u0430\u0440\u0442\u0435\u0440 \u0448\u0430\u0431\u043b\u043e\u043d\u0430, \u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
           },
           "triggerEnable": {
             "target": "to_template_07_sbt_end"

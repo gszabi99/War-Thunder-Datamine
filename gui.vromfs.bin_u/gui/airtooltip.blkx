@@ -65,16 +65,16 @@
                 }
               },
               {
+                "textareaNoTab": {
+                  "id": "aircraft-crew_spec"
+                }
+              },
+              {
                 "img": {
                   "id": "aircraft-crew_spec-icon",
                   "size": "@sIco, @sIco",
                   "pos": "-2@sf/@pf_outdated, -2@sf/@pf_outdated",
                   "position": "relative"
-                }
-              },
-              {
-                "textareaNoTab": {
-                  "id": "aircraft-crew_spec"
                 }
               }
             ]
@@ -89,23 +89,6 @@
           "crewStatus": "",
           "display": "hide"
         }
-      }
-    },
-    {
-      "activeText": {
-        "id": "aircraft-name",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "caption": "yes",
-        "text-align": "center"
-      }
-    },
-    {
-      "textAreaCentered": {
-        "id": "aircraft-type",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "text-align": "center"
       }
     },
     {
@@ -178,24 +161,31 @@
       ]
     },
     {
-      "img": {
-        "id": "aircraft-image",
-        "pos": "50%pw-50%w, 0",
-        "position": "relative",
-        "height": "25%sh",
-        "max-height": "200*@sf/@pf_outdated",
-        "width": "1.56h",
-        "max-width": "312*@sf/@pf_outdated",
-        "background-image": ""
+      "tdiv": {
+        "id": "aircraft_price",
+        "halign": "center",
+        "width": "pw",
+        "tdiv": {
+          "id": "aircraft_price_text_block",
+          "max-width": "0.5@sf"
+        }
       }
     },
     {
-      "country_exp_div": {
-        "id": "player_country_exp",
-        "pos": "50%pw-50%w, 10@sf/@pf_outdated",
+      "activeText": {
+        "id": "aircraft-name",
+        "pos": "50%pw-50%w, 0",
         "position": "relative",
-        "width": "0.4@sf",
-        "display": "hide"
+        "caption": "yes",
+        "text-align": "center"
+      }
+    },
+    {
+      "textAreaCentered": {
+        "id": "aircraft-type",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "text-align": "center"
       }
     },
     {
@@ -227,23 +217,33 @@
       }
     },
     {
-      "tdiv": {
-        "id": "aircraft_price",
-        "halign": "center",
-        "width": "pw",
-        "tdiv": {
-          "id": "aircraft_price_text_block",
-          "max-width": "0.5@sf"
-        }
-      }
-    },
-    {
       "textAreaCentered": {
         "id": "aircraft-cant_buy_info",
         "pos": "50%pw-50%w, 0",
         "position": "relative",
         "margin": "0, 0.01@scrn_tgt",
         "max-width": "0.5@sf"
+      }
+    },
+    {
+      "img": {
+        "id": "aircraft-image",
+        "pos": "50%pw-50%w, 0",
+        "position": "relative",
+        "height": "25%sh",
+        "max-height": "200*@sf/@pf_outdated",
+        "width": "1.56h",
+        "max-width": "312*@sf/@pf_outdated",
+        "background-image": ""
+      }
+    },
+    {
+      "country_exp_div": {
+        "id": "player_country_exp",
+        "pos": "50%pw-50%w, 10@sf/@pf_outdated",
+        "position": "relative",
+        "width": "0.4@sf",
+        "display": "hide"
       }
     },
     {
@@ -258,6 +258,23 @@
         "id": "weaponsInfo",
         "pos": "50%pw-50%w, 10@sf/@pf_outdated",
         "position": "relative"
+      }
+    },
+    {
+      "textareaNoTab": {
+        "id": "references_text",
+        "display": "hide",
+        "text": "#shop/reference_footnote",
+        "text-align": "left"
+      }
+    },
+    {
+      "textareaNoTab": {
+        "id": "current_game_mode_footnote_text",
+        "pos": "pw/2-w/2, 8@sf/@pf_outdated",
+        "position": "relative",
+        "text-align": "center",
+        "overlayTextColor": "faded"
       }
     },
     {
@@ -1453,23 +1470,6 @@
           ]
         }
       ]
-    },
-    {
-      "textareaNoTab": {
-        "id": "references_text",
-        "display": "hide",
-        "text": "#shop/reference_footnote",
-        "text-align": "left"
-      }
-    },
-    {
-      "textareaNoTab": {
-        "id": "current_game_mode_footnote_text",
-        "pos": "pw/2-w/2, 8@sf/@pf_outdated",
-        "position": "relative",
-        "text-align": "center",
-        "overlayTextColor": "faded"
-      }
     }
   ]
 }

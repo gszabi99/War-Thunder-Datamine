@@ -1384,7 +1384,7 @@
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "backgroundTexCoord": [0.32,0.51,0.61,0.61],
                     "size": [79.0,25.0],
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "valueTextSize": 1.0,
                     "valueMul": 0.54,
                     "ranges": [
@@ -1410,7 +1410,7 @@
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "backgroundTexCoord": [0.0,0.01,0.0,0.01],
                     "size": [1.0,1.0],
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "valueTextSize": 60.0,
                     "valueMul": 0.54,
                     "notDrawBackground": true,
@@ -1437,7 +1437,7 @@
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "backgroundTexCoord": [0.3,0.22,0.58,0.3],
                     "size": [79.0,25.0],
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "valueTextSize": 1.0,
                     "valueMul": 0.1969,
                     "ranges": [
@@ -1472,7 +1472,7 @@
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "backgroundTexCoord": [0.0,0.01,0.01,0.01],
                     "size": [1.0,1.0],
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "valueTextSize": 60.0,
                     "valueMul": 196.85,
                     "ranges": [
@@ -1507,7 +1507,7 @@
                     "backgroundTexCoord": [0.37,0.21,0.54,0.32],
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "size": [58.0,30.0],
-                    "color": "#00ffffff",
+                    "color": [255,255,0,255],
                     "valueTextSize": 1.0,
                     "notDrawBackground": false,
                     "ranges": {
@@ -1522,7 +1522,7 @@
                     "backgroundTexCoord": [0.0,0.01,0.01,0.01],
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "size": [1.0,1.0],
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "valueTextSize": 60.0,
                     "valueMul": 3.2808,
                     "notDrawBackground": true,
@@ -1538,7 +1538,7 @@
                     "backgroundTexCoord": [0.0,0.01,0.01,0.01],
                     "arrowTexCoord": [0.0,0.01,0.01,0.01],
                     "valueTextSize": 60.0,
-                    "color": "#00ff00ff",
+                    "color": [0,255,0,255],
                     "size": [1.0,1.0],
                     "arrowSize": [1.0,1.0],
                     "ranges": {
@@ -1907,6 +1907,14 @@
                   "turret": "turret1"
                 },
                 {
+                  "turret": {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                },
+                {
                   "dm": "gunner1_dm"
                 },
                 {
@@ -1926,14 +1934,6 @@
                 },
                 {
                   "parkInDeadzone": false
-                },
-                {
-                  "turret": {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
                 },
                 {
                   "limits": {
@@ -2028,6 +2028,14 @@
                   "turret": "turret1"
                 },
                 {
+                  "turret": {
+                    "head": "turret1",
+                    "gun": "gun1",
+                    "mainTurret": true,
+                    "ballisticTargeting": true
+                  }
+                },
+                {
                   "dm": "gunner1_dm"
                 },
                 {
@@ -2047,14 +2055,6 @@
                 },
                 {
                   "parkInDeadzone": false
-                },
-                {
-                  "turret": {
-                    "head": "turret1",
-                    "gun": "gun1",
-                    "mainTurret": true,
-                    "ballisticTargeting": true
-                  }
                 },
                 {
                   "limits": {
@@ -2164,25 +2164,6 @@
     ]
   },
   {
-    "default_skin": [
-      {
-        "name": "peten"
-      },
-      {
-        "replace_tex": {
-          "from": "ah_64a_c*",
-          "to": "ah_64a_peten_israel_desert_c*"
-        }
-      },
-      {
-        "replace_tex": {
-          "from": "ah_64a_c_dmg*",
-          "to": "ah_64a_peten_israel_desert_c_dmg*"
-        }
-      }
-    ]
-  },
-  {
     "user_skin": [
       {
         "name": "ah_64a"
@@ -2205,6 +2186,25 @@
       {
         "replace_tex": {
           "from": "ah_64a_n_dmg*"
+        }
+      }
+    ]
+  },
+  {
+    "default_skin": [
+      {
+        "name": "peten"
+      },
+      {
+        "replace_tex": {
+          "from": "ah_64a_c*",
+          "to": "ah_64a_peten_israel_desert_c*"
+        }
+      },
+      {
+        "replace_tex": {
+          "from": "ah_64a_c_dmg*",
+          "to": "ah_64a_peten_israel_desert_c_dmg*"
         }
       }
     ]

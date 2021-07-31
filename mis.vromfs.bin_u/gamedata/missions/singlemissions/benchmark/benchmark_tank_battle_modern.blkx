@@ -126,41 +126,6 @@
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamA_cutscene_tank02",
-            "target": "teamB_plane01_00"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamA_cutscene_tank09",
-            "target": "teamB_plane01_01"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamA_aaa_squad02",
-            "target": "teamB_plane02"
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "missionForceUpdate": {
-            "target_type": "any",
-            "dt": 0.05,
-            "timeToUpdate": 29.0,
-            "target": "all_tanks_squad"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -173,14 +138,6 @@
                 "set": true
               }
             }
-          }
-        },
-        {
-          "missionForceUpdate": {
-            "target_type": "any",
-            "dt": 0.05,
-            "timeToUpdate": 1.5,
-            "target": "all_tanks_squad"
           }
         },
         {
@@ -244,14 +201,6 @@
           ]
         },
         {
-          "missionForceUpdate": {
-            "target_type": "any",
-            "dt": 0.05,
-            "timeToUpdate": 1.5,
-            "target": "all_tanks_squad"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -267,25 +216,6 @@
           }
         },
         {
-          "missionForceUpdate": [
-            {
-              "target_type": "any"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 3.0
-            },
-            {
-              "target": "all_tanks_squad"
-            },
-            {
-              "target": "teamA_plane02"
-            }
-          ]
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -299,40 +229,6 @@
               }
             }
           }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "bomb_expl_200kg"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "bomb_expl_eff03"
-            },
-            {
-              "target": "bomb_expl_eff07"
-            }
-          ]
         },
         {
           "unitSetProperties": {
@@ -380,48 +276,6 @@
           ]
         },
         {
-          "missionForceUpdate": {
-            "target_type": "any",
-            "dt": 0.05,
-            "timeToUpdate": 2.5,
-            "target": "all_tanks_squad"
-          }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "bomb_expl_500kg"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "bomb_expl_eff04"
-            },
-            {
-              "target": "bomb_expl_eff08"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -453,28 +307,6 @@
               }
             }
           ]
-        },
-        {
-          "missionForceUpdate": {
-            "target_type": "any",
-            "dt": 0.05,
-            "timeToUpdate": 0.5,
-            "target": "all_tanks_squad"
-          }
-        },
-        {
-          "unitDamage": {
-            "part": 1,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "dying_squad_02",
-            "partName": "ammo_body",
-            "doExplosion": true
-          }
         },
         {
           "unitSetProperties": {
@@ -530,82 +362,6 @@
           }
         },
         {
-          "missionForceUpdate": [
-            {
-              "target_type": "any"
-            },
-            {
-              "dt": 0.05
-            },
-            {
-              "timeToUpdate": 0.2
-            },
-            {
-              "target": "shooting_squad_01"
-            },
-            {
-              "target": "dying_squad_01"
-            },
-            {
-              "target": "teamA_plane02"
-            },
-            {
-              "target": "teamA_plane03"
-            },
-            {
-              "target": "teamA_cutscene_tank09"
-            }
-          ]
-        },
-        {
-          "unitDamage": {
-            "part": 1,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "dying_squad_01",
-            "partName": "ammo_body",
-            "doExplosion": true
-          }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "bomb_expl_200kg"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "bomb_expl_eff01"
-            },
-            {
-              "target": "bomb_expl_eff05"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -659,6 +415,165 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_cutscene_tank26",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "shooting_squad_03"
+            },
+            {
+              "object": "teamA_cutscene_tank09"
+            },
+            {
+              "controls": {
+                "weaponTriggers": {
+                  "trigger": "gunner",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamA_cutscene_tank02",
+            "target": "teamB_plane01_00"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamA_cutscene_tank09",
+            "target": "teamB_plane01_01"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamA_aaa_squad02",
+            "target": "teamB_plane02"
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 29.0,
+            "target": "all_tanks_squad"
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 1.5,
+            "target": "all_tanks_squad"
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 1.5,
+            "target": "all_tanks_squad"
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 3.0
+            },
+            {
+              "target": "all_tanks_squad"
+            },
+            {
+              "target": "teamA_plane02"
+            }
+          ]
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 2.5,
+            "target": "all_tanks_squad"
+          }
+        },
+        {
+          "missionForceUpdate": {
+            "target_type": "any",
+            "dt": 0.05,
+            "timeToUpdate": 0.5,
+            "target": "all_tanks_squad"
+          }
+        },
+        {
+          "missionForceUpdate": [
+            {
+              "target_type": "any"
+            },
+            {
+              "dt": 0.05
+            },
+            {
+              "timeToUpdate": 0.2
+            },
+            {
+              "target": "shooting_squad_01"
+            },
+            {
+              "target": "dying_squad_01"
+            },
+            {
+              "target": "teamA_plane02"
+            },
+            {
+              "target": "teamA_plane03"
+            },
+            {
+              "target": "teamA_cutscene_tank09"
+            }
+          ]
+        },
+        {
           "missionForceUpdate": [
             {
               "target_type": "any"
@@ -683,55 +598,6 @@
             },
             {
               "target": "teamA_cutscene_tank09"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_cutscene_tank26",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner",
-                "set": true
-              }
-            }
-          }
-        },
-        {
-          "unitPlayEffect": [
-            {
-              "effect_type": "specify"
-            },
-            {
-              "effect": "bomb_expl_500kg"
-            },
-            {
-              "offset": [0.0,0.0,0.0]
-            },
-            {
-              "show": true
-            },
-            {
-              "attach": false
-            },
-            {
-              "scale": 1.0
-            },
-            {
-              "loopSpawn": true
-            },
-            {
-              "delay": [1.0,1.0]
-            },
-            {
-              "target": "bomb_expl_eff02"
-            },
-            {
-              "target": "bomb_expl_eff06"
             }
           ]
         },
@@ -769,36 +635,6 @@
             },
             {
               "target": "teamA_aaa_squad02"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "shooting_squad_03"
-            },
-            {
-              "object": "teamA_cutscene_tank09"
-            },
-            {
-              "controls": {
-                "weaponTriggers": {
-                  "trigger": "gunner",
-                  "set": true
-                }
-              }
             }
           ]
         },
@@ -838,6 +674,170 @@
               "target": "teamA_aaa_squad02"
             }
           ]
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "bomb_expl_200kg"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "bomb_expl_eff03"
+            },
+            {
+              "target": "bomb_expl_eff07"
+            }
+          ]
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "bomb_expl_500kg"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "bomb_expl_eff04"
+            },
+            {
+              "target": "bomb_expl_eff08"
+            }
+          ]
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "bomb_expl_200kg"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "bomb_expl_eff01"
+            },
+            {
+              "target": "bomb_expl_eff05"
+            }
+          ]
+        },
+        {
+          "unitPlayEffect": [
+            {
+              "effect_type": "specify"
+            },
+            {
+              "effect": "bomb_expl_500kg"
+            },
+            {
+              "offset": [0.0,0.0,0.0]
+            },
+            {
+              "show": true
+            },
+            {
+              "attach": false
+            },
+            {
+              "scale": 1.0
+            },
+            {
+              "loopSpawn": true
+            },
+            {
+              "delay": [1.0,1.0]
+            },
+            {
+              "target": "bomb_expl_eff02"
+            },
+            {
+              "target": "bomb_expl_eff06"
+            }
+          ]
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "dying_squad_02",
+            "partName": "ammo_body",
+            "doExplosion": true
+          }
+        },
+        {
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "dying_squad_01",
+            "partName": "ammo_body",
+            "doExplosion": true
+          }
         },
         {
           "triggerEnable": {
@@ -933,11 +933,6 @@
           }
         },
         {
-          "wait": {
-            "time": 13.0
-          }
-        },
-        {
           "missionStartCutscene": {
             "target": "cutscene_area02",
             "second_target": "cutscene_area02",
@@ -970,11 +965,6 @@
             "linear_eye": [0.01,0.0,0.0],
             "endFade": [5.0,4.0],
             "delayPlayer": false
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
           }
         },
         {
@@ -1013,11 +1003,6 @@
           }
         },
         {
-          "wait": {
-            "time": 17.0
-          }
-        },
-        {
           "missionStartCutscene": {
             "target": "cutscene_area04",
             "second_target": "cutscene_area04",
@@ -1050,6 +1035,21 @@
             "linear_eye": [0.01,0.0,0.0],
             "endFade": [5.0,4.0],
             "delayPlayer": false
+          }
+        },
+        {
+          "wait": {
+            "time": 13.0
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 17.0
           }
         },
         {
@@ -6080,61 +6080,6 @@
       }
     },
     {
-      "area_squad": {
-        "name": "effects_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1914.98,3.77405,1907.67]
-        ],
-        "props": [
-          {
-            "squad_members": "effect01"
-          },
-          {
-            "squad_members": "effect02"
-          },
-          {
-            "squad_members": "effect03"
-          },
-          {
-            "squad_members": "effect04"
-          },
-          {
-            "squad_members": "effect05"
-          },
-          {
-            "squad_members": "effect06"
-          },
-          {
-            "squad_members": "effect07"
-          },
-          {
-            "squad_members": "effect08"
-          },
-          {
-            "squad_members": "effect09"
-          },
-          {
-            "squad_members": "effect10"
-          },
-          {
-            "squad_members": "effect11"
-          },
-          {
-            "squad_members": "effect12"
-          },
-          {
-            "squad_members": "effect13"
-          },
-          {
-            "squad_members": "effect14"
-          }
-        ]
-      }
-    },
-    {
       "squad": {
         "name": "shooting_squad_01",
         "tm": [
@@ -6290,6 +6235,239 @@
           },
           {
             "squad_members": "teamA_cutscene_tank07"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamA_planes_squad",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [2257.49,0.0,1308.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_plane01"
+          },
+          {
+            "squad_members": "teamA_plane02"
+          },
+          {
+            "squad_members": "teamA_plane03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamB_planes_squad",
+        "tm": [
+          [-0.362036,0.0,0.932165],
+          [0.0,1.0,0.0],
+          [-0.932165,0.0,-0.362036],
+          [2368.93,45.6256,1697.15]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamB_plane01"
+          },
+          {
+            "squad_members": "teamB_plane02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "shooting_squad_04",
+        "tm": [
+          [-0,0.0,-0],
+          [0.0,0.0,0.0],
+          [0.0,0.0,-0],
+          [1696.28,49.5129,1783.89]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_cutscene_tank05"
+          },
+          {
+            "squad_members": "teamA_cutscene_tank02"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank09"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank06"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamB_plane01",
+        "tm": [
+          [-0.373977,0.0,0.927438],
+          [0.0,1.0,0.0],
+          [-0.927438,0.0,-0.373977],
+          [1925.07,42.2269,857.638]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamB_plane01_00"
+          },
+          {
+            "squad_members": "teamB_plane01_01"
+          },
+          {
+            "squad_members": "teamB_plane01_02"
+          },
+          {
+            "squad_members": "teamB_plane01_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamA_aaa_squad01",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [2027.86,44.2254,1245.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_cutscene_tank02"
+          },
+          {
+            "squad_members": "teamA_cutscene_tank09"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamA_aaa_squad02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3659.49,28.2422,2384.38]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_cutscene_tank17"
+          },
+          {
+            "squad_members": "teamA_cutscene_tank18"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "dying_squad_02",
+        "tm": [
+          [-0.373977,0.0,0.927438],
+          [0.0,1.0,0.0],
+          [-0.927438,0.0,-0.373977],
+          [1855.34,45.0995,894.011]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_cutscene_tank22"
+          },
+          {
+            "squad_members": "teamA_cutscene_tank28"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank05"
+          },
+          {
+            "squad_members": "teamB_cutscene_tank15"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "effects_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1914.98,3.77405,1907.67]
+        ],
+        "props": [
+          {
+            "squad_members": "effect01"
+          },
+          {
+            "squad_members": "effect02"
+          },
+          {
+            "squad_members": "effect03"
+          },
+          {
+            "squad_members": "effect04"
+          },
+          {
+            "squad_members": "effect05"
+          },
+          {
+            "squad_members": "effect06"
+          },
+          {
+            "squad_members": "effect07"
+          },
+          {
+            "squad_members": "effect08"
+          },
+          {
+            "squad_members": "effect09"
+          },
+          {
+            "squad_members": "effect10"
+          },
+          {
+            "squad_members": "effect11"
+          },
+          {
+            "squad_members": "effect12"
+          },
+          {
+            "squad_members": "effect13"
+          },
+          {
+            "squad_members": "effect14"
           }
         ]
       }
@@ -6566,112 +6744,6 @@
       }
     },
     {
-      "squad": {
-        "name": "teamA_planes_squad",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [2257.49,0.0,1308.6]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_plane01"
-          },
-          {
-            "squad_members": "teamA_plane02"
-          },
-          {
-            "squad_members": "teamA_plane03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "teamB_planes_squad",
-        "tm": [
-          [-0.362036,0.0,0.932165],
-          [0.0,1.0,0.0],
-          [-0.932165,0.0,-0.362036],
-          [2368.93,45.6256,1697.15]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_plane01"
-          },
-          {
-            "squad_members": "teamB_plane02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "shooting_squad_04",
-        "tm": [
-          [-1.13153e-32,0.0,-1.13153e-32],
-          [0.0,0.0,0.0],
-          [0.0,0.0,-1.11326e-32],
-          [1696.28,49.5129,1783.89]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_cutscene_tank05"
-          },
-          {
-            "squad_members": "teamA_cutscene_tank02"
-          },
-          {
-            "squad_members": "teamB_cutscene_tank09"
-          },
-          {
-            "squad_members": "teamB_cutscene_tank06"
-          },
-          {
-            "squad_members": "teamB_cutscene_tank05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "teamB_plane01",
-        "tm": [
-          [-0.373977,0.0,0.927438],
-          [0.0,1.0,0.0],
-          [-0.927438,0.0,-0.373977],
-          [1925.07,42.2269,857.638]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_plane01_00"
-          },
-          {
-            "squad_members": "teamB_plane01_01"
-          },
-          {
-            "squad_members": "teamB_plane01_02"
-          },
-          {
-            "squad_members": "teamB_plane01_03"
-          }
-        ]
-      }
-    },
-    {
       "armada": {
         "name": "teamB_plane01_01",
         "tm": [
@@ -6847,78 +6919,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "teamA_aaa_squad01",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [2027.86,44.2254,1245.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_cutscene_tank02"
-          },
-          {
-            "squad_members": "teamA_cutscene_tank09"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "teamA_aaa_squad02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3659.49,28.2422,2384.38]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_cutscene_tank17"
-          },
-          {
-            "squad_members": "teamA_cutscene_tank18"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "dying_squad_02",
-        "tm": [
-          [-0.373977,0.0,0.927438],
-          [0.0,1.0,0.0],
-          [-0.927438,0.0,-0.373977],
-          [1855.34,45.0995,894.011]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_cutscene_tank22"
-          },
-          {
-            "squad_members": "teamA_cutscene_tank28"
-          },
-          {
-            "squad_members": "teamB_cutscene_tank05"
-          },
-          {
-            "squad_members": "teamB_cutscene_tank15"
-          }
-        ]
       }
     }
   ],

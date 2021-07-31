@@ -728,6 +728,22 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "airfield_03",
+        "tm": [
+          [1.00773,0.0,0.651517],
+          [0.0,1.2,0.0],
+          [-0.651517,0.0,1.00773],
+          [-10097.7,102.664,3673.4]
+        ],
+        "unit_class": "dynAF_prorotype_ally",
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
       "armada": {
         "name": "t1_player01",
         "tm": [
@@ -1124,49 +1140,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3031.82,88.0903,1375.07]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_aaa_01"
-          },
-          {
-            "squad_members": "t1_aaa_02"
-          },
-          {
-            "squad_members": "t1_aaa_03"
-          },
-          {
-            "squad_members": "t1_aaa_04"
-          },
-          {
-            "squad_members": "t1_aaa_05"
-          },
-          {
-            "squad_members": "t1_aaa_06"
-          },
-          {
-            "squad_members": "t1_aaa_07"
-          },
-          {
-            "squad_members": "t1_aaa_08"
-          },
-          {
-            "squad_members": "t1_aaa_09"
-          },
-          {
-            "squad_members": "t1_aaa_10"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "t2_aaa_01",
         "tm": [
@@ -1518,6 +1491,49 @@
     },
     {
       "squad": {
+        "name": "t1_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3031.82,88.0903,1375.07]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_aaa_01"
+          },
+          {
+            "squad_members": "t1_aaa_02"
+          },
+          {
+            "squad_members": "t1_aaa_03"
+          },
+          {
+            "squad_members": "t1_aaa_04"
+          },
+          {
+            "squad_members": "t1_aaa_05"
+          },
+          {
+            "squad_members": "t1_aaa_06"
+          },
+          {
+            "squad_members": "t1_aaa_07"
+          },
+          {
+            "squad_members": "t1_aaa_08"
+          },
+          {
+            "squad_members": "t1_aaa_09"
+          },
+          {
+            "squad_members": "t1_aaa_10"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
         "name": "t2_aaa_squad",
         "tm": [
           [1.0,0.0,0.0],
@@ -1557,6 +1573,251 @@
             "squad_members": "t2_aaa_10"
           }
         ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2927.39,115.21,3605.33]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tank_01"
+          },
+          {
+            "squad_members": "t1_tank_02"
+          },
+          {
+            "squad_members": "t1_tank_03"
+          },
+          {
+            "squad_members": "t1_tank_04"
+          },
+          {
+            "squad_members": "t1_tank_05"
+          },
+          {
+            "squad_members": "t1_tank_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-17014.8,115.21,6249.76]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tank_01"
+          },
+          {
+            "squad_members": "t2_tank_02"
+          },
+          {
+            "squad_members": "t2_tank_03"
+          },
+          {
+            "squad_members": "t2_tank_04"
+          },
+          {
+            "squad_members": "t2_tank_05"
+          },
+          {
+            "squad_members": "t2_tank_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1095.91,79.7051,2865.46]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_squad"
+          },
+          {
+            "squad_members": "t1_aaa_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-16754.4,79.7051,8273.85]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_squad"
+          },
+          {
+            "squad_members": "t2_aaa_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1007.45,79.7051,4319.38]
+        ],
+        "props": {
+          "squad_members": "t1_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-15082.4,79.7051,9533.55]
+        ],
+        "props": {
+          "squad_members": "t2_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [262.456,79.7051,4872.68]
+        ],
+        "props": {
+          "squad_members": "t1_heavy_units_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-13809.9,79.7051,10378.2]
+        ],
+        "props": {
+          "squad_members": "t2_heavy_units_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1447.72,72.5039,7507.92]
+        ],
+        "props": {
+          "squad_members": "structures_01"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11406.0,72.5039,13164.0]
+        ],
+        "props": {
+          "squad_members": "structures_01"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1944.5,79.7,1508.35]
+        ],
+        "props": {
+          "squad_members": "t1_land_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-19184.7,79.7,8955.65]
+        ],
+        "props": {
+          "squad_members": "t2_land_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "bridges_squad",
+        "tm": [
+          [-2.5823201162378755e+21,0.0,-2.5823299678620604e+21],
+          [0.0,0.0,0.0],
+          [0.0,0.0,-2.730739992048435e+16],
+          [-7828.23,25.3146,2223.74]
+        ],
+        "props": [
+          {
+            "squad_members": "bridge_40"
+          },
+          {
+            "squad_members": "bridge_89"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "bridge_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-8355.6,86.65,3125.1]
+        ],
+        "props": {
+          "squad_members": "t2_movable_units_squad"
+        }
       }
     },
     {
@@ -3336,162 +3597,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2927.39,115.21,3605.33]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_tank_01"
-          },
-          {
-            "squad_members": "t1_tank_02"
-          },
-          {
-            "squad_members": "t1_tank_03"
-          },
-          {
-            "squad_members": "t1_tank_04"
-          },
-          {
-            "squad_members": "t1_tank_05"
-          },
-          {
-            "squad_members": "t1_tank_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-17014.8,115.21,6249.76]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_tank_01"
-          },
-          {
-            "squad_members": "t2_tank_02"
-          },
-          {
-            "squad_members": "t2_tank_03"
-          },
-          {
-            "squad_members": "t2_tank_04"
-          },
-          {
-            "squad_members": "t2_tank_05"
-          },
-          {
-            "squad_members": "t2_tank_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1095.91,79.7051,2865.46]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_tanks_squad"
-          },
-          {
-            "squad_members": "t1_aaa_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-16754.4,79.7051,8273.85]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_tanks_squad"
-          },
-          {
-            "squad_members": "t2_aaa_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1007.45,79.7051,4319.38]
-        ],
-        "props": {
-          "squad_members": "t1_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-15082.4,79.7051,9533.55]
-        ],
-        "props": {
-          "squad_members": "t2_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [262.456,79.7051,4872.68]
-        ],
-        "props": {
-          "squad_members": "t1_heavy_units_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13809.9,79.7051,10378.2]
-        ],
-        "props": {
-          "squad_members": "t2_heavy_units_squad"
-        }
-      }
-    },
-    {
       "structures": {
         "name": "structures_01",
         "tm": [
@@ -3527,111 +3632,6 @@
           "setStealth": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1447.72,72.5039,7507.92]
-        ],
-        "props": {
-          "squad_members": "structures_01"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11406.0,72.5039,13164.0]
-        ],
-        "props": {
-          "squad_members": "structures_01"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1944.5,79.7,1508.35]
-        ],
-        "props": {
-          "squad_members": "t1_land_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-19184.7,79.7,8955.65]
-        ],
-        "props": {
-          "squad_members": "t2_land_squad"
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "airfield_03",
-        "tm": [
-          [1.00773,0.0,0.651517],
-          [0.0,1.2,0.0],
-          [-0.651517,0.0,1.00773],
-          [-10097.7,102.664,3673.4]
-        ],
-        "unit_class": "dynAF_prorotype_ally",
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "bridges_squad",
-        "tm": [
-          [-2.58232e+21,0.0,-2.58233e+21],
-          [0.0,0.0,0.0],
-          [0.0,0.0,-2.73074e+16],
-          [-7828.23,25.3146,2223.74]
-        ],
-        "props": [
-          {
-            "squad_members": "bridge_40"
-          },
-          {
-            "squad_members": "bridge_89"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "bridge_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-8355.6,86.65,3125.1]
-        ],
-        "props": {
-          "squad_members": "t2_movable_units_squad"
-        }
       }
     }
   ],

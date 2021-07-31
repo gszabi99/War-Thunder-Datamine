@@ -717,6 +717,8 @@ local lastInventoryUpdateDelayedCall = 0
 
   lastInventoryUpdateDelayedCall = ::dagor.getCurTime()
   ::g_delayed_actions.add(function() {
+    if (!::g_login.isProfileReceived())
+      return
     lastInventoryUpdateDelayedCall = 0
     markInventoryUpdate()
   }.bindenv(this), 200)

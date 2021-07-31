@@ -1827,20 +1827,6 @@
           }
         },
         {
-          "slider": {
-            "point": "lever_proj_01",
-            "from": "suspension_01",
-            "to": "wheel_01"
-          }
-        },
-        {
-          "slider": {
-            "point": "lever_proj_02",
-            "from": "suspension_02",
-            "to": "wheel_02"
-          }
-        },
-        {
           "edge": {
             "from": "lever",
             "to": "lever_proj_01"
@@ -1856,6 +1842,20 @@
           "edge": {
             "from": "lever_proj_01",
             "to": "lever_proj_02"
+          }
+        },
+        {
+          "slider": {
+            "point": "lever_proj_01",
+            "from": "suspension_01",
+            "to": "wheel_01"
+          }
+        },
+        {
+          "slider": {
+            "point": "lever_proj_02",
+            "from": "suspension_02",
+            "to": "wheel_02"
           }
         }
       ]
@@ -3178,10 +3178,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 5000
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 5000
           },
           {
             "ChainfireTime": 3.0
@@ -3485,10 +3485,10 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 5000
+                  "fireConeAngle": 15.0
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "bullets": 5000
                 },
                 {
                   "ChainfireTime": 3.0
@@ -3573,6 +3573,51 @@
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-10.0,15.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner3",
+                "triggerGroup": "smoke",
+                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
+                "weaponType": "rockets",
+                "startFx": "",
+                "useEmitter": true,
+                "emitter": "emtr_mortar_flame_01",
+                "emitterGenRange": [1,1],
+                "emitterGenFmt": "emtr_mortar_flame_%02d",
+                "createGunEffects": true,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "allowableDelta": 360.0,
+                "salvo": 1,
+                "speedYaw": 24.0,
+                "speedPitch": 15.0,
+                "fireConeAngle": 1.0,
+                "bullets": 6,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_grenade",
+                  "gun": "bone_grenade"
+                },
+                "limits": {
+                  "yaw": [-0.0,0.0],
+                  "pitch": [0.0,0.0]
                 }
               }
             },
@@ -3672,51 +3717,6 @@
                   "node": "ex_decor_r_15"
                 }
               ]
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/66mm_germ_smoke_mortar_launcher.blk",
-                "weaponType": "rockets",
-                "startFx": "",
-                "useEmitter": true,
-                "emitter": "emtr_mortar_flame_01",
-                "emitterGenRange": [1,1],
-                "emitterGenFmt": "emtr_mortar_flame_%02d",
-                "createGunEffects": true,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "allowableDelta": 360.0,
-                "salvo": 1,
-                "speedYaw": 24.0,
-                "speedPitch": 15.0,
-                "fireConeAngle": 1.0,
-                "bullets": 6,
-                "salvoAmount": 100.0,
-                "ChainfireTime": 0.0,
-                "DelayAfterShoot": 5.0,
-                "AttackMaxDistance": 1000.0,
-                "AttackMaxRadius": 1000.0,
-                "AttackMaxHeight": 1000.0,
-                "accuracyAir": 0.0,
-                "accuracyGnd": 1.5,
-                "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_grenade",
-                  "gun": "bone_grenade"
-                },
-                "limits": {
-                  "yaw": [-0.0,0.0],
-                  "pitch": [0.0,0.0]
-                }
-              }
             }
           ]
         }

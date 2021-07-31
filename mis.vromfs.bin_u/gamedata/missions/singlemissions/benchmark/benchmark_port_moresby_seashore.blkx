@@ -95,6 +95,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.2
+          }
+        },
+        {
           "missionForceUpdate": [
             {
               "target_type": "isAlive"
@@ -134,8 +141,33 @@
           }
         },
         {
+          "preloadRendInsts": {
+            "object": "point_01"
+          }
+        },
+        {
           "wait": {
             "time": 0.3
+          }
+        },
+        {
+          "wait": {
+            "time": 11.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 12.0
+          }
+        },
+        {
+          "wait": {
+            "time": 13.0
           }
         },
         {
@@ -180,25 +212,73 @@
           }
         },
         {
-          "wait": {
-            "time": 11.0
+          "missionStartCutscene": {
+            "target": "point_05",
+            "second_target": "point_03",
+            "duration": 12.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [0.01,0.1,0.01],
+            "linear_eye_vel": [-250.0,0.1,0.01],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "constant_fov": 70.0,
+            "linear_at": [-4436.0,150.0,-2750.0],
+            "linear_eye": [1.0,0.5,0.0],
+            "endFade": [0.5,0.0],
+            "delayPlayer": true
           }
         },
         {
-          "preloadRendInsts": {
-            "object": "point_01"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 0.2
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
+          "missionStartCutscene": {
+            "target": "point_03",
+            "second_target": "point_04",
+            "duration": 15.0,
+            "camera_type": "flat_linear",
+            "direction_amp": 1.0,
+            "flat_offs": [100.0,100.0,100.0],
+            "zoom": 0.0,
+            "frequency": 1.0,
+            "linear_at_vel": [-0.01,0.01,0.01],
+            "linear_eye_vel": [-0.01,-1.0,-250.0],
+            "linear_at_accel": 0.0,
+            "linear_eye_accel": 0.0,
+            "linear_relative": false,
+            "pitch": 0.1,
+            "yaw": 0.0,
+            "pitch_amplitude": 1.0,
+            "yaw_amplitude": 1.0,
+            "distance": 30.0,
+            "shake_mult": 0.0,
+            "splineEye": "",
+            "splineAt": "",
+            "splineSpeed": 100.0,
+            "resetCamera": true,
+            "shake_accel": 0.0,
+            "fov_accel": 0.0,
+            "mustHaveGui": false,
+            "constant_fov": 70.0,
+            "linear_at": [-450.0,-300.0,-12250.0],
+            "linear_eye": [-150.0,-290.0,50.0],
+            "endFade": [3.0,2.0],
+            "delayPlayer": true
           }
         },
         {
@@ -252,86 +332,6 @@
             "object": "point_01",
             "target": "point_02",
             "changeLookTime": 12.0
-          }
-        },
-        {
-          "missionStartCutscene": {
-            "target": "point_05",
-            "second_target": "point_03",
-            "duration": 12.0,
-            "camera_type": "flat_linear",
-            "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
-            "zoom": 0.0,
-            "frequency": 1.0,
-            "linear_at_vel": [0.01,0.1,0.01],
-            "linear_eye_vel": [-250.0,0.1,0.01],
-            "linear_at_accel": 0.0,
-            "linear_eye_accel": 0.0,
-            "linear_relative": false,
-            "pitch": 0.1,
-            "yaw": 0.0,
-            "pitch_amplitude": 1.0,
-            "yaw_amplitude": 1.0,
-            "distance": 30.0,
-            "shake_mult": 0.0,
-            "splineEye": "",
-            "splineAt": "",
-            "splineSpeed": 100.0,
-            "resetCamera": true,
-            "shake_accel": 0.0,
-            "fov_accel": 0.0,
-            "mustHaveGui": false,
-            "constant_fov": 70.0,
-            "linear_at": [-4436.0,150.0,-2750.0],
-            "linear_eye": [1.0,0.5,0.0],
-            "endFade": [0.5,0.0],
-            "delayPlayer": true
-          }
-        },
-        {
-          "wait": {
-            "time": 12.0
-          }
-        },
-        {
-          "missionStartCutscene": {
-            "target": "point_03",
-            "second_target": "point_04",
-            "duration": 15.0,
-            "camera_type": "flat_linear",
-            "direction_amp": 1.0,
-            "flat_offs": [100.0,100.0,100.0],
-            "zoom": 0.0,
-            "frequency": 1.0,
-            "linear_at_vel": [-0.01,0.01,0.01],
-            "linear_eye_vel": [-0.01,-1.0,-250.0],
-            "linear_at_accel": 0.0,
-            "linear_eye_accel": 0.0,
-            "linear_relative": false,
-            "pitch": 0.1,
-            "yaw": 0.0,
-            "pitch_amplitude": 1.0,
-            "yaw_amplitude": 1.0,
-            "distance": 30.0,
-            "shake_mult": 0.0,
-            "splineEye": "",
-            "splineAt": "",
-            "splineSpeed": 100.0,
-            "resetCamera": true,
-            "shake_accel": 0.0,
-            "fov_accel": 0.0,
-            "mustHaveGui": false,
-            "constant_fov": 70.0,
-            "linear_at": [-450.0,-300.0,-12250.0],
-            "linear_eye": [-150.0,-290.0,50.0],
-            "endFade": [3.0,2.0],
-            "delayPlayer": true
-          }
-        },
-        {
-          "wait": {
-            "time": 13.0
           }
         },
         {

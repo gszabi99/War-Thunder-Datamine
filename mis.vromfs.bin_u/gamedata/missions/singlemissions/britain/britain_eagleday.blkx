@@ -362,16 +362,36 @@
           }
         },
         {
-          "triggerActivate": {
-            "target": "explosions00",
-            "activate_type": "ignoreConditions",
-            "check_trigger_status": true,
-            "after_activation": "disable"
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "triggerActivate": {
+            "target": "explosions00",
+            "activate_type": "ignoreConditions",
+            "check_trigger_status": true,
+            "after_activation": "disable"
           }
         },
         {
@@ -383,21 +403,11 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "triggerActivate": {
             "target": "explosions03",
             "activate_type": "ignoreConditions",
             "check_trigger_status": true,
             "after_activation": "disable"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
           }
         },
         {
@@ -409,21 +419,11 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "triggerActivate": {
             "target": "explosions05",
             "activate_type": "ignoreConditions",
             "check_trigger_status": true,
             "after_activation": "disable"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -496,11 +496,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -513,11 +508,6 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target00_02"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -536,11 +526,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -553,6 +538,21 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target00_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],
@@ -657,11 +657,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "unitPlayEffect": [
             {
               "effect": "bomb_ground_explosion_small"
@@ -700,6 +695,11 @@
               "target": "bomb_target01_02"
             }
           ]
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
         }
       ],
       "else_actions": []
@@ -745,11 +745,6 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target03"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -808,11 +803,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -825,11 +815,6 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target03_02"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -848,11 +833,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -865,6 +845,26 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target03_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],
@@ -1000,11 +1000,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -1017,11 +1012,6 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target05_01"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -1055,11 +1045,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -1075,11 +1060,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_ground_explosion_small",
             "offset": [0.0,0.0,0.0],
@@ -1092,6 +1072,26 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "bomb_target05_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],
@@ -1212,11 +1212,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1224,6 +1219,11 @@
             "object_var_value": 0,
             "object": "player_himself",
             "targetableByAi": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],
@@ -1426,6 +1426,16 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "luftwaffe_bombers02"
+          }
+        },
+        {
           "unitMoveTo": {
             "target": "hawkinge_area",
             "follow_target": false,
@@ -1446,13 +1456,22 @@
           }
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
+          "unitMoveTo": {
+            "target": "way_to_france",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "luftwaffe_bombers02"
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object": "luftwaffe_fighters00"
           }
         },
         {
@@ -1463,6 +1482,11 @@
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 300.0
           }
         },
         {
@@ -1506,30 +1530,6 @@
               "target": "bombers_killed"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 300.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "way_to_france",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object": "luftwaffe_fighters00"
-          }
         }
       ],
       "else_actions": []
@@ -2145,6 +2145,285 @@
       }
     },
     {
+      "armada": {
+        "name": "raf_fighters",
+        "tm": [
+          [0.34202,0.0,0.939693],
+          [0.0,1.0,0.0],
+          [-0.939693,0.0,0.34202],
+          [12920.9,216.6,-626.1]
+        ],
+        "unit_class": "hurricane_mk1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "hurricane_mk1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_bombers01",
+        "tm": [
+          [-0.34202,0.0,0.939693],
+          [0.0,1.0,0.0],
+          [-0.939693,0.0,-0.34202],
+          [13338.4,1564.6,-901.6]
+        ],
+        "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "he-111h-2_32_50kg",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 18,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_bombers02",
+        "tm": [
+          [-0.5,0.0,0.866025],
+          [0.0,1.0,0.0],
+          [-0.866025,0.0,-0.5],
+          [28759.0,1564.6,-20005.1]
+        ],
+        "unit_class": "he-111h-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "he-111h-2_32_50kg",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 27,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters00",
+        "tm": [
+          [-0.5,0.0,0.866025],
+          [0.0,1.0,0.0],
+          [-0.866025,0.0,-0.5],
+          [31740.7,1564.6,-22619.6]
+        ],
+        "unit_class": "bf-110c-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-110C-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters01",
+        "tm": [
+          [-0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,-0.737277],
+          [14031.3,481.95,529.1]
+        ],
+        "unit_class": "bf-110c-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-110C-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "luftwaffe_fighters02",
+        "tm": [
+          [-0.5,0.0,0.866025],
+          [0.0,1.0,0.0],
+          [-0.866025,0.0,-0.5],
+          [28920.6,1564.6,-20121.0]
+        ],
+        "unit_class": "bf-110c-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-110C-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 7,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "structures": {
         "name": "bomb_target00",
         "tm": [
@@ -2385,283 +2664,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ground_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12870.9,216.6,-351.0]
-        ],
-        "props": [
-          {
-            "squad_members": "bomb_target00"
-          },
-          {
-            "squad_members": "bomb_target01"
-          },
-          {
-            "squad_members": "bomb_target02"
-          },
-          {
-            "squad_members": "bomb_target03"
-          },
-          {
-            "squad_members": "bomb_target04"
-          },
-          {
-            "squad_members": "bomb_target05"
-          },
-          {
-            "squad_members": "bomb_target06"
-          },
-          {
-            "squad_members": "bomb_target00_01"
-          },
-          {
-            "squad_members": "bomb_target00_02"
-          },
-          {
-            "squad_members": "bomb_target00_03"
-          },
-          {
-            "squad_members": "bomb_target00_04"
-          },
-          {
-            "squad_members": "bomb_target01_01"
-          },
-          {
-            "squad_members": "bomb_target01_02"
-          },
-          {
-            "squad_members": "bomb_target03_01"
-          },
-          {
-            "squad_members": "bomb_target03_02"
-          },
-          {
-            "squad_members": "bomb_target03_03"
-          },
-          {
-            "squad_members": "bomb_target03_04"
-          },
-          {
-            "squad_members": "bomb_target05_01"
-          },
-          {
-            "squad_members": "bomb_target05_02"
-          },
-          {
-            "squad_members": "bomb_target05_03"
-          },
-          {
-            "squad_members": "bomb_target05_04"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "raf_fighters",
-        "tm": [
-          [0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,0.34202],
-          [12920.9,216.6,-626.1]
-        ],
-        "unit_class": "hurricane_mk1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "hurricane_mk1_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "luftwaffe_bombers01",
-        "tm": [
-          [-0.34202,0.0,0.939693],
-          [0.0,1.0,0.0],
-          [-0.939693,0.0,-0.34202],
-          [13338.4,1564.6,-901.6]
-        ],
-        "unit_class": "he-111h-2",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "he-111h-2_32_50kg",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 18,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13239.5,181.05,-1340.6]
-        ],
-        "props": {
-          "squad_members": "player",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "luftwaffe_bombers02",
-        "tm": [
-          [-0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,-0.5],
-          [28759.0,1564.6,-20005.1]
-        ],
-        "unit_class": "he-111h-2",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "he-111h-2_32_50kg",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 27,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "luftwaffe_fighters00",
-        "tm": [
-          [-0.5,0.0,0.866025],
-          [0.0,1.0,0.0],
-          [-0.866025,0.0,-0.5],
-          [31740.7,1564.6,-22619.6]
-        ],
-        "unit_class": "bf-110c-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-110C-4_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }
@@ -2979,287 +2981,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship00",
-        "tm": [
-          [0.422618,0.0,-0.906308],
-          [0.0,1.0,0.0],
-          [0.906308,0.0,0.422618],
-          [23996.0,-1.0,-975.9]
-        ],
-        "unit_class": "hms_cargo_ship",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [3.0,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship01",
-        "tm": [
-          [0.866025,0.0,-0.5],
-          [0.0,1.0,0.0],
-          [0.5,0.0,0.866025],
-          [22816.4,-1.0,-1899.5]
-        ],
-        "unit_class": "hms_leander",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [3.0,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship02",
-        "tm": [
-          [0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,0.737277],
-          [22918.4,-1.0,-1660.15]
-        ],
-        "unit_class": "uss_dd_georgetown",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [3.0,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship03",
-        "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [22990.8,-1.0,-1585.1]
-        ],
-        "unit_class": "hms_cargo_ship",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [3.0,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship04",
-        "tm": [
-          [0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,0.5],
-          [23734.2,-400.3,-1041.15]
-        ],
-        "unit_class": "fishboat2",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [5.0,3.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "crowd_ship05",
-        "tm": [
-          [0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,0.5],
-          [23075.7,-400.3,-1461.05]
-        ],
-        "unit_class": "fishboat2",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [5.0,3.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [24281.4,152.1,1270.5]
-        ],
-        "props": [
-          {
-            "squad_members": "air_def00"
-          },
-          {
-            "squad_members": "air_def01"
-          },
-          {
-            "squad_members": "air_def02"
-          },
-          {
-            "squad_members": "air_def03"
-          },
-          {
-            "squad_members": "air_def04"
-          },
-          {
-            "squad_members": "air_def05"
-          },
-          {
-            "squad_members": "air_def06"
-          },
-          {
-            "squad_members": "air_def07"
-          },
-          {
-            "squad_members": "air_def08"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ships_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23745.1,169.5,1245.55]
-        ],
-        "props": [
-          {
-            "squad_members": "crowd_ship00"
-          },
-          {
-            "squad_members": "crowd_ship01"
-          },
-          {
-            "squad_members": "crowd_ship02"
-          },
-          {
-            "squad_members": "crowd_ship03"
-          },
-          {
-            "squad_members": "crowd_ship04"
-          },
-          {
-            "squad_members": "crowd_ship05"
-          }
-        ]
       }
     },
     {
@@ -3753,19 +3474,181 @@
       }
     },
     {
-      "armada": {
-        "name": "luftwaffe_fighters01",
+      "squad": {
+        "name": "ground_targets_squad",
         "tm": [
-          [-0.737277,0.0,-0.67559],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737277],
-          [14031.3,481.95,529.1]
+          [0.0,0.0,1.0],
+          [12870.9,216.6,-351.0]
         ],
-        "unit_class": "bf-110c-4",
+        "props": [
+          {
+            "squad_members": "bomb_target00"
+          },
+          {
+            "squad_members": "bomb_target01"
+          },
+          {
+            "squad_members": "bomb_target02"
+          },
+          {
+            "squad_members": "bomb_target03"
+          },
+          {
+            "squad_members": "bomb_target04"
+          },
+          {
+            "squad_members": "bomb_target05"
+          },
+          {
+            "squad_members": "bomb_target06"
+          },
+          {
+            "squad_members": "bomb_target00_01"
+          },
+          {
+            "squad_members": "bomb_target00_02"
+          },
+          {
+            "squad_members": "bomb_target00_03"
+          },
+          {
+            "squad_members": "bomb_target00_04"
+          },
+          {
+            "squad_members": "bomb_target01_01"
+          },
+          {
+            "squad_members": "bomb_target01_02"
+          },
+          {
+            "squad_members": "bomb_target03_01"
+          },
+          {
+            "squad_members": "bomb_target03_02"
+          },
+          {
+            "squad_members": "bomb_target03_03"
+          },
+          {
+            "squad_members": "bomb_target03_04"
+          },
+          {
+            "squad_members": "bomb_target05_01"
+          },
+          {
+            "squad_members": "bomb_target05_02"
+          },
+          {
+            "squad_members": "bomb_target05_03"
+          },
+          {
+            "squad_members": "bomb_target05_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13239.5,181.05,-1340.6]
+        ],
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [24281.4,152.1,1270.5]
+        ],
+        "props": [
+          {
+            "squad_members": "air_def00"
+          },
+          {
+            "squad_members": "air_def01"
+          },
+          {
+            "squad_members": "air_def02"
+          },
+          {
+            "squad_members": "air_def03"
+          },
+          {
+            "squad_members": "air_def04"
+          },
+          {
+            "squad_members": "air_def05"
+          },
+          {
+            "squad_members": "air_def06"
+          },
+          {
+            "squad_members": "air_def07"
+          },
+          {
+            "squad_members": "air_def08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [23745.1,169.5,1245.55]
+        ],
+        "props": [
+          {
+            "squad_members": "crowd_ship00"
+          },
+          {
+            "squad_members": "crowd_ship01"
+          },
+          {
+            "squad_members": "crowd_ship02"
+          },
+          {
+            "squad_members": "crowd_ship03"
+          },
+          {
+            "squad_members": "crowd_ship04"
+          },
+          {
+            "squad_members": "crowd_ship05"
+          }
+        ]
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship00",
+        "tm": [
+          [0.422618,0.0,-0.906308],
+          [0.0,1.0,0.0],
+          [0.906308,0.0,0.422618],
+          [23996.0,-1.0,-975.9]
+        ],
+        "unit_class": "hms_cargo_ship",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "Bf-110C-4_default",
+        "weapons": "",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -3775,43 +3658,32 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 2,
-          "count": 5,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }
     },
     {
-      "armada": {
-        "name": "luftwaffe_fighters02",
+      "ships": {
+        "name": "crowd_ship01",
         "tm": [
-          [-0.5,0.0,0.866025],
+          [0.866025,0.0,-0.5],
           [0.0,1.0,0.0],
-          [-0.866025,0.0,-0.5],
-          [28920.6,1564.6,-20121.0]
+          [0.5,0.0,0.866025],
+          [22816.4,-1.0,-1899.5]
         ],
-        "unit_class": "bf-110c-4",
+        "unit_class": "hms_leander",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "Bf-110C-4_default",
+        "weapons": "",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -3821,26 +3693,154 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 2,
-          "count": 7,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship02",
+        "tm": [
+          [0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,0.737277],
+          [22918.4,-1.0,-1660.15]
+        ],
+        "unit_class": "uss_dd_georgetown",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship03",
+        "tm": [
+          [0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,0.67559],
+          [22990.8,-1.0,-1585.1]
+        ],
+        "unit_class": "hms_cargo_ship",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [3.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship04",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [23734.2,-400.3,-1041.15]
+        ],
+        "unit_class": "fishboat2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [5.0,3.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "crowd_ship05",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [23075.7,-400.3,-1461.05]
+        ],
+        "unit_class": "fishboat2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [5.0,3.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }

@@ -422,7 +422,7 @@
       "Type": "Jet",
       "Cylinders": 25,
       "Mass": 950.0,
-      "Thrust": 2453.8601,
+      "Thrust": 2453.86,
       "ThrottleBoost": 1.001,
       "AfterburnerBoost": 1.18,
       "RPMMin": 2750.0,
@@ -941,7 +941,7 @@
       "PowerConstRPM0": 1160.4,
       "PowerConstRPMCurvature0": 1.0,
       "Ceiling0": 0.0,
-      "PowerAtCeiling0": 2489.5701,
+      "PowerAtCeiling0": 2489.57,
       "AfterburnerManifoldPressure": 1.7298,
       "SpeedManifoldMultiplier": 1.0,
       "AllowAutoTurboCharger": false,
@@ -1649,6 +1649,16 @@
         "LateralLoadFactorTimeMult": 1.1
       },
       {
+        "LateralLoadFactorTimeMult": {
+          "Kp": 0.0,
+          "Ki": 0.0,
+          "Imax": 0.0,
+          "Kd": 0.0,
+          "dTau": 0.0208,
+          "Lim": [-10.0,10.0]
+        }
+      },
+      {
         "AosTimeMult": 2.0
       },
       {
@@ -1675,16 +1685,6 @@
         "Trim": {
           "Source": "",
           "PropTorqueAxis": [0.0,0.0,0.0]
-        }
-      },
-      {
-        "LateralLoadFactorTimeMult": {
-          "Kp": 0.0,
-          "Ki": 0.0,
-          "Imax": 0.0,
-          "Kd": 0.0,
-          "dTau": 0.0208,
-          "Lim": [-10.0,10.0]
         }
       },
       {

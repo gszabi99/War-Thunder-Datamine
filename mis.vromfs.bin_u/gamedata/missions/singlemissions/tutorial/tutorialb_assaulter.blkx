@@ -223,6 +223,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "playerControls": {
             "setStatus": "disable",
             "control": "ALL"
@@ -258,6 +265,26 @@
           }
         },
         {
+          "wait": {
+            "time": 0.15
+          }
+        },
+        {
+          "wait": {
+            "time": 0.7
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
@@ -272,8 +299,8 @@
           }
         },
         {
-          "wait": {
-            "time": 0.15
+          "playerOptions": {
+            "currentView": "3rdperson"
           }
         },
         {
@@ -302,13 +329,6 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
           "missionKillEffects": {
             "area": "big_area"
           }
@@ -319,16 +339,6 @@
             "value": 1.0,
             "force": true,
             "objects": "player"
-          }
-        },
-        {
-          "playerOptions": {
-            "currentView": "3rdperson"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.7
           }
         },
         {
@@ -349,8 +359,8 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "triggerEnable": {
+            "target": "flight_intro_skip"
           }
         },
         {
@@ -370,11 +380,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_assault_intro_continue",
@@ -388,11 +393,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "flight_intro_skip"
           }
         }
       ],
@@ -450,16 +450,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dialogue_intro_p03"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_about_assault",
@@ -476,11 +466,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_about_assault_continue",
@@ -494,6 +479,21 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dialogue_intro_p03"
           }
         },
         {
@@ -646,16 +646,16 @@
           ]
         },
         {
+          "triggerEnable": {
+            "target": "dialogue_intro_p06"
+          }
+        },
+        {
           "triggerActivate": {
             "target": "tutorialB_assaulter_waypoint_objective_init",
             "activate_type": "checkConidtions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dialogue_intro_p06"
           }
         }
       ],
@@ -889,12 +889,6 @@
           }
         },
         {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
@@ -911,11 +905,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
@@ -929,6 +918,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": false
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1074,6 +1074,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -1104,6 +1111,26 @@
         {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.15
+          }
+        },
+        {
+          "wait": {
+            "time": 0.7
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1139,11 +1166,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.15
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "player_spawn03",
             "follow_target": false,
@@ -1169,20 +1191,8 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
           "missionKillEffects": {
             "area": "big_area"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.7
           }
         },
         {
@@ -1211,9 +1221,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
+          "triggerEnable": [
+            {
+              "target": "bombing_sight_hint"
+            },
+            {
+              "target": "retry_truck_hint"
+            }
+          ]
         },
         {
           "playHint": {
@@ -1232,11 +1247,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_ground_continue",
@@ -1251,16 +1261,6 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_sight_hint"
-            },
-            {
-              "target": "retry_truck_hint"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -1311,19 +1311,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dialogue_bombing_p02"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_where_bombs_fall",
@@ -1337,18 +1324,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "hudElementBlink": {
-            "element": "bombSight",
-            "time": 10.0,
-            "blink": true
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -1368,8 +1343,33 @@
           }
         },
         {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dialogue_bombing_p02"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "bombing_how_to_aim"
+          }
+        },
+        {
+          "hudElementBlink": {
+            "element": "bombSight",
+            "time": 10.0,
+            "blink": true
           }
         }
       ],
@@ -1421,19 +1421,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dialogue_bombing_p03"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_aim",
@@ -1450,11 +1437,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_howTo_aim_continue",
@@ -1468,6 +1450,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dialogue_bombing_p03"
           }
         },
         {
@@ -1524,42 +1524,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.2,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_BOMBS"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_red_sight",
@@ -1574,6 +1538,42 @@
             "object_var_value": 0,
             "item": "ID_BOMBS",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.2,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_BOMBS"
           }
         },
         {
@@ -1653,6 +1653,16 @@
           }
         },
         {
+          "wait": {
+            "time": 9.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.5
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "follow_bomb",
             "startSubTypeOnTheMarch": "",
@@ -1677,14 +1687,22 @@
           }
         },
         {
-          "wait": {
-            "time": 9.0
-          }
-        },
-        {
           "triggerEnable": {
             "target": "dialogue_bombing_p08"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bombing_climb_hint"
+            },
+            {
+              "target": "bombing_climb_hint_MA"
+            },
+            {
+              "target": "bombing_climb_hint_Thrustmaster"
+            }
+          ]
         },
         {
           "unitDamage": {
@@ -1700,30 +1718,12 @@
           }
         },
         {
-          "wait": {
-            "time": 3.5
-          }
-        },
-        {
           "playerCenterMouseAim": []
         },
         {
           "playerOptions": {
             "currentView": "3rdperson"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_climb_hint"
-            },
-            {
-              "target": "bombing_climb_hint_MA"
-            },
-            {
-              "target": "bombing_climb_hint_Thrustmaster"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -2240,16 +2240,16 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "tutorialB_assaulter_kill_truck",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -2282,6 +2282,13 @@
           }
         },
         {
+          "varCompareInt": {
+            "var_value": "timer_slow",
+            "value": 13,
+            "comparasion_func": "more"
+          }
+        },
+        {
           "unitWhenStatus": {
             "object_type": "isUseless",
             "object_marking": 0,
@@ -2292,13 +2299,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "object": "player"
-          }
-        },
-        {
-          "varCompareInt": {
-            "var_value": "timer_slow",
-            "value": 13,
-            "comparasion_func": "more"
           }
         },
         {
@@ -2469,12 +2469,6 @@
           }
         },
         {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": false
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
@@ -2491,11 +2485,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
@@ -2509,6 +2498,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": false
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2675,6 +2675,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "playerControls": {
             "setStatus": "disable",
             "control": "ALL"
@@ -2700,8 +2707,50 @@
           ]
         },
         {
+          "playerControls": [
+            {
+              "setStatus": "enable"
+            },
+            {
+              "control": "ID_ROCKETS"
+            },
+            {
+              "control": "ID_FLIGHTMENU"
+            },
+            {
+              "control": "ID_FLIGHTMENU_SETUP"
+            },
+            {
+              "control": "ID_CONTINUE"
+            },
+            {
+              "control": "ID_CONTINUE_SETUP"
+            }
+          ]
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
+          "wait": {
+            "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -2742,11 +2791,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "player_spawn05",
             "follow_target": false,
@@ -2771,26 +2815,19 @@
           }
         },
         {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.6
-          }
-        },
-        {
           "triggerEnable": {
             "target": "dialogue_rockets_p01"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "bombing_fire_button_pressed"
+            },
+            {
+              "target": "retry_trucks_hint"
+            }
+          ]
         },
         {
           "unitForceRearmSpeed": {
@@ -2813,33 +2850,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_ROCKETS"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            }
-          ]
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_rockets",
@@ -2855,16 +2865,6 @@
             "item": "ID_ROCKETS",
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "bombing_fire_button_pressed"
-            },
-            {
-              "target": "retry_trucks_hint"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -3349,11 +3349,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorialB_retry",
@@ -3367,6 +3362,11 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {

@@ -212,6 +212,13 @@
           ]
         },
         {
+          "unitSetProperties": {
+            "object": "germ_fighter_sq",
+            "accuracy": 0.4,
+            "airEffShootingRate": 4.0
+          }
+        },
+        {
           "unitPlayEffect": [
             {
               "effect_type": "specify"
@@ -303,6 +310,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": false,
@@ -316,6 +328,11 @@
         {
           "moAddMissionObjective": {
             "target": "spain_evacuation_fly_to_cover_point"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "spain_evacuation_fly_to_save_trucks"
           }
         },
         {
@@ -378,23 +395,6 @@
             "object": "germ_fighter_cover",
             "target": "ussr_fighters",
             "fireRandom": true
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "spain_evacuation_fly_to_save_trucks"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "germ_fighter_sq",
-            "accuracy": 0.4,
-            "airEffShootingRate": 4.0
           }
         },
         {
@@ -641,6 +641,12 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object": "t1_trucks",
+            "speed": 15.0
+          }
+        },
+        {
           "missionSetTargetsIndicator": {
             "target_type": "isActive",
             "target_marking": 0,
@@ -675,19 +681,18 @@
           }
         },
         {
-          "moAddMissionObjective": {
-            "target": "spain_evacuation_fly_to_cover_trucks"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "t1_trucks",
-            "speed": 15.0
+          "wait": {
+            "time": 5.0
           }
         },
         {
           "wait": {
             "time": 5.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "spain_evacuation_fly_to_cover_trucks"
           }
         },
         {
@@ -775,11 +780,6 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -886,6 +886,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "wave02_when_arcade"
@@ -970,11 +975,6 @@
             "action": "show",
             "shouldFadeOut": false,
             "time": -1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1081,6 +1081,16 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "spain_evacuation_fly_to_save_trucks",
             "status": 2,
@@ -1088,20 +1098,10 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "spain_evacuation_fly_to_cover_trucks",
             "status": 2,
             "team": "A"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1466,6 +1466,406 @@
       }
     },
     {
+      "armada": {
+        "name": "t2_sparviero01",
+        "tm": [
+          [0.999048,0.0,0.0436194],
+          [0.0,1.0,0.0],
+          [-0.0436194,0.0,0.999048],
+          [-19673.4,1300.0,17143.5]
+        ],
+        "unit_class": "sm_79_1937",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "12_100lb_bombs",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "speed": 300.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter01",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-12839.2,1500.0,13715.9]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter02",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-12874.0,1530.4,13658.1]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter03",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-13052.6,1500.0,13745.4]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter04",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-13069.2,1529.35,13671.0]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter01_2",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-12854.2,1500.0,13749.4]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter03_2",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-13067.4,1500.0,13780.2]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_fighters",
+        "tm": [
+          [-0.906308,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,-0.906308],
+          [-10305.7,2000.0,12168.3]
+        ],
+        "unit_class": "i-16_type5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "shkas_new_gun",
+        "bullets1": "shkas_universal",
+        "bullets2": "",
+        "bullets3": "new_compressor",
+        "bulletsCount0": 0,
+        "bulletsCount1": 5000,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "calmDetection": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "germ_fighter_cover",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [-20227.3,2000.0,17174.1]
+        ],
+        "unit_class": "he_112a_0",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "calmDetection": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "wheeled_vehicles": {
         "name": "t1_trucks",
         "tm": [
@@ -1806,6 +2206,142 @@
           },
           {
             "squad_members": "t2_howitzer05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_inf_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1437.35,116.508,14966.4]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_inf01"
+          },
+          {
+            "squad_members": "t2_inf02"
+          },
+          {
+            "squad_members": "t2_inf03"
+          },
+          {
+            "squad_members": "t2_inf04"
+          },
+          {
+            "squad_members": "t2_inf05"
+          },
+          {
+            "squad_members": "t2_inf06"
+          },
+          {
+            "squad_members": "t2_inf07"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_inf_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-967.65,69.4,14810.0]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_inf01"
+          },
+          {
+            "squad_members": "t1_inf02"
+          },
+          {
+            "squad_members": "t1_inf03"
+          },
+          {
+            "squad_members": "t1_inf04"
+          },
+          {
+            "squad_members": "t1_inf05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "germ_fighter_sq",
+        "tm": [
+          [0.087156,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,0.087156],
+          [-13458.8,1716.15,13512.3]
+        ],
+        "props": [
+          {
+            "squad_members": "germ_fighter01"
+          },
+          {
+            "squad_members": "germ_fighter02"
+          },
+          {
+            "squad_members": "germ_fighter03"
+          },
+          {
+            "squad_members": "germ_fighter04"
+          },
+          {
+            "squad_members": "germ_fighter01_2"
+          },
+          {
+            "squad_members": "germ_fighter03_2"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7489.95,96.1,15397.3]
+        ],
+        "props": [
+          {
+            "squad_members": "germ_aaa_04"
+          },
+          {
+            "squad_members": "germ_aaa_05"
+          },
+          {
+            "squad_members": "germ_aaa_07"
+          },
+          {
+            "squad_members": "germ_aaa_08"
+          },
+          {
+            "squad_members": "germ_aaa_09"
+          },
+          {
+            "squad_members": "germ_aaa_12"
+          },
+          {
+            "squad_members": "germ_aaa_14"
+          },
+          {
+            "squad_members": "germ_aaa_15"
+          },
+          {
+            "squad_members": "germ_aaa_16"
+          },
+          {
+            "squad_members": "germ_aaa_17"
           }
         ]
       }
@@ -2159,68 +2695,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_inf_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1437.35,116.508,14966.4]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_inf01"
-          },
-          {
-            "squad_members": "t2_inf02"
-          },
-          {
-            "squad_members": "t2_inf03"
-          },
-          {
-            "squad_members": "t2_inf04"
-          },
-          {
-            "squad_members": "t2_inf05"
-          },
-          {
-            "squad_members": "t2_inf06"
-          },
-          {
-            "squad_members": "t2_inf07"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_inf_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-967.65,69.4,14810.0]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_inf01"
-          },
-          {
-            "squad_members": "t1_inf02"
-          },
-          {
-            "squad_members": "t1_inf03"
-          },
-          {
-            "squad_members": "t1_inf04"
-          },
-          {
-            "squad_members": "t1_inf05"
-          }
-        ]
-      }
-    },
-    {
       "infantry": {
         "name": "t1_inf06",
         "tm": [
@@ -2247,258 +2721,6 @@
           "count": 1
         },
         "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "t2_sparviero01",
-        "tm": [
-          [0.999048,0.0,0.0436194],
-          [0.0,1.0,0.0],
-          [-0.0436194,0.0,0.999048],
-          [-19673.4,1300.0,17143.5]
-        ],
-        "unit_class": "sm_79_1937",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "12_100lb_bombs",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "speed": 300.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter01",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-12839.2,1500.0,13715.9]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter02",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-12874.0,1530.4,13658.1]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter03",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-13052.6,1500.0,13745.4]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter04",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-13069.2,1529.35,13671.0]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "germ_fighter_sq",
-        "tm": [
-          [0.087156,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,0.087156],
-          [-13458.8,1716.15,13512.3]
-        ],
-        "props": [
-          {
-            "squad_members": "germ_fighter01"
-          },
-          {
-            "squad_members": "germ_fighter02"
-          },
-          {
-            "squad_members": "germ_fighter03"
-          },
-          {
-            "squad_members": "germ_fighter04"
-          },
-          {
-            "squad_members": "germ_fighter01_2"
-          },
-          {
-            "squad_members": "germ_fighter03_2"
-          }
-        ]
       }
     },
     {
@@ -2880,228 +3102,6 @@
           "effShootingRate": 0.2
         },
         "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter01_2",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-12854.2,1500.0,13749.4]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter03_2",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-13067.4,1500.0,13780.2]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ussr_fighters",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-10305.7,2000.0,12168.3]
-        ],
-        "unit_class": "i-16_type5",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "shkas_new_gun",
-        "bullets1": "shkas_universal",
-        "bullets2": "",
-        "bullets3": "new_compressor",
-        "bulletsCount0": 0,
-        "bulletsCount1": 5000,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "player": true,
-          "calmDetection": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighter_cover",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [-20227.3,2000.0,17174.1]
-        ],
-        "unit_class": "he_112a_0",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "calmDetection": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7489.95,96.1,15397.3]
-        ],
-        "props": [
-          {
-            "squad_members": "germ_aaa_04"
-          },
-          {
-            "squad_members": "germ_aaa_05"
-          },
-          {
-            "squad_members": "germ_aaa_07"
-          },
-          {
-            "squad_members": "germ_aaa_08"
-          },
-          {
-            "squad_members": "germ_aaa_09"
-          },
-          {
-            "squad_members": "germ_aaa_12"
-          },
-          {
-            "squad_members": "germ_aaa_14"
-          },
-          {
-            "squad_members": "germ_aaa_15"
-          },
-          {
-            "squad_members": "germ_aaa_16"
-          },
-          {
-            "squad_members": "germ_aaa_17"
-          }
-        ]
       }
     }
   ],

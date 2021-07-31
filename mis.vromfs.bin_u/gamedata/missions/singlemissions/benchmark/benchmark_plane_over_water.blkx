@@ -95,24 +95,16 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "playerControls": {
             "setStatus": "disable",
             "control": "ALL"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "cutscene_plane",
-            "aiEnabled": false
-          }
-        },
-        {
-          "wait": {
-            "time": 0.15
           }
         },
         {
@@ -139,6 +131,36 @@
               "control": "ID_FLIGHTMENU_SETUP"
             }
           ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "cutscene_plane",
+            "aiEnabled": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.15
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 10.5
+          }
         },
         {
           "missionSetTimeSpeed": {
@@ -168,28 +190,6 @@
             "fadeOut": true,
             "allowDeadUnits": false,
             "object": "cutscene_plane"
-          }
-        },
-        {
-          "playerOptions": {
-            "currentView": "cockpit"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -241,8 +241,8 @@
           }
         },
         {
-          "wait": {
-            "time": 10.5
+          "playerOptions": {
+            "currentView": "cockpit"
           }
         },
         {

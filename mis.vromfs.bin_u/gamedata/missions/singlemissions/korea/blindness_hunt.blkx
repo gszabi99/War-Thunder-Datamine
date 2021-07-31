@@ -196,6 +196,16 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
@@ -204,16 +214,6 @@
             "time": -1.0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -228,18 +228,18 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
           "triggerEnable": {
             "target": "after_cut"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "start_cut_skip"
           }
         }
       ]
@@ -704,6 +704,11 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "blindness_hunt_land"
           }
@@ -721,11 +726,6 @@
         {
           "triggerEnable": {
             "target": "near_airfield"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -2372,55 +2372,6 @@
       }
     },
     {
-      "squad": {
-        "name": "ussr_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7024.8,651.55,-863.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "ussr_trucks_01"
-          },
-          {
-            "squad_members": "ussr_trucks_02"
-          },
-          {
-            "squad_members": "ussr_trucks_03"
-          },
-          {
-            "squad_members": "ussr_trucks_04"
-          },
-          {
-            "squad_members": "ussr_airdef_for_trucks_01"
-          },
-          {
-            "squad_members": "ussr_airdef_for_trucks_02"
-          },
-          {
-            "squad_members": "ussr_airdef_for_trucks_03"
-          },
-          {
-            "squad_members": "ussr_airdef_for_trucks_04"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "wheeled_vehicles": {
         "name": "ussr_trucks_04",
         "tm": [
@@ -2788,6 +2739,82 @@
             }
           }
         }
+      }
+    },
+    {
+      "squad": {
+        "name": "ussr_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7024.8,651.55,-863.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "ussr_trucks_01"
+          },
+          {
+            "squad_members": "ussr_trucks_02"
+          },
+          {
+            "squad_members": "ussr_trucks_03"
+          },
+          {
+            "squad_members": "ussr_trucks_04"
+          },
+          {
+            "squad_members": "ussr_airdef_for_trucks_01"
+          },
+          {
+            "squad_members": "ussr_airdef_for_trucks_02"
+          },
+          {
+            "squad_members": "ussr_airdef_for_trucks_03"
+          },
+          {
+            "squad_members": "ussr_airdef_for_trucks_04"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2792.35,0.0,8588.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "squad_members": "player_wing",
+          "object_type": "isPlayer"
+        },
+        "way": []
       }
     },
     {
@@ -4632,33 +4659,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2792.35,0.0,8588.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "squad_members": "player_wing",
-          "object_type": "isPlayer"
-        },
-        "way": []
       }
     }
   ],

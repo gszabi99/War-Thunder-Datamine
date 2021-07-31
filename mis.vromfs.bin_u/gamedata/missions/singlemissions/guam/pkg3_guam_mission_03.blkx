@@ -272,11 +272,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -284,6 +279,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_02"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -329,11 +329,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -341,6 +336,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_03"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -386,11 +386,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -398,6 +393,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -443,11 +443,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -455,6 +450,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_05"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -500,11 +500,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -512,6 +507,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_06"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -557,11 +557,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -569,6 +564,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_07"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -614,11 +614,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -626,6 +621,11 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_08"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -676,19 +676,29 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "pkg3_guam_mission_03_waypoints",
             "status": 2
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "moAddMissionObjective": {
+            "target": "pkg3_guam_mission_03_artillery"
           }
         },
         {
           "moAddMissionObjective": {
-            "target": "pkg3_guam_mission_03_artillery"
+            "target": "pkg3_guam_mission_03_artillery_time"
           }
         },
         {
@@ -714,11 +724,6 @@
           }
         },
         {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "update_indicators"
@@ -733,11 +738,6 @@
               "target": "artillery_almost_destroyed"
             }
           ]
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "pkg3_guam_mission_03_artillery_time"
-          }
         }
       ]
     },
@@ -836,6 +836,11 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "complete_mission"
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "pkg3_guam_mission_03_artillery",
             "status": 2
@@ -859,11 +864,6 @@
             "ignoreDifficulty": false,
             "scale": 0.6,
             "target": "waypoint_07"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "complete_mission"
           }
         }
       ]
@@ -1210,6 +1210,42 @@
         "props": {
           "army": 1,
           "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters",
+        "tm": [
+          [-0.608761,0.0,-0.793353],
+          [0.0,1.0,0.0],
+          [0.793353,0.0,-0.608761],
+          [-2387.65,2467.0,2198.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "a6m5_zero",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
           "free_distance": 70.0,
           "floating_distance": 50.0,
           "minimum_distance_to_earth": 20.0,
@@ -1582,6 +1618,131 @@
       }
     },
     {
+      "structures": {
+        "name": "structures_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6330.8,112.192,-2689.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "stuff_tentBarrels",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "structures_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6126.7,110.461,-2701.35]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "stuff_tentBarrels",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "structures_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5863.2,106.239,-2683.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "stuff_tentBarrels",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "structures_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5710.8,101.406,-2654.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "stuff_tentBarrels",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "structures_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6776.2,115.831,-2711.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "stuff_tentBarrels",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "jpn_artillery_squad",
         "tm": [
@@ -1635,6 +1796,71 @@
           },
           {
             "squad_members": "jpn_artillery_14"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6019.1,41.7,-1483.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "jpn_aaa_01"
+          },
+          {
+            "squad_members": "jpn_aaa_02"
+          },
+          {
+            "squad_members": "jpn_aaa_03"
+          },
+          {
+            "squad_members": "jpn_aaa_04"
+          },
+          {
+            "squad_members": "jpn_aaa_05"
+          },
+          {
+            "squad_members": "jpn_aaa_06"
+          },
+          {
+            "squad_members": "jpn_aaa_07"
+          },
+          {
+            "squad_members": "jpn_aaa_08"
+          },
+          {
+            "squad_members": "jpn_aaa_09"
+          },
+          {
+            "squad_members": "jpn_aaa_10"
+          },
+          {
+            "squad_members": "jpn_aaa_11"
+          },
+          {
+            "squad_members": "jpn_aaa_12"
+          },
+          {
+            "squad_members": "jpn_aaa_13"
+          },
+          {
+            "squad_members": "jpn_aaa_14"
+          },
+          {
+            "squad_members": "jpn_aaa_15"
+          },
+          {
+            "squad_members": "jpn_aaa_16"
           }
         ],
         "way": []
@@ -1811,232 +2037,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "jpn_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6019.1,41.7,-1483.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "jpn_aaa_01"
-          },
-          {
-            "squad_members": "jpn_aaa_02"
-          },
-          {
-            "squad_members": "jpn_aaa_03"
-          },
-          {
-            "squad_members": "jpn_aaa_04"
-          },
-          {
-            "squad_members": "jpn_aaa_05"
-          },
-          {
-            "squad_members": "jpn_aaa_06"
-          },
-          {
-            "squad_members": "jpn_aaa_07"
-          },
-          {
-            "squad_members": "jpn_aaa_08"
-          },
-          {
-            "squad_members": "jpn_aaa_09"
-          },
-          {
-            "squad_members": "jpn_aaa_10"
-          },
-          {
-            "squad_members": "jpn_aaa_11"
-          },
-          {
-            "squad_members": "jpn_aaa_12"
-          },
-          {
-            "squad_members": "jpn_aaa_13"
-          },
-          {
-            "squad_members": "jpn_aaa_14"
-          },
-          {
-            "squad_members": "jpn_aaa_15"
-          },
-          {
-            "squad_members": "jpn_aaa_16"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6330.8,112.192,-2689.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "stuff_tentBarrels",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6126.7,110.461,-2701.35]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "stuff_tentBarrels",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5863.2,106.239,-2683.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "stuff_tentBarrels",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5710.8,101.406,-2654.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "stuff_tentBarrels",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6776.2,115.831,-2711.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "stuff_tentBarrels",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "jpn_fighters",
-        "tm": [
-          [-0.608761,0.0,-0.793353],
-          [0.0,1.0,0.0],
-          [0.793353,0.0,-0.608761],
-          [-2387.65,2467.0,2198.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "a6m5_zero",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

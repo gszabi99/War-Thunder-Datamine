@@ -16,6 +16,22 @@
     }
   },
   {
+    "dummy": {
+      "id": "btn_gamemenu",
+      "on_click": "onGamemenu",
+      "behaviour": "accesskey",
+      "accessKey": "Esc | J:Start"
+    }
+  },
+  {
+    "dummy": {
+      "id": "btn_show_hud",
+      "on_click": "setHudVisibility",
+      "behaviour": "accesskey",
+      "accessKey": "J:R.Thumb"
+    }
+  },
+  {
     "tdiv": [
       {
         "id": "respawn_screen"
@@ -50,28 +66,6 @@
               "id": "no_respawn_bases_place",
               "size": "19,19",
               "display": "hide"
-            }
-          },
-          {
-            "slotbarDiv": {
-              "id": "nav-slotbar",
-              "pos": "50%pw-50%w, 0",
-              "position": "relative",
-              "tdiv": {
-                "id": "slotbar_load_wait",
-                "height": "1@slotbarHeight",
-                "display": "hide",
-                "animated_wait_icon": {
-                  "pos": "0,50%ph-50%h",
-                  "position": "relative",
-                  "background-rotation": "0"
-                },
-                "textarea": {
-                  "text": "#mainmenu/waitSlotbarData",
-                  "pos": "0,50%ph-50%h",
-                  "position": "relative"
-                }
-              }
             }
           },
           {
@@ -225,6 +219,12 @@
                           "dropMenuArrow": []
                         },
                         {
+                          "dropMenuArrow": []
+                        },
+                        {
+                          "dropMenuSeparator": []
+                        },
+                        {
                           "dropMenuSeparator": []
                         },
                         {
@@ -232,12 +232,6 @@
                             "margin": "5@dp, 0",
                             "text": "#mission_objectives"
                           }
-                        },
-                        {
-                          "dropMenuSeparator": []
-                        },
-                        {
-                          "dropMenuArrow": []
                         }
                       ],
                       "tdiv": {
@@ -382,6 +376,28 @@
                 }
               }
             ]
+          },
+          {
+            "slotbarDiv": {
+              "id": "nav-slotbar",
+              "pos": "50%pw-50%w, 0",
+              "position": "relative",
+              "tdiv": {
+                "id": "slotbar_load_wait",
+                "height": "1@slotbarHeight",
+                "display": "hide",
+                "animated_wait_icon": {
+                  "pos": "0,50%ph-50%h",
+                  "position": "relative",
+                  "background-rotation": "0"
+                },
+                "textarea": {
+                  "text": "#mainmenu/waitSlotbarData",
+                  "pos": "0,50%ph-50%h",
+                  "position": "relative"
+                }
+              }
+            }
           }
         ]
       },
@@ -446,18 +462,6 @@
           "position": "absolute",
           "flow": "vertical",
           "total-input-transparent": "yes"
-        }
-      },
-      {
-        "activeText": {
-          "id": "spectator_mode_title",
-          "pos": "pw/2-w/2, @bh + 0.08@scrn_tgt",
-          "position": "absolute",
-          "input-transparent": "yes",
-          "display": "hide",
-          "caption": "yes",
-          "text": "#multiplayer/spectator",
-          "textShade": "yes"
         }
       },
       {
@@ -549,6 +553,18 @@
         }
       },
       {
+        "activeText": {
+          "id": "spectator_mode_title",
+          "pos": "pw/2-w/2, @bh + 0.08@scrn_tgt",
+          "position": "absolute",
+          "input-transparent": "yes",
+          "display": "hide",
+          "caption": "yes",
+          "text": "#multiplayer/spectator",
+          "textShade": "yes"
+        }
+      },
+      {
         "gamercard_div": {
           "isRespawnBottomGamercard": "yes",
           "gamercard": {
@@ -620,6 +636,11 @@
                       }
                     },
                     {
+                      "blockSeparator": {
+                        "display": "hide"
+                      }
+                    },
+                    {
                       "emptyVoiceChat": {
                         "tooltip": "#clan/voice_chat/widget",
                         "usertalk": {
@@ -647,11 +668,6 @@
                         "voiceChatWidget": {
                           "value": "{\"viewId\": \"VOICE_CHAT\"}"
                         }
-                      }
-                    },
-                    {
-                      "blockSeparator": {
-                        "display": "hide"
                       }
                     }
                   ],
@@ -853,26 +869,10 @@
     }
   },
   {
-    "dummy": {
-      "id": "btn_gamemenu",
-      "on_click": "onGamemenu",
-      "behaviour": "accesskey",
-      "accessKey": "Esc | J:Start"
-    }
-  },
-  {
     "DummyButton": {
       "id": "btn_hide_show_hud",
       "on_click": "showHud",
       "btnName": "BNotEsc"
-    }
-  },
-  {
-    "dummy": {
-      "id": "btn_show_hud",
-      "on_click": "setHudVisibility",
-      "behaviour": "accesskey",
-      "accessKey": "J:R.Thumb"
     }
   },
   {

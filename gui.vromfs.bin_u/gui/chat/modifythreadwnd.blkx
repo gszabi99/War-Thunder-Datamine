@@ -31,6 +31,21 @@
         }
       },
       {
+        "textareaNoTab": {
+          "id": "thread_category_header",
+          "pos": "0, 1@blockInterval",
+          "position": "relative",
+          "text": "#chat/categoryHeader"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "thread_title_header",
+          "pos": "0, 1@blockInterval",
+          "position": "relative"
+        }
+      },
+      {
         "tdiv": [
           {
             "id": "language_block"
@@ -74,37 +89,6 @@
             }
           }
         ]
-      },
-      {
-        "textareaNoTab": {
-          "id": "thread_category_header",
-          "pos": "0, 1@blockInterval",
-          "position": "relative",
-          "text": "#chat/categoryHeader"
-        }
-      },
-      {
-        "ComboBox": {
-          "id": "categories_list",
-          "position": "relative",
-          "width": "pw"
-        }
-      },
-      {
-        "textareaNoTab": {
-          "id": "thread_title_header",
-          "pos": "0, 1@blockInterval",
-          "position": "relative"
-        }
-      },
-      {
-        "EditBox": {
-          "id": "thread_title_editbox",
-          "size": "pw, 4@buttonHeight",
-          "multiline": "yes",
-          "_on_cancel_edit": "goBack",
-          "on_change_value": "onChangeTitle"
-        }
       },
       {
         "tdiv": [
@@ -207,6 +191,22 @@
             }
           }
         ]
+      },
+      {
+        "ComboBox": {
+          "id": "categories_list",
+          "position": "relative",
+          "width": "pw"
+        }
+      },
+      {
+        "EditBox": {
+          "id": "thread_title_editbox",
+          "size": "pw, 4@buttonHeight",
+          "multiline": "yes",
+          "_on_cancel_edit": "goBack",
+          "on_change_value": "onChangeTitle"
+        }
       },
       {
         "navBar": {

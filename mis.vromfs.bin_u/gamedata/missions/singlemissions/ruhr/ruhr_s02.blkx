@@ -149,6 +149,13 @@
           }
         },
         {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_fighters03",
+            "target": "player"
+          }
+        },
+        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -184,13 +191,6 @@
               "effShootingRate": 0.05
             }
           ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "enemy_fighters03",
-            "target": "player"
-          }
         }
       ],
       "else_actions": []
@@ -447,6 +447,236 @@
           "attack_type": "fire_at_will",
           "skill": 4,
           "count": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters01",
+        "tm": [
+          [-0.843391,0.0,0.5373],
+          [0.0,1.0,0.0],
+          [-0.5373,0.0,-0.843391],
+          [-1120.6,313.8,298.0]
+        ],
+        "unit_class": "p-39n",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "p_39_n_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 20,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_fighters01",
+        "tm": [
+          [0.843391,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,0.843391],
+          [-2152.7,497.8,1162.5]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 16,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "friendly_fighters02",
+        "tm": [
+          [0.422618,0.0,-0.906308],
+          [0.0,1.0,0.0],
+          [0.906308,0.0,0.422618],
+          [1222.2,497.8,5196.9]
+        ],
+        "unit_class": "fw-190f-8",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Fw-190F-8_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 16,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters02",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [944.5,313.8,2339.25]
+        ],
+        "unit_class": "p-39n",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "p_39_n_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 20,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters03",
+        "tm": [
+          [-0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,-0.965926],
+          [-2137.1,589.1,859.55]
+        ],
+        "unit_class": "p-39n",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "p_39_n_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 5,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 1.5,
@@ -738,236 +968,6 @@
             "squad_members": "aa06"
           }
         ]
-      }
-    },
-    {
-      "armada": {
-        "name": "enemy_fighters01",
-        "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-1120.6,313.8,298.0]
-        ],
-        "unit_class": "p-39n",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "p_39_n_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 20,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "friendly_fighters01",
-        "tm": [
-          [0.843391,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,0.843391],
-          [-2152.7,497.8,1162.5]
-        ],
-        "unit_class": "fw-190f-8",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Fw-190F-8_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 16,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "friendly_fighters02",
-        "tm": [
-          [0.422618,0.0,-0.906308],
-          [0.0,1.0,0.0],
-          [0.906308,0.0,0.422618],
-          [1222.2,497.8,5196.9]
-        ],
-        "unit_class": "fw-190f-8",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Fw-190F-8_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 16,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "enemy_fighters02",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [944.5,313.8,2339.25]
-        ],
-        "unit_class": "p-39n",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "p_39_n_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 20,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "enemy_fighters03",
-        "tm": [
-          [-0.965926,0.0,-0.258819],
-          [0.0,1.0,0.0],
-          [0.258819,0.0,-0.965926],
-          [-2137.1,589.1,859.55]
-        ],
-        "unit_class": "p-39n",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "p_39_n_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 5,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     }
   ],

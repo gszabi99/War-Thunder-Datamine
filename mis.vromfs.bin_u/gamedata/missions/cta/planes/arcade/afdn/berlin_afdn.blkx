@@ -280,7 +280,17 @@
       "actions": [
         {
           "comment": {
-            "value": "задаем начальную скорость уничтожения наземки"
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u043d\u0430\u0447\u0430\u043b\u044c\u043d\u0443\u044e \u0441\u043a\u043e\u0440\u043e\u0441\u0442\u044c \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u044f \u043d\u0430\u0437\u0435\u043c\u043a\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0434\u043b\u044f \u043f\u0440\u0435\u0434\u043e\u0442\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u044f \u0434\u043b\u0438\u043d\u043d\u044b\u0445 \u0441\u0435\u0441\u0441\u0438\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u0442\u0441\u044f \u043b\u043e\u0433\u0438\u043a\u0430 \u043c\u0438\u0441\u0441\u0438\u0438"
           }
         },
         {
@@ -295,11 +305,6 @@
               "var": "historical_destroy_timer"
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "задаем значения для предотвращения длинных сессий"
-          }
         },
         {
           "varSetInt": {
@@ -317,11 +322,6 @@
           "varSetInt": {
             "value": 4500,
             "var": "long_time_arcade_distance"
-          }
-        },
-        {
-          "comment": {
-            "value": "начинается логика миссии"
           }
         },
         {
@@ -858,6 +858,204 @@
       }
     },
     {
+      "squad": {
+        "name": "t1_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2455.8,72.4,-16883.2]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_truck_01"
+          },
+          {
+            "squad_members": "t1_truck_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2599.25,72.4,-8024.3]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_truck_01"
+          },
+          {
+            "squad_members": "t2_truck_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2055.85,65.4,-18530.8]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tanks_squad"
+          },
+          {
+            "squad_members": "t1_trucks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2625.8,65.4,-6828.15]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tanks_squad"
+          },
+          {
+            "squad_members": "t2_trucks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4637.95,47.75,-9807.75]
+        ],
+        "props": {
+          "squad_members": "dummy_unit"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4123.35,47.75,-9862.45]
+        ],
+        "props": {
+          "squad_members": "dummy_unit"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4351.05,44.25,-8611.35]
+        ],
+        "props": {
+          "squad_members": "t1_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2507.55,44.25,-8409.5]
+        ],
+        "props": {
+          "squad_members": "t2_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4572.75,48.05,-8296.3]
+        ],
+        "props": {
+          "squad_members": "t1_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2297.45,48.05,-8098.65]
+        ],
+        "props": {
+          "squad_members": "t2_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3623.25,50.2,-7864.6]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_heavy_units_squad"
+          },
+          {
+            "squad_members": "t1_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2972.8,50.2,-7967.25]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_heavy_units_squad"
+          },
+          {
+            "squad_members": "t2_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
       "air_defence": {
         "name": "t1_truck_01",
         "tm": [
@@ -1107,82 +1305,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2455.8,72.4,-16883.2]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_truck_01"
-          },
-          {
-            "squad_members": "t1_truck_02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2599.25,72.4,-8024.3]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_truck_01"
-          },
-          {
-            "squad_members": "t2_truck_02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2055.85,65.4,-18530.8]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_tanks_squad"
-          },
-          {
-            "squad_members": "t1_trucks_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2625.8,65.4,-6828.15]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_tanks_squad"
-          },
-          {
-            "squad_members": "t2_trucks_squad"
-          }
-        ]
-      }
-    },
-    {
       "structures": {
         "name": "dummy_unit",
         "tm": [
@@ -1217,128 +1339,6 @@
           "setStealth": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4637.95,47.75,-9807.75]
-        ],
-        "props": {
-          "squad_members": "dummy_unit"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4123.35,47.75,-9862.45]
-        ],
-        "props": {
-          "squad_members": "dummy_unit"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4351.05,44.25,-8611.35]
-        ],
-        "props": {
-          "squad_members": "t1_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2507.55,44.25,-8409.5]
-        ],
-        "props": {
-          "squad_members": "t2_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4572.75,48.05,-8296.3]
-        ],
-        "props": {
-          "squad_members": "t1_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2297.45,48.05,-8098.65]
-        ],
-        "props": {
-          "squad_members": "t2_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3623.25,50.2,-7864.6]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_heavy_units_squad"
-          },
-          {
-            "squad_members": "t1_light_units_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2972.8,50.2,-7967.25]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_heavy_units_squad"
-          },
-          {
-            "squad_members": "t2_light_units_squad"
-          }
-        ]
       }
     }
   ],

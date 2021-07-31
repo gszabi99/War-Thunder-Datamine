@@ -1063,6 +1063,17 @@
         }
       },
       {
+        "armorArrayHull": {
+          "xrayDmPart": "composite_armor_hull_02_dm",
+          "titleLoc": "RHA_tank",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "turret_03_back_dm"
+            }
+          }
+        }
+      },
+      {
         "armorArrayTurret": {
           "xrayDmPart": "composite_armor_turret_01_dm",
           "armorArrayText": [
@@ -1104,17 +1115,6 @@
             "layer": {
               "dmPart": "composite_armor_turret_03_dm",
               "xrayTextThickness": [40.0,310.0]
-            }
-          }
-        }
-      },
-      {
-        "armorArrayHull": {
-          "xrayDmPart": "composite_armor_hull_02_dm",
-          "titleLoc": "RHA_tank",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "turret_03_back_dm"
             }
           }
         }
@@ -2830,10 +2830,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 2500
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 2500
           },
           {
             "ChainfireTime": 3.0
@@ -3718,6 +3718,62 @@
           }
         },
         {
+          "shells": {
+            "reloadTimeMult": 4.0,
+            "fireEvent": "ammo_fire",
+            "explosionEvent": "ammo_explosion",
+            "wreckedPartId": 0,
+            "ammo_turret_45_dm": {
+              "count": 1
+            },
+            "ammo_turret_47_dm": {
+              "count": 1
+            },
+            "ammo_body_01_dm": {
+              "count": 1
+            },
+            "ammo_body_02_dm": {
+              "count": 1
+            },
+            "ammo_body_03_dm": {
+              "count": 1
+            },
+            "ammo_body_04_dm": {
+              "count": 1
+            },
+            "ammo_body_05_dm": {
+              "count": 1
+            },
+            "ammo_body_06_dm": {
+              "count": 1
+            },
+            "ammo_body_07_dm": {
+              "count": 1
+            },
+            "ammo_body_08_dm": {
+              "count": 1
+            },
+            "ammo_body_09_dm": {
+              "count": 1
+            },
+            "ammo_body_15_dm": {
+              "count": 1
+            },
+            "ammo_body_10_dm": {
+              "count": 1
+            },
+            "ammo_body_11_dm": {
+              "count": 1
+            },
+            "ammo_body_12_dm": {
+              "count": 1
+            },
+            "ammo_body_13_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
           "charges": {
             "autoLoad": true,
             "fireEvent": "ammo_fire",
@@ -3787,62 +3843,6 @@
               "count": 1
             },
             "ammo_turret_44_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
-          "shells": {
-            "reloadTimeMult": 4.0,
-            "fireEvent": "ammo_fire",
-            "explosionEvent": "ammo_explosion",
-            "wreckedPartId": 0,
-            "ammo_turret_45_dm": {
-              "count": 1
-            },
-            "ammo_turret_47_dm": {
-              "count": 1
-            },
-            "ammo_body_01_dm": {
-              "count": 1
-            },
-            "ammo_body_02_dm": {
-              "count": 1
-            },
-            "ammo_body_03_dm": {
-              "count": 1
-            },
-            "ammo_body_04_dm": {
-              "count": 1
-            },
-            "ammo_body_05_dm": {
-              "count": 1
-            },
-            "ammo_body_06_dm": {
-              "count": 1
-            },
-            "ammo_body_07_dm": {
-              "count": 1
-            },
-            "ammo_body_08_dm": {
-              "count": 1
-            },
-            "ammo_body_09_dm": {
-              "count": 1
-            },
-            "ammo_body_15_dm": {
-              "count": 1
-            },
-            "ammo_body_10_dm": {
-              "count": 1
-            },
-            "ammo_body_11_dm": {
-              "count": 1
-            },
-            "ammo_body_12_dm": {
-              "count": 1
-            },
-            "ammo_body_13_dm": {
               "count": 1
             }
           }
@@ -4081,10 +4081,10 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 2500
+                  "fireConeAngle": 15.0
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "bullets": 2500
                 },
                 {
                   "ChainfireTime": 3.0

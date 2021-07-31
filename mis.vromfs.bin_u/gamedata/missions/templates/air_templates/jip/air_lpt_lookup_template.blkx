@@ -123,12 +123,29 @@
       "actions": [
         {
           "comment": {
-            "value": "рандомизируем время старта"
+            "value": "\u0440\u0430\u043d\u0434\u043e\u043c\u0438\u0437\u0438\u0440\u0443\u0435\u043c \u0432\u0440\u0435\u043c\u044f \u0441\u0442\u0430\u0440\u0442\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
           "varSetRandomInt": {
             "var": "lpt_t1_delay_timer",
+            "from": 30,
+            "to_not_including": 120
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "lpt_t2_delay_timer",
             "from": 30,
             "to_not_including": 120
           }
@@ -143,29 +160,12 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetRandomInt": {
-            "var": "lpt_t2_delay_timer",
-            "from": 30,
-            "to_not_including": 120
-          }
-        },
-        {
           "varModify": {
             "operator": "add",
             "value": 0.0,
             "var": "lpt_t2_delay_timer",
             "use_variable": true,
             "var_value": "lpt_delay_timer"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -203,7 +203,7 @@
       },
       "actions": {
         "comment": {
-          "value": "шаблон не запущен идем проверять армию"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d \u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u0430\u0440\u043c\u0438\u044e"
         },
         "triggerEnable": {
           "target": "lpt_t1_check_army"
@@ -211,7 +211,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "шаблон запущен. не делаем ничего"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d. \u043d\u0435 \u0434\u0435\u043b\u0430\u0435\u043c \u043d\u0438\u0447\u0435\u0433\u043e"
         },
         "triggerDisable": {
           "target": "lpt_t1_start"
@@ -241,18 +241,18 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим, что шаблон запущен для команды А"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0434\u044f\u043b \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u044f\u043b \u0430\u0440\u043c\u0438\u0438 \u0411"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "lpt_t1_active"
-          }
-        },
-        {
-          "comment": {
-            "value": "шаблон не предназначен дял запуска только дял армии Б"
           }
         },
         {
@@ -263,7 +263,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "шаблон предназначен только для армии Б"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 \u0411"
         },
         "triggerEnable": {
           "target": "lpt_t1_clean_garbage"
@@ -301,12 +301,62 @@
         },
         {
           "comment": {
-            "value": "время подошло"
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e"
           }
         },
         {
           "comment": {
-            "value": "выбираем точку назначения"
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u0441\u043f\u0430\u0432\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0438 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c \u043a \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043d\u0434\u0438\u043a\u0430\u0446\u0438\u044e \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c  \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043b\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d \u043b\u0438 \u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u043a\u0440\u0438\u043f\u0442\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -318,28 +368,16 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t1_lookup_point_",
-            "var": "lpt_t1_target_point"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@lpt_randomizer",
-            "digits": 2,
-            "var": "lpt_t1_target_point"
-          }
-        },
-        {
-          "comment": {
-            "value": "выбираем точку спавна"
-          }
-        },
-        {
           "varSetRandomInt": {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 5
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_lookup_point_",
+            "var": "lpt_t1_target_point"
           }
         },
         {
@@ -349,6 +387,19 @@
           }
         },
         {
+          "varSetString": {
+            "value": "lpt_t1_matching_move_",
+            "var": "lpt_matching_t1_move_trigger_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@lpt_randomizer",
+            "digits": 2,
+            "var": "lpt_t1_target_point"
+          }
+        },
+        {
           "varAddString": {
             "value": "@lpt_randomizer",
             "digits": 2,
@@ -356,8 +407,10 @@
           }
         },
         {
-          "comment": {
-            "value": "спавним и отправляем к цели"
+          "varAddString": {
+            "value": "@lpt_matching_type",
+            "digits": 1,
+            "var": "lpt_matching_t1_move_trigger_name"
           }
         },
         {
@@ -378,26 +431,41 @@
           }
         },
         {
-          "comment": {
-            "value": "говорим разведчику двигаться к точке"
+          "triggerEnable": {
+            "target": "@lpt_matching_t1_move_trigger_name"
           }
         },
         {
-          "varSetString": {
-            "value": "lpt_t1_matching_move_",
-            "var": "lpt_matching_t1_move_trigger_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@lpt_matching_type",
-            "digits": 1,
-            "var": "lpt_matching_t1_move_trigger_name"
-          }
+          "triggerEnable": [
+            {
+              "target": "lpt_t1_update_pos_for_t1"
+            },
+            {
+              "target": "lpt_t1_update_pos_for_t2"
+            }
+          ]
         },
         {
           "triggerEnable": {
-            "target": "@lpt_matching_t1_move_trigger_name"
+            "target": "lpt_t1_is_detect_on"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "lpt_t1_lookup_dead"
+            },
+            {
+              "target": "lpt_t1_lookup_active"
+            },
+            {
+              "target": "lpt_t1_lookup_retreat"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "lpt_template_end"
           }
         },
         {
@@ -423,11 +491,6 @@
           }
         },
         {
-          "comment": {
-            "value": "выставляем индикацию по умолчанию"
-          }
-        },
-        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -450,62 +513,9 @@
           }
         },
         {
-          "comment": {
-            "value": "добавляем бонус к разведке"
-          }
-        },
-        {
           "varSetReal": {
             "value": 2000.0,
             "var": "lpt_t1_detection_bonus"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем  обновление позиции для обжектива"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t1_update_pos_for_t2"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "проверяем включен ли режим разведки"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_is_detect_on"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем остальные скрипты"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t1_lookup_dead"
-            },
-            {
-              "target": "lpt_t1_lookup_active"
-            },
-            {
-              "target": "lpt_t1_lookup_retreat"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "выдаем задание на прикрытие разведчика"
           }
         },
         {
@@ -519,16 +529,6 @@
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку отключения шаблона"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_template_end"
           }
         }
       ],
@@ -555,7 +555,7 @@
       },
       "actions": {
         "comment": {
-          "value": "квест на защиту запущен"
+          "value": "\u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443 \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
         },
         "moSetObjectiveStatus": {
           "target": "lpt_t1_defend_task",
@@ -600,7 +600,7 @@
       },
       "actions": {
         "comment": {
-          "value": "квест на убийство запущен"
+          "value": "\u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
         },
         "moSetObjectiveStatus": {
           "target": "lpt_t2_kill_task",
@@ -636,7 +636,12 @@
       "actions": [
         {
           "comment": {
-            "value": "режим разведки включен"
+            "value": "\u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438 \u0432\u043a\u043b\u044e\u0447\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
           }
         },
         {
@@ -682,11 +687,6 @@
           }
         },
         {
-          "comment": {
-            "value": "запускаем проверку на обнаружение разведчика"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "lpt_t1_lookup_detect_check"
@@ -700,12 +700,12 @@
       "else_actions": [
         {
           "comment": {
-            "value": "режим разведки выключен"
+            "value": "\u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438 \u0432\u044b\u043a\u043b\u044e\u0447\u0435\u043d"
           }
         },
         {
           "comment": {
-            "value": "говорим, что разведчик обнаружен"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
@@ -748,7 +748,7 @@
           "target": "lpt_t1_lookup_players_detect_check"
         },
         "comment": {
-          "value": "разведчик обнаружен"
+          "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
         },
         "triggerEnable": {
           "target": "lpt_t1_lookup_detected"
@@ -773,12 +773,17 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик обнаружен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
           "comment": {
-            "value": "даем задание на уничтожение разведчика"
+            "value": "\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0438\u043a\u0430\u0446\u0438\u044e"
           }
         },
         {
@@ -787,11 +792,6 @@
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@lpt_t1_lookup_plane"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем индикацию"
           }
         },
         {
@@ -836,12 +836,42 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик погиб"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043f\u043e\u0433\u0438\u0431"
           }
         },
         {
           "comment": {
-            "value": "отключаем отслеживание позиции для обжектива"
+            "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043b\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0437\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430 \u0438 \u0442\u0430\u0439\u043c\u0435\u0440 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435 \u043f\u0440\u043e\u0432\u0430\u043b\u0435\u043d\u043e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u043b\u0430 \u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u043f\u0440\u043e\u0442\u0438\u0432\u043d\u0438\u043a\u0430 \u0437\u0430\u0434\u0430\u043d\u0438\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0436\u0434\u0435\u043c 20 \u0441\u0435\u043a\u0443\u043d\u0434 \u0438 \u043f\u0440\u044f\u0447\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0443\u0431\u043e\u0440\u0449\u0438\u043a \u043c\u0443\u0441\u043e\u0440\u0430"
           }
         },
         {
@@ -861,22 +891,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "уменьшаем бонус к развездке"
-          }
-        },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t1_detection_bonus"
-          }
-        },
-        {
-          "comment": {
-            "value": "отключаем активность разведчика и таймер активности"
-          }
-        },
-        {
           "triggerDisable": [
             {
               "target": "lpt_t1_lookup_active"
@@ -887,8 +901,9 @@
           ]
         },
         {
-          "comment": {
-            "value": "говорим, что задание на прикрытие провалено"
+          "varSetReal": {
+            "value": 0.0,
+            "var": "lpt_t1_detection_bonus"
           }
         },
         {
@@ -904,26 +919,6 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем не выполнила ли команда противника задание"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_quest_complete_for_t2"
-          }
-        },
-        {
-          "comment": {
-            "value": "ждем 20 секунд и прячем квест на прикрытие"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t1_defend_task",
             "status": 0,
@@ -933,18 +928,23 @@
           }
         },
         {
-          "comment": {
-            "value": "включаем уборщик мусора"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
+          "triggerEnable": {
+            "target": "lpt_t1_quest_complete_for_t2"
           }
         },
         {
           "triggerEnable": {
             "target": "lpt_t1_clean_garbage"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -972,7 +972,7 @@
       "actions": [
         {
           "comment": {
-            "value": "у команды Б есть квест. засчитываем его"
+            "value": "\u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411 \u0435\u0441\u0442\u044c \u043a\u0432\u0435\u0441\u0442. \u0437\u0430\u0441\u0447\u0438\u0442\u044b\u0432\u0430\u0435\u043c \u0435\u0433\u043e"
           }
         },
         {
@@ -993,11 +993,6 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 0,
@@ -1005,11 +1000,16 @@
             "object_var_name": "",
             "team": "B"
           }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
         }
       ],
       "else_actions": {
         "comment": {
-          "value": "у команды Б нет квеста"
+          "value": "\u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411 \u043d\u0435\u0442 \u043a\u0432\u0435\u0441\u0442\u0430"
         }
       }
     },
@@ -1046,17 +1046,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t2_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -1116,7 +1116,12 @@
         },
         {
           "comment": {
-            "value": "разведчик ранен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0440\u0430\u043d\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0434\u043e\u0441\u0442\u0438\u0436\u0435\u043d\u0438\u0438 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0439 \u0442\u043e\u0447\u043a\u0438"
           }
         },
         {
@@ -1139,11 +1144,6 @@
             "destTimeMode": false,
             "object": "@lpt_t1_lookup_plane",
             "speed": 350.0
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку на достижении конечной точки"
           }
         },
         {
@@ -1188,17 +1188,17 @@
       "actions": [
         {
           "comment": {
-            "value": "корректировщик над целью отключаем проверку обнаружения"
+            "value": "\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0449\u0438\u043a \u043d\u0430\u0434 \u0446\u0435\u043b\u044c\u044e \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440 \u0438 \u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
           "triggerDisable": {
             "target": "lpt_t1_lookup_detect_check"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем таймер и говорим что разведчик обнаружен"
           }
         },
         {
@@ -1232,22 +1232,27 @@
       "actions": [
         {
           "comment": {
-            "value": "время подошло к концу и разведчик хочет домой"
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e \u043a \u043a\u043e\u043d\u0446\u0443 \u0438 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0445\u043e\u0447\u0435\u0442 \u0434\u043e\u043c\u043e\u0439"
           }
         },
         {
           "comment": {
-            "value": "закрываем возвращение домой по ранению"
+            "value": "\u0437\u0430\u043a\u0440\u044b\u0432\u0430\u0435\u043c \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0434\u043e\u043c\u043e\u0439 \u043f\u043e \u0440\u0430\u043d\u0435\u043d\u0438\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430 \u0434\u043e\u043c\u043e\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0434\u043e\u0441\u0442\u0438\u0436\u0435\u043d\u0438\u0438 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0439 \u0442\u043e\u0447\u043a\u0438"
           }
         },
         {
           "triggerDisable": {
             "target": "lpt_t1_lookup_retreat"
-          }
-        },
-        {
-          "comment": {
-            "value": "направляем разведчика домой"
           }
         },
         {
@@ -1270,11 +1275,6 @@
             "destTimeMode": false,
             "object": "@lpt_t1_lookup_plane",
             "speed": 350.0
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку на достижении конечной точки"
           }
         },
         {
@@ -1319,7 +1319,17 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик долетел до дома"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0434\u043e\u043b\u0435\u0442\u0435\u043b \u0434\u043e \u0434\u043e\u043c\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0437\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0443\u0431\u043e\u0440\u0449\u0438\u043a \u043c\u0443\u0441\u043e\u0440\u0430"
           }
         },
         {
@@ -1337,11 +1347,6 @@
               "target": "lpt_t1_lookup_dead"
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "уменьшаем бонус к развездке"
-          }
         },
         {
           "varSetReal": {
@@ -1367,6 +1372,15 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "lpt_t1_defend_task",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "lpt_t1_def_activity_calc"
           }
@@ -1377,32 +1391,18 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "lpt_t1_clean_garbage"
+          }
+        },
+        {
           "wait": {
             "time": 20.0
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "lpt_t1_defend_task",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем уборщик мусора"
-          }
-        },
-        {
           "wait": {
             "time": 5.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t1_clean_garbage"
           }
         }
       ],
@@ -1425,7 +1425,17 @@
       "actions": [
         {
           "comment": {
-            "value": "собираем мусор"
+            "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043c\u0443\u0441\u043e\u0440"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -1483,19 +1493,9 @@
           ]
         },
         {
-          "comment": {
-            "value": "говорим, что шаблон не активен"
-          }
-        },
-        {
           "varSetBool": {
             "value": false,
             "var": "lpt_t1_active"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1528,7 +1528,7 @@
       },
       "actions": {
         "comment": {
-          "value": "шаблон не запущен идем проверять армию"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d \u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u0430\u0440\u043c\u0438\u044e"
         },
         "triggerEnable": {
           "target": "lpt_t2_check_army"
@@ -1536,7 +1536,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "шаблон запущен. не делаем ничего"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d. \u043d\u0435 \u0434\u0435\u043b\u0430\u0435\u043c \u043d\u0438\u0447\u0435\u0433\u043e"
         },
         "triggerDisable": {
           "target": "lpt_t2_start"
@@ -1566,18 +1566,18 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим, что шаблон запущен для команды B"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430\u043f\u0443\u0449\u0435\u043d \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u044b B"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0434\u044f\u043b \u0437\u0430\u043f\u0443\u0441\u043a\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u044f\u043b \u0430\u0440\u043c\u0438\u0438 \u0411"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "lpt_t2_active"
-          }
-        },
-        {
-          "comment": {
-            "value": "шаблон не предназначен дял запуска только дял армии Б"
           }
         },
         {
@@ -1588,7 +1588,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "шаблон предназначен только для армии А"
+          "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u043f\u0440\u0435\u0434\u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 \u0410"
         },
         "triggerEnable": {
           "target": "lpt_t2_clean_garbage"
@@ -1626,12 +1626,62 @@
         },
         {
           "comment": {
-            "value": "время подошло"
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e"
           }
         },
         {
           "comment": {
-            "value": "выбираем точку назначения"
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u043d\u0430\u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u0441\u043f\u0430\u0432\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0438 \u043e\u0442\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c \u043a \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043d\u0434\u0438\u043a\u0430\u0446\u0438\u044e \u043f\u043e \u0443\u043c\u043e\u043b\u0447\u0430\u043d\u0438\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c  \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043b\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d \u043b\u0438 \u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u044b\u0435 \u0441\u043a\u0440\u0438\u043f\u0442\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -1643,28 +1693,16 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t2_lookup_point_",
-            "var": "lpt_t2_target_point"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@lpt_randomizer",
-            "digits": 2,
-            "var": "lpt_t2_target_point"
-          }
-        },
-        {
-          "comment": {
-            "value": "выбираем точку спавна"
-          }
-        },
-        {
           "varSetRandomInt": {
             "var": "lpt_randomizer",
             "from": 1,
             "to_not_including": 5
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_lookup_point_",
+            "var": "lpt_t2_target_point"
           }
         },
         {
@@ -1674,6 +1712,19 @@
           }
         },
         {
+          "varSetString": {
+            "value": "lpt_t2_matching_move_",
+            "var": "lpt_matching_t2_move_trigger_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@lpt_randomizer",
+            "digits": 2,
+            "var": "lpt_t2_target_point"
+          }
+        },
+        {
           "varAddString": {
             "value": "@lpt_randomizer",
             "digits": 2,
@@ -1681,8 +1732,10 @@
           }
         },
         {
-          "comment": {
-            "value": "спавним и отправляем к цели"
+          "varAddString": {
+            "value": "@lpt_matching_type",
+            "digits": 1,
+            "var": "lpt_matching_t2_move_trigger_name"
           }
         },
         {
@@ -1703,26 +1756,41 @@
           }
         },
         {
-          "comment": {
-            "value": "говорим разведчику двигаться к точке"
+          "triggerEnable": {
+            "target": "@lpt_matching_t2_move_trigger_name"
           }
         },
         {
-          "varSetString": {
-            "value": "lpt_t2_matching_move_",
-            "var": "lpt_matching_t2_move_trigger_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@lpt_matching_type",
-            "digits": 1,
-            "var": "lpt_matching_t2_move_trigger_name"
-          }
+          "triggerEnable": [
+            {
+              "target": "lpt_t2_update_pos_for_t1"
+            },
+            {
+              "target": "lpt_t2_update_pos_for_t2"
+            }
+          ]
         },
         {
           "triggerEnable": {
-            "target": "@lpt_matching_t2_move_trigger_name"
+            "target": "lpt_t2_is_detect_on"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "lpt_t2_lookup_dead"
+            },
+            {
+              "target": "lpt_t2_lookup_active"
+            },
+            {
+              "target": "lpt_t2_lookup_retreat"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "lpt_template_end"
           }
         },
         {
@@ -1748,11 +1816,6 @@
           }
         },
         {
-          "comment": {
-            "value": "выставляем индикацию по умолчанию"
-          }
-        },
-        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -1775,62 +1838,9 @@
           }
         },
         {
-          "comment": {
-            "value": "добавляем бонус к разведке"
-          }
-        },
-        {
           "varSetReal": {
             "value": 2000.0,
             "var": "lpt_t2_detection_bonus"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем  обновление позиции для обжектива"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_update_pos_for_t1"
-            },
-            {
-              "target": "lpt_t2_update_pos_for_t2"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "проверяем включен ли режим разведки"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_is_detect_on"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем остальные скрипты"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "lpt_t2_lookup_dead"
-            },
-            {
-              "target": "lpt_t2_lookup_active"
-            },
-            {
-              "target": "lpt_t2_lookup_retreat"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "выдаем задание на прикрытие разведчика"
           }
         },
         {
@@ -1844,16 +1854,6 @@
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку отключения шаблона"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_template_end"
           }
         }
       ],
@@ -1880,7 +1880,7 @@
       },
       "actions": {
         "comment": {
-          "value": "квест на убийство запущен"
+          "value": "\u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
         },
         "moSetObjectiveStatus": {
           "target": "lpt_t1_kill_task",
@@ -1914,7 +1914,7 @@
       },
       "actions": {
         "comment": {
-          "value": "квест на защиту запущен"
+          "value": "\u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443 \u0437\u0430\u043f\u0443\u0449\u0435\u043d"
         },
         "moSetObjectiveStatus": {
           "target": "lpt_t2_defend_task",
@@ -1961,7 +1961,12 @@
       "actions": [
         {
           "comment": {
-            "value": "режим разведки включен"
+            "value": "\u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438 \u0432\u043a\u043b\u044e\u0447\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
           }
         },
         {
@@ -2007,11 +2012,6 @@
           }
         },
         {
-          "comment": {
-            "value": "запускаем проверку на обнаружение разведчика"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "lpt_t2_lookup_detect_check"
@@ -2025,12 +2025,12 @@
       "else_actions": [
         {
           "comment": {
-            "value": "режим разведки выключен"
+            "value": "\u0440\u0435\u0436\u0438\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u043a\u0438 \u0432\u044b\u043a\u043b\u044e\u0447\u0435\u043d"
           }
         },
         {
           "comment": {
-            "value": "говорим, что разведчик обнаружен"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
@@ -2073,7 +2073,7 @@
           "target": "lpt_t2_lookup_players_detect_check"
         },
         "comment": {
-          "value": "разведчик обнаружен"
+          "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
         },
         "triggerEnable": {
           "target": "lpt_t2_lookup_detected"
@@ -2098,12 +2098,17 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик обнаружен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
           "comment": {
-            "value": "даем задание на уничтожение разведчика"
+            "value": "\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u0435 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0438\u043a\u0430\u0446\u0438\u044e"
           }
         },
         {
@@ -2112,11 +2117,6 @@
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "unit_or_area": "@lpt_t2_lookup_plane"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем индикацию"
           }
         },
         {
@@ -2161,12 +2161,42 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик погиб"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043f\u043e\u0433\u0438\u0431"
           }
         },
         {
           "comment": {
-            "value": "отключаем отслеживание позиции для обжектива"
+            "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0434\u043b\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0437\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430 \u0438 \u0442\u0430\u0439\u043c\u0435\u0440 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435 \u043f\u0440\u043e\u0432\u0430\u043b\u0435\u043d\u043e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u043b\u0430 \u043b\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u043f\u0440\u043e\u0442\u0438\u0432\u043d\u0438\u043a\u0430 \u0437\u0430\u0434\u0430\u043d\u0438\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0436\u0434\u0435\u043c 20 \u0441\u0435\u043a\u0443\u043d\u0434 \u0438 \u043f\u0440\u044f\u0447\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043f\u0440\u0438\u043a\u0440\u044b\u0442\u0438\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0443\u0431\u043e\u0440\u0449\u0438\u043a \u043c\u0443\u0441\u043e\u0440\u0430"
           }
         },
         {
@@ -2186,22 +2216,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "уменьшаем бонус к развездке"
-          }
-        },
-        {
-          "varSetReal": {
-            "value": 0.0,
-            "var": "lpt_t2_detection_bonus"
-          }
-        },
-        {
-          "comment": {
-            "value": "отключаем активность разведчика и таймер активности"
-          }
-        },
-        {
           "triggerDisable": [
             {
               "target": "lpt_t2_lookup_active"
@@ -2212,8 +2226,9 @@
           ]
         },
         {
-          "comment": {
-            "value": "говорим, что задание на прикрытие провалено"
+          "varSetReal": {
+            "value": 0.0,
+            "var": "lpt_t2_detection_bonus"
           }
         },
         {
@@ -2229,26 +2244,6 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем не выполнила ли команда противника задание"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_quest_complete_for_t1"
-          }
-        },
-        {
-          "comment": {
-            "value": "ждем 20 секунд и прячем квест на прикрытие"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t2_defend_task",
             "status": 0,
@@ -2258,18 +2253,23 @@
           }
         },
         {
-          "comment": {
-            "value": "включаем уборщик мусора"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
+          "triggerEnable": {
+            "target": "lpt_t2_quest_complete_for_t1"
           }
         },
         {
           "triggerEnable": {
             "target": "lpt_t2_clean_garbage"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -2297,7 +2297,7 @@
       "actions": [
         {
           "comment": {
-            "value": "у команды Б есть квест. засчитываем его"
+            "value": "\u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411 \u0435\u0441\u0442\u044c \u043a\u0432\u0435\u0441\u0442. \u0437\u0430\u0441\u0447\u0438\u0442\u044b\u0432\u0430\u0435\u043c \u0435\u0433\u043e"
           }
         },
         {
@@ -2318,11 +2318,6 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 0,
@@ -2330,11 +2325,16 @@
             "object_var_name": "",
             "team": "A"
           }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
         }
       ],
       "else_actions": {
         "comment": {
-          "value": "у команды Б нет квеста"
+          "value": "\u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411 \u043d\u0435\u0442 \u043a\u0432\u0435\u0441\u0442\u0430"
         }
       }
     },
@@ -2371,17 +2371,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "lpt_t1_kill_task",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -2441,7 +2441,12 @@
         },
         {
           "comment": {
-            "value": "разведчик ранен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0440\u0430\u043d\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0434\u043e\u0441\u0442\u0438\u0436\u0435\u043d\u0438\u0438 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0439 \u0442\u043e\u0447\u043a\u0438"
           }
         },
         {
@@ -2464,11 +2469,6 @@
             "destTimeMode": false,
             "object": "@lpt_t2_lookup_plane",
             "speed": 350.0
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку на достижении конечной точки"
           }
         },
         {
@@ -2513,17 +2513,17 @@
       "actions": [
         {
           "comment": {
-            "value": "корректировщик над целью отключаем проверку обнаружения"
+            "value": "\u043a\u043e\u0440\u0440\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0449\u0438\u043a \u043d\u0430\u0434 \u0446\u0435\u043b\u044c\u044e \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440 \u0438 \u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
           "triggerDisable": {
             "target": "lpt_t2_lookup_detect_check"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем таймер и говорим что разведчик обнаружен"
           }
         },
         {
@@ -2557,22 +2557,27 @@
       "actions": [
         {
           "comment": {
-            "value": "время подошло к концу и разведчик хочет домой"
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e \u043a \u043a\u043e\u043d\u0446\u0443 \u0438 \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0445\u043e\u0447\u0435\u0442 \u0434\u043e\u043c\u043e\u0439"
           }
         },
         {
           "comment": {
-            "value": "закрываем возвращение домой по ранению"
+            "value": "\u0437\u0430\u043a\u0440\u044b\u0432\u0430\u0435\u043c \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0434\u043e\u043c\u043e\u0439 \u043f\u043e \u0440\u0430\u043d\u0435\u043d\u0438\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u043f\u0440\u0430\u0432\u043b\u044f\u0435\u043c \u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a\u0430 \u0434\u043e\u043c\u043e\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0434\u043e\u0441\u0442\u0438\u0436\u0435\u043d\u0438\u0438 \u043a\u043e\u043d\u0435\u0447\u043d\u043e\u0439 \u0442\u043e\u0447\u043a\u0438"
           }
         },
         {
           "triggerDisable": {
             "target": "lpt_t2_lookup_retreat"
-          }
-        },
-        {
-          "comment": {
-            "value": "направляем разведчика домой"
           }
         },
         {
@@ -2595,11 +2600,6 @@
             "destTimeMode": false,
             "object": "@lpt_t2_lookup_plane",
             "speed": 350.0
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем проверку на достижении конечной точки"
           }
         },
         {
@@ -2644,7 +2644,17 @@
       "actions": [
         {
           "comment": {
-            "value": "разведчик долетел до дома"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u0434\u043e\u043b\u0435\u0442\u0435\u043b \u0434\u043e \u0434\u043e\u043c\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0431\u043e\u043d\u0443\u0441 \u043a \u0440\u0430\u0437\u0432\u0435\u0437\u0434\u043a\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0443\u0431\u043e\u0440\u0449\u0438\u043a \u043c\u0443\u0441\u043e\u0440\u0430"
           }
         },
         {
@@ -2662,11 +2672,6 @@
               "target": "lpt_t2_lookup_dead"
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "уменьшаем бонус к развездке"
-          }
         },
         {
           "varSetReal": {
@@ -2692,6 +2697,15 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "lpt_t2_defend_task",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "lpt_t2_def_activity_calc"
           }
@@ -2702,32 +2716,18 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "lpt_t2_clean_garbage"
+          }
+        },
+        {
           "wait": {
             "time": 20.0
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "lpt_t2_defend_task",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем уборщик мусора"
-          }
-        },
-        {
           "wait": {
             "time": 5.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "lpt_t2_clean_garbage"
           }
         }
       ],
@@ -2750,7 +2750,17 @@
       "actions": [
         {
           "comment": {
-            "value": "собираем мусор"
+            "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043c\u0443\u0441\u043e\u0440"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c, \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -2808,19 +2818,9 @@
           ]
         },
         {
-          "comment": {
-            "value": "говорим, что шаблон не активен"
-          }
-        },
-        {
           "varSetBool": {
             "value": false,
             "var": "lpt_t2_active"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -3545,7 +3545,7 @@
         },
         {
           "comment": {
-            "value": "разведчик обнаружен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
@@ -3601,7 +3601,7 @@
         },
         {
           "comment": {
-            "value": "разведчик обнаружен"
+            "value": "\u0440\u0430\u0437\u0432\u0435\u0434\u0447\u0438\u043a \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d"
           }
         },
         {
@@ -3655,7 +3655,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           },
           "varModify": {
             "operator": "add",
@@ -3665,7 +3665,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           }
         }
       },
@@ -3704,7 +3704,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "varModify": {
             "operator": "add",
@@ -3714,7 +3714,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         }
       },
@@ -3735,7 +3735,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -3759,11 +3764,6 @@
               "var": "lpt_t1_def_player_activity_calc",
               "use_variable": true,
               "var_value": "lpt_t1_def_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -3796,7 +3796,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t1_moderate_task_completed"
@@ -3804,7 +3804,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -3828,7 +3828,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -3852,11 +3857,6 @@
               "var": "lpt_t2_def_player_activity_calc",
               "use_variable": true,
               "var_value": "lpt_t2_def_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -3889,7 +3889,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t2_moderate_task_completed"
@@ -3897,7 +3897,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"
@@ -3931,7 +3931,7 @@
         },
         "actions": {
           "comment": {
-            "value": "игроки убили самолет"
+            "value": "\u0438\u0433\u0440\u043e\u043a\u0438 \u0443\u0431\u0438\u043b\u0438 \u0441\u0430\u043c\u043e\u043b\u0435\u0442"
           },
           "triggerEnable": {
             "target": "t1_moderate_task_completed"
@@ -3939,7 +3939,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "самолет убили не игроки"
+            "value": "\u0441\u0430\u043c\u043e\u043b\u0435\u0442 \u0443\u0431\u0438\u043b\u0438 \u043d\u0435 \u0438\u0433\u0440\u043e\u043a\u0438"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -3973,7 +3973,7 @@
         },
         "actions": {
           "comment": {
-            "value": "игроки убили самолет"
+            "value": "\u0438\u0433\u0440\u043e\u043a\u0438 \u0443\u0431\u0438\u043b\u0438 \u0441\u0430\u043c\u043e\u043b\u0435\u0442"
           },
           "triggerEnable": {
             "target": "t2_moderate_task_completed"
@@ -3981,7 +3981,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "самолет убили не игроки"
+            "value": "\u0441\u0430\u043c\u043e\u043b\u0435\u0442 \u0443\u0431\u0438\u043b\u0438 \u043d\u0435 \u0438\u0433\u0440\u043e\u043a\u0438"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"

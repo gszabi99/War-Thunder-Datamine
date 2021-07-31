@@ -1581,7 +1581,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.91,0.89],
                 "size": [96.0,192.0],
-                "color": "#ffff00ff",
+                "color": [0,255,255,255],
                 "valueTextSize": 30.0,
                 "ranges": [
                   {
@@ -1607,7 +1607,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "size": [96.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "ranges": [
                   {
@@ -1637,7 +1637,7 @@
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "size": [96.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "notDrawBackground": true,
                 "ranges": {
@@ -1695,7 +1695,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.91,0.89],
                 "size": [96.0,192.0],
-                "color": "#ffff00ff",
+                "color": [0,255,255,255],
                 "valueTextSize": 30.0,
                 "ranges": [
                   {
@@ -1721,7 +1721,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "size": [96.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "ranges": [
                   {
@@ -1751,7 +1751,7 @@
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "size": [96.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "notDrawBackground": true,
                 "ranges": {
@@ -1900,6 +1900,14 @@
           "turret": "turret1"
         },
         {
+          "turret": {
+            "head": "turret1",
+            "gun": "gun1",
+            "mainTurret": true,
+            "ballisticTargeting": true
+          }
+        },
+        {
           "shell": "emtr_shellrejection1"
         },
         {
@@ -1912,13 +1920,13 @@
           "bullets": 460
         },
         {
+          "bullets": 250
+        },
+        {
           "gunDm": "cannon1_dm"
         },
         {
           "partsDP": "cannon1_dm"
-        },
-        {
-          "bullets": 250
         },
         {
           "spread": 1.2
@@ -1928,14 +1936,6 @@
         },
         {
           "parkInDeadzone": false
-        },
-        {
-          "turret": {
-            "head": "turret1",
-            "gun": "gun1",
-            "mainTurret": true,
-            "ballisticTargeting": true
-          }
         },
         {
           "limits": {
@@ -4994,6 +4994,14 @@
                 "turret": "turret1"
               },
               {
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                }
+              },
+              {
                 "shell": "emtr_shellrejection1"
               },
               {
@@ -5006,13 +5014,13 @@
                 "bullets": 460
               },
               {
+                "bullets": 250
+              },
+              {
                 "gunDm": "cannon1_dm"
               },
               {
                 "partsDP": "cannon1_dm"
-              },
-              {
-                "bullets": 250
               },
               {
                 "spread": 1.2
@@ -5022,14 +5030,6 @@
               },
               {
                 "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
               },
               {
                 "limits": {
@@ -5110,6 +5110,14 @@
                 "turret": "turret1"
               },
               {
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                }
+              },
+              {
                 "shell": "emtr_shellrejection1"
               },
               {
@@ -5122,13 +5130,13 @@
                 "bullets": 460
               },
               {
+                "bullets": 250
+              },
+              {
                 "gunDm": "cannon1_dm"
               },
               {
                 "partsDP": "cannon1_dm"
-              },
-              {
-                "bullets": 250
               },
               {
                 "spread": 1.2
@@ -5138,14 +5146,6 @@
               },
               {
                 "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
               },
               {
                 "limits": {
@@ -5164,6 +5164,9 @@
                 "startFx": ""
               },
               {
+                "startFx": ""
+              },
+              {
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_launcher.blk"
               },
               {
@@ -5177,9 +5180,6 @@
               },
               {
                 "separate": false
-              },
-              {
-                "startFx": ""
               }
             ]
           },
@@ -5187,6 +5187,9 @@
             "Weapon": [
               {
                 "trigger": "countermeasures"
+              },
+              {
+                "startFx": ""
               },
               {
                 "startFx": ""
@@ -5205,9 +5208,6 @@
               },
               {
                 "separate": false
-              },
-              {
-                "startFx": ""
               }
             ]
           }

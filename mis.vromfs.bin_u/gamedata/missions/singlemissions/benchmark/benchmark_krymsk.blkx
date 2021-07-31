@@ -234,56 +234,6 @@
           }
         },
         {
-          "unitMoveTo": {
-            "target": "fiat_move01",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "fiat_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "fiat_tele01",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "fiat_cut",
-            "move_type": "teleport",
-            "lookat": "fiat_move02",
-            "velocity": 300.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2left",
@@ -309,56 +259,6 @@
           }
         },
         {
-          "unitMoveTo": {
-            "target": "fiat_move02",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "fiat_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "fiat_tele02",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "fiat_cut",
-            "move_type": "teleport",
-            "lookat": "airfield1500",
-            "velocity": 300.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
@@ -381,32 +281,6 @@
             "allowDeadUnits": false,
             "object": "fiat_cut",
             "target": "airfield02_spawn01"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "airfield1500",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "fiat_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
           }
         },
         {
@@ -436,19 +310,6 @@
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "i16_cut",
-            "target": "fiat_cut",
-            "fireRandom": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
@@ -471,19 +332,6 @@
             "allowDeadUnits": false,
             "object": "i16_cut",
             "target": "fiat_cut"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "fiat_cut",
-            "target": "i16_cut",
-            "fireRandom": true
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -512,8 +360,160 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "fiat_move01",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "fiat_cut"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "fiat_tele01",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "fiat_cut",
+            "move_type": "teleport",
+            "lookat": "fiat_move02",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "fiat_move02",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "fiat_cut"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "fiat_tele02",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "fiat_cut",
+            "move_type": "teleport",
+            "lookat": "airfield1500",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "airfield1500",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "fiat_cut"
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
           "wait": {
             "time": 5.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "i16_cut",
+            "target": "fiat_cut",
+            "fireRandom": true
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "fiat_cut",
+            "target": "i16_cut",
+            "fireRandom": true
           }
         },
         {
@@ -547,8 +547,55 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -562,10 +609,8 @@
           ]
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
+          "unitPutToSleep": {
+            "target": "bf_leader"
           }
         },
         {
@@ -592,137 +637,6 @@
             "object": "bf_cut",
             "finalLook": "airfield_start",
             "changeLookTime": 4.0
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "bf_tele01",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "bf_cut",
-            "move_type": "teleport",
-            "lookat": "airfield02_spawn02",
-            "velocity": 300.0
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "airfield02_start",
-            "objects": "i16_spawn_cut",
-            "takeoffInterval": 60.0
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect": "bomb_expl_200kg",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "airfield02_spawn01",
-            "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "unitDamage": {
-            "part": 21,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "i16_spawn_leader"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "i16_spawn_cut",
-            "isImmortal": true,
-            "aiEnabled": false,
-            "stayOnGround": false,
-            "hasExhaust": false
-          }
-        },
-        {
-          "unitSetControls": {
-            "controls": "power",
-            "value": 0.0,
-            "force": true,
-            "objects": "i16_spawn_cut"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "airfield1500",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "bf_cut"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "bf_leader",
-            "target": "i16_spawn_leader",
-            "fireRandom": true
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "aa_sq"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "bf_leader",
-            "isImmortal": true,
-            "plane": {
-              "ai_skill": "ACE"
-            }
           }
         },
         {
@@ -753,8 +667,178 @@
           }
         },
         {
-          "wait": {
-            "time": 7.0
+          "showSmartCutscene": {
+            "sceneType": "flyby",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "direct",
+            "duration": 3.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "bf_leader",
+            "flybyVertOffset": 2.0,
+            "timeBeforeFlyBy": 4.0,
+            "zoom": 2.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 6.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "firing_point",
+            "target": "bf_leader01",
+            "zoom": 0.5,
+            "finalZoom": 2.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "two_units",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "object",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 4.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "yak_cut",
+            "target": "bf_leader01",
+            "zoom": 2.0
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "1to2",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 6.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "yak_cut",
+            "target": "bf_cut"
+          }
+        },
+        {
+          "showSmartCutscene": {
+            "sceneType": "unit_attack_unit",
+            "startSubTypeOnTheMarch": "",
+            "startSubTypeGroundUnits": "",
+            "startSubTypeArea": "",
+            "startSubTypeUnitAttackUnit": "1to2",
+            "startSubTypeUnitMoveToUnit": "",
+            "startSubTypeTwoUnits": "",
+            "startSubTypeTakeoff": "",
+            "startSubTypeFlyBy": "",
+            "duration": 6.0,
+            "wait": false,
+            "changeCameras": true,
+            "teleportAllAttackers": false,
+            "allowTeleportAttackers": true,
+            "inverseCameraDirection": false,
+            "delayPlayer": true,
+            "fadeIn": false,
+            "fadeOut": true,
+            "allowDeadUnits": false,
+            "object": "bf_cut",
+            "target": "yak_cut"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "bf_tele01",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "bf_cut",
+            "move_type": "teleport",
+            "lookat": "airfield02_spawn02",
+            "velocity": 300.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "airfield1500",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "bf_cut"
           }
         },
         {
@@ -803,58 +887,37 @@
           }
         },
         {
-          "showSmartCutscene": {
-            "sceneType": "flyby",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "direct",
-            "duration": 3.0,
-            "wait": false,
-            "changeCameras": true,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "bf_leader",
-            "flybyVertOffset": 2.0,
-            "timeBeforeFlyBy": 4.0,
-            "zoom": 2.0
+          "spawnOnAirfield": {
+            "runwayName": "airfield02_start",
+            "objects": "i16_spawn_cut",
+            "takeoffInterval": 60.0
           }
         },
         {
-          "unitWakeUp": {
-            "target": "bf_leader01"
+          "unitPlayEffect": {
+            "effect": "bomb_expl_200kg",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "airfield02_spawn01",
+            "radiusOffset": [0.0,0.0]
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "aaa_small04",
-            "target": "bf_leader01",
-            "fireRandom": true
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "i16_cut",
-            "isImmortal": false
+          "unitDamage": {
+            "part": 21,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "i16_spawn_leader"
           }
         },
         {
@@ -876,81 +939,68 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": "i16_spawn_cut",
+            "isImmortal": true,
+            "aiEnabled": false,
+            "stayOnGround": false,
+            "hasExhaust": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "bf_leader",
+            "isImmortal": true,
+            "plane": {
+              "ai_skill": "ACE"
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "i16_cut",
+            "isImmortal": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "object": "bf_leader01",
             "isImmortal": true
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "unitSetControls": {
+            "controls": "power",
+            "value": 0.0,
+            "force": true,
+            "objects": "i16_spawn_cut"
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "bf_leader"
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "bf_leader",
+            "target": "i16_spawn_leader",
+            "fireRandom": true
           }
         },
         {
-          "showSmartCutscene": {
-            "sceneType": "two_units",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "object",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 6.0,
-            "wait": false,
-            "changeCameras": true,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "firing_point",
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "aaa_small04",
             "target": "bf_leader01",
-            "zoom": 0.5,
-            "finalZoom": 2.0
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "showSmartCutscene": {
-            "sceneType": "two_units",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "object",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 4.0,
-            "wait": false,
-            "changeCameras": true,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "yak_cut",
-            "target": "bf_leader01",
-            "zoom": 2.0
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
+            "fireRandom": true
           }
         },
         {
@@ -970,63 +1020,13 @@
           }
         },
         {
-          "showSmartCutscene": {
-            "sceneType": "unit_attack_unit",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "1to2",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 6.0,
-            "wait": false,
-            "changeCameras": true,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "yak_cut",
-            "target": "bf_cut"
+          "unitWakeUp": {
+            "target": "aa_sq"
           }
         },
         {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "showSmartCutscene": {
-            "sceneType": "unit_attack_unit",
-            "startSubTypeOnTheMarch": "",
-            "startSubTypeGroundUnits": "",
-            "startSubTypeArea": "",
-            "startSubTypeUnitAttackUnit": "1to2",
-            "startSubTypeUnitMoveToUnit": "",
-            "startSubTypeTwoUnits": "",
-            "startSubTypeTakeoff": "",
-            "startSubTypeFlyBy": "",
-            "duration": 6.0,
-            "wait": false,
-            "changeCameras": true,
-            "teleportAllAttackers": false,
-            "allowTeleportAttackers": true,
-            "inverseCameraDirection": false,
-            "delayPlayer": true,
-            "fadeIn": false,
-            "fadeOut": true,
-            "allowDeadUnits": false,
-            "object": "bf_cut",
-            "target": "yak_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
+          "unitWakeUp": {
+            "target": "bf_leader01"
           }
         },
         {
@@ -1060,8 +1060,64 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -1081,10 +1137,18 @@
           ]
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
+          "unitPutToSleep": [
+            {
+              "target": "spitfire_cut"
+            },
+            {
+              "target": "fw_cut"
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": {
+            "target": "hs_cut"
           }
         },
         {
@@ -1099,6 +1163,11 @@
               "target": "fw_cut"
             }
           ]
+        },
+        {
+          "unitWakeUp": {
+            "target": "aa_sq"
+          }
         },
         {
           "unitMoveTo": {
@@ -1162,16 +1231,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
@@ -1194,11 +1253,6 @@
             "allowDeadUnits": false,
             "object": "spitfire_cut",
             "target": "hs_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -1227,11 +1281,6 @@
           }
         },
         {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "bomber_attack_ground",
             "startSubTypeOnTheMarch": "",
@@ -1254,76 +1303,6 @@
             "allowDeadUnits": false,
             "object": "hs_cut",
             "target": "aaa_small05"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "hs_cut",
-            "effShootingRate": 0.0
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "spitfire_cut"
-            },
-            {
-              "target": "fw_cut"
-            }
-          ]
-        },
-        {
-          "unitWakeUp": {
-            "target": "aa_sq"
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "airfield_start",
-            "objects": "la5_cut"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "la5_cut",
-            "isImmortal": true
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "wait": {
-            "time": 5.5
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
           }
         },
         {
@@ -1351,8 +1330,29 @@
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "hs_cut"
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "hs_cut",
+            "effShootingRate": 0.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "la5_cut",
+            "isImmortal": true
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield_start",
+            "objects": "la5_cut"
           }
         },
         {
@@ -1386,8 +1386,55 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
           }
         },
         {
@@ -1423,6 +1470,49 @@
           ]
         },
         {
+          "unitWakeUp": [
+            {
+              "target": "yak_cut01"
+            },
+            {
+              "target": "fiat_cut01"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "spitfire_cut01"
+            },
+            {
+              "target": "bf_cut01"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "la5_cut01"
+            },
+            {
+              "target": "fw_cut01"
+            }
+          ]
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "spitfire_cut02"
+            },
+            {
+              "target": "yak_cut02"
+            },
+            {
+              "target": "la5_cut02"
+            }
+          ]
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "spitfire_cut",
@@ -1430,10 +1520,24 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "yak_cut01",
+            "target": "fiat_cut01"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "spitfire_cut01",
+            "target": "bf_cut01"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "la5_cut01",
+            "target": "fw_cut01"
           }
         },
         {
@@ -1450,6 +1554,94 @@
                 "limits": [0.0,0.0]
               }
             }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "hs_cut01",
+            "engineFire": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "yak_cut01",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.0,
+                "limits": [0.0,0.0]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "fiat_cut01",
+            "engineFire": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "spitfire_cut01",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.5,
+                "limits": [0.0,1.0]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "bf_cut01",
+            "engineFire": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "la5_cut01",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.5,
+                "limits": [0.0,1.0]
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "fw_cut01",
+            "engineFire": true
           }
         },
         {
@@ -1478,59 +1670,6 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "hs_cut01",
-            "engineFire": true
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "yak_cut01"
-            },
-            {
-              "target": "fiat_cut01"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "yak_cut01",
-            "target": "fiat_cut01"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "yak_cut01",
-            "plane": {
-              "targetDeviation": {
-                "trigger": "machine gun",
-                "defaultVal": 0.0,
-                "limits": [0.0,0.0]
-              }
-            }
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
@@ -1553,59 +1692,6 @@
             "allowDeadUnits": false,
             "object": "yak_cut01",
             "target": "fiat_cut01"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "fiat_cut01",
-            "engineFire": true
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "spitfire_cut01"
-            },
-            {
-              "target": "bf_cut01"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "spitfire_cut01",
-            "target": "bf_cut01"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "spitfire_cut01",
-            "plane": {
-              "targetDeviation": {
-                "trigger": "machine gun",
-                "defaultVal": 0.5,
-                "limits": [0.0,1.0]
-              }
-            }
           }
         },
         {
@@ -1634,71 +1720,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "bf_cut01",
-            "engineFire": true
-          }
-        },
-        {
-          "unitDamage": {
-            "part": 3,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "bf_cut01"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "la5_cut01"
-            },
-            {
-              "target": "fw_cut01"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "la5_cut01",
-            "target": "fw_cut01"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "la5_cut01",
-            "plane": {
-              "targetDeviation": {
-                "trigger": "machine gun",
-                "defaultVal": 0.5,
-                "limits": [0.0,1.0]
-              }
-            }
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "startSubTypeOnTheMarch": "",
@@ -1722,34 +1743,6 @@
             "object": "la5_cut01",
             "target": "fw_cut01"
           }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "fw_cut01",
-            "engineFire": true
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "spitfire_cut02"
-            },
-            {
-              "target": "yak_cut02"
-            },
-            {
-              "target": "la5_cut02"
-            }
-          ]
         },
         {
           "showSmartCutscene": {
@@ -1777,8 +1770,15 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
+          "unitDamage": {
+            "part": 3,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "bf_cut01"
           }
         },
         {
@@ -1860,6 +1860,46 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.3
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
@@ -1872,11 +1912,6 @@
             "delay": [1.0,1.0],
             "target": "eff_area01",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -1895,11 +1930,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_expl_1000kg",
             "offset": [0.0,0.0,0.0],
@@ -1912,11 +1942,6 @@
             "delay": [1.0,1.0],
             "target": "eff_area03",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -1935,11 +1960,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.3
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
@@ -1952,11 +1972,6 @@
             "delay": [1.0,1.0],
             "target": "eff_area05",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -1975,11 +1990,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect": "bomb_expl_200kg",
             "offset": [0.0,0.0,0.0],
@@ -1992,11 +2002,6 @@
             "delay": [1.0,1.0],
             "target": "eff_area07",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -2059,11 +2064,6 @@
               "target": "aaa_small06"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
         },
         {
           "triggerEnable": {
@@ -2305,6 +2305,937 @@
           "skill": 4,
           "plane": {
             "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "yak_cut",
+        "tm": [
+          [0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,0.92388],
+          [-11333.3,1500.0,9106.6]
+        ],
+        "unit_class": "yak-9",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "hs_cut",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [-6674.85,4000.0,12826.5]
+        ],
+        "unit_class": "ju-87d-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Ju87_D3_3x250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 5,
+          "plane": {
+            "wing_formation": "Vee",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "spitfire_cut",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [-5950.4,4100.0,13435.8]
+        ],
+        "unit_class": "spitfire_ix_ussr",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "skin": "soviet45",
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fw_cut",
+        "tm": [
+          [-0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,-0.965926],
+          [-3756.2,4500.0,12843.7]
+        ],
+        "unit_class": "fw-190a-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "la5_cut",
+        "tm": [
+          [0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,0.92388],
+          [-11646.5,1500.0,9602.0]
+        ],
+        "unit_class": "la-5fn",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "yak_cut02",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [-12360.3,1500.0,8017.7]
+        ],
+        "unit_class": "yak-9",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "yak_cut02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15612.7,1500.0,5551.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "la5_cut02",
+        "tm": [
+          [-0.843392,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843392],
+          [-12361.0,1500.0,8055.3]
+        ],
+        "unit_class": "la-5fn",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "la5_cut02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14561.4,1500.0,6712.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "spitfire_cut02",
+        "tm": [
+          [-0.843391,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,-0.843391],
+          [-12328.8,1500.0,8004.7]
+        ],
+        "unit_class": "spitfire_ix_ussr",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "skin": "soviet45",
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "spitfire_cut02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14313.8,1500.0,6254.45]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "la5_cut01",
+        "tm": [
+          [1.0,-1.164e-10,0.0],
+          [-2.18861e-08,0.998099,0.0616285],
+          [2.241e-09,-0.0616285,0.998099],
+          [-10680.3,550.0,9004.35]
+        ],
+        "unit_class": "la-5fn",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "yak_cut01",
+        "tm": [
+          [1.0,0.0,4.47035e-08],
+          [0.0,1.0,0.0],
+          [-4.47035e-08,0.0,1.0],
+          [-11100.0,1000.0,8075.6]
+        ],
+        "unit_class": "yak-9",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "spitfire_cut01",
+        "tm": [
+          [0.67559,0.0,0.737277],
+          [0.0,1.0,0.0],
+          [-0.737277,0.0,0.67559],
+          [-10340.8,300.0,8669.5]
+        ],
+        "unit_class": "spitfire_ix_ussr",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "skin": "soviet45",
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf_cut01",
+        "tm": [
+          [0.67559,0.0,0.737277],
+          [0.0,1.0,0.0],
+          [-0.737277,0.0,0.67559],
+          [-10253.5,300.0,8769.28]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fw_cut01",
+        "tm": [
+          [1.0,2.98023e-08,1.5431e-09],
+          [2.98023e-08,1.0,-3.7253e-09],
+          [-0,5.2684e-09,1.0],
+          [-10605.1,500.0,9003.48]
+        ],
+        "unit_class": "fw-190a-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fiat_cut01",
+        "tm": [
+          [1.0,0.0,5.96046e-08],
+          [0.0,1.0,0.0],
+          [-5.96046e-08,0.0,1.0],
+          [-11000.0,1000.0,8075.55]
+        ],
+        "unit_class": "fiat_cr42",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "fiat_cut01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-9410.8,1000.0,8081.15]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "bf_leader",
+        "tm": [
+          [0.608761,0.0,-0.793353],
+          [0.0,1.0,0.0],
+          [0.793353,0.0,0.608761],
+          [-11080.4,500.0,9885.65]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf_leader01",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [-10412.0,300.0,9299.8]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "bf_leader01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-9014.15,300.0,7464.9]
+            ],
+            "props": {
+              "speed": 100.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "hs_cut01",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [-10403.7,1000.0,9011.55]
+        ],
+        "unit_class": "ju-87d-5",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Ju87_D5_3x250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 5,
+          "plane": {
+            "wing_formation": "Vee",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "spitfire_cut03",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [-10367.0,1000.0,9051.6]
+        ],
+        "unit_class": "spitfire_ix_ussr",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 5,
+          "skin": "soviet45",
+          "plane": {
+            "wing_formation": "Vee",
             "row_distances": 3.0,
             "col_distances": 3.0,
             "super_formation": "Diamond",
@@ -2918,731 +3849,6 @@
       }
     },
     {
-      "armada": {
-        "name": "yak_cut",
-        "tm": [
-          [0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,0.92388],
-          [-11333.3,1500.0,9106.6]
-        ],
-        "unit_class": "yak-9",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "hs_cut",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [-6674.85,4000.0,12826.5]
-        ],
-        "unit_class": "ju-87d-3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Ju87_D3_3x250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 5,
-          "plane": {
-            "wing_formation": "Vee",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "spitfire_cut",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [-5950.4,4100.0,13435.8]
-        ],
-        "unit_class": "spitfire_ix_ussr",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "skin": "soviet45",
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fw_cut",
-        "tm": [
-          [-0.965926,0.0,-0.258819],
-          [0.0,1.0,0.0],
-          [0.258819,0.0,-0.965926],
-          [-3756.2,4500.0,12843.7]
-        ],
-        "unit_class": "fw-190a-5",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "la5_cut",
-        "tm": [
-          [0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,0.92388],
-          [-11646.5,1500.0,9602.0]
-        ],
-        "unit_class": "la-5fn",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "yak_cut02",
-        "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [-12360.3,1500.0,8017.7]
-        ],
-        "unit_class": "yak-9",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "yak_cut02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15612.7,1500.0,5551.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "la5_cut02",
-        "tm": [
-          [-0.843392,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843392],
-          [-12361.0,1500.0,8055.3]
-        ],
-        "unit_class": "la-5fn",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "la5_cut02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14561.4,1500.0,6712.35]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "spitfire_cut02",
-        "tm": [
-          [-0.843391,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,-0.843391],
-          [-12328.8,1500.0,8004.7]
-        ],
-        "unit_class": "spitfire_ix_ussr",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "skin": "soviet45",
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "spitfire_cut02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14313.8,1500.0,6254.45]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "la5_cut01",
-        "tm": [
-          [1.0,-1.16415e-10,0.0],
-          [-2.18861e-08,0.998099,0.0616285],
-          [2.24099e-09,-0.0616285,0.998099],
-          [-10680.3,550.0,9004.35]
-        ],
-        "unit_class": "la-5fn",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "yak_cut01",
-        "tm": [
-          [1.0,0.0,4.47035e-08],
-          [0.0,1.0,0.0],
-          [-4.47035e-08,0.0,1.0],
-          [-11100.0,1000.0,8075.6]
-        ],
-        "unit_class": "yak-9",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "spitfire_cut01",
-        "tm": [
-          [0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,0.67559],
-          [-10340.8,300.0,8669.5]
-        ],
-        "unit_class": "spitfire_ix_ussr",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "skin": "soviet45",
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf_cut01",
-        "tm": [
-          [0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,0.67559],
-          [-10253.5,300.0,8769.28]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fw_cut01",
-        "tm": [
-          [1.0,2.98023e-08,1.54307e-09],
-          [2.98023e-08,1.0,-3.72529e-09],
-          [-4.44089e-16,5.26836e-09,1.0],
-          [-10605.1,500.0,9003.48]
-        ],
-        "unit_class": "fw-190a-5",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fiat_cut01",
-        "tm": [
-          [1.0,0.0,5.96046e-08],
-          [0.0,1.0,0.0],
-          [-5.96046e-08,0.0,1.0],
-          [-11000.0,1000.0,8075.55]
-        ],
-        "unit_class": "fiat_cr42",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "fiat_cut01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-9410.8,1000.0,8081.15]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
       "squad": {
         "name": "ussr_armada_sq",
         "tm": [
@@ -3757,212 +3963,6 @@
           "squad_members": "i16_spawn_cut",
           "object_type": "isFormationLeader"
         }
-      }
-    },
-    {
-      "armada": {
-        "name": "bf_leader",
-        "tm": [
-          [0.608761,0.0,-0.793353],
-          [0.0,1.0,0.0],
-          [0.793353,0.0,0.608761],
-          [-11080.4,500.0,9885.65]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf_leader01",
-        "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [-10412.0,300.0,9299.8]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "bf_leader01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-9014.15,300.0,7464.9]
-            ],
-            "props": {
-              "speed": 100.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "hs_cut01",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [-10403.7,1000.0,9011.55]
-        ],
-        "unit_class": "ju-87d-5",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Ju87_D5_3x250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 5,
-          "plane": {
-            "wing_formation": "Vee",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "spitfire_cut03",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [-10367.0,1000.0,9051.6]
-        ],
-        "unit_class": "spitfire_ix_ussr",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 5,
-          "skin": "soviet45",
-          "plane": {
-            "wing_formation": "Vee",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     }
   ],

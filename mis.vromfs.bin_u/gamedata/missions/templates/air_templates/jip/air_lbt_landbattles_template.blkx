@@ -57,28 +57,8 @@
           }
         },
         {
-          "comment": {
-            "value": "ждем 30 секунд и запускаем все процедуры"
-          }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
-          "comment": {
-            "value": "проверку heat"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "lbt_heat_zone_restart"
-          }
-        },
-        {
-          "comment": {
-            "value": "проверку времени битвы"
           }
         },
         {
@@ -87,18 +67,8 @@
           }
         },
         {
-          "comment": {
-            "value": "проверку результатов битвы"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "lbt_end_restart"
-          }
-        },
-        {
-          "comment": {
-            "value": "подсчет убитых"
           }
         },
         {
@@ -107,13 +77,43 @@
           }
         },
         {
-          "comment": {
-            "value": "подсчет количества активных битв (для других шаблонов)"
+          "triggerEnable": {
+            "target": "lbt_counter_restart"
           }
         },
         {
-          "triggerEnable": {
-            "target": "lbt_counter_restart"
+          "comment": {
+            "value": "\u0436\u0434\u0435\u043c 30 \u0441\u0435\u043a\u0443\u043d\u0434 \u0438 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0432\u0441\u0435 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 heat"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0432\u0440\u0435\u043c\u0435\u043d\u0438 \u0431\u0438\u0442\u0432\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u043e\u0432 \u0431\u0438\u0442\u0432\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u0443\u0431\u0438\u0442\u044b\u0445"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0438\u0442\u0432 (\u0434\u043b\u044f \u0434\u0440\u0443\u0433\u0438\u0445 \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u0432)"
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
           }
         }
       ],
@@ -150,7 +150,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "надо проверить режим игры и выставить дефолтные значения"
+          "value": "\u043d\u0430\u0434\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0440\u0435\u0436\u0438\u043c \u0438\u0433\u0440\u044b \u0438 \u0432\u044b\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0434\u0435\u0444\u043e\u043b\u0442\u043d\u044b\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f"
         },
         "triggerEnable": {
           "target": "lbt_descriptor_set_defaults"
@@ -159,7 +159,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "дескрипторы в порядке"
+            "value": "\u0434\u0435\u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0440\u044b \u0432 \u043f\u043e\u0440\u044f\u0434\u043a\u0435"
           }
         },
         {
@@ -201,7 +201,7 @@
       "actions": [
         {
           "comment": {
-            "value": "PVE режим. у команды 2 должно быть преимущество в 2 раза"
+            "value": "PVE \u0440\u0435\u0436\u0438\u043c. \u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b 2 \u0434\u043e\u043b\u0436\u043d\u043e \u0431\u044b\u0442\u044c \u043f\u0440\u0435\u0438\u043c\u0443\u0449\u0435\u0441\u0442\u0432\u043e \u0432 2 \u0440\u0430\u0437\u0430"
           }
         },
         {
@@ -220,7 +220,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "PVP режим, обе команды равноправны"
+            "value": "PVP \u0440\u0435\u0436\u0438\u043c, \u043e\u0431\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0440\u0430\u0432\u043d\u043e\u043f\u0440\u0430\u0432\u043d\u044b"
           }
         },
         {
@@ -264,17 +264,17 @@
         "actions": [
           {
             "comment": {
-              "value": "получаем балансный уровень миссии"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0431\u0430\u043b\u0430\u043d\u0441\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c \u043c\u0438\u0441\u0441\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u043e\u0442 \u0440\u0430\u043d\u0433\u0430 \u043c\u0438\u0441\u0441\u0438\u0438"
             }
           },
           {
             "missionGetBalanceLevel": {
               "input_var": "lbt_balance_level"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем дистанцию проверки от ранга миссии"
             }
           },
           {
@@ -532,12 +532,57 @@
         "actions": [
           {
             "comment": {
-              "value": "проверяем что стартовые индексы не нулевые"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0447\u0442\u043e \u0441\u0442\u0430\u0440\u0442\u043e\u0432\u044b\u0435 \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u043d\u0435 \u043d\u0443\u043b\u0435\u0432\u044b\u0435"
             }
           },
           {
             "comment": {
-              "value": "и назначаем индексы в свои переменные"
+              "value": "\u0438 \u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0432 \u0441\u0432\u043e\u0438 \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u043c\u044f \u043f\u0435\u0440\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0434\u043b\u044f \u0440\u0438\u0441\u043e\u0432\u0430\u043d\u0438\u044f "
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u043c\u044f \u0432\u0442\u043e\u0440\u043e\u0439 \u0437\u043e\u043d\u044b \u0434\u043b\u044f \u0440\u0438\u0441\u043e\u0432\u0430\u043d\u0438\u044f "
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0430\u0440\u043c\u0438\u0438 \u0430\u0442\u0430\u043a\u0443\u044e\u0449\u0438\u0445"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0430\u0442\u0430\u043a\u0443\u044e\u0449\u0438\u0445"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0430\u0440\u043c\u0438\u0438 \u0437\u0430\u0449\u0438\u0449\u0430\u044e\u0449\u0438\u0445\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0431\u043e\u0435\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b \u0432 \u0441\u043b\u0443\u0447\u0430\u0435 \u0443\u0441\u043f\u0435\u0445\u0430 \u0430\u0442\u0430\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0431\u0438\u0442\u0432\u044b \u0434\u043b\u044f \u0440\u043e\u0442\u0430\u0446\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u043a\u0432\u0430\u0434\u044b"
             }
           },
           {
@@ -562,142 +607,10 @@
             }
           },
           {
-            "comment": {
-              "value": "имя первой зоны для рисования "
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_battle_draw_from_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_from_idx",
-              "digits": 2,
-              "var": "lbt_battle_draw_from_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "имя второй зоны для рисования "
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_area_",
-              "var": "lbt_battle_draw_to_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_to_idx",
-              "digits": 2,
-              "var": "lbt_battle_draw_to_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "имя переменной армии атакующих"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_battle_attacker_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_from_idx",
-              "digits": 2,
-              "var": "lbt_battle_attacker_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_battle_attacker_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем армию атакующих"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "lbt_battle_attacker_army_idx",
               "input_var": "@lbt_battle_attacker_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "имя переменной армии защищающихся"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_battle_deffender_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_to_idx",
-              "digits": 2,
-              "var": "lbt_battle_deffender_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_battle_deffender_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя боевой зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_area_",
-              "var": "lbt_battle_area_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_frontline_idx",
-              "digits": 2,
-              "var": "lbt_battle_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя зоны в случае успеха атаки"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_battle_frontline_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_frontline_idx",
-              "digits": 2,
-              "var": "lbt_battle_frontline_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "обнуляем текущий индекс битвы для ротации"
             }
           },
           {
@@ -707,8 +620,95 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем сквады"
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battle_draw_from_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_battle_draw_to_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battle_attacker_army_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battle_deffender_army_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_battle_area_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_battle_frontline_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_from_idx",
+              "digits": 2,
+              "var": "lbt_battle_draw_from_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_to_idx",
+              "digits": 2,
+              "var": "lbt_battle_draw_to_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_from_idx",
+              "digits": 2,
+              "var": "lbt_battle_attacker_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_battle_attacker_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_to_idx",
+              "digits": 2,
+              "var": "lbt_battle_deffender_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_battle_deffender_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_frontline_idx",
+              "digits": 2,
+              "var": "lbt_battle_area_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_frontline_idx",
+              "digits": 2,
+              "var": "lbt_battle_frontline_name"
             }
           },
           {
@@ -719,7 +719,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "переменные пустые - завершаем шаблон"
+            "value": "\u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435 \u043f\u0443\u0441\u0442\u044b\u0435 - \u0437\u0430\u0432\u0435\u0440\u0448\u0430\u0435\u043c \u0448\u0430\u0431\u043b\u043e\u043d"
           },
           "triggerDisable": {
             "target": "lbt_start"
@@ -750,7 +750,17 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили что активных битв меньше 3"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438 \u0447\u0442\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0438\u0442\u0432 \u043c\u0435\u043d\u044c\u0448\u0435 3"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043b\u043e\u0442\u0430 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0431\u0438\u0442\u0432\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0432\u043e\u0431\u043e\u0434\u043d\u0430 \u043b\u0438 \u0441\u043b\u043e\u0442 \u0431\u0438\u0442\u0432\u044b"
             }
           },
           {
@@ -758,11 +768,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "lbt_battle_start_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя слота активности битвы"
             }
           },
           {
@@ -786,11 +791,6 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем свободна ли слот битвы"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_start_check_battle_exist"
             }
@@ -798,7 +798,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "все слоты заняты нельзя начать битву"
+            "value": "\u0432\u0441\u0435 \u0441\u043b\u043e\u0442\u044b \u0437\u0430\u043d\u044f\u0442\u044b \u043d\u0435\u043b\u044c\u0437\u044f \u043d\u0430\u0447\u0430\u0442\u044c \u0431\u0438\u0442\u0432\u0443"
           },
           "triggerEnable": {
             "target": "lbt_start_end"
@@ -828,7 +828,47 @@
         "actions": [
           {
             "comment": {
-              "value": "битва с таким слотом не активна"
+              "value": "\u0431\u0438\u0442\u0432\u0430 \u0441 \u0442\u0430\u043a\u0438\u043c \u0441\u043b\u043e\u0442\u043e\u043c \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
@@ -838,33 +878,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t1_army_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "varSetString": {
               "value": "lbt_battle_t2_squad_",
               "var": "lbt_battle_t2_army_squad_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t2_army_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -874,33 +890,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t1_tank_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "varSetString": {
               "value": "lbt_battle_t2_tank_",
               "var": "lbt_battle_t2_tank_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t2_tank_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -910,51 +902,15 @@
             }
           },
           {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t1_art_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "varSetString": {
               "value": "lbt_battle_t2_art_",
               "var": "lbt_battle_t2_art_name"
             }
           },
           {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t2_art_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "varSetString": {
               "value": "lbt_battle_t1_bunker_",
               "var": "lbt_battle_t1_bunker_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_battle_start_idx",
-              "digits": 2,
-              "var": "lbt_battle_t1_bunker_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -967,12 +923,56 @@
             "varAddString": {
               "value": "@lbt_battle_start_idx",
               "digits": 2,
-              "var": "lbt_battle_t2_bunker_name"
+              "var": "lbt_battle_t1_army_squad_name"
             }
           },
           {
-            "comment": {
-              "value": ""
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_army_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t1_tank_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_tank_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t1_art_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_art_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t1_bunker_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_battle_start_idx",
+              "digits": 2,
+              "var": "lbt_battle_t2_bunker_name"
             }
           },
           {
@@ -983,7 +983,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_start_rotator"
@@ -1006,7 +1006,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "дизейблим цикл обработки. дальше все делается в heat ротации"
+            "value": "\u0434\u0438\u0437\u0435\u0439\u0431\u043b\u0438\u043c \u0446\u0438\u043a\u043b \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0438. \u0434\u0430\u043b\u044c\u0448\u0435 \u0432\u0441\u0435 \u0434\u0435\u043b\u0430\u0435\u0442\u0441\u044f \u0432 heat \u0440\u043e\u0442\u0430\u0446\u0438\u0438"
           },
           "triggerDisable": {
             "target": "lbt_start_rotator"
@@ -1079,14 +1079,24 @@
               }
             },
             {
-              "varSetBool": {
-                "value": true,
-                "var": "@lbt_battle_active_var_name"
+              "comment": {
+                "value": "\u0431\u0435\u0440\u0435\u043c \u044e\u043d\u0438\u0442\u043e\u0432 \u0430\u0442\u043a\u0438\u0432\u043d\u043e\u0439 \u0431\u0438\u0442\u0432\u044b, \u0446\u0435\u043b\u0438\u043a\u043e\u043c \u0438\u0445 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0435\u043c \u0438 \u043f\u0440\u044f\u0447\u0435\u043c"
               }
             },
             {
               "comment": {
-                "value": "берем юнитов аткивной битвы, целиком их восстанавливаем и прячем"
+                "value": ""
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0440\u0430\u0437\u0431\u0438\u0432\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u0441\u0441 \u0441\u043f\u0430\u0432\u043d\u0430\u043d\u0430 \u0434\u0432\u0430 \u0440\u0430\u0437\u043d\u044b\u0445 \u044d\u0432\u0435\u043d\u0442\u0430 \u0434\u043b\u044f \u0443\u0434\u043e\u0431\u0441\u0442\u0432\u0430"
+              }
+            },
+            {
+              "varSetBool": {
+                "value": true,
+                "var": "@lbt_battle_active_var_name"
               }
             },
             {
@@ -1119,11 +1129,6 @@
               ]
             },
             {
-              "comment": {
-                "value": ""
-              }
-            },
-            {
               "varSetReal": [
                 {
                   "value": 0.0
@@ -1135,11 +1140,6 @@
                   "var": "lbt_battle_t2_num_spawnded_units"
                 }
               ]
-            },
-            {
-              "comment": {
-                "value": "разбиваем процесс спавнана два разных эвента для удобства"
-              }
             },
             {
               "triggerEnable": {
@@ -1166,7 +1166,32 @@
           "actions": [
             {
               "comment": {
-                "value": "запрещаем стрельбу"
+                "value": "\u0437\u0430\u043f\u0440\u0435\u0449\u0430\u0435\u043c \u0441\u0442\u0440\u0435\u043b\u044c\u0431\u0443"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043f\u0430\u0432\u043d\u0430"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e \u0441\u043e \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435\u043c heat"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c heat"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u044b"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0431\u0438\u0442\u0432\u0443"
               }
             },
             {
@@ -1195,20 +1220,8 @@
               ]
             },
             {
-              "comment": {
-                "value": "создаем имя спавна"
-              }
-            },
-            {
               "varSetString": {
                 "value": "lbt_t1_battle_area_",
-                "var": "lbt_battle_t1_spawn_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_frontline_idx",
-                "digits": 2,
                 "var": "lbt_battle_t1_spawn_name"
               }
             },
@@ -1219,21 +1232,23 @@
               }
             },
             {
+              "varSetString": {
+                "value": "flt_area_",
+                "var": "lbt_battle_heat_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_frontline_idx",
+                "digits": 2,
+                "var": "lbt_battle_t1_spawn_name"
+              }
+            },
+            {
               "varAddString": {
                 "value": "@lbt_battle_frontline_idx",
                 "digits": 2,
                 "var": "lbt_battle_t2_spawn_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменно со значением heat"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "flt_area_",
-                "var": "lbt_battle_heat_var_name"
               }
             },
             {
@@ -1251,19 +1266,9 @@
               }
             },
             {
-              "comment": {
-                "value": "обнуляем heat"
-              }
-            },
-            {
               "varSetInt": {
                 "value": 0,
                 "var": "@lbt_battle_heat_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "запускаем спавны"
               }
             },
             {
@@ -1290,18 +1295,13 @@
               ]
             },
             {
-              "comment": {
-                "value": "запускаем битву"
+              "triggerEnable": {
+                "target": "lbt_battle_start"
               }
             },
             {
               "wait": {
                 "time": 10.0
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lbt_battle_start"
               }
             }
           ],
@@ -1323,7 +1323,7 @@
           "conditions": [],
           "actions": {
             "comment": {
-              "value": "просто вызываем спавн танков. все проверки внутри"
+              "value": "\u043f\u0440\u043e\u0441\u0442\u043e \u0432\u044b\u0437\u044b\u0432\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u0442\u0430\u043d\u043a\u043e\u0432. \u0432\u0441\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0432\u043d\u0443\u0442\u0440\u0438"
             },
             "triggerEnable": {
               "target": "lbt_battle_t1_tank_spawn"
@@ -1602,7 +1602,7 @@
           "conditions": [],
           "actions": {
             "comment": {
-              "value": "просто вызываем спавн танков. все проверки внутри"
+              "value": "\u043f\u0440\u043e\u0441\u0442\u043e \u0432\u044b\u0437\u044b\u0432\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u0442\u0430\u043d\u043a\u043e\u0432. \u0432\u0441\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0432\u043d\u0443\u0442\u0440\u0438"
             },
             "__missionSetTimeSpeed": {
               "speed": 0.0,
@@ -1922,21 +1922,6 @@
               ]
             },
             {
-              "comment": {
-                "value": "рисуем стрелку"
-              }
-            },
-            {
-              "triggerEnable": {
-                "target": "lbt_draw_arrow"
-              }
-            },
-            {
-              "comment": {
-                "value": "отключаем спавны"
-              }
-            },
-            {
               "__triggerDisable": [
                 {
                   "target": "lbt_battle_t1_tank_spawn"
@@ -1960,13 +1945,155 @@
             },
             {
               "comment": {
-                "value": "создаем имя переменной хранящей время боя"
+                "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u0441\u0442\u0440\u0435\u043b\u043a\u0443"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u044b"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432\u0440\u0435\u043c\u044f \u0431\u043e\u044f"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0435\u0435 \u0432\u0440\u0435\u043c\u044f \u043c\u0438\u0441\u0441\u0438\u0438"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0430\u0435\u043c \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c \u0438 \u0441\u0442\u0430\u0432\u0438\u043c \u0432\u0438\u0434\u0438\u043c\u043e\u0441\u0442\u044c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u0441\u0442\u0440\u0435\u043b\u044f\u0442\u044c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0442\u0430\u043d\u043a\u0430\u043c \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0438\u0433\u0430\u0435\u043c \u0446\u0435\u043b\u044f\u043c\u0438 \u0434\u043b\u044f \u0420\u0411"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u043e\u0431\u0435\u0438\u0445 \u043a\u043e\u043c\u0430\u043d\u0434 \u0434\u043b\u044f \u044d\u0442\u043e\u0439 \u0431\u0438\u0442\u0432\u044b"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0443\u0431\u0438\u0442\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0443\u0431\u0438\u0442\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043c\u0435\u0440\u0442\u0432\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u0434\u043b\u044f \u044d\u0442\u043e\u0439 \u0431\u0438\u0442\u0432\u044b"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0431\u043e\u044f"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0431\u0438\u0442\u0432\u0430 \u0430\u043a\u0442\u0438\u0432\u043d\u0430"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u043e\u0442\u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u0435\u043a\u0442\u043e\u0440\u0430 \u0441 \u043a\u043e\u0442\u043e\u0440\u043e\u0433\u043e \u043d\u0430\u043f\u0430\u043b\u0438"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u0435\u043a\u0442\u043e\u0440\u0430 \u0441 \u043a\u043e\u0442\u043e\u0440\u043e\u0433\u043e \u043d\u0430\u043f\u0430\u043b\u0438"
+              }
+            },
+            {
+              "triggerEnable": {
+                "target": "lbt_draw_arrow"
               }
             },
             {
               "varSetString": {
                 "value": "lbt_battle_",
                 "var": "lbt_battle_time_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_activity_",
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_activity_",
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_battle_",
+                "var": "lbt_battle_to_var_name"
               }
             },
             {
@@ -1984,8 +2111,101 @@
               }
             },
             {
-              "comment": {
-                "value": "обнуляем текущее время миссии"
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t1_time",
+                "digits": 0,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t2_time",
+                "digits": 0,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t1_death_counter",
+                "digits": 0,
+                "var": "lbt_activity_players_t1_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_t2_death_counter",
+                "digits": 0,
+                "var": "lbt_activity_players_t2_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_active",
+                "digits": 0,
+                "var": "lbt_battle_active_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_from_name",
+                "digits": 0,
+                "var": "lbt_battle_from_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "@lbt_battle_start_idx",
+                "digits": 2,
+                "var": "lbt_battle_to_var_name"
+              }
+            },
+            {
+              "varAddString": {
+                "value": "_to_name",
+                "digits": 0,
+                "var": "lbt_battle_to_var_name"
               }
             },
             {
@@ -1995,8 +2215,43 @@
               }
             },
             {
-              "comment": {
-                "value": "разрешаем атаковать и ставим видимость"
+              "varSetInt": [
+                {
+                  "value": 1
+                },
+                {
+                  "var": "@lbt_activity_players_t1_var_name"
+                },
+                {
+                  "var": "@lbt_activity_players_t2_var_name"
+                }
+              ]
+            },
+            {
+              "varSetInt": [
+                {
+                  "value": 1
+                },
+                {
+                  "var": "@lbt_damage_t1_counter_var_name"
+                },
+                {
+                  "var": "@lbt_damage_t2_counter_var_name"
+                }
+              ]
+            },
+            {
+              "varSetInt": {
+                "value": 0,
+                "var": "@lbt_battle_from_var_name",
+                "input_var": "lbt_battle_from_idx"
+              }
+            },
+            {
+              "varSetInt": {
+                "value": 0,
+                "var": "@lbt_battle_to_var_name",
+                "input_var": "lbt_battle_to_idx"
               }
             },
             {
@@ -2056,11 +2311,6 @@
               ]
             },
             {
-              "comment": {
-                "value": "говорим команду стрелять"
-              }
-            },
-            {
               "unitAttackTarget": {
                 "playerAttracted": false,
                 "object": "@lbt_battle_t1_army_squad_name",
@@ -2074,11 +2324,6 @@
                 "object": "@lbt_battle_t2_army_squad_name",
                 "target": "@lbt_battle_t1_army_squad_name",
                 "fireRandom": true
-              }
-            },
-            {
-              "comment": {
-                "value": "говорим танкам двигаться"
               }
             },
             {
@@ -2132,11 +2377,6 @@
               }
             },
             {
-              "comment": {
-                "value": "мигаем целями для РБ"
-              }
-            },
-            {
               "unitSetIndication": [
                 {
                   "set": true
@@ -2162,249 +2402,9 @@
               ]
             },
             {
-              "comment": {
-                "value": "создаем имя переменной, хранящей активность игроков команды А"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_activity_",
-                "var": "lbt_activity_players_t1_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_activity_players_t1_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_t1_time",
-                "digits": 0,
-                "var": "lbt_activity_players_t1_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной, хранящей активность игроков команды Б"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_activity_",
-                "var": "lbt_activity_players_t2_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_activity_players_t2_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_t2_time",
-                "digits": 0,
-                "var": "lbt_activity_players_t2_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "обнуляем активность обеих команд для этой битвы"
-              }
-            },
-            {
-              "varSetInt": [
-                {
-                  "value": 1
-                },
-                {
-                  "var": "@lbt_activity_players_t1_var_name"
-                },
-                {
-                  "var": "@lbt_activity_players_t2_var_name"
-                }
-              ]
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной, хранящей количество убитых юнитов команды А"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_damage_",
-                "var": "lbt_damage_t1_counter_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_damage_t1_counter_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_t1_death_counter",
-                "digits": 0,
-                "var": "lbt_activity_players_t1_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной, хранящей количество убитых юнитов команды Б"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_damage_",
-                "var": "lbt_damage_t2_counter_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_damage_t2_counter_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_t2_death_counter",
-                "digits": 0,
-                "var": "lbt_activity_players_t2_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "обнуляем количество мертвых юнитов для этой битвы"
-              }
-            },
-            {
-              "varSetInt": [
-                {
-                  "value": 1
-                },
-                {
-                  "var": "@lbt_damage_t1_counter_var_name"
-                },
-                {
-                  "var": "@lbt_damage_t2_counter_var_name"
-                }
-              ]
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной активности боя"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_battle_",
-                "var": "lbt_battle_active_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_battle_active_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_active",
-                "digits": 0,
-                "var": "lbt_battle_active_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "говорим что битва активна"
-              }
-            },
-            {
               "varSetBool": {
                 "value": true,
                 "var": "@lbt_battle_active_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной хранящей откуда напали"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_battle_",
-                "var": "lbt_battle_from_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_battle_from_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_from_name",
-                "digits": 0,
-                "var": "lbt_battle_from_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "запоминаем имя сектора с которого напали"
-              }
-            },
-            {
-              "varSetInt": {
-                "value": 0,
-                "var": "@lbt_battle_from_var_name",
-                "input_var": "lbt_battle_from_idx"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной хранящей куда напали"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_battle_",
-                "var": "lbt_battle_to_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "@lbt_battle_start_idx",
-                "digits": 2,
-                "var": "lbt_battle_to_var_name"
-              }
-            },
-            {
-              "varAddString": {
-                "value": "_to_name",
-                "digits": 0,
-                "var": "lbt_battle_to_var_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "запоминаем имя сектора с которого напали"
-              }
-            },
-            {
-              "varSetInt": {
-                "value": 0,
-                "var": "@lbt_battle_to_var_name",
-                "input_var": "lbt_battle_to_idx"
               }
             }
           ],
@@ -2463,7 +2463,17 @@
           "actions": [
             {
               "comment": {
-                "value": "индекс внутри диапазона"
+                "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u043d\u0443\u0442\u0440\u0438 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u0430 \u043b\u0438 \u0431\u0438\u0442\u0432\u0430"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u0430 \u043b\u0438 \u0431\u0438\u0442\u0432\u0430"
               }
             },
             {
@@ -2471,11 +2481,6 @@
                 "operator": "add",
                 "value": 1.0,
                 "var": "lbt_damage_cur_idx"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной хранящей активна ли битва"
               }
             },
             {
@@ -2499,11 +2504,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем активна ли битва"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "lbt_damage_check_active"
               }
@@ -2511,7 +2511,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "индекс вышел за предел диапазона"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430"
             },
             "triggerEnable": {
               "target": "lbt_damage_restart"
@@ -2541,7 +2541,27 @@
           "actions": [
             {
               "comment": {
-                "value": "создаем имя сквада команды А"
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u043c\u0435\u0440\u0442\u0432\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u043c\u0435\u0440\u0442\u0432\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
               }
             },
             {
@@ -2551,6 +2571,24 @@
               }
             },
             {
+              "varSetString": {
+                "value": "lbt_battle_t2_squad_",
+                "var": "lbt_damage_t2_battle_squad_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t1_counter_var_name"
+              }
+            },
+            {
+              "varSetString": {
+                "value": "lbt_damage_",
+                "var": "lbt_damage_t2_counter_var_name"
+              }
+            },
+            {
               "varAddString": {
                 "value": "@lbt_damage_cur_idx",
                 "digits": 2,
@@ -2558,32 +2596,10 @@
               }
             },
             {
-              "comment": {
-                "value": "создаем имя сквада команды Б"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_battle_t2_squad_",
-                "var": "lbt_damage_t2_battle_squad_name"
-              }
-            },
-            {
               "varAddString": {
                 "value": "@lbt_damage_cur_idx",
                 "digits": 2,
                 "var": "lbt_damage_t2_battle_squad_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_damage_",
-                "var": "lbt_damage_t1_counter_var_name"
               }
             },
             {
@@ -2601,17 +2617,6 @@
               }
             },
             {
-              "comment": {
-                "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
-              }
-            },
-            {
-              "varSetString": {
-                "value": "lbt_damage_",
-                "var": "lbt_damage_t2_counter_var_name"
-              }
-            },
-            {
               "varAddString": {
                 "value": "@lbt_damage_cur_idx",
                 "digits": 2,
@@ -2626,11 +2631,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем юнитов команды А"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "lbt_battle_t1_death_counter"
               }
@@ -2638,7 +2638,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -2677,7 +2677,7 @@
               "var": "@lbt_damage_t1_counter_var_name"
             },
             "comment": {
-              "value": "проверяем команду Б"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u0411"
             },
             "triggerEnable": {
               "target": "lbt_battle_t2_death_counter"
@@ -2685,7 +2685,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "проверяем команду Б"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u043e\u043c\u0430\u043d\u0434\u0443 \u0411"
             },
             "triggerEnable": {
               "target": "lbt_battle_t2_death_counter"
@@ -2725,7 +2725,7 @@
               "var": "@lbt_damage_t2_counter_var_name"
             },
             "comment": {
-              "value": "дальше по циклу"
+              "value": "\u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -2733,7 +2733,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "дальше по циклу"
+              "value": "\u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             },
             "triggerEnable": {
               "target": "lbt_damage_rotator"
@@ -2762,7 +2762,22 @@
         "actions": [
           {
             "comment": {
-              "value": "выставляем текущий индекс"
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0441\u0442\u0440\u043e\u043a\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0446\u0438\u043a\u043b"
             }
           },
           {
@@ -2772,30 +2787,15 @@
             }
           },
           {
-            "comment": {
-              "value": "выставляем строку"
-            }
-          },
-          {
             "varSetInt": {
               "value": 1,
               "var": "lbt_heat_col_idx"
             }
           },
           {
-            "comment": {
-              "value": "выставляем максимум"
-            }
-          },
-          {
             "varSetInt": {
               "value": 49,
               "var": "lbt_heat_max_cell_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем цикл"
             }
           },
           {
@@ -2846,7 +2846,42 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем строку до увеличения текущего индекса"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u0441\u0442\u0440\u043e\u043a\u0443 \u0434\u043e \u0443\u0432\u0435\u043b\u0438\u0447\u0435\u043d\u0438\u044f \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e \u0438\u043d\u0434\u0435\u043a\u0441\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0447\u0442\u043e \u0430\u0440\u043c\u0438\u044f \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 \u043d\u0443\u043b\u044e (\u0437\u043e\u043d\u0430 \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f)"
             }
           },
           {
@@ -2854,6 +2889,27 @@
               "value": 1,
               "var": "lbt_heat_col_idx",
               "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_cur_army",
+              "input_var": "@lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_max_idx",
+              "input_var": "lbt_heat_col_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_min_idx",
+              "input_var": "lbt_heat_max_idx"
             }
           },
           {
@@ -2873,82 +2929,10 @@
             }
           },
           {
-            "comment": {
-              "value": "увеличиваем текущий индекс"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
               "var": "lbt_heat_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_zone_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_cur_idx",
-              "digits": 2,
-              "var": "lbt_heat_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя переменой, хранящей армию"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_army_cur_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_cur_idx",
-              "digits": 2,
-              "var": "lbt_heat_army_cur_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_heat_army_cur_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем армию зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_cur_army",
-              "input_var": "@lbt_heat_army_cur_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "считаем максимальное значение"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_max_idx",
-              "input_var": "lbt_heat_col_idx"
             }
           },
           {
@@ -2968,18 +2952,6 @@
             }
           },
           {
-            "comment": {
-              "value": "считаем минимальное значение"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_min_idx",
-              "input_var": "lbt_heat_max_idx"
-            }
-          },
-          {
             "varModify": {
               "operator": "subAB",
               "value": 7.0,
@@ -2996,8 +2968,36 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем что армия не равна нулю (зона не используется)"
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_zone_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_cur_idx",
+              "digits": 2,
+              "var": "lbt_heat_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_cur_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_cur_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_cur_var_name"
             }
           },
           {
@@ -3008,7 +3008,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не получилось ничего найти"
+            "value": "\u043d\u0435 \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u043e\u0441\u044c \u043d\u0438\u0447\u0435\u0433\u043e \u043d\u0430\u0439\u0442\u0438"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_restart"
@@ -3038,12 +3038,22 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили, что зона принадлежит какой-то армии"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438, \u0447\u0442\u043e \u0437\u043e\u043d\u0430 \u043f\u0440\u0438\u043d\u0430\u0434\u043b\u0435\u0436\u0438\u0442 \u043a\u0430\u043a\u043e\u0439-\u0442\u043e \u0430\u0440\u043c\u0438\u0438"
             }
           },
           {
             "comment": {
-              "value": "собираем переменную в которой хранится heat зоны"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f heat \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 heat"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 heat \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u044b 1"
             }
           },
           {
@@ -3067,20 +3077,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значение heat"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "lbt_heat_value",
               "input_var": "@lbt_heat_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем значение heat для команды 1"
             }
           },
           {
@@ -3091,7 +3091,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не принадлежит армии, идем дальше по циклу"
+            "value": "\u043d\u0435 \u043f\u0440\u0438\u043d\u0430\u0434\u043b\u0435\u0436\u0438\u0442 \u0430\u0440\u043c\u0438\u0438, \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -3121,18 +3121,18 @@
         "actions": [
           {
             "comment": {
-              "value": "атакует команда А"
+              "value": "\u0430\u0442\u0430\u043a\u0443\u0435\u0442 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043f\u043e\u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0445 \u0437\u043e\u043d"
             }
           },
           {
             "varSetInt": {
               "value": 1,
               "var": "lbt_heat_who_attack"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем проверку пограничных зон"
             }
           },
           {
@@ -3143,7 +3143,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем может быть команда Б атакует"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043c\u043e\u0436\u0435\u0442 \u0431\u044b\u0442\u044c \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0411 \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_t2_check"
@@ -3173,18 +3173,18 @@
         "actions": [
           {
             "comment": {
-              "value": "атакует команда Б"
+              "value": "\u0430\u0442\u0430\u043a\u0443\u0435\u0442 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043f\u043e\u0433\u0440\u0430\u043d\u0438\u0447\u043d\u044b\u0445 \u0437\u043e\u043d"
             }
           },
           {
             "varSetInt": {
               "value": 2,
               "var": "lbt_heat_who_attack"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем проверку пограничных зон"
             }
           },
           {
@@ -3195,7 +3195,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "нет нужного heat идем дальше по циклу"
+            "value": "\u043d\u0435\u0442 \u043d\u0443\u0436\u043d\u043e\u0433\u043e heat \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -3225,18 +3225,79 @@
         "actions": [
           {
             "comment": {
-              "value": "зона используется"
+              "value": "\u0437\u043e\u043d\u0430 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f"
             }
           },
           {
             "comment": {
-              "value": "собираем имя левой зоны"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043b\u0435\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0432\u0435\u0440\u0445\u043d\u0435\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043d\u0438\u0436\u043d\u0435\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043b\u0435\u0432\u0443\u044e \u0437\u043e\u043d\u0443"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "lbt_heat_left_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_right_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_upper_idx",
+              "input_var": "lbt_heat_cur_idx"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_heat_bottom_idx",
               "input_var": "lbt_heat_cur_idx"
             }
           },
@@ -3248,110 +3309,10 @@
             }
           },
           {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_left_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_left_idx",
-              "digits": 2,
-              "var": "lbt_heat_left_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной, где хранится армия"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_army_left_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_left_idx",
-              "digits": 2,
-              "var": "lbt_heat_army_left_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_heat_army_left_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя правой зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_right_idx",
-              "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": -1.0,
               "var": "lbt_heat_right_idx"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_right_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_right_idx",
-              "digits": 2,
-              "var": "lbt_heat_right_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной, где хранится армия"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_army_right_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_right_idx",
-              "digits": 2,
-              "var": "lbt_heat_army_right_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_heat_army_right_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя верхней зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_upper_idx",
-              "input_var": "lbt_heat_cur_idx"
             }
           },
           {
@@ -3364,56 +3325,6 @@
             }
           },
           {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_upper_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_upper_idx",
-              "digits": 2,
-              "var": "lbt_heat_upper_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной, где хранится армия"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_army_upper_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_heat_upper_idx",
-              "digits": 2,
-              "var": "lbt_heat_army_upper_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_heat_army_upper_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя нижней зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_heat_bottom_idx",
-              "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -3425,7 +3336,112 @@
           {
             "varSetString": {
               "value": "flt_area_",
+              "var": "lbt_heat_left_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_right_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_upper_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
               "var": "lbt_heat_bottom_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_heat_army_bottom_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_left_idx",
+              "digits": 2,
+              "var": "lbt_heat_left_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_left_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_left_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_right_idx",
+              "digits": 2,
+              "var": "lbt_heat_right_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_right_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_right_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_upper_idx",
+              "digits": 2,
+              "var": "lbt_heat_upper_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_heat_upper_idx",
+              "digits": 2,
+              "var": "lbt_heat_army_upper_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_heat_army_upper_var_name"
             }
           },
           {
@@ -3433,17 +3449,6 @@
               "value": "@lbt_heat_bottom_idx",
               "digits": 2,
               "var": "lbt_heat_bottom_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной, где хранится армия"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_heat_army_bottom_var_name"
             }
           },
           {
@@ -3461,11 +3466,6 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем левую зону"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_left_exist"
             }
@@ -3474,12 +3474,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "зона не используется"
+              "value": "\u0437\u043e\u043d\u0430 \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0441\u044f"
             }
           },
           {
             "comment": {
-              "value": "идем дальше по циклу"
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -3517,17 +3517,22 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс не вышел за пределы строки"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0435 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u044b \u0441\u0442\u0440\u043e\u043a\u0438"
             }
           },
           {
             "comment": {
-              "value": "и зона существует"
+              "value": "\u0438 \u0437\u043e\u043d\u0430 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "получаем армию левой ячейки"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u043b\u0435\u0432\u043e\u0439 \u044f\u0447\u0435\u0439\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u0438"
             }
           },
           {
@@ -3538,11 +3543,6 @@
             }
           },
           {
-            "comment": {
-              "value": "сравниваем армии"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_left_army_check"
             }
@@ -3550,7 +3550,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку справа"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u043f\u0440\u0430\u0432\u0430"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_right_exist"
@@ -3590,12 +3590,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия левой зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043b\u0435\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0431\u043e\u043b\u044c\u0448\u0435 0 \u0438 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 \u0430\u0440\u043c\u0438\u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c\u043e\u0439 \u0437\u043e\u043d\u044b"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u0442\u043e \u0441\u043e\u0431\u0438\u0440\u0430\u043b\u0441\u044f \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
@@ -3606,7 +3606,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку справа"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u043f\u0440\u0430\u0432\u0430"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_right_exist"
@@ -3637,12 +3637,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0437\u043e\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
             }
           },
           {
@@ -3657,11 +3662,6 @@
               "value": 0,
               "var": "lbt_heat_zone_02_idx",
               "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем поля"
             }
           },
           {
@@ -3687,7 +3687,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
@@ -3725,17 +3725,22 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс не вышел за пределы строки"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0435 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u044b \u0441\u0442\u0440\u043e\u043a\u0438"
             }
           },
           {
             "comment": {
-              "value": "и зона существует"
+              "value": "\u0438 \u0437\u043e\u043d\u0430 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "получаем армию левой ячейки"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u043b\u0435\u0432\u043e\u0439 \u044f\u0447\u0435\u0439\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u0438"
             }
           },
           {
@@ -3746,11 +3751,6 @@
             }
           },
           {
-            "comment": {
-              "value": "сравниваем армии"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_right_army_check"
             }
@@ -3758,7 +3758,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку сверху"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u0432\u0435\u0440\u0445\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_exist"
@@ -3798,12 +3798,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0431\u043e\u043b\u044c\u0448\u0435 0 \u0438 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 \u0430\u0440\u043c\u0438\u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c\u043e\u0439 \u0437\u043e\u043d\u044b"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u0442\u043e \u0441\u043e\u0431\u0438\u0440\u0430\u043b\u0441\u044f \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
@@ -3814,7 +3814,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку сверху"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u0432\u0435\u0440\u0445\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_upper_exist"
@@ -3845,12 +3845,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0437\u043e\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
             }
           },
           {
@@ -3865,11 +3870,6 @@
               "value": 0,
               "var": "lbt_heat_zone_02_idx",
               "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем поля"
             }
           },
           {
@@ -3895,7 +3895,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
@@ -3927,12 +3927,17 @@
         "actions": [
           {
             "comment": {
-              "value": "зона существует"
+              "value": "\u0437\u043e\u043d\u0430 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "получаем армию верхней ячейки"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0432\u0435\u0440\u0445\u043d\u0435\u0439 \u044f\u0447\u0435\u0439\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u0438"
             }
           },
           {
@@ -3943,11 +3948,6 @@
             }
           },
           {
-            "comment": {
-              "value": "сравниваем армии"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_upper_army_check"
             }
@@ -3955,7 +3955,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку снизу"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u043d\u0438\u0437\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_bottom_exist"
@@ -3995,17 +3995,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0432\u0435\u0440\u0445\u043d\u0435\u0439 \u0437\u043e\u043d\u044b \u0431\u043e\u043b\u044c\u0448\u0435 0 \u0438 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 \u0430\u0440\u043c\u0438\u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c\u043e\u0439 \u0437\u043e\u043d\u044b"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u0442\u043e \u0441\u043e\u0431\u0438\u0440\u0430\u043b\u0441\u044f \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
             }
           },
           {
@@ -4016,7 +4016,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем проверять ячейку снизу"
+            "value": "\u0438\u0434\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u044f\u0447\u0435\u0439\u043a\u0443 \u0441\u043d\u0438\u0437\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_bottom_exist"
@@ -4047,12 +4047,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0437\u043e\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
             }
           },
           {
@@ -4067,11 +4072,6 @@
               "value": 0,
               "var": "lbt_heat_zone_02_idx",
               "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем поля"
             }
           },
           {
@@ -4097,7 +4097,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
@@ -4129,12 +4129,17 @@
         "actions": [
           {
             "comment": {
-              "value": "зона существует"
+              "value": "\u0437\u043e\u043d\u0430 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "получаем армию нижней ячейки"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u043d\u0438\u0436\u043d\u0435\u0439 \u044f\u0447\u0435\u0439\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u0438"
             }
           },
           {
@@ -4145,11 +4150,6 @@
             }
           },
           {
-            "comment": {
-              "value": "сравниваем армии"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_bottom_army_check"
             }
@@ -4157,7 +4157,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -4205,12 +4205,12 @@
         "actions": [
           {
             "comment": {
-              "value": "армия верхней зоны больше 0 и не равна армии проверяемой зоны"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0432\u0435\u0440\u0445\u043d\u0435\u0439 \u0437\u043e\u043d\u044b \u0431\u043e\u043b\u044c\u0448\u0435 0 \u0438 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 \u0430\u0440\u043c\u0438\u0438 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c\u043e\u0439 \u0437\u043e\u043d\u044b"
             }
           },
           {
             "comment": {
-              "value": "проверяем кто собирался атаковать"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u0442\u043e \u0441\u043e\u0431\u0438\u0440\u0430\u043b\u0441\u044f \u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
@@ -4221,7 +4221,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше по циклу"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -4252,12 +4252,17 @@
         "actions": [
           {
             "comment": {
-              "value": "армия правой зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u043f\u0440\u0430\u0432\u043e\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
             "comment": {
-              "value": "запоминаем индексы зон"
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0437\u043e\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
             }
           },
           {
@@ -4272,11 +4277,6 @@
               "value": 0,
               "var": "lbt_heat_zone_02_idx",
               "input_var": "lbt_heat_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем поля"
             }
           },
           {
@@ -4302,7 +4302,7 @@
           },
           {
             "comment": {
-              "value": "армия текущей зоны атакует"
+              "value": "\u0430\u0440\u043c\u0438\u044f \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0437\u043e\u043d\u044b \u0430\u0442\u0430\u043a\u0443\u0435\u0442"
             }
           },
           {
@@ -4329,7 +4329,12 @@
         "actions": [
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0442\u043e\u0433\u043e \u0447\u0442\u043e \u0432 \u044d\u0442\u0438\u0445 \u043a\u0432\u0430\u0434\u0440\u0430\u0442\u0430\u0445 \u0443\u0436\u0435 \u0435\u0441\u0442\u044c \u0431\u0438\u0442\u0432\u0430"
             }
           },
           {
@@ -4344,11 +4349,6 @@
               "value": 0,
               "var": "lbt_heat_attack_to_idx",
               "input_var": "lbt_heat_zone_02_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем проверку того что в этих квадратах уже есть битва"
             }
           },
           {
@@ -4376,18 +4376,18 @@
         "actions": [
           {
             "comment": {
-              "value": "обнуляем индекс"
+              "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0434\u0430\u043b\u044c\u0448\u0435"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "lbt_heat_battle_check_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем ротацию дальше"
             }
           },
           {
@@ -4429,13 +4429,29 @@
           },
           {
             "comment": {
-              "value": "создаем переменную хранящую имя from для битвы"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u0438\u043c\u044f from \u0434\u043b\u044f \u0431\u0438\u0442\u0432\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u0438\u043c\u044f to \u0434\u043b\u044f \u0431\u0438\u0442\u0432\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441\u044b"
             }
           },
           {
             "varSetString": {
               "value": "lbt_battle_",
               "var": "lbt_heat_battle_check_from_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_heat_battle_check_to_var_name"
             }
           },
           {
@@ -4453,17 +4469,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем переменную хранящую имя to для битвы"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_",
-              "var": "lbt_heat_battle_check_to_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_heat_battle_check_idx",
               "digits": 2,
@@ -4478,11 +4483,6 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем индексы"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_battle_check_is_battle_exist"
             }
@@ -4490,7 +4490,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "так и не нашли ничего. стартуем битву"
+            "value": "\u0442\u0430\u043a \u0438 \u043d\u0435 \u043d\u0430\u0448\u043b\u0438 \u043d\u0438\u0447\u0435\u0433\u043e. \u0441\u0442\u0430\u0440\u0442\u0443\u0435\u043c \u0431\u0438\u0442\u0432\u0443"
           },
           "triggerEnable": {
             "target": "lbt_heat_battle_start"
@@ -4546,7 +4546,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "индексы совпали. возвращаемся в ротацию heat"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441\u044b \u0441\u043e\u0432\u043f\u0430\u043b\u0438. \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u043c\u0441\u044f \u0432 \u0440\u043e\u0442\u0430\u0446\u0438\u044e heat"
           },
           "triggerEnable": {
             "target": "lbt_heat_zone_rotator"
@@ -4554,7 +4554,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "индексы не совпали идем дальше по ротации"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441\u044b \u043d\u0435 \u0441\u043e\u0432\u043f\u0430\u043b\u0438 \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0440\u043e\u0442\u0430\u0446\u0438\u0438"
           },
           "triggerEnable": {
             "target": "lbt_heat_battle_check_rotator"
@@ -4578,7 +4578,22 @@
         "actions": [
           {
             "comment": {
-              "value": "заполняем поля"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u043e\u043b\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u0442\u0430\u0432\u0438\u043c heat \u0432 0"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u0430\u043c\u0443 \u0431\u0438\u0442\u0432\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0434\u0430\u043b\u044c\u0448\u0435"
             }
           },
           {
@@ -4596,19 +4611,9 @@
             }
           },
           {
-            "comment": {
-              "value": "ставим heat в 0"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "@lbt_heat_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем саму битву"
             }
           },
           {
@@ -4617,18 +4622,13 @@
             }
           },
           {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем ротацию дальше"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_heat_zone_rotator"
+            }
+          },
+          {
+            "wait": {
+              "time": 10.0
             }
           }
         ],
@@ -4654,7 +4654,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем раз в 1 секунду для более точных результатов"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u0430\u0437 \u0432 1 \u0441\u0435\u043a\u0443\u043d\u0434\u0443 \u0434\u043b\u044f \u0431\u043e\u043b\u0435\u0435 \u0442\u043e\u0447\u043d\u044b\u0445 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u043e\u0432"
           },
           "varSetInt": {
             "value": 0,
@@ -4690,7 +4690,17 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс внутри диапазона"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u043d\u0443\u0442\u0440\u0438 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0430\u0440\u043d\u0438\u0442\u0441\u044f \u0430\u043a\u0442\u0438\u0432\u0435\u043d \u043b\u0438 \u0431\u043e\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
             }
           },
           {
@@ -4698,11 +4708,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "lbt_time_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где харнится активен ли бой"
             }
           },
           {
@@ -4726,11 +4731,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем проверку"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_time_rotator_activity_check"
             }
@@ -4738,7 +4738,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим цикл"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c \u0446\u0438\u043a\u043b"
           },
           "triggerEnable": {
             "target": "lbt_time_restart"
@@ -4768,18 +4768,72 @@
         "actions": [
           {
             "comment": {
-              "value": "битва активна"
+              "value": "\u0431\u0438\u0442\u0432\u0430 \u0430\u043a\u0442\u0438\u0432\u043d\u0430"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, хранящей время боя"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432\u0440\u0435\u043c\u044f \u0431\u043e\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0432\u0440\u0435\u043c\u044f \u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0430\u0434\u043e \u043b\u0438 \u043c\u0435\u043d\u044f\u0442\u044c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
             "varSetString": {
               "value": "lbt_battle_",
               "var": "lbt_time_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t1_squad_",
+              "var": "lbt_time_t1_battle_squad_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t2_squad_",
+              "var": "lbt_time_t2_battle_squad_name"
             }
           },
           {
@@ -4797,8 +4851,45 @@
             }
           },
           {
-            "comment": {
-              "value": "увеличиваем время на 1"
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_time_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_time",
+              "digits": 0,
+              "var": "lbt_time_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_t1_battle_squad_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_time_cur_idx",
+              "digits": 2,
+              "var": "lbt_time_t2_battle_squad_name"
             }
           },
           {
@@ -4809,97 +4900,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды А"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_activity_",
-              "var": "lbt_time_activity_players_t1_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_time_cur_idx",
-              "digits": 2,
-              "var": "lbt_time_activity_players_t1_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_t1_time",
-              "digits": 0,
-              "var": "lbt_time_activity_players_t1_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды Б"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_activity_",
-              "var": "lbt_time_activity_players_t2_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_time_cur_idx",
-              "digits": 2,
-              "var": "lbt_time_activity_players_t2_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_t1_time",
-              "digits": 0,
-              "var": "lbt_time_activity_players_t2_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя сквада команды А"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t1_squad_",
-              "var": "lbt_time_t1_battle_squad_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_time_cur_idx",
-              "digits": 2,
-              "var": "lbt_time_t1_battle_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя сквада команды Б"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t2_squad_",
-              "var": "lbt_time_t2_battle_squad_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_time_cur_idx",
-              "digits": 2,
-              "var": "lbt_time_t2_battle_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем надо ли менять активность"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_time_t1_activity_change"
             }
@@ -4907,7 +4907,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "битва не активна идем дальше по циклу"
+            "value": "\u0431\u0438\u0442\u0432\u0430 \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u043d\u0430 \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_time_rotator"
@@ -4972,7 +4972,12 @@
         "actions": [
           {
             "comment": {
-              "value": "рядом есть один из игроков команды А"
+              "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
@@ -4983,11 +4988,6 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_time_t2_activity_change"
             }
@@ -4995,7 +4995,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           },
           "triggerEnable": {
             "target": "lbt_time_t2_activity_change"
@@ -5060,7 +5060,12 @@
         "actions": [
           {
             "comment": {
-              "value": "рядом есть один из игроков команды Б"
+              "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
@@ -5071,11 +5076,6 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_time_rotator"
             }
@@ -5083,7 +5083,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "triggerEnable": {
             "target": "lbt_time_rotator"
@@ -5110,7 +5110,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "запускаем раз в 10 секунд"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u0430\u0437 \u0432 10 \u0441\u0435\u043a\u0443\u043d\u0434"
           },
           "varSetInt": {
             "value": 0,
@@ -5146,7 +5146,17 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс внутри диапазона"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u043d\u0443\u0442\u0440\u0438 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0430\u0440\u043d\u0438\u0442\u0441\u044f \u0430\u043a\u0442\u0438\u0432\u0435\u043d \u043b\u0438 \u0431\u043e\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443"
             }
           },
           {
@@ -5154,11 +5164,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "lbt_end_cur_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где харнится активен ли бой"
             }
           },
           {
@@ -5182,11 +5187,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем проверку"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_rotator_activity_check"
             }
@@ -5194,7 +5194,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим цикл"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c \u0446\u0438\u043a\u043b"
           },
           "triggerEnable": {
             "target": "lbt_end_restart"
@@ -5224,18 +5224,67 @@
         "actions": [
           {
             "comment": {
-              "value": "битва активна"
+              "value": "\u0431\u0438\u0442\u0432\u0430 \u0430\u043a\u0442\u0438\u0432\u043d\u0430"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной, хранящей время боя"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432\u0440\u0435\u043c\u044f \u0431\u043e\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u043d\u0430\u0434\u043e \u043b\u0438 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044c \u0431\u0438\u0442\u0432\u0443"
             }
           },
           {
             "varSetString": {
               "value": "lbt_battle_",
               "var": "lbt_end_time_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_end_activity_players_t1_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_activity_",
+              "var": "lbt_end_activity_players_t2_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t1_squad_",
+              "var": "lbt_end_t1_battle_squad_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_t2_squad_",
+              "var": "lbt_end_t2_battle_squad_name"
             }
           },
           {
@@ -5253,17 +5302,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды А"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_activity_",
-              "var": "lbt_end_activity_players_t1_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
@@ -5275,17 +5313,6 @@
               "value": "_t1_time",
               "digits": 0,
               "var": "lbt_end_activity_players_t1_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной хранящей активность игроков команды Б"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_activity_",
-              "var": "lbt_end_activity_players_t2_var_name"
             }
           },
           {
@@ -5303,17 +5330,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя сквада команды А"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t1_squad_",
-              "var": "lbt_end_t1_battle_squad_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
@@ -5321,26 +5337,10 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя сквада команды Б"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_t2_squad_",
-              "var": "lbt_end_t2_battle_squad_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
               "var": "lbt_end_t2_battle_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем не надо ли завершить битву"
             }
           },
           {
@@ -5351,7 +5351,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "битва не активна идем дальше по циклу"
+            "value": "\u0431\u0438\u0442\u0432\u0430 \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u043d\u0430 \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "lbt_end_rotator"
@@ -5413,13 +5413,108 @@
           },
           {
             "comment": {
-              "value": "создаем имя переменной, где харнится откуда напали"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0430\u0440\u043d\u0438\u0442\u0441\u044f \u043e\u0442\u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0430\u0440\u043d\u0438\u0442\u0441\u044f \u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0441\u0442\u0440\u0435\u043b\u043a\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0435\u0440\u0435\u0440\u0438\u0441\u043e\u0432\u044b\u0432\u0430\u0435\u043c \u0432\u0441\u0435 \u0441\u0442\u0440\u0435\u043b\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0435\u0440\u0435\u0441\u0442\u0430\u0435\u043c \u043c\u0438\u0433\u0430\u0442\u044c \u0446\u0435\u043b\u044f\u043c\u0438 \u0434\u043b\u044f \u0420\u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0431\u0438\u0440\u0430\u0435\u043c \u0432\u0438\u0434\u0438\u043c\u043e\u0441\u0442\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u043c\u0435\u0440\u0442\u0432\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u043f\u043e\u0434\u0441\u0447\u0435\u0442 \u043c\u0435\u0440\u0442\u0432\u044b\u0445 \u044e\u043d\u0438\u0442\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u0430\u0440\u043c\u0438\u044e \u0430\u0442\u0430\u043a\u0443\u044e\u0449\u0435\u0433\u043e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u043d\u0430\u043f\u0430\u0434\u0430\u044e\u0449\u0435\u0433\u043e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u0430\u0440\u043c\u0438\u044e \u0437\u0430\u0449\u0438\u0449\u0430\u044e\u0449\u0435\u0433\u043e\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0437\u0430\u0449\u0438\u0449\u0430\u044e\u0449\u0435\u0433\u043e\u0441\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0441\u0447\u0435\u0442\u0447\u0438\u043a \u0434\u043b\u044f \u043a\u043e\u043c\u0430\u043d\u0434\u044b 2 \u0441\u043e\u0433\u043b\u0430\u0441\u043d\u043e \u0440\u0430\u0442\u0438\u043e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043a\u0442\u043e \u0432\u044b\u0438\u0433\u0440\u0430\u043b"
             }
           },
           {
             "varSetString": {
               "value": "lbt_battle_",
               "var": "lbt_end_from_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_to_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_damage_",
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_damage_",
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_from_army_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_to_army_var_name"
             }
           },
           {
@@ -5437,17 +5532,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя переменной, где харнится куда напали"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_",
-              "var": "lbt_end_to_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_cur_idx",
               "digits": 2,
@@ -5462,8 +5546,61 @@
             }
           },
           {
-            "comment": {
-              "value": "прячем стрелку"
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t1_death_counter",
+              "digits": 2,
+              "var": "lbt_end_t1_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@lbt_end_cur_idx",
+              "digits": 2,
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_t2_death_counter",
+              "digits": 2,
+              "var": "lbt_end_t2_counter_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "lbt_end_from_army_var_name",
+              "input_var": "@lbt_end_from_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_from_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "lbt_end_to_army_var_name",
+              "input_var": "@lbt_end_to_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "lbt_end_to_army_var_name"
             }
           },
           {
@@ -5476,18 +5613,13 @@
             }
           },
           {
-            "comment": {
-              "value": "перерисовываем все стрелки"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_redraw_restart"
             }
           },
           {
-            "comment": {
-              "value": "перестаем мигать целями для РБ"
+            "triggerEnable": {
+              "target": "lbt_end_check_t1_win"
             }
           },
           {
@@ -5516,11 +5648,6 @@
             ]
           },
           {
-            "comment": {
-              "value": "убираем видимость"
-            }
-          },
-          {
             "unitSetProperties": [
               {
                 "object_marking": 0
@@ -5546,87 +5673,6 @@
             ]
           },
           {
-            "comment": {
-              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды А"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_damage_",
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_end_cur_idx",
-              "digits": 2,
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_t1_death_counter",
-              "digits": 2,
-              "var": "lbt_end_t1_counter_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где хранится подсчет мертвых юнитов команды Б"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_damage_",
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@lbt_end_cur_idx",
-              "digits": 2,
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_t2_death_counter",
-              "digits": 2,
-              "var": "lbt_end_t2_counter_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем переменную, хранящую армию атакующего"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_end_from_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "lbt_end_from_army_var_name",
-              "input_var": "@lbt_end_from_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_end_from_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем армию нападающего"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "lbt_end_from_army",
@@ -5634,46 +5680,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем переменную, хранящую армию защищающегося"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_end_to_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "lbt_end_to_army_var_name",
-              "input_var": "@lbt_end_to_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "lbt_end_to_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем армию защищающегося"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "lbt_end_to_army",
               "input_var": "@lbt_end_to_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем счетчик для команды 2 согласно ратио"
             }
           },
           {
@@ -5698,16 +5708,6 @@
               "var": "lbt_end_t2_result_counter",
               "use_variable": true,
               "var_value": "lbt_battle_t1_reference_units_ratio"
-            }
-          },
-          {
-            "comment": {
-              "value": "включаем проверку кто выиграл"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "lbt_end_check_t1_win"
             }
           }
         ],
@@ -5741,7 +5741,22 @@
         "actions": [
           {
             "comment": {
-              "value": "победила команда А"
+              "value": "\u043f\u043e\u0431\u0435\u0434\u0438\u043b\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430 \u043b\u0438 \u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0430\u043a\u0430"
             }
           },
           {
@@ -5751,28 +5766,13 @@
             }
           },
           {
-            "comment": {
-              "value": "двигаем линию фронта"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_t1_move_frontline"
             }
           },
           {
-            "comment": {
-              "value": "проверяем активности"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_t1_activity_calc"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем разрешена ли контр атака"
             }
           },
           {
@@ -5783,7 +5783,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выигрыш команды Б"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u0438\u0433\u0440\u044b\u0448 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "triggerEnable": {
             "target": "lbt_end_check_t2_win"
@@ -5814,7 +5814,22 @@
         "actions": [
           {
             "comment": {
-              "value": "победила команда А"
+              "value": "\u043f\u043e\u0431\u0435\u0434\u0438\u043b\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u0430 \u0410"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430 \u043b\u0438 \u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0430\u043a\u0430"
             }
           },
           {
@@ -5824,28 +5839,13 @@
             }
           },
           {
-            "comment": {
-              "value": "двигаем линию фронта"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_t2_move_frontline"
             }
           },
           {
-            "comment": {
-              "value": "проверяем активности"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "lbt_end_t2_activity_calc"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем разрешена ли контр атака"
             }
           },
           {
@@ -5856,7 +5856,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выигрыш команды Б"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u0438\u0433\u0440\u044b\u0448 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "triggerEnable": {
             "target": "lbt_end_check_no_win"
@@ -5880,18 +5880,18 @@
         "actions": [
           {
             "comment": {
-              "value": "никто не победил"
+              "value": "\u043d\u0438\u043a\u0442\u043e \u043d\u0435 \u043f\u043e\u0431\u0435\u0434\u0438\u043b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "varSetBool": {
               "value": false,
               "var": "@lbt_end_active_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -5925,7 +5925,12 @@
         "actions": [
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "\u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
             }
           },
           {
@@ -5947,11 +5952,6 @@
             }
           },
           {
-            "comment": {
-              "value": "рисуем линию фронта"
-            }
-          },
-          {
             "triggerEnable": [
               {
                 "target": "flt_draw_frontline"
@@ -5964,7 +5964,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не двигаем линию фронта"
+            "value": "\u043d\u0435 \u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
           },
           "triggerDisable": {
             "target": "lbt_end_t1_move_frontline"
@@ -5994,7 +5994,12 @@
         "actions": [
           {
             "comment": {
-              "value": "двигаем линию фронта"
+              "value": "\u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
             }
           },
           {
@@ -6016,11 +6021,6 @@
             }
           },
           {
-            "comment": {
-              "value": "рисуем линию фронта"
-            }
-          },
-          {
             "triggerEnable": [
               {
                 "target": "flt_draw_frontline"
@@ -6033,7 +6033,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "не двигаем линию фронта"
+            "value": "\u043d\u0435 \u0434\u0432\u0438\u0433\u0430\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
           },
           "triggerDisable": {
             "target": "lbt_end_t1_move_frontline"
@@ -6057,7 +6057,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -6081,11 +6086,6 @@
               "var": "lbt_t1_players_activity_calc",
               "use_variable": true,
               "var_value": "@lbt_end_time_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -6129,17 +6129,17 @@
         "actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была 25% или выше"
+              "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "triggerEnable": {
               "target": "t1_major_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -6151,17 +6151,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была ниже 25%"
+              "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "triggerEnable": {
               "target": "t1_tiny_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -6188,7 +6188,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -6212,11 +6217,6 @@
               "var": "lbt_t2_players_activity_calc",
               "use_variable": true,
               "var_value": "@lbt_end_time_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -6260,17 +6260,17 @@
         "actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была 25% или выше"
+              "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "triggerEnable": {
               "target": "t2_major_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -6282,17 +6282,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "активность игроков при выполнении задания была ниже 25%"
+              "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "triggerEnable": {
               "target": "t2_tiny_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -6355,6 +6355,51 @@
             }
           },
           {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u043e\u0442\u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e \u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u043e\u0442\u043a\u0443\u0434\u0430 \u0438 \u043a\u0443\u0434\u0430 \u043d\u0430\u043f\u0430\u043b\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435, \u0445\u0440\u0430\u043d\u044f\u0449\u0438\u0435 \u0430\u0440\u043c\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0435, \u0445\u0440\u0430\u043d\u044f\u0449\u0438\u0435 \u0430\u0440\u043c\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0430\u0440\u043c\u0438\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0431\u043e\u0435\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f \u0445\u0440\u0430\u043d\u044f\u0449\u0430\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0431\u0438\u0442\u0432\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0447\u0442\u043e \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0430\u0440\u043c\u0438\u0439 \u0432\u0430\u043b\u0438\u0434\u043d\u043e"
+            }
+          },
+          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -6362,14 +6407,53 @@
             }
           },
           {
-            "comment": {
-              "value": "собираем переменную, хранящую откуда напали"
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_redraw_from_var_name"
             }
           },
           {
             "varSetString": {
               "value": "lbt_battle_",
-              "var": "lbt_end_redraw_from_var_name"
+              "var": "lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_redraw_from_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "flt_area_",
+              "var": "lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "lbt_end_redraw_from_army_var_name",
+              "input_var": "lbt_end_redraw_from_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "lbt_end_redraw_to_army_var_name",
+              "input_var": "lbt_end_redraw_to_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_area_",
+              "var": "lbt_end_redraw_battle_area_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "lbt_battle_",
+              "var": "lbt_end_redraw_is_active_var_name"
             }
           },
           {
@@ -6387,24 +6471,6 @@
             }
           },
           {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_end_redraw_from_idx",
-              "input_var": "@lbt_end_redraw_from_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем переменную, хранящую куда напали"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_",
-              "var": "lbt_end_redraw_to_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_redraw_cur_idx",
               "digits": 2,
@@ -6419,24 +6485,6 @@
             }
           },
           {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_end_redraw_to_idx",
-              "input_var": "@lbt_end_redraw_to_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получае значения откуда и куда напали"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_end_redraw_from_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_redraw_from_idx",
               "digits": 2,
@@ -6444,28 +6492,10 @@
             }
           },
           {
-            "varSetString": {
-              "value": "flt_area_",
-              "var": "lbt_end_redraw_to_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_redraw_to_idx",
               "digits": 2,
               "var": "lbt_end_redraw_to_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем переменные, хранящие армии"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "lbt_end_redraw_from_army_var_name",
-              "input_var": "lbt_end_redraw_from_name"
             }
           },
           {
@@ -6476,18 +6506,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем переменные, хранящие армии"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "lbt_end_redraw_to_army_var_name",
-              "input_var": "lbt_end_redraw_to_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "_state",
               "digits": 0,
@@ -6495,58 +6513,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значения армий"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_end_redraw_from_army_idx",
-              "input_var": "@lbt_end_redraw_from_army_var_name"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_end_redraw_to_army_idx",
-              "input_var": "@lbt_end_redraw_to_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя боевой зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "lbt_end_redraw_to_real_zone_idx",
-              "input_var": "@lbt_end_redraw_to_name"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_area_",
-              "var": "lbt_end_redraw_battle_area_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@lbt_end_redraw_to_idx",
               "digits": 2,
               "var": "lbt_end_redraw_battle_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "переменная хранящая активность битвы"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "lbt_battle_",
-              "var": "lbt_end_redraw_is_active_var_name"
             }
           },
           {
@@ -6564,8 +6534,38 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем что значения армий валидно"
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_from_idx",
+              "input_var": "@lbt_end_redraw_from_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_idx",
+              "input_var": "@lbt_end_redraw_to_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_from_army_idx",
+              "input_var": "@lbt_end_redraw_from_army_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_army_idx",
+              "input_var": "@lbt_end_redraw_to_army_var_name"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "lbt_end_redraw_to_real_zone_idx",
+              "input_var": "@lbt_end_redraw_to_name"
             }
           },
           {
@@ -6576,7 +6576,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "по новому циклу не идем"
+            "value": "\u043f\u043e \u043d\u043e\u0432\u043e\u043c\u0443 \u0446\u0438\u043a\u043b\u0443 \u043d\u0435 \u0438\u0434\u0435\u043c"
           },
           "triggerDisable": {
             "target": "lbt_end_redraw_rotator"
@@ -6745,6 +6745,11 @@
             }
           },
           {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
             "varSetString": {
               "value": "lbt_battle_",
               "var": "lbt_counter_active_var_name"
@@ -6762,11 +6767,6 @@
               "value": "_active",
               "digits": 0,
               "var": "lbt_counter_active_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -6845,7 +6845,7 @@
         },
         "actions": {
           "comment": {
-            "value": "контр аттака разрешена"
+            "value": "\u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0442\u0430\u043a\u0430 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430"
           },
           "triggerEnable": {
             "target": "lbt_counter_attack_t1_check_start"
@@ -6853,7 +6853,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "контр атака не разрешена"
+            "value": "\u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0430\u043a\u0430 \u043d\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430"
           },
           "triggerDisable": {
             "target": "lbt_counter_attack_t1_check_enable"
@@ -6882,7 +6882,7 @@
         },
         "actions": {
           "comment": {
-            "value": "контр аттака разрешена"
+            "value": "\u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0442\u0430\u043a\u0430 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430"
           },
           "triggerEnable": {
             "target": "lbt_counter_attack_t2_check_start"
@@ -6890,7 +6890,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "контр атака не разрешена"
+            "value": "\u043a\u043e\u043d\u0442\u0440 \u0430\u0442\u0430\u043a\u0430 \u043d\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0430"
           },
           "triggerDisable": {
             "target": "lbt_counter_attack_t2_check_enable"
@@ -6920,12 +6920,17 @@
         "actions": [
           {
             "comment": {
-              "value": "атака была со стороны врага - можно контратаковать"
+              "value": "\u0430\u0442\u0430\u043a\u0430 \u0431\u044b\u043b\u0430 \u0441\u043e \u0441\u0442\u043e\u0440\u043e\u043d\u044b \u0432\u0440\u0430\u0433\u0430 - \u043c\u043e\u0436\u043d\u043e \u043a\u043e\u043d\u0442\u0440\u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую heat"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e heat"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 heat \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u044b\u043c"
             }
           },
           {
@@ -6946,11 +6951,6 @@
               "value": "_heat",
               "digits": 0,
               "var": "lbt_counter_attack_t1_heat_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "выставляет heat максимальным"
             }
           },
           {
@@ -6989,12 +6989,17 @@
         "actions": [
           {
             "comment": {
-              "value": "атака была со стороны врага - можно контратаковать"
+              "value": "\u0430\u0442\u0430\u043a\u0430 \u0431\u044b\u043b\u0430 \u0441\u043e \u0441\u0442\u043e\u0440\u043e\u043d\u044b \u0432\u0440\u0430\u0433\u0430 - \u043c\u043e\u0436\u043d\u043e \u043a\u043e\u043d\u0442\u0440\u0430\u0442\u0430\u043a\u043e\u0432\u0430\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "получаем переменную, хранящую heat"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e, \u0445\u0440\u0430\u043d\u044f\u0449\u0443\u044e heat"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 heat \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u044b\u043c"
             }
           },
           {
@@ -7015,11 +7020,6 @@
               "value": "_heat",
               "digits": 0,
               "var": "lbt_counter_attack_t2_heat_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "выставляет heat максимальным"
             }
           },
           {

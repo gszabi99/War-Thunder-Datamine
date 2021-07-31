@@ -381,6 +381,13 @@
           }
         },
         {
+          "unitLoadBehTree": {
+            "name": "wait",
+            "objects": "instructor",
+            "loadType": "node"
+          }
+        },
+        {
           "spawnOnAirfield": [
             {
               "runwayName": "airfield00"
@@ -395,13 +402,6 @@
               "takeoffInterval": 1.0
             }
           ]
-        },
-        {
-          "unitLoadBehTree": {
-            "name": "wait",
-            "objects": "instructor",
-            "loadType": "node"
-          }
         },
         {
           "playerControls": {
@@ -526,6 +526,21 @@
           }
         },
         {
+          "wait": {
+            "time": 28.0
+          }
+        },
+        {
+          "wait": {
+            "time": 48.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "instructor_takes_off_dialogue"
@@ -534,6 +549,11 @@
               "target": "instructor_takes_off_skip"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "first_objective"
+          }
         },
         {
           "playHint": {
@@ -553,8 +573,20 @@
           }
         },
         {
-          "wait": {
-            "time": 28.0
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "time": -1.0,
+            "shouldFadeOut": false,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -579,40 +611,8 @@
           }
         },
         {
-          "wait": {
-            "time": 48.0
-          }
-        },
-        {
           "triggerDisable": {
             "target": "instructor_takes_off_skip"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "time": -1.0,
-            "shouldFadeOut": false,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "first_objective"
           }
         }
       ],
@@ -640,6 +640,12 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d02",
+            "subtitles": true
+          }
+        },
+        {
           "unitLoadBehTree": {
             "name": "taxiOnAirfield",
             "objects": "instructor",
@@ -647,14 +653,13 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d02",
-            "subtitles": true
+          "triggerDisable": {
+            "target": "instructor_takes_off_skip"
           }
         },
         {
           "triggerDisable": {
-            "target": "instructor_takes_off_skip"
+            "target": "instructor_takes_off"
           }
         },
         {
@@ -680,17 +685,12 @@
           }
         },
         {
-          "triggerDisable": {
-            "target": "instructor_takes_off"
+          "wait": {
+            "time": 2.0
           }
         },
         {
           "missionStopCutscene": []
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
         },
         {
           "triggerEnable": [
@@ -851,19 +851,13 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "ps4_groundTest_skip"
-          }
-        },
-        {
           "wait": {
             "time": 0.1
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d03_1",
-            "subtitles": true
+          "triggerEnable": {
+            "target": "ps4_groundTest_skip"
           }
         },
         {
@@ -875,6 +869,12 @@
               "target": "ps4_groundTest_skip"
             }
           ]
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d03_1",
+            "subtitles": true
+          }
         }
       ],
       "else_actions": []
@@ -1852,6 +1852,12 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d05",
+            "subtitles": true
+          }
+        },
+        {
           "hudElementBlink": {
             "element": "speed",
             "time": 2.0,
@@ -1863,12 +1869,6 @@
             "element": "throttle",
             "time": 2.0,
             "blink": true
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d05",
-            "subtitles": true
           }
         }
       ],
@@ -1936,11 +1936,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_rudder02",
@@ -1955,6 +1950,11 @@
             "object_var_value": 0,
             "item": "rudder",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -2482,6 +2482,11 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "aerialTest_elevator02"
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "tutorial_mission1_airControls",
             "object_var_comp_op": "equal",
@@ -2525,6 +2530,11 @@
           }
         },
         {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_elevator02",
@@ -2540,16 +2550,6 @@
             "item": "elevator=max",
             "shouldBlink": false,
             "showKeyBoardShortcutsForMouseAim": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "aerialTest_elevator02"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
           }
         },
         {
@@ -2657,6 +2657,18 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d09_3",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d09_4",
+            "subtitles": true
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -2670,6 +2682,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_ailerons02",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ailerons",
+            "shouldBlink": false,
+            "showKeyBoardShortcutsForMouseAim": true
           }
         },
         {
@@ -2692,12 +2722,6 @@
             "destTimeMode": false,
             "object": "instructor",
             "move_type": "teleport"
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d09_3",
-            "subtitles": true
           }
         },
         {
@@ -2740,33 +2764,15 @@
           }
         },
         {
-          "unitLoadBehTree": {
-            "name": "rollManeuver",
-            "objects": "instructor",
-            "loadType": "node"
-          }
-        },
-        {
           "wait": {
             "time": 6.0
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_ailerons02",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ailerons",
-            "shouldBlink": false,
-            "showKeyBoardShortcutsForMouseAim": true
+          "unitLoadBehTree": {
+            "name": "rollManeuver",
+            "objects": "instructor",
+            "loadType": "node"
           }
         },
         {
@@ -2778,12 +2784,6 @@
               "target": "aerialTest_ailerons02_2"
             }
           ]
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d09_4",
-            "subtitles": true
-          }
         }
       ],
       "else_actions": []
@@ -2833,19 +2833,6 @@
           }
         },
         {
-          "missionStopCutscene": []
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "aerialTest_ailerons02_1"
-            },
-            {
-              "target": "aerialTest_ailerons02_2"
-            }
-          ]
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_ailerons02",
@@ -2861,6 +2848,19 @@
             "item": "l_stick_to_left_n_right",
             "shouldBlink": false
           }
+        },
+        {
+          "missionStopCutscene": []
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "aerialTest_ailerons02_1"
+            },
+            {
+              "target": "aerialTest_ailerons02_2"
+            }
+          ]
         },
         {
           "missionPlayDialogue": {
@@ -3254,12 +3254,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d10_3",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_throttle03",
@@ -3274,6 +3268,12 @@
             "object_var_value": 0,
             "item": "throttle=max",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d10_3",
+            "subtitles": true
           }
         },
         {
@@ -3572,12 +3572,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d13_2",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_turn02",
@@ -3593,6 +3587,12 @@
             "item": "elevator=min",
             "shouldBlink": false,
             "showKeyBoardShortcutsForMouseAim": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d13_2",
+            "subtitles": true
           }
         },
         {
@@ -4042,8 +4042,25 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d12_1",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d12_2",
+            "subtitles": true
+          }
+        },
+        {
           "triggerDisable": {
             "target": "pre_player_restore03"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "aerialTest_spin01_skip"
           }
         },
         {
@@ -4141,9 +4158,29 @@
           }
         },
         {
+          "wait": {
+            "time": 11.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "aerialTest_spin01_skip"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "aerialTest_spin02"
+            },
+            {
+              "target": "aerialTest_spin03"
+            }
+          ]
         },
         {
           "playHint": {
@@ -4160,16 +4197,6 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 11.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "aerialTest_spin01_skip"
           }
         },
         {
@@ -4190,17 +4217,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d12_1",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_spin01",
@@ -4214,22 +4230,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "aerialTest_spin02"
-            },
-            {
-              "target": "aerialTest_spin03"
-            }
-          ]
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d12_2",
-            "subtitles": true
           }
         }
       ],
@@ -4282,15 +4282,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d12_1",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_spin01",
@@ -4307,6 +4298,21 @@
           }
         },
         {
+          "missionStopSpeech": []
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d12_1",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m1_d12_2",
+            "subtitles": true
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "aerialTest_spin02"
@@ -4315,12 +4321,6 @@
               "target": "aerialTest_spin03"
             }
           ]
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m1_d12_2",
-            "subtitles": true
-          }
         }
       ],
       "else_actions": []
@@ -4363,11 +4363,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -4420,6 +4415,11 @@
           ]
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "aerialTest_spin04"
           }
@@ -4465,11 +4465,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -4520,6 +4515,11 @@
               "shouldBlink": false
             }
           ]
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
         },
         {
           "triggerEnable": {
@@ -4702,6 +4702,14 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [1.0,1.0,1.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
           "wait": {
             "time": 2.0
           }
@@ -4731,11 +4739,24 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [1.0,1.0,1.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
+          "unitMoveTo": {
+            "target": "way04",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "instructor"
           }
         },
         {
@@ -4767,27 +4788,6 @@
               "target": "testFlight_trimmer"
             }
           ]
-        },
-        {
-          "unitMoveTo": {
-            "target": "way04",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "instructor"
-          }
         },
         {
           "unitSetIndication": {
@@ -4863,11 +4863,6 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_trimmer",
@@ -4882,11 +4877,6 @@
             "object_var_value": 0,
             "item": "ID_TRIM",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -4907,11 +4897,6 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_resetTrimmer",
@@ -4926,6 +4911,21 @@
             "object_var_value": 0,
             "item": "ID_TRIM_RESET",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
           }
         }
       ],
@@ -5489,14 +5489,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -5544,6 +5544,24 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -5557,19 +5575,9 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "spawnOnAirfield": {
             "runwayName": "airfield00",
             "objects": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -5592,14 +5600,6 @@
         {
           "triggerEnable": {
             "target": "groundTest_throttle02"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -5647,14 +5647,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -5702,6 +5702,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -5712,11 +5725,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -5741,14 +5749,6 @@
             "move_type": "teleport",
             "lookat": "instructor_way00",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -5796,14 +5796,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -5851,6 +5851,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -5861,11 +5874,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -5892,14 +5900,6 @@
             "follow_radius": 300.0,
             "lookat": "instructor",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -5966,14 +5966,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -6021,6 +6021,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -6031,11 +6044,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -6060,14 +6068,6 @@
             "move_type": "teleport",
             "lookat": "instructor",
             "velocity": 250.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -8554,372 +8554,6 @@
       }
     },
     {
-      "infantry": {
-        "name": "infantry_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [514.95,26.65,-11946.3]
-        ],
-        "unit_class": "rifle_infantry",
-        "closed_waypoints": true,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "attack_type": "hold_fire",
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
-        },
-        "way": {
-          "infantry_01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [501.7,26.65,-11964.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [395.35,26.65,-12071.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [343.1,26.65,-12124.0]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [266.7,26.65,-12198.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_01_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [271.1,26.65,-12208.1]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "infantry": {
-        "name": "infantry_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [471.25,26.6737,-11640.3]
-        ],
-        "unit_class": "rifle_infantry",
-        "closed_waypoints": true,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "attack_type": "hold_fire",
-          "count": 7,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
-        },
-        "way": {
-          "infantry_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [219.6,26.65,-11806.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [163.15,26.65,-11827.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [121.5,26.65,-11818.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [87.25,26.65,-11812.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [37.5,26.65,-11833.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-29.85,26.65,-11899.3]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-100.55,26.65,-11977.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-187.6,26.65,-12065.9]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "infantry_02_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-232.3,26.65,-12063.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "infantry": {
-        "name": "infantry_03",
-        "tm": [
-          [-0.67559,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,-0.67559],
-          [388.1,26.65,-11633.9]
-        ],
-        "unit_class": "rifle_infantry",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "attack_type": "hold_fire",
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
-        },
-        "way": []
-      }
-    },
-    {
-      "infantry": {
-        "name": "infantry_04",
-        "tm": [
-          [0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,0.5],
-          [-275.7,28.0,-12223.0]
-        ],
-        "unit_class": "rifle_infantry",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "attack_type": "hold_fire",
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1]
-        },
-        "way": []
-      }
-    },
-    {
       "wheeled_vehicles": {
         "name": "wheeled_vehicles_09",
         "tm": [
@@ -9354,6 +8988,372 @@
             }
           }
         }
+      }
+    },
+    {
+      "infantry": {
+        "name": "infantry_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [514.95,26.65,-11946.3]
+        ],
+        "unit_class": "rifle_infantry",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "attack_type": "hold_fire",
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1]
+        },
+        "way": {
+          "infantry_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [501.7,26.65,-11964.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [395.35,26.65,-12071.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [343.1,26.65,-12124.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [266.7,26.65,-12198.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_01_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [271.1,26.65,-12208.1]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "infantry": {
+        "name": "infantry_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [471.25,26.6737,-11640.3]
+        ],
+        "unit_class": "rifle_infantry",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "attack_type": "hold_fire",
+          "count": 7,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1]
+        },
+        "way": {
+          "infantry_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [219.6,26.65,-11806.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [163.15,26.65,-11827.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [121.5,26.65,-11818.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [87.25,26.65,-11812.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [37.5,26.65,-11833.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-29.85,26.65,-11899.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-100.55,26.65,-11977.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-187.6,26.65,-12065.9]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "infantry_02_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-232.3,26.65,-12063.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "infantry": {
+        "name": "infantry_03",
+        "tm": [
+          [-0.67559,0.0,0.737277],
+          [0.0,1.0,0.0],
+          [-0.737277,0.0,-0.67559],
+          [388.1,26.65,-11633.9]
+        ],
+        "unit_class": "rifle_infantry",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "attack_type": "hold_fire",
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1]
+        },
+        "way": []
+      }
+    },
+    {
+      "infantry": {
+        "name": "infantry_04",
+        "tm": [
+          [0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,0.5],
+          [-275.7,28.0,-12223.0]
+        ],
+        "unit_class": "rifle_infantry",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "attack_type": "hold_fire",
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1]
+        },
+        "way": []
       }
     },
     {
@@ -9893,8 +9893,8 @@
     "airfield_area": {
       "type": "Box",
       "tm": [
-        [1050.85,1.71301e-12,1050.85],
-        [7.72101e-14,34.05,-1.32716e-13],
+        [1050.85,1.7e-12,1050.85],
+        [1e-13,34.05,-1e-13],
         [-206.294,5.49317e-06,206.294],
         [92.3,6.1,-12135.7]
       ],

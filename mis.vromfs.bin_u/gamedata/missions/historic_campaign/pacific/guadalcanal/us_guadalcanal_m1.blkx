@@ -377,28 +377,6 @@
           }
         },
         {
-          "unitSetControls": [
-            {
-              "controls": "power"
-            },
-            {
-              "value": 0.0
-            },
-            {
-              "force": true
-            },
-            {
-              "objects": "maka_sp_sq"
-            },
-            {
-              "objects": "hala_sp_sq"
-            },
-            {
-              "objects": "gavutu_sp_sq"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -425,13 +403,6 @@
               "aiEnabled": false
             }
           ]
-        },
-        {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 500.0,
-            "target": "gavutu_all"
-          }
         },
         {
           "unitSetProperties": [
@@ -462,30 +433,6 @@
           ]
         },
         {
-          "unitSetStealth": [
-            {
-              "set": true
-            },
-            {
-              "radius": 1500.0
-            },
-            {
-              "target": "hala_all"
-            },
-            {
-              "target": "maka_all"
-            },
-            {
-              "target": "tulagi_all"
-            }
-          ]
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cutscene"
-          }
-        },
-        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -509,6 +456,59 @@
               "effShootingRate": 0.5
             }
           ]
+        },
+        {
+          "unitSetControls": [
+            {
+              "controls": "power"
+            },
+            {
+              "value": 0.0
+            },
+            {
+              "force": true
+            },
+            {
+              "objects": "maka_sp_sq"
+            },
+            {
+              "objects": "hala_sp_sq"
+            },
+            {
+              "objects": "gavutu_sp_sq"
+            }
+          ]
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 500.0,
+            "target": "gavutu_all"
+          }
+        },
+        {
+          "unitSetStealth": [
+            {
+              "set": true
+            },
+            {
+              "radius": 1500.0
+            },
+            {
+              "target": "hala_all"
+            },
+            {
+              "target": "maka_all"
+            },
+            {
+              "target": "tulagi_all"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "start_cutscene"
+          }
         }
       ],
       "else_actions": []
@@ -566,44 +566,6 @@
           }
         },
         {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/us_guadalcanal_m1_t1",
-            "duration": 6.0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
@@ -625,37 +587,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "wasp_fleet_point_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "armada_01_cut"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "cut_area",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "armada_01_cut"
           }
         },
         {
@@ -686,20 +617,29 @@
         },
         {
           "showCutsceneInfo": {
+            "text": "cutscene_text/us_guadalcanal_m1_t1",
+            "duration": 6.0
+          }
+        },
+        {
+          "showCutsceneInfo": {
             "text": "cutscene_text/us_guadalcanal_m1_t2",
             "duration": 6.0
           }
         },
         {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ALL"
+          "wait": {
+            "time": 2.0
           }
         },
         {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_SKIP_CUTSCENE"
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
           }
         },
         {
@@ -708,9 +648,25 @@
           }
         },
         {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ID_SKIP_CUTSCENE"
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -731,13 +687,57 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "start_cut_skip"
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "triggerEnable": {
+            "target": "miss_start"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "armada_01_cut"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "cut_area",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "armada_01_cut"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_SKIP_CUTSCENE"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ID_SKIP_CUTSCENE"
           }
         },
         {
@@ -747,8 +747,8 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "miss_start"
+          "triggerDisable": {
+            "target": "start_cut_skip"
           }
         }
       ],
@@ -820,9 +820,21 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ALL"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -842,18 +854,6 @@
               "target": "armada_01_cut"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
         },
         {
           "missionPlayDialogue": {
@@ -1014,39 +1014,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "way01_cut_skip"
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m1_dialog2_part1",
-            "subtitles": false
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "ground_units",
             "startSubTypeOnTheMarch": "",
@@ -1071,13 +1038,35 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "near_way01_dialog2"
+          "wait": {
+            "time": 2.0
           }
         },
         {
           "wait": {
             "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -1098,18 +1087,29 @@
           }
         },
         {
-          "triggerDisable": {
-            "target": "start_cut_skip"
+          "triggerEnable": {
+            "target": "way01_cut_skip"
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "triggerEnable": {
+            "target": "near_way01_dialog2"
           }
         },
         {
           "triggerEnable": {
             "target": "way01_start"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "us_gc_m1_dialog2_part1",
+            "subtitles": false
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "start_cut_skip"
           }
         }
       ],
@@ -1225,14 +1225,14 @@
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
             "time": 1.0
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+          "wait": {
             "time": 1.0
           }
         },
@@ -1331,11 +1331,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2000.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1343,6 +1338,11 @@
             "object_var_value": 0,
             "object": "maka_sp05",
             "aiEnabled": true
+          }
+        },
+        {
+          "wait": {
+            "time": 2000.0
           }
         }
       ],
@@ -1634,6 +1634,11 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "missionSetTargetsIndicator": {
             "target_type": "isAlive",
             "target_marking": 0,
@@ -1645,11 +1650,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "maka_sp_sq"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -1712,11 +1712,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -1724,6 +1719,11 @@
             "oriented": false,
             "ignoreDifficulty": false,
             "target": "waypoint03"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1832,11 +1832,6 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1847,11 +1842,6 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1859,6 +1849,16 @@
             "object_var_value": 0,
             "object": "hala_sp06",
             "aiEnabled": true
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -2019,8 +2019,24 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "missionPlayDialogue": {
             "dialog": "us_gc_m1_dialog4_part1",
+            "subtitles": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "us_gc_m1_dialog4_part2",
             "subtitles": false
           }
         },
@@ -2057,27 +2073,11 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "guadal_us1_mo1_waypointFly",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "us_gc_m1_dialog4_part2",
-            "subtitles": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -2160,8 +2160,18 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "land_cutscene"
+          }
+        },
+        {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -2172,20 +2182,10 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionSetFade": {
             "mode": "fadeIn",
             "color": [0.0,0.0,0.0],
             "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "land_cutscene"
           }
         }
       ],
@@ -2297,8 +2297,35 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_SKIP_CUTSCENE"
+          }
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ID_SKIP_CUTSCENE"
+          }
+        },
+        {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -2319,22 +2346,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_cut_skip"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_SKIP_CUTSCENE"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
@@ -2352,19 +2363,8 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "land_cut_skip"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ID_SKIP_CUTSCENE"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -2373,8 +2373,8 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "triggerDisable": {
+            "target": "land_cut_skip"
           }
         },
         {
@@ -2452,6 +2452,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
           }
@@ -2489,13 +2496,6 @@
           "playerControls": {
             "setStatus": "enable",
             "control": "ALL"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
           }
         }
       ],
@@ -2608,15 +2608,50 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+          "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 58.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2663,6 +2698,40 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "area",
             "duration": 6.0,
@@ -2684,48 +2753,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "tulagi_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_dialog"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
           }
         },
         {
@@ -2753,11 +2780,6 @@
           }
         },
         {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "area",
             "duration": 6.0,
@@ -2779,11 +2801,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "tulagi_cut02"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -2854,35 +2871,18 @@
           ]
         },
         {
-          "wait": {
-            "time": 58.0
+          "triggerEnable": {
+            "target": "debriefing_dialog"
           }
         },
         {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
+          "triggerEnable": {
+            "target": "debriefing_cut_skip"
           }
         },
         {
           "triggerDisable": {
             "target": "debriefing_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -3849,6 +3849,571 @@
       }
     },
     {
+      "armada": {
+        "name": "gavutu_sp01",
+        "tm": [
+          [0.5373,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,0.5373],
+          [14173.3,-6.95,12133.0]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp02",
+        "tm": [
+          [0.766044,0.0,0.642788],
+          [0.0,1.0,0.0],
+          [-0.642788,0.0,0.766044],
+          [14205.0,-2.7,12102.8]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp03",
+        "tm": [
+          [0.92388,0.0,0.382683],
+          [0.0,1.0,0.0],
+          [-0.382683,0.0,0.92388],
+          [14776.9,-2.45,11703.0]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp04",
+        "tm": [
+          [0.939693,0.0,0.34202],
+          [0.0,1.0,0.0],
+          [-0.34202,0.0,0.939693],
+          [14793.6,-4.7,11681.9]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp05",
+        "tm": [
+          [0.976296,0.0,-0.21644],
+          [0.0,1.0,0.0],
+          [0.21644,0.0,0.976296],
+          [14838.0,-4.35,11446.0]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp06",
+        "tm": [
+          [0.976296,0.0,-0.21644],
+          [0.0,1.0,0.0],
+          [0.21644,0.0,0.976296],
+          [14833.3,-6.05,11428.3]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "gavutu_sp07",
+        "tm": [
+          [0.976296,0.0,-0.21644],
+          [0.0,1.0,0.0],
+          [0.21644,0.0,0.976296],
+          [14836.5,-2.75,11464.8]
+        ],
+        "unit_class": "a6m2_n_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_f4f01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4147.5,500.0,8464.2]
+        ],
+        "unit_class": "f4f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 2,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_sbd01",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [7277.4,1500.0,8668.8]
+        ],
+        "unit_class": "sbd-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "sbd_3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 15,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "armada_02",
+        "tm": [
+          [-0.92388,0.0,0.382684],
+          [0.0,1.0,0.0],
+          [-0.382684,0.0,-0.92388],
+          [16235.2,200.0,11430.6]
+        ],
+        "unit_class": "f4f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "f4f_cut",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-19998.9,20.0,30942.6]
+        ],
+        "unit_class": "f4f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "armada_01_cut",
+        "tm": [
+          [0.887011,0.0,0.461748],
+          [0.0,1.0,0.0],
+          [-0.461748,0.0,0.887011],
+          [4444.6,500.0,8136.55]
+        ],
+        "unit_class": "f4f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "isDelayed": false,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.0,
+            "super_col_distances": 1.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "maka_sp_sq",
         "tm": [
@@ -3921,6 +4486,510 @@
           },
           {
             "squad_members": "lcvp_sq"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "maka_aa_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12516.0,-26.15,13320.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "maka_aa01"
+          },
+          {
+            "squad_members": "maka_aa02"
+          },
+          {
+            "squad_members": "maka_aa03"
+          },
+          {
+            "squad_members": "maka_aa04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "gavutu_sp_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14719.2,-21.0,11888.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "gavutu_sp01"
+          },
+          {
+            "squad_members": "gavutu_sp02"
+          },
+          {
+            "squad_members": "gavutu_sp03"
+          },
+          {
+            "squad_members": "gavutu_sp04"
+          },
+          {
+            "squad_members": "gavutu_sp05"
+          },
+          {
+            "squad_members": "gavutu_sp06"
+          },
+          {
+            "squad_members": "gavutu_sp07"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "gavutu_aa_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14834.5,-22.45,11849.7]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "gavutu_aa01"
+          },
+          {
+            "squad_members": "gavutu_aa02"
+          },
+          {
+            "squad_members": "gavutu_aa03"
+          },
+          {
+            "squad_members": "gavutu_aa04"
+          },
+          {
+            "squad_members": "gavutu_aa05"
+          },
+          {
+            "squad_members": "gavutu_aa06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "hala_sp_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15969.5,-26.7,11801.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "hala_sp01"
+          },
+          {
+            "squad_members": "hala_sp02"
+          },
+          {
+            "squad_members": "hala_sp03"
+          },
+          {
+            "squad_members": "hala_sp04"
+          },
+          {
+            "squad_members": "hala_sp05"
+          },
+          {
+            "squad_members": "hala_sp06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "hala_aa_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15907.0,-30.1,11799.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "hala_aa01"
+          },
+          {
+            "squad_members": "hala_aa02"
+          },
+          {
+            "squad_members": "hala_aa03"
+          },
+          {
+            "squad_members": "hala_aa04"
+          },
+          {
+            "squad_members": "hala_aa05"
+          },
+          {
+            "squad_members": "hala_aa06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "maka_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12536.0,-11.85,13472.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "maka_sp_sq"
+          },
+          {
+            "squad_members": "maka_aa_sq"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "gavutu_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14872.3,-18.35,12005.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "gavutu_sp_sq"
+          },
+          {
+            "squad_members": "gavutu_aa_sq"
+          },
+          {
+            "squad_members": "gavutu_v_sq"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "hala_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [15946.2,-33.3,11739.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "hala_sp_sq"
+          },
+          {
+            "squad_members": "hala_aa_sq"
+          },
+          {
+            "squad_members": "hala_v_sq"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14216.0,63.75,13922.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "maka_all"
+          },
+          {
+            "squad_members": "gavutu_all"
+          },
+          {
+            "squad_members": "hala_all"
+          },
+          {
+            "squad_members": "tulagi_all"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "gavutu_v_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14937.3,-32.8,11827.9]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "gavutu_v01"
+          },
+          {
+            "squad_members": "gavutu_v02"
+          },
+          {
+            "squad_members": "gavutu_v03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "hala_v_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [16042.7,-17.45,11809.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "hala_v01"
+          },
+          {
+            "squad_members": "hala_v02"
+          },
+          {
+            "squad_members": "hala_v03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "tulagi_aa_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11045.1,-59.95,12259.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "tulagi_aa01"
+          },
+          {
+            "squad_members": "tulagi_aa02"
+          },
+          {
+            "squad_members": "tulagi_aa03"
+          },
+          {
+            "squad_members": "tulagi_aa04"
+          },
+          {
+            "squad_members": "tulagi_aa05"
+          },
+          {
+            "squad_members": "tulagi_aa06"
+          },
+          {
+            "squad_members": "tulagi_aa07"
+          },
+          {
+            "squad_members": "tulagi_aa08"
+          },
+          {
+            "squad_members": "tulagi_aa09"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "tulagi_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11153.6,-38.7,12111.2]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "tulagi_aa_sq"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "lcvp_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9438.3,0.0,11482.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "lcvp01"
+          },
+          {
+            "squad_members": "lcvp02"
+          },
+          {
+            "squad_members": "lcvp03"
+          },
+          {
+            "squad_members": "lcvp04"
+          },
+          {
+            "squad_members": "lcvp05"
+          },
+          {
+            "squad_members": "lcvp06"
+          },
+          {
+            "squad_members": "lcvp07"
+          },
+          {
+            "squad_members": "lcvp08"
+          },
+          {
+            "squad_members": "lcvp09"
+          },
+          {
+            "squad_members": "lcvp10"
+          },
+          {
+            "squad_members": "lcvp11"
+          },
+          {
+            "squad_members": "lcvp12"
+          },
+          {
+            "squad_members": "lcvp13"
+          },
+          {
+            "squad_members": "lcvp14"
+          },
+          {
+            "squad_members": "lcvp15"
+          },
+          {
+            "squad_members": "lcvp16"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "player_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3581.1,0.0,9104.7]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "armada_01",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "wasp_fleet",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-20458.0,0.0,30971.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "wasp"
+          },
+          {
+            "squad_members": "ships_02"
+          },
+          {
+            "squad_members": "ships_03"
+          },
+          {
+            "squad_members": "ships_04"
+          },
+          {
+            "squad_members": "ships_05"
+          },
+          {
+            "squad_members": "ships_06"
+          },
+          {
+            "squad_members": "ships_07"
+          },
+          {
+            "squad_members": "ships_08"
+          },
+          {
+            "squad_members": "ships_09"
+          },
+          {
+            "squad_members": "ships_10"
+          },
+          {
+            "squad_members": "ships_11"
           }
         ]
       }
@@ -4286,434 +5355,6 @@
       }
     },
     {
-      "armada": {
-        "name": "gavutu_sp01",
-        "tm": [
-          [0.5373,0.0,0.843391],
-          [0.0,1.0,0.0],
-          [-0.843391,0.0,0.5373],
-          [14173.3,-6.95,12133.0]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp02",
-        "tm": [
-          [0.766044,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,0.766044],
-          [14205.0,-2.7,12102.8]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp03",
-        "tm": [
-          [0.92388,0.0,0.382683],
-          [0.0,1.0,0.0],
-          [-0.382683,0.0,0.92388],
-          [14776.9,-2.45,11703.0]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp04",
-        "tm": [
-          [0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,0.939693],
-          [14793.6,-4.7,11681.9]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp05",
-        "tm": [
-          [0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,0.976296],
-          [14838.0,-4.35,11446.0]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp06",
-        "tm": [
-          [0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,0.976296],
-          [14833.3,-6.05,11428.3]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "gavutu_sp07",
-        "tm": [
-          [0.976296,0.0,-0.21644],
-          [0.0,1.0,0.0],
-          [0.21644,0.0,0.976296],
-          [14836.5,-2.75,11464.8]
-        ],
-        "unit_class": "a6m2_n_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "maka_aa_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12516.0,-26.15,13320.2]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "maka_aa01"
-          },
-          {
-            "squad_members": "maka_aa02"
-          },
-          {
-            "squad_members": "maka_aa03"
-          },
-          {
-            "squad_members": "maka_aa04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "gavutu_sp_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14719.2,-21.0,11888.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "gavutu_sp01"
-          },
-          {
-            "squad_members": "gavutu_sp02"
-          },
-          {
-            "squad_members": "gavutu_sp03"
-          },
-          {
-            "squad_members": "gavutu_sp04"
-          },
-          {
-            "squad_members": "gavutu_sp05"
-          },
-          {
-            "squad_members": "gavutu_sp06"
-          },
-          {
-            "squad_members": "gavutu_sp07"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "gavutu_aa_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14834.5,-22.45,11849.7]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "gavutu_aa01"
-          },
-          {
-            "squad_members": "gavutu_aa02"
-          },
-          {
-            "squad_members": "gavutu_aa03"
-          },
-          {
-            "squad_members": "gavutu_aa04"
-          },
-          {
-            "squad_members": "gavutu_aa05"
-          },
-          {
-            "squad_members": "gavutu_aa06"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "hala_aa03",
         "tm": [
@@ -4783,146 +5424,6 @@
           "uniqueName": ""
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "hala_sp_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15969.5,-26.7,11801.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "hala_sp01"
-          },
-          {
-            "squad_members": "hala_sp02"
-          },
-          {
-            "squad_members": "hala_sp03"
-          },
-          {
-            "squad_members": "hala_sp04"
-          },
-          {
-            "squad_members": "hala_sp05"
-          },
-          {
-            "squad_members": "hala_sp06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "hala_aa_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15907.0,-30.1,11799.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "hala_aa01"
-          },
-          {
-            "squad_members": "hala_aa02"
-          },
-          {
-            "squad_members": "hala_aa03"
-          },
-          {
-            "squad_members": "hala_aa04"
-          },
-          {
-            "squad_members": "hala_aa05"
-          },
-          {
-            "squad_members": "hala_aa06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "maka_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12536.0,-11.85,13472.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "maka_sp_sq"
-          },
-          {
-            "squad_members": "maka_aa_sq"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "gavutu_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14872.3,-18.35,12005.8]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "gavutu_sp_sq"
-          },
-          {
-            "squad_members": "gavutu_aa_sq"
-          },
-          {
-            "squad_members": "gavutu_v_sq"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "hala_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [15946.2,-33.3,11739.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "hala_sp_sq"
-          },
-          {
-            "squad_members": "hala_aa_sq"
-          },
-          {
-            "squad_members": "hala_v_sq"
-          }
-        ]
       }
     },
     {
@@ -5070,15 +5571,15 @@
       }
     },
     {
-      "armada": {
-        "name": "us_f4f01",
+      "air_defence": {
+        "name": "tulagi_aa02",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [4147.5,500.0,8464.2]
+          [12414.0,20.5,11936.7]
         ],
-        "unit_class": "f4f-4",
+        "unit_class": "jpn_13mm_hotchkiss",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -5093,55 +5594,304 @@
         "bulletsCount3": 0,
         "crewSkillK": 0.0,
         "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 2,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "uniqueName": ""
         },
         "way": []
       }
     },
     {
-      "squad": {
-        "name": "jpn_all",
+      "air_defence": {
+        "name": "tulagi_aa03",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [14216.0,63.75,13922.3]
+          [11814.1,36.55,12210.8]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "maka_all"
-          },
-          {
-            "squad_members": "gavutu_all"
-          },
-          {
-            "squad_members": "hala_all"
-          },
-          {
-            "squad_members": "tulagi_all"
-          }
-        ]
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11626.5,41.75,12644.2]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11149.1,36.55,12959.1]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [10708.2,36.55,12989.7]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [10690.8,36.55,13130.6]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11776.0,36.55,12571.6]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "tulagi_aa09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11626.3,36.55,12933.6]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "maka_aa04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12283.4,42.55,12985.1]
+        ],
+        "unit_class": "jpn_13mm_hotchkiss",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
       }
     },
     {
@@ -5358,56 +6108,6 @@
           "uniqueName": ""
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "gavutu_v_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14937.3,-32.8,11827.9]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "gavutu_v01"
-          },
-          {
-            "squad_members": "gavutu_v02"
-          },
-          {
-            "squad_members": "gavutu_v03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "hala_v_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [16042.7,-17.45,11809.8]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "hala_v01"
-          },
-          {
-            "squad_members": "hala_v02"
-          },
-          {
-            "squad_members": "hala_v03"
-          }
-        ]
       }
     },
     {
@@ -5873,435 +6573,6 @@
       }
     },
     {
-      "armada": {
-        "name": "us_sbd01",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [7277.4,1500.0,8668.8]
-        ],
-        "unit_class": "sbd-3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "sbd_3_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 15,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12414.0,20.5,11936.7]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11814.1,36.55,12210.8]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11626.5,41.75,12644.2]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11149.1,36.55,12959.1]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa06",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10708.2,36.55,12989.7]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa07",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [10690.8,36.55,13130.6]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa08",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11776.0,36.55,12571.6]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "tulagi_aa09",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11626.3,36.55,12933.6]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "tulagi_aa_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11045.1,-59.95,12259.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "tulagi_aa01"
-          },
-          {
-            "squad_members": "tulagi_aa02"
-          },
-          {
-            "squad_members": "tulagi_aa03"
-          },
-          {
-            "squad_members": "tulagi_aa04"
-          },
-          {
-            "squad_members": "tulagi_aa05"
-          },
-          {
-            "squad_members": "tulagi_aa06"
-          },
-          {
-            "squad_members": "tulagi_aa07"
-          },
-          {
-            "squad_members": "tulagi_aa08"
-          },
-          {
-            "squad_members": "tulagi_aa09"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "tulagi_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11153.6,-38.7,12111.2]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "tulagi_aa_sq"
-        }
-      }
-    },
-    {
-      "air_defence": {
-        "name": "maka_aa04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12283.4,42.55,12985.1]
-        ],
-        "unit_class": "jpn_13mm_hotchkiss",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "us_dd02",
         "tm": [
@@ -6432,70 +6703,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "lcvp_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9438.3,0.0,11482.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "lcvp01"
-          },
-          {
-            "squad_members": "lcvp02"
-          },
-          {
-            "squad_members": "lcvp03"
-          },
-          {
-            "squad_members": "lcvp04"
-          },
-          {
-            "squad_members": "lcvp05"
-          },
-          {
-            "squad_members": "lcvp06"
-          },
-          {
-            "squad_members": "lcvp07"
-          },
-          {
-            "squad_members": "lcvp08"
-          },
-          {
-            "squad_members": "lcvp09"
-          },
-          {
-            "squad_members": "lcvp10"
-          },
-          {
-            "squad_members": "lcvp11"
-          },
-          {
-            "squad_members": "lcvp12"
-          },
-          {
-            "squad_members": "lcvp13"
-          },
-          {
-            "squad_members": "lcvp14"
-          },
-          {
-            "squad_members": "lcvp15"
-          },
-          {
-            "squad_members": "lcvp16"
-          }
-        ]
       }
     },
     {
@@ -7347,69 +7554,6 @@
       }
     },
     {
-      "squad": {
-        "name": "player_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3581.1,0.0,9104.7]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "armada_01",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "armada_02",
-        "tm": [
-          [-0.92388,0.0,0.382684],
-          [0.0,1.0,0.0],
-          [-0.382684,0.0,-0.92388],
-          [16235.2,200.0,11430.6]
-        ],
-        "unit_class": "f4f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-4_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "wasp",
         "tm": [
@@ -7801,150 +7945,6 @@
           "formation_noise": [0.1,0.1],
           "attack_type": "fire_at_will",
           "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "wasp_fleet",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-20458.0,0.0,30971.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "wasp"
-          },
-          {
-            "squad_members": "ships_02"
-          },
-          {
-            "squad_members": "ships_03"
-          },
-          {
-            "squad_members": "ships_04"
-          },
-          {
-            "squad_members": "ships_05"
-          },
-          {
-            "squad_members": "ships_06"
-          },
-          {
-            "squad_members": "ships_07"
-          },
-          {
-            "squad_members": "ships_08"
-          },
-          {
-            "squad_members": "ships_09"
-          },
-          {
-            "squad_members": "ships_10"
-          },
-          {
-            "squad_members": "ships_11"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "f4f_cut",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-19998.9,20.0,30942.6]
-        ],
-        "unit_class": "f4f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-4_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "armada_01_cut",
-        "tm": [
-          [0.887011,0.0,0.461748],
-          [0.0,1.0,0.0],
-          [-0.461748,0.0,0.887011],
-          [4444.6,500.0,8136.55]
-        ],
-        "unit_class": "f4f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-4_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 4,
-          "isDelayed": false,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.0,
-            "super_col_distances": 1.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

@@ -194,6 +194,95 @@
           }
         },
         {
+          "div": {
+            "id": "searchDiv",
+            "display": "hide",
+            "size": "3@sIco + 0.26@sf, ph",
+            "min-width": "15*@scrn_tgt/100.0",
+            "max-width": "30%pw",
+            "min-height": "ph",
+            "max-height": "ph",
+            "padding-top": "1@blockInterval",
+            "padding-left": "1@blockInterval",
+            "behaviour": "window-size",
+            "window-size-border-mask": "L",
+            "frame": {
+              "size": "pw, ph",
+              "flow": "vertical",
+              "smallFont": "yes",
+              "type": "dark",
+              "tdiv": {
+                "id": "search_channels_block",
+                "width": "pw",
+                "flow": "vertical",
+                "tdiv": {
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "activeText": {
+                    "smallFont": "yes",
+                    "width": "pw",
+                    "pare-text": "yes",
+                    "text": "#channel/search",
+                    "min-height": "24"
+                  },
+                  "Button_text": {
+                    "id": "btn_mainChannels",
+                    "pos": "pw-w, 50%ph-50%h",
+                    "position": "absolute",
+                    "tooltip": "#chat/backToMainChannels",
+                    "on_click": "onMainChannels",
+                    "class": "image",
+                    "imgSize": "small",
+                    "showConsoleImage": "no",
+                    "img": {
+                      "background-image": "#ui/gameuiskin#btn_undo.svg"
+                    }
+                  }
+                },
+                "groupIns": {
+                  "noPadding": "yes",
+                  "EditBox": {
+                    "id": "search_edit",
+                    "text": "",
+                    "noMargin": "yes",
+                    "on_activate": "onSearchStart",
+                    "on_cancel_edit": "onCancelSearchEdit",
+                    "on_set_focus": "onChatEditboxFocus"
+                  },
+                  "Button_text": {
+                    "pos": "@blockInterval, 0.5ph-0.5h",
+                    "position": "relative",
+                    "tooltip": "#channel/search",
+                    "on_click": "onSearchStart",
+                    "class": "image",
+                    "noMargin": "yes",
+                    "showConsoleImage": "no",
+                    "img": {
+                      "background-image": "#ui/gameuiskin#btn_search.svg"
+                    }
+                  }
+                }
+              },
+              "groupList": {
+                "id": "searchList",
+                "imgType": "none",
+                "on_dbl_click": "onSearchRoomJoin",
+                "on_cancel_edit": "onCancelSearchRooms",
+                "on_hover": "onChatListHover",
+                "on_unhover": "onChatListHover"
+              },
+              "Button_text": {
+                "id": "btn_join_room",
+                "pos": "50%pw-50%w, 0",
+                "position": "relative",
+                "style": "margin-right:0; min-width:1; width:pw; overflow:hidden; pare-text:yes;",
+                "text": "#chat/btnJoin",
+                "_on_click": "onSearchRoomJoin"
+              }
+            }
+          }
+        },
+        {
           "tdiv": [
             {
               "size": "fw, ph"
@@ -284,95 +373,6 @@
               }
             }
           ]
-        },
-        {
-          "div": {
-            "id": "searchDiv",
-            "display": "hide",
-            "size": "3@sIco + 0.26@sf, ph",
-            "min-width": "15*@scrn_tgt/100.0",
-            "max-width": "30%pw",
-            "min-height": "ph",
-            "max-height": "ph",
-            "padding-top": "1@blockInterval",
-            "padding-left": "1@blockInterval",
-            "behaviour": "window-size",
-            "window-size-border-mask": "L",
-            "frame": {
-              "size": "pw, ph",
-              "flow": "vertical",
-              "smallFont": "yes",
-              "type": "dark",
-              "tdiv": {
-                "id": "search_channels_block",
-                "width": "pw",
-                "flow": "vertical",
-                "tdiv": {
-                  "width": "pw",
-                  "overflow": "hidden",
-                  "activeText": {
-                    "smallFont": "yes",
-                    "width": "pw",
-                    "pare-text": "yes",
-                    "text": "#channel/search",
-                    "min-height": "24"
-                  },
-                  "Button_text": {
-                    "id": "btn_mainChannels",
-                    "pos": "pw-w, 50%ph-50%h",
-                    "position": "absolute",
-                    "tooltip": "#chat/backToMainChannels",
-                    "on_click": "onMainChannels",
-                    "class": "image",
-                    "imgSize": "small",
-                    "showConsoleImage": "no",
-                    "img": {
-                      "background-image": "#ui/gameuiskin#btn_undo.svg"
-                    }
-                  }
-                },
-                "groupIns": {
-                  "noPadding": "yes",
-                  "EditBox": {
-                    "id": "search_edit",
-                    "text": "",
-                    "noMargin": "yes",
-                    "on_activate": "onSearchStart",
-                    "on_cancel_edit": "onCancelSearchEdit",
-                    "on_set_focus": "onChatEditboxFocus"
-                  },
-                  "Button_text": {
-                    "pos": "@blockInterval, 0.5ph-0.5h",
-                    "position": "relative",
-                    "tooltip": "#channel/search",
-                    "on_click": "onSearchStart",
-                    "class": "image",
-                    "noMargin": "yes",
-                    "showConsoleImage": "no",
-                    "img": {
-                      "background-image": "#ui/gameuiskin#btn_search.svg"
-                    }
-                  }
-                }
-              },
-              "groupList": {
-                "id": "searchList",
-                "imgType": "none",
-                "on_dbl_click": "onSearchRoomJoin",
-                "on_cancel_edit": "onCancelSearchRooms",
-                "on_hover": "onChatListHover",
-                "on_unhover": "onChatListHover"
-              },
-              "Button_text": {
-                "id": "btn_join_room",
-                "pos": "50%pw-50%w, 0",
-                "position": "relative",
-                "style": "margin-right:0; min-width:1; width:pw; overflow:hidden; pare-text:yes;",
-                "text": "#chat/btnJoin",
-                "_on_click": "onSearchRoomJoin"
-              }
-            }
-          }
         }
       ]
     },

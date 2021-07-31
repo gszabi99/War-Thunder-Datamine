@@ -2213,10 +2213,10 @@
               "lim3": [-145.0,145.0,-10.0,70.0]
             },
             {
-              "lim4": [145.0,160.0,-5.0,70.0]
+              "lim3": [160.0,180.0,8.0,70.0]
             },
             {
-              "lim3": [160.0,180.0,8.0,70.0]
+              "lim4": [145.0,160.0,-5.0,70.0]
             }
           ],
           "gunStabilizer": {
@@ -2291,10 +2291,10 @@
               "lim3": [-145.0,145.0,-10.0,70.0]
             },
             {
-              "lim4": [145.0,160.0,-5.0,70.0]
+              "lim3": [160.0,180.0,8.0,70.0]
             },
             {
-              "lim3": [160.0,180.0,8.0,70.0]
+              "lim4": [145.0,160.0,-5.0,70.0]
             }
           ],
           "gunStabilizer": {
@@ -3340,14 +3340,6 @@
         }
       },
       {
-        "procedural": {
-          "name": "default",
-          "fx": {
-            "name": "ship_hit_fire"
-          }
-        }
-      },
-      {
         "event": {
           "name": "torpedo_fire",
           "fx": {
@@ -3362,6 +3354,14 @@
           "fx": {
             "name": "ship_explosion_large_second",
             "centerDmgPart": false
+          }
+        }
+      },
+      {
+        "procedural": {
+          "name": "default",
+          "fx": {
+            "name": "ship_hit_fire"
           }
         }
       }
@@ -3405,16 +3405,16 @@
             "part": "compartment_02_dm"
           },
           {
-            "weight": 1.0
-          },
-          {
-            "maxWaterAlive": 1.0
-          },
-          {
             "part": {
               "partNo": "radio_station_dm",
               "critWaterLevel": 0.5
             }
+          },
+          {
+            "weight": 1.0
+          },
+          {
+            "maxWaterAlive": 1.0
           }
         ]
       },

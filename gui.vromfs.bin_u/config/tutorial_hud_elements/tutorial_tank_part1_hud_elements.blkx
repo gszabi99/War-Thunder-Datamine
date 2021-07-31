@@ -102,17 +102,6 @@
         }
       },
       {
-        "img": {
-          "id": "tutorial_tank_arrow_player_map",
-          "position": "absolute",
-          "pos": "6%pw-0%w, 19%ph-0%h",
-          "size": "30/720@shHud, 50/720@shHud",
-          "rotation": "125",
-          "display": "show",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
         "textareaNoTab": {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_enemy_tank",
@@ -121,17 +110,6 @@
           "display": "show",
           "style": "font:@fontHudMedium; text-align:center; color:#c93e3e;",
           "text": "#hud_tutorial_tank_minimap_enemy_tank"
-        }
-      },
-      {
-        "img": {
-          "id": "tutorial_tank_arrow_enemy_map",
-          "position": "absolute",
-          "pos": "33%pw-50%w, 16%ph-0%h",
-          "size": "30/720@shHud, 40/720@shHud",
-          "rotation": "180",
-          "display": "show",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
         }
       },
       {
@@ -147,12 +125,244 @@
       },
       {
         "img": {
+          "id": "tutorial_tank_arrow_player_map",
+          "position": "absolute",
+          "pos": "6%pw-0%w, 19%ph-0%h",
+          "size": "30/720@shHud, 50/720@shHud",
+          "rotation": "125",
+          "display": "show",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      },
+      {
+        "img": {
+          "id": "tutorial_tank_arrow_enemy_map",
+          "position": "absolute",
+          "pos": "33%pw-50%w, 16%ph-0%h",
+          "size": "30/720@shHud, 40/720@shHud",
+          "rotation": "180",
+          "display": "show",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      },
+      {
+        "img": {
           "id": "tutorial_tank_arrow_ally_map",
           "position": "absolute",
           "pos": "13%pw-0%w, 67%ph-100%h",
           "size": "30/720@shHud, 50/720@shHud",
           "display": "show",
           "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      }
+    ]
+  },
+  {
+    "tdiv": {
+      "shadeStyle": "HudHeader3D",
+      "id": "hud_tutorial_tank_press_to_continue_cross",
+      "hintStyle": "hudHintYellow",
+      "behaviour": "bhvHint",
+      "width": "pw",
+      "isWrapInRowAllowed": "yes",
+      "flow-align": "right",
+      "position": "absolute",
+      "pos": "100%pw-100%w, 45%ph-50%h",
+      "display": "show",
+      "value": "hints/tutorial_press_id_continue"
+    }
+  },
+  {
+    "tdiv": [
+      {
+        "id": "hud_tutorial_tank_xray_all_texts"
+      },
+      {
+        "_set_aabb_by_object": "hitCamera"
+      },
+      {
+        "pos": "50%pw, 50%ph"
+      },
+      {
+        "size": "288, 146"
+      },
+      {
+        "position": "root"
+      },
+      {
+        "textareaNoTab": {
+          "shadeStyle": "HudHeader3D",
+          "id": "hud_tutorial_tank_xray_itself",
+          "position": "absolute",
+          "pos": "0%pw-115%w, 10%ph-0%h",
+          "display": "hide",
+          "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
+          "text": "#hud_tutorial_tank_xray_itself"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "shadeStyle": "HudHeader3D",
+          "id": "hud_tutorial_tank_xray_explanation",
+          "position": "absolute",
+          "pos": "0%pw-110%w, 50%ph-0%h",
+          "display": "hide",
+          "width": "0.9pw",
+          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
+          "text": "#hud_tutorial_tank_xray_explanation"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "shadeStyle": "HudHeader3D",
+          "id": "hud_tutorial_tank_xray_crew_count",
+          "position": "absolute",
+          "pos": "0%pw-110%w, 50%ph-0%h",
+          "width": "0.9pw",
+          "display": "hide",
+          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
+          "text": "#hud_tutorial_tank_xray_crew_count"
+        }
+      },
+      {
+        "textareaNoTab": {
+          "shadeStyle": "HudHeader3D",
+          "id": "hud_tutorial_tank_fire_and_explosion",
+          "position": "absolute",
+          "pos": "0%pw-110%w, 50%ph-0%h",
+          "width": "0.9pw",
+          "display": "hide",
+          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
+          "text": "#hud_tutorial_tank_fire_and_explosion"
+        }
+      }
+    ]
+  },
+  {
+    "tdiv": {
+      "shadeStyle": "HudHeader3D",
+      "id": "hud_tutorial_tank_press_to_continue_xray",
+      "hintStyle": "hudHintYellow",
+      "behaviour": "bhvHint",
+      "width": "pw",
+      "isWrapInRowAllowed": "yes",
+      "flow-align": "right",
+      "position": "absolute",
+      "pos": "98%pw-100%w, 30%ph-50%h",
+      "display": "show",
+      "style": "font:@fontHudMedium; text-align:right; color:#ebeb22;",
+      "value": "hints/tutorial_press_id_continue"
+    }
+  },
+  {
+    "tdiv": {
+      "id": "hud_tutorial_tank_minimap_artillery",
+      "_set_aabb_by_object": "map",
+      "img": {
+        "id": "tutorial_tank_arrow_artillery_map",
+        "position": "absolute",
+        "pos": "34%pw-50%w, -10%ph-0%h",
+        "size": "30/720@shHud, 100/720@shHud",
+        "rotation": "180",
+        "display": "show",
+        "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+      }
+    }
+  },
+  {
+    "tdiv": [
+      {
+        "id": "hud_tutorial_tank_tickets_all_texts"
+      },
+      {
+        "_set_aabb_by_object": "multiplayerScore"
+      },
+      {
+        "position": "root"
+      },
+      {
+        "textareaNoTab": {
+          "shadeStyle": "HudHeader3D",
+          "id": "hud_tutorial_tank_tickets_zone_white_corners",
+          "position": "absolute",
+          "pos": "50%pw-50%w, 270%ph-0%h",
+          "display": "hide",
+          "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
+          "text": "#hud_tutorial_tank_tickets_zone_white_corners"
+        }
+      },
+      {
+        "img": {
+          "id": "tutorial_tank_arrow_white_corners01",
+          "position": "absolute",
+          "pos": "52%pw-50%w, 90%ph-0%h",
+          "size": "30/720@shHud, 50/720@shHud",
+          "rotation": "7",
+          "display": "hide",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      },
+      {
+        "img": {
+          "id": "tutorial_tank_arrow_white_corners02",
+          "position": "absolute",
+          "pos": "48%pw-50%w, 90%ph-0%h",
+          "size": "30/720@shHud, 50/720@shHud",
+          "rotation": "353",
+          "display": "hide",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      },
+      {
+        "tdiv": {
+          "id": "tutorial_tank_arrow_friendly_tickets",
+          "flow": "vertical",
+          "pos": "10%pw-100%w, 0",
+          "position": "absolute",
+          "display": "hide",
+          "img": {
+            "position": "relative",
+            "pos": "0, 0",
+            "size": "30/720@shHud, 70/720@shHud",
+            "rotation": "65",
+            "display": "show",
+            "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+          },
+          "textareaNoTab": {
+            "shadeStyle": "HudHeader3D",
+            "id": "hud_tutorial_tank_your_team_tickets",
+            "position": "relative",
+            "pos": "15%pw-100%w, 0",
+            "display": "show",
+            "style": "font:@fontHudMedium; text-align:right; color:#276cff;",
+            "text": "#hud_tutorial_tank_your_team_tickets"
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "id": "tutorial_tank_arrow_enemy_tickets",
+          "flow": "vertical",
+          "pos": "90%pw-100%w, 0",
+          "position": "absolute",
+          "display": "hide",
+          "img": {
+            "position": "relative",
+            "pos": "100%pw, 0",
+            "size": "30/720@shHud, 70/720@shHud",
+            "rotation": "295",
+            "display": "show",
+            "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+          },
+          "textareaNoTab": {
+            "shadeStyle": "HudHeader3D",
+            "id": "hud_tutorial_tank_enemy_team_tickets",
+            "position": "relative",
+            "pos": "100%pw-0%w, 0",
+            "display": "show",
+            "style": "font:@fontHudMedium; text-align:left; color:#c93e3e;",
+            "text": "#hud_tutorial_tank_enemy_team_tickets"
+          }
         }
       }
     ]
@@ -383,118 +593,6 @@
     }
   },
   {
-    "tdiv": {
-      "shadeStyle": "HudHeader3D",
-      "id": "hud_tutorial_tank_press_to_continue_cross",
-      "hintStyle": "hudHintYellow",
-      "behaviour": "bhvHint",
-      "width": "pw",
-      "isWrapInRowAllowed": "yes",
-      "flow-align": "right",
-      "position": "absolute",
-      "pos": "100%pw-100%w, 45%ph-50%h",
-      "display": "show",
-      "value": "hints/tutorial_press_id_continue"
-    }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tank_xray_all_texts"
-      },
-      {
-        "_set_aabb_by_object": "hitCamera"
-      },
-      {
-        "pos": "50%pw, 50%ph"
-      },
-      {
-        "size": "288, 146"
-      },
-      {
-        "position": "root"
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_xray_itself",
-          "position": "absolute",
-          "pos": "0%pw-115%w, 10%ph-0%h",
-          "display": "hide",
-          "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
-          "text": "#hud_tutorial_tank_xray_itself"
-        }
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_xray_explanation",
-          "position": "absolute",
-          "pos": "0%pw-110%w, 50%ph-0%h",
-          "display": "hide",
-          "width": "0.9pw",
-          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
-          "text": "#hud_tutorial_tank_xray_explanation"
-        }
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_xray_crew_count",
-          "position": "absolute",
-          "pos": "0%pw-110%w, 50%ph-0%h",
-          "width": "0.9pw",
-          "display": "hide",
-          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
-          "text": "#hud_tutorial_tank_xray_crew_count"
-        }
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_fire_and_explosion",
-          "position": "absolute",
-          "pos": "0%pw-110%w, 50%ph-0%h",
-          "width": "0.9pw",
-          "display": "hide",
-          "style": "font:@fontHudNormal; text-align:right; color:#ffffff;",
-          "text": "#hud_tutorial_tank_fire_and_explosion"
-        }
-      }
-    ]
-  },
-  {
-    "tdiv": {
-      "shadeStyle": "HudHeader3D",
-      "id": "hud_tutorial_tank_press_to_continue_xray",
-      "hintStyle": "hudHintYellow",
-      "behaviour": "bhvHint",
-      "width": "pw",
-      "isWrapInRowAllowed": "yes",
-      "flow-align": "right",
-      "position": "absolute",
-      "pos": "98%pw-100%w, 30%ph-50%h",
-      "display": "show",
-      "style": "font:@fontHudMedium; text-align:right; color:#ebeb22;",
-      "value": "hints/tutorial_press_id_continue"
-    }
-  },
-  {
-    "tdiv": {
-      "id": "hud_tutorial_tank_minimap_artillery",
-      "_set_aabb_by_object": "map",
-      "img": {
-        "id": "tutorial_tank_arrow_artillery_map",
-        "position": "absolute",
-        "pos": "34%pw-50%w, -10%ph-0%h",
-        "size": "30/720@shHud, 100/720@shHud",
-        "rotation": "180",
-        "display": "show",
-        "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-      }
-    }
-  },
-  {
     "textareaNoTab": {
       "shadeStyle": "HudHeader3D",
       "id": "hud_tutorial_tank_artillery_strike",
@@ -525,103 +623,5 @@
         "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
       }
     }
-  },
-  {
-    "tdiv": [
-      {
-        "id": "hud_tutorial_tank_tickets_all_texts"
-      },
-      {
-        "_set_aabb_by_object": "multiplayerScore"
-      },
-      {
-        "position": "root"
-      },
-      {
-        "textareaNoTab": {
-          "shadeStyle": "HudHeader3D",
-          "id": "hud_tutorial_tank_tickets_zone_white_corners",
-          "position": "absolute",
-          "pos": "50%pw-50%w, 270%ph-0%h",
-          "display": "hide",
-          "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
-          "text": "#hud_tutorial_tank_tickets_zone_white_corners"
-        }
-      },
-      {
-        "img": {
-          "id": "tutorial_tank_arrow_white_corners01",
-          "position": "absolute",
-          "pos": "52%pw-50%w, 90%ph-0%h",
-          "size": "30/720@shHud, 50/720@shHud",
-          "rotation": "7",
-          "display": "hide",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
-        "img": {
-          "id": "tutorial_tank_arrow_white_corners02",
-          "position": "absolute",
-          "pos": "48%pw-50%w, 90%ph-0%h",
-          "size": "30/720@shHud, 50/720@shHud",
-          "rotation": "353",
-          "display": "hide",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
-        "tdiv": {
-          "id": "tutorial_tank_arrow_friendly_tickets",
-          "flow": "vertical",
-          "pos": "10%pw-100%w, 0",
-          "position": "absolute",
-          "display": "hide",
-          "img": {
-            "position": "relative",
-            "pos": "0, 0",
-            "size": "30/720@shHud, 70/720@shHud",
-            "rotation": "65",
-            "display": "show",
-            "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-          },
-          "textareaNoTab": {
-            "shadeStyle": "HudHeader3D",
-            "id": "hud_tutorial_tank_your_team_tickets",
-            "position": "relative",
-            "pos": "15%pw-100%w, 0",
-            "display": "show",
-            "style": "font:@fontHudMedium; text-align:right; color:#276cff;",
-            "text": "#hud_tutorial_tank_your_team_tickets"
-          }
-        }
-      },
-      {
-        "tdiv": {
-          "id": "tutorial_tank_arrow_enemy_tickets",
-          "flow": "vertical",
-          "pos": "90%pw-100%w, 0",
-          "position": "absolute",
-          "display": "hide",
-          "img": {
-            "position": "relative",
-            "pos": "100%pw, 0",
-            "size": "30/720@shHud, 70/720@shHud",
-            "rotation": "295",
-            "display": "show",
-            "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-          },
-          "textareaNoTab": {
-            "shadeStyle": "HudHeader3D",
-            "id": "hud_tutorial_tank_enemy_team_tickets",
-            "position": "relative",
-            "pos": "100%pw-0%w, 0",
-            "display": "show",
-            "style": "font:@fontHudMedium; text-align:left; color:#c93e3e;",
-            "text": "#hud_tutorial_tank_enemy_team_tickets"
-          }
-        }
-      }
-    ]
   }
 ]

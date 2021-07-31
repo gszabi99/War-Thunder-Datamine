@@ -62,100 +62,6 @@
       }
     },
     {
-      "div": {
-        "behaviour": "button",
-        "size": "sw,sh",
-        "position": "root",
-        "on_click": "onClosePopups"
-      }
-    },
-    {
-      "ProjectAwardsPanel": {
-        "id": "project-awards"
-      }
-    },
-    {
-      "TopMenuPanel": [
-        {
-          "input-transparent": "yes"
-        },
-        {
-          "shadowSafeArea": []
-        },
-        {
-          "tdiv": {
-            "size": "1@swOrRwInVr, ph-(1@bh+1@topGamercardDarkLineHeight)*1@isInVr",
-            "pos": "1@bwInVr, (1@bh-1@topGamercardDarkLineHeight)*1@isInVr",
-            "position": "absolute",
-            "TopMenuPanelBg": {
-              "width": "pw"
-            }
-          }
-        },
-        {
-          "tdiv": {
-            "pos": "pw-w-1@bw, 1@bh",
-            "position": "absolute",
-            "tdiv": {
-              "id": "language_selector",
-              "pos": "0, ph/2-h/2",
-              "position": "relative",
-              "display": "hide",
-              "text": {
-                "id": "label_language",
-                "text": "#profile/language",
-                "pos": "0, ph/2-h/2",
-                "position": "relative",
-                "talign": "left",
-                "margin": "@sIco/8, 0, @sIco/4, 0",
-                "input-transparent": "yes",
-                "inactive": "yes"
-              },
-              "Button_text": {
-                "id": "btn_language",
-                "position": "relative",
-                "noMargin": "yes",
-                "visualStyle": "noFrame",
-                "imgSize": "big",
-                "on_click": "onPopupLanguages",
-                "popupMenuBrightIcons": "yes",
-                "popupMenuWithoutHover": "yes",
-                "btnName": "Y",
-                "ButtonImg": [],
-                "cardImg": {
-                  "id": "btn_language_icon",
-                  "background-image": "#ui/gameuiskin#lang_usa"
-                },
-                "btnText": {
-                  "id": "btn_language_text",
-                  "text": "#profile/language/en",
-                  "pos": "@blockInterval, 50%ph-50%h",
-                  "position": "relative",
-                  "text-align": "left"
-                }
-              }
-            },
-            "Button_close": {
-              "id": "button_exit",
-              "_on_click": "goBack",
-              "relative": "yes"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "BottomMenuPanel": {
-        "input-transparent": "yes",
-        "shadowSafeArea": [],
-        "line": [],
-        "copyright": {
-          "pos": "pw-w-1@bw, 50%ph - 50%h",
-          "position": "absolute"
-        }
-      }
-    },
-    {
       "tdiv": [
         {
           "min-width": "0.35*@sf"
@@ -182,6 +88,24 @@
           }
         },
         {
+          "ShadeDiv": {
+            "min-width": "0.33*@sf",
+            "width": "pw",
+            "height": "1@topBarHeight",
+            "pos": "50%pw-50%w, 0",
+            "position": "absolute"
+          }
+        },
+        {
+          "ShadeDiv": {
+            "min-width": "0.33*@sf",
+            "width": "pw",
+            "height": "1@bottomBarHeight",
+            "position": "absolute",
+            "pos": "50%pw-50%w, ph - h"
+          }
+        },
+        {
           "Red_shadow_light": {
             "pos": "50%pw-50%w, 0",
             "position": "absolute",
@@ -190,12 +114,10 @@
           }
         },
         {
-          "ShadeDiv": {
-            "min-width": "0.33*@sf",
-            "width": "pw",
-            "height": "1@topBarHeight",
-            "pos": "50%pw-50%w, 0",
-            "position": "absolute"
+          "Red_shadow_light": {
+            "size": "300%pw, 1@bottomBarHeight",
+            "position": "absolute",
+            "pos": "50%pw-50%w, ph - h"
           }
         },
         {
@@ -228,6 +150,27 @@
               "position": "absolute",
               "versionText": {
                 "padding-left": "0.02@scrn_tgt"
+              }
+            }
+          }
+        },
+        {
+          "GameLogoPlate": {
+            "size": "90%pw,15%ph",
+            "pos": "50%pw-50%w, 85%ph+4",
+            "position": "absolute",
+            "Shadow": {
+              "size": "pw, ph",
+              "redPlate": {
+                "size": "pw, ph",
+                "pattern": {
+                  "size": "pw, ph",
+                  "type": "dark_diag_lines",
+                  "CompanyLogo": {
+                    "pos": "50%pw-50%w, 50%ph-50%h",
+                    "position": "absolute"
+                  }
+                }
               }
             }
           }
@@ -347,6 +290,26 @@
                             }
                           }
                         ]
+                      }
+                    },
+                    {
+                      "tdiv": {
+                        "id": "sharding_block",
+                        "width": "90%pw",
+                        "pos": "0, 0.02@scrn_tgt",
+                        "position": "relative",
+                        "textarea": {
+                          "text": "#mainmenu/server",
+                          "style": "paragraph-indent:0;",
+                          "input-transparent": "yes",
+                          "inactive": "yes"
+                        },
+                        "tdiv": {
+                          "id": "sharding_dropright_block",
+                          "width": "fw",
+                          "margin-left": "0.032@scrn_tgt",
+                          "class": "circuitDropright"
+                        }
                       }
                     },
                     {
@@ -527,26 +490,6 @@
                           }
                         }
                       ]
-                    },
-                    {
-                      "tdiv": {
-                        "id": "sharding_block",
-                        "width": "90%pw",
-                        "pos": "0, 0.02@scrn_tgt",
-                        "position": "relative",
-                        "textarea": {
-                          "text": "#mainmenu/server",
-                          "style": "paragraph-indent:0;",
-                          "input-transparent": "yes",
-                          "inactive": "yes"
-                        },
-                        "tdiv": {
-                          "id": "sharding_dropright_block",
-                          "width": "fw",
-                          "margin-left": "0.032@scrn_tgt",
-                          "class": "circuitDropright"
-                        }
-                      }
                     }
                   ]
                 },
@@ -689,43 +632,6 @@
               }
             }
           ]
-        },
-        {
-          "Red_shadow_light": {
-            "size": "300%pw, 1@bottomBarHeight",
-            "position": "absolute",
-            "pos": "50%pw-50%w, ph - h"
-          }
-        },
-        {
-          "ShadeDiv": {
-            "min-width": "0.33*@sf",
-            "width": "pw",
-            "height": "1@bottomBarHeight",
-            "position": "absolute",
-            "pos": "50%pw-50%w, ph - h"
-          }
-        },
-        {
-          "GameLogoPlate": {
-            "size": "90%pw,15%ph",
-            "pos": "50%pw-50%w, 85%ph+4",
-            "position": "absolute",
-            "Shadow": {
-              "size": "pw, ph",
-              "redPlate": {
-                "size": "pw, ph",
-                "pattern": {
-                  "size": "pw, ph",
-                  "type": "dark_diag_lines",
-                  "CompanyLogo": {
-                    "pos": "50%pw-50%w, 50%ph-50%h",
-                    "position": "absolute"
-                  }
-                }
-              }
-            }
-          }
         }
       ]
     },
@@ -745,6 +651,100 @@
           "pos": "(pw-w)/2, 0",
           "position": "relative",
           "width": "pw"
+        }
+      }
+    },
+    {
+      "div": {
+        "behaviour": "button",
+        "size": "sw,sh",
+        "position": "root",
+        "on_click": "onClosePopups"
+      }
+    },
+    {
+      "ProjectAwardsPanel": {
+        "id": "project-awards"
+      }
+    },
+    {
+      "TopMenuPanel": [
+        {
+          "input-transparent": "yes"
+        },
+        {
+          "shadowSafeArea": []
+        },
+        {
+          "tdiv": {
+            "size": "1@swOrRwInVr, ph-(1@bh+1@topGamercardDarkLineHeight)*1@isInVr",
+            "pos": "1@bwInVr, (1@bh-1@topGamercardDarkLineHeight)*1@isInVr",
+            "position": "absolute",
+            "TopMenuPanelBg": {
+              "width": "pw"
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "pos": "pw-w-1@bw, 1@bh",
+            "position": "absolute",
+            "tdiv": {
+              "id": "language_selector",
+              "pos": "0, ph/2-h/2",
+              "position": "relative",
+              "display": "hide",
+              "text": {
+                "id": "label_language",
+                "text": "#profile/language",
+                "pos": "0, ph/2-h/2",
+                "position": "relative",
+                "talign": "left",
+                "margin": "@sIco/8, 0, @sIco/4, 0",
+                "input-transparent": "yes",
+                "inactive": "yes"
+              },
+              "Button_text": {
+                "id": "btn_language",
+                "position": "relative",
+                "noMargin": "yes",
+                "visualStyle": "noFrame",
+                "imgSize": "big",
+                "on_click": "onPopupLanguages",
+                "popupMenuBrightIcons": "yes",
+                "popupMenuWithoutHover": "yes",
+                "btnName": "Y",
+                "ButtonImg": [],
+                "cardImg": {
+                  "id": "btn_language_icon",
+                  "background-image": "#ui/gameuiskin#lang_usa"
+                },
+                "btnText": {
+                  "id": "btn_language_text",
+                  "text": "#profile/language/en",
+                  "pos": "@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                }
+              }
+            },
+            "Button_close": {
+              "id": "button_exit",
+              "_on_click": "goBack",
+              "relative": "yes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "BottomMenuPanel": {
+        "input-transparent": "yes",
+        "shadowSafeArea": [],
+        "line": [],
+        "copyright": {
+          "pos": "pw-w-1@bw, 50%ph - 50%h",
+          "position": "absolute"
         }
       }
     }

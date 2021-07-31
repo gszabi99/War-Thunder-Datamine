@@ -6,10 +6,10 @@
     "fmFile": "fm/j2m3.blk"
   },
   {
-    "model": "j2m2"
+    "fmFile": "fm/n1k2_j.blk"
   },
   {
-    "fmFile": "fm/n1k2_j.blk"
+    "model": "j2m2"
   },
   {
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk"
@@ -31,6 +31,9 @@
   },
   {
     "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk"
+  },
+  {
+    "fireParamsPreset": "600kph"
   },
   {
     "fireParamsPreset": "600kph"
@@ -58,9 +61,6 @@
   },
   {
     "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk"
-  },
-  {
-    "fireParamsPreset": "600kph"
   },
   {
     "ikPilot": [
@@ -3787,7 +3787,7 @@
         "wingspan": 11.99,
         "wingArea": 23.5,
         "emptyWeight": 3010.0,
-        "normalWeight": 3885.3201,
+        "normalWeight": 3885.32,
         "maxTakeoffWeight": 4321.0,
         "powerPlantType": 1,
         "powerMaxWep": 2030.0,
@@ -3854,22 +3854,6 @@
           "climbRateMil5": [12900.0,-4.1]
         }
       }
-    }
-  },
-  {
-    "balanceData": {
-      "accSpd": 2.2427,
-      "climbSpeed": 18.18,
-      "maxSpeed": 176.3,
-      "turnTime": 19.0
-    }
-  },
-  {
-    "fireParams": {
-      "engineExtinguishFireSpeed": [82.0,194.0],
-      "engineExtinguishFireSpeedChance": [0.01,0.1],
-      "fireDamagePowerRel": 0.05,
-      "nonExtinguishFireTime": 5.0
     }
   },
   {
@@ -3948,6 +3932,98 @@
           "climbRateMil5": [12600.0,-3.7]
         }
       }
+    }
+  },
+  {
+    "wiki": {
+      "general": {
+        "length": 9.895,
+        "wingspan": 10.8,
+        "wingArea": 20.5,
+        "emptyWeight": 2489.0,
+        "normalWeight": 3110.0,
+        "maxTakeoffWeight": 3946.0,
+        "powerPlantType": 1,
+        "powerMaxWep": 1930.0,
+        "powerMaxMil": 1670.0
+      },
+      "performance": {
+        "table": {
+          "rpmWep": 2600.0,
+          "manifoldPressureWep": 1.69,
+          "airSpeedWep0": [0.0,577.0],
+          "airSpeedWep1": [1500.0,610.0],
+          "airSpeedWep2": [4900.0,655.0],
+          "climbRateWep0": [0.0,20.8],
+          "climbRateWep1": [1000.0,20.7],
+          "climbRateWep2": [4400.0,14.8],
+          "climbTimeWep0": [2000.0,80.0628],
+          "climbTimeWep1": [4000.0,173.572],
+          "climbTimeWep2": [6000.0,284.901],
+          "climbTimeWep3": [8000.0,444.896],
+          "turnTimeWep": [1000.0,18.0],
+          "rpmMil": 2500.0,
+          "manifoldPressureMil": 1.39,
+          "airSpeedMil0": [0.0,549.0],
+          "airSpeedMil1": [2900.0,607.0],
+          "airSpeedMil2": [6200.0,650.0],
+          "climbRateMil0": [0.0,16.6],
+          "climbRateMil1": [2400.0,16.0],
+          "climbRateMil2": [5600.0,10.6],
+          "climbTimeMil0": [2000.0,93.1621],
+          "climbTimeMil1": [4000.0,196.959],
+          "climbTimeMil2": [6000.0,318.965],
+          "climbTimeMil3": [8000.0,486.522],
+          "turnTimeMil": [1000.0,19.2],
+          "takeoffDistance": 669.563,
+          "ceiling": 12200.0,
+          "rollRate": 139.0,
+          "wingLoading": 152.0,
+          "powerToWeightRatio": 0.61
+        },
+        "plot": {
+          "airSpeedWep0": [0.0,577.0],
+          "airSpeedWep1": [1200.0,607.0],
+          "airSpeedWep2": [3100.0,612.0],
+          "airSpeedWep3": [5000.0,658.0],
+          "airSpeedWep4": [7500.0,642.0],
+          "airSpeedWep5": [10400.0,599.0],
+          "airSpeedWep6": [12200.0,544.0],
+          "climbRateWep0": [0.0,20.8],
+          "climbRateWep1": [1000.0,20.7],
+          "climbRateWep2": [2500.0,16.5],
+          "climbRateWep3": [4100.0,15.3],
+          "climbRateWep4": [12200.0,-3.9],
+          "airSpeedMil0": [0.0,549.0],
+          "airSpeedMil1": [2700.0,606.0],
+          "airSpeedMil2": [4000.0,598.0],
+          "airSpeedMil3": [5900.0,645.0],
+          "airSpeedMil4": [7900.0,634.0],
+          "airSpeedMil5": [10400.0,595.0],
+          "airSpeedMil6": [12100.0,542.0],
+          "climbRateMil0": [0.0,16.6],
+          "climbRateMil1": [2200.0,16.2],
+          "climbRateMil2": [3500.0,12.8],
+          "climbRateMil3": [5100.0,11.5],
+          "climbRateMil4": [12100.0,-3.9]
+        }
+      }
+    }
+  },
+  {
+    "balanceData": {
+      "accSpd": 2.2427,
+      "climbSpeed": 18.18,
+      "maxSpeed": 176.3,
+      "turnTime": 19.0
+    }
+  },
+  {
+    "fireParams": {
+      "engineExtinguishFireSpeed": [82.0,194.0],
+      "engineExtinguishFireSpeedChance": [0.01,0.1],
+      "fireDamagePowerRel": 0.05,
+      "nonExtinguishFireTime": 5.0
     }
   },
   {
@@ -5886,82 +5962,6 @@
         }
       }
     ]
-  },
-  {
-    "wiki": {
-      "general": {
-        "length": 9.895,
-        "wingspan": 10.8,
-        "wingArea": 20.5,
-        "emptyWeight": 2489.0,
-        "normalWeight": 3110.0,
-        "maxTakeoffWeight": 3946.0,
-        "powerPlantType": 1,
-        "powerMaxWep": 1930.0,
-        "powerMaxMil": 1670.0
-      },
-      "performance": {
-        "table": {
-          "rpmWep": 2600.0,
-          "manifoldPressureWep": 1.69,
-          "airSpeedWep0": [0.0,577.0],
-          "airSpeedWep1": [1500.0,610.0],
-          "airSpeedWep2": [4900.0,655.0],
-          "climbRateWep0": [0.0,20.8],
-          "climbRateWep1": [1000.0,20.7],
-          "climbRateWep2": [4400.0,14.8],
-          "climbTimeWep0": [2000.0,80.0628],
-          "climbTimeWep1": [4000.0,173.572],
-          "climbTimeWep2": [6000.0,284.901],
-          "climbTimeWep3": [8000.0,444.896],
-          "turnTimeWep": [1000.0,18.0],
-          "rpmMil": 2500.0,
-          "manifoldPressureMil": 1.39,
-          "airSpeedMil0": [0.0,549.0],
-          "airSpeedMil1": [2900.0,607.0],
-          "airSpeedMil2": [6200.0,650.0],
-          "climbRateMil0": [0.0,16.6],
-          "climbRateMil1": [2400.0,16.0],
-          "climbRateMil2": [5600.0,10.6],
-          "climbTimeMil0": [2000.0,93.1621],
-          "climbTimeMil1": [4000.0,196.959],
-          "climbTimeMil2": [6000.0,318.965],
-          "climbTimeMil3": [8000.0,486.522],
-          "turnTimeMil": [1000.0,19.2],
-          "takeoffDistance": 669.563,
-          "ceiling": 12200.0,
-          "rollRate": 139.0,
-          "wingLoading": 152.0,
-          "powerToWeightRatio": 0.61
-        },
-        "plot": {
-          "airSpeedWep0": [0.0,577.0],
-          "airSpeedWep1": [1200.0,607.0],
-          "airSpeedWep2": [3100.0,612.0],
-          "airSpeedWep3": [5000.0,658.0],
-          "airSpeedWep4": [7500.0,642.0],
-          "airSpeedWep5": [10400.0,599.0],
-          "airSpeedWep6": [12200.0,544.0],
-          "climbRateWep0": [0.0,20.8],
-          "climbRateWep1": [1000.0,20.7],
-          "climbRateWep2": [2500.0,16.5],
-          "climbRateWep3": [4100.0,15.3],
-          "climbRateWep4": [12200.0,-3.9],
-          "airSpeedMil0": [0.0,549.0],
-          "airSpeedMil1": [2700.0,606.0],
-          "airSpeedMil2": [4000.0,598.0],
-          "airSpeedMil3": [5900.0,645.0],
-          "airSpeedMil4": [7900.0,634.0],
-          "airSpeedMil5": [10400.0,595.0],
-          "airSpeedMil6": [12100.0,542.0],
-          "climbRateMil0": [0.0,16.6],
-          "climbRateMil1": [2200.0,16.2],
-          "climbRateMil2": [3500.0,12.8],
-          "climbRateMil3": [5100.0,11.5],
-          "climbRateMil4": [12100.0,-3.9]
-        }
-      }
-    }
   },
   {
     "cockpit": {

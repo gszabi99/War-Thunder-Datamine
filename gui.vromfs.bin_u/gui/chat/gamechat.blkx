@@ -21,6 +21,30 @@
         }
       },
       {
+        "tdiv": {
+          "id": "chat_log_tdiv",
+          "position": "relative",
+          "width": "pw",
+          "max-height": "13.5*@scrn_tgt/100.0",
+          "min-height": "4*@scrn_tgt/100.0",
+          "background-color": "@hudTextBgShade",
+          "overflow-y": "auto",
+          "auto-scroll": "yes",
+          "css-hier-invalidate": "yes",
+          "scroll-align": "left",
+          "scrollType": "hidden",
+          "transparent": "100",
+          "chatLog": {
+            "id": "chat_log",
+            "width": "pw",
+            "padding": "0.5*@scrn_tgt/100.0",
+            "text": "",
+            "on_link_click": "onChatLinkClick",
+            "on_link_rclick": "onChatLinkRClick"
+          }
+        }
+      },
+      {
         "HorizontalListBox": [
           {
             "id": "chat_tabs"
@@ -60,30 +84,6 @@
             }
           }
         ]
-      },
-      {
-        "tdiv": {
-          "id": "chat_log_tdiv",
-          "position": "relative",
-          "width": "pw",
-          "max-height": "13.5*@scrn_tgt/100.0",
-          "min-height": "4*@scrn_tgt/100.0",
-          "background-color": "@hudTextBgShade",
-          "overflow-y": "auto",
-          "auto-scroll": "yes",
-          "css-hier-invalidate": "yes",
-          "scroll-align": "left",
-          "scrollType": "hidden",
-          "transparent": "100",
-          "chatLog": {
-            "id": "chat_log",
-            "width": "pw",
-            "padding": "0.5*@scrn_tgt/100.0",
-            "text": "",
-            "on_link_click": "onChatLinkClick",
-            "on_link_rclick": "onChatLinkRClick"
-          }
-        }
       },
       {
         "div": {

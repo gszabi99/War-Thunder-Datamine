@@ -101,18 +101,6 @@
               }
             },
             {
-              "EditBox": {
-                "id": "chat_input",
-                "width": "fw",
-                "max-len": "250",
-                "on_activate": "onChatEntered",
-                "on_cancel_edit": "onChatCancel",
-                "on_change_value": "onChatChanged",
-                "style": "height:@spectatorToolbarBtnSize;",
-                "text": ""
-              }
-            },
-            {
               "hoverButton": {
                 "id": "btn_send",
                 "tooltip": "#chat/send",
@@ -132,6 +120,18 @@
                 "icon": {
                   "background-image": "#ui/gameuiskin#btn_close.svg"
                 }
+              }
+            },
+            {
+              "EditBox": {
+                "id": "chat_input",
+                "width": "fw",
+                "max-len": "250",
+                "on_activate": "onChatEntered",
+                "on_cancel_edit": "onChatCancel",
+                "on_change_value": "onChatChanged",
+                "style": "height:@spectatorToolbarBtnSize;",
+                "text": ""
               }
             }
           ]

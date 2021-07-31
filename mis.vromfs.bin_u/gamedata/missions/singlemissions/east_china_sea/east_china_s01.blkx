@@ -135,16 +135,6 @@
           }
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "jpn_battleship_yamato"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -189,6 +179,41 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "bombers00"
+            },
+            {
+              "object": "bombers01"
+            },
+            {
+              "effShootingRate": 0.0
+            }
+          ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_battleship_yamato"
           }
         },
         {
@@ -289,31 +314,6 @@
           ]
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "bombers00"
-            },
-            {
-              "object": "bombers01"
-            },
-            {
-              "effShootingRate": 0.0
-            }
-          ]
-        },
-        {
           "unitAttackTarget": [
             {
               "playerAttracted": false
@@ -393,11 +393,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -405,6 +400,11 @@
             "object_var_value": 0,
             "object": "player_himself",
             "targetableByAi": true
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         }
       ],
@@ -520,6 +520,21 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitLoadBehTree": {
             "name": "instructorBeh",
             "objects": "player",
@@ -552,11 +567,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "unitDamage": {
             "part": 0,
             "power": 1.0,
@@ -567,11 +577,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "jpn_battleship_yamato",
             "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -587,11 +592,6 @@
             "loopSpawn": true,
             "delay": [1.0,1.0],
             "target": "jpn_battleship_yamato"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -805,399 +805,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_battleship_yamato",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27944.3,0.0,-10373.5]
-        ],
-        "unit_class": "ijn_bb_yamato",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_cruiser_yahagi",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-26492.9,0.0,-8529.4]
-        ],
-        "unit_class": "ijn_ca_nagara",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer00",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27467.1,0.0,-9425.65]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer01",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28825.8,0.0,-9058.4]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer02",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27987.5,0.0,-12964.9]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer03",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27292.9,0.0,-12700.4]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer04",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28799.9,0.0,-12568.5]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer05",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-27191.8,0.0,-11178.3]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer06",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-28289.0,0.0,-8059.0]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "jpn_destroyer07",
-        "tm": [
-          [7.54979e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,7.54979e-08],
-          [-29987.0,0.0,-9884.1]
-        ],
-        "unit_class": "ijn_dd_shiratsuyu",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "jpn_navy",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-25016.2,0.0,-10119.4]
-        ],
-        "props": [
-          {
-            "squad_members": "jpn_battleship_yamato"
-          },
-          {
-            "squad_members": "jpn_cruiser_yahagi"
-          },
-          {
-            "squad_members": "jpn_destroyer00"
-          },
-          {
-            "squad_members": "jpn_destroyer01"
-          },
-          {
-            "squad_members": "jpn_destroyer02"
-          },
-          {
-            "squad_members": "jpn_destroyer03"
-          },
-          {
-            "squad_members": "jpn_destroyer04"
-          },
-          {
-            "squad_members": "jpn_destroyer05"
-          },
-          {
-            "squad_members": "jpn_destroyer06"
-          },
-          {
-            "squad_members": "jpn_destroyer07"
-          }
-        ]
       }
     },
     {
@@ -1750,6 +1357,399 @@
           }
         },
         "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_battleship_yamato",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-27944.3,0.0,-10373.5]
+        ],
+        "unit_class": "ijn_bb_yamato",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_cruiser_yahagi",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-26492.9,0.0,-8529.4]
+        ],
+        "unit_class": "ijn_ca_nagara",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer00",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-27467.1,0.0,-9425.65]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer01",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-28825.8,0.0,-9058.4]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer02",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-27987.5,0.0,-12964.9]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer03",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-27292.9,0.0,-12700.4]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer04",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-28799.9,0.0,-12568.5]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer05",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-27191.8,0.0,-11178.3]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer06",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-28289.0,0.0,-8059.0]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "jpn_destroyer07",
+        "tm": [
+          [7.54979e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,7.54979e-08],
+          [-29987.0,0.0,-9884.1]
+        ],
+        "unit_class": "ijn_dd_shiratsuyu",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_navy",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-25016.2,0.0,-10119.4]
+        ],
+        "props": [
+          {
+            "squad_members": "jpn_battleship_yamato"
+          },
+          {
+            "squad_members": "jpn_cruiser_yahagi"
+          },
+          {
+            "squad_members": "jpn_destroyer00"
+          },
+          {
+            "squad_members": "jpn_destroyer01"
+          },
+          {
+            "squad_members": "jpn_destroyer02"
+          },
+          {
+            "squad_members": "jpn_destroyer03"
+          },
+          {
+            "squad_members": "jpn_destroyer04"
+          },
+          {
+            "squad_members": "jpn_destroyer05"
+          },
+          {
+            "squad_members": "jpn_destroyer06"
+          },
+          {
+            "squad_members": "jpn_destroyer07"
+          }
+        ]
       }
     },
     {

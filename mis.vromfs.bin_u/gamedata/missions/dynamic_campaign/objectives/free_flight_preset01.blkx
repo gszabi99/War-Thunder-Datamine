@@ -215,51 +215,6 @@
           }
         },
         {
-          "unitMoveTo": {
-            "target": "waypoint01",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "#player_cut.any"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
@@ -284,49 +239,19 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
+          "unitMoveTo": {
+            "target": "waypoint01",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
             "target_marking": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "battle_start"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.1
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#player_cut.any"
           }
         },
         {
@@ -346,6 +271,81 @@
             "move_type": "teleport",
             "lookat": "waypoint01",
             "velocity": 250.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.1
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "start_cut_skip"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "battle_start"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "start_cut_skip"
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
           }
         }
       ],
@@ -440,6 +440,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "unitPutToSleep": {
             "target": "#player_cut.any"
           }
@@ -453,11 +458,6 @@
         },
         {
           "missionStopCutscene": []
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
         },
         {
           "missionMarkAsWaypoint": {
@@ -549,6 +549,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint02"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -558,16 +568,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint02"
           }
         },
         {
@@ -614,6 +614,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint03"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -623,16 +633,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint03"
           }
         },
         {
@@ -679,6 +679,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint04"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -688,16 +698,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint04"
           }
         },
         {
@@ -744,6 +744,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint05"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -753,16 +763,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint05"
           }
         },
         {
@@ -809,6 +809,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint06"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -818,16 +828,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint06"
           }
         },
         {
@@ -874,6 +874,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint07"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -883,16 +893,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint07"
           }
         },
         {
@@ -939,6 +939,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint08"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -948,16 +958,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint08"
           }
         },
         {
@@ -1004,6 +1004,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": false,
+            "scale": 1.0,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "target": "waypoint09"
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -1013,16 +1023,6 @@
         {
           "wait": {
             "time": 0.3
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": false,
-            "scale": 1.0,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "target": "waypoint09"
           }
         },
         {
@@ -1226,6 +1226,22 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "evac",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#player_cut.any"
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
@@ -1250,24 +1266,18 @@
           }
         },
         {
-          "unitMoveTo": {
-            "target": "evac",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "#player_cut.any"
+          "wait": {
+            "time": 2.0
           }
         },
         {
           "wait": {
-            "time": 2.0
+            "time": 8.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -1285,16 +1295,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "end_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 8.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/cutsc_skip",
@@ -1309,18 +1309,18 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "end_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
           "triggerEnable": {
             "target": "miss_complete"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "end_cut_skip"
           }
         }
       ],
@@ -1388,6 +1388,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "completed"
           }
@@ -1400,13 +1407,6 @@
         {
           "unitPutToSleep": {
             "target": "#player_cut.any"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
           }
         },
         {
@@ -1585,71 +1585,6 @@
       }
     },
     {
-      "squad": {
-        "name": "#unit_background",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [166.4,-86.0,350.3]
-        ],
-        "props": {
-          "squad_members": "dummy_fake"
-        }
-      }
-    },
-    {
-      "structures": {
-        "name": "dummy_fake",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [90706.6,0.0,90676.5]
-        ],
-        "unit_class": "dummy_nosmoke",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ally_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1472.6,14.5,8731.2]
-        ],
-        "props": {
-          "squad_members": "dummy_fake"
-        }
-      }
-    },
-    {
       "armada": {
         "name": "#player_cut.any",
         "tm": [
@@ -1692,6 +1627,71 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "#unit_background",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [166.4,-86.0,350.3]
+        ],
+        "props": {
+          "squad_members": "dummy_fake"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "ally_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1472.6,14.5,8731.2]
+        ],
+        "props": {
+          "squad_members": "dummy_fake"
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "dummy_fake",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [90706.6,0.0,90676.5]
+        ],
+        "unit_class": "dummy_nosmoke",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": []
       }

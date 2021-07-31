@@ -108,6 +108,62 @@
                         }
                       },
                       {
+                        "tdiv": [
+                          {
+                            "padding-top": "1@blockInterval"
+                          },
+                          {
+                            "activeText": {
+                              "smallFont": "yes",
+                              "text": "#mainmenu/rank",
+                              "position": "relative",
+                              "pos": "0, ph/2-h/2"
+                            }
+                          },
+                          {
+                            "activeText": {
+                              "id": "profile-rank",
+                              "smallFont": "yes",
+                              "position": "relative",
+                              "pos": "@blockInterval, ph/2-h/2"
+                            }
+                          },
+                          {
+                            "activeText": {
+                              "id": "profile-prestige_title",
+                              "smallFont": "yes",
+                              "position": "relative",
+                              "pos": "@blockInterval, ph/2-h/2"
+                            }
+                          },
+                          {
+                            "cardImg": {
+                              "id": "profile-prestige",
+                              "position": "relative",
+                              "pos": "@blockInterval, ph/2-h/2"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "tdiv": {
+                          "width": "pw",
+                          "expProgress": {
+                            "id": "profile-rankProgress",
+                            "width": "fw",
+                            "position": "relative",
+                            "pos": "0, ph/2-h/2",
+                            "value": "0"
+                          },
+                          "text": {
+                            "id": "profile-exp",
+                            "tinyFont": "yes",
+                            "position": "relative",
+                            "pos": "@blockInterval, ph/2-h/2"
+                          }
+                        }
+                      },
+                      {
                         "Button_text": {
                           "id": "profile_currentUser_btn_title",
                           "visualStyle": "noBgr",
@@ -143,62 +199,6 @@
                           "id": "profile-currentUser-facebookName",
                           "width": "pw",
                           "smallFont": "yes"
-                        }
-                      },
-                      {
-                        "tdiv": [
-                          {
-                            "padding-top": "1@blockInterval"
-                          },
-                          {
-                            "activeText": {
-                              "smallFont": "yes",
-                              "text": "#mainmenu/rank",
-                              "position": "relative",
-                              "pos": "0, ph/2-h/2"
-                            }
-                          },
-                          {
-                            "activeText": {
-                              "id": "profile-rank",
-                              "smallFont": "yes",
-                              "position": "relative",
-                              "pos": "@blockInterval, ph/2-h/2"
-                            }
-                          },
-                          {
-                            "cardImg": {
-                              "id": "profile-prestige",
-                              "position": "relative",
-                              "pos": "@blockInterval, ph/2-h/2"
-                            }
-                          },
-                          {
-                            "activeText": {
-                              "id": "profile-prestige_title",
-                              "smallFont": "yes",
-                              "position": "relative",
-                              "pos": "@blockInterval, ph/2-h/2"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "tdiv": {
-                          "width": "pw",
-                          "expProgress": {
-                            "id": "profile-rankProgress",
-                            "width": "fw",
-                            "position": "relative",
-                            "pos": "0, ph/2-h/2",
-                            "value": "0"
-                          },
-                          "text": {
-                            "id": "profile-exp",
-                            "tinyFont": "yes",
-                            "position": "relative",
-                            "pos": "@blockInterval, ph/2-h/2"
-                          }
                         }
                       }
                     ]
@@ -283,9 +283,6 @@
                   }
                 }
               ]
-            },
-            {
-              "chapterSeparator": []
             },
             {
               "tdiv": [
@@ -384,6 +381,9 @@
                   ]
                 }
               ]
+            },
+            {
+              "chapterSeparator": []
             }
           ],
           "animated_wait_icon": {
@@ -423,10 +423,10 @@
               "position": "relative"
             },
             {
-              "pos": "0.5pw-0.5w, 0"
+              "position": "relative"
             },
             {
-              "position": "relative"
+              "pos": "0.5pw-0.5w, 0"
             },
             {
               "table": {
@@ -504,11 +504,6 @@
             }
           },
           {
-            "chapterSeparator": {
-              "margin": "1@blockInterval, 0"
-            }
-          },
-          {
             "tdiv": {
               "id": "medals_info",
               "size": "0.3pw, ph",
@@ -534,6 +529,11 @@
                 "ButtonImg": [],
                 "CheckBoxImg": []
               }
+            }
+          },
+          {
+            "chapterSeparator": {
+              "margin": "1@blockInterval, 0"
             }
           }
         ]
@@ -595,11 +595,6 @@
               }
             },
             {
-              "chapterSeparator": {
-                "margin-left": "1@blockInterval"
-              }
-            },
-            {
               "listbox": {
                 "id": "unlocks_list",
                 "flow": "vertical",
@@ -609,6 +604,11 @@
                 "navigatorShortcuts": "active",
                 "scrollbarShortcuts": "yes",
                 "on_dbl_click": "unlockToFavoritesByActivateItem"
+              }
+            },
+            {
+              "chapterSeparator": {
+                "margin-left": "1@blockInterval"
               }
             },
             {
@@ -897,6 +897,19 @@
                     }
                   },
                   {
+                    "TopMenuPanelBg": {
+                      "width": "0.5fw",
+                      "overflow": "hidden",
+                      "css-hier-invalidate": "yes",
+                      "Red_shadow_light": {
+                        "pos": "-50%w, 0",
+                        "position": "absolute",
+                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
+                        "class": "inverted"
+                      }
+                    }
+                  },
+                  {
                     "tdiv": {
                       "id": "gamercard_logo_place",
                       "pos": "0, 1@titleLogoSafeareaOffsetTop",
@@ -934,19 +947,6 @@
                         "margin-left": "-1@titleLogoPlatePadding/2",
                         "allowDecreaseFont": "yes",
                         "display": "hide"
-                      }
-                    }
-                  },
-                  {
-                    "TopMenuPanelBg": {
-                      "width": "0.5fw",
-                      "overflow": "hidden",
-                      "css-hier-invalidate": "yes",
-                      "Red_shadow_light": {
-                        "pos": "-50%w, 0",
-                        "position": "absolute",
-                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
-                        "class": "inverted"
                       }
                     }
                   }
@@ -1039,19 +1039,6 @@
                         }
                       },
                       {
-                        "tdiv": {
-                          "id": "topmenu_menu_panel",
-                          "height": "ph",
-                          "padding": "-1@gcButtonsInterval, 0"
-                        }
-                      },
-                      {
-                        "tdiv": {
-                          "id": "left_gc_panel_free_width",
-                          "width": "fw"
-                        }
-                      },
-                      {
                         "gcButtonsHolder": [
                           {
                             "id": "gamercard_panel_left"
@@ -1135,6 +1122,19 @@
                             }
                           }
                         ]
+                      },
+                      {
+                        "tdiv": {
+                          "id": "topmenu_menu_panel",
+                          "height": "ph",
+                          "padding": "-1@gcButtonsInterval, 0"
+                        }
+                      },
+                      {
+                        "tdiv": {
+                          "id": "left_gc_panel_free_width",
+                          "width": "fw"
+                        }
                       }
                     ]
                   },
@@ -1325,6 +1325,15 @@
                 ]
               },
               {
+                "tdiv": {
+                  "id": "chatPopupNest",
+                  "size": "0.4@sf+10, 0.075*@sf+10",
+                  "position": "absolute",
+                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                  "flow": "vertical"
+                }
+              },
+              {
                 "infoBlock": {
                   "css-hier-invalidate": "yes",
                   "activeText": {
@@ -1348,15 +1357,6 @@
                       "display": "hide"
                     }
                   }
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "chatPopupNest",
-                  "size": "0.4@sf+10, 0.075*@sf+10",
-                  "position": "absolute",
-                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                  "flow": "vertical"
                 }
               }
             ]
@@ -1433,6 +1433,11 @@
                     }
                   },
                   {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  },
+                  {
                     "emptyVoiceChat": {
                       "tooltip": "#clan/voice_chat/widget",
                       "usertalk": {
@@ -1460,11 +1465,6 @@
                       "voiceChatWidget": {
                         "value": "{\"viewId\": \"VOICE_CHAT\"}"
                       }
-                    }
-                  },
-                  {
-                    "blockSeparator": {
-                      "display": "hide"
                     }
                   }
                 ],

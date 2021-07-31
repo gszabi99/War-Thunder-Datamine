@@ -193,11 +193,6 @@
             }
           },
           {
-            "rowSeparator": {
-              "top": "-1@dp"
-            }
-          },
-          {
             "div": [
               {
                 "id": "main_block"
@@ -214,11 +209,6 @@
                     "id": "control_navigation",
                     "height": "ph"
                   }
-                }
-              },
-              {
-                "chapterSeparator": {
-                  "id": "nav_separator"
                 }
               },
               {
@@ -378,8 +368,18 @@
                     }
                   }
                 ]
+              },
+              {
+                "chapterSeparator": {
+                  "id": "nav_separator"
+                }
               }
             ]
+          },
+          {
+            "rowSeparator": {
+              "top": "-1@dp"
+            }
           },
           {
             "frameBlock": [
@@ -606,6 +606,16 @@
         }
       },
       {
+        "tdiv": {
+          "id": "black_screen",
+          "background-color": "@black",
+          "size": "1@swOrRwInVr, 1@shOrRhInVr",
+          "pos": "1@bwInVr, 1@bhInVr",
+          "position": "absolute",
+          "display": "hide"
+        }
+      },
+      {
         "gamercard_div": {
           "gamercard": {
             "BottomMenuPanel": {
@@ -617,6 +627,11 @@
                 "voiceChatWidgetNest": [
                   {
                     "isClanOnly": "no"
+                  },
+                  {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
                   },
                   {
                     "blockSeparator": {
@@ -652,26 +667,11 @@
                         "value": "{\"viewId\": \"VOICE_CHAT\"}"
                       }
                     }
-                  },
-                  {
-                    "blockSeparator": {
-                      "display": "hide"
-                    }
                   }
                 ]
               }
             }
           }
-        }
-      },
-      {
-        "tdiv": {
-          "id": "black_screen",
-          "background-color": "@black",
-          "size": "1@swOrRwInVr, 1@shOrRhInVr",
-          "pos": "1@bwInVr, 1@bhInVr",
-          "position": "absolute",
-          "display": "hide"
         }
       }
     ]

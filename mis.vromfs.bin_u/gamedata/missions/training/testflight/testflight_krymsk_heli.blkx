@@ -453,6 +453,43 @@
       }
     },
     {
+      "ships": {
+        "name": "ships_02",
+        "tm": [
+          [-0.635191,0.0,-0.772355],
+          [0.0,1.0,0.0],
+          [0.772355,0.0,-0.635191],
+          [4030.3,10.0,-3358.5]
+        ],
+        "unit_class": "ussr_aircraftcarrier_baku",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim"
+        },
+        "way": []
+      }
+    },
+    {
       "tankModels": {
         "name": "us_tank_01",
         "tm": [
@@ -488,31 +525,6 @@
           "attack_type": "dont_aim"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_squad",
-        "tm": [
-          [-0.812423,0.0,0.583069],
-          [0.0,1.0,0.0],
-          [-0.583069,0.0,-0.812423],
-          [271.774,384.755,-5335.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_truck_squad"
-          },
-          {
-            "squad_members": "us_tank_squad"
-          },
-          {
-            "squad_members": "us_ai_plane"
-          }
-        ]
       }
     },
     {
@@ -775,40 +787,6 @@
       }
     },
     {
-      "squad": {
-        "name": "us_truck_squad",
-        "tm": [
-          [0.714889,0.0,0.699238],
-          [0.0,1.0,0.0],
-          [-0.699238,0.0,0.714889],
-          [935.465,95.505,-3299.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_truck_06"
-          },
-          {
-            "squad_members": "us_truck_05"
-          },
-          {
-            "squad_members": "us_truck_04"
-          },
-          {
-            "squad_members": "us_truck_03"
-          },
-          {
-            "squad_members": "us_truck_02"
-          },
-          {
-            "squad_members": "us_truck_01"
-          }
-        ]
-      }
-    },
-    {
       "tankModels": {
         "name": "us_tank_03",
         "tm": [
@@ -844,133 +822,6 @@
           "attack_type": "dont_aim"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "us_tank_squad",
-        "tm": [
-          [-0.793381,0.0,0.608726],
-          [0.0,1.0,0.0],
-          [-0.608726,0.0,-0.793381],
-          [770.445,121.708,-3241.31]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_tank_01"
-          },
-          {
-            "squad_members": "us_tank_02"
-          },
-          {
-            "squad_members": "us_tank_03"
-          },
-          {
-            "squad_members": "us_tank_04"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "us_ai_plane",
-        "tm": [
-          [-0.87777,0.0,-0.479083],
-          [0.0,1.0,0.0],
-          [0.479083,0.0,-0.87777],
-          [4592.94,400.0,-7044.42]
-        ],
-        "unit_class": "f-86a-5",
-        "objLayer": 1,
-        "closed_waypoints": true,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "dontOverrideHeight": true,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "dont_aim",
-          "skill": 4,
-          "stealthRadius": 7000.0,
-          "targetableByAi": false,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "armada_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3238.74,400.0,-7929.06]
-            ],
-            "props": {
-              "speed": 500.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "armada_02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2240.2,800.0,-13334.4]
-            ],
-            "props": {
-              "speed": 500.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "armada_02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4916.51,800.0,-9349.62]
-            ],
-            "props": {
-              "speed": 500.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
       }
     },
     {
@@ -1312,6 +1163,192 @@
       ]
     },
     {
+      "squad": {
+        "name": "ai_squad",
+        "tm": [
+          [-0.812423,0.0,0.583069],
+          [0.0,1.0,0.0],
+          [-0.583069,0.0,-0.812423],
+          [271.774,384.755,-5335.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_truck_squad"
+          },
+          {
+            "squad_members": "us_tank_squad"
+          },
+          {
+            "squad_members": "us_ai_plane"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "us_truck_squad",
+        "tm": [
+          [0.714889,0.0,0.699238],
+          [0.0,1.0,0.0],
+          [-0.699238,0.0,0.714889],
+          [935.465,95.505,-3299.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_truck_06"
+          },
+          {
+            "squad_members": "us_truck_05"
+          },
+          {
+            "squad_members": "us_truck_04"
+          },
+          {
+            "squad_members": "us_truck_03"
+          },
+          {
+            "squad_members": "us_truck_02"
+          },
+          {
+            "squad_members": "us_truck_01"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "us_tank_squad",
+        "tm": [
+          [-0.793381,0.0,0.608726],
+          [0.0,1.0,0.0],
+          [-0.608726,0.0,-0.793381],
+          [770.445,121.708,-3241.31]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_tank_01"
+          },
+          {
+            "squad_members": "us_tank_02"
+          },
+          {
+            "squad_members": "us_tank_03"
+          },
+          {
+            "squad_members": "us_tank_04"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "us_ai_plane",
+        "tm": [
+          [-0.87777,0.0,-0.479083],
+          [0.0,1.0,0.0],
+          [0.479083,0.0,-0.87777],
+          [4592.94,400.0,-7044.42]
+        ],
+        "unit_class": "f-86a-5",
+        "objLayer": 1,
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "dontOverrideHeight": true,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "dont_aim",
+          "skill": 4,
+          "stealthRadius": 7000.0,
+          "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "armada_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3238.74,400.0,-7929.06]
+            ],
+            "props": {
+              "speed": 500.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "armada_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2240.2,800.0,-13334.4]
+            ],
+            "props": {
+              "speed": 500.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "armada_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4916.51,800.0,-9349.62]
+            ],
+            "props": {
+              "speed": 500.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
       "armada": {
         "name": "armada_01",
         "tm": [
@@ -1354,43 +1391,6 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "ships_02",
-        "tm": [
-          [-0.635191,0.0,-0.772355],
-          [0.0,1.0,0.0],
-          [0.772355,0.0,-0.635191],
-          [4030.3,10.0,-3358.5]
-        ],
-        "unit_class": "ussr_aircraftcarrier_baku",
-        "objLayer": 1,
-        "closed_waypoints": true,
-        "isShipSpline": true,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "dont_aim"
         },
         "way": []
       }

@@ -361,6 +361,19 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 8,
+            "var": "artillery_disable_stage",
+            "fromDescriptor": "artillery_disable_stage"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 8,
+            "var": "pickups_count"
+          }
+        },
+        {
           "comment": {
             "value": "(br_area_div * 2 - 1 = 11) - number of total stages"
           }
@@ -378,13 +391,6 @@
         {
           "comment": {
             "value": "artillery have radius 150m radius and sector side is 1400/6=250m"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "artillery_disable_stage",
-            "fromDescriptor": "artillery_disable_stage"
           }
         },
         {
@@ -429,12 +435,6 @@
             "object_marking": 0,
             "object": "object_groups_squad",
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "pickups_count"
           }
         }
       ],
@@ -555,6 +555,127 @@
           },
           {
             "squad_members": "spawn45"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "pickups_area_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2874.93,8.04791,2285.96]
+        ],
+        "props": [
+          {
+            "squad_members": "pickuparea01"
+          },
+          {
+            "squad_members": "pickuparea02"
+          },
+          {
+            "squad_members": "pickuparea03"
+          },
+          {
+            "squad_members": "pickuparea04"
+          },
+          {
+            "squad_members": "pickuparea05"
+          },
+          {
+            "squad_members": "pickuparea06"
+          },
+          {
+            "squad_members": "pickuparea07"
+          },
+          {
+            "squad_members": "pickuparea08"
+          },
+          {
+            "squad_members": "pickuparea09"
+          },
+          {
+            "squad_members": "pickuparea10"
+          },
+          {
+            "squad_members": "pickuparea11"
+          },
+          {
+            "squad_members": "pickuparea12"
+          },
+          {
+            "squad_members": "pickuparea13"
+          },
+          {
+            "squad_members": "pickuparea14"
+          },
+          {
+            "squad_members": "pickuparea15"
+          },
+          {
+            "squad_members": "pickuparea16"
+          },
+          {
+            "squad_members": "pickuparea17"
+          },
+          {
+            "squad_members": "pickuparea18"
+          },
+          {
+            "squad_members": "pickuparea19"
+          },
+          {
+            "squad_members": "pickuparea20"
+          },
+          {
+            "squad_members": "pickuparea21"
+          },
+          {
+            "squad_members": "pickuparea22"
+          },
+          {
+            "squad_members": "pickuparea23"
+          },
+          {
+            "squad_members": "pickuparea24"
+          },
+          {
+            "squad_members": "pickuparea25"
+          },
+          {
+            "squad_members": "pickuparea26"
+          },
+          {
+            "squad_members": "pickuparea27"
+          },
+          {
+            "squad_members": "pickuparea28"
+          },
+          {
+            "squad_members": "pickuparea29"
+          },
+          {
+            "squad_members": "pickuparea30"
+          },
+          {
+            "squad_members": "pickuparea31"
+          },
+          {
+            "squad_members": "pickuparea32"
+          },
+          {
+            "squad_members": "pickuparea33"
+          },
+          {
+            "squad_members": "pickuparea34"
+          },
+          {
+            "squad_members": "pickuparea35"
+          },
+          {
+            "squad_members": "pickuparea36"
           }
         ]
       }
@@ -1835,127 +1956,6 @@
       }
     },
     {
-      "area_squad": {
-        "name": "pickups_area_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2874.93,8.04791,2285.96]
-        ],
-        "props": [
-          {
-            "squad_members": "pickuparea01"
-          },
-          {
-            "squad_members": "pickuparea02"
-          },
-          {
-            "squad_members": "pickuparea03"
-          },
-          {
-            "squad_members": "pickuparea04"
-          },
-          {
-            "squad_members": "pickuparea05"
-          },
-          {
-            "squad_members": "pickuparea06"
-          },
-          {
-            "squad_members": "pickuparea07"
-          },
-          {
-            "squad_members": "pickuparea08"
-          },
-          {
-            "squad_members": "pickuparea09"
-          },
-          {
-            "squad_members": "pickuparea10"
-          },
-          {
-            "squad_members": "pickuparea11"
-          },
-          {
-            "squad_members": "pickuparea12"
-          },
-          {
-            "squad_members": "pickuparea13"
-          },
-          {
-            "squad_members": "pickuparea14"
-          },
-          {
-            "squad_members": "pickuparea15"
-          },
-          {
-            "squad_members": "pickuparea16"
-          },
-          {
-            "squad_members": "pickuparea17"
-          },
-          {
-            "squad_members": "pickuparea18"
-          },
-          {
-            "squad_members": "pickuparea19"
-          },
-          {
-            "squad_members": "pickuparea20"
-          },
-          {
-            "squad_members": "pickuparea21"
-          },
-          {
-            "squad_members": "pickuparea22"
-          },
-          {
-            "squad_members": "pickuparea23"
-          },
-          {
-            "squad_members": "pickuparea24"
-          },
-          {
-            "squad_members": "pickuparea25"
-          },
-          {
-            "squad_members": "pickuparea26"
-          },
-          {
-            "squad_members": "pickuparea27"
-          },
-          {
-            "squad_members": "pickuparea28"
-          },
-          {
-            "squad_members": "pickuparea29"
-          },
-          {
-            "squad_members": "pickuparea30"
-          },
-          {
-            "squad_members": "pickuparea31"
-          },
-          {
-            "squad_members": "pickuparea32"
-          },
-          {
-            "squad_members": "pickuparea33"
-          },
-          {
-            "squad_members": "pickuparea34"
-          },
-          {
-            "squad_members": "pickuparea35"
-          },
-          {
-            "squad_members": "pickuparea36"
-          }
-        ]
-      }
-    },
-    {
       "objectGroups": {
         "name": "objectGroups_77",
         "tm": [
@@ -2585,6 +2585,74 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "objectGroups_113",
+        "tm": [
+          [-0.486888,0.0,-0.873464],
+          [0.0,1.0,0.0],
+          [0.873464,0.0,-0.486888],
+          [2383.1,8.04783,2644.56]
+        ],
+        "unit_class": "det_factory_small_building_b",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_114",
+        "tm": [
+          [0.0245447,0.0,0.999699],
+          [0.0,1.0,0.0],
+          [-0.999699,0.0,0.0245447],
+          [2431.01,8.04794,2689.1]
+        ],
+        "unit_class": "det_pipes_set_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_115",
+        "tm": [
+          [0.84329,0.0,0.537459],
+          [0.0,1.0,0.0],
+          [-0.537459,0.0,0.84329],
+          [2278.17,8.04797,2625.42]
+        ],
+        "unit_class": "det_pipes_set_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_116",
+        "tm": [
+          [0.642942,0.0,0.765914],
+          [0.0,1.0,0.0],
+          [-0.765914,0.0,0.642942],
+          [2282.0,12.5723,2647.25]
+        ],
+        "unit_class": "det_factory_small_building_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
       "squad": {
         "name": "object_groups_squad",
         "tm": [
@@ -2979,74 +3047,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_113",
-        "tm": [
-          [-0.486888,0.0,-0.873464],
-          [0.0,1.0,0.0],
-          [0.873464,0.0,-0.486888],
-          [2383.1,8.04783,2644.56]
-        ],
-        "unit_class": "det_factory_small_building_b",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_114",
-        "tm": [
-          [0.0245447,0.0,0.999699],
-          [0.0,1.0,0.0],
-          [-0.999699,0.0,0.0245447],
-          [2431.01,8.04794,2689.1]
-        ],
-        "unit_class": "det_pipes_set_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_115",
-        "tm": [
-          [0.84329,0.0,0.537459],
-          [0.0,1.0,0.0],
-          [-0.537459,0.0,0.84329],
-          [2278.17,8.04797,2625.42]
-        ],
-        "unit_class": "det_pipes_set_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_116",
-        "tm": [
-          [0.642942,0.0,0.765914],
-          [0.0,1.0,0.0],
-          [-0.765914,0.0,0.642942],
-          [2282.0,12.5723,2647.25]
-        ],
-        "unit_class": "det_factory_small_building_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
       }
     }
   ],
@@ -3484,7 +3484,7 @@
       "type": "Sphere",
       "tm": [
         [0.343042,0.0,11.9951],
-        [2.92438e-09,12.0,1.02256e-07],
+        [2.9244e-09,12.0,1.02256e-07],
         [-11.9951,0.0,0.343041],
         [2096.71,8.15,1998.81]
       ],
@@ -3506,7 +3506,7 @@
       "type": "Sphere",
       "tm": [
         [0.626956,0.0,11.9836],
-        [5.34471e-09,12.0,1.02158e-07],
+        [5.3447e-09,12.0,1.02158e-07],
         [-11.9836,0.0,0.626956],
         [2226.27,8.14999,1930.88]
       ],

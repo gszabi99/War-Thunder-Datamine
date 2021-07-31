@@ -390,16 +390,6 @@
           }
         },
         {
-          "comment": {
-            "value": "настройки фронтлайна"
-          }
-        },
-        {
-          "comment": {
-            "value": "общее количество зон"
-          }
-        },
-        {
           "varSetInt": [
             {
               "value": 8
@@ -426,37 +416,9 @@
           ]
         },
         {
-          "comment": {
-            "value": "высчитываем количество зон показывающих глубину фронта"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "flt_total_zones"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 0.0,
-            "var": "flt_total_zones",
-            "use_variable": true,
-            "var_value": "flt_zones_in_row"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "mul",
-            "value": 3.0,
-            "var": "flt_total_zones",
-            "use_variable": true,
-            "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "comment": {
-            "value": "помечаем зоны морскими"
           }
         },
         {
@@ -485,6 +447,54 @@
           ]
         },
         {
+          "comment": {
+            "value": "\u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0444\u0440\u043e\u043d\u0442\u043b\u0430\u0439\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043e\u0431\u0449\u0435\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u043e\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0441\u0447\u0438\u0442\u044b\u0432\u0430\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u043e\u043d \u043f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u044e\u0449\u0438\u0445 \u0433\u043b\u0443\u0431\u0438\u043d\u0443 \u0444\u0440\u043e\u043d\u0442\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043c\u043e\u0440\u0441\u043a\u0438\u043c\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043a\u043e\u043c\u0430\u043d\u0434 (\u0432 \u0446\u0438\u043a\u043b\u0435 \u043f\u043e \u0430\u043b\u0433\u043e\u0440\u0438\u0442\u043c\u0443)"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        },
+        {
           "varSetString": [
             {
               "value": "sea"
@@ -510,11 +520,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "помечаем зоны команд (в цикле по алгоритму)"
-          }
-        },
-        {
           "varSetBool": {
             "value": true,
             "var": "flt_mirrior_start"
@@ -523,11 +528,6 @@
         {
           "triggerEnable": {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "comment": {
-            "value": "рисуем линию фронта"
           }
         },
         {

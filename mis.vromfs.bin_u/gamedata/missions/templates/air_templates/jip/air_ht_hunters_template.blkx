@@ -137,18 +137,28 @@
         },
         {
           "comment": {
-            "value": "говорим что скрипт селфрестартится"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0441\u043a\u0440\u0438\u043f\u0442 \u0441\u0435\u043b\u0444\u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u0442\u0441\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043c\u043e\u0434\u0438\u0444\u0438\u0446\u0438\u0440\u0443\u0435\u043c \u0432\u0440\u0435\u043c\u044f \u0441\u0431\u0435\u0433\u0430\u043d\u0438\u044f "
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0438\u043c\u044f \u0441\u043a\u0432\u0430\u0434\u0430 \u0437\u0435\u043d\u0438\u0442\u043e\u043a, \u0437\u0430\u0449\u0438\u0449\u0430\u044e\u0449\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0441\u043a\u0440\u0438\u043f\u0442"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "ht_self_restart"
-          }
-        },
-        {
-          "comment": {
-            "value": "модифицируем время сбегания "
           }
         },
         {
@@ -161,11 +171,6 @@
           }
         },
         {
-          "comment": {
-            "value": "говорим имя сквада зениток, защищающих аэродром"
-          }
-        },
-        {
           "varSetString": {
             "value": "ft_t1_aaa_squad",
             "var": "ht_t1_airfield_name"
@@ -175,11 +180,6 @@
           "varSetString": {
             "value": "ft_t2_aaa_squad",
             "var": "ht_t2_airfield_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем основной скрипт"
           }
         },
         {
@@ -212,22 +212,23 @@
       "actions": [
         {
           "comment": {
-            "value": "выставляем дефолтное значение для задержек"
+            "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0434\u0435\u0444\u043e\u043b\u0442\u043d\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0435\u043c\u043d\u043e\u0433\u043e \u0440\u0430\u043d\u0434\u043e\u043c\u0430\u0439\u0437\u0438\u043c \u0432\u0440\u0435\u043c\u044f \u043f\u043e\u044f\u0432\u043b\u0435\u043d\u0438\u044f \u043e\u0445\u043e\u0442\u043d\u0438\u043a\u043e\u0432"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043a\u0440\u0438\u043f\u0442"
           }
         },
         {
           "varSetInt": {
             "value": 0,
             "var": "ht_t1_delay_timer"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 0.0,
-            "var": "ht_t1_delay_timer",
-            "use_variable": true,
-            "var_value": "ht_t1_initial_delay_timer"
           }
         },
         {
@@ -240,21 +241,18 @@
           "varModify": {
             "operator": "add",
             "value": 0.0,
+            "var": "ht_t1_delay_timer",
+            "use_variable": true,
+            "var_value": "ht_t1_initial_delay_timer"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
             "var": "ht_t2_delay_timer",
             "use_variable": true,
             "var_value": "ht_t2_initial_delay_timer"
-          }
-        },
-        {
-          "comment": {
-            "value": "немного рандомайзим время появления охотников"
-          }
-        },
-        {
-          "varSetRandomInt": {
-            "var": "ht_delay_randomizer",
-            "from": 0,
-            "to_not_including": 10
           }
         },
         {
@@ -267,13 +265,6 @@
           }
         },
         {
-          "varSetRandomInt": {
-            "var": "ht_delay_randomizer",
-            "from": 0,
-            "to_not_including": 90
-          }
-        },
-        {
           "varModify": {
             "operator": "add",
             "value": 0.0,
@@ -283,8 +274,17 @@
           }
         },
         {
-          "comment": {
-            "value": "запускаем скрипт"
+          "varSetRandomInt": {
+            "var": "ht_delay_randomizer",
+            "from": 0,
+            "to_not_including": 10
+          }
+        },
+        {
+          "varSetRandomInt": {
+            "var": "ht_delay_randomizer",
+            "from": 0,
+            "to_not_including": 90
           }
         },
         {
@@ -324,12 +324,12 @@
       "actions": [
         {
           "comment": {
-            "value": "время подошло нужному значению "
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e \u043d\u0443\u0436\u043d\u043e\u043c\u0443 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044e "
           }
         },
         {
           "comment": {
-            "value": "и охотники команды А не запущены"
+            "value": "\u0438 \u043e\u0445\u043e\u0442\u043d\u0438\u043a\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410 \u043d\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u044b"
           }
         },
         {
@@ -340,7 +340,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "охотники команды А еще запущены"
+          "value": "\u043e\u0445\u043e\u0442\u043d\u0438\u043a\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410 \u0435\u0449\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u044b"
         }
       }
     },
@@ -366,7 +366,7 @@
       },
       "actions": {
         "comment": {
-          "value": "скрипт запускается не только для армии 2"
+          "value": "\u0441\u043a\u0440\u0438\u043f\u0442 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u0442\u0441\u044f \u043d\u0435 \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 2"
         },
         "triggerEnable": {
           "target": "ht_t1_check_team_alive"
@@ -398,12 +398,12 @@
       "actions": [
         {
           "comment": {
-            "value": "время подошло нужному значению "
+            "value": "\u0432\u0440\u0435\u043c\u044f \u043f\u043e\u0434\u043e\u0448\u043b\u043e \u043d\u0443\u0436\u043d\u043e\u043c\u0443 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044e "
           }
         },
         {
           "comment": {
-            "value": "и охотники команды А не запущены"
+            "value": "\u0438 \u043e\u0445\u043e\u0442\u043d\u0438\u043a\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410 \u043d\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u044b"
           }
         },
         {
@@ -414,7 +414,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "охотники команды А еще запущены"
+          "value": "\u043e\u0445\u043e\u0442\u043d\u0438\u043a\u0438 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410 \u0435\u0449\u0435 \u0437\u0430\u043f\u0443\u0449\u0435\u043d\u044b"
         }
       }
     },
@@ -440,7 +440,7 @@
       },
       "actions": {
         "comment": {
-          "value": "скрипт запускается не только для армии 1"
+          "value": "\u0441\u043a\u0440\u0438\u043f\u0442 \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u0442\u0441\u044f \u043d\u0435 \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 1"
         },
         "triggerEnable": {
           "target": "ht_t2_check_team_alive"
@@ -477,7 +477,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активных игроков в команде 2 больше 3 - на них можно охотиться"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u0435 2 \u0431\u043e\u043b\u044c\u0448\u0435 3 - \u043d\u0430 \u043d\u0438\u0445 \u043c\u043e\u0436\u043d\u043e \u043e\u0445\u043e\u0442\u0438\u0442\u044c\u0441\u044f"
           },
           "triggerEnable": {
             "target": "ht_t1_check_distance"
@@ -518,7 +518,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом никого нет. проверяем есть ли аэродром рядом"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0438\u043a\u043e\u0433\u043e \u043d\u0435\u0442. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0440\u044f\u0434\u043e\u043c"
           },
           "unitMark": {
             "target_marking": 1,
@@ -556,7 +556,7 @@
         },
         "actions": {
           "comment": {
-            "value": "аэродром найден. проверяем дистанцию"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u043d\u0430\u0439\u0434\u0435\u043d. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "ht_t1_check_airfield_distance"
@@ -564,7 +564,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "не найден джиповский аэродром. пробуем найти BfD"
+            "value": "\u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d \u0434\u0436\u0438\u043f\u043e\u0432\u0441\u043a\u0438\u0439 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u043d\u0430\u0439\u0442\u0438 BfD"
           },
           "varSetString": {
             "value": "t2_def_aaa_squad",
@@ -596,7 +596,7 @@
         },
         "actions": {
           "comment": {
-            "value": "найден аэродром BfD проверяем дистанцию"
+            "value": "\u043d\u0430\u0439\u0434\u0435\u043d \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c BfD \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "ht_t1_check_airfield_distance"
@@ -604,7 +604,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "не найден аэродром. не спавним хантеров"
+            "value": "\u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c. \u043d\u0435 \u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0445\u0430\u043d\u0442\u0435\u0440\u043e\u0432"
           },
           "triggerEnable": {
             "target": "ht_t1_hunter_clearing"
@@ -644,7 +644,7 @@
         },
         "actions": {
           "comment": {
-            "value": "аэродромных зениток тоже рядом нет"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043d\u044b\u0445 \u0437\u0435\u043d\u0438\u0442\u043e\u043a \u0442\u043e\u0436\u0435 \u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442"
           },
           "varSetString": {
             "value": "",
@@ -667,7 +667,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "аэродром близко. не спавним хантеров"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0431\u043b\u0438\u0437\u043a\u043e. \u043d\u0435 \u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0445\u0430\u043d\u0442\u0435\u0440\u043e\u0432"
           },
           "triggerEnable": {
             "target": "ht_t1_hunter_clearing"
@@ -696,7 +696,7 @@
         },
         "actions": {
           "comment": {
-            "value": "имя игрока не пустое"
+            "value": "\u0438\u043c\u044f \u0438\u0433\u0440\u043e\u043a\u0430 \u043d\u0435 \u043f\u0443\u0441\u0442\u043e\u0435"
           },
           "triggerEnable": {
             "target": "ht_t1_check_player_height"
@@ -704,7 +704,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя игрока пустое. собираем мусор"
+            "value": "\u0438\u043c\u044f \u0438\u0433\u0440\u043e\u043a\u0430 \u043f\u0443\u0441\u0442\u043e\u0435. \u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043c\u0443\u0441\u043e\u0440"
           },
           "triggerEnable": {
             "target": "ht_t1_hunter_clearing"
@@ -763,7 +763,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверили, что игрок в высотах от 500 до 4000"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438, \u0447\u0442\u043e \u0438\u0433\u0440\u043e\u043a \u0432 \u0432\u044b\u0441\u043e\u0442\u0430\u0445 \u043e\u0442 500 \u0434\u043e 4000"
           },
           "varSetBool": {
             "value": true,
@@ -843,7 +843,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активных игроков в команде 1 больше 3 - на них можно охотиться"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u0435 1 \u0431\u043e\u043b\u044c\u0448\u0435 3 - \u043d\u0430 \u043d\u0438\u0445 \u043c\u043e\u0436\u043d\u043e \u043e\u0445\u043e\u0442\u0438\u0442\u044c\u0441\u044f"
           },
           "triggerEnable": {
             "target": "ht_t2_check_distance"
@@ -884,7 +884,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом никого нет. проверяем есть ли аэродром рядом"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0438\u043a\u043e\u0433\u043e \u043d\u0435\u0442. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0440\u044f\u0434\u043e\u043c"
           },
           "unitMark": {
             "target_marking": 1,
@@ -922,7 +922,7 @@
         },
         "actions": {
           "comment": {
-            "value": "аэродром найден. проверяем дистанцию"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u043d\u0430\u0439\u0434\u0435\u043d. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "ht_t2_check_airfield_distance"
@@ -930,7 +930,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "не найден джиповский аэродром. пробуем найти BfD"
+            "value": "\u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d \u0434\u0436\u0438\u043f\u043e\u0432\u0441\u043a\u0438\u0439 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u043d\u0430\u0439\u0442\u0438 BfD"
           },
           "varSetString": {
             "value": "t1_def_aaa_squad",
@@ -962,7 +962,7 @@
         },
         "actions": {
           "comment": {
-            "value": "найден аэродром BfD проверяем дистанцию"
+            "value": "\u043d\u0430\u0439\u0434\u0435\u043d \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c BfD \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "ht_t2_check_airfield_distance"
@@ -970,7 +970,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "не найден аэродром или далеко. не спавним хантеров"
+            "value": "\u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0438\u043b\u0438 \u0434\u0430\u043b\u0435\u043a\u043e. \u043d\u0435 \u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0445\u0430\u043d\u0442\u0435\u0440\u043e\u0432"
           },
           "triggerEnable": {
             "target": "ht_t2_hunter_clearing"
@@ -1010,7 +1010,7 @@
         },
         "actions": {
           "comment": {
-            "value": "аэродромных зениток тоже рядом нет"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043d\u044b\u0445 \u0437\u0435\u043d\u0438\u0442\u043e\u043a \u0442\u043e\u0436\u0435 \u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442"
           },
           "varSetString": {
             "value": "",
@@ -1033,7 +1033,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "аэродром далеко. не спавним хантеров"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0434\u0430\u043b\u0435\u043a\u043e. \u043d\u0435 \u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0445\u0430\u043d\u0442\u0435\u0440\u043e\u0432"
           },
           "triggerEnable": {
             "target": "ht_t2_hunter_clearing"
@@ -1062,7 +1062,7 @@
         },
         "actions": {
           "comment": {
-            "value": "имя игрока не пустое"
+            "value": "\u0438\u043c\u044f \u0438\u0433\u0440\u043e\u043a\u0430 \u043d\u0435 \u043f\u0443\u0441\u0442\u043e\u0435"
           },
           "triggerEnable": {
             "target": "ht_t2_check_player_height"
@@ -1070,7 +1070,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя игрока пустое. собираем мусор"
+            "value": "\u0438\u043c\u044f \u0438\u0433\u0440\u043e\u043a\u0430 \u043f\u0443\u0441\u0442\u043e\u0435. \u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u043c\u0443\u0441\u043e\u0440"
           },
           "triggerEnable": {
             "target": "ht_t2_hunter_clearing"
@@ -1129,7 +1129,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "проверили, что игрок в высотах от 500 до 4000"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438, \u0447\u0442\u043e \u0438\u0433\u0440\u043e\u043a \u0432 \u0432\u044b\u0441\u043e\u0442\u0430\u0445 \u043e\u0442 500 \u0434\u043e 4000"
           },
           "varSetBool": {
             "value": true,
@@ -1224,7 +1224,7 @@
         },
         "actions": {
           "comment": {
-            "value": "хантеры потеряли цель до начала стрельбы и убегают"
+            "value": "\u0445\u0430\u043d\u0442\u0435\u0440\u044b \u043f\u043e\u0442\u0435\u0440\u044f\u043b\u0438 \u0446\u0435\u043b\u044c \u0434\u043e \u043d\u0430\u0447\u0430\u043b\u0430 \u0441\u0442\u0440\u0435\u043b\u044c\u0431\u044b \u0438 \u0443\u0431\u0435\u0433\u0430\u044e\u0442"
           },
           "triggerDisable": [
             {
@@ -1297,11 +1297,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/ht_hunters_activate",
@@ -1315,6 +1310,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           }
         ],
@@ -1552,7 +1552,7 @@
         },
         "actions": {
           "comment": {
-            "value": "хантеры потеряли цель до начала стрельбы и убегают"
+            "value": "\u0445\u0430\u043d\u0442\u0435\u0440\u044b \u043f\u043e\u0442\u0435\u0440\u044f\u043b\u0438 \u0446\u0435\u043b\u044c \u0434\u043e \u043d\u0430\u0447\u0430\u043b\u0430 \u0441\u0442\u0440\u0435\u043b\u044c\u0431\u044b \u0438 \u0443\u0431\u0435\u0433\u0430\u044e\u0442"
           },
           "triggerDisable": [
             {
@@ -1625,11 +1625,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/ht_hunters_activate",
@@ -1643,6 +1638,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "A"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           }
         ],

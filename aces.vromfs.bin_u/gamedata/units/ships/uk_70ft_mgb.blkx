@@ -2500,12 +2500,6 @@
             "part": "compartment_02_dm"
           },
           {
-            "weight": 1.0
-          },
-          {
-            "maxWaterAlive": 1.0
-          },
-          {
             "part": {
               "partNo": "radio_station_dm",
               "critWaterLevel": 0.5
@@ -2516,6 +2510,12 @@
               "partNo": "ammunition_storage_02_dm",
               "critWaterLevel": 0.75
             }
+          },
+          {
+            "weight": 1.0
+          },
+          {
+            "maxWaterAlive": 1.0
           }
         ]
       },
@@ -3195,14 +3195,6 @@
         }
       },
       {
-        "procedural": {
-          "name": "default",
-          "fx": {
-            "name": "ship_hit_fire"
-          }
-        }
-      },
-      {
         "event": {
           "name": "torpedo_fire",
           "fx": {
@@ -3217,6 +3209,14 @@
           "fx": {
             "name": "ship_explosion_large_second",
             "centerDmgPart": false
+          }
+        }
+      },
+      {
+        "procedural": {
+          "name": "default",
+          "fx": {
+            "name": "ship_hit_fire"
           }
         }
       }

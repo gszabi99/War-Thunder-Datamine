@@ -1308,7 +1308,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.91,0.89],
                 "size": [192.0,192.0],
-                "color": "#ffff00ff",
+                "color": [0,255,255,255],
                 "valueTextSize": 30.0,
                 "valueMul": 0.54,
                 "ranges": [
@@ -1332,7 +1332,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "size": [192.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "valueMul": 0.1969,
                 "ranges": [
@@ -1375,7 +1375,7 @@
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "size": [192.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "notDrawBackground": true,
                 "ranges": {
@@ -1433,7 +1433,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.91,0.89],
                 "size": [192.0,192.0],
-                "color": "#ffff00ff",
+                "color": [0,255,255,255],
                 "valueTextSize": 30.0,
                 "valueMul": 0.54,
                 "ranges": [
@@ -1457,7 +1457,7 @@
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "size": [192.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "valueMul": 0.1969,
                 "ranges": [
@@ -1500,7 +1500,7 @@
                 "backgroundTexCoord": [0.0,0.0,0.89,0.89],
                 "arrowTexCoord": [0.0,0.93,0.4,0.97],
                 "size": [192.0,192.0],
-                "color": "#1e1effff",
+                "color": [255,30,30,255],
                 "valueTextSize": 30.0,
                 "notDrawBackground": true,
                 "ranges": {
@@ -1690,6 +1690,14 @@
           "turret": "turret1"
         },
         {
+          "turret": {
+            "head": "turret1",
+            "gun": "gun1",
+            "mainTurret": true,
+            "ballisticTargeting": true
+          }
+        },
+        {
           "dm": "gunner1_dm"
         },
         {
@@ -1712,14 +1720,6 @@
         },
         {
           "parkInDeadzone": false
-        },
-        {
-          "turret": {
-            "head": "turret1",
-            "gun": "gun1",
-            "mainTurret": true,
-            "ballisticTargeting": true
-          }
         },
         {
           "limits": {
@@ -2022,6 +2022,14 @@
                 "turret": "turret1"
               },
               {
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                }
+              },
+              {
                 "dm": "gunner1_dm"
               },
               {
@@ -2041,14 +2049,6 @@
               },
               {
                 "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
               },
               {
                 "limits": {
@@ -2217,6 +2217,14 @@
                 "turret": "turret1"
               },
               {
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                }
+              },
+              {
                 "dm": "gunner1_dm"
               },
               {
@@ -2236,14 +2244,6 @@
               },
               {
                 "parkInDeadzone": false
-              },
-              {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
               },
               {
                 "limits": {
@@ -2439,6 +2439,14 @@
                 "turret": "turret1"
               },
               {
+                "turret": {
+                  "head": "turret1",
+                  "gun": "gun1",
+                  "mainTurret": true,
+                  "ballisticTargeting": true
+                }
+              },
+              {
                 "dm": "gunner1_dm"
               },
               {
@@ -2460,14 +2468,6 @@
                 "parkInDeadzone": false
               },
               {
-                "turret": {
-                  "head": "turret1",
-                  "gun": "gun1",
-                  "mainTurret": true,
-                  "ballisticTargeting": true
-                }
-              },
-              {
                 "limits": {
                   "yaw": [-86.0,86.0],
                   "pitch": [-60.0,11.0]
@@ -2487,30 +2487,6 @@
                 }
               }
             ]
-          },
-          {
-            "RocketCap": {
-              "name": "cap_1",
-              "part": "starstreak_pylon_cap_1_b001"
-            }
-          },
-          {
-            "RocketCap": {
-              "name": "cap_2",
-              "part": "starstreak_pylon_cap_2_b001"
-            }
-          },
-          {
-            "RocketCap": {
-              "name": "cap_3",
-              "part": "starstreak_pylon_cap_1_b002"
-            }
-          },
-          {
-            "RocketCap": {
-              "name": "cap_4",
-              "part": "starstreak_pylon_cap_2_b002"
-            }
           },
           {
             "Weapon": {
@@ -2585,6 +2561,30 @@
               "bullets": 8,
               "external": true,
               "separate": false
+            }
+          },
+          {
+            "RocketCap": {
+              "name": "cap_1",
+              "part": "starstreak_pylon_cap_1_b001"
+            }
+          },
+          {
+            "RocketCap": {
+              "name": "cap_2",
+              "part": "starstreak_pylon_cap_2_b001"
+            }
+          },
+          {
+            "RocketCap": {
+              "name": "cap_3",
+              "part": "starstreak_pylon_cap_1_b002"
+            }
+          },
+          {
+            "RocketCap": {
+              "name": "cap_4",
+              "part": "starstreak_pylon_cap_2_b002"
             }
           }
         ],

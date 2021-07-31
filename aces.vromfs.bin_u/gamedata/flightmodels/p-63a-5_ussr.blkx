@@ -3,10 +3,13 @@
     "fmFile": "fm/p-63a-5.blk"
   },
   {
+    "fmFile": "fm/p-63a-10.blk"
+  },
+  {
     "fireParamsPreset": "600kph"
   },
   {
-    "fmFile": "fm/p-63a-10.blk"
+    "fireParamsPreset": "700kph"
   },
   {
     "model": "p_63a_5"
@@ -54,14 +57,19 @@
     "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk"
   },
   {
-    "fireParamsPreset": "700kph"
-  },
-  {
     "fightAiBehaviour": "fighter"
   },
   {
     "fireParams": {
       "engineExtinguishFireSpeed": [82.0,194.0],
+      "engineExtinguishFireSpeedChance": [0.01,0.1],
+      "fireDamagePowerRel": 0.05,
+      "nonExtinguishFireTime": 5.0
+    }
+  },
+  {
+    "fireParams": {
+      "engineExtinguishFireSpeed": [138.0,223.0],
       "engineExtinguishFireSpeedChance": [0.01,0.1],
       "fireDamagePowerRel": 0.05,
       "nonExtinguishFireTime": 5.0
@@ -2015,34 +2023,34 @@
         "maxHeadHorAngle": 60.0
       },
       {
-        "maxHeadDownAngle": 60.0
-      },
-      {
-        "maxHeadUpAngle": 10.0
-      },
-      {
-        "headNode": "Bip01 Head"
-      },
-      {
-        "pelvisNode": "Bip01 Pelvis"
-      },
-      {
-        "pelvisTargetNode": "Bip01 Pelvis01"
-      },
-      {
         "maxHeadHorAngle": 60.0
       },
       {
         "maxHeadDownAngle": 60.0
       },
       {
+        "maxHeadDownAngle": 60.0
+      },
+      {
+        "maxHeadUpAngle": 10.0
+      },
+      {
         "maxHeadUpAngle": 10.0
       },
       {
         "headNode": "Bip01 Head"
       },
       {
+        "headNode": "Bip01 Head"
+      },
+      {
         "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisNode": "Bip01 Pelvis"
+      },
+      {
+        "pelvisTargetNode": "Bip01 Pelvis01"
       },
       {
         "pelvisTargetNode": "Bip01 Pelvis01"
@@ -2231,14 +2239,6 @@
     }
   },
   {
-    "fireParams": {
-      "engineExtinguishFireSpeed": [138.0,223.0],
-      "engineExtinguishFireSpeedChance": [0.01,0.1],
-      "fireDamagePowerRel": 0.05,
-      "nonExtinguishFireTime": 5.0
-    }
-  },
-  {
     "wiki": {
       "general": {
         "length": 10.0177,
@@ -2246,7 +2246,7 @@
         "wingArea": 23.24,
         "emptyWeight": 3422.0,
         "normalWeight": 3991.03,
-        "maxTakeoffWeight": 4756.2798,
+        "maxTakeoffWeight": 4756.28,
         "powerPlantType": 0,
         "powerMaxWep": 1950.0,
         "powerMaxMil": 1180.0
@@ -2302,14 +2302,6 @@
     }
   },
   {
-    "balanceData": {
-      "accSpd": 2.1892,
-      "climbSpeed": 17.2,
-      "maxSpeed": 180.15,
-      "turnTime": 23.0
-    }
-  },
-  {
     "wiki": {
       "general": {
         "length": 10.0177,
@@ -2317,7 +2309,7 @@
         "wingArea": 23.24,
         "emptyWeight": 3422.0,
         "normalWeight": 3991.03,
-        "maxTakeoffWeight": 4756.2798,
+        "maxTakeoffWeight": 4756.28,
         "powerPlantType": 0,
         "powerMaxWep": 1600.0,
         "powerMaxMil": 1180.0
@@ -2371,6 +2363,14 @@
           "climbRateMil3": [12700.0,-3.3]
         }
       }
+    }
+  },
+  {
+    "balanceData": {
+      "accSpd": 2.1892,
+      "climbSpeed": 17.2,
+      "maxSpeed": 180.15,
+      "turnTime": 23.0
     }
   },
   {

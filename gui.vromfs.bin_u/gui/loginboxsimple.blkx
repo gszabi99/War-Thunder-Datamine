@@ -57,6 +57,41 @@
       }
     },
     {
+      "tdiv": {
+        "id": "authorization_block",
+        "pos": "50%sw-50%w, 70%sh - 50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "tdiv": {
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "background-color": "@shadeBackgroundColor3",
+          "textAreaCentered": {
+            "id": "xbox_active_usertag",
+            "caption": "yes",
+            "margin": "0.01@scrn_tgt, 0.005@scrn_tgt",
+            "hideEmptyText": "yes",
+            "text": ""
+          }
+        },
+        "authorizationBlock": {
+          "id": "authorization_button_place",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "flow": "vertical"
+        },
+        "textAreaCentered": {
+          "id": "user_notify_text",
+          "pos": "50%pw-50%w, 0",
+          "position": "relative",
+          "max-width": "50%sw",
+          "text": "",
+          "hideEmptyText": "yes",
+          "shadeStyle": "HudHeader3D"
+        }
+      }
+    },
+    {
       "TopMenuPanel": {
         "shadowSafeArea": [],
         "TopMenuPanelBGPlace": {
@@ -125,41 +160,6 @@
         "CompanyLogo": {
           "pos": "pw-w-1@bw -1@companyLogoPadW, -h -1@companyLogoPadH",
           "position": "absolute"
-        }
-      }
-    },
-    {
-      "tdiv": {
-        "id": "authorization_block",
-        "pos": "50%sw-50%w, 70%sh - 50%h",
-        "position": "absolute",
-        "flow": "vertical",
-        "tdiv": {
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "background-color": "@shadeBackgroundColor3",
-          "textAreaCentered": {
-            "id": "xbox_active_usertag",
-            "caption": "yes",
-            "margin": "0.01@scrn_tgt, 0.005@scrn_tgt",
-            "hideEmptyText": "yes",
-            "text": ""
-          }
-        },
-        "authorizationBlock": {
-          "id": "authorization_button_place",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "flow": "vertical"
-        },
-        "textAreaCentered": {
-          "id": "user_notify_text",
-          "pos": "50%pw-50%w, 0",
-          "position": "relative",
-          "max-width": "50%sw",
-          "text": "",
-          "hideEmptyText": "yes",
-          "shadeStyle": "HudHeader3D"
         }
       }
     }

@@ -41,6 +41,22 @@
         }
       },
       {
+        "reaction": {
+          "event": "almostBeenHit",
+          "setNodeWithName": {
+            "nodeName": "doPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "almostBeenHitFront",
+          "setNodeWithName": {
+            "nodeName": "doFrontalPanic"
+          }
+        }
+      },
+      {
         "selector": [
           {
             "selectStrategy": "ordered"
@@ -76,22 +92,6 @@
             "waitOnLand": []
           }
         ]
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHit",
-          "setNodeWithName": {
-            "nodeName": "doPanic"
-          }
-        }
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHitFront",
-          "setNodeWithName": {
-            "nodeName": "doFrontalPanic"
-          }
-        }
       },
       {
         "selector": [
@@ -179,16 +179,6 @@
         ]
       },
       {
-        "sequencer": {
-          "orbitHere": {
-            "speed": 260.0,
-            "rollFactor": 0.2,
-            "alt": 3000.0,
-            "maxTime": 10.0
-          }
-        }
-      },
-      {
         "selector": {
           "name": "doPanic",
           "rollManeuver": [],
@@ -256,6 +246,16 @@
             }
           }
         ]
+      },
+      {
+        "sequencer": {
+          "orbitHere": {
+            "speed": 260.0,
+            "rollFactor": 0.2,
+            "alt": 3000.0,
+            "maxTime": 10.0
+          }
+        }
       }
     ]
   },
@@ -427,6 +427,22 @@
         }
       },
       {
+        "reaction": {
+          "event": "almostBeenHit",
+          "setNodeWithName": {
+            "nodeName": "doPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "almostBeenHitFront",
+          "setNodeWithName": {
+            "nodeName": "doFrontalPanic"
+          }
+        }
+      },
+      {
         "selector": [
           {
             "selectStrategy": "ordered"
@@ -462,99 +478,6 @@
             "waitOnLand": []
           }
         ]
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHit",
-          "setNodeWithName": {
-            "nodeName": "doPanic"
-          }
-        }
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHitFront",
-          "setNodeWithName": {
-            "nodeName": "doFrontalPanic"
-          }
-        }
-      },
-      {
-        "sequencer": {
-          "ifThenElse": [
-            {
-              "and": {
-                "checkCaptureZone": {
-                  "varName": "zoneToCapture",
-                  "cond": "landOnly"
-                },
-                "findAirportAtCZ": {
-                  "varName": "zoneToCapture"
-                }
-              }
-            },
-            {
-              "sequencer": [
-                {
-                  "findApproachPos": {
-                    "dist": 2600.0
-                  }
-                },
-                {
-                  "flyToPos": {
-                    "speed": 350.0,
-                    "dist": 1250.0,
-                    "minAlt": 100.0
-                  }
-                },
-                {
-                  "findApproachPos": {
-                    "dist": 900.0
-                  }
-                },
-                {
-                  "flyToPos": {
-                    "speed": 200.0,
-                    "dist": 350.0,
-                    "minAlt": 20.0
-                  }
-                },
-                {
-                  "sequencer": [
-                    {
-                      "reaction": {
-                        "event": "groundAhead"
-                      }
-                    },
-                    {
-                      "reaction": {
-                        "event": "collisionAhead"
-                      }
-                    },
-                    {
-                      "land": []
-                    },
-                    {
-                      "afterLanding": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "sequencer": {
-                "setCaptureZoneAsDestination": {
-                  "varName": "zoneToCapture"
-                },
-                "flyToPos": {
-                  "speed": 350.0,
-                  "dist": 350.0,
-                  "minAlt": 200.0
-                }
-              }
-            }
-          ]
-        }
       },
       {
         "selector": {
@@ -630,6 +553,83 @@
             }
           }
         ]
+      },
+      {
+        "sequencer": {
+          "ifThenElse": [
+            {
+              "and": {
+                "checkCaptureZone": {
+                  "varName": "zoneToCapture",
+                  "cond": "landOnly"
+                },
+                "findAirportAtCZ": {
+                  "varName": "zoneToCapture"
+                }
+              }
+            },
+            {
+              "sequencer": [
+                {
+                  "findApproachPos": {
+                    "dist": 2600.0
+                  }
+                },
+                {
+                  "findApproachPos": {
+                    "dist": 900.0
+                  }
+                },
+                {
+                  "flyToPos": {
+                    "speed": 350.0,
+                    "dist": 1250.0,
+                    "minAlt": 100.0
+                  }
+                },
+                {
+                  "flyToPos": {
+                    "speed": 200.0,
+                    "dist": 350.0,
+                    "minAlt": 20.0
+                  }
+                },
+                {
+                  "sequencer": [
+                    {
+                      "reaction": {
+                        "event": "groundAhead"
+                      }
+                    },
+                    {
+                      "reaction": {
+                        "event": "collisionAhead"
+                      }
+                    },
+                    {
+                      "land": []
+                    },
+                    {
+                      "afterLanding": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "sequencer": {
+                "setCaptureZoneAsDestination": {
+                  "varName": "zoneToCapture"
+                },
+                "flyToPos": {
+                  "speed": 350.0,
+                  "dist": 350.0,
+                  "minAlt": 200.0
+                }
+              }
+            }
+          ]
+        }
       }
     ]
   },
@@ -675,6 +675,39 @@
         }
       },
       {
+        "reaction": {
+          "event": "almostBeenHit",
+          "setNodeWithName": {
+            "nodeName": "doPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "almostBeenHitFront",
+          "setNodeWithName": {
+            "nodeName": "doFrontalPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "regularCheck",
+          "isTargetDist": {
+            "useTarget": true,
+            "op": "greater",
+            "dist": 2000.0
+          },
+          "findUnit": {
+            "searchForAir": true,
+            "onlyMissionTargets": false,
+            "radius": 2000.0,
+            "degreesToCheck": 50.0
+          },
+          "recalculateTree": []
+        }
+      },
+      {
         "selector": [
           {
             "selectStrategy": "ordered"
@@ -712,20 +745,79 @@
         ]
       },
       {
-        "reaction": {
-          "event": "almostBeenHit",
-          "setNodeWithName": {
-            "nodeName": "doPanic"
-          }
+        "selector": {
+          "name": "doPanic",
+          "rollManeuver": [],
+          "bellManeuver": [],
+          "roll180Man": [],
+          "waveout": [],
+          "sinus": [],
+          "zigzagSplit": []
         }
       },
       {
-        "reaction": {
-          "event": "almostBeenHitFront",
-          "setNodeWithName": {
-            "nodeName": "doFrontalPanic"
+        "selector": [
+          {
+            "name": "doFrontalPanic"
+          },
+          {
+            "rollManeuver": []
+          },
+          {
+            "roll180Man": []
+          },
+          {
+            "sinus": []
+          },
+          {
+            "turn": {
+              "direction": "right",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 1.3
+            }
+          },
+          {
+            "turn": {
+              "direction": "left",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 1.3
+            }
+          },
+          {
+            "turn": {
+              "direction": "right",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 0.4
+            }
+          },
+          {
+            "turn": {
+              "direction": "left",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 0.4
+            }
+          },
+          {
+            "turn": {
+              "direction": "right",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 0.5
+            }
+          },
+          {
+            "turn": {
+              "direction": "left",
+              "maxRoll": 60.0,
+              "extremeElevator": true,
+              "timeToTurn": 0.5
+            }
           }
-        }
+        ]
       },
       {
         "setAsLeader": {
@@ -775,102 +867,10 @@
         }
       },
       {
-        "reaction": {
-          "event": "regularCheck",
-          "isTargetDist": {
-            "useTarget": true,
-            "op": "greater",
-            "dist": 2000.0
-          },
-          "findUnit": {
-            "searchForAir": true,
-            "onlyMissionTargets": false,
-            "radius": 2000.0,
-            "degreesToCheck": 50.0
-          },
-          "recalculateTree": []
-        }
-      },
-      {
         "followTarget": {
           "offset": [-20.0,10.0,30.0],
           "useTarget": false
         }
-      },
-      {
-        "selector": {
-          "name": "doPanic",
-          "rollManeuver": [],
-          "bellManeuver": [],
-          "roll180Man": [],
-          "waveout": [],
-          "sinus": [],
-          "zigzagSplit": []
-        }
-      },
-      {
-        "selector": [
-          {
-            "name": "doFrontalPanic"
-          },
-          {
-            "rollManeuver": []
-          },
-          {
-            "roll180Man": []
-          },
-          {
-            "sinus": []
-          },
-          {
-            "turn": {
-              "direction": "right",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 1.3
-            }
-          },
-          {
-            "turn": {
-              "direction": "left",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 1.3
-            }
-          },
-          {
-            "turn": {
-              "direction": "right",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 0.4
-            }
-          },
-          {
-            "turn": {
-              "direction": "left",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 0.4
-            }
-          },
-          {
-            "turn": {
-              "direction": "right",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 0.5
-            }
-          },
-          {
-            "turn": {
-              "direction": "left",
-              "maxRoll": 60.0,
-              "extremeElevator": true,
-              "timeToTurn": 0.5
-            }
-          }
-        ]
       }
     ]
   },
@@ -916,6 +916,22 @@
         }
       },
       {
+        "reaction": {
+          "event": "almostBeenHit",
+          "setNodeWithName": {
+            "nodeName": "doPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "almostBeenHitFront",
+          "setNodeWithName": {
+            "nodeName": "doFrontalPanic"
+          }
+        }
+      },
+      {
         "selector": [
           {
             "selectStrategy": "ordered"
@@ -951,27 +967,6 @@
             "waitOnLand": []
           }
         ]
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHit",
-          "setNodeWithName": {
-            "nodeName": "doPanic"
-          }
-        }
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHitFront",
-          "setNodeWithName": {
-            "nodeName": "doFrontalPanic"
-          }
-        }
-      },
-      {
-        "setCaptureZoneAsDestination": {
-          "varName": "zoneToDefend"
-        }
       },
       {
         "selector": [
@@ -1027,16 +1022,16 @@
                 }
               },
               {
-                "setCaptureZoneAsDestination": {
-                  "varName": "zoneToDefend"
-                }
-              },
-              {
                 "flyToPos": {
                   "speed": 260.0,
                   "dist": 50.0,
                   "minAlt": 200.0,
                   "maxTime": 5.0
+                }
+              },
+              {
+                "setCaptureZoneAsDestination": {
+                  "varName": "zoneToDefend"
                 }
               }
             ]
@@ -1117,6 +1112,11 @@
             }
           }
         ]
+      },
+      {
+        "setCaptureZoneAsDestination": {
+          "varName": "zoneToDefend"
+        }
       }
     ]
   },
@@ -1162,6 +1162,22 @@
         }
       },
       {
+        "reaction": {
+          "event": "almostBeenHit",
+          "setNodeWithName": {
+            "nodeName": "doPanic"
+          }
+        }
+      },
+      {
+        "reaction": {
+          "event": "almostBeenHitFront",
+          "setNodeWithName": {
+            "nodeName": "doFrontalPanic"
+          }
+        }
+      },
+      {
         "selector": [
           {
             "selectStrategy": "ordered"
@@ -1197,60 +1213,6 @@
             "waitOnLand": []
           }
         ]
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHit",
-          "setNodeWithName": {
-            "nodeName": "doPanic"
-          }
-        }
-      },
-      {
-        "reaction": {
-          "event": "almostBeenHitFront",
-          "setNodeWithName": {
-            "nodeName": "doFrontalPanic"
-          }
-        }
-      },
-      {
-        "parallel": {
-          "updateTarget": {
-            "searchForAir": true,
-            "onlyMissionTargets": false,
-            "radius": 200000.0,
-            "distanceDifferenceToMaxSpeedRatio": 9.0
-          },
-          "ifThenElse": {
-            "or": [
-              {
-                "isTargetType": {
-                  "type": "fighter"
-                }
-              },
-              {
-                "isTargetType": {
-                  "type": "bomber"
-                }
-              }
-            ],
-            "selector": {
-              "fighterAttackFighter": {
-                "allowSpeedCheat": false
-              }
-            },
-            "fighterAttackGround": []
-          }
-        }
-      },
-      {
-        "orbitHere": {
-          "speed": 260.0,
-          "rollFactor": 0.2,
-          "alt": 3000.0,
-          "maxTime": 10.0
-        }
       },
       {
         "selector": {
@@ -1320,6 +1282,44 @@
             }
           }
         ]
+      },
+      {
+        "parallel": {
+          "updateTarget": {
+            "searchForAir": true,
+            "onlyMissionTargets": false,
+            "radius": 200000.0,
+            "distanceDifferenceToMaxSpeedRatio": 9.0
+          },
+          "ifThenElse": {
+            "or": [
+              {
+                "isTargetType": {
+                  "type": "fighter"
+                }
+              },
+              {
+                "isTargetType": {
+                  "type": "bomber"
+                }
+              }
+            ],
+            "selector": {
+              "fighterAttackFighter": {
+                "allowSpeedCheat": false
+              }
+            },
+            "fighterAttackGround": []
+          }
+        }
+      },
+      {
+        "orbitHere": {
+          "speed": 260.0,
+          "rollFactor": 0.2,
+          "alt": 3000.0,
+          "maxTime": 10.0
+        }
       }
     ]
   },

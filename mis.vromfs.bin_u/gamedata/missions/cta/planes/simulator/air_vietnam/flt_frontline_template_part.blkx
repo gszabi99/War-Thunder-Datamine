@@ -187,13 +187,7 @@
       "actions": [
         {
           "comment": {
-            "value": "ограничиваем количество битв"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 2,
-            "var": "lbt_battle_max_battle_num"
+            "value": "\u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u0438\u0442\u0432"
           }
         },
         {
@@ -202,16 +196,44 @@
           }
         },
         {
-          "missionBattleArea": {
-            "air": true,
-            "ground": false,
-            "mapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": true,
-            "airMapArea": true,
-            "area": "flt_battle_area",
-            "newGridHorizontalCellCount": 7
+          "comment": {
+            "value": "\u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0444\u0440\u043e\u043d\u0442\u043b\u0430\u0439\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e col \u0438 row"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0441\u0447\u0438\u0442\u044b\u0432\u0430\u0435\u043c \u043e\u0431\u0449\u0435\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u043e\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0437\u043e\u043d, \u044f\u0432\u043b\u044f\u044e\u0449\u0438\u0445\u0441\u044f \u043b\u0438\u043d\u0438\u0435\u0439 \u0444\u0440\u043e\u043d\u0442\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043d\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u043c\u044b\u043c\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043a\u043e\u043c\u0430\u043d\u0434 (\u0432 \u0446\u0438\u043a\u043b\u0435 \u043f\u043e \u0430\u043b\u0433\u043e\u0440\u0438\u0442\u043c\u0443)"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 2,
+            "var": "lbt_battle_max_battle_num"
           }
         },
         {
@@ -239,16 +261,6 @@
           }
         },
         {
-          "comment": {
-            "value": "настройки фронтлайна"
-          }
-        },
-        {
-          "comment": {
-            "value": "количество col и row"
-          }
-        },
-        {
           "varSetInt": {
             "value": 7,
             "var": "flt_zones_in_row"
@@ -261,14 +273,34 @@
           }
         },
         {
-          "comment": {
-            "value": "высчитываем общее количество зон"
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_total_zones"
           }
         },
         {
           "varSetInt": {
             "value": 0,
-            "var": "flt_total_zones"
+            "var": "flt_area_44_state"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "flt_area_45_state"
+          }
+        },
+        {
+          "missionBattleArea": {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "airMapArea": true,
+            "area": "flt_battle_area",
+            "newGridHorizontalCellCount": 7
           }
         },
         {
@@ -287,11 +319,6 @@
             "var": "flt_total_zones",
             "use_variable": true,
             "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "comment": {
-            "value": "индекс зон, являющихся линией фронта"
           }
         },
         {
@@ -344,11 +371,6 @@
           }
         },
         {
-          "comment": {
-            "value": "помечаем зоны не используемыми"
-          }
-        },
-        {
           "__varSetInt": {
             "value": 0,
             "var": "flt_area_02_state"
@@ -373,30 +395,8 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "flt_area_44_state"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "flt_area_45_state"
-          }
-        },
-        {
-          "comment": {
-            "value": "помечаем зоны команд (в цикле по алгоритму)"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "comment": {
-            "value": "рисуем линию фронта"
           }
         },
         {
@@ -460,15 +460,57 @@
       }
     },
     {
-      "structures": {
-        "name": "flt_t1_art",
+      "air_defence": {
+        "name": "flt_t2_big_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [40679.2,-12.0,31782.3]
+          [19881.3,127.4,55388.3]
         ],
-        "unit_class": "ussr_76mm_zis3",
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "flt_t1_small_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [37561.0,-12.0,32663.2]
+        ],
+        "unit_class": "ussr_37mm_61k",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -503,14 +545,14 @@
     },
     {
       "air_defence": {
-        "name": "flt_t2_big_aaa",
+        "name": "flt_t2_small_aaa",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [19881.3,127.4,55388.3]
+          [23750.3,131.1,56362.4]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_37mm_flak43",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -528,6 +570,48 @@
         "applyAllMods": false,
         "props": {
           "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "flt_t1_art",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40679.2,-12.0,31782.3]
+        ],
+        "unit_class": "ussr_76mm_zis3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
           "count": 10,
           "formation_type": "rows",
           "formation_div": 3,
@@ -717,90 +801,6 @@
       }
     },
     {
-      "air_defence": {
-        "name": "flt_t1_small_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [37561.0,-12.0,32663.2]
-        ],
-        "unit_class": "ussr_37mm_61k",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 1,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "flt_t2_small_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23750.3,131.1,56362.4]
-        ],
-        "unit_class": "germ_37mm_flak43",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "flt_t2_small_aaa_squad",
         "tm": [
@@ -812,6 +812,36 @@
         "props": {
           "object_marking": 0,
           "squad_members": "flt_t2_small_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [42662.7,0.55,36500.2]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t1_tank"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7361.4,0.55,59433.2]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t2_tank"
         }
       }
     },
@@ -943,36 +973,6 @@
           "setStealth": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [42662.7,0.55,36500.2]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t1_tank"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7361.4,0.55,59433.2]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t2_tank"
-        }
       }
     }
   ],

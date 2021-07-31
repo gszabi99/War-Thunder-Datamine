@@ -3,10 +3,10 @@
     "model": "mig_9_ussr"
   },
   {
-    "fmFile": "fm/mig-9_ussr.blk"
+    "model": "mig_9"
   },
   {
-    "model": "mig_9"
+    "fmFile": "fm/mig-9_ussr.blk"
   },
   {
     "fmFile": "fm/mig-9.blk"
@@ -66,10 +66,10 @@
     "fireParamsPreset": "900kph"
   },
   {
-    "fightAiBehaviour": "fighter"
+    "fireParamsPreset": "1000kph"
   },
   {
-    "fireParamsPreset": "1000kph"
+    "fightAiBehaviour": "fighter"
   },
   {
     "harmonizationSuffix": "_tomoe"
@@ -109,6 +109,59 @@
           "airSpeedMil2": [10200.0,879.0],
           "climbRateMil0": [0.0,22.0],
           "climbRateMil1": [10200.0,8.3]
+        }
+      }
+    }
+  },
+  {
+    "wiki": {
+      "general": {
+        "length": 9.75,
+        "wingspan": 10.0,
+        "wingArea": 18.2,
+        "emptyWeight": 3600.0,
+        "normalWeight": 4979.0,
+        "maxTakeoffWeight": 5590.0,
+        "powerPlantType": 2,
+        "thrustMaxWep": 16700.0,
+        "thrustMaxMil": 14800.0
+      },
+      "performance": {
+        "table": {
+          "rpmWep": 10000.0,
+          "airSpeedWep0": [1000.0,963.0],
+          "climbRateWep0": [0.0,28.0],
+          "climbTimeWep0": [2000.0,69.5594],
+          "climbTimeWep1": [4000.0,144.277],
+          "climbTimeWep2": [6000.0,230.293],
+          "climbTimeWep3": [8000.0,330.188],
+          "turnTimeWep": [1000.0,26.0],
+          "rpmMil": 9500.0,
+          "airSpeedMil0": [0.0,906.0],
+          "airSpeedMil1": [1000.0,951.0],
+          "climbRateMil0": [0.0,23.2],
+          "climbTimeMil0": [2000.0,82.9885],
+          "climbTimeMil1": [4000.0,173.499],
+          "climbTimeMil2": [6000.0,279.26],
+          "climbTimeMil3": [8000.0,403.364],
+          "turnTimeMil": [1000.0,27.8],
+          "takeoffDistance": 1046.8,
+          "ceiling": 10500.0,
+          "rollRate": 163.0,
+          "wingLoading": 274.0,
+          "thrustToWeightRatio": 0.4
+        },
+        "plot": {
+          "airSpeedWep0": [0.0,963.0],
+          "airSpeedWep1": [10500.0,903.0],
+          "climbRateWep0": [0.0,28.0],
+          "climbRateWep1": [3100.0,25.1],
+          "climbRateWep2": [10500.0,12.9],
+          "airSpeedMil0": [0.0,906.0],
+          "airSpeedMil1": [1600.0,948.0],
+          "airSpeedMil2": [10300.0,895.0],
+          "climbRateMil0": [0.0,23.2],
+          "climbRateMil1": [10300.0,9.9]
         }
       }
     }
@@ -241,6 +294,9 @@
           "fuel_pressure": [0.0,15.0]
         },
         {
+          "fuel_pressure": [0.0,15.0]
+        },
+        {
           "fuel_pressure1": [0.0,15.0]
         },
         {
@@ -248,9 +304,6 @@
         },
         {
           "fuel_pressure3": [0.0,15.0]
-        },
-        {
-          "fuel_pressure": [0.0,15.0]
         }
       ],
       "parts_holes_dmg": {
@@ -318,59 +371,6 @@
       "n37_new_gun": {
         "reqModification": "ns37_belt_pack",
         "tier": 4
-      }
-    }
-  },
-  {
-    "wiki": {
-      "general": {
-        "length": 9.75,
-        "wingspan": 10.0,
-        "wingArea": 18.2,
-        "emptyWeight": 3600.0,
-        "normalWeight": 4979.0,
-        "maxTakeoffWeight": 5590.0,
-        "powerPlantType": 2,
-        "thrustMaxWep": 16700.0,
-        "thrustMaxMil": 14800.0
-      },
-      "performance": {
-        "table": {
-          "rpmWep": 10000.0,
-          "airSpeedWep0": [1000.0,963.0],
-          "climbRateWep0": [0.0,28.0],
-          "climbTimeWep0": [2000.0,69.5594],
-          "climbTimeWep1": [4000.0,144.277],
-          "climbTimeWep2": [6000.0,230.293],
-          "climbTimeWep3": [8000.0,330.188],
-          "turnTimeWep": [1000.0,26.0],
-          "rpmMil": 9500.0,
-          "airSpeedMil0": [0.0,906.0],
-          "airSpeedMil1": [1000.0,951.0],
-          "climbRateMil0": [0.0,23.2],
-          "climbTimeMil0": [2000.0,82.9885],
-          "climbTimeMil1": [4000.0,173.499],
-          "climbTimeMil2": [6000.0,279.26],
-          "climbTimeMil3": [8000.0,403.364],
-          "turnTimeMil": [1000.0,27.8],
-          "takeoffDistance": 1046.8,
-          "ceiling": 10500.0,
-          "rollRate": 163.0,
-          "wingLoading": 274.0,
-          "thrustToWeightRatio": 0.4
-        },
-        "plot": {
-          "airSpeedWep0": [0.0,963.0],
-          "airSpeedWep1": [10500.0,903.0],
-          "climbRateWep0": [0.0,28.0],
-          "climbRateWep1": [3100.0,25.1],
-          "climbRateWep2": [10500.0,12.9],
-          "airSpeedMil0": [0.0,906.0],
-          "airSpeedMil1": [1600.0,948.0],
-          "airSpeedMil2": [10300.0,895.0],
-          "climbRateMil0": [0.0,23.2],
-          "climbRateMil1": [10300.0,9.9]
-        }
       }
     }
   },

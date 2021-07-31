@@ -229,34 +229,6 @@
           }
         },
         {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ALL"
-          }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_CONTINUE"
-            },
-            {
-              "control": "ID_FLIGHTMENU"
-            },
-            {
-              "control": "ID_FLIGHTMENU_SETUP"
-            },
-            {
-              "control": "ID_CONTINUE_SETUP"
-            },
-            {
-              "control": "ID_LOCK_TARGET"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -324,6 +296,34 @@
             },
             {
               "attack_type": "hold_fire"
+            }
+          ]
+        },
+        {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ALL"
+          }
+        },
+        {
+          "playerControls": [
+            {
+              "setStatus": "enable"
+            },
+            {
+              "control": "ID_CONTINUE"
+            },
+            {
+              "control": "ID_FLIGHTMENU"
+            },
+            {
+              "control": "ID_FLIGHTMENU_SETUP"
+            },
+            {
+              "control": "ID_CONTINUE_SETUP"
+            },
+            {
+              "control": "ID_LOCK_TARGET"
             }
           ]
         },
@@ -433,43 +433,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "initial_dialogue"
-            },
-            {
-              "target": "initial_cutscene_skip"
-            }
-          ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "time": -1.0,
-            "shouldFadeOut": false,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 18.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
@@ -496,12 +459,54 @@
         },
         {
           "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 18.0
+          }
+        },
+        {
+          "wait": {
             "time": 48.0
           }
         },
         {
-          "triggerDisable": {
-            "target": "initial_cutscene_skip"
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "initial_dialogue"
+            },
+            {
+              "target": "initial_cutscene_skip"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "carrierTakeoff_start"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "time": -1.0,
+            "shouldFadeOut": false,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -522,13 +527,8 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "carrierTakeoff_start"
+          "triggerDisable": {
+            "target": "initial_cutscene_skip"
           }
         }
       ],
@@ -556,15 +556,28 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d02_1",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d02_2",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d02_3",
+            "subtitles": true
+          }
+        },
+        {
           "unitLoadBehTree": {
             "name": "missionBomber",
             "objects": "instructor",
             "loadType": "tree"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -575,9 +588,8 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d02_1",
-            "subtitles": true
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -586,14 +598,13 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d02_2",
-            "subtitles": true
+          "wait": {
+            "time": 7.0
           }
         },
         {
           "wait": {
-            "time": 7.0
+            "time": 2.0
           }
         },
         {
@@ -611,14 +622,13 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d02_3",
-            "subtitles": true
+          "triggerDisable": {
+            "target": "initial_cutscene_skip"
           }
         },
         {
           "triggerDisable": {
-            "target": "initial_cutscene_skip"
+            "target": "initial_cutscene"
           }
         },
         {
@@ -636,16 +646,6 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "initial_cutscene"
           }
         },
         {
@@ -727,6 +727,13 @@
           }
         },
         {
+          "unitLoadBehTree": {
+            "name": "missionBomber",
+            "objects": "instructor",
+            "loadType": "tree"
+          }
+        },
+        {
           "unitMoveTo": {
             "target": "waypoint01",
             "follow_target": false,
@@ -751,16 +758,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "carrierTakeoff_start"
-            },
-            {
-              "target": "instructor_movement"
-            }
-          ]
-        },
-        {
           "unitMoveTo": {
             "target": "waypoint01",
             "follow_target": false,
@@ -782,11 +779,14 @@
           }
         },
         {
-          "unitLoadBehTree": {
-            "name": "missionBomber",
-            "objects": "instructor",
-            "loadType": "tree"
-          }
+          "triggerEnable": [
+            {
+              "target": "carrierTakeoff_start"
+            },
+            {
+              "target": "instructor_movement"
+            }
+          ]
         }
       ],
       "else_actions": []
@@ -986,18 +986,23 @@
           ]
         },
         {
+          "triggerDisable": {
+            "target": "carrierTakeoff_engine_pre_ps4"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "carrierTakeoff_engine_pre_ps4"
           }
         },
         {
-          "wait": {
-            "time": 0.2
+          "triggerEnable": {
+            "target": "carrierTakeoff_engine02"
           }
         },
         {
-          "triggerDisable": {
-            "target": "carrierTakeoff_engine_pre_ps4"
+          "wait": {
+            "time": 0.2
           }
         },
         {
@@ -1021,11 +1026,6 @@
             "object_var_value": 0,
             "item": "ID_TOGGLE_ENGINE",
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "carrierTakeoff_engine02"
           }
         }
       ],
@@ -1361,24 +1361,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "carrierTakeoff_throttle02_dialogue01"
-            },
-            {
-              "target": "carrierTakeoff_inAir"
-            },
-            {
-              "target": "carrierTakeoff_elevator01"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_rudder02",
@@ -1396,8 +1378,26 @@
           }
         },
         {
+          "triggerEnable": [
+            {
+              "target": "carrierTakeoff_throttle02_dialogue01"
+            },
+            {
+              "target": "carrierTakeoff_inAir"
+            },
+            {
+              "target": "carrierTakeoff_elevator01"
+            }
+          ]
+        },
+        {
           "triggerEnable": {
             "target": "carrierTakeoff_throttle02_dialogue02"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -1807,16 +1807,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "carrierTakeoff_gears_arcreal01_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_gears01",
@@ -1835,7 +1825,17 @@
         },
         {
           "triggerEnable": {
+            "target": "carrierTakeoff_gears_arcreal01_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "follow00_way"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -2155,6 +2155,21 @@
           ]
         },
         {
+          "triggerEnable": {
+            "target": "follow00_way_dialogue01"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "torpedoing_cutscene"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "follow00_way_dialogue02"
+          }
+        },
+        {
           "unitMoveTo": {
             "target": "waypoint02",
             "follow_target": false,
@@ -2176,13 +2191,13 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "follow00_way_dialogue01"
+          "wait": {
+            "time": 2.0
           }
         },
         {
           "wait": {
-            "time": 2.0
+            "time": 8.0
           }
         },
         {
@@ -2200,21 +2215,6 @@
             "target": "tutorial_mission4_follow00",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "torpedoing_cutscene"
-          }
-        },
-        {
-          "wait": {
-            "time": 8.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "follow00_way_dialogue02"
           }
         }
       ],
@@ -2360,6 +2360,16 @@
           }
         },
         {
+          "wait": {
+            "time": 78.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "torpedoing_dialogue"
@@ -2368,6 +2378,11 @@
               "target": "torpedoing_cutscene_skip"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "torpedoing_waypoint"
+          }
         },
         {
           "playHint": {
@@ -2384,16 +2399,6 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 78.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "torpedoing_cutscene_skip"
           }
         },
         {
@@ -2414,13 +2419,8 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "torpedoing_waypoint"
+          "triggerDisable": {
+            "target": "torpedoing_cutscene_skip"
           }
         }
       ],
@@ -2448,19 +2448,20 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "missionPlayDialogue": {
             "dialog": "tutorial_m4_d07_3",
             "subtitles": true
           }
         },
         {
-          "unitDropAmmo": {
-            "object": "instructor_cut"
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d07_4",
+            "subtitles": true
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -2469,9 +2470,8 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d07_4",
-            "subtitles": true
+          "unitDropAmmo": {
+            "object": "instructor_cut"
           }
         },
         {
@@ -2521,6 +2521,16 @@
           }
         },
         {
+          "triggerDisable": [
+            {
+              "target": "torpedoing_cutscene"
+            },
+            {
+              "target": "torpedoing_dialogue"
+            }
+          ]
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/cutsc_skip",
@@ -2541,16 +2551,6 @@
           "wait": {
             "time": 2.0
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "torpedoing_cutscene"
-            },
-            {
-              "target": "torpedoing_dialogue"
-            }
-          ]
         },
         {
           "missionStopCutscene": []
@@ -2629,8 +2629,18 @@
           }
         },
         {
+          "unitPutToSleep": {
+            "target": "instructor_cut"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "torpedoing_waypoint"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -2663,11 +2673,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "waypoint04",
             "follow_target": false,
@@ -2686,11 +2691,6 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "instructor"
-          }
-        },
-        {
-          "unitPutToSleep": {
-            "target": "instructor_cut"
           }
         }
       ],
@@ -2741,19 +2741,6 @@
           }
         },
         {
-          "playerCenterMouseAim": []
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "pre_playerRestore_follow00"
-            },
-            {
-              "target": "ifPlayerDead_follow00"
-            }
-          ]
-        },
-        {
           "unitMoveTo": {
             "target": "waypoint04",
             "follow_target": false,
@@ -2773,6 +2760,19 @@
             "destTimeMode": false,
             "object": "instructor"
           }
+        },
+        {
+          "playerCenterMouseAim": []
+        },
+        {
+          "triggerDisable": [
+            {
+              "target": "pre_playerRestore_follow00"
+            },
+            {
+              "target": "ifPlayerDead_follow00"
+            }
+          ]
         },
         {
           "unitSetProperties": {
@@ -2812,6 +2812,16 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "target_ship01"
@@ -2827,9 +2837,14 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
+          "triggerEnable": [
+            {
+              "target": "torpedoing_start"
+            },
+            {
+              "target": "pre_playerRestore_torpedoing"
+            }
+          ]
         },
         {
           "missionMarkAsWaypoint": {
@@ -2849,11 +2864,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_waypoint",
@@ -2868,16 +2878,6 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "torpedoing_start"
-            },
-            {
-              "target": "pre_playerRestore_torpedoing"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -3001,16 +3001,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "torpedoing_decreaseAlt01_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_decreaseAlt",
@@ -3029,7 +3019,17 @@
         },
         {
           "triggerEnable": {
+            "target": "torpedoing_decreaseAlt01_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "torpedoing_level_arcreal01"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
           }
         }
       ],
@@ -3122,6 +3122,16 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_levelAR",
@@ -3136,16 +3146,6 @@
             "object_var_value": 0,
             "item": "elevator=max",
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "torpedoing_level_arcreal01_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -3166,8 +3166,8 @@
           }
         },
         {
-          "wait": {
-            "time": 6.0
+          "triggerEnable": {
+            "target": "torpedoing_level_arcreal01_dialogue"
           }
         },
         {
@@ -3311,16 +3311,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "torpedoing_aim_arcreal01_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_torpedoAimAR",
@@ -3338,7 +3328,17 @@
         },
         {
           "triggerEnable": {
+            "target": "torpedoing_aim_arcreal01_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "torpedoing_keep_position01"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -3443,16 +3443,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "torpedoing_aim_simulator01_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_torpedoAimS",
@@ -3470,7 +3460,17 @@
         },
         {
           "triggerEnable": {
+            "target": "torpedoing_aim_simulator01_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "torpedoing_keep_position01"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -3581,11 +3581,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_torpedoLevel",
@@ -3599,6 +3594,11 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -3664,11 +3664,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_launchTorpedoAR",
@@ -3682,6 +3677,11 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -4021,12 +4021,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d13",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_retry",
@@ -4040,6 +4034,12 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d13",
+            "subtitles": true
           }
         },
         {
@@ -4095,6 +4095,16 @@
           ]
         },
         {
+          "triggerDisable": [
+            {
+              "target": "torpedoing_shipNotKilled"
+            },
+            {
+              "target": "pre_playerRestore_torpedoing"
+            }
+          ]
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_launchTorpedoSim",
@@ -4133,16 +4143,6 @@
             "setStatus": "enable",
             "control": "ID_BOMBS"
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "torpedoing_shipNotKilled"
-            },
-            {
-              "target": "pre_playerRestore_torpedoing"
-            }
-          ]
         },
         {
           "unitMoveTo": {
@@ -4228,6 +4228,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_destroyShips",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -4246,22 +4262,6 @@
         {
           "wait": {
             "time": 5.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_destroyShips",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -4352,12 +4352,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d19_2",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_turretControl",
@@ -4372,6 +4366,12 @@
             "object_var_value": 0,
             "item": "turret_x+turret_y",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d19_2",
+            "subtitles": true
           }
         },
         {
@@ -4456,12 +4456,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d19_3",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_attackByFire",
@@ -4476,6 +4470,12 @@
             "object_var_value": 0,
             "item": "pseudo_fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d19_3",
+            "subtitles": true
           }
         },
         {
@@ -4554,12 +4554,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d19_3",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_attackByFire",
@@ -4574,6 +4568,12 @@
             "object_var_value": 0,
             "item": "pseudo_fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d19_3",
+            "subtitles": true
           }
         },
         {
@@ -4652,12 +4652,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d19_3",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_attackByFire",
@@ -4672,6 +4666,12 @@
             "object_var_value": 0,
             "item": "pseudo_fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d19_3",
+            "subtitles": true
           }
         },
         {
@@ -4750,12 +4750,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d19_3",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_attackByFire",
@@ -4770,6 +4764,12 @@
             "object_var_value": 0,
             "item": "pseudo_fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d19_3",
+            "subtitles": true
           }
         },
         {
@@ -5108,6 +5108,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_gunnerView",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TOGGLE_VIEW",
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerDisable": [
             {
               "target": "torpedoing_gunner01"
@@ -5135,23 +5152,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_gunnerView",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_TOGGLE_VIEW",
-            "shouldBlink": false
           }
         },
         {
@@ -5417,12 +5417,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d14",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tooPitched",
@@ -5440,6 +5434,12 @@
         },
         {
           "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d14",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
             "dialog": "tutorial_m4_d17",
             "subtitles": true
           }
@@ -5448,6 +5448,14 @@
           "missionSetFade": {
             "mode": "fadeOut",
             "colour": [0.0,0.0,0.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [1.0,1.0,1.0],
             "time": 1.0,
             "color": [0.0,0.0,0.0]
           }
@@ -5499,14 +5507,6 @@
               "target": "target_ship02"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [1.0,1.0,1.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
-          }
         },
         {
           "missionMarkAsWaypoint": {
@@ -5620,12 +5620,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d15",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tooHigh",
@@ -5643,6 +5637,12 @@
         },
         {
           "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d15",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
             "dialog": "tutorial_m4_d17",
             "subtitles": true
           }
@@ -5651,6 +5651,14 @@
           "missionSetFade": {
             "mode": "fadeOut",
             "colour": [0.0,0.0,0.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [1.0,1.0,1.0],
             "time": 1.0,
             "color": [0.0,0.0,0.0]
           }
@@ -5702,14 +5710,6 @@
               "target": "target_ship02"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [1.0,1.0,1.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
-          }
         },
         {
           "missionMarkAsWaypoint": {
@@ -5841,12 +5841,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m4_d16",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_pitchedAndHigh",
@@ -5864,6 +5858,12 @@
         },
         {
           "missionPlayDialogue": {
+            "dialog": "tutorial_m4_d16",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
             "dialog": "tutorial_m4_d17",
             "subtitles": true
           }
@@ -5872,6 +5872,14 @@
           "missionSetFade": {
             "mode": "fadeOut",
             "colour": [0.0,0.0,0.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [1.0,1.0,1.0],
             "time": 1.0,
             "color": [0.0,0.0,0.0]
           }
@@ -5923,14 +5931,6 @@
               "target": "target_ship02"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [1.0,1.0,1.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
-          }
         },
         {
           "missionMarkAsWaypoint": {
@@ -6065,14 +6065,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -6120,8 +6120,31 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -6133,37 +6156,14 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "spawnOnAirfield": {
             "runwayName": "uss_enterprise",
             "objects": "player"
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
-          }
-        },
-        {
           "triggerEnable": {
             "target": "pre_playerRestore_takeOff"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -6229,14 +6229,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -6284,6 +6284,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -6294,11 +6307,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -6338,14 +6346,6 @@
               "target": "pre_playerRestore_follow00"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
-          }
         }
       ],
       "else_actions": []
@@ -6462,6 +6462,12 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_CONTINUE"
+          }
+        },
+        {
           "missionKillEffects": {
             "area": "killEffects_area",
             "torpedoes": true
@@ -6470,12 +6476,6 @@
         {
           "wait": {
             "time": 1.5
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_CONTINUE"
           }
         },
         {
@@ -6523,6 +6523,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -6550,11 +6563,6 @@
           "playerControls": {
             "setStatus": "disable",
             "control": "ID_BOMBS"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -6610,14 +6618,6 @@
               "target": "pre_playerRestore_torpedoing"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
-          }
         }
       ],
       "else_actions": []
@@ -6681,14 +6681,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -6736,6 +6736,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -6746,11 +6759,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -6781,14 +6789,6 @@
             "move_type": "teleport",
             "lookat": "training_ship00",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -6864,14 +6864,14 @@
           }
         },
         {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_CONTINUE"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
           }
         },
         {
@@ -6919,6 +6919,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -6929,11 +6942,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -6959,14 +6967,6 @@
             "follow_radius": 300.0,
             "lookat": "waypoint02",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         }
       ],
@@ -7895,6 +7895,102 @@
       }
     },
     {
+      "armada": {
+        "name": "instructor_cut",
+        "tm": [
+          [-0.0436196,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,-0.0436196],
+          [4737.95,154.35,-23304.7]
+        ],
+        "unit_class": "tbf-1c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "tbf_1c_mk13_torpedo",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "instructor_cut_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [4726.9,102.0,-19829.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "instructor_cut_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3715.35,260.75,-19335.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "instructor_cut_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2768.2,448.45,-19785.1]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
       "ships": {
         "name": "uss_enterprise",
         "tm": [
@@ -8113,28 +8209,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_ships",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5419.74,2.0,-21027.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_ship01"
-          },
-          {
-            "squad_members": "target_ship02"
-          }
-        ]
-      }
-    },
-    {
       "ships": {
         "name": "training_ship00",
         "tm": [
@@ -8243,31 +8317,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "training_ships",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3428.05,2.0,-19594.2]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "training_ship00"
-          },
-          {
-            "squad_members": "training_ship01"
-          },
-          {
-            "squad_members": "training_ship02"
-          }
-        ]
       }
     },
     {
@@ -8484,6 +8533,53 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "target_ships",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5419.74,2.0,-21027.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_ship01"
+          },
+          {
+            "squad_members": "target_ship02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "training_ships",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3428.05,2.0,-19594.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "training_ship00"
+          },
+          {
+            "squad_members": "training_ship01"
+          },
+          {
+            "squad_members": "training_ship02"
+          }
+        ]
       }
     },
     {
@@ -9558,102 +9654,6 @@
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
               [575.4,26.65,-11674.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "instructor_cut",
-        "tm": [
-          [-0.0436196,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,-0.0436196],
-          [4737.95,154.35,-23304.7]
-        ],
-        "unit_class": "tbf-1c",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "tbf_1c_mk13_torpedo",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "uniqueName": "",
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "instructor_cut_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4726.9,102.0,-19829.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "instructor_cut_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3715.35,260.75,-19335.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "instructor_cut_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2768.2,448.45,-19785.1]
             ],
             "props": {
               "speed": 300.0,

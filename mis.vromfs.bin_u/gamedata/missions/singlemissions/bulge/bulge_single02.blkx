@@ -144,15 +144,6 @@
           ]
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": true,
-            "object": "evil_fighters00",
-            "target": "player",
-            "playerAttractedCount": 1,
-            "playerAttractedEffRate": 0.1
-          }
-        },
-        {
           "unitSetProperties": {
             "object": "evil_fighters00",
             "effShootingRate": 0.05
@@ -188,6 +179,15 @@
             "object": "evil_artillery_squad",
             "stealthRadius": 2000.0,
             "effShootingRate": 0.02
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": true,
+            "object": "evil_fighters00",
+            "target": "player",
+            "playerAttractedCount": 1,
+            "playerAttractedEffRate": 0.1
           }
         },
         {
@@ -760,6 +760,12 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target": "trap02_evil_vehicles01"
+          }
+        },
+        {
           "unitAttackTarget": [
             {
               "playerAttracted": false
@@ -781,12 +787,6 @@
         {
           "wait": {
             "time": 10.0
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target": "trap02_evil_vehicles01"
           }
         }
       ]
@@ -1126,6 +1126,43 @@
           "numInWing": 2,
           "skin": "raf45",
           "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "evil_fighters00",
+        "tm": [
+          [-0.382683,0.0,0.92388],
+          [0.0,1.0,0.0],
+          [-0.92388,0.0,-0.382683],
+          [10504.0,1057.35,5461.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "fw-190f-8",
+        "weapons": "Fw-190F-8_default",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "isDelayed": true,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -2609,801 +2646,6 @@
       }
     },
     {
-      "armada": {
-        "name": "evil_fighters00",
-        "tm": [
-          [-0.382683,0.0,0.92388],
-          [0.0,1.0,0.0],
-          [-0.92388,0.0,-0.382683],
-          [10504.0,1057.35,5461.05]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "fw-190f-8",
-        "weapons": "Fw-190F-8_default",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_01",
-        "tm": [
-          [-0.999048,0.0,-0.0436192],
-          [0.0,1.0,0.0],
-          [0.0436192,0.0,-0.999048],
-          [10947.6,236.995,11379.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_02",
-        "tm": [
-          [0.382684,0.0,0.923879],
-          [0.0,1.0,0.0],
-          [-0.923879,0.0,0.382684],
-          [11131.0,248.037,11501.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_03",
-        "tm": [
-          [1.0,0.0,-3.7998e-07],
-          [0.0,1.0,0.0],
-          [3.7998e-07,0.0,1.0],
-          [11161.8,279.3,11252.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap00_evil_vehicles00",
-        "tm": [
-          [-0.173648,0.0,-0.984808],
-          [0.0,1.0,0.0],
-          [0.984808,0.0,-0.173648],
-          [7481.75,261.885,12951.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [1.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap00_evil_vehicles00_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7410.5,269.028,12883.5]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap00_evil_vehicles00_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [7366.5,272.511,12872.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap01_evil_vehicles00",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [9416.7,120.349,13250.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "formation_type": "cols",
-          "formation_div": 2,
-          "formation_step": [1.0,2.0],
-          "formation_noise": [0.2,0.3],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap01_evil_vehicles00_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [9383.65,78.75,13097.0]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap01_evil_vehicles00_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [9242.7,74.75,12929.5]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_04",
-        "tm": [
-          [-0.537299,0.0,0.843391],
-          [0.0,1.0,0.0],
-          [-0.843391,0.0,-0.537299],
-          [11881.5,238.251,12260.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_05",
-        "tm": [
-          [0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,0.21644],
-          [12318.4,279.464,12423.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_06",
-        "tm": [
-          [0.642787,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642787],
-          [9516.25,273.761,15174.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_07",
-        "tm": [
-          [0.642787,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642787],
-          [9184.3,309.406,15313.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_08",
-        "tm": [
-          [0.642787,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,0.642787],
-          [9366.3,311.545,15636.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap02_evil_vehicles00",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11028.0,104.154,13733.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 2,
-          "formation_step": [1.0,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap02_evil_vehicles00_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11025.0,101.3,13691.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles00_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10942.7,69.7,13666.7]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles00_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10781.3,72.3,13666.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap02_evil_vehicles01",
-        "tm": [
-          [0.461748,0.0,-0.887011],
-          [0.0,1.0,0.0],
-          [0.887011,0.0,0.461748],
-          [10197.8,180.662,13913.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.1,2.2],
-          "formation_noise": [-0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap02_evil_vehicles01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10241.8,171.608,13837.5]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10299.2,159.745,13745.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10337.7,146.592,13725.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap02_evil_vehicles01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10366.7,136.184,13714.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap03_evil_vehicles00",
-        "tm": [
-          [0.642787,0.0,0.766044],
-          [0.0,1.0,0.0],
-          [-0.766044,0.0,0.642787],
-          [11632.0,235.362,13661.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [5.1,2.0],
-          "formation_noise": [0.4,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap03_evil_vehicles00_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11683.0,257.181,13873.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles00_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11793.0,264.341,14001.5]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles00_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11832.2,266.293,14026.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9057.35,318.15,13319.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": {
-          "squad_members": "player",
-          "object_type": "isPlayer"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "friendly_air_defence_00",
-        "tm": [
-          [-0.906308,0.0,-0.422618],
-          [0.0,1.0,0.0],
-          [0.422618,0.0,-0.906308],
-          [13423.9,285.364,15482.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_90mm_m1",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "friendly_air_defence_01",
-        "tm": [
-          [-0.300706,0.0,-0.953717],
-          [0.0,1.0,0.0],
-          [0.953717,0.0,-0.300706],
-          [13488.7,288.68,15375.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_90mm_m1",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "friendly_air_defence_02",
-        "tm": [
-          [-0.939692,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939692],
-          [13464.5,284.464,15651.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_90mm_m1",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "friendly_air_defence_03",
-        "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [13849.9,276.108,15438.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_90mm_m1",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "friendly_air_defence_04",
-        "tm": [
-          [-0.0871557,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,-0.0871557],
-          [13726.0,276.806,15259.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_90mm_m1",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_09",
-        "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [7415.1,287.0,14618.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_10",
-        "tm": [
-          [0.0871555,0.0,-0.996195],
-          [0.0,1.0,0.0],
-          [0.996195,0.0,0.0871555],
-          [7368.05,283.561,14440.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "evil_vehicles_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5532.1,284.265,12836.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "trap00_evil_vehicles00"
-          },
-          {
-            "squad_members": "trap01_evil_vehicles00"
-          },
-          {
-            "squad_members": "trap02_evil_vehicles00"
-          },
-          {
-            "squad_members": "trap02_evil_vehicles01"
-          },
-          {
-            "squad_members": "trap03_evil_vehicles00"
-          },
-          {
-            "squad_members": "trap03_evil_vehicles01"
-          },
-          {
-            "squad_members": "trap03_evil_vehicles02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "wheeled_vehicles": {
         "name": "trap00_evil_vehicles01",
         "tm": [
@@ -3466,156 +2708,6 @@
             "props": {
               "speed": 300.0,
               "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap03_evil_vehicles01",
-        "tm": [
-          [0.939692,0.0,-0.34202],
-          [0.0,1.0,0.0],
-          [0.34202,0.0,0.939692],
-          [11641.5,265.776,14886.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 2,
-          "formation_step": [3.4,2.0],
-          "formation_noise": [-0.1,-0.3],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap03_evil_vehicles01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11870.3,274.888,14632.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12003.0,273.774,14422.2]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12045.0,272.425,14199.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "trap03_evil_vehicles02",
-        "tm": [
-          [-0.642787,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,-0.642787],
-          [12312.3,280.785,14443.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_hummel",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.0,2.0],
-          "formation_noise": [-0.1,-0.3],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "trap03_evil_vehicles02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12260.7,276.395,14343.8]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12240.5,276.858,14280.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12195.8,275.527,14230.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          },
-          "trap03_evil_vehicles02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [12170.0,274.876,14213.3]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
               "shouldKeepFormation": false
             }
           }
@@ -3910,153 +3002,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery00",
-        "tm": [
-          [-0.0871557,0.0,0.996195],
-          [0.0,1.0,0.0],
-          [-0.996195,0.0,-0.0871557],
-          [8517.1,214.425,12064.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "light_evil_vehicles_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8111.15,264.196,12056.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "trap00_evil_vehicles01"
-          },
-          {
-            "squad_members": "trap00_evil_vehicles02"
-          },
-          {
-            "squad_members": "trap00_evil_vehicles03"
-          },
-          {
-            "squad_members": "trap01_evil_vehicles01"
-          },
-          {
-            "squad_members": "trap01_evil_vehicles02"
-          },
-          {
-            "squad_members": "trap02_evil_vehicles02"
-          },
-          {
-            "squad_members": "trap02_evil_vehicles03"
-          },
-          {
-            "squad_members": "trap02_evil_vehicles04"
-          },
-          {
-            "squad_members": "trap03_evil_vehicles03"
-          },
-          {
-            "squad_members": "trap03_evil_vehicles04"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery01",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [10122.8,208.695,12755.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery02",
-        "tm": [
-          [0.5373,0.0,-0.843391],
-          [0.0,1.0,0.0],
-          [0.843391,0.0,0.5373],
-          [9815.25,265.162,13869.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery03",
-        "tm": [
-          [-0.382683,0.0,-0.92388],
-          [0.0,1.0,0.0],
-          [0.92388,0.0,-0.382683],
-          [9346.75,269.746,13925.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_pak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
       }
     },
     {
@@ -4361,256 +3306,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery04",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [12392.0,281.919,12860.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery05",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [12549.0,284.987,13120.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery06",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [11941.5,233.977,13194.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery07",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [12099.5,243.986,13341.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery08",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [12562.6,272.834,13807.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery09",
-        "tm": [
-          [0.34202,0.0,-0.939693],
-          [0.0,1.0,0.0],
-          [0.939693,0.0,0.34202],
-          [12028.5,278.379,15249.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery10",
-        "tm": [
-          [0.34202,0.0,-0.939693],
-          [0.0,1.0,0.0],
-          [0.939693,0.0,0.34202],
-          [12409.9,312.157,14870.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_pak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery11",
-        "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [11999.7,276.047,14560.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery12",
-        "tm": [
-          [-0.5373,0.0,-0.843391],
-          [0.0,1.0,0.0],
-          [0.843391,0.0,-0.5373],
-          [11553.0,248.396,14496.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "evil_artillery13",
-        "tm": [
-          [-0.999048,0.0,0.0436195],
-          [0.0,1.0,0.0],
-          [-0.0436195,0.0,-0.999048],
-          [11359.3,199.86,13732.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
       }
     },
     {
@@ -5360,6 +4055,961 @@
       }
     },
     {
+      "air_defence": {
+        "name": "air_defence_01",
+        "tm": [
+          [-0.999048,0.0,-0.0436192],
+          [0.0,1.0,0.0],
+          [0.0436192,0.0,-0.999048],
+          [10947.6,236.995,11379.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_02",
+        "tm": [
+          [0.382684,0.0,0.923879],
+          [0.0,1.0,0.0],
+          [-0.923879,0.0,0.382684],
+          [11131.0,248.037,11501.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_03",
+        "tm": [
+          [1.0,0.0,-3.7998e-07],
+          [0.0,1.0,0.0],
+          [3.7998e-07,0.0,1.0],
+          [11161.8,279.3,11252.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_04",
+        "tm": [
+          [-0.537299,0.0,0.843391],
+          [0.0,1.0,0.0],
+          [-0.843391,0.0,-0.537299],
+          [11881.5,238.251,12260.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_05",
+        "tm": [
+          [0.21644,0.0,0.976296],
+          [0.0,1.0,0.0],
+          [-0.976296,0.0,0.21644],
+          [12318.4,279.464,12423.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_06",
+        "tm": [
+          [0.642787,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,0.642787],
+          [9516.25,273.761,15174.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_07",
+        "tm": [
+          [0.642787,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,0.642787],
+          [9184.3,309.406,15313.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_08",
+        "tm": [
+          [0.642787,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,0.642787],
+          [9366.3,311.545,15636.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_defence_00",
+        "tm": [
+          [-0.906308,0.0,-0.422618],
+          [0.0,1.0,0.0],
+          [0.422618,0.0,-0.906308],
+          [13423.9,285.364,15482.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_90mm_m1",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_defence_01",
+        "tm": [
+          [-0.300706,0.0,-0.953717],
+          [0.0,1.0,0.0],
+          [0.953717,0.0,-0.300706],
+          [13488.7,288.68,15375.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_90mm_m1",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_defence_02",
+        "tm": [
+          [-0.939692,0.0,0.34202],
+          [0.0,1.0,0.0],
+          [-0.34202,0.0,-0.939692],
+          [13464.5,284.464,15651.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_90mm_m1",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_defence_03",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [13849.9,276.108,15438.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_90mm_m1",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "friendly_air_defence_04",
+        "tm": [
+          [-0.0871557,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,-0.0871557],
+          [13726.0,276.806,15259.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_90mm_m1",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_09",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [7415.1,287.0,14618.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_10",
+        "tm": [
+          [0.0871555,0.0,-0.996195],
+          [0.0,1.0,0.0],
+          [0.996195,0.0,0.0871555],
+          [7368.05,283.561,14440.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap00_evil_vehicles00",
+        "tm": [
+          [-0.173648,0.0,-0.984808],
+          [0.0,1.0,0.0],
+          [0.984808,0.0,-0.173648],
+          [7481.75,261.885,12951.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [1.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap00_evil_vehicles00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7410.5,269.028,12883.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap00_evil_vehicles00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [7366.5,272.511,12872.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap01_evil_vehicles00",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [9416.7,120.349,13250.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "cols",
+          "formation_div": 2,
+          "formation_step": [1.0,2.0],
+          "formation_noise": [0.2,0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap01_evil_vehicles00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9383.65,78.75,13097.0]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap01_evil_vehicles00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [9242.7,74.75,12929.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap02_evil_vehicles00",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [11028.0,104.154,13733.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 2,
+          "formation_step": [1.0,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap02_evil_vehicles00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11025.0,101.3,13691.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap02_evil_vehicles00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10942.7,69.7,13666.7]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap02_evil_vehicles00_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10781.3,72.3,13666.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap02_evil_vehicles01",
+        "tm": [
+          [0.461748,0.0,-0.887011],
+          [0.0,1.0,0.0],
+          [0.887011,0.0,0.461748],
+          [10197.8,180.662,13913.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.1,2.2],
+          "formation_noise": [-0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap02_evil_vehicles01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10241.8,171.608,13837.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap02_evil_vehicles01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10299.2,159.745,13745.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap02_evil_vehicles01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10337.7,146.592,13725.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap02_evil_vehicles01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10366.7,136.184,13714.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap03_evil_vehicles00",
+        "tm": [
+          [0.642787,0.0,0.766044],
+          [0.0,1.0,0.0],
+          [-0.766044,0.0,0.642787],
+          [11632.0,235.362,13661.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [5.1,2.0],
+          "formation_noise": [0.4,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap03_evil_vehicles00_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11683.0,257.181,13873.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles00_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11793.0,264.341,14001.5]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles00_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11832.2,266.293,14026.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap03_evil_vehicles01",
+        "tm": [
+          [0.939692,0.0,-0.34202],
+          [0.0,1.0,0.0],
+          [0.34202,0.0,0.939692],
+          [11641.5,265.776,14886.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 2,
+          "formation_step": [3.4,2.0],
+          "formation_noise": [-0.1,-0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap03_evil_vehicles01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11870.3,274.888,14632.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12003.0,273.774,14422.2]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12045.0,272.425,14199.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "trap03_evil_vehicles02",
+        "tm": [
+          [-0.642787,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,-0.642787],
+          [12312.3,280.785,14443.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_hummel",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.0,2.0],
+          "formation_noise": [-0.1,-0.3],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "trap03_evil_vehicles02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12260.7,276.395,14343.8]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12240.5,276.858,14280.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12195.8,275.527,14230.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          },
+          "trap03_evil_vehicles02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [12170.0,274.876,14213.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9057.35,318.15,13319.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "evil_vehicles_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5532.1,284.265,12836.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "trap00_evil_vehicles00"
+          },
+          {
+            "squad_members": "trap01_evil_vehicles00"
+          },
+          {
+            "squad_members": "trap02_evil_vehicles00"
+          },
+          {
+            "squad_members": "trap02_evil_vehicles01"
+          },
+          {
+            "squad_members": "trap03_evil_vehicles00"
+          },
+          {
+            "squad_members": "trap03_evil_vehicles01"
+          },
+          {
+            "squad_members": "trap03_evil_vehicles02"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "light_evil_vehicles_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8111.15,264.196,12056.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "trap00_evil_vehicles01"
+          },
+          {
+            "squad_members": "trap00_evil_vehicles02"
+          },
+          {
+            "squad_members": "trap00_evil_vehicles03"
+          },
+          {
+            "squad_members": "trap01_evil_vehicles01"
+          },
+          {
+            "squad_members": "trap01_evil_vehicles02"
+          },
+          {
+            "squad_members": "trap02_evil_vehicles02"
+          },
+          {
+            "squad_members": "trap02_evil_vehicles03"
+          },
+          {
+            "squad_members": "trap02_evil_vehicles04"
+          },
+          {
+            "squad_members": "trap03_evil_vehicles03"
+          },
+          {
+            "squad_members": "trap03_evil_vehicles04"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "evil_artillery_squad",
         "tm": [
@@ -5415,6 +5065,356 @@
             "squad_members": "evil_artillery13"
           }
         ],
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery00",
+        "tm": [
+          [-0.0871557,0.0,0.996195],
+          [0.0,1.0,0.0],
+          [-0.996195,0.0,-0.0871557],
+          [8517.1,214.425,12064.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery01",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [10122.8,208.695,12755.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery02",
+        "tm": [
+          [0.5373,0.0,-0.843391],
+          [0.0,1.0,0.0],
+          [0.843391,0.0,0.5373],
+          [9815.25,265.162,13869.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery03",
+        "tm": [
+          [-0.382683,0.0,-0.92388],
+          [0.0,1.0,0.0],
+          [0.92388,0.0,-0.382683],
+          [9346.75,269.746,13925.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_pak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery04",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [12392.0,281.919,12860.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery05",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [12549.0,284.987,13120.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery06",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [11941.5,233.977,13194.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery07",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [12099.5,243.986,13341.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery08",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [12562.6,272.834,13807.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery09",
+        "tm": [
+          [0.34202,0.0,-0.939693],
+          [0.0,1.0,0.0],
+          [0.939693,0.0,0.34202],
+          [12028.5,278.379,15249.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery10",
+        "tm": [
+          [0.34202,0.0,-0.939693],
+          [0.0,1.0,0.0],
+          [0.939693,0.0,0.34202],
+          [12409.9,312.157,14870.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_pak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery11",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [11999.7,276.047,14560.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery12",
+        "tm": [
+          [-0.5373,0.0,-0.843391],
+          [0.0,1.0,0.0],
+          [0.843391,0.0,-0.5373],
+          [11553.0,248.396,14496.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "evil_artillery13",
+        "tm": [
+          [-0.999048,0.0,0.0436195],
+          [0.0,1.0,0.0],
+          [-0.0436195,0.0,-0.999048],
+          [11359.3,199.86,13732.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
         "way": []
       }
     }

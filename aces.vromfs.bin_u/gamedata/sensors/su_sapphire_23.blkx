@@ -201,10 +201,10 @@
         "rangeFinder": false
       },
       {
-        "groundClutter": false
+        "rangeFinder": false
       },
       {
-        "rangeFinder": false
+        "groundClutter": false
       }
     ]
   },
@@ -769,11 +769,6 @@
             }
           },
           {
-            "setIllumination": {
-              "illumination": false
-            }
-          },
-          {
             "setFsmActive": {
               "fsm": "checkRaltLess",
               "active": false
@@ -783,6 +778,11 @@
             "setFsmActive": {
               "fsm": "checkRaltGreater",
               "active": false
+            }
+          },
+          {
+            "setIllumination": {
+              "illumination": false
             }
           }
         ],
@@ -1492,6 +1492,81 @@
           }
         },
         {
+          "finishedDesignationTrack": {
+            "stateFrom": "BSVdHDesignationTrack",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "command": "selectTarget",
+            "stateTo": "BSVdHSearch",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setBSVdHSearchMode": []
+            }
+          }
+        },
+        {
+          "finishedDesignationTrack": {
+            "stateFrom": "SMVDesignationTrack",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "command": "selectTarget",
+            "stateTo": "SMVSearch",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setSMVSearchMode": []
+            }
+          }
+        },
+        {
+          "finishedDesignationTrack": {
+            "stateFrom": "MVDesignationTrack",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "command": "selectTarget",
+            "stateTo": "MVSearch",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setMVSearchMode": []
+            }
+          }
+        },
+        {
+          "finishedDesignationTrack": {
+            "stateFrom": "OLSFromLookUpDesignationTrack",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "command": "selectTarget",
+            "stateTo": "OLSFromLookUpSearch",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setOLSSearchMode": []
+            }
+          }
+        },
+        {
+          "finishedDesignationTrack": {
+            "stateFrom": "OLSFromLookDownDesignationTrack",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "command": "selectTarget",
+            "stateTo": "OLSFromLookDownSearch",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setOLSSearchMode": []
+            }
+          }
+        },
+        {
           "BSVdHDesignationLock": {
             "stateFrom": "BSVdHSearch",
             "command": "selectTarget",
@@ -1556,21 +1631,6 @@
             "actions": {
               "setFsmActive": {
                 "fsm": "lock",
-                "active": false
-              },
-              "setBSVdHSearchMode": []
-            }
-          }
-        },
-        {
-          "finishedDesignationTrack": {
-            "stateFrom": "BSVdHDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "command": "selectTarget",
-            "stateTo": "BSVdHSearch",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
                 "active": false
               },
               "setBSVdHSearchMode": []
@@ -1649,21 +1709,6 @@
           }
         },
         {
-          "finishedDesignationTrack": {
-            "stateFrom": "SMVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "command": "selectTarget",
-            "stateTo": "SMVSearch",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
-              "setSMVSearchMode": []
-            }
-          }
-        },
-        {
           "MVDesignationLock": {
             "stateFrom": "MVSearch",
             "command": "selectTarget",
@@ -1728,21 +1773,6 @@
             "actions": {
               "setFsmActive": {
                 "fsm": "lock",
-                "active": false
-              },
-              "setMVSearchMode": []
-            }
-          }
-        },
-        {
-          "finishedDesignationTrack": {
-            "stateFrom": "MVDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "command": "selectTarget",
-            "stateTo": "MVSearch",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
                 "active": false
               },
               "setMVSearchMode": []
@@ -1821,21 +1851,6 @@
           }
         },
         {
-          "finishedDesignationTrack": {
-            "stateFrom": "OLSFromLookUpDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "command": "selectTarget",
-            "stateTo": "OLSFromLookUpSearch",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
-              "setOLSSearchMode": []
-            }
-          }
-        },
-        {
           "OLSFromLookDownDesignationLock": {
             "stateFrom": "OLSFromLookDownSearch",
             "command": "selectTarget",
@@ -1900,21 +1915,6 @@
             "actions": {
               "setFsmActive": {
                 "fsm": "lock",
-                "active": false
-              },
-              "setOLSSearchMode": []
-            }
-          }
-        },
-        {
-          "finishedDesignationTrack": {
-            "stateFrom": "OLSFromLookDownDesignationTrack",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "command": "selectTarget",
-            "stateTo": "OLSFromLookDownSearch",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
                 "active": false
               },
               "setOLSSearchMode": []

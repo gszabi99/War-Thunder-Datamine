@@ -263,6 +263,12 @@
           }
         },
         {
+          "unitWakeUp": {
+            "target": "jpn_aaa_squad",
+            "delayForObjects": [5.0,10.0]
+          }
+        },
+        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -293,12 +299,6 @@
               "target": "fail_mission_01"
             }
           ]
-        },
-        {
-          "unitWakeUp": {
-            "target": "jpn_aaa_squad",
-            "delayForObjects": [5.0,10.0]
-          }
         }
       ],
       "else_actions": []
@@ -456,9 +456,25 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_trucks_02"
+          }
+        },
+        {
           "unitMark": {
             "target_marking": 0,
             "target": "jpn_trucks_01"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "jpn_trucks_02"
           }
         },
         {
@@ -480,22 +496,6 @@
               "target": "jpn_fighters_01"
             }
           ]
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "jpn_trucks_02"
-          }
-        },
-        {
-          "unitMark": {
-            "target_marking": 1,
-            "target": "jpn_trucks_02"
-          }
         },
         {
           "moAddMissionObjective": {
@@ -682,9 +682,25 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "jpn_tanks"
+          }
+        },
+        {
           "unitMark": {
             "target_marking": 0,
             "target": "jpn_trucks_02"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "jpn_tanks"
           }
         },
         {
@@ -703,12 +719,6 @@
           }
         },
         {
-          "unitMark": {
-            "target_marking": 1,
-            "target": "jpn_tanks"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -716,16 +726,6 @@
             "object_var_value": 0,
             "object": "jpn_tanks",
             "stealthRadius": 7500.0
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "jpn_tanks"
           }
         },
         {
@@ -1088,6 +1088,52 @@
           "skill": 4,
           "numInWing": 2,
           "skin": "us_navy",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3026.05,425.3,-3984.85]
+        ],
+        "unit_class": "a6m5_zero",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -2150,52 +2196,6 @@
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.05
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "jpn_fighters_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3026.05,425.3,-3984.85]
-        ],
-        "unit_class": "a6m5_zero",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

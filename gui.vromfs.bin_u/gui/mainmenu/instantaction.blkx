@@ -48,20 +48,6 @@
       ]
     },
     {
-      "timer": {
-        "id": "promo_blocks_timer_slow",
-        "timer_handler_func": "onPromoBlocksUpdate",
-        "timer_interval_msec": "5000"
-      }
-    },
-    {
-      "timer": {
-        "id": "promo_blocks_timer_fast",
-        "timer_handler_func": "onPromoBlocksTimer",
-        "timer_interval_msec": "1000"
-      }
-    },
-    {
       "tdiv": [
         {
           "pos": "0.5sw-0.5w, 2@topBarHeight + 0.018@sf - @bh"
@@ -134,11 +120,6 @@
           }
         }
       ]
-    },
-    {
-      "airInfoBlock": {
-        "id": "slot_info"
-      }
     },
     {
       "tdiv": [
@@ -353,6 +334,25 @@
           }
         }
       ]
+    },
+    {
+      "timer": {
+        "id": "promo_blocks_timer_slow",
+        "timer_handler_func": "onPromoBlocksUpdate",
+        "timer_interval_msec": "5000"
+      }
+    },
+    {
+      "timer": {
+        "id": "promo_blocks_timer_fast",
+        "timer_handler_func": "onPromoBlocksTimer",
+        "timer_interval_msec": "1000"
+      }
+    },
+    {
+      "airInfoBlock": {
+        "id": "slot_info"
+      }
     }
   ]
 }

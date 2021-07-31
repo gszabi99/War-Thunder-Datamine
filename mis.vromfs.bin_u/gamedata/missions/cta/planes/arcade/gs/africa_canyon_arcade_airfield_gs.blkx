@@ -472,48 +472,21 @@
           }
         },
         {
+          "varSetBool": {
+            "value": true,
+            "var": "isBombingZonesAffect"
+          }
+        },
+        {
           "varSetInt": {
             "value": 4,
             "var": "max_bomb_areas"
           }
         },
         {
-          "comment": {
-            "value": "задаем начальную скорость уничтожения наземки с заниженым коэфициентом"
-          }
-        },
-        {
-          "varSetReal": [
-            {
-              "value": 1800.0
-            },
-            {
-              "var": "arcade_destroy_timer"
-            },
-            {
-              "var": "historical_destroy_timer"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "задаем значения для предотвращения длинных сессий"
-          }
-        },
-        {
-          "comment": {
-            "value": "длина сессии после которой применяем новые правила"
-          }
-        },
-        {
           "varSetInt": {
             "value": 600,
             "var": "long_time_is"
-          }
-        },
-        {
-          "comment": {
-            "value": "реальная максимальная длина сессии к которой мы стремися"
           }
         },
         {
@@ -530,8 +503,41 @@
         },
         {
           "comment": {
-            "value": "начинается логика миссии"
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u043d\u0430\u0447\u0430\u043b\u044c\u043d\u0443\u044e \u0441\u043a\u043e\u0440\u043e\u0441\u0442\u044c \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u044f \u043d\u0430\u0437\u0435\u043c\u043a\u0438 \u0441 \u0437\u0430\u043d\u0438\u0436\u0435\u043d\u044b\u043c \u043a\u043e\u044d\u0444\u0438\u0446\u0438\u0435\u043d\u0442\u043e\u043c"
           }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0434\u043b\u044f \u043f\u0440\u0435\u0434\u043e\u0442\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u044f \u0434\u043b\u0438\u043d\u043d\u044b\u0445 \u0441\u0435\u0441\u0441\u0438\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u043b\u0438\u043d\u0430 \u0441\u0435\u0441\u0441\u0438\u0438 \u043f\u043e\u0441\u043b\u0435 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u0435\u043c \u043d\u043e\u0432\u044b\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0440\u0435\u0430\u043b\u044c\u043d\u0430\u044f \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0434\u043b\u0438\u043d\u0430 \u0441\u0435\u0441\u0441\u0438\u0438 \u043a \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043c\u044b \u0441\u0442\u0440\u0435\u043c\u0438\u0441\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u0442\u0441\u044f \u043b\u043e\u0433\u0438\u043a\u0430 \u043c\u0438\u0441\u0441\u0438\u0438"
+          }
+        },
+        {
+          "varSetReal": [
+            {
+              "value": 1800.0
+            },
+            {
+              "var": "arcade_destroy_timer"
+            },
+            {
+              "var": "historical_destroy_timer"
+            }
+          ]
         },
         {
           "varSetReal": {
@@ -587,6 +593,58 @@
             "offset": [0.0,0.0,0.0],
             "tags": {
               "type_bomber": true,
+              "tank": false
+            }
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/airfield_spawn",
+            "spawnEffect": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "isStrictSpawn": false,
+            "useExisting": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "target": "t1_airfield",
+            "team": "A",
+            "offset": [0.0,0.0,0.0],
+            "tags": {
+              "type_hydroplane": false,
+              "tank": false
+            }
+          }
+        },
+        {
+          "__missionMarkAsRespawnPoint": {
+            "loc_name": "missions/airfield_spawn",
+            "spawnEffect": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "radius": -1.0,
+            "isStrictSpawn": false,
+            "useExisting": false,
+            "removeAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "isIndividual": false,
+            "resetStrictSpawnIndex": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "replaceAreas": false,
+            "forceCreate": false,
+            "target": "t2_airfield",
+            "team": "B",
+            "offset": [0.0,0.0,0.0],
+            "tags": {
+              "type_hydroplane": false,
               "tank": false
             }
           }
@@ -699,66 +757,8 @@
           }
         },
         {
-          "varSetBool": {
-            "value": true,
-            "var": "isBombingZonesAffect"
-          }
-        },
-        {
           "wait": {
             "time": 1.0
-          }
-        },
-        {
-          "__missionMarkAsRespawnPoint": {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "t1_airfield",
-            "team": "A",
-            "offset": [0.0,0.0,0.0],
-            "tags": {
-              "type_hydroplane": false,
-              "tank": false
-            }
-          }
-        },
-        {
-          "__missionMarkAsRespawnPoint": {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "target": "t2_airfield",
-            "team": "B",
-            "offset": [0.0,0.0,0.0],
-            "tags": {
-              "type_hydroplane": false,
-              "tank": false
-            }
           }
         }
       ],
@@ -1141,28 +1141,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6781.82,1769.91,-6421.23]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_artillery_squad"
-          },
-          {
-            "squad_members": "t2_trucks_squad"
-          }
-        ]
-      }
-    },
-    {
       "tracked_vehicles": {
         "name": "t1_tank_03",
         "tm": [
@@ -1517,28 +1495,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6848.08,1769.91,4424.05]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_artillery_squad"
-          },
-          {
-            "squad_members": "t1_trucks_squad"
-          }
-        ]
       }
     },
     {
@@ -3380,92 +3336,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1792.11,1048.59,4098.91]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_tank_01"
-          },
-          {
-            "squad_members": "t1_tank_02"
-          },
-          {
-            "squad_members": "t1_tank_03"
-          },
-          {
-            "squad_members": "t1_tank_04"
-          },
-          {
-            "squad_members": "t1_tank_05"
-          },
-          {
-            "squad_members": "t1_tank_06"
-          },
-          {
-            "squad_members": "t1_additional_tank_01"
-          },
-          {
-            "squad_members": "t1_additional_tank_02"
-          },
-          {
-            "squad_members": "t1_additional_tank_03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6394.31,1016.47,-4242.87]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_tank_01"
-          },
-          {
-            "squad_members": "t2_tank_02"
-          },
-          {
-            "squad_members": "t2_tank_03"
-          },
-          {
-            "squad_members": "t2_tank_04"
-          },
-          {
-            "squad_members": "t2_tank_05"
-          },
-          {
-            "squad_members": "t2_tank_06"
-          },
-          {
-            "squad_members": "t2_additional_tank_01"
-          },
-          {
-            "squad_members": "t2_additional_tank_02"
-          },
-          {
-            "squad_members": "t2_additional_tank_03"
-          }
-        ]
-      }
-    },
-    {
       "tracked_vehicles": {
         "name": "t1_tank_02",
         "tm": [
@@ -4909,6 +4779,2043 @@
       }
     },
     {
+      "tracked_vehicles": {
+        "name": "t2_tank_02",
+        "tm": [
+          [-0.258818,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258818],
+          [4002.1,470.3,-5802.7]
+        ],
+        "unit_class": "germ_pzIVc",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank10_wp_20": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3914.2,469.3,-5422.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank10_wp_21": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3814.75,468.998,-5093.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank10_wp_25": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2377.95,478.95,-3710.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank10_wp_27": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [313.0,424.55,-2104.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [149.55,424.7,-1977.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4226.0,418.65,1081.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4475.8,413.9,1663.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5383.55,416.55,1722.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5551.25,419.9,935.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-5385.05,421.05,658.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4810.15,424.1,97.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4593.45,429.6,-1725.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1726.15,453.2,-3657.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_02_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1008.5,420.45,-3411.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_additional_tank_01",
+        "tm": [
+          [0.793353,0.0,-0.608762],
+          [0.0,1.0,0.0],
+          [0.608762,0.0,0.793353],
+          [-3969.47,429.3,776.175]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tank_07_wp_83": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3541.65,428.95,411.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_84": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [134.2,424.955,-1961.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_85": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [289.85,423.0,-2090.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_86": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [734.15,425.9,-2819.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_87": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2365.65,478.2,-3698.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_88": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3805.3,469.15,-5092.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_89": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3836.3,471.55,-7036.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_90": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3813.9,468.5,-7644.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_91": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [532.4,467.55,-9221.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_92": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-357.75,463.35,-8572.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_93": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2414.05,453.5,-6759.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_94": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1486.2,452.9,-5051.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_95": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1605.8,453.9,-4351.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_96": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-967.0,420.4,-3548.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_97": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-419.3,421.7,-2921.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_additional_tank_02",
+        "tm": [
+          [-0.260652,0.0,-0.965433],
+          [0.0,1.0,0.0],
+          [0.965433,0.0,-0.260652],
+          [-4693.92,474.4,705.659]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [12.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_tank_07_wp_98": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4785.47,421.9,375.44]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_99": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4810.35,424.1,98.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_100": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4597.2,429.4,-1717.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_101": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1729.45,452.65,-3649.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_102": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-971.2,420.4,-3547.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_103": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [43.75,418.2,-2845.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_104": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [737.95,425.85,-2825.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_105": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2359.8,477.9,-3696.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_106": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3803.0,469.2,-5092.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_107": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3837.05,471.7,-7030.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_108": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3815.55,468.45,-7643.85]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_109": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [538.75,467.75,-9220.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_110": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-359.85,463.25,-8569.45]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_111": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2403.35,453.55,-6765.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_112": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1486.55,452.8,-5047.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_113": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1606.9,453.9,-4348.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_114": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-967.95,420.4,-3550.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_tank_07_wp_115": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-688.8,422.3,-3071.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_additional_tank_01",
+        "tm": [
+          [-0.866026,0.0,-0.5],
+          [0.0,1.0,0.0],
+          [0.5,0.0,-0.866026],
+          [3490.0,478.759,-7919.11]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_07_wp_35": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3355.46,476.281,-7992.54]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3044.9,476.24,-8136.16]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_tank_07_wp_36": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [534.701,474.4,-9222.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_37": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-358.949,479.95,-8579.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_65": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2412.4,453.55,-6759.6]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_66": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1486.85,453.35,-5047.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_67": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1606.1,459.65,-4357.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_68": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1716.2,453.9,-3675.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_69": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4585.4,429.75,-1745.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_70": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4798.7,423.7,84.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_71": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4237.1,418.25,1093.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_72": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [138.351,424.9,-1965.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_73": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [60.8507,418.05,-2830.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_74": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-540.149,426.3,-2925.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_additional_tank_02",
+        "tm": [
+          [-0.766045,0.0,0.642787],
+          [0.0,1.0,0.0],
+          [-0.642787,0.0,-0.766045],
+          [4423.87,627.205,-7671.47]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,6.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_tank_07_wp_75": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [4116.1,468.3,-7405.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_76": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3842.65,473.95,-7048.6]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_77": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3816.15,468.967,-5095.85]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_78": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2377.7,479.4,-3710.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_79": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [758.1,432.6,-2840.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_80": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [63.7,418.05,-2834.35]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_81": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-955.5,420.35,-3535.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_82": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1715.0,453.9,-3667.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_83": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4588.8,429.75,-1737.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_84": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4796.95,423.6,82.451]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_85": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4237.95,418.25,1093.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_86": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [135.2,424.95,-1963.55]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_87": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [60.5,418.05,-2830.75]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_tank_07_wp_88": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-776.45,445.45,-2951.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_additional_tank_03",
+        "tm": [
+          [0.793353,0.0,-0.608762],
+          [0.0,1.0,0.0],
+          [0.608762,0.0,0.793353],
+          [-4222.81,429.3,1079.26]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_additional_tank_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3866.46,428.913,684.852]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_16": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-3552.75,429.528,417.419]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_additional_tank_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-523.972,437.409,-3111.47]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [40.395,449.667,-2847.64]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [734.15,425.9,-2819.15]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2365.65,478.2,-3698.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3805.3,469.15,-5092.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3836.3,471.55,-7036.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3813.9,468.5,-7644.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [532.4,467.55,-9221.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-357.75,463.35,-8572.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-2414.05,453.5,-6759.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1486.2,452.9,-5051.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1605.8,453.9,-4351.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-967.0,420.4,-3548.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t1_additional_tank_03_wp_15": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-419.3,421.7,-2921.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_additional_tank_03",
+        "tm": [
+          [-0.866026,0.0,-0.5],
+          [0.0,1.0,0.0],
+          [0.5,0.0,-0.866026],
+          [3771.32,473.428,-7718.83]
+        ],
+        "unit_class": "germ_tigerI",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 5,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [12.0,8.0],
+          "formation_noise": [0.3,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_additional_tank_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [3631.78,474.598,-7831.39]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "GATHER_TO",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2996.93,491.434,-8142.42]
+            ],
+            "props": {
+              "speed": 30.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_additional_tank_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-446.908,450.088,-7550.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1482.41,453.35,-5049.83]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1606.1,459.65,-4357.25]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1716.2,453.9,-3675.65]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4585.4,429.75,-1745.4]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4798.7,423.7,84.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-4237.1,418.25,1093.3]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [138.351,424.9,-1965.95]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [60.8507,418.05,-2830.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "USE_SPLINES",
+              "shouldKeepFormation": true,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "t2_additional_tank_03_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-540.149,426.3,-2925.05]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6781.82,1769.91,-6421.23]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_artillery_squad"
+          },
+          {
+            "squad_members": "t2_trucks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6848.08,1769.91,4424.05]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_artillery_squad"
+          },
+          {
+            "squad_members": "t1_trucks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1792.11,1048.59,4098.91]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_tank_01"
+          },
+          {
+            "squad_members": "t1_tank_02"
+          },
+          {
+            "squad_members": "t1_tank_03"
+          },
+          {
+            "squad_members": "t1_tank_04"
+          },
+          {
+            "squad_members": "t1_tank_05"
+          },
+          {
+            "squad_members": "t1_tank_06"
+          },
+          {
+            "squad_members": "t1_additional_tank_01"
+          },
+          {
+            "squad_members": "t1_additional_tank_02"
+          },
+          {
+            "squad_members": "t1_additional_tank_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6394.31,1016.47,-4242.87]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_tank_01"
+          },
+          {
+            "squad_members": "t2_tank_02"
+          },
+          {
+            "squad_members": "t2_tank_03"
+          },
+          {
+            "squad_members": "t2_tank_04"
+          },
+          {
+            "squad_members": "t2_tank_05"
+          },
+          {
+            "squad_members": "t2_tank_06"
+          },
+          {
+            "squad_members": "t2_additional_tank_01"
+          },
+          {
+            "squad_members": "t2_additional_tank_02"
+          },
+          {
+            "squad_members": "t2_additional_tank_03"
+          }
+        ]
+      }
+    },
+    {
       "squad": {
         "name": "fake_dead_squad",
         "tm": [
@@ -5056,6 +6963,388 @@
       }
     },
     {
+      "squad": {
+        "name": "t1_bunkers_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6807.35,418.0,3658.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_bunker_01"
+          },
+          {
+            "squad_members": "t1_bunker_02"
+          },
+          {
+            "squad_members": "t1_bunker_03"
+          },
+          {
+            "squad_members": "t1_bunker_04"
+          },
+          {
+            "squad_members": "t1_bunker_05"
+          },
+          {
+            "squad_members": "t1_bunker_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_bunkers_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3643.65,735.15,-9390.15]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_bunker_01"
+          },
+          {
+            "squad_members": "t2_bunker_02"
+          },
+          {
+            "squad_members": "t2_bunker_03"
+          },
+          {
+            "squad_members": "t2_bunker_04"
+          },
+          {
+            "squad_members": "t2_bunker_05"
+          },
+          {
+            "squad_members": "t2_bunker_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7204.0,1350.6,-1125.75]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_truck_01"
+          },
+          {
+            "squad_members": "t1_truck_02"
+          },
+          {
+            "squad_members": "t1_truck_03"
+          },
+          {
+            "squad_members": "t1_truck_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1749.6,1350.6,-9953.35]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_truck_01"
+          },
+          {
+            "squad_members": "t2_truck_02"
+          },
+          {
+            "squad_members": "t2_truck_03"
+          },
+          {
+            "squad_members": "t2_truck_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7649.55,1193.05,-6804.75]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "t1_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6843.8,703.55,-7572.65]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "t1_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [428.35,1193.05,-11404.0]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "t2_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [558.85,703.55,-11855.5]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "t2_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6297.8,530.5,-6374.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_heavy_units_squad"
+          },
+          {
+            "squad_members": "t1_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-720.95,530.5,-10736.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_heavy_units_squad"
+          },
+          {
+            "squad_members": "t2_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_artillery_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4239.2,291.6,3843.25]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_art_01"
+          },
+          {
+            "squad_members": "t1_art_02"
+          },
+          {
+            "squad_members": "t1_art_03"
+          },
+          {
+            "squad_members": "t1_art_04"
+          },
+          {
+            "squad_members": "t1_art_05"
+          },
+          {
+            "squad_members": "t1_art_06"
+          },
+          {
+            "squad_members": "t1_art_07"
+          },
+          {
+            "squad_members": "t1_art_08"
+          },
+          {
+            "squad_members": "t1_art_09"
+          },
+          {
+            "squad_members": "t1_art_10"
+          },
+          {
+            "squad_members": "t1_art_11"
+          },
+          {
+            "squad_members": "t1_art_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_artillery_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1894.6,97.3,-10811.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_art_01"
+          },
+          {
+            "squad_members": "t2_art_02"
+          },
+          {
+            "squad_members": "t2_art_03"
+          },
+          {
+            "squad_members": "t2_art_04"
+          },
+          {
+            "squad_members": "t2_art_05"
+          },
+          {
+            "squad_members": "t2_art_06"
+          },
+          {
+            "squad_members": "t2_art_07"
+          },
+          {
+            "squad_members": "t2_art_08"
+          },
+          {
+            "squad_members": "t2_art_09"
+          },
+          {
+            "squad_members": "t2_art_10"
+          },
+          {
+            "squad_members": "t2_art_11"
+          },
+          {
+            "squad_members": "t2_art_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6434.9,1769.9,5924.4]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_land_squad"
+          },
+          {
+            "squad_members": "t1_bunkers_squad"
+          },
+          {
+            "squad_members": "t1_tanks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8098.5,1769.9,-7858.35]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t2_land_squad"
+          },
+          {
+            "squad_members": "t2_bunkers_squad"
+          },
+          {
+            "squad_members": "t2_tanks_squad"
+          }
+        ]
+      }
+    },
+    {
       "objectGroups": {
         "name": "t2_airfield",
         "tm": [
@@ -5083,6 +7372,394 @@
         "unit_class": "dynaf_universal_1line_a",
         "props": {
           "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_01",
+        "tm": [
+          [-0.219734,-0.0874425,0.971633],
+          [-0.168611,0.98439,0.0504584],
+          [-0.960878,-0.152741,-0.231048],
+          [1826.05,435.95,-2974.1]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_02",
+        "tm": [
+          [-0.423814,-0.00909394,0.905703],
+          [-0.0569133,0.998241,-0.0166089],
+          [-0.90396,-0.0585858,-0.423586],
+          [3392.6,450.555,-3908.85]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_03",
+        "tm": [
+          [0.164291,0.041017,0.985558],
+          [-0.114099,0.993217,-0.0223161],
+          [-0.97979,-0.108785,0.167856],
+          [-361.839,496.356,-5901.82]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_04",
+        "tm": [
+          [0.840802,-0.00313453,-0.541336],
+          [0.00114368,0.999991,-0.00401428],
+          [0.541344,0.00275645,0.840798],
+          [-2363.78,448.691,-7010.1]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_05",
+        "tm": [
+          [5.06639e-07,-0.00631377,-0.999979],
+          [0.0548021,0.998476,-0.0063042],
+          [0.998496,-0.054801,0.000347883],
+          [-3000.6,443.5,-3075.42]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_06",
+        "tm": [
+          [-0.347782,0.0437251,-0.936555],
+          [0.0413416,0.998655,0.031272],
+          [0.936664,-0.0278434,-0.349122],
+          [-4062.88,432.196,-2250.71]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_07",
+        "tm": [
+          [-0.931478,0.070381,-0.356924],
+          [0.103305,0.991892,-0.0740103],
+          [0.348821,-0.105811,-0.931197],
+          [99.4359,463.665,-451.347]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_08",
+        "tm": [
+          [-0.533139,-0.00111941,0.846027],
+          [-0.0836409,0.99517,-0.051391],
+          [-0.841882,-0.0981608,-0.530658],
+          [750.9,441.2,795.5]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_09",
+        "tm": [
+          [0.0871563,0.0486639,-0.995005],
+          [-3.7253e-09,0.998806,0.0488498],
+          [0.996195,-0.00425756,0.0870522],
+          [-1952.85,433.3,-3613.6]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_10",
+        "tm": [
+          [-0.291194,0.0455009,-0.955582],
+          [0.131889,0.99124,0.00700808],
+          [0.947529,-0.123989,-0.294644],
+          [-189.6,440.0,-1611.95]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_11",
+        "tm": [
+          [0.999048,0.00190269,-0.0435787],
+          [0.0,0.999048,0.0436194],
+          [0.0436202,-0.0435779,0.998098],
+          [-1330.1,447.25,-5426.0]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_12",
+        "tm": [
+          [0.992367,0.0333845,0.118714],
+          [-0.0457982,0.993583,0.103427],
+          [-0.114499,-0.108075,0.987527],
+          [1000.05,443.65,-3247.25]
+        ],
+        "unit_class": "dynTrench_small_bunker_axis",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_bomb_target_01",
+        "tm": [
+          [0.878267,0.0,-0.95846],
+          [0.0,1.3,0.0],
+          [0.95846,0.0,0.878267],
+          [-8875.9,1300.8,-1959.45]
+        ],
+        "unit_class": "dynBase_ammunition_camp_square",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_bomb_target_02",
+        "tm": [
+          [-0.444626,0.0,1.2216],
+          [0.0,1.3,0.0],
+          [-1.2216,0.0,-0.444626],
+          [521.8,468.724,3106.05]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_bomb_target_03",
+        "tm": [
+          [0.95846,0.0,-0.878267],
+          [0.0,1.3,0.0],
+          [0.878267,0.0,0.95846],
+          [-7973.45,969.35,6044.65]
+        ],
+        "unit_class": "dynBase_fuel_storage_square",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_bomb_target_01",
+        "tm": [
+          [1.23983,0.0,0.390918],
+          [0.0,1.3,0.0],
+          [-0.390918,0.0,1.23983],
+          [-950.95,163.45,-10827.0]
+        ],
+        "unit_class": "dynBase_ammunition_storage_square",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_bomb_target_02",
+        "tm": [
+          [1.26918,0.0,0.281372],
+          [0.0,1.3,0.0],
+          [-0.281372,0.0,1.26918],
+          [7335.75,491.45,-12278.8]
+        ],
+        "unit_class": "dynBase_oil_storage_large_square",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_bomb_target_03",
+        "tm": [
+          [1.2557,0.0,-0.336464],
+          [0.0,1.3,0.0],
+          [0.336464,0.0,1.2557],
+          [6514.35,959.1,-2058.6]
+        ],
+        "unit_class": "dynBase_military_base_square",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_bomb_target_04",
+        "tm": [
+          [1.26918,0.0,0.281372],
+          [0.0,1.3,0.0],
+          [-0.281372,0.0,1.26918],
+          [2516.33,342.856,-13332.6]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_bomb_target_04",
+        "tm": [
+          [0.95846,0.0,-0.878267],
+          [0.0,1.3,0.0],
+          [0.878267,0.0,0.95846],
+          [-2864.11,637.215,6241.59]
+        ],
+        "unit_class": "dynBase_small_factory_square",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_helicopter_pad_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-426.604,561.12,3832.24]
+        ],
+        "unit_class": "dynHelipad_beton_a_usa",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_helicopter_pad_02",
+        "tm": [
+          [-0.447146,0.0,-0.894461],
+          [0.0,1.0,0.0],
+          [0.894461,0.0,-0.447146],
+          [-7872.67,513.195,-4222.8]
+        ],
+        "unit_class": "dynHelipad_beton_a_usa",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_helicopter_pad_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6456.43,427.781,-3434.24]
+        ],
+        "unit_class": "dynHelipad_beton_a_usa",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_helicopter_pad_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1897.03,267.717,-10146.5]
+        ],
+        "unit_class": "dynHelipad_beton_a_usa",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
           "active": true
         }
       }
@@ -6096,181 +8773,6 @@
       }
     },
     {
-      "armada": {
-        "name": "t1_player01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-611.51,1922.1,-3087.74]
-        ],
-        "unit_class": "spitfire_mk5c",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "player": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_01",
-        "tm": [
-          [-0.219734,-0.0874425,0.971633],
-          [-0.168611,0.98439,0.0504584],
-          [-0.960878,-0.152741,-0.231048],
-          [1826.05,435.95,-2974.1]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_02",
-        "tm": [
-          [-0.423814,-0.00909394,0.905703],
-          [-0.0569133,0.998241,-0.0166089],
-          [-0.90396,-0.0585858,-0.423586],
-          [3392.6,450.555,-3908.85]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_03",
-        "tm": [
-          [0.164291,0.041017,0.985558],
-          [-0.114099,0.993217,-0.0223161],
-          [-0.97979,-0.108785,0.167856],
-          [-361.839,496.356,-5901.82]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_04",
-        "tm": [
-          [0.840802,-0.00313453,-0.541336],
-          [0.00114368,0.999991,-0.00401428],
-          [0.541344,0.00275645,0.840798],
-          [-2363.78,448.691,-7010.1]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_05",
-        "tm": [
-          [5.06639e-07,-0.00631377,-0.999979],
-          [0.0548021,0.998476,-0.0063042],
-          [0.998496,-0.054801,0.000347883],
-          [-3000.6,443.5,-3075.42]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_06",
-        "tm": [
-          [-0.347782,0.0437251,-0.936555],
-          [0.0413416,0.998655,0.031272],
-          [0.936664,-0.0278434,-0.349122],
-          [-4062.88,432.196,-2250.71]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_07",
-        "tm": [
-          [-0.931478,0.070381,-0.356924],
-          [0.103305,0.991892,-0.0740103],
-          [0.348821,-0.105811,-0.931197],
-          [99.4359,463.665,-451.347]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_08",
-        "tm": [
-          [-0.533139,-0.00111941,0.846027],
-          [-0.0836409,0.99517,-0.051391],
-          [-0.841882,-0.0981608,-0.530658],
-          [750.9,441.2,795.5]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
       "structures": {
         "name": "t1_bunker_05",
         "tm": [
@@ -6304,22 +8806,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_09",
-        "tm": [
-          [0.0871563,0.0486639,-0.995005],
-          [-3.72529e-09,0.998806,0.0488498],
-          [0.996195,-0.00425756,0.0870522],
-          [-1952.85,433.3,-3613.6]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
       }
     },
     {
@@ -6359,22 +8845,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "objectGroups_10",
-        "tm": [
-          [-0.291194,0.0455009,-0.955582],
-          [0.131889,0.99124,0.00700808],
-          [0.947529,-0.123989,-0.294644],
-          [-189.6,440.0,-1611.95]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
       "structures": {
         "name": "t2_bunker_05",
         "tm": [
@@ -6411,22 +8881,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "objectGroups_11",
-        "tm": [
-          [0.999048,0.00190269,-0.0435787],
-          [0.0,0.999048,0.0436194],
-          [0.0436202,-0.0435779,0.998098],
-          [-1330.1,447.25,-5426.0]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "structures": {
         "name": "t2_bunker_06",
         "tm": [
@@ -6460,250 +8914,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_12",
-        "tm": [
-          [0.992367,0.0333845,0.118714],
-          [-0.0457982,0.993583,0.103427],
-          [-0.114499,-0.108075,0.987527],
-          [1000.05,443.65,-3247.25]
-        ],
-        "unit_class": "dynTrench_small_bunker_axis",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_bunkers_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6807.35,418.0,3658.2]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_bunker_01"
-          },
-          {
-            "squad_members": "t1_bunker_02"
-          },
-          {
-            "squad_members": "t1_bunker_03"
-          },
-          {
-            "squad_members": "t1_bunker_04"
-          },
-          {
-            "squad_members": "t1_bunker_05"
-          },
-          {
-            "squad_members": "t1_bunker_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_bunkers_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3643.65,735.15,-9390.15]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_bunker_01"
-          },
-          {
-            "squad_members": "t2_bunker_02"
-          },
-          {
-            "squad_members": "t2_bunker_03"
-          },
-          {
-            "squad_members": "t2_bunker_04"
-          },
-          {
-            "squad_members": "t2_bunker_05"
-          },
-          {
-            "squad_members": "t2_bunker_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7204.0,1350.6,-1125.75]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_truck_01"
-          },
-          {
-            "squad_members": "t1_truck_02"
-          },
-          {
-            "squad_members": "t1_truck_03"
-          },
-          {
-            "squad_members": "t1_truck_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1749.6,1350.6,-9953.35]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_truck_01"
-          },
-          {
-            "squad_members": "t2_truck_02"
-          },
-          {
-            "squad_members": "t2_truck_03"
-          },
-          {
-            "squad_members": "t2_truck_04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7649.55,1193.05,-6804.75]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "t1_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6843.8,703.55,-7572.65]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "t1_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [428.35,1193.05,-11404.0]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "t2_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [558.85,703.55,-11855.5]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "t2_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6297.8,530.5,-6374.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_heavy_units_squad"
-          },
-          {
-            "squad_members": "t1_light_units_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-720.95,530.5,-10736.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_heavy_units_squad"
-          },
-          {
-            "squad_members": "t2_light_units_squad"
-          }
-        ]
       }
     },
     {
@@ -7139,58 +9349,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_artillery_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4239.2,291.6,3843.25]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_art_01"
-          },
-          {
-            "squad_members": "t1_art_02"
-          },
-          {
-            "squad_members": "t1_art_03"
-          },
-          {
-            "squad_members": "t1_art_04"
-          },
-          {
-            "squad_members": "t1_art_05"
-          },
-          {
-            "squad_members": "t1_art_06"
-          },
-          {
-            "squad_members": "t1_art_07"
-          },
-          {
-            "squad_members": "t1_art_08"
-          },
-          {
-            "squad_members": "t1_art_09"
-          },
-          {
-            "squad_members": "t1_art_10"
-          },
-          {
-            "squad_members": "t1_art_11"
-          },
-          {
-            "squad_members": "t1_art_12"
-          }
-        ]
-      }
-    },
-    {
       "structures": {
         "name": "t2_art_01",
         "tm": [
@@ -7623,201 +9781,50 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_artillery_squad",
+      "armada": {
+        "name": "t1_player01",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [1894.6,97.3,-10811.8]
+          [-611.51,1922.1,-3087.74]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_art_01"
-          },
-          {
-            "squad_members": "t2_art_02"
-          },
-          {
-            "squad_members": "t2_art_03"
-          },
-          {
-            "squad_members": "t2_art_04"
-          },
-          {
-            "squad_members": "t2_art_05"
-          },
-          {
-            "squad_members": "t2_art_06"
-          },
-          {
-            "squad_members": "t2_art_07"
-          },
-          {
-            "squad_members": "t2_art_08"
-          },
-          {
-            "squad_members": "t2_art_09"
-          },
-          {
-            "squad_members": "t2_art_10"
-          },
-          {
-            "squad_members": "t2_art_11"
-          },
-          {
-            "squad_members": "t2_art_12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6434.9,1769.9,5924.4]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_land_squad"
-          },
-          {
-            "squad_members": "t1_bunkers_squad"
-          },
-          {
-            "squad_members": "t1_tanks_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8098.5,1769.9,-7858.35]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t2_land_squad"
-          },
-          {
-            "squad_members": "t2_bunkers_squad"
-          },
-          {
-            "squad_members": "t2_tanks_squad"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_01",
-        "tm": [
-          [0.878267,0.0,-0.95846],
-          [0.0,1.3,0.0],
-          [0.95846,0.0,0.878267],
-          [-8875.9,1300.8,-1959.45]
-        ],
-        "unit_class": "dynBase_ammunition_camp_square",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_02",
-        "tm": [
-          [-0.444626,0.0,1.2216],
-          [0.0,1.3,0.0],
-          [-1.2216,0.0,-0.444626],
-          [521.8,468.724,3106.05]
-        ],
-        "unit_class": "dynBase_petrol_camp_square",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_03",
-        "tm": [
-          [0.95846,0.0,-0.878267],
-          [0.0,1.3,0.0],
-          [0.878267,0.0,0.95846],
-          [-7973.45,969.35,6044.65]
-        ],
-        "unit_class": "dynBase_fuel_storage_square",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_01",
-        "tm": [
-          [1.23983,0.0,0.390918],
-          [0.0,1.3,0.0],
-          [-0.390918,0.0,1.23983],
-          [-950.95,163.45,-10827.0]
-        ],
-        "unit_class": "dynBase_ammunition_storage_square",
+        "unit_class": "spitfire_mk5c",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
         "props": {
           "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_02",
-        "tm": [
-          [1.26918,0.0,0.281372],
-          [0.0,1.3,0.0],
-          [-0.281372,0.0,1.26918],
-          [7335.75,491.45,-12278.8]
-        ],
-        "unit_class": "dynBase_oil_storage_large_square",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_03",
-        "tm": [
-          [1.2557,0.0,-0.336464],
-          [0.0,1.3,0.0],
-          [0.336464,0.0,1.2557],
-          [6514.35,959.1,-2058.6]
-        ],
-        "unit_class": "dynBase_military_base_square",
-        "props": {
-          "army": 2,
-          "active": true
-        }
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
       }
     },
     {
@@ -9329,267 +11336,6 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "t2_tank_02",
-        "tm": [
-          [-0.258818,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258818],
-          [4002.1,470.3,-5802.7]
-        ],
-        "unit_class": "germ_pzIVc",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,6.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank10_wp_20": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3914.2,469.3,-5422.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank10_wp_21": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3814.75,468.998,-5093.55]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank10_wp_25": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2377.95,478.95,-3710.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank10_wp_27": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [313.0,424.55,-2104.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [149.55,424.7,-1977.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4226.0,418.65,1081.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4475.8,413.9,1663.45]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5383.55,416.55,1722.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5551.25,419.9,935.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-5385.05,421.05,658.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4810.15,424.1,97.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4593.45,429.6,-1725.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1726.15,453.2,-3657.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_02_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1008.5,420.45,-3411.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
       "wheeled_vehicles": {
         "name": "t2_truck_02",
         "tm": [
@@ -10726,1752 +12472,6 @@
               "tas": false
             }
           }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_additional_tank_01",
-        "tm": [
-          [0.793353,0.0,-0.608762],
-          [0.0,1.0,0.0],
-          [0.608762,0.0,0.793353],
-          [-3969.47,429.3,776.175]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,8.0],
-          "formation_noise": [0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_tank_07_wp_83": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3541.65,428.95,411.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_84": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [134.2,424.955,-1961.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_85": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [289.85,423.0,-2090.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_86": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [734.15,425.9,-2819.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_87": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2365.65,478.2,-3698.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_88": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3805.3,469.15,-5092.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_89": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3836.3,471.55,-7036.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_90": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3813.9,468.5,-7644.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_91": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [532.4,467.55,-9221.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_92": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-357.75,463.35,-8572.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_93": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2414.05,453.5,-6759.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_94": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1486.2,452.9,-5051.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_95": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1605.8,453.9,-4351.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_96": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-967.0,420.4,-3548.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_97": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-419.3,421.7,-2921.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_additional_tank_02",
-        "tm": [
-          [-0.260652,0.0,-0.965433],
-          [0.0,1.0,0.0],
-          [0.965433,0.0,-0.260652],
-          [-4693.92,474.4,705.659]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [12.0,8.0],
-          "formation_noise": [0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_tank_07_wp_98": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4785.47,421.9,375.44]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_99": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4810.35,424.1,98.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_100": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4597.2,429.4,-1717.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_101": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1729.45,452.65,-3649.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_102": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-971.2,420.4,-3547.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_103": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [43.75,418.2,-2845.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_104": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [737.95,425.85,-2825.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_105": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2359.8,477.9,-3696.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_106": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3803.0,469.2,-5092.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_107": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3837.05,471.7,-7030.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_108": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3815.55,468.45,-7643.85]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_109": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [538.75,467.75,-9220.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_110": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-359.85,463.25,-8569.45]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_111": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2403.35,453.55,-6765.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_112": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1486.55,452.8,-5047.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_113": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1606.9,453.9,-4348.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_114": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-967.95,420.4,-3550.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_tank_07_wp_115": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-688.8,422.3,-3071.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_additional_tank_01",
-        "tm": [
-          [-0.866026,0.0,-0.5],
-          [0.0,1.0,0.0],
-          [0.5,0.0,-0.866026],
-          [3490.0,478.759,-7919.11]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,8.0],
-          "formation_noise": [0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_07_wp_35": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3355.46,476.281,-7992.54]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3044.9,476.24,-8136.16]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_tank_07_wp_36": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [534.701,474.4,-9222.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_37": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-358.949,479.95,-8579.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_65": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2412.4,453.55,-6759.6]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_66": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1486.85,453.35,-5047.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_67": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1606.1,459.65,-4357.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_68": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1716.2,453.9,-3675.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_69": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4585.4,429.75,-1745.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_70": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4798.7,423.7,84.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_71": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4237.1,418.25,1093.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_72": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [138.351,424.9,-1965.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_73": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [60.8507,418.05,-2830.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_74": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-540.149,426.3,-2925.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_additional_tank_02",
-        "tm": [
-          [-0.766045,0.0,0.642787],
-          [0.0,1.0,0.0],
-          [-0.642787,0.0,-0.766045],
-          [4423.87,627.205,-7671.47]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,6.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_tank_07_wp_75": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4116.1,468.3,-7405.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_76": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3842.65,473.95,-7048.6]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_77": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3816.15,468.967,-5095.85]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_78": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2377.7,479.4,-3710.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_79": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [758.1,432.6,-2840.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_80": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [63.7,418.05,-2834.35]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_81": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-955.5,420.35,-3535.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_82": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1715.0,453.9,-3667.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_83": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4588.8,429.75,-1737.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_84": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4796.95,423.6,82.451]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_85": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4237.95,418.25,1093.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_86": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [135.2,424.95,-1963.55]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_87": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [60.5,418.05,-2830.75]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_tank_07_wp_88": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-776.45,445.45,-2951.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_bomb_target_04",
-        "tm": [
-          [1.26918,0.0,0.281372],
-          [0.0,1.3,0.0],
-          [-0.281372,0.0,1.26918],
-          [2516.33,342.856,-13332.6]
-        ],
-        "unit_class": "dynBase_small_factory_square",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_bomb_target_04",
-        "tm": [
-          [0.95846,0.0,-0.878267],
-          [0.0,1.3,0.0],
-          [0.878267,0.0,0.95846],
-          [-2864.11,637.215,6241.59]
-        ],
-        "unit_class": "dynBase_small_factory_square",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_additional_tank_03",
-        "tm": [
-          [0.793353,0.0,-0.608762],
-          [0.0,1.0,0.0],
-          [0.608762,0.0,0.793353],
-          [-4222.81,429.3,1079.26]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,8.0],
-          "formation_noise": [0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t1_additional_tank_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3866.46,428.913,684.852]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_16": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-3552.75,429.528,417.419]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_additional_tank_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-523.972,437.409,-3111.47]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [40.395,449.667,-2847.64]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [734.15,425.9,-2819.15]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2365.65,478.2,-3698.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3805.3,469.15,-5092.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3836.3,471.55,-7036.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3813.9,468.5,-7644.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [532.4,467.55,-9221.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-357.75,463.35,-8572.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-2414.05,453.5,-6759.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1486.2,452.9,-5051.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_13": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1605.8,453.9,-4351.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_14": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-967.0,420.4,-3548.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t1_additional_tank_03_wp_15": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-419.3,421.7,-2921.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_additional_tank_03",
-        "tm": [
-          [-0.866026,0.0,-0.5],
-          [0.0,1.0,0.0],
-          [0.5,0.0,-0.866026],
-          [3771.32,473.428,-7718.83]
-        ],
-        "unit_class": "germ_tigerI",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 5,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [12.0,8.0],
-          "formation_noise": [0.3,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "t2_additional_tank_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [3631.78,474.598,-7831.39]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "GATHER_TO",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_14": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2996.93,491.434,-8142.42]
-            ],
-            "props": {
-              "speed": 30.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_additional_tank_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-446.908,450.088,-7550.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1482.41,453.35,-5049.83]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1606.1,459.65,-4357.25]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1716.2,453.9,-3675.65]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4585.4,429.75,-1745.4]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4798.7,423.7,84.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-4237.1,418.25,1093.3]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [138.351,424.9,-1965.95]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [60.8507,418.05,-2830.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "USE_SPLINES",
-              "shouldKeepFormation": true,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "t2_additional_tank_03_wp_13": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-540.149,426.3,-2925.05]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_helicopter_pad_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-426.604,561.12,3832.24]
-        ],
-        "unit_class": "dynHelipad_beton_a_usa",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_helicopter_pad_02",
-        "tm": [
-          [-0.447146,0.0,-0.894461],
-          [0.0,1.0,0.0],
-          [0.894461,0.0,-0.447146],
-          [-7872.67,513.195,-4222.8]
-        ],
-        "unit_class": "dynHelipad_beton_a_usa",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_helicopter_pad_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6456.43,427.781,-3434.24]
-        ],
-        "unit_class": "dynHelipad_beton_a_usa",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_helicopter_pad_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1897.03,267.717,-10146.5]
-        ],
-        "unit_class": "dynHelipad_beton_a_usa",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
         }
       }
     }

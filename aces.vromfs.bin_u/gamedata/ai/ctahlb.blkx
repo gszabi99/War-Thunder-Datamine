@@ -101,22 +101,6 @@
       }
     },
     {
-      "clearIdList": {
-        "listName": "zonesToCapture"
-      }
-    },
-    {
-      "clearIdList": {
-        "listName": "zonesToDefend"
-      }
-    },
-    {
-      "setVarTo": {
-        "varName": "enemyCZAfter",
-        "val": -1
-      }
-    },
-    {
       "sequencer": [
         {
           "repeat": true
@@ -138,6 +122,12 @@
           "setVarTo": {
             "varName": "alreadyCapturing",
             "val": 0
+          }
+        },
+        {
+          "setVarTo": {
+            "fromVar": "enemyCZ",
+            "varName": "enemyCZAfter"
           }
         },
         {
@@ -171,12 +161,6 @@
           }
         },
         {
-          "setVarTo": {
-            "fromVar": "enemyCZ",
-            "varName": "enemyCZAfter"
-          }
-        },
-        {
           "ifThenElse": {
             "compareVar": {
               "varName": "alreadyCapturing",
@@ -191,12 +175,6 @@
           }
         }
       ]
-    },
-    {
-      "setVarTo": {
-        "varName": "friendlyCZAfter",
-        "val": -1
-      }
     },
     {
       "sequencer": {
@@ -269,6 +247,13 @@
           }
         },
         {
+          "getFromList": {
+            "listName": "fightingPlanes",
+            "varName": "assister",
+            "indexType": "random"
+          }
+        },
+        {
           "getClosestCZToPlane": {
             "listName": "zonesToCapture",
             "planeName": "capturer",
@@ -288,6 +273,12 @@
           }
         },
         {
+          "removeFromList": {
+            "listName": "fightingPlanes",
+            "varName": "assister"
+          }
+        },
+        {
           "addToList": {
             "listName": "capturePlanes",
             "varName": "capturer"
@@ -300,29 +291,16 @@
           }
         },
         {
+          "setBehaviourToPlane": {
+            "planeName": "assister",
+            "behaviour": "assistCaptureBot"
+          }
+        },
+        {
           "setBotVarTo": {
             "planeName": "capturer",
             "fromVar": "closestZone",
             "toVar": "zoneToCapture"
-          }
-        },
-        {
-          "getFromList": {
-            "listName": "fightingPlanes",
-            "varName": "assister",
-            "indexType": "random"
-          }
-        },
-        {
-          "removeFromList": {
-            "listName": "fightingPlanes",
-            "varName": "assister"
-          }
-        },
-        {
-          "setBehaviourToPlane": {
-            "planeName": "assister",
-            "behaviour": "assistCaptureBot"
           }
         },
         {
@@ -478,6 +456,28 @@
           "planeName": "other",
           "behaviour": "rearmingBot"
         }
+      }
+    },
+    {
+      "clearIdList": {
+        "listName": "zonesToCapture"
+      }
+    },
+    {
+      "clearIdList": {
+        "listName": "zonesToDefend"
+      }
+    },
+    {
+      "setVarTo": {
+        "varName": "enemyCZAfter",
+        "val": -1
+      }
+    },
+    {
+      "setVarTo": {
+        "varName": "friendlyCZAfter",
+        "val": -1
       }
     }
   ]

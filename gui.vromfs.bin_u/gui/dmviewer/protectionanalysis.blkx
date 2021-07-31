@@ -12,50 +12,6 @@
     }
   },
   {
-    "frame": {
-      "id": "wnd_frame",
-      "width": "1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding",
-      "pos": "1@bw, sh/2-h/2",
-      "position": "absolute",
-      "class": "wnd",
-      "type": "big",
-      "invisibleSelection": "yes",
-      "frame_header": {
-        "activeText": {
-          "id": "wnd_title",
-          "caption": "yes",
-          "text": "#mainmenu/btnProtectionAnalysis"
-        }
-      },
-      "verticalCellsOptions": {
-        "id": "options_container",
-        "width": "pw",
-        "class": "optionsMultiColumn",
-        "fullWidthOptions": "yes",
-        "selfFocusBorder": "yes",
-        "css-hier-invalidate": "yes",
-        "moveY": "linear",
-        "behavior": "PosOptionsNavigator",
-        "navigatorShortcuts": "yes",
-        "on_wrap_left": "onDistanceDec",
-        "on_wrap_right": "onDistanceInc"
-      },
-      "rowSeparator": {
-        "pos": "0, 1@blockInterval"
-      },
-      "CheckBox": {
-        "id": "checkboxSaveChoice",
-        "margin": "2@dp, 2@blockInterval, 0, 1@blockInterval",
-        "position": "relative",
-        "text": "#mainmenu/btnSaveChoice",
-        "on_change_value": "onSave",
-        "btnName": "Y",
-        "ButtonImg": [],
-        "CheckBoxImg": []
-      }
-    }
-  },
-  {
     "tdiv": [
       {
         "pos": "pw - 1@bw - w, sh -1@bottomBarHeight -1@blockInterval -h"
@@ -187,6 +143,50 @@
     ]
   },
   {
+    "frame": {
+      "id": "wnd_frame",
+      "width": "1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding",
+      "pos": "1@bw, sh/2-h/2",
+      "position": "absolute",
+      "class": "wnd",
+      "type": "big",
+      "invisibleSelection": "yes",
+      "frame_header": {
+        "activeText": {
+          "id": "wnd_title",
+          "caption": "yes",
+          "text": "#mainmenu/btnProtectionAnalysis"
+        }
+      },
+      "verticalCellsOptions": {
+        "id": "options_container",
+        "width": "pw",
+        "class": "optionsMultiColumn",
+        "fullWidthOptions": "yes",
+        "selfFocusBorder": "yes",
+        "css-hier-invalidate": "yes",
+        "moveY": "linear",
+        "behavior": "PosOptionsNavigator",
+        "navigatorShortcuts": "yes",
+        "on_wrap_left": "onDistanceDec",
+        "on_wrap_right": "onDistanceInc"
+      },
+      "rowSeparator": {
+        "pos": "0, 1@blockInterval"
+      },
+      "CheckBox": {
+        "id": "checkboxSaveChoice",
+        "margin": "2@dp, 2@blockInterval, 0, 1@blockInterval",
+        "position": "relative",
+        "text": "#mainmenu/btnSaveChoice",
+        "on_change_value": "onSave",
+        "btnName": "Y",
+        "ButtonImg": [],
+        "CheckBoxImg": []
+      }
+    }
+  },
+  {
     "gamercard_div": [
       {
         "id": "chapter_gamercard"
@@ -304,6 +304,19 @@
                     }
                   },
                   {
+                    "TopMenuPanelBg": {
+                      "width": "0.5fw",
+                      "overflow": "hidden",
+                      "css-hier-invalidate": "yes",
+                      "Red_shadow_light": {
+                        "pos": "-50%w, 0",
+                        "position": "absolute",
+                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
+                        "class": "inverted"
+                      }
+                    }
+                  },
+                  {
                     "tdiv": {
                       "id": "gamercard_logo_place",
                       "pos": "0, 1@titleLogoSafeareaOffsetTop",
@@ -341,19 +354,6 @@
                         "margin-left": "-1@titleLogoPlatePadding/2",
                         "allowDecreaseFont": "yes",
                         "display": "hide"
-                      }
-                    }
-                  },
-                  {
-                    "TopMenuPanelBg": {
-                      "width": "0.5fw",
-                      "overflow": "hidden",
-                      "css-hier-invalidate": "yes",
-                      "Red_shadow_light": {
-                        "pos": "-50%w, 0",
-                        "position": "absolute",
-                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
-                        "class": "inverted"
                       }
                     }
                   }
@@ -446,19 +446,6 @@
                         }
                       },
                       {
-                        "tdiv": {
-                          "id": "topmenu_menu_panel",
-                          "height": "ph",
-                          "padding": "-1@gcButtonsInterval, 0"
-                        }
-                      },
-                      {
-                        "tdiv": {
-                          "id": "left_gc_panel_free_width",
-                          "width": "fw"
-                        }
-                      },
-                      {
                         "gcButtonsHolder": [
                           {
                             "id": "gamercard_panel_left"
@@ -542,6 +529,19 @@
                             }
                           }
                         ]
+                      },
+                      {
+                        "tdiv": {
+                          "id": "topmenu_menu_panel",
+                          "height": "ph",
+                          "padding": "-1@gcButtonsInterval, 0"
+                        }
+                      },
+                      {
+                        "tdiv": {
+                          "id": "left_gc_panel_free_width",
+                          "width": "fw"
+                        }
                       }
                     ]
                   },
@@ -732,6 +732,15 @@
                 ]
               },
               {
+                "tdiv": {
+                  "id": "chatPopupNest",
+                  "size": "0.4@sf+10, 0.075*@sf+10",
+                  "position": "absolute",
+                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                  "flow": "vertical"
+                }
+              },
+              {
                 "infoBlock": {
                   "css-hier-invalidate": "yes",
                   "activeText": {
@@ -755,15 +764,6 @@
                       "display": "hide"
                     }
                   }
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "chatPopupNest",
-                  "size": "0.4@sf+10, 0.075*@sf+10",
-                  "position": "absolute",
-                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                  "flow": "vertical"
                 }
               }
             ]
@@ -840,6 +840,11 @@
                     }
                   },
                   {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  },
+                  {
                     "emptyVoiceChat": {
                       "tooltip": "#clan/voice_chat/widget",
                       "usertalk": {
@@ -867,11 +872,6 @@
                       "voiceChatWidget": {
                         "value": "{\"viewId\": \"VOICE_CHAT\"}"
                       }
-                    }
-                  },
-                  {
-                    "blockSeparator": {
-                      "display": "hide"
                     }
                   }
                 ],

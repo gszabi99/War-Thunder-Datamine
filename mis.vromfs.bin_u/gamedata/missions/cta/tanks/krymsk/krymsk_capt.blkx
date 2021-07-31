@@ -545,11 +545,6 @@
           }
         },
         {
-          "comment": {
-            "value": "Включаем спавн артиллерии"
-          }
-        },
-        {
           "missionMarkAsRespawnPoint": [
             {
               "loc_name": ""
@@ -886,34 +881,6 @@
           ]
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "t1_aaa_squad"
-            },
-            {
-              "object": "t2_aaa_squad"
-            },
-            {
-              "accuracy": 0.6
-            },
-            {
-              "effShootingRate": 0.3
-            }
-          ]
-        },
-        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/ground_spawn_east",
             "spawnEffect": false,
@@ -1016,6 +983,39 @@
               "tank": true
             }
           }
+        },
+        {
+          "comment": {
+            "value": "\u0412\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u0430\u0440\u0442\u0438\u043b\u043b\u0435\u0440\u0438\u0438"
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "t1_aaa_squad"
+            },
+            {
+              "object": "t2_aaa_squad"
+            },
+            {
+              "accuracy": 0.6
+            },
+            {
+              "effShootingRate": 0.3
+            }
+          ]
         }
       ],
       "else_actions": []
@@ -1159,6 +1159,57 @@
           [2285.42,346.079,269.201]
         ],
         "unit_class": "dynTrench_small_bunker_axis",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t1_airfield",
+        "tm": [
+          [0.514233,0.0,0.85765],
+          [0.0,1.0,0.0],
+          [-0.85765,0.0,0.514233],
+          [8682.31,34.3794,5418.7]
+        ],
+        "unit_class": "dynAF_krymsk_ally",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "t2_airfield",
+        "tm": [
+          [-0.953571,0.0,0.301168],
+          [0.0,1.0,0.0],
+          [-0.301168,0.0,-0.953571],
+          [-2777.96,288.69,-3930.4]
+        ],
+        "unit_class": "dynAF_krymsk_ally",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "barbwire_01",
+        "tm": [
+          [0.627533,0.0,-0.77859],
+          [0.0,1.0,0.0],
+          [0.77859,0.0,0.627533],
+          [2675.86,206.578,1907.5]
+        ],
+        "unit_class": "tank_barbwire",
         "objLayer": 2,
         "props": {
           "army": 0,
@@ -2363,57 +2414,6 @@
             "squad_members": "t2_aaa_15"
           }
         ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t1_airfield",
-        "tm": [
-          [0.514233,0.0,0.85765],
-          [0.0,1.0,0.0],
-          [-0.85765,0.0,0.514233],
-          [8682.31,34.3794,5418.7]
-        ],
-        "unit_class": "dynAF_krymsk_ally",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "t2_airfield",
-        "tm": [
-          [-0.953571,0.0,0.301168],
-          [0.0,1.0,0.0],
-          [-0.301168,0.0,-0.953571],
-          [-2777.96,288.69,-3930.4]
-        ],
-        "unit_class": "dynAF_krymsk_ally",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "barbwire_01",
-        "tm": [
-          [0.627533,0.0,-0.77859],
-          [0.0,1.0,0.0],
-          [0.77859,0.0,0.627533],
-          [2675.86,206.578,1907.5]
-        ],
-        "unit_class": "tank_barbwire",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
       }
     },
     {

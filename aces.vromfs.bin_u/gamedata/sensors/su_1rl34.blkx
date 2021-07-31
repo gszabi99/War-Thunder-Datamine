@@ -191,6 +191,11 @@
             }
           },
           {
+            "setEnabled": {
+              "value": true
+            }
+          },
+          {
             "setWeaponDetectionAllowance": {
               "source": "const",
               "value": true
@@ -200,6 +205,11 @@
             "setCenterAzimuth": {
               "source": "constant",
               "value": 0.0
+            }
+          },
+          {
+            "setCenterAzimuth": {
+              "source": "body"
             }
           },
           {
@@ -215,11 +225,6 @@
             "clearTargetsOfInterest": []
           },
           {
-            "setEnabled": {
-              "value": true
-            }
-          },
-          {
             "setCenterElevation": {
               "source": "constant",
               "value": 7.5
@@ -228,11 +233,6 @@
           {
             "setScanPatternSet": {
               "scanPatternSet": "search"
-            }
-          },
-          {
-            "setCenterAzimuth": {
-              "source": "body"
             }
           },
           {
@@ -311,13 +311,13 @@
             }
           },
           {
-            "setWeaponDetectionAllowance": {
-              "source": "targetDesignation"
+            "setEnabled": {
+              "value": true
             }
           },
           {
-            "setEnabled": {
-              "value": true
+            "setWeaponDetectionAllowance": {
+              "source": "targetDesignation"
             }
           },
           {
@@ -348,6 +348,11 @@
           {
             "setModeName": {
               "name": "track"
+            }
+          },
+          {
+            "setEnabled": {
+              "value": true
             }
           },
           {
@@ -407,11 +412,6 @@
             "setFsmActive": {
               "fsm": "track",
               "active": true
-            }
-          },
-          {
-            "setEnabled": {
-              "value": true
             }
           }
         ]

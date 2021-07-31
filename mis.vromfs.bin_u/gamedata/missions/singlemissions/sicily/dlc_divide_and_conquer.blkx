@@ -334,6 +334,19 @@
           }
         },
         {
+          "unitAttackTarget": {
+            "playerAttracted": true,
+            "object": "enemies_squad",
+            "target": "players_squad",
+            "fireRandom": true,
+            "playerAttractedCount": 2,
+            "playerAttractedEffRate": 1.0,
+            "fightInArea": "battle_area",
+            "fightAreaRadius": 2000.0,
+            "fightAreaOuterRadius": 3000.0
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "dlc_divide_and_conquer_waypoint",
             "status": 2
@@ -345,19 +358,24 @@
           }
         },
         {
+          "wait": {
+            "time": 8.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "dlc_divide_and_conquer_main"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "dlc_divide_and_conquer_bf109"
           }
         },
         {
           "unitSetIndication": {
             "set": true,
             "target": "enemies_squad"
-          }
-        },
-        {
-          "wait": {
-            "time": 8.0
           }
         },
         {
@@ -401,11 +419,6 @@
           }
         },
         {
-          "moAddMissionObjective": {
-            "target": "dlc_divide_and_conquer_bf109"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "bf109_taked_off"
@@ -420,19 +433,6 @@
               "target": "ju52_start_up"
             }
           ]
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": true,
-            "object": "enemies_squad",
-            "target": "players_squad",
-            "fireRandom": true,
-            "playerAttractedCount": 2,
-            "playerAttractedEffRate": 1.0,
-            "fightInArea": "battle_area",
-            "fightAreaRadius": 2000.0,
-            "fightAreaOuterRadius": 3000.0
-          }
         }
       ]
     },
@@ -632,6 +632,29 @@
           }
         },
         {
+          "triggerEnable": [
+            {
+              "target": "ju52_landed"
+            },
+            {
+              "target": "je52_not_landed"
+            },
+            {
+              "target": "ju52_near_player"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "update_ju25_indicator"
+            },
+            {
+              "target": "ju52_near_landing_point"
+            }
+          ]
+        },
+        {
           "wait": {
             "time": 4.0
           }
@@ -670,19 +693,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "ju52_landed"
-            },
-            {
-              "target": "je52_not_landed"
-            },
-            {
-              "target": "ju52_near_player"
-            }
-          ]
-        },
-        {
           "unitMoveTo": {
             "target": "landing_point",
             "follow_target": false,
@@ -706,16 +716,6 @@
             "object": "fiat_02",
             "follow_offset": [-150.0,150.0,20.0]
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "update_ju25_indicator"
-            },
-            {
-              "target": "ju52_near_landing_point"
-            }
-          ]
         }
       ]
     },
@@ -1284,13 +1284,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 3.0
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -2573,6 +2573,221 @@
       }
     },
     {
+      "armada": {
+        "name": "bf_019_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11175.5,453.0,15664.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109g-2",
+        "weapons": "Bf-109G-2_default",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fiat_03",
+        "tm": [
+          [0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,0.67559],
+          [-13773.4,2451.0,18784.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "mc-202",
+        "weapons": "MC202_default",
+        "props": {
+          "army": 2,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies",
+        "tm": [
+          [-0.991445,0.0,-0.130526],
+          [0.0,1.0,0.0],
+          [0.130526,0.0,-0.991445],
+          [-5331.2,2418.9,15067.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_ix",
+        "weapons": "SpitfireIX_default",
+        "props": {
+          "army": 1,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fiat_04",
+        "tm": [
+          [0.461749,0.0,0.887011],
+          [0.0,1.0,0.0],
+          [-0.887011,0.0,0.461749],
+          [-13482.0,2451.0,11768.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "mc-202",
+        "weapons": "MC202_default",
+        "props": {
+          "army": 2,
+          "count": 14,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fiat_05",
+        "tm": [
+          [-0.766044,0.0,0.642788],
+          [0.0,1.0,0.0],
+          [-0.642788,0.0,-0.766044],
+          [-6915.35,2451.0,11189.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "mc-202",
+        "weapons": "MC202_default",
+        "props": {
+          "army": 2,
+          "count": 14,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "fiat_for_airfield",
+        "tm": [
+          [0.67559,0.0,-0.737277],
+          [0.0,1.0,0.0],
+          [0.737277,0.0,0.67559],
+          [-13773.4,3051.5,18784.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "mc-202",
+        "weapons": "MC202_default",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "air_defence": {
         "name": "germ_aaa_01",
         "tm": [
@@ -2758,114 +2973,6 @@
       }
     },
     {
-      "armada": {
-        "name": "bf_019_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11175.5,453.0,15664.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109g-2",
-        "weapons": "Bf-109G-2_default",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fiat_03",
-        "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-13773.4,2451.0,18784.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "mc-202",
-        "weapons": "MC202_default",
-        "props": {
-          "army": 2,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies",
-        "tm": [
-          [-0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,-0.991445],
-          [-5331.2,2418.9,15067.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "spitfire_ix",
-        "weapons": "SpitfireIX_default",
-        "props": {
-          "army": 1,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "enemies_squad",
         "tm": [
@@ -2920,113 +3027,6 @@
             "squad_members": "allies"
           }
         ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fiat_04",
-        "tm": [
-          [0.461749,0.0,0.887011],
-          [0.0,1.0,0.0],
-          [-0.887011,0.0,0.461749],
-          [-13482.0,2451.0,11768.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "mc-202",
-        "weapons": "MC202_default",
-        "props": {
-          "army": 2,
-          "count": 14,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fiat_05",
-        "tm": [
-          [-0.766044,0.0,0.642788],
-          [0.0,1.0,0.0],
-          [-0.642788,0.0,-0.766044],
-          [-6915.35,2451.0,11189.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "mc-202",
-        "weapons": "MC202_default",
-        "props": {
-          "army": 2,
-          "count": 14,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "fiat_for_airfield",
-        "tm": [
-          [0.67559,0.0,-0.737277],
-          [0.0,1.0,0.0],
-          [0.737277,0.0,0.67559],
-          [-13773.4,3051.5,18784.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "mc-202",
-        "weapons": "MC202_default",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
         "way": []
       }
     }

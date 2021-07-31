@@ -338,6 +338,42 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "target_waypoint_fighters",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#player_cut.any",
+            "velocity": 250.0
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "#player_cut.any",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#player.fighter",
+            "move_type": "teleport",
+            "lookat": "target_waypoint_fighters",
+            "velocity": 250.0
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "far",
@@ -359,52 +395,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "ally_group_alive"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "target_waypoint_fighters",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "#player_cut.any",
-            "velocity": 250.0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
           }
         },
         {
@@ -433,7 +423,41 @@
         },
         {
           "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "wait": {
             "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.1
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -451,20 +475,8 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
           }
         },
         {
@@ -473,27 +485,15 @@
           }
         },
         {
-          "wait": {
-            "time": 1.1
+          "triggerDisable": {
+            "target": "start_cut_skip"
           }
         },
         {
-          "unitMoveTo": {
-            "target": "#player_cut.any",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "#player.fighter",
-            "move_type": "teleport",
-            "lookat": "target_waypoint_fighters",
-            "velocity": 250.0
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
           }
         }
       ],
@@ -582,6 +582,16 @@
       },
       "conditions": [],
       "actions": [
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
         {
           "wait": {
             "time": 1.0
@@ -677,11 +687,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "triggerDisable": [
             {
               "target": "bombers_count_calc"
@@ -693,6 +698,11 @@
               "target": "3_player_Online"
             }
           ]
+        },
+        {
+          "triggerDisable": {
+            "target": "bomber_count_toLow"
+          }
         },
         {
           "varModify": {
@@ -744,16 +754,6 @@
         },
         {
           "triggerEnable": {
-            "target": "bomber_count_toLow"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerDisable": {
             "target": "bomber_count_toLow"
           }
         },
@@ -1108,16 +1108,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "cover_done"
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "enemy_fighters_group03"
-          }
-        },
-        {
           "unitAttackTarget": [
             {
               "playerAttracted": true
@@ -1148,6 +1138,16 @@
             "object": "#enemy_attack_bombers03",
             "target": "#ally_bombers_group",
             "fireRandom": true
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "cover_done"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "enemy_fighters_group03"
           }
         }
       ],
@@ -1369,6 +1369,16 @@
           ]
         },
         {
+          "triggerDisable": [
+            {
+              "target": "bombers_count"
+            },
+            {
+              "target": "bomber_died"
+            }
+          ]
+        },
+        {
           "unitMoveTo": {
             "target": "enemy_evac",
             "follow_target": false,
@@ -1403,8 +1413,30 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "#ally_bombers_group",
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object_marking": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "#ally_fighters_group",
+            "follow_radius": 300.0
+          }
+        },
+        {
           "wait": {
             "time": 15.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1421,40 +1453,8 @@
           }
         },
         {
-          "triggerDisable": [
-            {
-              "target": "bombers_count"
-            },
-            {
-              "target": "bomber_died"
-            }
-          ]
-        },
-        {
           "missionForceMusic": {
             "evName": "suspense_cs"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "#ally_bombers_group",
-            "follow_target": true,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object_marking": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "#ally_fighters_group",
-            "follow_radius": 300.0
           }
         },
         {
@@ -1535,35 +1535,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "end_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
@@ -1589,7 +1560,36 @@
         },
         {
           "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
             "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -1607,13 +1607,18 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "end_cut_skip"
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "triggerEnable": {
+            "target": "miss_complete"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "end_cut_skip"
           }
         },
         {
@@ -1621,11 +1626,6 @@
             "mode": "fadeOut",
             "color": [0.0,0.0,0.0],
             "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "miss_complete"
           }
         }
       ],
@@ -1693,6 +1693,13 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "completed"
           }
@@ -1709,13 +1716,6 @@
         },
         {
           "missionStopCutscene": []
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
         }
       ],
       "else_actions": []
@@ -2308,6 +2308,194 @@
       }
     },
     {
+      "armada": {
+        "name": "#enemy04.fighter",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [452.2,-56.4,299.7]
+        ],
+        "unit_class": "a-20g",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.0,
+            "super_col_distances": 1.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "#enemy05.fighter",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [376.55,-56.4,300.2]
+        ],
+        "unit_class": "a-20g",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.0,
+            "super_col_distances": 1.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "#enemy06.fighter",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [299.15,-56.4,298.0]
+        ],
+        "unit_class": "a-20g",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.0,
+            "super_col_distances": 1.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "#player_cut.any",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1424.95,97.9,-1703.8]
+        ],
+        "unit_class": "a-20g",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.0,
+            "super_col_distances": 1.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "#ally_bombers_group",
         "tm": [
@@ -2574,43 +2762,6 @@
       }
     },
     {
-      "structures": {
-        "name": "dummy_fake",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [90000.0,-1000.0,90000.0]
-        ],
-        "unit_class": "dummy_immortal",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": "",
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "#unit_background",
         "tm": [
@@ -2637,194 +2788,6 @@
           "squad_members": "ally_all",
           "object_type": "isActive"
         }
-      }
-    },
-    {
-      "armada": {
-        "name": "#enemy04.fighter",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [452.2,-56.4,299.7]
-        ],
-        "unit_class": "a-20g",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 4,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.0,
-            "super_col_distances": 1.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "#enemy05.fighter",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [376.55,-56.4,300.2]
-        ],
-        "unit_class": "a-20g",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 4,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.0,
-            "super_col_distances": 1.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "#enemy06.fighter",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [299.15,-56.4,298.0]
-        ],
-        "unit_class": "a-20g",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 4,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.0,
-            "super_col_distances": 1.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "#player_cut.any",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1424.95,97.9,-1703.8]
-        ],
-        "unit_class": "a-20g",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.0,
-            "super_col_distances": 1.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     },
     {
@@ -2909,6 +2872,43 @@
         "props": {
           "squad_members": ""
         }
+      }
+    },
+    {
+      "structures": {
+        "name": "dummy_fake",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [90000.0,-1000.0,90000.0]
+        ],
+        "unit_class": "dummy_immortal",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": "",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
       }
     }
   ],

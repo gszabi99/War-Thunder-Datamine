@@ -229,7 +229,7 @@
         },
         {
           "comment": {
-            "value": "забирает unit number percent из дескриптора, если такого параметра в конфигах нет, значение будет равно нулю, сработает следующий триггер"
+            "value": "\u0437\u0430\u0431\u0438\u0440\u0430\u0435\u0442 unit number percent \u0438\u0437 \u0434\u0435\u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0440\u0430, \u0435\u0441\u043b\u0438 \u0442\u0430\u043a\u043e\u0433\u043e \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u0430 \u0432 \u043a\u043e\u043d\u0444\u0438\u0433\u0430\u0445 \u043d\u0435\u0442, \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0431\u0443\u0434\u0435\u0442 \u0440\u0430\u0432\u043d\u043e \u043d\u0443\u043b\u044e, \u0441\u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0442\u0440\u0438\u0433\u0433\u0435\u0440"
           }
         },
         {
@@ -356,18 +356,40 @@
           }
         },
         {
-          "varModify": {
-            "operator": "mul",
-            "value": -1.0,
-            "var": "tickets_changing_initial"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "tickets_changing_limit",
             "input_var": "tickets_changing_initial",
             "fromDescriptor": ""
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "tickets_bonus_after_wave_default",
+            "input_var": "tickets_changing_initial",
+            "fromDescriptor": ""
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1000,
+            "var": "tickets_bonus_after_wave_max",
+            "fromDescriptor": "ticketsBonusMax"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "tickets_bonus_after_wave_min",
+            "input_var": "tickets_bonus_after_wave_max"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "mul",
+            "value": -1.0,
+            "var": "tickets_changing_initial"
           }
         },
         {
@@ -377,14 +399,6 @@
             "var": "tickets_changing_limit",
             "use_variable": true,
             "var_value": "tickets_changing_iter_num"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "tickets_bonus_after_wave_default",
-            "input_var": "tickets_changing_initial",
-            "fromDescriptor": ""
           }
         },
         {
@@ -410,20 +424,6 @@
             "operator": "divAB",
             "value": -2.0,
             "var": "tickets_bonus_after_wave_default"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 1000,
-            "var": "tickets_bonus_after_wave_max",
-            "fromDescriptor": "ticketsBonusMax"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "tickets_bonus_after_wave_min",
-            "input_var": "tickets_bonus_after_wave_max"
           }
         },
         {
@@ -573,7 +573,7 @@
       },
       "actions": {
         "comment": {
-          "value": "если в дескрипторе не указана units_number_percent - ставится 100% "
+          "value": "\u0435\u0441\u043b\u0438 \u0432 \u0434\u0435\u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0440\u0435 \u043d\u0435 \u0443\u043a\u0430\u0437\u0430\u043d\u0430 units_number_percent - \u0441\u0442\u0430\u0432\u0438\u0442\u0441\u044f 100% "
         },
         "varSetInt": {
           "value": 100,
@@ -695,6 +695,11 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "standard",
             "name": "@start_hint_id_str",
@@ -708,11 +713,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -770,13 +770,13 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "previous_wave_type_is_dead"
+          "wait": {
+            "time": 60.0
           }
         },
         {
-          "wait": {
-            "time": 60.0
+          "triggerEnable": {
+            "target": "previous_wave_type_is_dead"
           }
         }
       ],
@@ -816,6 +816,27 @@
           }
         },
         {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
+            "var": "wave_number_overall_counter"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "mul",
+            "value": -1.0,
+            "var": "tickets_changing_per_wave"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "pickups_count"
+          }
+        },
+        {
           "__playHint": {
             "hintType": "custom",
             "name": "",
@@ -832,13 +853,6 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "wave_number_overall_counter"
-          }
-        },
-        {
           "gameMPChangeScore": {
             "value": -910,
             "valueSystem": "amount",
@@ -848,20 +862,6 @@
         {
           "comment": {
             "value": "910 tickets = 1/11 part of MPScore (num of waves)"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "mul",
-            "value": -1.0,
-            "var": "tickets_changing_per_wave"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "pickups_count"
           }
         },
         {
@@ -1005,16 +1005,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "waves_start"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "",
@@ -1028,6 +1018,16 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "waves_start"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -1141,8 +1141,24 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "gameMPChangeScore": {
+            "value": -20,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -20,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -20,
+            "valueSystem": "percentage",
+            "team": "B"
           }
         },
         {
@@ -1158,10 +1174,8 @@
           }
         },
         {
-          "gameMPChangeScore": {
-            "value": -20,
-            "valueSystem": "percentage",
-            "team": "B"
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -1170,22 +1184,8 @@
           }
         },
         {
-          "gameMPChangeScore": {
-            "value": -20,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
           "wait": {
             "time": 1.0
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -20,
-            "valueSystem": "percentage",
-            "team": "B"
           }
         },
         {
@@ -1454,18 +1454,18 @@
             }
           },
           {
+            "varSetInt": {
+              "value": 0,
+              "var": "tickets_changing_per_wave"
+            }
+          },
+          {
             "varModify": {
               "operator": "add",
               "value": 0.0,
               "var": "tickets_next_int",
               "use_variable": true,
               "var_value": "tickets_bonus_after_wave"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "tickets_changing_per_wave"
             }
           },
           {
@@ -1905,11 +1905,6 @@
             }
           },
           {
-            "wait": {
-              "time": 0.5
-            }
-          },
-          {
             "missionShowMapLine": {
               "areaNameFrom": "draw_safezone_01",
               "areaNameTo": "draw_safezone_02",
@@ -1943,6 +1938,11 @@
               "show": true,
               "colorCode": "Ally",
               "scale": 0.5
+            }
+          },
+          {
+            "wait": {
+              "time": 0.5
             }
           }
         ],
@@ -2209,6 +2209,13 @@
             }
           },
           {
+            "varModify": {
+              "operator": "add",
+              "value": -1.0,
+              "var": "wave_number_overall_var"
+            }
+          },
+          {
             "varAddString": {
               "value": "@wave_number_var",
               "digits": 2,
@@ -2231,13 +2238,6 @@
                 "target": "special_waves_time_delay"
               }
             ]
-          },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": -1.0,
-              "var": "wave_number_overall_var"
-            }
           }
         ],
         "else_actions": []
@@ -2286,31 +2286,19 @@
             }
           },
           {
+            "varSetInt": {
+              "value": 10,
+              "var": "players_effective_count",
+              "input_var": "players_online_count_int"
+            }
+          },
+          {
             "varModify": {
               "operator": "divAB",
               "value": 1.0,
               "var": "wave_units_number_var",
               "use_variable": true,
               "var_value": "unitCountDiv"
-            }
-          },
-          {
-            "missionGetMaxPlayers": {
-              "input_var": "players_max_count_int"
-            }
-          },
-          {
-            "getUnitsCount": {
-              "target": "players_squad",
-              "target_type": "isOnGround",
-              "var": "players_on_ground_current"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 10,
-              "var": "players_effective_count",
-              "input_var": "players_online_count_int"
             }
           },
           {
@@ -2354,6 +2342,18 @@
               "var": "wave_units_number_var",
               "use_variable": true,
               "var_value": "players_max_count_int"
+            }
+          },
+          {
+            "missionGetMaxPlayers": {
+              "input_var": "players_max_count_int"
+            }
+          },
+          {
+            "getUnitsCount": {
+              "target": "players_squad",
+              "target_type": "isOnGround",
+              "var": "players_on_ground_current"
             }
           },
           {
@@ -2552,13 +2552,6 @@
             }
           },
           {
-            "varSetInt": {
-              "value": 0,
-              "var": "d",
-              "input_var": "c"
-            }
-          },
-          {
             "varModify": {
               "operator": "mul",
               "value": 1.0,
@@ -2590,6 +2583,13 @@
               "var": "c",
               "use_variable": true,
               "var_value": "d"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "d",
+              "input_var": "c"
             }
           },
           {
@@ -2631,7 +2631,7 @@
           },
           {
             "comment": {
-              "value": "A= кол-во юнитов в волне B= количество сторон, с которых стартует волна C= кол-во юнитов  стартующих в первом направлении D= количество юнитов в остальных направлениях."
+              "value": "A= \u043a\u043e\u043b-\u0432\u043e \u044e\u043d\u0438\u0442\u043e\u0432 \u0432 \u0432\u043e\u043b\u043d\u0435 B= \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0442\u043e\u0440\u043e\u043d, \u0441 \u043a\u043e\u0442\u043e\u0440\u044b\u0445 \u0441\u0442\u0430\u0440\u0442\u0443\u0435\u0442 \u0432\u043e\u043b\u043d\u0430 C= \u043a\u043e\u043b-\u0432\u043e \u044e\u043d\u0438\u0442\u043e\u0432  \u0441\u0442\u0430\u0440\u0442\u0443\u044e\u0449\u0438\u0445 \u0432 \u043f\u0435\u0440\u0432\u043e\u043c \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0438 D= \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044e\u043d\u0438\u0442\u043e\u0432 \u0432 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u044b\u0445 \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f\u0445."
             }
           }
         ],
@@ -2671,6 +2671,31 @@
             }
           },
           {
+            "varModify": {
+              "operator": "divAB",
+              "value": 1.0,
+              "var": "c",
+              "use_variable": true,
+              "var_value": "enemy_will_stop_div"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "mul",
+              "value": -1.0,
+              "var": "b"
+            }
+          },
+          {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "b",
+              "use_variable": true,
+              "var_value": "a"
+            }
+          },
+          {
             "varSetString": {
               "value": "direction",
               "var": "direction"
@@ -2703,7 +2728,7 @@
           },
           {
             "comment": {
-              "value": "количество юнитов, которое будет останавливаться , когда стреляют"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044e\u043d\u0438\u0442\u043e\u0432, \u043a\u043e\u0442\u043e\u0440\u043e\u0435 \u0431\u0443\u0434\u0435\u0442 \u043e\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0442\u044c\u0441\u044f , \u043a\u043e\u0433\u0434\u0430 \u0441\u0442\u0440\u0435\u043b\u044f\u044e\u0442"
             }
           },
           {
@@ -2721,35 +2746,10 @@
             }
           },
           {
-            "varModify": {
-              "operator": "divAB",
-              "value": 1.0,
-              "var": "c",
-              "use_variable": true,
-              "var_value": "enemy_will_stop_div"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "b",
               "input_var": "c"
-            }
-          },
-          {
-            "varModify": {
-              "operator": "mul",
-              "value": -1.0,
-              "var": "b"
-            }
-          },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "b",
-              "use_variable": true,
-              "var_value": "a"
             }
           },
           {
@@ -2813,15 +2813,34 @@
             }
           },
           {
-            "comment": {
-              "value": "количество юнитов, которое будет останавливаться , когда стреляют"
+            "varSetInt": {
+              "value": 0,
+              "var": "a",
+              "input_var": "c"
             }
           },
           {
             "varSetInt": {
               "value": 0,
-              "var": "a",
+              "var": "b",
               "input_var": "c"
+            }
+          },
+          {
+            "varSetInt": {
+              "value": 0,
+              "var": "c",
+              "input_var": "d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u044e\u043d\u0438\u0442\u043e\u0432, \u043a\u043e\u0442\u043e\u0440\u043e\u0435 \u0431\u0443\u0434\u0435\u0442 \u043e\u0441\u0442\u0430\u043d\u0430\u0432\u043b\u0438\u0432\u0430\u0442\u044c\u0441\u044f , \u043a\u043e\u0433\u0434\u0430 \u0441\u0442\u0440\u0435\u043b\u044f\u044e\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u043e\u0441\u0442\u0430\u0432\u0448\u0438\u0445\u0441\u044f"
             }
           },
           {
@@ -2831,13 +2850,6 @@
               "var": "c",
               "use_variable": true,
               "var_value": "enemy_will_stop_div"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "b",
-              "input_var": "c"
             }
           },
           {
@@ -2870,8 +2882,16 @@
             }
           },
           {
-            "comment": {
-              "value": "спавним оставшихся"
+            "unitRespawn": {
+              "delay": 0.01,
+              "offset": [-10.0,0.0,-10.0],
+              "object": "@wave_name_var",
+              "object_type": "isInactive",
+              "target": "@direction_respawn",
+              "randomObjectsCountVar": "b",
+              "setObjectMarking": 0,
+              "setObjectMarkingVar": "random_int",
+              "resetFormation": true
             }
           },
           {
@@ -2912,26 +2932,6 @@
               "target_type": "isMarked",
               "unit_type_ex": "isActive",
               "target_marking_var": "random_int"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 0.01,
-              "offset": [-10.0,0.0,-10.0],
-              "object": "@wave_name_var",
-              "object_type": "isInactive",
-              "target": "@direction_respawn",
-              "randomObjectsCountVar": "b",
-              "setObjectMarking": 0,
-              "setObjectMarkingVar": "random_int",
-              "resetFormation": true
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "c",
-              "input_var": "d"
             }
           },
           {
@@ -2955,8 +2955,21 @@
             }
           },
           {
+            "unitRespawn": {
+              "delay": 0.01,
+              "offset": [-10.0,0.0,-10.0],
+              "object": "@wave_name_var",
+              "object_type": "isInactive",
+              "target": "@direction_respawn",
+              "randomObjectsCountVar": "b",
+              "setObjectMarking": 0,
+              "setObjectMarkingVar": "random_int",
+              "resetFormation": true
+            }
+          },
+          {
             "comment": {
-              "value": "спавним оставшихся"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u043e\u0441\u0442\u0430\u0432\u0448\u0438\u0445\u0441\u044f"
             }
           },
           {
@@ -2997,19 +3010,6 @@
               "target_type": "isMarked",
               "unit_type_ex": "isActive",
               "target_marking_var": "random_int"
-            }
-          },
-          {
-            "unitRespawn": {
-              "delay": 0.01,
-              "offset": [-10.0,0.0,-10.0],
-              "object": "@wave_name_var",
-              "object_type": "isInactive",
-              "target": "@direction_respawn",
-              "randomObjectsCountVar": "b",
-              "setObjectMarking": 0,
-              "setObjectMarkingVar": "random_int",
-              "resetFormation": true
             }
           },
           {
@@ -4084,6 +4084,11 @@
             }
           },
           {
+            "wait": {
+              "time": 5.0
+            }
+          },
+          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/enemy_spaa_spawn",
@@ -4096,11 +4101,6 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
-            }
-          },
-          {
-            "wait": {
-              "time": 5.0
             }
           },
           {

@@ -516,11 +516,6 @@
             }
           },
           {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/ally_capture_flag",
@@ -548,6 +543,11 @@
               "target": "t2_player_squad",
               "target_type": "isMarked",
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
             }
           }
         ],
@@ -724,11 +724,6 @@
             }
           },
           {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/ally_capture_flag",
@@ -756,6 +751,11 @@
               "target": "t1_tankspawn_01",
               "target_type": "isMarked",
               "team": "A"
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
             }
           }
         ],
@@ -1004,6 +1004,18 @@
               }
             },
             {
+              "missionMarkAsCaptureZone": {
+                "army": 0,
+                "timeMultiplier": 0.5,
+                "disableZone": false,
+                "name_for_respawn_base": "",
+                "target": "capture_zone",
+                "canCaptureByGM": true,
+                "zoneType": "capture_one_time",
+                "captureNoPenalty": true
+              }
+            },
+            {
               "triggerDisable": [
                 {
                   "target": "t1_player_near_flag"
@@ -1014,6 +1026,39 @@
               ]
             },
             {
+              "triggerDisable": [
+                {
+                  "target": "t1_flag_in_t2_capturezone"
+                },
+                {
+                  "target": "t1_set_flag_in_t2_capturezone"
+                },
+                {
+                  "target": "t2_flag_in_t1_capturezone"
+                },
+                {
+                  "target": "t2_set_flag_in_t1_capturezone"
+                },
+                {
+                  "target": "t2_bleeds_when_flag_in_capture_zone"
+                },
+                {
+                  "target": "t1_bleeds_when_flag_in_capture_zone"
+                },
+                {
+                  "target": "t1_restore_flag_from_t1_capturezone"
+                },
+                {
+                  "target": "t2_restore_flag_from_t2_capturezone"
+                }
+              ]
+            },
+            {
+              "triggerDisable": {
+                "target": "flag_on_the_ground"
+              }
+            },
+            {
               "playHint": {
                 "hintType": "custom",
                 "name": "@on_the_ground_string",
@@ -1022,6 +1067,30 @@
                 "isOverFade": false,
                 "time": -1.0,
                 "priority": 0,
+                "target_marking": 0
+              }
+            },
+            {
+              "playHint": {
+                "hintType": "custom",
+                "name": "hints/flag_returned_in_capturezone",
+                "action": "show",
+                "shouldFadeOut": false,
+                "time": -1.0,
+                "priority": 0,
+                "isOverFade": false,
+                "target_marking": 0
+              }
+            },
+            {
+              "playHint": {
+                "hintType": "custom",
+                "name": "hints/flag_returned_in_capturezone",
+                "action": "hide",
+                "shouldFadeOut": false,
+                "time": -1.0,
+                "priority": 0,
+                "isOverFade": false,
                 "target_marking": 0
               }
             },
@@ -1081,30 +1150,6 @@
               }
             },
             {
-              "playHint": {
-                "hintType": "custom",
-                "name": "hints/flag_returned_in_capturezone",
-                "action": "show",
-                "shouldFadeOut": false,
-                "time": -1.0,
-                "priority": 0,
-                "isOverFade": false,
-                "target_marking": 0
-              }
-            },
-            {
-              "missionMarkAsCaptureZone": {
-                "army": 0,
-                "timeMultiplier": 0.5,
-                "disableZone": false,
-                "name_for_respawn_base": "",
-                "target": "capture_zone",
-                "canCaptureByGM": true,
-                "zoneType": "capture_one_time",
-                "captureNoPenalty": true
-              }
-            },
-            {
               "triggerEnable": [
                 {
                   "target": "t1_capture_flag_central"
@@ -1115,53 +1160,8 @@
               ]
             },
             {
-              "triggerDisable": [
-                {
-                  "target": "t1_flag_in_t2_capturezone"
-                },
-                {
-                  "target": "t1_set_flag_in_t2_capturezone"
-                },
-                {
-                  "target": "t2_flag_in_t1_capturezone"
-                },
-                {
-                  "target": "t2_set_flag_in_t1_capturezone"
-                },
-                {
-                  "target": "t2_bleeds_when_flag_in_capture_zone"
-                },
-                {
-                  "target": "t1_bleeds_when_flag_in_capture_zone"
-                },
-                {
-                  "target": "t1_restore_flag_from_t1_capturezone"
-                },
-                {
-                  "target": "t2_restore_flag_from_t2_capturezone"
-                }
-              ]
-            },
-            {
               "wait": {
                 "time": 3.0
-              }
-            },
-            {
-              "playHint": {
-                "hintType": "custom",
-                "name": "hints/flag_returned_in_capturezone",
-                "action": "hide",
-                "shouldFadeOut": false,
-                "time": -1.0,
-                "priority": 0,
-                "isOverFade": false,
-                "target_marking": 0
-              }
-            },
-            {
-              "triggerDisable": {
-                "target": "flag_on_the_ground"
               }
             }
           ]
@@ -1485,7 +1485,7 @@
           },
           {
             "__comment": {
-              "value": "Счетчик отображаемый снизу пока не работает, отключил логику"
+              "value": "\u0421\u0447\u0435\u0442\u0447\u0438\u043a \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u043c\u044b\u0439 \u0441\u043d\u0438\u0437\u0443 \u043f\u043e\u043a\u0430 \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u043b \u043b\u043e\u0433\u0438\u043a\u0443"
             }
           },
           {
@@ -1493,6 +1493,19 @@
               "hintType": "bottom",
               "name": "@t1_hint_string",
               "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "team": "A"
+            }
+          },
+          {
+            "__playHint": {
+              "hintType": "bottom",
+              "name": "@t1_hint_string",
+              "action": "show",
               "shouldFadeOut": false,
               "isOverFade": false,
               "time": -1.0,
@@ -1528,19 +1541,6 @@
               "digits": 0,
               "var": "t1_hint_string",
               "input_var": "mpPoints_int"
-            }
-          },
-          {
-            "__playHint": {
-              "hintType": "bottom",
-              "name": "@t1_hint_string",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "team": "A"
             }
           }
         ],
@@ -1591,7 +1591,7 @@
           },
           {
             "__comment": {
-              "value": "Счетчик отображаемый снизу пока не работает, отключил логику"
+              "value": "\u0421\u0447\u0435\u0442\u0447\u0438\u043a \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u043c\u044b\u0439 \u0441\u043d\u0438\u0437\u0443 \u043f\u043e\u043a\u0430 \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u043b \u043b\u043e\u0433\u0438\u043a\u0443"
             }
           },
           {
@@ -1599,6 +1599,19 @@
               "hintType": "bottom",
               "name": "@t2_hint_string",
               "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "team": "B"
+            }
+          },
+          {
+            "__playHint": {
+              "hintType": "bottom",
+              "name": "@t2_hint_string",
+              "action": "show",
               "shouldFadeOut": false,
               "isOverFade": false,
               "time": -1.0,
@@ -1634,19 +1647,6 @@
               "digits": 0,
               "var": "t2_hint_string",
               "input_var": "mpPoints_int"
-            }
-          },
-          {
-            "__playHint": {
-              "hintType": "bottom",
-              "name": "@t2_hint_string",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "team": "B"
             }
           }
         ],
@@ -2119,7 +2119,7 @@
           },
           {
             "__comment": {
-              "value": "Счетчик отображаемый снизу пока не работает, отключил логику"
+              "value": "\u0421\u0447\u0435\u0442\u0447\u0438\u043a \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u043c\u044b\u0439 \u0441\u043d\u0438\u0437\u0443 \u043f\u043e\u043a\u0430 \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u043b \u043b\u043e\u0433\u0438\u043a\u0443"
             }
           },
           {
@@ -2127,6 +2127,19 @@
               "hintType": "bottom",
               "name": "@t1_hint_string",
               "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "team": "A"
+            }
+          },
+          {
+            "__playHint": {
+              "hintType": "bottom",
+              "name": "@t1_hint_string",
+              "action": "show",
               "shouldFadeOut": false,
               "isOverFade": false,
               "time": -1.0,
@@ -2162,19 +2175,6 @@
               "digits": 0,
               "var": "t1_hint_string",
               "input_var": "mpPoints_int"
-            }
-          },
-          {
-            "__playHint": {
-              "hintType": "bottom",
-              "name": "@t1_hint_string",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "team": "A"
             }
           }
         ],
@@ -2432,7 +2432,7 @@
           },
           {
             "__comment": {
-              "value": "Счетчик отображаемый снизу пока не работает, отключил логику"
+              "value": "\u0421\u0447\u0435\u0442\u0447\u0438\u043a \u043e\u0442\u043e\u0431\u0440\u0430\u0436\u0430\u0435\u043c\u044b\u0439 \u0441\u043d\u0438\u0437\u0443 \u043f\u043e\u043a\u0430 \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442, \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u043b \u043b\u043e\u0433\u0438\u043a\u0443"
             }
           },
           {
@@ -2440,6 +2440,19 @@
               "hintType": "bottom",
               "name": "@t2_hint_string",
               "action": "hide",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "team": "B"
+            }
+          },
+          {
+            "__playHint": {
+              "hintType": "bottom",
+              "name": "@t2_hint_string",
+              "action": "show",
               "shouldFadeOut": false,
               "isOverFade": false,
               "time": -1.0,
@@ -2475,19 +2488,6 @@
               "digits": 0,
               "var": "t2_hint_string",
               "input_var": "mpPoints_int"
-            }
-          },
-          {
-            "__playHint": {
-              "hintType": "bottom",
-              "name": "@t2_hint_string",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "team": "B"
             }
           }
         ],
@@ -2635,23 +2635,6 @@
             }
           },
           {
-            "missionMarkAsCaptureZone": {
-              "army": 2,
-              "timeMultiplier": 0.5,
-              "disableZone": true,
-              "name_for_respawn_base": "",
-              "target": "t2_capturezone",
-              "canCaptureByGM": true,
-              "zoneType": "capture",
-              "captureNoPenalty": true
-            }
-          },
-          {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/enemy_loose_third_of_points",
@@ -2675,6 +2658,23 @@
               "isOverFade": false,
               "target_marking": 0,
               "team": "B"
+            }
+          },
+          {
+            "missionMarkAsCaptureZone": {
+              "army": 2,
+              "timeMultiplier": 0.5,
+              "disableZone": true,
+              "name_for_respawn_base": "",
+              "target": "t2_capturezone",
+              "canCaptureByGM": true,
+              "zoneType": "capture",
+              "captureNoPenalty": true
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
             }
           },
           {
@@ -2787,23 +2787,6 @@
             }
           },
           {
-            "missionMarkAsCaptureZone": {
-              "army": 1,
-              "timeMultiplier": 0.5,
-              "disableZone": true,
-              "name_for_respawn_base": "",
-              "target": "t1_capturezone",
-              "canCaptureByGM": true,
-              "zoneType": "capture",
-              "captureNoPenalty": true
-            }
-          },
-          {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "custom",
               "name": "hints/enemy_loose_third_of_points",
@@ -2827,6 +2810,23 @@
               "isOverFade": false,
               "target_marking": 0,
               "team": "A"
+            }
+          },
+          {
+            "missionMarkAsCaptureZone": {
+              "army": 1,
+              "timeMultiplier": 0.5,
+              "disableZone": true,
+              "name_for_respawn_base": "",
+              "target": "t1_capturezone",
+              "canCaptureByGM": true,
+              "zoneType": "capture",
+              "captureNoPenalty": true
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
             }
           },
           {
@@ -3140,6 +3140,31 @@
       }
     },
     {
+      "area_squad": {
+        "name": "t1_battlearea",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1011.2,2.8,1212.9]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_battlearea_part01"
+          },
+          {
+            "squad_members": "t1_battlearea_part02"
+          },
+          {
+            "squad_members": "t1_battlearea_part03"
+          },
+          {
+            "squad_members": "t1_battlearea_part04"
+          }
+        ]
+      }
+    },
+    {
       "squad": {
         "name": "t1_player_squad",
         "tm": [
@@ -3370,45 +3395,6 @@
       }
     },
     {
-      "structures": {
-        "name": "flag",
-        "tm": [
-          [0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,0.991445],
-          [2012.25,3.8,2063.87]
-        ],
-        "unit_class": "flag_blue",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "stealthRadius": 0.0,
-          "setStealth": true,
-          "targetableByAi": false
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "ai_tanks_squad",
         "tm": [
@@ -3420,45 +3406,6 @@
         "props": {
           "squad_members": "dummy"
         }
-      }
-    },
-    {
-      "structures": {
-        "name": "dummy",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1929.32,-8295.7,3147.14]
-        ],
-        "unit_class": "dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
       }
     },
     {
@@ -3928,6 +3875,84 @@
             "squad_members": "t2_players_squad"
           }
         ]
+      }
+    },
+    {
+      "structures": {
+        "name": "flag",
+        "tm": [
+          [0.991445,0.0,-0.130526],
+          [0.0,1.0,0.0],
+          [0.130526,0.0,0.991445],
+          [2012.25,3.8,2063.87]
+        ],
+        "unit_class": "flag_blue",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "dummy",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1929.32,-8295.7,3147.14]
+        ],
+        "unit_class": "dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
       }
     },
     {
@@ -5400,31 +5425,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "area_squad": {
-        "name": "t1_battlearea",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1011.2,2.8,1212.9]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_battlearea_part01"
-          },
-          {
-            "squad_members": "t1_battlearea_part02"
-          },
-          {
-            "squad_members": "t1_battlearea_part03"
-          },
-          {
-            "squad_members": "t1_battlearea_part04"
-          }
-        ]
       }
     }
   ],

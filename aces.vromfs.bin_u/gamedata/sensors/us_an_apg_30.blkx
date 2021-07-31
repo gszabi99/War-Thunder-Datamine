@@ -165,20 +165,6 @@
           }
         },
         {
-          "finishedTrack": {
-            "stateFrom": "track",
-            "event": "activeTargetOfInterestInertialTimeOut",
-            "stateTo": "lock",
-            "actions": {
-              "setFsmActive": {
-                "fsm": "track",
-                "active": false
-              },
-              "setLockMode": []
-            }
-          }
-        },
-        {
           "track": [
             {
               "stateFrom": "lock"
@@ -215,6 +201,20 @@
               ]
             }
           ]
+        },
+        {
+          "finishedTrack": {
+            "stateFrom": "track",
+            "event": "activeTargetOfInterestInertialTimeOut",
+            "stateTo": "lock",
+            "actions": {
+              "setFsmActive": {
+                "fsm": "track",
+                "active": false
+              },
+              "setLockMode": []
+            }
+          }
         },
         {
           "switchScopeRange": {

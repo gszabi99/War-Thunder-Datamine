@@ -564,7 +564,17 @@
       "actions": [
         {
           "comment": {
-            "value": "назначаем армию А портам"
+            "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0410 \u043f\u043e\u0440\u0442\u0430\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0411 \u043f\u043e\u0440\u0442\u0430\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0438\u043c\u0435\u043d\u0430 \u043f\u043e\u0440\u0442\u0430\u043c"
           }
         },
         {
@@ -574,19 +584,9 @@
           }
         },
         {
-          "comment": {
-            "value": "назначаем армию Б портам"
-          }
-        },
-        {
           "varSetInt": {
             "value": 1,
             "var": "pt_port_02_army"
-          }
-        },
-        {
-          "comment": {
-            "value": "назначаем имена портам"
           }
         },
         {
@@ -676,6 +676,96 @@
           },
           {
             "squad_members": "pt_cargo_ships_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "port_01_defenders",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [39075.0,46.0371,-30955.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "port_01_bunker_01"
+          },
+          {
+            "squad_members": "port_01_bunker_02"
+          },
+          {
+            "squad_members": "port_01_bunker_03"
+          },
+          {
+            "squad_members": "port_01_bunker_04"
+          },
+          {
+            "squad_members": "port_01_bunker_05"
+          },
+          {
+            "squad_members": "port_01_bunker_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "all_port_defenders_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [50568.3,28.9785,234.199]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "port_01_defenders"
+          },
+          {
+            "squad_members": "port_02_defenders"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "port_02_defenders",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [21591.7,46.0293,36961.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "port_02_bunker_01"
+          },
+          {
+            "squad_members": "port_02_bunker_02"
+          },
+          {
+            "squad_members": "port_02_bunker_03"
+          },
+          {
+            "squad_members": "port_02_bunker_04"
+          },
+          {
+            "squad_members": "port_02_bunker_05"
+          },
+          {
+            "squad_members": "port_02_bunker_06"
           }
         ]
       }
@@ -871,40 +961,6 @@
       }
     },
     {
-      "squad": {
-        "name": "port_01_defenders",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [39075.0,46.0371,-30955.8]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "port_01_bunker_01"
-          },
-          {
-            "squad_members": "port_01_bunker_02"
-          },
-          {
-            "squad_members": "port_01_bunker_03"
-          },
-          {
-            "squad_members": "port_01_bunker_04"
-          },
-          {
-            "squad_members": "port_01_bunker_05"
-          },
-          {
-            "squad_members": "port_01_bunker_06"
-          }
-        ]
-      }
-    },
-    {
       "structures": {
         "name": "port_01_bunker_06",
         "tm": [
@@ -940,62 +996,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "all_port_defenders_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [50568.3,28.9785,234.199]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "port_01_defenders"
-          },
-          {
-            "squad_members": "port_02_defenders"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "port_02_defenders",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21591.7,46.0293,36961.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "port_02_bunker_01"
-          },
-          {
-            "squad_members": "port_02_bunker_02"
-          },
-          {
-            "squad_members": "port_02_bunker_03"
-          },
-          {
-            "squad_members": "port_02_bunker_04"
-          },
-          {
-            "squad_members": "port_02_bunker_05"
-          },
-          {
-            "squad_members": "port_02_bunker_06"
-          }
-        ]
       }
     },
     {

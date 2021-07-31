@@ -128,17 +128,17 @@
                   }
                 },
                 {
-                  "activeText": {
-                    "id": "available_exp",
-                    "margin-left": "1@blockInterval",
-                    "text": "",
+                  "text": {
+                    "text": "#currency/freeResearchPoints/sign",
+                    "style": "color:@currencyFreeRpColor;",
                     "tooltip": "#exp/available/tooltip"
                   }
                 },
                 {
-                  "text": {
-                    "text": "#currency/freeResearchPoints/sign",
-                    "style": "color:@currencyFreeRpColor;",
+                  "activeText": {
+                    "id": "available_exp",
+                    "margin-left": "1@blockInterval",
+                    "text": "",
                     "tooltip": "#exp/available/tooltip"
                   }
                 }
@@ -156,16 +156,57 @@
                   }
                 },
                 {
+                  "text": {
+                    "text": "#gold/short",
+                    "style": "color:@currencyGoldColor;"
+                  }
+                },
+                {
                   "activeText": {
                     "id": "convertion_cost",
                     "margin-left": "1@blockInterval",
                     "text": ""
                   }
+                }
+              ]
+            },
+            {
+              "tdiv": [
+                {
+                  "id": "unit_researched_nest"
                 },
                 {
-                  "text": {
-                    "text": "#gold/short",
-                    "style": "color:@currencyGoldColor;"
+                  "display": "hide"
+                },
+                {
+                  "flow": "vertical"
+                },
+                {
+                  "size": "pw, 0.08@sf"
+                },
+                {
+                  "position": "absolute"
+                },
+                {
+                  "pos": "50%pw-50%w, ph-h"
+                },
+                {
+                  "textareaNoTab": {
+                    "text": "#pr_conversion/unit_researched",
+                    "pos": "0.5pw - 0.5w, 0.5ph-h",
+                    "width": "pw",
+                    "text-align": "center",
+                    "position": "relative"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "id": "buy_unit_cost",
+                    "pos": "0.5pw - 0.5w, 0",
+                    "width": "pw",
+                    "position": "relative",
+                    "text-align": "center",
+                    "text": ""
                   }
                 }
               ]
@@ -191,6 +232,28 @@
                       "square": "yes",
                       "on_click": "onButtonDec",
                       "tooltip": "#weaponry/descreaseValue"
+                    }
+                  },
+                  {
+                    "Button_text": {
+                      "id": "buttonInc",
+                      "text": "+",
+                      "square": "yes",
+                      "on_click": "onButtonInc",
+                      "tooltip": "#weaponry/increaseValue"
+                    }
+                  },
+                  {
+                    "Button_text": {
+                      "id": "btn_max",
+                      "pos": "1@blockInterval, ph/2-h/2",
+                      "position": "relative",
+                      "noMargin": "yes",
+                      "text": "#profile/maximumExp",
+                      "btnName": "Y",
+                      "_on_click": "onMax",
+                      "inactiveColor": "no",
+                      "ButtonImg": []
                     }
                   },
                   {
@@ -268,72 +331,9 @@
                         }
                       }
                     ]
-                  },
-                  {
-                    "Button_text": {
-                      "id": "buttonInc",
-                      "text": "+",
-                      "square": "yes",
-                      "on_click": "onButtonInc",
-                      "tooltip": "#weaponry/increaseValue"
-                    }
-                  },
-                  {
-                    "Button_text": {
-                      "id": "btn_max",
-                      "pos": "1@blockInterval, ph/2-h/2",
-                      "position": "relative",
-                      "noMargin": "yes",
-                      "text": "#profile/maximumExp",
-                      "btnName": "Y",
-                      "_on_click": "onMax",
-                      "inactiveColor": "no",
-                      "ButtonImg": []
-                    }
                   }
                 ]
               }
-            },
-            {
-              "tdiv": [
-                {
-                  "id": "unit_researched_nest"
-                },
-                {
-                  "display": "hide"
-                },
-                {
-                  "flow": "vertical"
-                },
-                {
-                  "size": "pw, 0.08@sf"
-                },
-                {
-                  "position": "absolute"
-                },
-                {
-                  "pos": "50%pw-50%w, ph-h"
-                },
-                {
-                  "textareaNoTab": {
-                    "text": "#pr_conversion/unit_researched",
-                    "pos": "0.5pw - 0.5w, 0.5ph-h",
-                    "width": "pw",
-                    "text-align": "center",
-                    "position": "relative"
-                  }
-                },
-                {
-                  "textareaNoTab": {
-                    "id": "buy_unit_cost",
-                    "pos": "0.5pw - 0.5w, 0",
-                    "width": "pw",
-                    "position": "relative",
-                    "text-align": "center",
-                    "text": ""
-                  }
-                }
-              ]
             },
             {
               "textareaNoTab": {
@@ -502,6 +502,19 @@
                     }
                   },
                   {
+                    "TopMenuPanelBg": {
+                      "width": "0.5fw",
+                      "overflow": "hidden",
+                      "css-hier-invalidate": "yes",
+                      "Red_shadow_light": {
+                        "pos": "-50%w, 0",
+                        "position": "absolute",
+                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
+                        "class": "inverted"
+                      }
+                    }
+                  },
+                  {
                     "tdiv": {
                       "id": "gamercard_logo_place",
                       "pos": "0, 1@titleLogoSafeareaOffsetTop",
@@ -539,19 +552,6 @@
                         "margin-left": "-1@titleLogoPlatePadding/2",
                         "allowDecreaseFont": "yes",
                         "display": "hide"
-                      }
-                    }
-                  },
-                  {
-                    "TopMenuPanelBg": {
-                      "width": "0.5fw",
-                      "overflow": "hidden",
-                      "css-hier-invalidate": "yes",
-                      "Red_shadow_light": {
-                        "pos": "-50%w, 0",
-                        "position": "absolute",
-                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
-                        "class": "inverted"
                       }
                     }
                   }
@@ -644,19 +644,6 @@
                         }
                       },
                       {
-                        "tdiv": {
-                          "id": "topmenu_menu_panel",
-                          "height": "ph",
-                          "padding": "-1@gcButtonsInterval, 0"
-                        }
-                      },
-                      {
-                        "tdiv": {
-                          "id": "left_gc_panel_free_width",
-                          "width": "fw"
-                        }
-                      },
-                      {
                         "gcButtonsHolder": [
                           {
                             "id": "gamercard_panel_left"
@@ -740,6 +727,19 @@
                             }
                           }
                         ]
+                      },
+                      {
+                        "tdiv": {
+                          "id": "topmenu_menu_panel",
+                          "height": "ph",
+                          "padding": "-1@gcButtonsInterval, 0"
+                        }
+                      },
+                      {
+                        "tdiv": {
+                          "id": "left_gc_panel_free_width",
+                          "width": "fw"
+                        }
                       }
                     ]
                   },
@@ -930,6 +930,15 @@
                 ]
               },
               {
+                "tdiv": {
+                  "id": "chatPopupNest",
+                  "size": "0.4@sf+10, 0.075*@sf+10",
+                  "position": "absolute",
+                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                  "flow": "vertical"
+                }
+              },
+              {
                 "infoBlock": {
                   "css-hier-invalidate": "yes",
                   "activeText": {
@@ -953,15 +962,6 @@
                       "display": "hide"
                     }
                   }
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "chatPopupNest",
-                  "size": "0.4@sf+10, 0.075*@sf+10",
-                  "position": "absolute",
-                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                  "flow": "vertical"
                 }
               }
             ]
@@ -1038,6 +1038,11 @@
                     }
                   },
                   {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  },
+                  {
                     "emptyVoiceChat": {
                       "tooltip": "#clan/voice_chat/widget",
                       "usertalk": {
@@ -1065,11 +1070,6 @@
                       "voiceChatWidget": {
                         "value": "{\"viewId\": \"VOICE_CHAT\"}"
                       }
-                    }
-                  },
-                  {
-                    "blockSeparator": {
-                      "display": "hide"
                     }
                   }
                 ],

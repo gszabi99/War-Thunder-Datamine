@@ -3,10 +3,10 @@
     "fmFile": "fm/mig-15_ns23.blk"
   },
   {
-    "model": "mig_15_ns23"
+    "fmFile": "fm/mig-15.blk"
   },
   {
-    "fmFile": "fm/mig-15.blk"
+    "model": "mig_15_ns23"
   },
   {
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk"
@@ -1993,6 +1993,9 @@
           "throttle": [-1.6,2.3]
         },
         {
+          "throttle": [0.0,1.0]
+        },
+        {
           "vario": [-75.0,75.0]
         },
         {
@@ -2042,9 +2045,6 @@
         },
         {
           "fuel_pressure": [0.0,15.0]
-        },
-        {
-          "throttle": [0.0,1.0]
         },
         {
           "throttle1": [0.0,1.0]
@@ -2141,6 +2141,43 @@
           "airSpeedMil1": [11000.0,975.0],
           "climbRateMil0": [0.0,50.0],
           "climbRateMil1": [11000.0,18.0]
+        }
+      }
+    }
+  },
+  {
+    "wiki": {
+      "general": {
+        "length": 10.1,
+        "wingspan": 10.08,
+        "wingArea": 20.6,
+        "emptyWeight": 3508.0,
+        "normalWeight": 4808.0,
+        "maxTakeoffWeight": 5485.0,
+        "powerPlantType": 2,
+        "thrustMaxMil": 19700.0
+      },
+      "performance": {
+        "table": {
+          "rpmMil": 12300.0,
+          "airSpeedMil0": [0.0,1050.0],
+          "climbRateMil0": [0.0,42.0],
+          "climbTimeMil0": [2000.0,47.8859],
+          "climbTimeMil1": [4000.0,102.829],
+          "climbTimeMil2": [6000.0,166.021],
+          "climbTimeMil3": [8000.0,241.32],
+          "turnTimeMil": [1000.0,22.1],
+          "takeoffDistance": 794.127,
+          "ceiling": 11100.0,
+          "rollRate": 70.0,
+          "wingLoading": 233.0,
+          "thrustToWeightRatio": 0.43
+        },
+        "plot": {
+          "airSpeedMil0": [0.0,1050.0],
+          "airSpeedMil1": [11100.0,964.0],
+          "climbRateMil0": [0.0,42.0],
+          "climbRateMil1": [11100.0,13.0]
         }
       }
     }
@@ -2380,43 +2417,6 @@
         }
       }
     ]
-  },
-  {
-    "wiki": {
-      "general": {
-        "length": 10.1,
-        "wingspan": 10.08,
-        "wingArea": 20.6,
-        "emptyWeight": 3508.0,
-        "normalWeight": 4808.0,
-        "maxTakeoffWeight": 5485.0,
-        "powerPlantType": 2,
-        "thrustMaxMil": 19700.0
-      },
-      "performance": {
-        "table": {
-          "rpmMil": 12300.0,
-          "airSpeedMil0": [0.0,1050.0],
-          "climbRateMil0": [0.0,42.0],
-          "climbTimeMil0": [2000.0,47.8859],
-          "climbTimeMil1": [4000.0,102.829],
-          "climbTimeMil2": [6000.0,166.021],
-          "climbTimeMil3": [8000.0,241.32],
-          "turnTimeMil": [1000.0,22.1],
-          "takeoffDistance": 794.127,
-          "ceiling": 11100.0,
-          "rollRate": 70.0,
-          "wingLoading": 233.0,
-          "thrustToWeightRatio": 0.43
-        },
-        "plot": {
-          "airSpeedMil0": [0.0,1050.0],
-          "airSpeedMil1": [11100.0,964.0],
-          "climbRateMil0": [0.0,42.0],
-          "climbRateMil1": [11100.0,13.0]
-        }
-      }
-    }
   },
   {
     "balanceData": {

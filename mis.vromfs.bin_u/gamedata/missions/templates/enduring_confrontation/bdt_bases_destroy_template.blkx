@@ -44,7 +44,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "активируем спавнеры баз"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u0438\u0440\u0443\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u0435\u0440\u044b \u0431\u0430\u0437"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_start"
@@ -106,7 +106,7 @@
             "var": "bdt_t1_cur_base_spawn_idx"
           },
           "comment": {
-            "value": "рестарт"
+            "value": "\u0440\u0435\u0441\u0442\u0430\u0440\u0442"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_start"
@@ -155,12 +155,47 @@
           },
           {
             "comment": {
-              "value": "количество активных зон меньше разрешенного"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0437\u043e\u043d \u043c\u0435\u043d\u044c\u0448\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043d\u043e\u0433\u043e"
             }
           },
           {
             "comment": {
-              "value": "выбираем случайный индекс зоны"
+              "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043e\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u043b\u0438 \u0438\u043c\u044f"
             }
           },
           {
@@ -172,26 +207,9 @@
             }
           },
           {
-            "comment": {
-              "value": "собираем имя зоны"
-            }
-          },
-          {
             "varSetString": {
               "value": "bdt_t1_bomb_zone_",
               "var": "bdt_t1_cur_spawn_zone_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
-              "var": "bdt_t1_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя объекта"
             }
           },
           {
@@ -201,21 +219,35 @@
             }
           },
           {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
-              "var": "bdt_spawn_t1_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя таймера"
+            "varSetString": {
+              "value": "bdt_t1_zone_",
+              "var": "bdt_spawn_t1_timer_var_name"
             }
           },
           {
             "varSetString": {
               "value": "bdt_t1_zone_",
-              "var": "bdt_spawn_t1_timer_var_name"
+              "var": "bdt_spawn_t1_zone_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_bomb_zone_",
+              "var": "bdt_t1_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t1_cur_spawn_random_idx",
+              "var": "bdt_t1_cur_spawn_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t1_cur_spawn_random_idx",
+              "var": "bdt_spawn_t1_bombing_zone_object_name"
             }
           },
           {
@@ -233,29 +265,6 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значение таймера"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "bdt_spawn_t1_timer",
-              "input_var": "@bdt_spawn_t1_timer_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя переменной зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_zone_",
-              "var": "bdt_spawn_t1_zone_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_t1_cur_base_spawn_idx",
               "digits": 2,
@@ -267,17 +276,6 @@
               "value": "_name",
               "digits": 0,
               "var": "bdt_spawn_t1_zone_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя зениток"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_bomb_zone_",
-              "var": "bdt_t1_cur_spawn_aaa_name"
             }
           },
           {
@@ -295,8 +293,10 @@
             }
           },
           {
-            "comment": {
-              "value": "выполняем проверку доступно ли имя"
+            "varSetInt": {
+              "value": 0,
+              "var": "bdt_spawn_t1_timer",
+              "input_var": "@bdt_spawn_t1_timer_var_name"
             }
           },
           {
@@ -307,7 +307,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "достигли максимума зон"
+            "value": "\u0434\u043e\u0441\u0442\u0438\u0433\u043b\u0438 \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u0437\u043e\u043d"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_restart"
@@ -388,21 +388,22 @@
             }
           },
           {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t1_cur_spawn_random_idx",
-              "var": "bdt_t1_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя зениток"
+            "varSetString": {
+              "value": "bdt_t1_bomb_zone_",
+              "var": "bdt_t1_cur_spawn_aaa_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t1_bomb_zone_",
-              "var": "bdt_t1_cur_spawn_aaa_name"
+              "value": "bdt_t1_bomb_object_",
+              "var": "bdt_spawn_t1_bombing_zone_object_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t1_cur_spawn_random_idx",
+              "var": "bdt_t1_cur_spawn_zone_name"
             }
           },
           {
@@ -420,21 +421,20 @@
             }
           },
           {
-            "comment": {
-              "value": "собираем имя объекта"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_bomb_object_",
-              "var": "bdt_spawn_t1_bombing_zone_object_name"
-            }
-          },
-          {
             "varAddString": {
               "digits": 2,
               "value": "@bdt_t1_cur_spawn_random_idx",
               "var": "bdt_spawn_t1_bombing_zone_object_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043e\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430"
             }
           },
           {
@@ -480,7 +480,7 @@
         },
         "actions": {
           "comment": {
-            "value": "имя пустое, можно проверять дальше"
+            "value": "\u0438\u043c\u044f \u043f\u0443\u0441\u0442\u043e\u0435, \u043c\u043e\u0436\u043d\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u0434\u0430\u043b\u044c\u0448\u0435"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_check_name"
@@ -488,7 +488,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя занято, идем дальше по циклу"
+            "value": "\u0438\u043c\u044f \u0437\u0430\u043d\u044f\u0442\u043e, \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_t1_spawn_rotator"
@@ -556,7 +556,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "имя зоны - валидно"
+            "value": "\u0438\u043c\u044f \u0437\u043e\u043d\u044b - \u0432\u0430\u043b\u0438\u0434\u043d\u043e"
           },
           "triggerEnable": {
             "target": "bdt_t1_frontline_start"
@@ -564,7 +564,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя зоны - не валидно. генерируем его заново"
+            "value": "\u0438\u043c\u044f \u0437\u043e\u043d\u044b - \u043d\u0435 \u0432\u0430\u043b\u0438\u0434\u043d\u043e. \u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0435\u043c \u0435\u0433\u043e \u0437\u0430\u043d\u043e\u0432\u043e"
           },
           "varModify": {
             "operator": "add",
@@ -599,7 +599,22 @@
         "actions": [
           {
             "comment": {
-              "value": "готовимся к проверке не находится ли зона на чужой территории"
+              "value": "\u0433\u043e\u0442\u043e\u0432\u0438\u043c\u0441\u044f \u043a \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0435 \u043d\u0435 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u043b\u0438 \u0437\u043e\u043d\u0430 \u043d\u0430 \u0447\u0443\u0436\u043e\u0439 \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0441 \u0430\u0440\u043c\u0438\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u0440\u043c\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
             }
           },
           {
@@ -607,11 +622,6 @@
               "name": "@bdt_t1_cur_spawn_zone_name",
               "template": "flt_area_",
               "out_var": "bdt_t1_frontline_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной с армией"
             }
           },
           {
@@ -629,20 +639,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем индекс армии"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_t1_frontline_zone_idx",
               "input_var": "@bdt_t1_frontline_state_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем армию"
             }
           },
           {
@@ -680,12 +680,17 @@
         "actions": [
           {
             "comment": {
-              "value": "в пределах зон команды А"
+              "value": "\u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u0437\u043e\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
             }
           },
           {
             "comment": {
-              "value": "создаем имя зоны"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0437\u043e\u043d\u0443"
             }
           },
           {
@@ -702,11 +707,6 @@
             }
           },
           {
-            "comment": {
-              "value": "спавним зону"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t1_spawn_zone_show"
             }
@@ -714,7 +714,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "вышли за пределы территории А"
+            "value": "\u0432\u044b\u0448\u043b\u0438 \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u044b \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u0438 \u0410"
           },
           "varModify": {
             "operator": "add",
@@ -743,17 +743,52 @@
         "actions": [
           {
             "comment": {
-              "value": "проявляем объект"
+              "value": "\u043f\u0440\u043e\u044f\u0432\u043b\u044f\u0435\u043c \u043e\u0431\u044a\u0435\u043a\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438 \u0447\u0442\u043e \u043e\u0431\u044a\u0435\u043a\u0442 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b \u0432 \u043e\u0434\u043d\u0443 \u0438\u0437 \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0445"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0442\u0435\u043a\u0443\u0449\u0438\u0445 \u0437\u043e\u043d \u043d\u0430 \u043e\u0434\u043d\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0446\u0435\u043b\u044c \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0434\u043b\u044f \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u044b \u0437\u0435\u043d\u0438\u0442\u043e\u043a"
             }
           },
           {
             "unitWakeUp": {
               "target": "@bdt_spawn_t1_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверили что объект существует"
             }
           },
           {
@@ -768,14 +803,23 @@
             }
           },
           {
-            "comment": {
-              "value": "запоминаем имя зоны в одну из переменных"
+            "varSetString": {
+              "value": "bdt_t1_zone_",
+              "var": "bdt_t1_spawn_zone_var_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t1_zone_",
-              "var": "bdt_t1_spawn_zone_var_name"
+              "value": "",
+              "var": "@bdt_t1_spawn_zone_var_name",
+              "input_var": "bdt_t1_cur_spawn_zone_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "bdt_t1_base_as_target_for_t2_name",
+              "input_var": "bdt_t1_cur_spawn_zone_name"
             }
           },
           {
@@ -793,23 +837,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запоминаем имя зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "@bdt_t1_spawn_zone_var_name",
-              "input_var": "bdt_t1_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "увеличиваем переменную количества текущих зон на одну"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -817,30 +844,8 @@
             }
           },
           {
-            "comment": {
-              "value": "даем задание"
-            }
-          },
-          {
             "__triggerEnable": {
               "target": "bdt_t1_give_objectvie"
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим что цель доступна для бомберов"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "bdt_t1_base_as_target_for_t2_name",
-              "input_var": "bdt_t1_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем таймер"
             }
           },
           {
@@ -851,11 +856,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запускаем спавны зениток"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t1_aaa_spawn_start"
             }
@@ -863,7 +863,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "объекта не существует. запускаем головной скрипт"
+            "value": "\u043e\u0431\u044a\u0435\u043a\u0442\u0430 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0433\u043e\u043b\u043e\u0432\u043d\u043e\u0439 \u0441\u043a\u0440\u0438\u043f\u0442"
           },
           "varModify": {
             "operator": "add",
@@ -892,7 +892,7 @@
         "conditions": [],
         "actions": {
           "comment": {
-            "value": "активируем спавнеры баз"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u0438\u0440\u0443\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u0435\u0440\u044b \u0431\u0430\u0437"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_start"
@@ -954,7 +954,7 @@
             "var": "bdt_t2_cur_base_spawn_idx"
           },
           "comment": {
-            "value": "рестарт"
+            "value": "\u0440\u0435\u0441\u0442\u0430\u0440\u0442"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_start"
@@ -1003,12 +1003,47 @@
           },
           {
             "comment": {
-              "value": "количество активных зон меньше разрешенного"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0437\u043e\u043d \u043c\u0435\u043d\u044c\u0448\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043d\u043e\u0433\u043e"
             }
           },
           {
             "comment": {
-              "value": "выбираем случайный индекс зоны"
+              "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043e\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u043e \u043b\u0438 \u0438\u043c\u044f"
             }
           },
           {
@@ -1020,26 +1055,9 @@
             }
           },
           {
-            "comment": {
-              "value": "собираем имя зоны"
-            }
-          },
-          {
             "varSetString": {
               "value": "bdt_t2_bomb_zone_",
               "var": "bdt_t2_cur_spawn_zone_name"
-            }
-          },
-          {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
-              "var": "bdt_t2_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя объекта"
             }
           },
           {
@@ -1049,21 +1067,35 @@
             }
           },
           {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
-              "var": "bdt_spawn_t2_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя таймера"
+            "varSetString": {
+              "value": "bdt_t2_zone_",
+              "var": "bdt_spawn_t2_timer_var_name"
             }
           },
           {
             "varSetString": {
               "value": "bdt_t2_zone_",
-              "var": "bdt_spawn_t2_timer_var_name"
+              "var": "bdt_spawn_t2_zone_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_bomb_zone_",
+              "var": "bdt_t2_cur_spawn_aaa_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t2_cur_spawn_random_idx",
+              "var": "bdt_t2_cur_spawn_zone_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t2_cur_spawn_random_idx",
+              "var": "bdt_spawn_t2_bombing_zone_object_name"
             }
           },
           {
@@ -1081,29 +1113,6 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значение таймера"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "bdt_spawn_t2_timer",
-              "input_var": "@bdt_spawn_t2_timer_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя переменной зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_zone_",
-              "var": "bdt_spawn_t2_zone_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_t2_cur_base_spawn_idx",
               "digits": 2,
@@ -1115,17 +1124,6 @@
               "value": "_name",
               "digits": 0,
               "var": "bdt_spawn_t2_zone_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя зениток"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_bomb_zone_",
-              "var": "bdt_t2_cur_spawn_aaa_name"
             }
           },
           {
@@ -1143,8 +1141,10 @@
             }
           },
           {
-            "comment": {
-              "value": "выполняем проверку доступно ли имя"
+            "varSetInt": {
+              "value": 0,
+              "var": "bdt_spawn_t2_timer",
+              "input_var": "@bdt_spawn_t2_timer_var_name"
             }
           },
           {
@@ -1155,7 +1155,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "достигли максимума зон"
+            "value": "\u0434\u043e\u0441\u0442\u0438\u0433\u043b\u0438 \u043c\u0430\u043a\u0441\u0438\u043c\u0443\u043c\u0430 \u0437\u043e\u043d"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_restart"
@@ -1236,21 +1236,22 @@
             }
           },
           {
-            "varAddString": {
-              "digits": 2,
-              "value": "@bdt_t2_cur_spawn_random_idx",
-              "var": "bdt_t2_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя зениток"
+            "varSetString": {
+              "value": "bdt_t2_bomb_zone_",
+              "var": "bdt_t2_cur_spawn_aaa_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t2_bomb_zone_",
-              "var": "bdt_t2_cur_spawn_aaa_name"
+              "value": "bdt_t2_bomb_object_",
+              "var": "bdt_spawn_t2_bombing_zone_object_name"
+            }
+          },
+          {
+            "varAddString": {
+              "digits": 2,
+              "value": "@bdt_t2_cur_spawn_random_idx",
+              "var": "bdt_t2_cur_spawn_zone_name"
             }
           },
           {
@@ -1268,21 +1269,20 @@
             }
           },
           {
-            "comment": {
-              "value": "собираем имя объекта"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_bomb_object_",
-              "var": "bdt_spawn_t2_bombing_zone_object_name"
-            }
-          },
-          {
             "varAddString": {
               "digits": 2,
               "value": "@bdt_t2_cur_spawn_random_idx",
               "var": "bdt_spawn_t2_bombing_zone_object_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043e\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u044a\u0435\u043a\u0442\u0430"
             }
           },
           {
@@ -1328,7 +1328,7 @@
         },
         "actions": {
           "comment": {
-            "value": "имя пустое, можно проверять дальше"
+            "value": "\u0438\u043c\u044f \u043f\u0443\u0441\u0442\u043e\u0435, \u043c\u043e\u0436\u043d\u043e \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0442\u044c \u0434\u0430\u043b\u044c\u0448\u0435"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_check_name"
@@ -1336,7 +1336,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя занято, идем дальше по циклу"
+            "value": "\u0438\u043c\u044f \u0437\u0430\u043d\u044f\u0442\u043e, \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_t2_spawn_rotator"
@@ -1397,7 +1397,7 @@
         ],
         "actions": {
           "comment": {
-            "value": "имя зоны - валидно"
+            "value": "\u0438\u043c\u044f \u0437\u043e\u043d\u044b - \u0432\u0430\u043b\u0438\u0434\u043d\u043e"
           },
           "triggerEnable": {
             "target": "bdt_t2_frontline_start"
@@ -1405,7 +1405,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "имя зоны - не валидно. генерируем его заново"
+            "value": "\u0438\u043c\u044f \u0437\u043e\u043d\u044b - \u043d\u0435 \u0432\u0430\u043b\u0438\u0434\u043d\u043e. \u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0435\u043c \u0435\u0433\u043e \u0437\u0430\u043d\u043e\u0432\u043e"
           },
           "varModify": {
             "operator": "add",
@@ -1440,7 +1440,22 @@
         "actions": [
           {
             "comment": {
-              "value": "готовимся к проверке не находится ли зона на чужой территории"
+              "value": "\u0433\u043e\u0442\u043e\u0432\u0438\u043c\u0441\u044f \u043a \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0435 \u043d\u0435 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u043b\u0438 \u0437\u043e\u043d\u0430 \u043d\u0430 \u0447\u0443\u0436\u043e\u0439 \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0441 \u0430\u0440\u043c\u0438\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u0440\u043c\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
             }
           },
           {
@@ -1448,11 +1463,6 @@
               "name": "@bdt_t2_cur_spawn_zone_name",
               "template": "flt_area_",
               "out_var": "bdt_t2_frontline_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной с армией"
             }
           },
           {
@@ -1470,20 +1480,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем индекс армии"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_t2_frontline_zone_idx",
               "input_var": "@bdt_t2_frontline_state_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем армию"
             }
           },
           {
@@ -1521,12 +1521,17 @@
         "actions": [
           {
             "comment": {
-              "value": "в пределах зон команды А"
+              "value": "\u0432 \u043f\u0440\u0435\u0434\u0435\u043b\u0430\u0445 \u0437\u043e\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
             }
           },
           {
             "comment": {
-              "value": "создаем имя зоны"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0437\u043e\u043d\u0443"
             }
           },
           {
@@ -1543,11 +1548,6 @@
             }
           },
           {
-            "comment": {
-              "value": "спавним зону"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t2_spawn_zone_show"
             }
@@ -1555,7 +1555,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "вышли за пределы территории А"
+            "value": "\u0432\u044b\u0448\u043b\u0438 \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u044b \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u0438 \u0410"
           },
           "varModify": {
             "operator": "add",
@@ -1597,17 +1597,52 @@
           },
           {
             "comment": {
-              "value": "проявляем объект"
+              "value": "\u043f\u0440\u043e\u044f\u0432\u043b\u044f\u0435\u043c \u043e\u0431\u044a\u0435\u043a\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438 \u0447\u0442\u043e \u043e\u0431\u044a\u0435\u043a\u0442 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b \u0432 \u043e\u0434\u043d\u0443 \u0438\u0437 \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u044b\u0445"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0443\u044e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0442\u0435\u043a\u0443\u0449\u0438\u0445 \u0437\u043e\u043d \u043d\u0430 \u043e\u0434\u043d\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u0430\u0435\u043c \u0437\u0430\u0434\u0430\u043d\u0438\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0446\u0435\u043b\u044c \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u0430 \u0434\u043b\u044f \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
             }
           },
           {
             "unitWakeUp": {
               "target": "@bdt_spawn_t2_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверили что объект существует"
             }
           },
           {
@@ -1622,14 +1657,23 @@
             }
           },
           {
-            "comment": {
-              "value": "запоминаем имя зоны в одну из переменных"
+            "varSetString": {
+              "value": "bdt_t2_zone_",
+              "var": "bdt_t2_spawn_zone_var_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t2_zone_",
-              "var": "bdt_t2_spawn_zone_var_name"
+              "value": "",
+              "var": "@bdt_t2_spawn_zone_var_name",
+              "input_var": "bdt_t2_cur_spawn_zone_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "bdt_t2_base_as_target_for_t1_name",
+              "input_var": "bdt_t2_cur_spawn_zone_name"
             }
           },
           {
@@ -1647,23 +1691,6 @@
             }
           },
           {
-            "comment": {
-              "value": "запоминаем имя зоны"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "@bdt_t2_spawn_zone_var_name",
-              "input_var": "bdt_t2_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "увеличиваем переменную количества текущих зон на одну"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -1671,30 +1698,8 @@
             }
           },
           {
-            "comment": {
-              "value": "даем задание"
-            }
-          },
-          {
             "__triggerEnable": {
               "target": "bdt_t2_give_objectvie"
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим что цель доступна для бомберов"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "bdt_t2_base_as_target_for_t1_name",
-              "input_var": "bdt_t2_cur_spawn_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем таймер"
             }
           },
           {
@@ -1705,11 +1710,6 @@
             }
           },
           {
-            "comment": {
-              "value": "спавним зенитки"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t2_aaa_spawn_start"
             }
@@ -1717,7 +1717,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "объекта не существует. запускаем головной скрипт"
+            "value": "\u043e\u0431\u044a\u0435\u043a\u0442\u0430 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0433\u043e\u043b\u043e\u0432\u043d\u043e\u0439 \u0441\u043a\u0440\u0438\u043f\u0442"
           },
           "varModify": {
             "operator": "add",
@@ -1846,7 +1846,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "нет зоны для спавна"
+              "value": "\u043d\u0435\u0442 \u0437\u043e\u043d\u044b \u0434\u043b\u044f \u0441\u043f\u0430\u0432\u043d\u0430"
             },
             "triggerEnable": {
               "target": "bdt_t1_aaa_spawn_rotator"
@@ -1967,7 +1967,7 @@
           },
           "else_actions": {
             "comment": {
-              "value": "нет зоны для спавна"
+              "value": "\u043d\u0435\u0442 \u0437\u043e\u043d\u044b \u0434\u043b\u044f \u0441\u043f\u0430\u0432\u043d\u0430"
             },
             "triggerEnable": {
               "target": "bdt_t2_aaa_spawn_rotator"
@@ -1996,28 +1996,28 @@
         "actions": [
           {
             "comment": {
-              "value": "захватили территорию команды А"
+              "value": "\u0437\u0430\u0445\u0432\u0430\u0442\u0438\u043b\u0438 \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u044e \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
             }
           },
           {
             "comment": {
-              "value": "проверяем не надо ли убрать базу"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u043d\u0430\u0434\u043e \u043b\u0438 \u0443\u0431\u0440\u0430\u0442\u044c \u0431\u0430\u0437\u0443"
             }
           },
           {
             "comment": {
-              "value": "имя захваченной зоны в переменной bdt_capture_t1_frontline_name"
+              "value": "\u0438\u043c\u044f \u0437\u0430\u0445\u0432\u0430\u0447\u0435\u043d\u043d\u043e\u0439 \u0437\u043e\u043d\u044b \u0432 \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 bdt_capture_t1_frontline_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043f\u043e\u0438\u0441\u043a"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "bdt_capture_t1_bombing_zone_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "начинаем поиск"
             }
           },
           {
@@ -2052,12 +2052,42 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше трех проверяем"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043c\u0435\u043d\u044c\u0448\u0435 \u0442\u0440\u0435\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем индекс на 1"
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0438\u043c\u044f \u0430\u0438\u0440\u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0431\u043e\u043c\u0431\u043e\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0440\u0433\u0435\u0442\u0430 \u0431\u043e\u043c\u0431\u043e\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking zone name"
             }
           },
           {
@@ -2068,14 +2098,15 @@
             }
           },
           {
-            "comment": {
-              "value": "составляем имя переменной, в которой хранится имя аирфилда"
+            "varSetString": {
+              "value": "bdt_t1_zone_",
+              "var": "bdt_capture_t1_bombing_zone_var_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t1_zone_",
-              "var": "bdt_capture_t1_bombing_zone_var_name"
+              "value": "bdt_t1_bomb_target_",
+              "var": "bdt_capture_t1_aaa_name"
             }
           },
           {
@@ -2093,43 +2124,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя бомбовой зоны"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
-              "var": "bdt_capture_t1_bombing_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя таргета бомбовой зоны"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
-              "var": "bdt_capture_t1_bombing_zone_target_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "_bomb_target",
               "digits": 0,
               "var": "bdt_capture_t1_bombing_zone_target_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зенитки"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_bomb_target_",
-              "var": "bdt_capture_t1_aaa_name"
             }
           },
           {
@@ -2147,8 +2145,15 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя зоны в которой находится аэродром"
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
+              "var": "bdt_capture_t1_bombing_zone_name"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t1_bombing_zone_var_name",
+              "var": "bdt_capture_t1_bombing_zone_target_name"
             }
           },
           {
@@ -2156,11 +2161,6 @@
               "name": "@bdt_capture_t1_bombing_zone_name",
               "template": "flt_area_",
               "out_var": "bdt_capture_t1_own_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "checking zone name"
             }
           },
           {
@@ -2207,7 +2207,17 @@
           },
           {
             "comment": {
-              "value": "полчаем имя переменной где хранится армия зоны в которой филд"
+              "value": "\u043f\u043e\u043b\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0437\u043e\u043d\u044b \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0444\u0438\u043b\u0434"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u043b\u0438 \u0430\u0438\u0440\u0444\u0438\u043b\u0434 \u0432 \u0438\u0441\u043a\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435"
             }
           },
           {
@@ -2225,20 +2235,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем армию"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_capture_t1_own_state_idx",
               "input_var": "@bdt_capture_t1_own_state_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
           {
@@ -2279,12 +2279,27 @@
         "actions": [
           {
             "comment": {
-              "value": "бомбовая зона в исомой зоне. надо ее отключить"
+              "value": "\u0431\u043e\u043c\u0431\u043e\u0432\u0430\u044f \u0437\u043e\u043d\u0430 \u0432 \u0438\u0441\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435. \u043d\u0430\u0434\u043e \u0435\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "создаем имя зоны"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0431\u0438\u0432\u0430\u0435\u043c \u0437\u043e\u043d\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0437\u0435\u043d\u0442\u0438\u043a\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "continue rotator"
             }
           },
           {
@@ -2301,19 +2316,9 @@
             }
           },
           {
-            "comment": {
-              "value": "убиваем зону"
-            }
-          },
-          {
             "missionBombingAreaDamage": {
               "target": "@bdt_capture_t1_bomb_zone_name",
               "damageHP": 900000.0
-            }
-          },
-          {
-            "comment": {
-              "value": "прячем зентику"
             }
           },
           {
@@ -2330,11 +2335,6 @@
             }
           },
           {
-            "comment": {
-              "value": "continue rotator"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_capture_t1_rotator"
             }
@@ -2343,12 +2343,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "аэродром не в искомой зоне отключать не надо"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u043d\u0435 \u0432 \u0438\u0441\u043a\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0442\u044c \u043d\u0435 \u043d\u0430\u0434\u043e"
             }
           },
           {
             "comment": {
-              "value": "проверяем следующий"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439"
             }
           },
           {
@@ -2375,28 +2375,28 @@
         "actions": [
           {
             "comment": {
-              "value": "захватили территорию команды А"
+              "value": "\u0437\u0430\u0445\u0432\u0430\u0442\u0438\u043b\u0438 \u0442\u0435\u0440\u0440\u0438\u0442\u043e\u0440\u0438\u044e \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
             }
           },
           {
             "comment": {
-              "value": "проверяем не надо ли убрать базу"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u043d\u0430\u0434\u043e \u043b\u0438 \u0443\u0431\u0440\u0430\u0442\u044c \u0431\u0430\u0437\u0443"
             }
           },
           {
             "comment": {
-              "value": "имя захваченной зоны в переменной bdt_capture_t1_frontline_name"
+              "value": "\u0438\u043c\u044f \u0437\u0430\u0445\u0432\u0430\u0447\u0435\u043d\u043d\u043e\u0439 \u0437\u043e\u043d\u044b \u0432 \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 bdt_capture_t1_frontline_name"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043f\u043e\u0438\u0441\u043a"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "bdt_capture_t2_bombing_zone_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "начинаем поиск"
             }
           },
           {
@@ -2431,12 +2431,42 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше трех проверяем"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043c\u0435\u043d\u044c\u0448\u0435 \u0442\u0440\u0435\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем индекс на 1"
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0438\u043c\u044f \u0430\u0438\u0440\u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0430\u0438\u0440\u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0440\u0433\u0435\u0442\u0430 \u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "checking zone name"
             }
           },
           {
@@ -2447,14 +2477,15 @@
             }
           },
           {
-            "comment": {
-              "value": "составляем имя переменной, в которой хранится имя аирфилда"
+            "varSetString": {
+              "value": "bdt_t2_zone_",
+              "var": "bdt_capture_t2_bombing_zone_var_name"
             }
           },
           {
             "varSetString": {
-              "value": "bdt_t2_zone_",
-              "var": "bdt_capture_t2_bombing_zone_var_name"
+              "value": "bdt_t2_bomb_target_",
+              "var": "bdt_capture_t2_aaa_name"
             }
           },
           {
@@ -2472,43 +2503,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя аирфилда"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
-              "var": "bdt_capture_t2_bombing_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя таргета филда"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
-              "var": "bdt_capture_t2_bombing_zone_target_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "_bomb_target",
               "digits": 0,
               "var": "bdt_capture_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зенитки"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_bomb_target_",
-              "var": "bdt_capture_t2_aaa_name"
             }
           },
           {
@@ -2526,8 +2524,15 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя зоны в которой находится аэродром"
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
+              "var": "bdt_capture_t2_bombing_zone_name"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "@bdt_capture_t2_bombing_zone_var_name",
+              "var": "bdt_capture_t2_bombing_zone_target_name"
             }
           },
           {
@@ -2535,11 +2540,6 @@
               "name": "@bdt_capture_t2_bombing_zone_name",
               "template": "flt_area_",
               "out_var": "bdt_capture_t2_own_area_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "checking zone name"
             }
           },
           {
@@ -2586,7 +2586,17 @@
           },
           {
             "comment": {
-              "value": "полчаем имя переменной где хранится армия зоны в которой филд"
+              "value": "\u043f\u043e\u043b\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0437\u043e\u043d\u044b \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0444\u0438\u043b\u0434"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u0435 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u043b\u0438 \u0430\u0438\u0440\u0444\u0438\u043b\u0434 \u0432 \u0438\u0441\u043a\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435"
             }
           },
           {
@@ -2604,20 +2614,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем армию"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_capture_t2_own_state_idx",
               "input_var": "@bdt_capture_t2_own_state_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем не находится ли аирфилд в искомой зоне"
             }
           },
           {
@@ -2658,12 +2658,27 @@
         "actions": [
           {
             "comment": {
-              "value": "аэродром в исомой зоне. надо его отключить"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0432 \u0438\u0441\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435. \u043d\u0430\u0434\u043e \u0435\u0433\u043e \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "создаем имя зоны"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0431\u0438\u0432\u0430\u0435\u043c \u0437\u043e\u043d\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0437\u0435\u043d\u0438\u0442\u043a\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "continue rotator"
             }
           },
           {
@@ -2680,19 +2695,9 @@
             }
           },
           {
-            "comment": {
-              "value": "убиваем зону"
-            }
-          },
-          {
             "missionBombingAreaDamage": {
               "target": "@bdt_capture_t2_bomb_zone_name",
               "damageHP": 900000.0
-            }
-          },
-          {
-            "comment": {
-              "value": "прячем зенитку"
             }
           },
           {
@@ -2709,11 +2714,6 @@
             }
           },
           {
-            "comment": {
-              "value": "continue rotator"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_capture_t2_rotator"
             }
@@ -2722,12 +2722,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "аэродром не в искомой зоне отключать не надо"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u043d\u0435 \u0432 \u0438\u0441\u043a\u043e\u043c\u043e\u0439 \u0437\u043e\u043d\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0442\u044c \u043d\u0435 \u043d\u0430\u0434\u043e"
             }
           },
           {
             "comment": {
-              "value": "проверяем следующий"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439"
             }
           },
           {
@@ -2753,12 +2753,42 @@
       "actions": [
         {
           "comment": {
-            "value": "максимальное количество активных баз - ТРИ"
+            "value": "\u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0430\u0437 - \u0422\u0420\u0418"
           }
         },
         {
           "comment": {
-            "value": "получаем балансный уровень миссии"
+            "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0431\u0430\u043b\u0430\u043d\u0441\u043d\u044b\u0439 \u0443\u0440\u043e\u0432\u0435\u043d\u044c \u043c\u0438\u0441\u0441\u0438\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_army_both_zero: -1 -\u0432\u0441\u0435\u0433\u0434\u0430 \u0434\u043b\u044f \u043e\u0431\u0435\u0438\u0445 \u0430\u0440\u043c\u0438\u0439. 0 - \u0434\u043b\u044f \u043e\u0431\u0435\u0438\u0445 \u0430\u0440\u043c\u0438\u0439 \u043d\u043e \u043c\u043e\u0436\u0435\u0442 \u043c\u0435\u043d\u044f\u0442\u044c\u0441\u044f \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u0449\u0438\u043c \u0448\u0430\u0431\u043b\u043e\u043d\u043e\u043c, 1 \u0438 2 - \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 \u0410 \u0438 \u0411"
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_t1_total_bases_max_count - \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0435\u043e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u0430\u0437 \u0434\u043e\u0441\u0442\u0443\u043f\u043d\u044b\u0445 \u0434\u043b\u044f \u0432\u044b\u0431\u043e\u0440\u0430."
+          }
+        },
+        {
+          "comment": {
+            "value": "bdt_t1_active_bases_max_count - \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043e\u0434\u043d\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0430\u0437"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430 \u0446\u0435\u043b\u044f\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430 \u0437\u0435\u043d\u0438\u0442\u043a\u0430\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c  \u0448\u0430\u0431\u043b\u043e\u043d"
           }
         },
         {
@@ -2786,23 +2816,8 @@
           ]
         },
         {
-          "comment": {
-            "value": "bdt_army_both_zero: -1 -всегда для обеих армий. 0 - для обеих армий но может меняться управляющим шаблоном, 1 и 2 - для армии А и Б"
-          }
-        },
-        {
-          "comment": {
-            "value": "bdt_t1_total_bases_max_count - максимальнео количество баз доступных для выбора."
-          }
-        },
-        {
-          "comment": {
-            "value": "bdt_t1_active_bases_max_count - максимальное количество одновременно активных баз"
-          }
-        },
-        {
-          "comment": {
-            "value": "назначаем свойства целям"
+          "triggerEnable": {
+            "target": "bdt_start"
           }
         },
         {
@@ -2835,11 +2850,6 @@
               "stealthRadius": 0.0
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "назначаем свойства зениткам"
-          }
         },
         {
           "unitSetProperties": [
@@ -2880,16 +2890,6 @@
               "targetChangeProb": 0.25
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "запускаем  шаблон"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "bdt_start"
-          }
         }
       ],
       "else_actions": []
@@ -2917,7 +2917,22 @@
         },
         {
           "comment": {
-            "value": "специально не delayed чтобы первая пачка целей появилась  сразу"
+            "value": "\u0441\u043f\u0435\u0446\u0438\u0430\u043b\u044c\u043d\u043e \u043d\u0435 delayed \u0447\u0442\u043e\u0431\u044b \u043f\u0435\u0440\u0432\u0430\u044f \u043f\u0430\u0447\u043a\u0430 \u0446\u0435\u043b\u0435\u0439 \u043f\u043e\u044f\u0432\u0438\u043b\u0430\u0441\u044c  \u0441\u0440\u0430\u0437\u0443"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "capturing routine"
           }
         },
         {
@@ -2931,11 +2946,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "запускаем проверку уничтожения"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "bdt_destroy_t1_start"
@@ -2946,11 +2956,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "запускаем проверку восстановления"
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "bdt_t1_restore_start"
@@ -2959,11 +2964,6 @@
               "target": "bdt_t2_restore_start"
             }
           ]
-        },
-        {
-          "comment": {
-            "value": "capturing routine"
-          }
         },
         {
           "triggerEnable": [
@@ -3020,18 +3020,18 @@
           },
           {
             "comment": {
-              "value": "6100 для истории"
+              "value": "6100 \u0434\u043b\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "varSetReal": {
               "value": 6100.0,
               "var": "bdt_base_hp"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -3090,18 +3090,18 @@
           },
           {
             "comment": {
-              "value": "10500 для истории"
+              "value": "10500 \u0434\u043b\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "varSetReal": {
               "value": 10500.0,
               "var": "bdt_base_hp"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -3160,18 +3160,18 @@
           },
           {
             "comment": {
-              "value": "16000 для истории"
+              "value": "16000 \u0434\u043b\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "varSetReal": {
               "value": 16000.0,
               "var": "bdt_base_hp"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -3230,18 +3230,18 @@
           },
           {
             "comment": {
-              "value": "25900 для истории"
+              "value": "25900 \u0434\u043b\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "varSetReal": {
               "value": 25900.0,
               "var": "bdt_base_hp"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -3291,18 +3291,18 @@
           },
           {
             "comment": {
-              "value": "25900 для истории"
+              "value": "25900 \u0434\u043b\u044f \u0438\u0441\u0442\u043e\u0440\u0438\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "varSetReal": {
               "value": 25900.0,
               "var": "bdt_base_hp"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -3366,7 +3366,7 @@
             "var": "bdt_destroy_t1_bombing_zone_idx"
           },
           "comment": {
-            "value": "начинаем поиск"
+            "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043f\u043e\u0438\u0441\u043a"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_rotator"
@@ -3398,12 +3398,27 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше трех проверяем"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043c\u0435\u043d\u044c\u0448\u0435 \u0442\u0440\u0435\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем индекс на 1"
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0438\u043c\u044f \u0430\u0438\u0440\u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0431\u043e\u043c\u0431\u043e\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
             }
           },
           {
@@ -3411,11 +3426,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "bdt_destroy_t1_bombing_zone_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
@@ -3439,19 +3449,9 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя бомбовой зоны"
-            }
-          },
-          {
             "varGetStringValue": {
               "from_var_name": "@bdt_destroy_t1_bombing_zone_var_name",
               "var": "bdt_destroy_t1_bombing_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем имя зоны"
             }
           },
           {
@@ -3462,7 +3462,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_start"
@@ -3491,12 +3491,12 @@
         "actions": [
           {
             "comment": {
-              "value": "заполняем имя зенитки"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
             }
           },
           {
             "comment": {
-              "value": "зона есть - проверяем статус"
+              "value": "\u0437\u043e\u043d\u0430 \u0435\u0441\u0442\u044c - \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0442\u0430\u0442\u0443\u0441"
             }
           },
           {
@@ -3508,7 +3508,7 @@
         "else_actions": [
           {
             "comment": {
-              "value": "нет такой зоны идем дальше"
+              "value": "\u043d\u0435\u0442 \u0442\u0430\u043a\u043e\u0439 \u0437\u043e\u043d\u044b \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435"
             }
           },
           {
@@ -3557,7 +3557,47 @@
         "actions": [
           {
             "comment": {
-              "value": "зона уничтожена"
+              "value": "\u0437\u043e\u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043e\u043f\u0443\u0441\u0442\u043e\u0448\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u043e\u0431\u044a\u0435\u043a\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0431\u0438\u0432\u0430\u0435\u043c \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0430\u0437"
             }
           },
           {
@@ -3566,8 +3606,8 @@
             }
           },
           {
-            "comment": {
-              "value": "опустошаем имя зоны"
+            "triggerEnable": {
+              "target": "bdt_t1_aaa_destroy_start"
             }
           },
           {
@@ -3577,20 +3617,27 @@
             }
           },
           {
-            "comment": {
-              "value": "прячем объект"
+            "varSetString": {
+              "value": "bdt_t1_bomb_object_",
+              "var": "bdt_destroy_t1_bombing_zone_object_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_destroy_zone_",
+              "var": "bdt_t2_destroy_objective_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_zone_",
+              "var": "bdt_destroy_t1_timer_var_name"
             }
           },
           {
             "varGetIntFromString": {
               "value": "@bdt_destroy_t1_bombing_zone_name",
               "var": "bdt_destroy_t1_real_idx"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_bomb_object_",
-              "var": "bdt_destroy_t1_bombing_zone_object_name"
             }
           },
           {
@@ -3601,47 +3648,10 @@
             }
           },
           {
-            "unitPutToSleep": {
-              "target": "@bdt_destroy_t1_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя обжектива"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_destroy_zone_",
-              "var": "bdt_t2_destroy_objective_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_destroy_t1_bombing_zone_idx",
               "digits": 2,
               "var": "bdt_t2_destroy_objective_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим что обжектив выполнен"
-            }
-          },
-          {
-            "__triggerEnable": {
-              "target": "bdt_t1_set_objectvie"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя таймера"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_zone_",
-              "var": "bdt_destroy_t1_timer_var_name"
             }
           },
           {
@@ -3659,8 +3669,13 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем таймер"
+            "unitPutToSleep": {
+              "target": "@bdt_destroy_t1_bombing_zone_object_name"
+            }
+          },
+          {
+            "__triggerEnable": {
+              "target": "bdt_t1_set_objectvie"
             }
           },
           {
@@ -3668,21 +3683,6 @@
               "value": 0,
               "var": "@bdt_destroy_t1_timer_var_name",
               "input_var": "bdt_respawn_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "убиваем зенитки"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_t1_aaa_destroy_start"
-            }
-          },
-          {
-            "comment": {
-              "value": "уменьшаем количество активных баз"
             }
           },
           {
@@ -3695,7 +3695,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "зона цела - идем дальше по циклу"
+            "value": "\u0437\u043e\u043d\u0430 \u0446\u0435\u043b\u0430 - \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t1_rotator"
@@ -3722,7 +3722,7 @@
             "var": "bdt_destroy_t2_bombing_zone_idx"
           },
           "comment": {
-            "value": "начинаем поиск"
+            "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043f\u043e\u0438\u0441\u043a"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -3754,12 +3754,27 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше трех проверяем"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043c\u0435\u043d\u044c\u0448\u0435 \u0442\u0440\u0435\u0445 \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем индекс на 1"
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0438\u043c\u044f \u0430\u0438\u0440\u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0431\u043e\u043c\u0431\u043e\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
             }
           },
           {
@@ -3767,11 +3782,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "bdt_destroy_t2_bombing_zone_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "составляем имя переменной, в которой хранится имя аирфилда"
             }
           },
           {
@@ -3795,19 +3805,9 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем имя бомбовой зоны"
-            }
-          },
-          {
             "varGetStringValue": {
               "from_var_name": "@bdt_destroy_t2_bombing_zone_var_name",
               "var": "bdt_destroy_t2_bombing_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем имя зоны"
             }
           },
           {
@@ -3818,7 +3818,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс вышел за диапазон. рестартим"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u0434\u0438\u0430\u043f\u0430\u0437\u043e\u043d. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_start"
@@ -3847,18 +3847,18 @@
         "actions": [
           {
             "comment": {
-              "value": "получаем объекта таргета бомбовой зоны"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u043e\u0431\u044a\u0435\u043a\u0442\u0430 \u0442\u0430\u0440\u0433\u0435\u0442\u0430 \u0431\u043e\u043c\u0431\u043e\u0432\u043e\u0439 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u043e\u043d\u0430 \u0435\u0441\u0442\u044c - \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0442\u0430\u0442\u0443\u0441"
             }
           },
           {
             "__varGetStringValue": {
               "from_var_name": "bdt_destroy_t2_bombing_zone_name",
               "var": "bdt_destroy_t2_bombing_zone_target_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "зона есть - проверяем статус"
             }
           },
           {
@@ -3869,7 +3869,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "нет такой зоны идем дальше"
+            "value": "\u043d\u0435\u0442 \u0442\u0430\u043a\u043e\u0439 \u0437\u043e\u043d\u044b \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -3897,7 +3897,47 @@
         "actions": [
           {
             "comment": {
-              "value": "зона уничтожена"
+              "value": "\u0437\u043e\u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043e\u043f\u0443\u0441\u0442\u043e\u0448\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u043e\u0431\u044a\u0435\u043a\u0442"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u0431\u0438\u0432\u0430\u0435\u043c \u0437\u0435\u043d\u0438\u0442\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u0430\u0437"
             }
           },
           {
@@ -3906,8 +3946,8 @@
             }
           },
           {
-            "comment": {
-              "value": "опустошаем имя зоны"
+            "triggerEnable": {
+              "target": "bdt_t2_aaa_destroy_start"
             }
           },
           {
@@ -3917,20 +3957,27 @@
             }
           },
           {
-            "comment": {
-              "value": "прячем объект"
+            "varSetString": {
+              "value": "bdt_t2_bomb_object_",
+              "var": "bdt_destroy_t2_bombing_zone_object_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t1_destroy_zone_",
+              "var": "bdt_t1_destroy_objective_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "bdt_t2_zone_",
+              "var": "bdt_destroy_t2_timer_var_name"
             }
           },
           {
             "varGetIntFromString": {
               "value": "@bdt_destroy_t2_bombing_zone_name",
               "var": "bdt_destroy_t2_real_idx"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_bomb_object_",
-              "var": "bdt_destroy_t2_bombing_zone_object_name"
             }
           },
           {
@@ -3941,47 +3988,10 @@
             }
           },
           {
-            "unitPutToSleep": {
-              "target": "@bdt_destroy_t2_bombing_zone_object_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя обжектива"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t1_destroy_zone_",
-              "var": "bdt_t1_destroy_objective_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "@bdt_destroy_t2_bombing_zone_idx",
               "digits": 2,
               "var": "bdt_t1_destroy_objective_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим что обжектив выполнен"
-            }
-          },
-          {
-            "__triggerEnable": {
-              "target": "bdt_t2_set_objectvie"
-            }
-          },
-          {
-            "comment": {
-              "value": "собираем имя таймера"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "bdt_t2_zone_",
-              "var": "bdt_destroy_t2_timer_var_name"
             }
           },
           {
@@ -3999,8 +4009,13 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем таймер"
+            "unitPutToSleep": {
+              "target": "@bdt_destroy_t2_bombing_zone_object_name"
+            }
+          },
+          {
+            "__triggerEnable": {
+              "target": "bdt_t2_set_objectvie"
             }
           },
           {
@@ -4008,21 +4023,6 @@
               "value": 0,
               "var": "@bdt_destroy_t2_timer_var_name",
               "input_var": "bdt_respawn_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "убиваем зенитки"
-            }
-          },
-          {
-            "triggerEnable": {
-              "target": "bdt_t2_aaa_destroy_start"
-            }
-          },
-          {
-            "comment": {
-              "value": "уменьшаем количество активных баз"
             }
           },
           {
@@ -4035,7 +4035,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "зона цела - идем дальше по циклу"
+            "value": "\u0437\u043e\u043d\u0430 \u0446\u0435\u043b\u0430 - \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_destroy_t2_rotator"
@@ -4403,7 +4403,12 @@
           },
           {
             "comment": {
-              "value": "собираем имя обжектива"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0442\u0430\u0442\u0443\u0441"
             }
           },
           {
@@ -4417,11 +4422,6 @@
               "value": "@bdt_t1_clear_idx",
               "digits": 2,
               "var": "bdt_t1_clear_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем статус"
             }
           },
           {
@@ -4528,7 +4528,12 @@
           },
           {
             "comment": {
-              "value": "собираем имя обжектива"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043e\u0431\u0436\u0435\u043a\u0442\u0438\u0432\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0442\u0430\u0442\u0443\u0441"
             }
           },
           {
@@ -4542,11 +4547,6 @@
               "value": "@bdt_t2_clear_idx",
               "digits": 2,
               "var": "bdt_t2_clear_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем статус"
             }
           },
           {
@@ -4799,7 +4799,17 @@
           },
           {
             "comment": {
-              "value": "собираем имя переменной где хранится таймер"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
             }
           },
           {
@@ -4823,20 +4833,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значение таймера"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_t1_restore_timer",
               "input_var": "@bdt_t1_restore_timer_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем значение таймера"
             }
           },
           {
@@ -4874,7 +4874,12 @@
         "actions": [
           {
             "comment": {
-              "value": "таймер больше нуля - уменьшаем его"
+              "value": "\u0442\u0430\u0439\u043c\u0435\u0440 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0443\u043b\u044f - \u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0435\u0433\u043e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -4885,11 +4890,6 @@
             }
           },
           {
-            "comment": {
-              "value": "идем дальше по циклу"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t1_restore_rotator"
             }
@@ -4897,7 +4897,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше поциклу"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e\u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_t1_restore_rotator"
@@ -4960,7 +4960,17 @@
           },
           {
             "comment": {
-              "value": "собираем имя переменной где хранится таймер"
+              "value": "\u0441\u043e\u0431\u0438\u0440\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0442\u0430\u0439\u043c\u0435\u0440"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0442\u0430\u0439\u043c\u0435\u0440\u0430"
             }
           },
           {
@@ -4984,20 +4994,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем значение таймера"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "bdt_t2_restore_timer",
               "input_var": "@bdt_t2_restore_timer_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем значение таймера"
             }
           },
           {
@@ -5035,7 +5035,12 @@
         "actions": [
           {
             "comment": {
-              "value": "таймер больше нуля - уменьшаем его"
+              "value": "\u0442\u0430\u0439\u043c\u0435\u0440 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0443\u043b\u044f - \u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0435\u0433\u043e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -5046,11 +5051,6 @@
             }
           },
           {
-            "comment": {
-              "value": "идем дальше по циклу"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "bdt_t2_restore_rotator"
             }
@@ -5058,7 +5058,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "идем дальше поциклу"
+            "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e\u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "bdt_t2_restore_rotator"

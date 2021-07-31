@@ -77,7 +77,7 @@
     "common": {
       "range1": 9250.0,
       "range2": 46250.0,
-      "range3": 120000.25,
+      "range3": 120000.2,
       "range4": 1850.0
     }
   },
@@ -140,17 +140,17 @@
             }
           },
           {
+            "setScanPattern": {
+              "scanPattern": "lock"
+            }
+          },
+          {
             "resetScanPhase": []
           },
           {
             "setFsmActive": {
               "fsm": "lock",
               "active": true
-            }
-          },
-          {
-            "setScanPattern": {
-              "scanPattern": "lock"
             }
           },
           {
@@ -201,6 +201,11 @@
             }
           },
           {
+            "setScanPattern": {
+              "scanPattern": "track"
+            }
+          },
+          {
             "clearTargetsOfInterest": []
           },
           {
@@ -238,11 +243,6 @@
             "setFsmActive": {
               "fsm": "track",
               "active": true
-            }
-          },
-          {
-            "setScanPattern": {
-              "scanPattern": "track"
             }
           },
           {

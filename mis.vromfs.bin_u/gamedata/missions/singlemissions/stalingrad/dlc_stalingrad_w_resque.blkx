@@ -715,17 +715,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "airfield_03",
-            "objects": "ally_transport"
-          }
-        },
-        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
@@ -734,7 +723,18 @@
         },
         {
           "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
             "time": 5.0
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "airfield_03",
+            "objects": "ally_transport"
           }
         },
         {
@@ -782,6 +782,16 @@
           }
         },
         {
+          "triggerEnable": [
+            {
+              "target": "mission_success"
+            },
+            {
+              "target": "enemies_attack"
+            }
+          ]
+        },
+        {
           "triggerDisable": {
             "target": "li2_ressurect"
           }
@@ -797,16 +807,6 @@
             "horizontalDirectionForTeleport": true,
             "object": "ally_transport"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "mission_success"
-            },
-            {
-              "target": "enemies_attack"
-            }
-          ]
         }
       ]
     },
@@ -857,13 +857,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 2.0
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -1349,6 +1349,25 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "airfield_03",
+        "tm": [
+          [0.866025,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,0.866025],
+          [-14265.7,152.531,-21098.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dynAF_stalingrad_winter_grd_ally",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "active": true
+        },
+        "way": []
+      }
+    },
+    {
       "armada": {
         "name": "player_wing",
         "tm": [
@@ -1405,6 +1424,188 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf-109_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11064.3,2500.0,-11749.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf-109_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11005.2,2500.0,-11419.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_hunters_01",
+        "tm": [
+          [0.976296,0.0,0.21644],
+          [0.0,1.0,0.0],
+          [-0.21644,0.0,0.976296],
+          [-14279.5,2500.0,-19042.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109e-3",
+        "weapons": "Bf-109E-3_default",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "skin": "winter40",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_hunters_02",
+        "tm": [
+          [0.976296,0.0,0.21644],
+          [0.0,1.0,0.0],
+          [-0.21644,0.0,0.976296],
+          [-15727.4,2500.0,-19042.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109e-3",
+        "weapons": "Bf-109E-3_default",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "skin": "winter40",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf-109_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11005.2,2500.0,-11110.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-110c-4",
+        "weapons": "Bf-110C-4_default",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -1515,157 +1716,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13428.4,-0.473633,-18200.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "air_defence_01"
-          },
-          {
-            "squad_members": "air_defence_02"
-          },
-          {
-            "squad_members": "air_defence_03"
-          },
-          {
-            "squad_members": "air_defence_04"
-          },
-          {
-            "squad_members": "air_defence_05"
-          },
-          {
-            "squad_members": "air_defence_06"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "player_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-76.1104,2.11743,-17413.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "player_wing"
-          },
-          {
-            "squad_members": "ally_transport"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "infantry": {
-        "name": "ussr_soldiers",
-        "tm": [
-          [-0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,-0.707107],
-          [-14211.5,135.85,-21409.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "rifle_infantry",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "attack_type": "fire_at_will",
-          "count": 4,
-          "skin": "ussr"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf-109_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11064.3,2500.0,-11749.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-110c-4",
-        "weapons": "Bf-110C-4_default",
-        "props": {
-          "army": 2,
-          "count": 3,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf-109_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11005.2,2500.0,-11419.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-110c-4",
-        "weapons": "Bf-110C-4_default",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }
@@ -1871,35 +1921,6 @@
       }
     },
     {
-      "squad": {
-        "name": "additional_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-12891.7,40.51,-19579.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "air_defence_07"
-          },
-          {
-            "squad_members": "air_defence_08"
-          },
-          {
-            "squad_members": "air_defence_09"
-          },
-          {
-            "squad_members": "air_defence_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "air_defence": {
         "name": "air_defence_09",
         "tm": [
@@ -1950,130 +1971,109 @@
       }
     },
     {
-      "armada": {
-        "name": "enemy_hunters_01",
-        "tm": [
-          [0.976296,0.0,0.21644],
-          [0.0,1.0,0.0],
-          [-0.21644,0.0,0.976296],
-          [-14279.5,2500.0,-19042.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109e-3",
-        "weapons": "Bf-109E-3_default",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "skin": "winter40",
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "enemy_hunters_02",
-        "tm": [
-          [0.976296,0.0,0.21644],
-          [0.0,1.0,0.0],
-          [-0.21644,0.0,0.976296],
-          [-15727.4,2500.0,-19042.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109e-3",
-        "weapons": "Bf-109E-3_default",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "skin": "winter40",
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf-109_03",
+      "squad": {
+        "name": "air_def_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-11005.2,2500.0,-11110.8]
+          [-13428.4,-0.473633,-18200.5]
         ],
         "closed_waypoints": false,
-        "unit_class": "bf-110c-4",
-        "weapons": "Bf-110C-4_default",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "air_defence_01"
+          },
+          {
+            "squad_members": "air_defence_02"
+          },
+          {
+            "squad_members": "air_defence_03"
+          },
+          {
+            "squad_members": "air_defence_04"
+          },
+          {
+            "squad_members": "air_defence_05"
+          },
+          {
+            "squad_members": "air_defence_06"
           }
-        },
+        ],
         "way": []
       }
     },
     {
-      "objectGroups": {
-        "name": "airfield_03",
+      "squad": {
+        "name": "player_squad",
         "tm": [
-          [0.866025,0.0,0.5],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [-0.5,0.0,0.866025],
-          [-14265.7,152.531,-21098.9]
+          [0.0,0.0,1.0],
+          [-76.1104,2.11743,-17413.9]
         ],
         "closed_waypoints": false,
-        "unit_class": "dynAF_stalingrad_winter_grd_ally",
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "player_wing"
+          },
+          {
+            "squad_members": "ally_transport"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "additional_air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-12891.7,40.51,-19579.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "air_defence_07"
+          },
+          {
+            "squad_members": "air_defence_08"
+          },
+          {
+            "squad_members": "air_defence_09"
+          },
+          {
+            "squad_members": "air_defence_10"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "infantry": {
+        "name": "ussr_soldiers",
+        "tm": [
+          [-0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,-0.707107],
+          [-14211.5,135.85,-21409.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "rifle_infantry",
         "weapons": "",
         "props": {
           "army": 1,
-          "active": true
+          "attack_type": "fire_at_will",
+          "count": 4,
+          "skin": "ussr"
         },
         "way": []
       }

@@ -7,6 +7,41 @@
       }
     },
     {
+      "extends": {
+        "source": "config/damageModel.blk:defaultKineticDamageProps",
+        "target": "damage/kinetic",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
+        "target": "damage/cumulative",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultSplashDamageProps",
+        "target": "damage/splash",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultShatterDamageProps",
+        "target": "damage/shatter",
+        "checkTargetExists": true
+      }
+    },
+    {
+      "extends": {
+        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
+        "target": "damage/secondaryShatter",
+        "checkTargetExists": true
+      }
+    },
+    {
       "alias": {
         "param": "hitPowerMult",
         "alias": "damage/kinetic/damage"
@@ -40,13 +75,6 @@
       "alias": {
         "param": "relativeVelHitShift",
         "alias": "damage/kinetic/correctionDamageByRelativeVelocity"
-      }
-    },
-    {
-      "extends": {
-        "source": "config/damageModel.blk:defaultKineticDamageProps",
-        "target": "damage/kinetic",
-        "checkTargetExists": true
       }
     },
     {
@@ -86,13 +114,6 @@
       }
     },
     {
-      "extends": {
-        "source": "config/damageModel.blk:defaultCumulativeDamageProps",
-        "target": "damage/cumulative",
-        "checkTargetExists": true
-      }
-    },
-    {
       "alias": {
         "param": "explodeRadius",
         "alias": "damage/splash/radius"
@@ -114,13 +135,6 @@
       "alias": {
         "param": "explosiveMass",
         "alias": "damage/splash/mass"
-      }
-    },
-    {
-      "extends": {
-        "source": "config/damageModel.blk:defaultSplashDamageProps",
-        "target": "damage/splash",
-        "checkTargetExists": true
       }
     },
     {
@@ -160,27 +174,6 @@
       }
     },
     {
-      "extends": {
-        "source": "config/damageModel.blk:defaultShatterDamageProps",
-        "target": "damage/shatter",
-        "checkTargetExists": true
-      }
-    },
-    {
-      "preset": {
-        "param": "secondaryShattersPreset",
-        "presets": "config/damageModel.blk:secondaryShatters",
-        "target": "damage/secondaryShatter"
-      }
-    },
-    {
-      "extends": {
-        "source": "config/damageModel.blk:defaultSecondaryShatterDamageProps",
-        "target": "damage/secondaryShatter",
-        "checkTargetExists": true
-      }
-    },
-    {
       "alias": {
         "param": "explosiveType",
         "alias": "damage/explosive/type"
@@ -208,6 +201,13 @@
       "alias": {
         "param": "explodeTreshold",
         "alias": "damage/explosive/fuseArmorTreshold"
+      }
+    },
+    {
+      "preset": {
+        "param": "secondaryShattersPreset",
+        "presets": "config/damageModel.blk:secondaryShatters",
+        "target": "damage/secondaryShatter"
       }
     },
     {

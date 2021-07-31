@@ -130,8 +130,8 @@
       "footballScoreGoal": 100.0,
       "footballScoreAssist": 50.0,
       "footballScoreSave": 75.0,
-      "colorTeamA": "#f28b43ff",
-      "colorTeamB": "#179d98ff",
+      "colorTeamA": [67,139,242,255],
+      "colorTeamB": [152,157,23,255],
       "difficulty": "arcade",
       "isPhysPredictionEnabled": true,
       "isPreciseCollisionDetectionEnabled": true,
@@ -338,17 +338,17 @@
             }
           },
           {
+            "varSetString": {
+              "value": "t2_respawn_def",
+              "var": "t2_respawn_name"
+            }
+          },
+          {
             "varAddString": {
               "value": "",
               "digits": 1,
               "var": "t1_respawn_name",
               "input_var": "random"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t2_respawn_def",
-              "var": "t2_respawn_name"
             }
           },
           {
@@ -365,16 +365,16 @@
             }
           },
           {
+            "varSetString": {
+              "value": "t2_respawn_att_",
+              "var": "t2_respawn_name"
+            }
+          },
+          {
             "varSetRandomInt": {
               "var": "random",
               "from": 1,
               "to_not_including": 3
-            }
-          },
-          {
-            "varSetString": {
-              "value": "t2_respawn_att_",
-              "var": "t2_respawn_name"
             }
           },
           {
@@ -919,6 +919,12 @@
             }
           },
           {
+            "varSetInt": {
+              "value": 5,
+              "var": "kickoff_timer"
+            }
+          },
+          {
             "varSetBool": {
               "value": false,
               "var": "waiting_timer_gone"
@@ -960,12 +966,6 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "Both"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 5,
-              "var": "kickoff_timer"
             }
           },
           {
@@ -1134,6 +1134,16 @@
             }
           },
           {
+            "triggerEnable": [
+              {
+                "target": "t1_leads_by_2_goals"
+              },
+              {
+                "target": "t2_leads_by_2_goals"
+              }
+            ]
+          },
+          {
             "unitSetProperties": [
               {
                 "object_marking": 0
@@ -1175,16 +1185,6 @@
               "value": true,
               "var": "match_in_progress"
             }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "t1_leads_by_2_goals"
-              },
-              {
-                "target": "t2_leads_by_2_goals"
-              }
-            ]
           },
           {
             "triggerDisable": {
@@ -1478,6 +1478,12 @@
             }
           },
           {
+            "varSetBool": {
+              "value": true,
+              "var": "t1_goal"
+            }
+          },
+          {
             "playSound": {
               "name": "football_event/referee_end",
               "loop": false,
@@ -1500,12 +1506,6 @@
               "object_var_value": 0,
               "var_name": "current_timer",
               "team": "Both"
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "t1_goal"
             }
           },
           {
@@ -1587,6 +1587,12 @@
             }
           },
           {
+            "varSetBool": {
+              "value": false,
+              "var": "t1_goal"
+            }
+          },
+          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/football_fulltime",
@@ -1609,12 +1615,6 @@
               "loop": false,
               "start": true,
               "team": "Both"
-            }
-          },
-          {
-            "varSetBool": {
-              "value": false,
-              "var": "t1_goal"
             }
           },
           {
@@ -1789,6 +1789,12 @@
             }
           },
           {
+            "varSetBool": {
+              "value": true,
+              "var": "t1_goal"
+            }
+          },
+          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/football_halftime",
@@ -1811,12 +1817,6 @@
               "loop": false,
               "start": true,
               "team": "Both"
-            }
-          },
-          {
-            "varSetBool": {
-              "value": true,
-              "var": "t1_goal"
             }
           },
           {
@@ -2304,6 +2304,11 @@
             }
           },
           {
+            "wait": {
+              "time": 2.0
+            }
+          },
+          {
             "moSetObjectiveStatus": {
               "target": "t1_football_get_advantage_in_3_goals",
               "status": 2,
@@ -2322,11 +2327,6 @@
               "target": "t2_football_get_advantage_in_3_goals",
               "status": 3,
               "team": "B"
-            }
-          },
-          {
-            "wait": {
-              "time": 2.0
             }
           },
           {
@@ -2401,6 +2401,11 @@
             }
           },
           {
+            "wait": {
+              "time": 2.0
+            }
+          },
+          {
             "moSetObjectiveStatus": {
               "target": "t2_football_get_advantage_in_3_goals",
               "status": 2,
@@ -2419,11 +2424,6 @@
               "target": "t1_football_get_advantage_in_3_goals",
               "status": 3,
               "team": "A"
-            }
-          },
-          {
-            "wait": {
-              "time": 2.0
             }
           },
           {
@@ -2549,6 +2549,11 @@
             }
           },
           {
+            "wait": {
+              "time": 5.0
+            }
+          },
+          {
             "playerForceMoveToRespawnScreen": {
               "target": "all_players_squad"
             }
@@ -2571,11 +2576,6 @@
                 "target": "set_respawn_base_name"
               }
             ]
-          },
-          {
-            "wait": {
-              "time": 5.0
-            }
           },
           {
             "unitRespawn": {
@@ -3619,42 +3619,6 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
-        },
-        "way": []
-      }
-    },
-    {
-      "phys_obj": {
-        "name": "ball",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [0.0,22.5,0.0]
-        ],
-        "unit_class": "ball",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
         },
         "way": []
       }
@@ -6647,6 +6611,42 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
+        },
+        "way": []
+      }
+    },
+    {
+      "phys_obj": {
+        "name": "ball",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [0.0,22.5,0.0]
+        ],
+        "unit_class": "ball",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }

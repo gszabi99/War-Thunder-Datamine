@@ -15,6 +15,11 @@
           }
         },
         {
+          "blockSeparator": {
+            "display": "hide"
+          }
+        },
+        {
           "emptyVoiceChat": {
             "tooltip": "#clan/voice_chat/widget",
             "usertalk": {
@@ -43,11 +48,6 @@
               "value": "{\"viewId\": \"VOICE_CHAT\"}"
             }
           }
-        },
-        {
-          "blockSeparator": {
-            "display": "hide"
-          }
         }
       ],
       "tdiv": {
@@ -68,16 +68,6 @@
         "height": "@missionProgressHeight",
         "display": "hide"
       }
-    }
-  },
-  {
-    "hudMessages": {
-      "id": "hud_message_player_damage_notification",
-      "message_style": "player_damage_notification",
-      "position": "relative",
-      "pos": "1@bottomHudMessagesLeftPos, ph -h -1@hudMisObjIconsSize -1@blockInterval",
-      "width": "0.6@shHud + 1@isWide * 0.2@shHud",
-      "flow": "vertical"
     }
   },
   {
@@ -423,6 +413,14 @@
         ]
       },
       {
+        "hudMessages": {
+          "id": "hud_message_center_mission_result",
+          "pos": "50%pw-50%w, 0.4@shHud",
+          "position": "absolute",
+          "message_style": "mission_result_notification"
+        }
+      },
+      {
         "tdiv": [
           {
             "pos": "pw/2 - w/2, 1@topCenterMessagesTopPos"
@@ -582,14 +580,6 @@
         ]
       },
       {
-        "hudMessages": {
-          "id": "hud_message_center_mission_result",
-          "pos": "50%pw-50%w, 0.4@shHud",
-          "position": "absolute",
-          "message_style": "mission_result_notification"
-        }
-      },
-      {
         "tdiv": {
           "id": "mission_result_box_start",
           "height": "0.3@sf",
@@ -673,23 +663,6 @@
           ]
         },
         {
-          "hudMessages": {
-            "id": "hud_message_zone_capture_notification",
-            "width": "pw",
-            "height": "0.065@shHud",
-            "message_style": "zone_capture_notification",
-            "input-transparent": "yes"
-          }
-        },
-        {
-          "div": {
-            "id": "display_timers",
-            "height": "0.08@shHud",
-            "position": "relative",
-            "left": "pw/2 - w/2"
-          }
-        },
-        {
           "tdiv": {
             "id": "actionbar_hints_nest",
             "width": "1@shHud",
@@ -710,15 +683,6 @@
           }
         },
         {
-          "textAreaCentered": {
-            "id": "low-quality-model-warning",
-            "width": "pw",
-            "style": "color:@warningTextColor; font:@fontHudNormal;",
-            "text": "#low_quality_model_in_hangar",
-            "display": "hide"
-          }
-        },
-        {
           "tdiv": {
             "id": "tutorial_hints",
             "width": "pw",
@@ -734,6 +698,32 @@
             "position": "root",
             "pos": "50%sw-50%w, @shHud - h",
             "flow": "vertical"
+          }
+        },
+        {
+          "hudMessages": {
+            "id": "hud_message_zone_capture_notification",
+            "width": "pw",
+            "height": "0.065@shHud",
+            "message_style": "zone_capture_notification",
+            "input-transparent": "yes"
+          }
+        },
+        {
+          "div": {
+            "id": "display_timers",
+            "height": "0.08@shHud",
+            "position": "relative",
+            "left": "pw/2 - w/2"
+          }
+        },
+        {
+          "textAreaCentered": {
+            "id": "low-quality-model-warning",
+            "width": "pw",
+            "style": "color:@warningTextColor; font:@fontHudNormal;",
+            "text": "#low_quality_model_in_hangar",
+            "display": "hide"
           }
         }
       ]
@@ -751,6 +741,16 @@
   {
     "tdiv": {
       "id": "hud_message_timers"
+    }
+  },
+  {
+    "hudMessages": {
+      "id": "hud_message_player_damage_notification",
+      "message_style": "player_damage_notification",
+      "position": "relative",
+      "pos": "1@bottomHudMessagesLeftPos, ph -h -1@hudMisObjIconsSize -1@blockInterval",
+      "width": "0.6@shHud + 1@isWide * 0.2@shHud",
+      "flow": "vertical"
     }
   },
   {

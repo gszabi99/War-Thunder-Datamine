@@ -238,6 +238,16 @@
           ]
         },
         {
+          "triggerEnable": [
+            {
+              "target": "update_timer_indicator"
+            },
+            {
+              "target": "check_for_reach_first_target"
+            }
+          ]
+        },
+        {
           "wait": {
             "time": 3.0
           }
@@ -297,16 +307,6 @@
             "scale": 1.0,
             "target": "airfield_02_point"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "update_timer_indicator"
-            },
-            {
-              "target": "check_for_reach_first_target"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -835,15 +835,25 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 3.0
+          "wait": {
+            "time": 1.0
           }
         },
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 3.0
           }
         },
         {
@@ -873,11 +883,6 @@
             "object": "ju_87_cutscene",
             "target": "allies_02",
             "fireRandom": true
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -942,11 +947,6 @@
             "target": "allies_02",
             "doExplosion": true,
             "delayForObjects": [0.1,1.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -1039,13 +1039,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 2.0
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -1421,28 +1421,6 @@
       }
     },
     {
-      "squad": {
-        "name": "enemy_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-23251.5,20.95,634.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "squad_fw_109_01"
-          },
-          {
-            "squad_members": "squad_fw_109_02"
-          }
-        ]
-      }
-    },
-    {
       "armada": {
         "name": "fw_190_01_2_players_add",
         "tm": [
@@ -1584,34 +1562,6 @@
       }
     },
     {
-      "squad": {
-        "name": "squad_fw_109_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-25255.1,145.45,2974.05]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "fw_190_01"
-          },
-          {
-            "squad_members": "fw_190_01_2_players_add"
-          },
-          {
-            "squad_members": "fw_190_01_3_players_add"
-          },
-          {
-            "squad_members": "fw_190_01_4_players_add"
-          }
-        ]
-      }
-    },
-    {
       "armada": {
         "name": "fw_190_02_2_player_add",
         "tm": [
@@ -1750,6 +1700,56 @@
           }
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "enemy_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23251.5,20.95,634.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "squad_fw_109_01"
+          },
+          {
+            "squad_members": "squad_fw_109_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "squad_fw_109_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-25255.1,145.45,2974.05]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "fw_190_01"
+          },
+          {
+            "squad_members": "fw_190_01_2_players_add"
+          },
+          {
+            "squad_members": "fw_190_01_3_players_add"
+          },
+          {
+            "squad_members": "fw_190_01_4_players_add"
+          }
+        ]
       }
     },
     {

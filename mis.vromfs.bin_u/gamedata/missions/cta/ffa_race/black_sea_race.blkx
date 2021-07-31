@@ -164,7 +164,7 @@
             "defaultTimeToDisableWeapon": -1.0,
             "groundFxType": "waypoint_ground_arrow",
             "enableFromStart": true,
-            "racePathColor": "#efb90dff"
+            "racePathColor": [13,185,239,255]
           }
         },
         {
@@ -1067,12 +1067,33 @@
           }
         },
         {
+          "unitSetIndication": {
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "set": true,
+            "target": "2nd_fire_range_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 1,
             "target": "1st_fire_range_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
           }
         },
         {
@@ -1088,21 +1109,6 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "marking_reset_area02_p01"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 1,
             "object_var_name": "",
@@ -1114,14 +1120,8 @@
           }
         },
         {
-          "unitSetIndication": {
-            "target_marking": 1,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "2nd_fire_range_squad",
-            "target_type": "isMarked"
+          "triggerEnable": {
+            "target": "marking_reset_area02_p01"
           }
         },
         {
@@ -1181,12 +1181,33 @@
           }
         },
         {
+          "unitSetIndication": {
+            "target_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "set": true,
+            "target": "2nd_fire_range_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 2,
             "target": "1st_fire_range_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
           }
         },
         {
@@ -1202,21 +1223,6 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "marking_reset_area02_p02"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 2,
             "object_var_name": "",
@@ -1228,14 +1234,8 @@
           }
         },
         {
-          "unitSetIndication": {
-            "target_marking": 2,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "2nd_fire_range_squad",
-            "target_type": "isMarked"
+          "triggerEnable": {
+            "target": "marking_reset_area02_p02"
           }
         },
         {
@@ -1295,12 +1295,33 @@
           }
         },
         {
+          "unitSetIndication": {
+            "target_marking": 3,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "set": true,
+            "target": "2nd_fire_range_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 3,
             "target": "1st_fire_range_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
           }
         },
         {
@@ -1316,21 +1337,6 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "marking_reset_area02_p03"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 3,
             "object_var_name": "",
@@ -1342,14 +1348,8 @@
           }
         },
         {
-          "unitSetIndication": {
-            "target_marking": 3,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "2nd_fire_range_squad",
-            "target_type": "isMarked"
+          "triggerEnable": {
+            "target": "marking_reset_area02_p03"
           }
         },
         {
@@ -1409,12 +1409,33 @@
           }
         },
         {
+          "unitSetIndication": {
+            "target_marking": 4,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "set": true,
+            "target": "2nd_fire_range_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 4,
             "target": "1st_fire_range_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
           }
         },
         {
@@ -1430,21 +1451,6 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "marking_reset_area02_p04"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 4,
             "object_var_name": "",
@@ -1456,14 +1462,8 @@
           }
         },
         {
-          "unitSetIndication": {
-            "target_marking": 4,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "2nd_fire_range_squad",
-            "target_type": "isMarked"
+          "triggerEnable": {
+            "target": "marking_reset_area02_p04"
           }
         },
         {
@@ -1528,6 +1528,17 @@
           }
         },
         {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "target_type": "",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
+          }
+        },
+        {
           "unitSetIndication": {
             "target_marking": 1,
             "object_var_name": "",
@@ -1548,17 +1559,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "target_type": "",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
           }
         },
         {
@@ -1651,6 +1651,17 @@
           }
         },
         {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "target_type": "",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
+          }
+        },
+        {
           "unitSetIndication": {
             "target_marking": 2,
             "object_var_name": "",
@@ -1671,17 +1682,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "target_type": "",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
           }
         },
         {
@@ -1774,6 +1774,17 @@
           }
         },
         {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "target_type": "",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
+          }
+        },
+        {
           "unitSetIndication": {
             "target_marking": 3,
             "object_var_name": "",
@@ -1794,17 +1805,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "target_type": "",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
           }
         },
         {
@@ -1897,6 +1897,17 @@
           }
         },
         {
+          "unitRestore": {
+            "ressurectIfDead": false,
+            "fullRestore": false,
+            "target_marking": 0,
+            "target": "players_squad",
+            "target_type": "",
+            "ammoRestore": true,
+            "useForTriggerFiltered": true
+          }
+        },
+        {
           "unitSetIndication": {
             "target_marking": 4,
             "object_var_name": "",
@@ -1917,17 +1928,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "unitRestore": {
-            "ressurectIfDead": false,
-            "fullRestore": false,
-            "target_marking": 0,
-            "target": "players_squad",
-            "target_type": "",
-            "ammoRestore": true,
-            "useForTriggerFiltered": true
           }
         },
         {
@@ -2327,6 +2327,754 @@
           },
           {
             "squad_members": "player04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group01_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [7646.88,-0.00170898,6568.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_unit01"
+          },
+          {
+            "squad_members": "target_group01_unit02"
+          },
+          {
+            "squad_members": "target_group01_unit03"
+          },
+          {
+            "squad_members": "target_group01_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group02_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [6959.17,-0.00170898,7696.94]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group02_unit01"
+          },
+          {
+            "squad_members": "target_group02_unit02"
+          },
+          {
+            "squad_members": "target_group02_unit03"
+          },
+          {
+            "squad_members": "target_group02_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group03_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [7354.22,-0.00170898,7198.46]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group03_unit01"
+          },
+          {
+            "squad_members": "target_group03_unit02"
+          },
+          {
+            "squad_members": "target_group03_unit03"
+          },
+          {
+            "squad_members": "target_group03_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group04_squad",
+        "tm": [
+          [0.190596,0.0,0.981668],
+          [0.0,1.0,0.0],
+          [-0.981668,0.0,0.190596],
+          [8645.63,6.35721,1954.57]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group04_unit01"
+          },
+          {
+            "squad_members": "target_group04_unit02"
+          },
+          {
+            "squad_members": "target_group04_unit03"
+          },
+          {
+            "squad_members": "target_group04_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group05_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [6716.81,-0.00170898,6071.54]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group05_unit01"
+          },
+          {
+            "squad_members": "target_group05_unit02"
+          },
+          {
+            "squad_members": "target_group05_unit03"
+          },
+          {
+            "squad_members": "target_group05_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group06_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [5243.09,-0.00170898,7644.72]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group06_unit01"
+          },
+          {
+            "squad_members": "target_group06_unit02"
+          },
+          {
+            "squad_members": "target_group06_unit03"
+          },
+          {
+            "squad_members": "target_group06_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group07_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [4053.68,-0.0012207,6969.89]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group07_unit01"
+          },
+          {
+            "squad_members": "target_group07_unit02"
+          },
+          {
+            "squad_members": "target_group07_unit03"
+          },
+          {
+            "squad_members": "target_group07_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group08_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [3126.6,-0.00161743,3774.74]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_unit01"
+          },
+          {
+            "squad_members": "target_group08_unit02"
+          },
+          {
+            "squad_members": "target_group08_unit03"
+          },
+          {
+            "squad_members": "target_group08_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group09_squad",
+        "tm": [
+          [0.871944,0.0,0.489605],
+          [0.0,1.0,0.0],
+          [-0.489605,0.0,0.871944],
+          [3633.04,-0.00166321,4584.18]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group09_unit01"
+          },
+          {
+            "squad_members": "target_group09_unit02"
+          },
+          {
+            "squad_members": "target_group09_unit03"
+          },
+          {
+            "squad_members": "target_group09_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group10_squad",
+        "tm": [
+          [0.00451691,0.0,0.999989],
+          [0.0,1.0,0.0],
+          [-0.999989,0.0,0.00451691],
+          [3644.75,-0.00170898,2693.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group10_unit01"
+          },
+          {
+            "squad_members": "target_group10_unit02"
+          },
+          {
+            "squad_members": "target_group10_unit03"
+          },
+          {
+            "squad_members": "target_group10_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group11_squad",
+        "tm": [
+          [0.994557,0.0,-0.104189],
+          [0.0,1.0,0.0],
+          [0.104189,0.0,0.994557],
+          [2872.59,-0.00146484,4162.17]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group11_unit01"
+          },
+          {
+            "squad_members": "target_group11_unit02"
+          },
+          {
+            "squad_members": "target_group11_unit03"
+          },
+          {
+            "squad_members": "target_group11_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_fire_range_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3390.43,0.0,5756.23]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_squad"
+          },
+          {
+            "squad_members": "target_group02_squad"
+          },
+          {
+            "squad_members": "target_group03_squad"
+          },
+          {
+            "squad_members": "target_group04_squad"
+          },
+          {
+            "squad_members": "target_group05_squad"
+          },
+          {
+            "squad_members": "target_group06_squad"
+          },
+          {
+            "squad_members": "target_group07_squad"
+          },
+          {
+            "squad_members": "target_group13_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_fire_range_squad",
+        "tm": [
+          [0.97267,0.0,0.23219],
+          [0.0,1.0,0.0],
+          [-0.23219,0.0,0.97267],
+          [2162.07,-0.00170898,5436.43]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_squad"
+          },
+          {
+            "squad_members": "target_group09_squad"
+          },
+          {
+            "squad_members": "target_group10_squad"
+          },
+          {
+            "squad_members": "target_group11_squad"
+          },
+          {
+            "squad_members": "target_group12_squad"
+          },
+          {
+            "squad_members": "target_group14_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "all_targets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1198.22,0.0,5466.37]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "1st_fire_range_squad"
+          },
+          {
+            "squad_members": "2nd_fire_range_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_range_targets_p01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4983.38,0.000488281,7223.48]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_unit01"
+          },
+          {
+            "squad_members": "target_group02_unit01"
+          },
+          {
+            "squad_members": "target_group03_unit01"
+          },
+          {
+            "squad_members": "target_group04_unit01"
+          },
+          {
+            "squad_members": "target_group05_unit01"
+          },
+          {
+            "squad_members": "target_group06_unit01"
+          },
+          {
+            "squad_members": "target_group07_unit01"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_range_targets_p01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-771.983,0.0,3949.83]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_unit01"
+          },
+          {
+            "squad_members": "target_group09_unit01"
+          },
+          {
+            "squad_members": "target_group10_unit01"
+          },
+          {
+            "squad_members": "target_group11_unit01"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_range_targets_p02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4999.05,0.000488281,6812.27]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_unit02"
+          },
+          {
+            "squad_members": "target_group02_unit02"
+          },
+          {
+            "squad_members": "target_group03_unit02"
+          },
+          {
+            "squad_members": "target_group04_unit02"
+          },
+          {
+            "squad_members": "target_group05_unit02"
+          },
+          {
+            "squad_members": "target_group06_unit02"
+          },
+          {
+            "squad_members": "target_group07_unit02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_range_targets_p02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-511.739,0.0,3857.41]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_unit02"
+          },
+          {
+            "squad_members": "target_group09_unit02"
+          },
+          {
+            "squad_members": "target_group10_unit02"
+          },
+          {
+            "squad_members": "target_group11_unit02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_range_targets_p03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5333.95,0.000488281,6673.91]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_unit03"
+          },
+          {
+            "squad_members": "target_group02_unit03"
+          },
+          {
+            "squad_members": "target_group03_unit03"
+          },
+          {
+            "squad_members": "target_group04_unit03"
+          },
+          {
+            "squad_members": "target_group05_unit03"
+          },
+          {
+            "squad_members": "target_group06_unit03"
+          },
+          {
+            "squad_members": "target_group07_unit03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_range_targets_p03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-458.954,0.0,3579.22]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_unit03"
+          },
+          {
+            "squad_members": "target_group09_unit03"
+          },
+          {
+            "squad_members": "target_group10_unit03"
+          },
+          {
+            "squad_members": "target_group11_unit03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_range_targets_p04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5624.18,0.000488281,6533.29]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group01_unit04"
+          },
+          {
+            "squad_members": "target_group02_unit04"
+          },
+          {
+            "squad_members": "target_group03_unit04"
+          },
+          {
+            "squad_members": "target_group04_unit04"
+          },
+          {
+            "squad_members": "target_group05_unit04"
+          },
+          {
+            "squad_members": "target_group06_unit04"
+          },
+          {
+            "squad_members": "target_group07_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_range_targets_p04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-463.677,0.0,3276.84]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group08_unit04"
+          },
+          {
+            "squad_members": "target_group09_unit04"
+          },
+          {
+            "squad_members": "target_group10_unit04"
+          },
+          {
+            "squad_members": "target_group11_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group13_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7781.8,0.0,4061.16]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group13_unit01"
+          },
+          {
+            "squad_members": "target_group13_unit02"
+          },
+          {
+            "squad_members": "target_group13_unit03"
+          },
+          {
+            "squad_members": "target_group13_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group12_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3374.71,0.0,4284.86]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group12_unit01"
+          },
+          {
+            "squad_members": "target_group12_unit02"
+          },
+          {
+            "squad_members": "target_group12_unit03"
+          },
+          {
+            "squad_members": "target_group12_unit04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "target_group14_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3214.12,0.0,4723.02]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_group14_unit01"
+          },
+          {
+            "squad_members": "target_group14_unit02"
+          },
+          {
+            "squad_members": "target_group14_unit03"
+          },
+          {
+            "squad_members": "target_group14_unit04"
           }
         ]
       }
@@ -3960,667 +4708,447 @@
       }
     },
     {
-      "squad": {
-        "name": "target_group01_squad",
+      "structures": {
+        "name": "target_group12_unit01",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.841983,0.0,-0.539503],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [7646.88,-0.00170898,6568.0]
+          [0.539503,0.0,0.841983],
+          [3819.98,-0.00146484,3934.2]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_unit01"
-          },
-          {
-            "squad_members": "target_group01_unit02"
-          },
-          {
-            "squad_members": "target_group01_unit03"
-          },
-          {
-            "squad_members": "target_group01_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group02_squad",
+      "structures": {
+        "name": "target_group12_unit02",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.841983,0.0,-0.539503],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [6959.17,-0.00170898,7696.94]
+          [0.539503,0.0,0.841983],
+          [3797.39,-0.00146484,4009.05]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group02_unit01"
-          },
-          {
-            "squad_members": "target_group02_unit02"
-          },
-          {
-            "squad_members": "target_group02_unit03"
-          },
-          {
-            "squad_members": "target_group02_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group03_squad",
+      "structures": {
+        "name": "target_group12_unit03",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.841983,0.0,-0.539503],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [7354.22,-0.00170898,7198.46]
+          [0.539503,0.0,0.841983],
+          [3761.6,-0.00146484,4141.37]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group03_unit01"
-          },
-          {
-            "squad_members": "target_group03_unit02"
-          },
-          {
-            "squad_members": "target_group03_unit03"
-          },
-          {
-            "squad_members": "target_group03_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group04_squad",
+      "structures": {
+        "name": "target_group12_unit04",
         "tm": [
-          [0.190596,0.0,0.981668],
+          [0.841983,0.0,-0.539503],
           [0.0,1.0,0.0],
-          [-0.981668,0.0,0.190596],
-          [8645.63,6.35721,1954.57]
+          [0.539503,0.0,0.841983],
+          [3783.74,-0.00146484,4071.07]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group04_unit01"
-          },
-          {
-            "squad_members": "target_group04_unit02"
-          },
-          {
-            "squad_members": "target_group04_unit03"
-          },
-          {
-            "squad_members": "target_group04_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group05_squad",
+      "structures": {
+        "name": "target_group13_unit01",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.774338,0.0,0.632771],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [6716.81,-0.00170898,6071.54]
+          [-0.632771,0.0,0.774338],
+          [7383.44,-0.00146484,3491.85]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group05_unit01"
-          },
-          {
-            "squad_members": "target_group05_unit02"
-          },
-          {
-            "squad_members": "target_group05_unit03"
-          },
-          {
-            "squad_members": "target_group05_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group06_squad",
+      "structures": {
+        "name": "target_group13_unit02",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.774338,0.0,0.632771],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [5243.09,-0.00170898,7644.72]
+          [-0.632771,0.0,0.774338],
+          [7364.25,-0.00146484,3529.67]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group06_unit01"
-          },
-          {
-            "squad_members": "target_group06_unit02"
-          },
-          {
-            "squad_members": "target_group06_unit03"
-          },
-          {
-            "squad_members": "target_group06_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group07_squad",
+      "structures": {
+        "name": "target_group13_unit03",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.774338,0.0,0.632771],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [4053.68,-0.0012207,6969.89]
+          [-0.632771,0.0,0.774338],
+          [7335.34,-0.00146484,3568.0]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group07_unit01"
-          },
-          {
-            "squad_members": "target_group07_unit02"
-          },
-          {
-            "squad_members": "target_group07_unit03"
-          },
-          {
-            "squad_members": "target_group07_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group08_squad",
+      "structures": {
+        "name": "target_group13_unit04",
         "tm": [
-          [0.97267,0.0,0.23219],
+          [0.774338,0.0,0.632771],
           [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [3126.6,-0.00161743,3774.74]
+          [-0.632771,0.0,0.774338],
+          [7310.82,-0.00146484,3600.01]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_unit01"
-          },
-          {
-            "squad_members": "target_group08_unit02"
-          },
-          {
-            "squad_members": "target_group08_unit03"
-          },
-          {
-            "squad_members": "target_group08_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group09_squad",
+      "structures": {
+        "name": "target_group14_unit01",
         "tm": [
-          [0.871944,0.0,0.489605],
+          [0.856704,0.0,0.515807],
           [0.0,1.0,0.0],
-          [-0.489605,0.0,0.871944],
-          [3633.04,-0.00166321,4584.18]
+          [-0.515807,0.0,0.856704],
+          [4877.03,-0.00146484,3939.94]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group09_unit01"
-          },
-          {
-            "squad_members": "target_group09_unit02"
-          },
-          {
-            "squad_members": "target_group09_unit03"
-          },
-          {
-            "squad_members": "target_group09_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group10_squad",
+      "structures": {
+        "name": "target_group14_unit02",
         "tm": [
-          [0.00451691,0.0,0.999989],
+          [0.856704,0.0,0.515807],
           [0.0,1.0,0.0],
-          [-0.999989,0.0,0.00451691],
-          [3644.75,-0.00170898,2693.1]
+          [-0.515807,0.0,0.856704],
+          [4908.82,-0.00146484,3935.88]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group10_unit01"
-          },
-          {
-            "squad_members": "target_group10_unit02"
-          },
-          {
-            "squad_members": "target_group10_unit03"
-          },
-          {
-            "squad_members": "target_group10_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "target_group11_squad",
+      "structures": {
+        "name": "target_group14_unit03",
         "tm": [
-          [0.994557,0.0,-0.104189],
+          [0.856704,0.0,0.515807],
           [0.0,1.0,0.0],
-          [0.104189,0.0,0.994557],
-          [2872.59,-0.00146484,4162.17]
+          [-0.515807,0.0,0.856704],
+          [4940.33,-0.00146484,3937.26]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group11_unit01"
-          },
-          {
-            "squad_members": "target_group11_unit02"
-          },
-          {
-            "squad_members": "target_group11_unit03"
-          },
-          {
-            "squad_members": "target_group11_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
-      "squad": {
-        "name": "1st_fire_range_squad",
+      "structures": {
+        "name": "target_group14_unit04",
         "tm": [
-          [1.0,0.0,0.0],
+          [0.856704,0.0,0.515807],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3390.43,0.0,5756.23]
+          [-0.515807,0.0,0.856704],
+          [4977.08,-0.00146484,3943.67]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_squad"
-          },
-          {
-            "squad_members": "target_group02_squad"
-          },
-          {
-            "squad_members": "target_group03_squad"
-          },
-          {
-            "squad_members": "target_group04_squad"
-          },
-          {
-            "squad_members": "target_group05_squad"
-          },
-          {
-            "squad_members": "target_group06_squad"
-          },
-          {
-            "squad_members": "target_group07_squad"
-          },
-          {
-            "squad_members": "target_group13_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_fire_range_squad",
-        "tm": [
-          [0.97267,0.0,0.23219],
-          [0.0,1.0,0.0],
-          [-0.23219,0.0,0.97267],
-          [2162.07,-0.00170898,5436.43]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_squad"
-          },
-          {
-            "squad_members": "target_group09_squad"
-          },
-          {
-            "squad_members": "target_group10_squad"
-          },
-          {
-            "squad_members": "target_group11_squad"
-          },
-          {
-            "squad_members": "target_group12_squad"
-          },
-          {
-            "squad_members": "target_group14_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "all_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1198.22,0.0,5466.37]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1st_fire_range_squad"
-          },
-          {
-            "squad_members": "2nd_fire_range_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_range_targets_p01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4983.38,0.000488281,7223.48]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_unit01"
-          },
-          {
-            "squad_members": "target_group02_unit01"
-          },
-          {
-            "squad_members": "target_group03_unit01"
-          },
-          {
-            "squad_members": "target_group04_unit01"
-          },
-          {
-            "squad_members": "target_group05_unit01"
-          },
-          {
-            "squad_members": "target_group06_unit01"
-          },
-          {
-            "squad_members": "target_group07_unit01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_range_targets_p01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-771.983,0.0,3949.83]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_unit01"
-          },
-          {
-            "squad_members": "target_group09_unit01"
-          },
-          {
-            "squad_members": "target_group10_unit01"
-          },
-          {
-            "squad_members": "target_group11_unit01"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_range_targets_p02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4999.05,0.000488281,6812.27]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_unit02"
-          },
-          {
-            "squad_members": "target_group02_unit02"
-          },
-          {
-            "squad_members": "target_group03_unit02"
-          },
-          {
-            "squad_members": "target_group04_unit02"
-          },
-          {
-            "squad_members": "target_group05_unit02"
-          },
-          {
-            "squad_members": "target_group06_unit02"
-          },
-          {
-            "squad_members": "target_group07_unit02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_range_targets_p02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-511.739,0.0,3857.41]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_unit02"
-          },
-          {
-            "squad_members": "target_group09_unit02"
-          },
-          {
-            "squad_members": "target_group10_unit02"
-          },
-          {
-            "squad_members": "target_group11_unit02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_range_targets_p03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5333.95,0.000488281,6673.91]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_unit03"
-          },
-          {
-            "squad_members": "target_group02_unit03"
-          },
-          {
-            "squad_members": "target_group03_unit03"
-          },
-          {
-            "squad_members": "target_group04_unit03"
-          },
-          {
-            "squad_members": "target_group05_unit03"
-          },
-          {
-            "squad_members": "target_group06_unit03"
-          },
-          {
-            "squad_members": "target_group07_unit03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_range_targets_p03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-458.954,0.0,3579.22]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_unit03"
-          },
-          {
-            "squad_members": "target_group09_unit03"
-          },
-          {
-            "squad_members": "target_group10_unit03"
-          },
-          {
-            "squad_members": "target_group11_unit03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_range_targets_p04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5624.18,0.000488281,6533.29]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group01_unit04"
-          },
-          {
-            "squad_members": "target_group02_unit04"
-          },
-          {
-            "squad_members": "target_group03_unit04"
-          },
-          {
-            "squad_members": "target_group04_unit04"
-          },
-          {
-            "squad_members": "target_group05_unit04"
-          },
-          {
-            "squad_members": "target_group06_unit04"
-          },
-          {
-            "squad_members": "target_group07_unit04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_range_targets_p04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-463.677,0.0,3276.84]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group08_unit04"
-          },
-          {
-            "squad_members": "target_group09_unit04"
-          },
-          {
-            "squad_members": "target_group10_unit04"
-          },
-          {
-            "squad_members": "target_group11_unit04"
-          }
-        ]
+        "unit_class": "ship_target_mine_char",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
@@ -5768,534 +6296,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group12_unit01",
-        "tm": [
-          [0.841983,0.0,-0.539503],
-          [0.0,1.0,0.0],
-          [0.539503,0.0,0.841983],
-          [3819.98,-0.00146484,3934.2]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group12_unit02",
-        "tm": [
-          [0.841983,0.0,-0.539503],
-          [0.0,1.0,0.0],
-          [0.539503,0.0,0.841983],
-          [3797.39,-0.00146484,4009.05]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group12_unit03",
-        "tm": [
-          [0.841983,0.0,-0.539503],
-          [0.0,1.0,0.0],
-          [0.539503,0.0,0.841983],
-          [3761.6,-0.00146484,4141.37]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group12_unit04",
-        "tm": [
-          [0.841983,0.0,-0.539503],
-          [0.0,1.0,0.0],
-          [0.539503,0.0,0.841983],
-          [3783.74,-0.00146484,4071.07]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group13_unit01",
-        "tm": [
-          [0.774338,0.0,0.632771],
-          [0.0,1.0,0.0],
-          [-0.632771,0.0,0.774338],
-          [7383.44,-0.00146484,3491.85]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group13_unit02",
-        "tm": [
-          [0.774338,0.0,0.632771],
-          [0.0,1.0,0.0],
-          [-0.632771,0.0,0.774338],
-          [7364.25,-0.00146484,3529.67]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group13_unit03",
-        "tm": [
-          [0.774338,0.0,0.632771],
-          [0.0,1.0,0.0],
-          [-0.632771,0.0,0.774338],
-          [7335.34,-0.00146484,3568.0]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group13_unit04",
-        "tm": [
-          [0.774338,0.0,0.632771],
-          [0.0,1.0,0.0],
-          [-0.632771,0.0,0.774338],
-          [7310.82,-0.00146484,3600.01]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group14_unit01",
-        "tm": [
-          [0.856704,0.0,0.515807],
-          [0.0,1.0,0.0],
-          [-0.515807,0.0,0.856704],
-          [4877.03,-0.00146484,3939.94]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group14_unit02",
-        "tm": [
-          [0.856704,0.0,0.515807],
-          [0.0,1.0,0.0],
-          [-0.515807,0.0,0.856704],
-          [4908.82,-0.00146484,3935.88]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group14_unit03",
-        "tm": [
-          [0.856704,0.0,0.515807],
-          [0.0,1.0,0.0],
-          [-0.515807,0.0,0.856704],
-          [4940.33,-0.00146484,3937.26]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "target_group14_unit04",
-        "tm": [
-          [0.856704,0.0,0.515807],
-          [0.0,1.0,0.0],
-          [-0.515807,0.0,0.856704],
-          [4977.08,-0.00146484,3943.67]
-        ],
-        "unit_class": "ship_target_mine_char",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "target_group13_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7781.8,0.0,4061.16]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group13_unit01"
-          },
-          {
-            "squad_members": "target_group13_unit02"
-          },
-          {
-            "squad_members": "target_group13_unit03"
-          },
-          {
-            "squad_members": "target_group13_unit04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "target_group12_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3374.71,0.0,4284.86]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group12_unit01"
-          },
-          {
-            "squad_members": "target_group12_unit02"
-          },
-          {
-            "squad_members": "target_group12_unit03"
-          },
-          {
-            "squad_members": "target_group12_unit04"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "target_group14_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3214.12,0.0,4723.02]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_group14_unit01"
-          },
-          {
-            "squad_members": "target_group14_unit02"
-          },
-          {
-            "squad_members": "target_group14_unit03"
-          },
-          {
-            "squad_members": "target_group14_unit04"
-          }
-        ]
       }
     }
   ],

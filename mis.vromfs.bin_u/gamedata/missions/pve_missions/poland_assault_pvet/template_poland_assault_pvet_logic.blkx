@@ -1585,6 +1585,20 @@
           }
         },
         {
+          "varSetString": {
+            "value": "way_points_",
+            "var": "stage3_direction"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "stage3_direction",
+            "input_var": "stage3_rnd_dir"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
@@ -1613,20 +1627,6 @@
             "object": "ai_tank_stage3_sq",
             "move_type": "teleport",
             "useForTriggerFiltered": true
-          }
-        },
-        {
-          "varSetString": {
-            "value": "way_points_",
-            "var": "stage3_direction"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "stage3_direction",
-            "input_var": "stage3_rnd_dir"
           }
         },
         {
@@ -1882,6 +1882,36 @@
             }
           },
           {
+            "playHint": {
+              "hintType": "standard",
+              "name": "@string_container",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          },
+          {
+            "playHint": {
+              "hintType": "standard",
+              "name": "@string_position",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            }
+          },
+          {
             "varSetBool": {
               "value": false,
               "var": "iterator_go"
@@ -1895,29 +1925,6 @@
             }
           },
           {
-            "varSetString": {
-              "value": "",
-              "var": "string_container",
-              "input_var": "rnd_spwn_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 0,
-              "var": "string_container",
-              "input_var": "iterator"
-            }
-          },
-          {
-            "varSetRandomInt": {
-              "var": "random_positioning",
-              "from": 0,
-              "to_not_including": 0,
-              "var_to_not_including": "p_total"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -1926,16 +1933,15 @@
           },
           {
             "varSetString": {
-              "value": "p",
-              "var": "var_p_i1"
+              "value": "",
+              "var": "string_container",
+              "input_var": "rnd_spwn_name"
             }
           },
           {
-            "varAddString": {
-              "value": "",
-              "digits": 0,
-              "var": "var_p_i1",
-              "input_var": "random_positioning"
+            "varSetString": {
+              "value": "p",
+              "var": "var_p_i1"
             }
           },
           {
@@ -1948,8 +1954,32 @@
             "varAddString": {
               "value": "",
               "digits": 0,
+              "var": "string_container",
+              "input_var": "iterator"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 0,
+              "var": "var_p_i1",
+              "input_var": "random_positioning"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 0,
               "var": "string_position",
               "input_var": "@var_p_i1"
+            }
+          },
+          {
+            "varSetRandomInt": {
+              "var": "random_positioning",
+              "from": 0,
+              "to_not_including": 0,
+              "var_to_not_including": "p_total"
             }
           },
           {
@@ -1982,38 +2012,8 @@
             }
           },
           {
-            "playHint": {
-              "hintType": "standard",
-              "name": "@string_container",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0
-            }
-          },
-          {
             "wait": {
               "time": 0.25
-            }
-          },
-          {
-            "playHint": {
-              "hintType": "standard",
-              "name": "@string_position",
-              "action": "show",
-              "shouldFadeOut": false,
-              "isOverFade": false,
-              "time": -1.0,
-              "priority": 0,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0
             }
           },
           {
@@ -2070,6 +2070,13 @@
             }
           },
           {
+            "varModify": {
+              "operator": "add",
+              "value": 1.0,
+              "var": "i1"
+            }
+          },
+          {
             "varSetString": [
               {
                 "value": "p"
@@ -2103,13 +2110,6 @@
               "value": 0,
               "var": "@var_p_i1",
               "input_var": "@var_p_i1n"
-            }
-          },
-          {
-            "varModify": {
-              "operator": "add",
-              "value": 1.0,
-              "var": "i1"
             }
           }
         ],

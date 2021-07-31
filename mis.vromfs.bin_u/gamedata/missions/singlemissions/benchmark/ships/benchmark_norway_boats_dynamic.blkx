@@ -123,6 +123,12 @@
           }
         },
         {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
           "unitPlayEffect": [
             {
               "effect_type": "specify"
@@ -195,14 +201,6 @@
               "radiusOffset": [0.0,0.0]
             }
           ]
-        },
-        {
-          "missionForceUpdate": {
-            "target_type": "isAlive",
-            "dt": 0.05,
-            "timeToUpdate": 3.0,
-            "target": "teamA_avia04"
-          }
         },
         {
           "unitPlayEffect": {
@@ -284,6 +282,14 @@
           }
         },
         {
+          "missionForceUpdate": {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 3.0,
+            "target": "teamA_avia04"
+          }
+        },
+        {
           "missionForceUpdate": [
             {
               "target_type": "isAlive"
@@ -304,12 +310,6 @@
               "target": "teamA_avia04"
             }
           ]
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
         },
         {
           "triggerEnable": {
@@ -391,6 +391,12 @@
           }
         },
         {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
           "unitPlayEffect": [
             {
               "effect_type": "specify"
@@ -463,14 +469,6 @@
               "radiusOffset": [0.0,0.0]
             }
           ]
-        },
-        {
-          "missionForceUpdate": {
-            "target_type": "isAlive",
-            "dt": 0.05,
-            "timeToUpdate": 3.0,
-            "target": "teamA_avia04"
-          }
         },
         {
           "unitPlayEffect": {
@@ -552,6 +550,14 @@
           }
         },
         {
+          "missionForceUpdate": {
+            "target_type": "isAlive",
+            "dt": 0.05,
+            "timeToUpdate": 3.0,
+            "target": "teamA_avia04"
+          }
+        },
+        {
           "missionForceUpdate": [
             {
               "target_type": "isAlive"
@@ -579,12 +585,6 @@
             "dt": 0.05,
             "timeToUpdate": 30.0,
             "target": "scene03"
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
           }
         },
         {
@@ -677,6 +677,126 @@
           ]
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_ship_05",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_ship_03",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamB_ship_03",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamB_ship_07",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_ship_08",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamB_ship_04",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "teamA_ship_04"
+            },
+            {
+              "object": "teamB_destroyer01"
+            },
+            {
+              "controls": {
+                "weaponTriggers": {
+                  "trigger": "gunner0",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
           "unitLoadBehTree": {
             "name": "missionHitThePoint",
             "objects": "teamB_avia03",
@@ -700,6 +820,20 @@
           ]
         },
         {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamB_avia04",
+            "target": "teamA_avia01"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamB_ship_06",
+            "target": "teamA_ship_02"
+          }
+        },
+        {
           "unitMoveTo": {
             "object_marking": 0,
             "object_var_name": "",
@@ -718,13 +852,6 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "teamB_avia03"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamB_avia04",
-            "target": "teamA_avia01"
           }
         },
         {
@@ -766,38 +893,8 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_ship_05",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
-          }
-        },
-        {
           "wait": {
             "time": 1.7
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_ship_03",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
           }
         },
         {
@@ -806,38 +903,8 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamB_ship_03",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
-          }
-        },
-        {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamB_ship_07",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
           }
         },
         {
@@ -846,81 +913,14 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_ship_08",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
-          }
-        },
-        {
           "wait": {
             "time": 0.2
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamB_ship_04",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
           }
         },
         {
           "wait": {
             "time": 0.8
           }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamB_ship_06",
-            "target": "teamA_ship_02"
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamA_ship_04"
-            },
-            {
-              "object": "teamB_destroyer01"
-            },
-            {
-              "controls": {
-                "weaponTriggers": {
-                  "trigger": "gunner0",
-                  "set": true
-                }
-              }
-            }
-          ]
         },
         {
           "wait": {
@@ -994,6 +994,74 @@
               "aiEnabled": true
             }
           ]
+        },
+        {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "teamA_avia02"
+            },
+            {
+              "object": "teamA_avia01"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_avia01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_avia03",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": true
+                }
+              }
+            ]
+          }
         },
         {
           "unitLoadBehTree": [
@@ -1103,76 +1171,8 @@
           }
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamA_avia02"
-            },
-            {
-              "object": "teamA_avia01"
-            },
-            {
-              "plane": {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
-              }
-            }
-          ]
-        },
-        {
           "wait": {
             "time": 5.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_avia01",
-            "plane": {
-              "weaponTriggers": {
-                "trigger": "rockets",
-                "set": true
-              }
-            }
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_avia03",
-            "plane": [
-              {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
-                  "trigger": "machine gun",
-                  "set": true
-                }
-              }
-            ]
           }
         },
         {
@@ -1299,6 +1299,89 @@
           }
         },
         {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "teamA_avia02"
+            },
+            {
+              "object": "teamA_avia01"
+            },
+            {
+              "plane": {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_avia01",
+            "plane": {
+              "weaponTriggers": {
+                "trigger": "rockets",
+                "set": true
+              }
+            }
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_avia03",
+            "plane": [
+              {
+                "weaponTriggers": {
+                  "trigger": "cannon",
+                  "set": true
+                }
+              },
+              {
+                "weaponTriggers": {
+                  "trigger": "machine gun",
+                  "set": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamA_ship_06",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner0",
+                "set": true
+              }
+            }
+          }
+        },
+        {
           "unitLoadBehTree": {
             "name": "missionHitThePoint",
             "objects": "teamB_avia03",
@@ -1333,6 +1416,39 @@
             "playerAttracted": false,
             "object": "teamB_avia05",
             "target": "teamA_avia03"
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "teamA_avia02"
+            },
+            {
+              "object": "teamA_avia01"
+            },
+            {
+              "target": "teamB_ship_01"
+            },
+            {
+              "fireMode": "salvo"
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamA_ship_01",
+            "target": "teamB_ship_06"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "teamA_ship_02",
+            "target": "teamB_ship_06"
           }
         },
         {
@@ -1390,43 +1506,8 @@
           }
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "teamA_avia02"
-            },
-            {
-              "object": "teamA_avia01"
-            },
-            {
-              "plane": {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
-              }
-            }
-          ]
-        },
-        {
           "wait": {
             "time": 1.0
-          }
-        },
-        {
-          "unitDropAmmo": {
-            "object": "teamB_ship_08"
           }
         },
         {
@@ -1435,104 +1516,23 @@
           }
         },
         {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "teamA_avia02"
-            },
-            {
-              "object": "teamA_avia01"
-            },
-            {
-              "target": "teamB_ship_01"
-            },
-            {
-              "fireMode": "salvo"
-            }
-          ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_avia01",
-            "plane": {
-              "weaponTriggers": {
-                "trigger": "rockets",
-                "set": true
-              }
-            }
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_avia03",
-            "plane": [
-              {
-                "weaponTriggers": {
-                  "trigger": "cannon",
-                  "set": true
-                }
-              },
-              {
-                "weaponTriggers": {
-                  "trigger": "machine gun",
-                  "set": true
-                }
-              }
-            ]
-          }
-        },
-        {
           "wait": {
             "time": 1.0
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamA_ship_01",
-            "target": "teamB_ship_06"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamA_ship_06",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner0",
-                "set": true
-              }
-            }
-          }
-        },
-        {
           "wait": {
             "time": 1.0
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "teamA_ship_02",
-            "target": "teamB_ship_06"
           }
         },
         {
           "wait": {
             "time": 3.0
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "teamB_ship_08"
           }
         },
         {
@@ -1649,6 +1649,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "effect": "ship_model_fire",
@@ -1660,11 +1665,6 @@
             "delay": [1.0,1.0],
             "target": "teamA_ship_02",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1699,6 +1699,46 @@
             "object": "scene03",
             "speed": 60.0,
             "lockSpeed": true
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "avia_group02",
+            "plane": [
+              {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 0.0,
+                  "limits": [0.0,0.0]
+                }
+              },
+              {
+                "targetDeviation": {
+                  "trigger": "cannon",
+                  "defaultVal": 0.0,
+                  "limits": [0.0,0.0]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "teamB_destroyer02",
+            "controls": {
+              "weaponTriggers": {
+                "trigger": "gunner3",
+                "set": true
+              }
+            }
           }
         },
         {
@@ -1772,36 +1812,6 @@
           }
         },
         {
-          "unitWakeUp": {
-            "target": "avia_group02"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "avia_group02",
-            "plane": [
-              {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 0.0,
-                  "limits": [0.0,0.0]
-                }
-              },
-              {
-                "targetDeviation": {
-                  "trigger": "cannon",
-                  "defaultVal": 0.0,
-                  "limits": [0.0,0.0]
-                }
-              }
-            ]
-          }
-        },
-        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "teamB_avia01",
@@ -1813,6 +1823,16 @@
             "playerAttracted": false,
             "object": "teamB_avia02",
             "target": "teamA_ship_11"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "avia_group02"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "teamA_avia04"
           }
         },
         {
@@ -1849,18 +1869,8 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "teamB_destroyer02",
-            "controls": {
-              "weaponTriggers": {
-                "trigger": "gunner3",
-                "set": true
-              }
-            }
+          "wait": {
+            "time": 6.0
           }
         },
         {
@@ -1872,16 +1882,6 @@
           "unitDropAmmo": {
             "object": "teamB_ship_05",
             "triggerGroup": "torpedoes"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "teamA_avia04"
           }
         },
         {
@@ -4601,7 +4601,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [1680.27,-3.7835e-10,2226.89]
+              [1680.27,-3.783e-10,2226.89]
             ],
             "props": {
               "speed": 300.0,
@@ -4617,7 +4617,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [1876.78,-3.7835e-10,2180.14]
+              [1876.78,-3.783e-10,2180.14]
             ],
             "props": {
               "speed": 300.0,
@@ -4663,330 +4663,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "teamA_units",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1110.39,0.0,744.16]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_ship_01"
-          },
-          {
-            "squad_members": "teamA_ship_02"
-          },
-          {
-            "squad_members": "teamA_ship_03"
-          },
-          {
-            "squad_members": "teamA_ship_04"
-          },
-          {
-            "squad_members": "teamA_ship_05"
-          },
-          {
-            "squad_members": "teamA_ship_06"
-          },
-          {
-            "squad_members": "teamA_ship_07"
-          },
-          {
-            "squad_members": "teamA_ship_08"
-          },
-          {
-            "squad_members": "teamA_destroyer01"
-          },
-          {
-            "squad_members": "teamA_ship_09"
-          },
-          {
-            "squad_members": "teamA_ship_10"
-          },
-          {
-            "squad_members": "teamA_ship_11"
-          },
-          {
-            "squad_members": "teamA_ship_12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "teamB_units",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1360.02,0.000366211,710.908]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamB_ship_02"
-          },
-          {
-            "squad_members": "teamB_ship_03"
-          },
-          {
-            "squad_members": "teamB_ship_04"
-          },
-          {
-            "squad_members": "teamB_ship_05"
-          },
-          {
-            "squad_members": "teamB_ship_06"
-          },
-          {
-            "squad_members": "teamB_ship_07"
-          },
-          {
-            "squad_members": "teamB_ship_08"
-          },
-          {
-            "squad_members": "teamB_ship_01"
-          },
-          {
-            "squad_members": "teamB_ship_10"
-          },
-          {
-            "squad_members": "teamB_ship_09"
-          },
-          {
-            "squad_members": "teamB_ship_11"
-          },
-          {
-            "squad_members": "teamB_destroyer01"
-          },
-          {
-            "squad_members": "teamB_destroyer02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "all_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2582.03,0.0,822.36]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "teamA_units"
-          },
-          {
-            "squad_members": "teamB_units"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "teamA_avia01",
-        "tm": [
-          [0.963258,-0.26466,0.0456923],
-          [0.26773,0.959713,-0.0852779],
-          [-0.0212825,0.0943779,0.995309],
-          [493.45,631.674,2265.22]
-        ],
-        "unit_class": "spitfire_f22",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "6_rockets",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "teamA_avia02",
-        "tm": [
-          [0.985285,-0.168256,-0.0300559],
-          [0.168334,0.98573,6.2352e-05],
-          [0.0296161,-0.00512111,0.999549],
-          [560.558,510.323,2352.4]
-        ],
-        "unit_class": "spitfire_f22",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "6_rockets",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "teamA_avia03",
-        "tm": [
-          [0.99999,-3.21839e-09,-0.004436],
-          [-4.50936e-07,1.0,7.39641e-08],
-          [0.0044361,-8.52252e-09,0.99999],
-          [1292.15,37.7911,2189.88]
-        ],
-        "unit_class": "hellcat_fmk1",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f6f-3_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "teamA_avia04",
-        "tm": [
-          [0.386153,0.0,-0.922434],
-          [-0.000164747,1.0,-6.85469e-05],
-          [0.922434,0.000178323,0.386153],
-          [1829.94,248.049,4106.33]
-        ],
-        "unit_class": "blenheim_mkiv",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "blenheim_mkiv_2_500lb",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Echelon",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }
@@ -5434,7 +5110,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [2117.29,-3.63798e-11,2813.52]
+              [2117.29,-3.64e-11,2813.52]
             ],
             "props": {
               "speed": 300.0,
@@ -5766,7 +5442,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [2015.01,3.12866e-10,2620.13]
+              [2015.01,3.129e-10,2620.13]
             ],
             "props": {
               "speed": 300.0,
@@ -5782,7 +5458,7 @@
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [2058.54,3.12866e-10,2630.78]
+              [2058.54,3.129e-10,2630.78]
             ],
             "props": {
               "speed": 300.0,
@@ -6192,6 +5868,272 @@
       }
     },
     {
+      "ships": {
+        "name": "teamB_ship_11",
+        "tm": [
+          [-0.930748,0.0,-0.365661],
+          [0.0,1.0,0.0],
+          [0.365661,0.0,-0.930748],
+          [2674.26,-0.000976563,2929.67]
+        ],
+        "unit_class": "germ_s_100_s_174_class",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "teamB_ship_11_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2251.01,0.000366211,2668.76]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2183.9,0.0,2717.67]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2195.27,0.0,2794.38]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2266.21,0.0,2869.69]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2446.94,0.0,2919.3]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "teamB_ship_11_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [2700.27,6.10352e-05,2997.28]
+            ],
+            "props": {
+              "speed": 300.0,
+              "tas": false,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "teamA_units",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1110.39,0.0,744.16]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_ship_01"
+          },
+          {
+            "squad_members": "teamA_ship_02"
+          },
+          {
+            "squad_members": "teamA_ship_03"
+          },
+          {
+            "squad_members": "teamA_ship_04"
+          },
+          {
+            "squad_members": "teamA_ship_05"
+          },
+          {
+            "squad_members": "teamA_ship_06"
+          },
+          {
+            "squad_members": "teamA_ship_07"
+          },
+          {
+            "squad_members": "teamA_ship_08"
+          },
+          {
+            "squad_members": "teamA_destroyer01"
+          },
+          {
+            "squad_members": "teamA_ship_09"
+          },
+          {
+            "squad_members": "teamA_ship_10"
+          },
+          {
+            "squad_members": "teamA_ship_11"
+          },
+          {
+            "squad_members": "teamA_ship_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "teamB_units",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1360.02,0.000366211,710.908]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamB_ship_02"
+          },
+          {
+            "squad_members": "teamB_ship_03"
+          },
+          {
+            "squad_members": "teamB_ship_04"
+          },
+          {
+            "squad_members": "teamB_ship_05"
+          },
+          {
+            "squad_members": "teamB_ship_06"
+          },
+          {
+            "squad_members": "teamB_ship_07"
+          },
+          {
+            "squad_members": "teamB_ship_08"
+          },
+          {
+            "squad_members": "teamB_ship_01"
+          },
+          {
+            "squad_members": "teamB_ship_10"
+          },
+          {
+            "squad_members": "teamB_ship_09"
+          },
+          {
+            "squad_members": "teamB_ship_11"
+          },
+          {
+            "squad_members": "teamB_destroyer01"
+          },
+          {
+            "squad_members": "teamB_destroyer02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "all_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2582.03,0.0,822.36]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "teamA_units"
+          },
+          {
+            "squad_members": "teamB_units"
+          }
+        ]
+      }
+    },
+    {
       "squad": {
         "name": "shooting_group01",
         "tm": [
@@ -6261,102 +6203,6 @@
       }
     },
     {
-      "armada": {
-        "name": "teamB_avia01",
-        "tm": [
-          [-0.928315,0.0,-0.371793],
-          [-4.36587e-07,1.0,7.22888e-07],
-          [0.371795,0.0,-0.928315],
-          [2536.65,339.674,2824.14]
-        ],
-        "unit_class": "ju-87g_1",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Ju-87G-1_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 100,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "teamB_avia02",
-        "tm": [
-          [-0.934939,-1.11022e-15,-0.354808],
-          [7.10914e-08,1.0,4.57308e-07],
-          [0.354809,-2.20021e-15,-0.934939],
-          [2792.95,380.909,3093.91]
-        ],
-        "unit_class": "ju-87g_1",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Ju-87G-1_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 100,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "teamA_avia_squad",
         "tm": [
@@ -6413,54 +6259,6 @@
             "squad_members": "teamB_avia05"
           }
         ]
-      }
-    },
-    {
-      "armada": {
-        "name": "teamB_avia03",
-        "tm": [
-          [0.999986,0.0,-0.00524373],
-          [-3.70798e-07,1.0,-4.07814e-07],
-          [0.00524228,8.47369e-11,0.999986],
-          [1564.88,37.7664,2178.24]
-        ],
-        "unit_class": "bf-109k-4",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 100,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 1,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     },
     {
@@ -6733,6 +6531,342 @@
     },
     {
       "armada": {
+        "name": "teamA_avia01",
+        "tm": [
+          [0.963258,-0.26466,0.0456923],
+          [0.26773,0.959713,-0.0852779],
+          [-0.0212825,0.0943779,0.995309],
+          [493.45,631.674,2265.22]
+        ],
+        "unit_class": "spitfire_f22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "6_rockets",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamA_avia02",
+        "tm": [
+          [0.985285,-0.168256,-0.0300559],
+          [0.168334,0.98573,6.2352e-05],
+          [0.0296161,-0.00512111,0.999549],
+          [560.558,510.323,2352.4]
+        ],
+        "unit_class": "spitfire_f22",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "6_rockets",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamA_avia03",
+        "tm": [
+          [0.99999,-3.2184e-09,-0.004436],
+          [-4.50936e-07,1.0,7.39641e-08],
+          [0.0044361,-8.5225e-09,0.99999],
+          [1292.15,37.7911,2189.88]
+        ],
+        "unit_class": "hellcat_fmk1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f6f-3_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamA_avia04",
+        "tm": [
+          [0.386153,0.0,-0.922434],
+          [-0.000164747,1.0,-6.85469e-05],
+          [0.922434,0.000178323,0.386153],
+          [1829.94,248.049,4106.33]
+        ],
+        "unit_class": "blenheim_mkiv",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "blenheim_mkiv_2_500lb",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Echelon",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamB_avia01",
+        "tm": [
+          [-0.928315,0.0,-0.371793],
+          [-4.36587e-07,1.0,7.22888e-07],
+          [0.371795,0.0,-0.928315],
+          [2536.65,339.674,2824.14]
+        ],
+        "unit_class": "ju-87g_1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Ju-87G-1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamB_avia02",
+        "tm": [
+          [-0.934939,-0,-0.354808],
+          [7.10914e-08,1.0,4.57308e-07],
+          [0.354809,-0,-0.934939],
+          [2792.95,380.909,3093.91]
+        ],
+        "unit_class": "ju-87g_1",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Ju-87G-1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "teamB_avia03",
+        "tm": [
+          [0.999986,0.0,-0.00524373],
+          [-3.70798e-07,1.0,-4.07814e-07],
+          [0.00524228,8.47e-11,0.999986],
+          [1564.88,37.7664,2178.24]
+        ],
+        "unit_class": "bf-109k-4",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 1,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
         "name": "teamB_avia04",
         "tm": [
           [-0.980764,0.0258546,-0.193476],
@@ -6780,146 +6914,12 @@
       }
     },
     {
-      "ships": {
-        "name": "teamB_ship_11",
-        "tm": [
-          [-0.930748,0.0,-0.365661],
-          [0.0,1.0,0.0],
-          [0.365661,0.0,-0.930748],
-          [2674.26,-0.000976563,2929.67]
-        ],
-        "unit_class": "germ_s_100_s_174_class",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "teamB_ship_11_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2251.01,0.000366211,2668.76]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "teamB_ship_11_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2183.9,0.0,2717.67]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "teamB_ship_11_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2195.27,0.0,2794.38]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "teamB_ship_11_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2266.21,0.0,2869.69]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "teamB_ship_11_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2446.94,0.0,2919.3]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "teamB_ship_11_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [2700.27,6.10352e-05,2997.28]
-            ],
-            "props": {
-              "speed": 300.0,
-              "tas": false,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
       "armada": {
         "name": "teamB_avia05",
         "tm": [
           [0.952126,0.0,-0.305703],
           [-4.76268e-07,1.0,-2.77439e-07],
-          [0.305701,8.47369e-11,0.952127],
+          [0.305701,8.47e-11,0.952127],
           [975.805,84.4198,2331.53]
         ],
         "unit_class": "bf-109k-4",

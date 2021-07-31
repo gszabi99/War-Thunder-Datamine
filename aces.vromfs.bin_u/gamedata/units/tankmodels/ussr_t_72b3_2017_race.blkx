@@ -2282,10 +2282,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 2000
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 2000
           },
           {
             "ChainfireTime": 3.0
@@ -3433,10 +3433,10 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 2000
+                  "fireConeAngle": 15.0
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "bullets": 2000
                 },
                 {
                   "ChainfireTime": 3.0
@@ -3521,6 +3521,52 @@
                 "limits": {
                   "yaw": [-180.0,180.0],
                   "pitch": [-4.0,75.0]
+                }
+              }
+            },
+            {
+              "Weapon": {
+                "trigger": "gunner3",
+                "triggerGroup": "smoke",
+                "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
+                "weaponType": "rockets",
+                "startFx": "",
+                "useEmitter": true,
+                "emitter": "emtr_mortar_flame_01",
+                "emitterGenRange": [1,8],
+                "emitterGenFmt": "emtr_mortar_flame_%02d",
+                "ignoreLoaderPenalty": true,
+                "createGunEffects": true,
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "allowableDelta": 360.0,
+                "salvo": 4,
+                "speedYaw": 24.0,
+                "speedPitch": 15.0,
+                "fireConeAngle": 1.0,
+                "bullets": 8,
+                "salvoAmount": 100.0,
+                "ChainfireTime": 0.0,
+                "DelayAfterShoot": 5.0,
+                "AttackMaxDistance": 1000.0,
+                "AttackMaxRadius": 1000.0,
+                "AttackMaxHeight": 1000.0,
+                "accuracyAir": 0.0,
+                "accuracyGnd": 1.5,
+                "errMeasureVel": 0.0,
+                "errMeasureVelFast": 0.0,
+                "errMeasureVelFwdShift": 0.0,
+                "errMeasureVelDir": 0.0,
+                "errTargettingOn100kmph": 0.0,
+                "errTargetting": 3.0,
+                "errExplTime": 0.0,
+                "turret": {
+                  "head": "bone_grenade",
+                  "gun": "bone_grenade"
+                },
+                "limits": {
+                  "yaw": [-0.0,0.0],
+                  "pitch": [0.0,0.0]
                 }
               }
             },
@@ -3758,52 +3804,6 @@
                   "node": "ex_decor_l_03"
                 }
               ]
-            },
-            {
-              "Weapon": {
-                "trigger": "gunner3",
-                "triggerGroup": "smoke",
-                "blk": "gameData/Weapons/groundModels_weapons/81mm_tucha_launcher.blk",
-                "weaponType": "rockets",
-                "startFx": "",
-                "useEmitter": true,
-                "emitter": "emtr_mortar_flame_01",
-                "emitterGenRange": [1,8],
-                "emitterGenFmt": "emtr_mortar_flame_%02d",
-                "ignoreLoaderPenalty": true,
-                "createGunEffects": true,
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "allowableDelta": 360.0,
-                "salvo": 4,
-                "speedYaw": 24.0,
-                "speedPitch": 15.0,
-                "fireConeAngle": 1.0,
-                "bullets": 8,
-                "salvoAmount": 100.0,
-                "ChainfireTime": 0.0,
-                "DelayAfterShoot": 5.0,
-                "AttackMaxDistance": 1000.0,
-                "AttackMaxRadius": 1000.0,
-                "AttackMaxHeight": 1000.0,
-                "accuracyAir": 0.0,
-                "accuracyGnd": 1.5,
-                "errMeasureVel": 0.0,
-                "errMeasureVelFast": 0.0,
-                "errMeasureVelFwdShift": 0.0,
-                "errMeasureVelDir": 0.0,
-                "errTargettingOn100kmph": 0.0,
-                "errTargetting": 3.0,
-                "errExplTime": 0.0,
-                "turret": {
-                  "head": "bone_grenade",
-                  "gun": "bone_grenade"
-                },
-                "limits": {
-                  "yaw": [-0.0,0.0],
-                  "pitch": [0.0,0.0]
-                }
-              }
             }
           ]
         }
@@ -3936,80 +3936,6 @@
           }
         },
         {
-          "charges": {
-            "autoLoad": true,
-            "fireEvent": "ammo_fire",
-            "explosionEvent": "ammo_explosion",
-            "wreckedPartId": 0,
-            "ammo_body_01_dm": {
-              "count": 1
-            },
-            "ammo_body_02_dm": {
-              "count": 1
-            },
-            "ammo_body_03_dm": {
-              "count": 1
-            },
-            "ammo_body_04_dm": {
-              "count": 1
-            },
-            "ammo_body_05_dm": {
-              "count": 1
-            },
-            "ammo_body_06_dm": {
-              "count": 1
-            },
-            "ammo_body_07_dm": {
-              "count": 1
-            },
-            "ammo_body_08_dm": {
-              "count": 1
-            },
-            "ammo_body_09_dm": {
-              "count": 1
-            },
-            "ammo_body_10_dm": {
-              "count": 1
-            },
-            "ammo_body_11_dm": {
-              "count": 1
-            },
-            "ammo_body_12_dm": {
-              "count": 1
-            },
-            "ammo_body_13_dm": {
-              "count": 1
-            },
-            "ammo_body_14_dm": {
-              "count": 1
-            },
-            "ammo_body_15_dm": {
-              "count": 1
-            },
-            "ammo_body_16_dm": {
-              "count": 1
-            },
-            "ammo_body_17_dm": {
-              "count": 1
-            },
-            "ammo_body_18_dm": {
-              "count": 1
-            },
-            "ammo_body_19_dm": {
-              "count": 1
-            },
-            "ammo_body_20_dm": {
-              "count": 1
-            },
-            "ammo_body_21_dm": {
-              "count": 1
-            },
-            "ammo_body_22_dm": {
-              "count": 1
-            }
-          }
-        },
-        {
           "shells": {
             "reloadTimeMult": 4.0,
             "fireEvent": "ammo_fire",
@@ -4082,6 +4008,80 @@
               "count": 1
             },
             "ammo_turret_44_dm": {
+              "count": 1
+            }
+          }
+        },
+        {
+          "charges": {
+            "autoLoad": true,
+            "fireEvent": "ammo_fire",
+            "explosionEvent": "ammo_explosion",
+            "wreckedPartId": 0,
+            "ammo_body_01_dm": {
+              "count": 1
+            },
+            "ammo_body_02_dm": {
+              "count": 1
+            },
+            "ammo_body_03_dm": {
+              "count": 1
+            },
+            "ammo_body_04_dm": {
+              "count": 1
+            },
+            "ammo_body_05_dm": {
+              "count": 1
+            },
+            "ammo_body_06_dm": {
+              "count": 1
+            },
+            "ammo_body_07_dm": {
+              "count": 1
+            },
+            "ammo_body_08_dm": {
+              "count": 1
+            },
+            "ammo_body_09_dm": {
+              "count": 1
+            },
+            "ammo_body_10_dm": {
+              "count": 1
+            },
+            "ammo_body_11_dm": {
+              "count": 1
+            },
+            "ammo_body_12_dm": {
+              "count": 1
+            },
+            "ammo_body_13_dm": {
+              "count": 1
+            },
+            "ammo_body_14_dm": {
+              "count": 1
+            },
+            "ammo_body_15_dm": {
+              "count": 1
+            },
+            "ammo_body_16_dm": {
+              "count": 1
+            },
+            "ammo_body_17_dm": {
+              "count": 1
+            },
+            "ammo_body_18_dm": {
+              "count": 1
+            },
+            "ammo_body_19_dm": {
+              "count": 1
+            },
+            "ammo_body_20_dm": {
+              "count": 1
+            },
+            "ammo_body_21_dm": {
+              "count": 1
+            },
+            "ammo_body_22_dm": {
               "count": 1
             }
           }

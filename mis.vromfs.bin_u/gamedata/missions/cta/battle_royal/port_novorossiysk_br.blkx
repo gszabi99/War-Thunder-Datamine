@@ -362,6 +362,19 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 8,
+            "var": "artillery_disable_stage",
+            "fromDescriptor": "artillery_disable_stage"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 8,
+            "var": "pickups_count"
+          }
+        },
+        {
           "comment": {
             "value": "(br_area_div * 2 - 1 = 11) - number of total stages"
           }
@@ -379,13 +392,6 @@
         {
           "comment": {
             "value": "artillery have radius 150m radius and sector side is 1400/6=250m"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "artillery_disable_stage",
-            "fromDescriptor": "artillery_disable_stage"
           }
         },
         {
@@ -433,12 +439,6 @@
             "object_var_value": 0,
             "object": "object_groups_sqad",
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "pickups_count"
           }
         }
       ],
@@ -559,6 +559,127 @@
           },
           {
             "squad_members": "spawn_43"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "pickups_area_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1354.48,-6.95896,946.62]
+        ],
+        "props": [
+          {
+            "squad_members": "pickup_area01"
+          },
+          {
+            "squad_members": "pickup_area02"
+          },
+          {
+            "squad_members": "pickup_area03"
+          },
+          {
+            "squad_members": "pickup_area04"
+          },
+          {
+            "squad_members": "pickup_area05"
+          },
+          {
+            "squad_members": "pickup_area06"
+          },
+          {
+            "squad_members": "pickup_area07"
+          },
+          {
+            "squad_members": "pickup_area08"
+          },
+          {
+            "squad_members": "pickup_area09"
+          },
+          {
+            "squad_members": "pickup_area10"
+          },
+          {
+            "squad_members": "pickup_area11"
+          },
+          {
+            "squad_members": "pickup_area12"
+          },
+          {
+            "squad_members": "pickup_area13"
+          },
+          {
+            "squad_members": "pickup_area14"
+          },
+          {
+            "squad_members": "pickup_area15"
+          },
+          {
+            "squad_members": "pickup_area16"
+          },
+          {
+            "squad_members": "pickup_area17"
+          },
+          {
+            "squad_members": "pickup_area18"
+          },
+          {
+            "squad_members": "pickup_area19"
+          },
+          {
+            "squad_members": "pickup_area20"
+          },
+          {
+            "squad_members": "pickup_area21"
+          },
+          {
+            "squad_members": "pickup_area22"
+          },
+          {
+            "squad_members": "pickup_area23"
+          },
+          {
+            "squad_members": "pickup_area24"
+          },
+          {
+            "squad_members": "pickup_area25"
+          },
+          {
+            "squad_members": "pickup_area26"
+          },
+          {
+            "squad_members": "pickup_area27"
+          },
+          {
+            "squad_members": "pickup_area28"
+          },
+          {
+            "squad_members": "pickup_area29"
+          },
+          {
+            "squad_members": "pickup_area30"
+          },
+          {
+            "squad_members": "pickup_area31"
+          },
+          {
+            "squad_members": "pickup_area32"
+          },
+          {
+            "squad_members": "pickup_area33"
+          },
+          {
+            "squad_members": "pickup_area34"
+          },
+          {
+            "squad_members": "pickup_area35"
+          },
+          {
+            "squad_members": "pickup_area36"
           }
         ]
       }
@@ -2298,6 +2419,57 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "objectGroups_106",
+        "tm": [
+          [-0.408668,0.0,0.687743],
+          [0.0,0.8,0.0],
+          [-0.687743,0.0,-0.408668],
+          [1034.4,6.05,1058.55]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_107",
+        "tm": [
+          [0.896204,0.0,-0.443641],
+          [0.0,1.0,0.0],
+          [0.443641,0.0,0.896204],
+          [1000.3,7.14099,1014.2]
+        ],
+        "unit_class": "debris_bricks_medium_b",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_108",
+        "tm": [
+          [-0.872829,0.0,0.488025],
+          [0.0,1.0,0.0],
+          [-0.488025,0.0,-0.872829],
+          [994.35,7.45,1011.55]
+        ],
+        "unit_class": "debris_bricks_medium",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
       "squad": {
         "name": "object_groups_sqad",
         "tm": [
@@ -2629,127 +2801,6 @@
       }
     },
     {
-      "area_squad": {
-        "name": "pickups_area_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1354.48,-6.95896,946.62]
-        ],
-        "props": [
-          {
-            "squad_members": "pickup_area01"
-          },
-          {
-            "squad_members": "pickup_area02"
-          },
-          {
-            "squad_members": "pickup_area03"
-          },
-          {
-            "squad_members": "pickup_area04"
-          },
-          {
-            "squad_members": "pickup_area05"
-          },
-          {
-            "squad_members": "pickup_area06"
-          },
-          {
-            "squad_members": "pickup_area07"
-          },
-          {
-            "squad_members": "pickup_area08"
-          },
-          {
-            "squad_members": "pickup_area09"
-          },
-          {
-            "squad_members": "pickup_area10"
-          },
-          {
-            "squad_members": "pickup_area11"
-          },
-          {
-            "squad_members": "pickup_area12"
-          },
-          {
-            "squad_members": "pickup_area13"
-          },
-          {
-            "squad_members": "pickup_area14"
-          },
-          {
-            "squad_members": "pickup_area15"
-          },
-          {
-            "squad_members": "pickup_area16"
-          },
-          {
-            "squad_members": "pickup_area17"
-          },
-          {
-            "squad_members": "pickup_area18"
-          },
-          {
-            "squad_members": "pickup_area19"
-          },
-          {
-            "squad_members": "pickup_area20"
-          },
-          {
-            "squad_members": "pickup_area21"
-          },
-          {
-            "squad_members": "pickup_area22"
-          },
-          {
-            "squad_members": "pickup_area23"
-          },
-          {
-            "squad_members": "pickup_area24"
-          },
-          {
-            "squad_members": "pickup_area25"
-          },
-          {
-            "squad_members": "pickup_area26"
-          },
-          {
-            "squad_members": "pickup_area27"
-          },
-          {
-            "squad_members": "pickup_area28"
-          },
-          {
-            "squad_members": "pickup_area29"
-          },
-          {
-            "squad_members": "pickup_area30"
-          },
-          {
-            "squad_members": "pickup_area31"
-          },
-          {
-            "squad_members": "pickup_area32"
-          },
-          {
-            "squad_members": "pickup_area33"
-          },
-          {
-            "squad_members": "pickup_area34"
-          },
-          {
-            "squad_members": "pickup_area35"
-          },
-          {
-            "squad_members": "pickup_area36"
-          }
-        ]
-      }
-    },
-    {
       "armada": {
         "name": "player01",
         "tm": [
@@ -2793,57 +2844,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_106",
-        "tm": [
-          [-0.408668,0.0,0.687743],
-          [0.0,0.8,0.0],
-          [-0.687743,0.0,-0.408668],
-          [1034.4,6.05,1058.55]
-        ],
-        "unit_class": "debris_bricks_large_b",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_107",
-        "tm": [
-          [0.896204,0.0,-0.443641],
-          [0.0,1.0,0.0],
-          [0.443641,0.0,0.896204],
-          [1000.3,7.14099,1014.2]
-        ],
-        "unit_class": "debris_bricks_medium_b",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_108",
-        "tm": [
-          [-0.872829,0.0,0.488025],
-          [0.0,1.0,0.0],
-          [-0.488025,0.0,-0.872829],
-          [994.35,7.45,1011.55]
-        ],
-        "unit_class": "debris_bricks_medium",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
       }
     }
   ],

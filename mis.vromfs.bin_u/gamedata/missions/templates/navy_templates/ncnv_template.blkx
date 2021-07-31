@@ -609,21 +609,6 @@
           }
         },
         {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "linePointStr",
-            "input_var": "linePointCount"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "linePointCount"
-          }
-        },
-        {
           "varSetString": {
             "value": "convoy_waypoint",
             "var": "linPointStr_next"
@@ -633,8 +618,23 @@
           "varAddString": {
             "value": "",
             "digits": 2,
+            "var": "linePointStr",
+            "input_var": "linePointCount"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
             "var": "linPointStr_next",
             "input_var": "linePointCount"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "linePointCount"
           }
         },
         {

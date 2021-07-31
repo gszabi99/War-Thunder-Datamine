@@ -53,7 +53,12 @@
       "actions": [
         {
           "comment": {
-            "value": "указываем максимальное количество баз +1"
+            "value": "\u0443\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u043c \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u0430\u0437 +1"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0441\u0430\u043c \u0441\u0435\u0431\u044f \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u0442"
           }
         },
         {
@@ -66,11 +71,6 @@
           "varSetInt": {
             "value": 9,
             "var": "bdt_t2_total_bases_max_count"
-          }
-        },
-        {
-          "comment": {
-            "value": "говорим что шаблон сам себя рестартит"
           }
         },
         {
@@ -1043,6 +1043,48 @@
       }
     },
     {
+      "structures": {
+        "name": "bdt_t1_bomb_zone_06_bomb_target",
+        "tm": [
+          [0.906307,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,0.906307],
+          [26923.0,70.3452,-20077.8]
+        ],
+        "unit_class": "dummy_immortal",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true,
+          "targetableByAi": false
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "bdt_t1_targets_squad",
         "tm": [
@@ -1123,45 +1165,33 @@
       }
     },
     {
-      "structures": {
-        "name": "bdt_t1_bomb_zone_06_bomb_target",
+      "squad": {
+        "name": "bdt_t1_aaa_squad",
         "tm": [
-          [0.906307,0.0,0.422618],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906307],
-          [26923.0,70.3452,-20077.8]
+          [0.0,0.0,1.0],
+          [-34993.0,0.0,16114.9]
         ],
-        "unit_class": "dummy_immortal",
-        "objLayer": 2,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
         "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true,
-          "targetableByAi": false
-        },
-        "way": []
+          "object_marking": 0,
+          "squad_members": "bdt_t1_aaa_unit"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t2_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-36451.9,0.0,15820.7]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "bdt_t2_aaa_unit"
+        }
       }
     },
     {
@@ -1240,36 +1270,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "bdt_t1_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-34993.0,0.0,16114.9]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "bdt_t1_aaa_unit"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "bdt_t2_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-36451.9,0.0,15820.7]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "bdt_t2_aaa_unit"
-        }
       }
     }
   ],

@@ -196,6 +196,16 @@
           ]
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        },
+        {
           "unitPutToSleep": {
             "target": "artillery_tutorial_squad"
           }
@@ -229,6 +239,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_hello",
@@ -245,26 +260,27 @@
           }
         },
         {
+          "__playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_press_id_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "__triggerActivate": {
             "target": "initial",
             "activate_type": "ignoreConditions",
             "check_trigger_status": false,
             "after_activation": "disable"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player",
-            "isImmortal": true
           }
         },
         {
@@ -324,22 +340,6 @@
             "element": "hud_tutorial_tank_press_to_continue_map",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "__playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_press_id_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         }
       ],
@@ -442,6 +442,44 @@
           ]
         },
         {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "background_tanks12"
+            },
+            {
+              "object": "background_tanks13"
+            },
+            {
+              "speed": 25.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -521,34 +559,6 @@
           ]
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "background_tanks12"
-            },
-            {
-              "object": "background_tanks13"
-            },
-            {
-              "speed": 25.0
-            },
-            {
-              "lockSpeed": true
-            }
-          ]
-        },
-        {
           "missionBattleArea": {
             "air": true,
             "ground": true,
@@ -564,6 +574,11 @@
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -583,39 +598,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_001_intro01"
-          }
-        },
-        {
-          "unitPutToSleep": [
-            {
-              "target": "target_tank04"
-            },
-            {
-              "target": "artillery_tutorial_squad"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "driving_ride_forward_hint"
-            },
-            {
-              "target": "[sim]driving_use_transmission"
-            },
-            {
-              "target": "player_respawn"
-            }
-          ]
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_hello_continue",
@@ -632,14 +614,32 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player",
-            "isImmortal": true
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_001_intro01"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "driving_ride_forward_hint"
+            },
+            {
+              "target": "[sim]driving_use_transmission"
+            },
+            {
+              "target": "player_respawn"
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "target_tank04"
+            },
+            {
+              "target": "artillery_tutorial_squad"
+            }
+          ]
         },
         {
           "hudElementEnlarge": {
@@ -710,33 +710,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "playerControls": [
-            {
-              "setStatus": "enable"
-            },
-            {
-              "control": "ID_TRANS_GEAR_UP"
-            },
-            {
-              "control": "ID_TRANS_GEAR_DOWN"
-            },
-            {
-              "control": "ID_TRANS_GEAR_NEUTRAL"
-            },
-            {
-              "control": "ID_BAILOUT"
-            }
-          ]
-        },
-        {
           "playHint": [
             {
               "hintType": "tutorialHint"
@@ -779,6 +752,33 @@
             },
             {
               "shouldBlink": false
+            }
+          ]
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "playerControls": [
+            {
+              "setStatus": "enable"
+            },
+            {
+              "control": "ID_TRANS_GEAR_UP"
+            },
+            {
+              "control": "ID_TRANS_GEAR_DOWN"
+            },
+            {
+              "control": "ID_TRANS_GEAR_NEUTRAL"
+            },
+            {
+              "control": "ID_BAILOUT"
             }
           ]
         },
@@ -899,6 +899,28 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_ride_forward",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "gm_throttle+gm_steering",
+            "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
           }
@@ -908,11 +930,6 @@
             "target": "tutorial_tank_basics_learn_to_move",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -942,23 +959,6 @@
               "control": "ID_BAILOUT"
             }
           ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_ride_forward",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "gm_throttle+gm_steering",
-            "shouldBlink": false
-          }
         },
         {
           "triggerEnable": [
@@ -1023,6 +1023,11 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerDisable": {
             "target": "tutorial_tank_arcade_003_movement01"
           }
@@ -1059,11 +1064,6 @@
             "element": "hud_tutorial_tank_movement_info",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -1188,6 +1188,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -1209,11 +1214,6 @@
             "ignoreDifficulty": false,
             "scale": 0.0,
             "target": "waypoint02_underground"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -1276,16 +1276,6 @@
           }
         },
         {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint02_underground"
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -1297,6 +1287,16 @@
             "scale": 1.0,
             "target": "waypoint03",
             "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint02_underground"
           }
         },
         {
@@ -1358,16 +1358,6 @@
           }
         },
         {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint03_underground"
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -1379,6 +1369,16 @@
             "scale": 1.0,
             "target": "waypoint04",
             "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint03_underground"
           }
         },
         {
@@ -1561,16 +1561,6 @@
           ]
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "target_tank01"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1581,8 +1571,23 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "target_tank01"
+          }
+        },
+        {
           "tacticalMapForceZoom": {
             "zoom": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1621,20 +1626,15 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_005_a_map_explanation01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_map",
             "show": true,
             "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_005_a_map_explanation01"
           }
         },
         {
@@ -1689,8 +1689,39 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_about_minimap_markers",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_minimap_all_captions",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_press_to_continue_map",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1715,37 +1746,6 @@
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_005_a_map_explanation02"
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_about_minimap_markers",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_minimap_all_captions",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_press_to_continue_map",
-            "show": true,
-            "time": -1
           }
         },
         {
@@ -1805,6 +1805,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_video_about_hud_markers",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_video_about_hud_markers_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_minimap_itself",
             "show": false,
@@ -1833,6 +1865,34 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "tank_tutorial_basic_shooting_screen01",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_cursor_location",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_cannon_aiming",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_cross_location",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1848,6 +1908,26 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -1857,88 +1937,8 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "tank_tutorial_basic_shooting_screen01",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_005_cursors_explanation01"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_video_about_hud_markers",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_cursor_location",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_cannon_aiming",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_cross_location",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_video_about_hud_markers_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -1983,6 +1983,38 @@
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_video_dont_shoot_at_cursor",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_video_dont_shoot_at_cursor_continue",
+            "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
@@ -2044,39 +2076,10 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
           "hudElementShow": {
             "element": "tank_tutorial_basic_shooting01",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_video_dont_shoot_at_cursor",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_005_cursors_explanation02"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -2094,24 +2097,21 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_video_dont_shoot_at_cursor_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_005_cursors_explanation02"
           }
         },
         {
           "triggerEnable": {
             "target": "shootingVideo_correct_shooting"
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
           }
         }
       ],
@@ -2163,23 +2163,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_basic_shooting02",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_basic_shooting_screen02",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_video_shoot_at_cross",
@@ -2193,40 +2176,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_005_cursors_explanation03"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "shootingP1_player_teleport"
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_basic_shooting02",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_basic_shooting_screen03",
-            "show": true,
-            "time": -1
           }
         },
         {
@@ -2246,14 +2195,65 @@
           }
         },
         {
-          "bigQueryAddRecord": {
-            "name": "tutorial_tank_basics_arcade",
-            "params": "task 2/8: hud and shooting explanations viewed"
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_basic_shooting02",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_basic_shooting_screen02",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_basic_shooting02",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_basic_shooting_screen03",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_005_cursors_explanation03"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "shootingP1_player_teleport"
           }
         },
         {
           "triggerEnable": {
             "target": "shootingP1_spot_your_target"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_basics_arcade",
+            "params": "task 2/8: hud and shooting explanations viewed"
           }
         }
       ],
@@ -2281,6 +2281,12 @@
           }
         },
         {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
           "unitRespawn": {
             "delay": 1.0,
             "offset": [0.0,0.0,0.0],
@@ -2294,18 +2300,12 @@
           }
         },
         {
-          "playerCenterMouseAim": []
-        },
-        {
           "wait": {
             "time": 0.1
           }
         },
         {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
+          "playerCenterMouseAim": []
         }
       ],
       "else_actions": []
@@ -2360,6 +2360,52 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "playHint": [
+            {
+              "hintType": "tutorialHint"
+            },
+            {
+              "name": "hints/tutorial_tank_move_turret"
+            },
+            {
+              "action": "show"
+            },
+            {
+              "shouldFadeOut": false
+            },
+            {
+              "time": -1.0
+            },
+            {
+              "priority": 0
+            },
+            {
+              "isOverFade": false
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "item": "gm_mouse_aim_x"
+            },
+            {
+              "item": "gm_mouse_aim_y"
+            },
+            {
+              "shouldBlink": false
+            }
+          ]
         },
         {
           "hudElementShow": {
@@ -2423,6 +2469,11 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -2450,57 +2501,6 @@
             "speed": 0.0,
             "realtimeTriggers": true
           }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": [
-            {
-              "hintType": "tutorialHint"
-            },
-            {
-              "name": "hints/tutorial_tank_move_turret"
-            },
-            {
-              "action": "show"
-            },
-            {
-              "shouldFadeOut": false
-            },
-            {
-              "time": -1.0
-            },
-            {
-              "priority": 0
-            },
-            {
-              "isOverFade": false
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "item": "gm_mouse_aim_x"
-            },
-            {
-              "item": "gm_mouse_aim_y"
-            },
-            {
-              "shouldBlink": false
-            }
-          ]
         },
         {
           "playerLockTarget": {
@@ -2637,6 +2637,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_wait_for_turret",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_wait_for_turret_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -2674,19 +2706,8 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_wait_for_turret",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2695,29 +2716,8 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "triggerEnable": {
             "target": "shootingP1_switch_to_sniper_sight"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_wait_for_turret_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         }
       ],
@@ -2789,6 +2789,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_switch_to_sniper_sight",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "pseudo_toggle_view",
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": ""
           }
@@ -2810,23 +2827,6 @@
               "control": "ID_TOGGLE_VIEW"
             }
           ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_switch_to_sniper_sight",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "pseudo_toggle_view",
-            "shouldBlink": false
-          }
         },
         {
           "triggerEnable": [
@@ -2892,6 +2892,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_zoom_in",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_ZOOM_TOGGLE",
+            "shouldBlink": false
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -2911,23 +2928,6 @@
               "control": "ID_ZOOM_TOGGLE"
             }
           ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_zoom_in",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_ZOOM_TOGGLE",
-            "shouldBlink": false
-          }
         },
         {
           "triggerEnable": [
@@ -2996,21 +2996,6 @@
           }
         },
         {
-          "moAddMissionObjective": {
-            "target": "tutorial_tank_basics_learn_to_shoot",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_crosshair",
@@ -3027,16 +3012,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_009_first_target_crosshairs01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_crosshair_continue",
@@ -3050,6 +3025,31 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "tutorial_tank_basics_learn_to_shoot",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_009_first_target_crosshairs01"
           }
         },
         {
@@ -3111,14 +3111,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_crosshair",
@@ -3135,16 +3127,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_009_first_target_crosshairs01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_crosshair_continue",
@@ -3158,6 +3140,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_009_first_target_crosshairs01"
           }
         },
         {
@@ -3209,14 +3209,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_crosshair_colors",
@@ -3233,16 +3225,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_crosshair_colors_continue",
@@ -3256,6 +3238,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
           }
         },
         {
@@ -3312,6 +3312,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "hudElementShow": {
             "element": "tutorial_tank_sight_color_img",
             "show": true,
@@ -3340,6 +3345,13 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_press_to_continue_cross",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -3361,18 +3373,6 @@
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_010_first_target_crosshairs02"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_press_to_continue_cross",
-            "show": true,
-            "time": -1
           }
         },
         {
@@ -3424,21 +3424,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_press_to_continue_cross",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_aim_at_crew",
@@ -3453,6 +3438,21 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_press_to_continue_cross",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "playerControls": [
@@ -3478,7 +3478,7 @@
               "blink": true
             },
             {
-              "color": "#00ff21ff"
+              "color": [33,255,0,255]
             },
             {
               "target": "target_tank01"
@@ -3551,11 +3551,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shoot_at_crew",
@@ -3570,6 +3565,11 @@
             "object_var_value": 0,
             "item": "ID_FIRE_GM",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -3733,6 +3733,39 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_xray_all_texts",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_xray_itself",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_xray_explanation",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_press_to_continue_xray",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "wait": {
             "time": 2.0
           }
@@ -3811,39 +3844,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_xray_all_texts",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_xray_itself",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_xray_explanation",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_press_to_continue_xray",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
           "triggerEnable": {
             "target": "shootingP1_xray_explained"
           }
@@ -3906,15 +3906,27 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_xray_crew_count",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_press_to_continue_xray",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_xray_crew_count",
-            "show": true,
-            "time": -1
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -3939,18 +3951,6 @@
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_013_xray_explanation02"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_press_to_continue_xray",
-            "show": true,
-            "time": -1
           }
         },
         {
@@ -4135,7 +4135,7 @@
         ],
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff21ff",
+          "color": [33,255,0,255],
           "target": "target_tank01",
           "part": "commander",
           "freq": 5.0
@@ -4247,7 +4247,7 @@
         "missionStopSpeech": [],
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff21ff",
+          "color": [33,255,0,255],
           "target": "target_tank01",
           "part": "loader",
           "freq": 5.0
@@ -4358,7 +4358,7 @@
         "missionStopSpeech": [],
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff21ff",
+          "color": [33,255,0,255],
           "target": "target_tank01",
           "part": "driver",
           "freq": 5.0
@@ -4469,7 +4469,7 @@
         "missionStopSpeech": [],
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff21ff",
+          "color": [33,255,0,255],
           "target": "target_tank01",
           "part": "gunner",
           "freq": 5.0
@@ -4654,7 +4654,7 @@
             "blink": false
           },
           {
-            "color": "#00ff21ff"
+            "color": [33,255,0,255]
           },
           {
             "target": "target_tank01"
@@ -4740,14 +4740,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_toggle_view_back",
@@ -4763,6 +4755,14 @@
             "item": "pseudo_toggle_view",
             "shouldBlink": false
           }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": {
@@ -4821,6 +4821,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_about_engine_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -4846,6 +4862,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "playerLockTarget": {
             "target": "target_tank02"
           }
@@ -4854,29 +4875,8 @@
           "missionStopSpeech": []
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "hudElementSelectionShade": {
             "element": "curTarget"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_about_engine_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -4934,6 +4934,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_aim_at_engine",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerDisable": [
             {
               "target": "tutorial_tank_arcade_020_second_target_intro01"
@@ -4950,22 +4966,6 @@
         },
         {
           "missionStopSpeech": []
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_aim_at_engine",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
         },
         {
           "triggerEnable": {
@@ -4996,6 +4996,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -5010,24 +5015,6 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "triggerDisable": [
-            {
-              "target": "tutorial_tank_arcade_022_second_target_intro03"
-            },
-            {
-              "target": "tutorial_tank_arcade_023_second_target_fire01"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
         },
         {
           "playHint": [
@@ -5076,6 +5063,19 @@
           ]
         },
         {
+          "triggerDisable": [
+            {
+              "target": "tutorial_tank_arcade_022_second_target_intro03"
+            },
+            {
+              "target": "tutorial_tank_arcade_023_second_target_fire01"
+            }
+          ]
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
           "playerControls": [
             {
               "setStatus": "enable"
@@ -5117,7 +5117,7 @@
         {
           "unitBlinkPart": {
             "blink": true,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank02",
             "part": "engine",
             "freq": 5.0
@@ -5181,6 +5181,22 @@
           }
         },
         {
+          "playerControls": [
+            {
+              "setStatus": "disable"
+            },
+            {
+              "control": "ID_FIRE"
+            },
+            {
+              "control": "ID_FIRE_CANNONS"
+            },
+            {
+              "control": "ID_FIRE_GM"
+            }
+          ]
+        },
+        {
           "unitSetIndication": {
             "set": false,
             "target_marking": 0,
@@ -5201,25 +5217,9 @@
           }
         },
         {
-          "playerControls": [
-            {
-              "setStatus": "disable"
-            },
-            {
-              "control": "ID_FIRE"
-            },
-            {
-              "control": "ID_FIRE_CANNONS"
-            },
-            {
-              "control": "ID_FIRE_GM"
-            }
-          ]
-        },
-        {
           "unitBlinkPart": {
             "blink": false,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank02",
             "part": "engine",
             "freq": 5.0
@@ -5255,6 +5255,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "__playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_fire_and_explosion",
@@ -5285,20 +5290,15 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_024_second_target_xray01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_xray",
             "show": true,
             "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_024_second_target_xray01"
           }
         },
         {
@@ -5430,9 +5430,15 @@
           ]
         },
         {
+          "playerControls": {
+            "setStatus": "disable",
+            "control": "ID_FIRE_GM"
+          }
+        },
+        {
           "unitBlinkPart": {
             "blink": false,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank02",
             "part": "engine",
             "freq": 5.0
@@ -5453,8 +5459,27 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_fire_and_explosion",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_fire_and_explosion",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -5469,20 +5494,7 @@
           }
         },
         {
-          "playerControls": {
-            "setStatus": "disable",
-            "control": "ID_FIRE_GM"
-          }
-        },
-        {
           "missionStopSpeech": []
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_fire_and_explosion",
-            "show": true,
-            "time": -1
-          }
         },
         {
           "playHint": {
@@ -5514,24 +5526,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_fire_and_explosion",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "bigQueryAddRecord": {
-            "name": "tutorial_tank_basics_arcade",
-            "params": "task 5/8: player killed the 2nd tank by shooting at its engine"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "captureZone_start"
@@ -5540,6 +5534,12 @@
               "target": "captureZone_change_view"
             }
           ]
+        },
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_basics_arcade",
+            "params": "task 5/8: player killed the 2nd tank by shooting at its engine"
+          }
         }
       ],
       "else_actions": []
@@ -5585,14 +5585,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_capture_zone_toggle_view_back",
@@ -5608,6 +5600,14 @@
             "item": "pseudo_toggle_view",
             "shouldBlink": false
           }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": {
@@ -5658,6 +5658,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_about_target_camera",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_about_target_camera_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -5675,35 +5707,8 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_about_target_camera",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "playerLockTarget": {
-            "target": "target_tank03"
-          }
-        },
-        {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
           }
         },
         {
@@ -5712,19 +5717,14 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_about_target_camera_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "playerLockTarget": {
+            "target": "target_tank03"
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
           }
         },
         {
@@ -5781,22 +5781,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": "curTarget"
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_target_camera_manual",
@@ -5810,6 +5794,22 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": "curTarget"
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -5841,6 +5841,16 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "triggerDisable": {
             "target": "targetCamera_change_view"
           }
@@ -5862,14 +5872,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_target_camera_manual_is_hard",
@@ -5886,9 +5888,7 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": {
@@ -5935,6 +5935,28 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_use_target_camera",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TARGET_CAMERA",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "targetCamera_used"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "targetCamera_used"
           }
@@ -5945,8 +5967,20 @@
           }
         },
         {
+          "hudElementSelectionShade": {
+            "element": "curTarget"
+          }
+        },
+        {
           "missionSetFade": {
             "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
             "color": [0.0,0.0,0.0],
             "time": 0.5
           }
@@ -5960,6 +5994,26 @@
           }
         },
         {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
+          "wait": {
+            "time": 0.2
+          }
+        },
+        {
+          "wait": {
+            "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
+          }
+        },
+        {
           "unitPutToSleep": {
             "target": "target_tank03"
           }
@@ -5970,11 +6024,6 @@
             "offset": [0.0,0.0,0.0],
             "object": "player",
             "target": "waypoint04"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
@@ -5999,63 +6048,14 @@
           }
         },
         {
-          "wait": {
-            "time": 0.2
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.6
-          }
-        },
-        {
           "playerLockTarget": {
             "target": "target_tank04"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.1
           }
         },
         {
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_TARGETING_HOLD_GM"
-          }
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": "curTarget"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_use_target_camera",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_TARGET_CAMERA",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "targetCamera_used"
           }
         }
       ],
@@ -6108,8 +6108,29 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_tank04",
+            "speed": 30.0,
+            "lockSpeed": true
+          }
+        },
+        {
           "wait": {
             "time": 10.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -6120,8 +6141,8 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
+          "playerEmulateShortcut": {
+            "control": "ID_LOCK_TARGET"
           }
         },
         {
@@ -6131,17 +6152,6 @@
         },
         {
           "missionStopSpeech": []
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "target_tank04",
-            "speed": 30.0,
-            "lockSpeed": true
-          }
         },
         {
           "playHint": {
@@ -6157,16 +6167,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "playerEmulateShortcut": {
-            "control": "ID_LOCK_TARGET"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -6218,6 +6218,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -6235,11 +6240,6 @@
         },
         {
           "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
         },
         {
           "__playerControls": [
@@ -6433,20 +6433,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.2
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_allied_artillery_warning",
@@ -6460,35 +6446,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_050a_artillery_strike01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_artillery_warning",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tutorial_tank_arrow_artillery_warning",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -6508,8 +6465,51 @@
           }
         },
         {
+          "wait": {
+            "time": 1.2
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_050a_artillery_strike01"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "alliedArtillery_stop_moving"
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_artillery_warning",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tutorial_tank_arrow_artillery_warning",
+            "show": true,
+            "time": -1
           }
         }
       ],
@@ -6599,16 +6599,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_050a_artillery_strike02"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_map",
             "show": true,
@@ -6617,7 +6607,17 @@
         },
         {
           "triggerEnable": {
+            "target": "tutorial_tank_arcade_050a_artillery_strike02"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "alliedArtillery_origins_of_strike"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         }
       ],
@@ -6669,6 +6669,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_allied_artillery_beware",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_allied_artillery_beware_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_press_to_continue_map",
             "show": false,
@@ -6702,37 +6734,8 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_allied_artillery_beware",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_050a_artillery_strike03"
           }
         },
         {
@@ -6741,19 +6744,16 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_allied_artillery_beware_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_050a_artillery_strike03"
           }
         },
         {
@@ -6810,19 +6810,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_allied_artillery_turn_back",
@@ -6838,6 +6825,19 @@
             "item": "gm_throttle=min",
             "shouldBlink": false
           }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": [
@@ -6987,6 +6987,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_allied_artillery_wait",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerDisable": {
             "target": "alliedArtillery_strike_for_all"
           }
@@ -7029,28 +7061,12 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
         },
         {
           "triggerEnable": {
@@ -7058,29 +7074,13 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_allied_artillery_wait",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "triggerEnable": {
+            "target": "alliedArtillery_explosions"
           }
         },
         {
           "tutorialArtilleryShootAtPos": {
             "area": "artillery_strike_zone"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "alliedArtillery_explosions"
           }
         }
       ],
@@ -7107,6 +7107,26 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 8.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.7
+          }
+        },
+        {
+          "wait": {
+            "time": 18.0
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "effect": "art_ground_splash",
@@ -7118,35 +7138,6 @@
             "delay": [1.0,1.0],
             "target": "explosion01",
             "radiusOffset": [0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "unitDamage": {
-            "part": 1,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "target_tank07",
-            "partName": "ammo_body_01",
-            "explodeAmmo": true
-          }
-        },
-        {
-          "unitPutToSleep": {
-            "target": "art_hedgehogs02"
-          }
-        },
-        {
-          "wait": {
-            "time": 8.0
           }
         },
         {
@@ -7164,8 +7155,17 @@
           }
         },
         {
-          "wait": {
-            "time": 0.7
+          "unitDamage": {
+            "part": 1,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "target_tank07",
+            "partName": "ammo_body_01",
+            "explodeAmmo": true
           }
         },
         {
@@ -7183,13 +7183,13 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_050a_artillery_strike06"
+          "unitPutToSleep": {
+            "target": "art_hedgehogs02"
           }
         },
         {
-          "wait": {
-            "time": 18.0
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_050a_artillery_strike06"
           }
         },
         {
@@ -7237,6 +7237,27 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_allied_artillery_move",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -7259,45 +7280,14 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_allied_artillery_move",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "missionSetTimeSpeed": {
             "speed": 1.0,
             "realtimeTriggers": true
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_050a_artillery_strike07"
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint09_underground"
           }
         },
         {
@@ -7309,6 +7299,16 @@
               "target": "captureZone_start"
             }
           ]
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint09_underground"
+          }
         }
       ],
       "else_actions": []
@@ -7375,19 +7375,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_allied_artillery_you_will_get_it_too",
@@ -7401,11 +7388,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -7423,6 +7405,24 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "missionStopSpeech": []
         }
       ],
       "else_actions": []
@@ -7468,6 +7468,20 @@
           }
         },
         {
+          "unitPlayEffect": {
+            "effect_type": "specify",
+            "effect": "pv_point_smoke_blue",
+            "offset": [0.0,0.0,0.0],
+            "show": true,
+            "attach": false,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [1.0,1.0],
+            "target": "capture_zone_smoke",
+            "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
           "missionMarkAsWaypoint": {
             "visible": false,
             "primary": true,
@@ -7475,6 +7489,16 @@
             "ignoreDifficulty": false,
             "scale": 0.0,
             "target": "waypoint09_underground"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -7504,6 +7528,38 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_capture_zone_start",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_capture_zone_start_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
@@ -7518,20 +7574,6 @@
             "zoneType": "capture",
             "useHUDMarkers": true,
             "zoneDefenders": []
-          }
-        },
-        {
-          "unitPlayEffect": {
-            "effect_type": "specify",
-            "effect": "pv_point_smoke_blue",
-            "offset": [0.0,0.0,0.0],
-            "show": true,
-            "attach": false,
-            "scale": 1.0,
-            "loopSpawn": true,
-            "delay": [1.0,1.0],
-            "target": "capture_zone_smoke",
-            "radiusOffset": [0.0,0.0]
           }
         },
         {
@@ -7551,50 +7593,8 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_capture_zone_start",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_046_capture_zone_start01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_capture_zone_start_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -7646,19 +7646,6 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_capture_zone_toggle_view_back",
@@ -7674,6 +7661,19 @@
             "item": "pseudo_toggle_view",
             "shouldBlink": false
           }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": {
@@ -7712,6 +7712,38 @@
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_capture_zone_start",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_capture_zone_start_continue",
+            "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
@@ -7765,45 +7797,13 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_capture_zone_start",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_046_capture_zone_start01"
-          }
-        },
-        {
           "wait": {
             "time": 2.0
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_capture_zone_start_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_046_capture_zone_start01"
           }
         },
         {
@@ -7855,19 +7855,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": "iconCaptureZone"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_zone_marker",
@@ -7884,16 +7871,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_048_capture_zone_hint02"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_zone_marker_continue",
@@ -7907,6 +7884,29 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": "iconCaptureZone"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_048_capture_zone_hint02"
           }
         },
         {
@@ -7958,6 +7958,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_go_inside_the_circle",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "gm_throttle+gm_steering",
+            "shouldBlink": false
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "enable"
@@ -7996,20 +8013,8 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_go_inside_the_circle",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "gm_throttle+gm_steering",
-            "shouldBlink": false
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -8044,11 +8049,6 @@
             "ignoreDifficulty": false,
             "scale": 0.0,
             "target": "waypoint08_underground"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -8102,16 +8102,6 @@
           }
         },
         {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint08_underground"
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -8123,6 +8113,16 @@
             "scale": 1.0,
             "target": "waypoint09",
             "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint08_underground"
           }
         },
         {
@@ -8227,16 +8227,6 @@
           }
         },
         {
-          "missionMarkAsWaypoint": {
-            "visible": false,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint09_underground"
-          }
-        },
-        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -8248,6 +8238,16 @@
             "scale": 1.0,
             "target": "waypoint10",
             "radiusOffset": [0.0,0.0]
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": false,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint09_underground"
           }
         },
         {
@@ -8495,6 +8495,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_destroy_enemy_tank_in_zone",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "fire",
+            "shouldBlink": false
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -8527,23 +8544,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "target_tank06"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_destroy_enemy_tank_in_zone",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "fire",
-            "shouldBlink": false
           }
         },
         {
@@ -8634,11 +8634,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_destroy_enemy_ammo_hint",
@@ -8653,6 +8648,11 @@
             "object_var_value": 0,
             "item": "ID_ACTION_BAR_ITEM_1",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -8733,6 +8733,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "triggerDisable": [
             {
               "target": "captureZone_change_ammo_switched"
@@ -8759,8 +8764,19 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_destroy_enemy_crew_hint",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
           }
         },
         {
@@ -8769,7 +8785,7 @@
               "blink": true
             },
             {
-              "color": "#00ff21ff"
+              "color": [33,255,0,255]
             },
             {
               "target": "target_tank01"
@@ -8793,22 +8809,6 @@
               "freq": 5.0
             }
           ]
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_destroy_enemy_crew_hint",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
         }
       ],
       "else_actions": []
@@ -8995,6 +8995,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_capture_zone_clear",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
             "element": "hud_tutorial_tank_tickets_all_texts",
             "show": false,
@@ -9031,6 +9047,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "hudElementSelectionShade": {
             "element": "screenTop"
           }
@@ -9052,35 +9073,8 @@
           ]
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_capture_zone_clear",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_053_capture_zone_target_killed01"
-          }
-        },
-        {
-          "bigQueryAddRecord": {
-            "name": "tutorial_tank_basics_arcade",
-            "params": "task 7/8: player cleared the capture zone from enemy presence"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -9092,6 +9086,12 @@
               "target": "captureZone_player_in_circle"
             }
           ]
+        },
+        {
+          "bigQueryAddRecord": {
+            "name": "tutorial_tank_basics_arcade",
+            "params": "task 7/8: player cleared the capture zone from enemy presence"
+          }
         }
       ],
       "else_actions": []
@@ -9152,6 +9152,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_go_to_circle_and_wait_until_capture_ends",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
@@ -9171,22 +9187,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_go_to_circle_and_wait_until_capture_ends",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -9342,11 +9342,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -9360,14 +9355,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -9403,16 +9390,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_056_capture_zone_completed_hint01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_about_zone_colors_continue",
@@ -9426,6 +9403,29 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_056_capture_zone_completed_hint01"
           }
         },
         {
@@ -9482,14 +9482,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_captures_are_important",
@@ -9506,16 +9498,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_047_capture_zone_hint01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_captures_are_important_continue",
@@ -9529,6 +9511,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_047_capture_zone_hint01"
           }
         },
         {
@@ -9580,14 +9580,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation02",
@@ -9604,13 +9596,47 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_058_capture_zone_completed_hint03"
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_tickets_explanation02_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100500,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_058_capture_zone_completed_hint03"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "captureZone_tickets_hint03"
           }
         },
         {
@@ -9632,32 +9658,6 @@
             "element": "tutorial_tank_arrow_enemy_tickets",
             "show": true,
             "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_tickets_explanation02_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100500,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "captureZone_tickets_hint03"
           }
         }
       ],
@@ -9704,19 +9704,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation03",
@@ -9733,16 +9720,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_059_capture_zone_completed_hint04"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_tickets_explanation03_continue",
@@ -9756,6 +9733,29 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_059_capture_zone_completed_hint04"
           }
         },
         {
@@ -9812,18 +9812,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_tickets_all_texts",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_final_hint",
@@ -9837,75 +9825,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -25,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_060_victory"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "tutorial_tank_basics_learn_to_capture",
-            "status": 2,
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
-          }
-        },
-        {
-          "gameMPChangeScore": {
-            "value": -30,
-            "valueSystem": "percentage",
-            "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.5
           }
         },
         {
@@ -9925,8 +9844,89 @@
           }
         },
         {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_tickets_all_texts",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -25,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "gameMPChangeScore": {
+            "value": -30,
+            "valueSystem": "percentage",
+            "team": "B"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_060_victory"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "tutorial_tank_basics_learn_to_capture",
+            "status": 2,
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
           }
         },
         {
@@ -10007,8 +10007,20 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -10040,18 +10052,6 @@
             "object": "player",
             "move_type": "teleport",
             "lookat": "waypoint01"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
           }
         }
       ],
@@ -13041,536 +13041,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1921.26,221.75,1571.65]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_tank01"
-          },
-          {
-            "squad_members": "target_tank02"
-          },
-          {
-            "squad_members": "target_tank06"
-          },
-          {
-            "squad_members": "target_tank03"
-          },
-          {
-            "squad_members": "target_tank07"
-          },
-          {
-            "squad_members": "target_tank08"
-          },
-          {
-            "squad_members": "target_tank04"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs001",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1566.97,217.553,1657.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs02",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1637.35,216.986,1595.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs03",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1649.42,216.99,1590.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs10",
-        "tm": [
-          [0.973864,0.0,0.227132],
-          [0.0,1.0,0.0],
-          [-0.227132,0.0,0.973864],
-          [1655.47,217.073,1623.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs11",
-        "tm": [
-          [0.869017,0.0,-0.494783],
-          [0.0,1.0,0.0],
-          [0.494783,0.0,0.869017],
-          [1601.81,217.553,1626.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs13",
-        "tm": [
-          [0.958144,0.0,-0.286287],
-          [0.0,1.0,0.0],
-          [0.286287,0.0,0.958144],
-          [1754.69,217.553,1628.75]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs16",
-        "tm": [
-          [0.748351,0.0,-0.663303],
-          [0.0,1.0,0.0],
-          [0.663303,0.0,0.748351],
-          [1766.53,217.553,1627.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs17",
-        "tm": [
-          [0.748351,0.0,-0.663303],
-          [0.0,1.0,0.0],
-          [0.663303,0.0,0.748351],
-          [1778.75,217.553,1622.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs23",
-        "tm": [
-          [0.598329,0.0,-0.801251],
-          [0.0,1.0,0.0],
-          [0.801251,0.0,0.598329],
-          [1848.71,217.553,1535.64]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs27",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1660.71,217.227,1585.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs26",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1674.06,217.553,1582.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs39",
-        "tm": [
-          [0.845122,0.0,-0.534573],
-          [0.0,1.0,0.0],
-          [0.534573,0.0,0.845122],
-          [1745.62,217.259,1556.15]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs38",
-        "tm": [
-          [0.932893,0.0,-0.360154],
-          [0.0,1.0,0.0],
-          [0.360154,0.0,0.932893],
-          [1759.7,217.254,1546.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs50",
-        "tm": [
-          [-0.375247,0.0,-0.926925],
-          [0.0,1.0,0.0],
-          [0.926925,0.0,-0.375247],
-          [1839.53,217.254,1544.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs14",
-        "tm": [
-          [0.984638,0.0,0.174607],
-          [0.0,1.0,0.0],
-          [-0.174607,0.0,0.984638],
-          [1672.15,217.083,1635.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs15",
-        "tm": [
-          [0.984638,0.0,0.174607],
-          [0.0,1.0,0.0],
-          [-0.174607,0.0,0.984638],
-          [1673.21,217.083,1641.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs18",
-        "tm": [
-          [0.744899,-0.0717984,-0.663303],
-          [0.0959422,0.995387,0.0],
-          [0.660243,-0.0636387,0.748351],
-          [1753.5,217.752,1639.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs24",
-        "tm": [
-          [0.991584,0.0,-0.129463],
-          [0.0,1.0,0.0],
-          [0.129463,0.0,0.991584],
-          [1861.84,217.553,1592.21]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs25",
-        "tm": [
-          [0.963998,0.0,0.26591],
-          [0.0,1.0,0.0],
-          [-0.26591,0.0,0.963998],
-          [1813.52,217.553,1583.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs28",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1796.72,217.553,1583.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs51",
-        "tm": [
-          [-0.375247,0.0,-0.926925],
-          [0.0,1.0,0.0],
-          [0.926925,0.0,-0.375247],
-          [1839.77,217.087,1534.65]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs04",
-        "tm": [
-          [0.942734,0.0,-0.333544],
-          [0.0,1.0,0.0],
-          [0.333544,0.0,0.942734],
-          [1586.44,217.553,1655.07]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs05",
-        "tm": [
-          [0.79606,0.0,-0.605217],
-          [0.0,1.0,0.0],
-          [0.605217,0.0,0.79606],
-          [1601.38,219.96,1650.97]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs06",
-        "tm": [
-          [0.79606,0.0,-0.605217],
-          [0.0,1.0,0.0],
-          [0.605217,0.0,0.79606],
-          [1617.39,217.553,1640.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs07",
-        "tm": [
-          [0.882225,0.0,-0.470828],
-          [0.0,1.0,0.0],
-          [0.470828,0.0,0.882225],
-          [1636.07,217.415,1626.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs12",
-        "tm": [
-          [0.869017,0.0,-0.494783],
-          [0.0,1.0,0.0],
-          [0.494783,0.0,0.869017],
-          [1566.36,216.777,1633.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs19",
-        "tm": [
-          [0.993548,0.0227149,0.111119],
-          [0.0,0.979739,-0.200278],
-          [-0.113417,0.198985,0.973418],
-          [1583.86,216.826,1630.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs52",
-        "tm": [
-          [-0.893347,0.0,-0.449368],
-          [0.0,1.0,0.0],
-          [0.449368,0.0,-0.893347],
-          [1829.01,216.614,1522.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs53",
-        "tm": [
-          [-0.997491,0.0,-0.0707989],
-          [0.0,1.0,0.0],
-          [0.0707989,0.0,-0.997491],
-          [1814.52,217.096,1516.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "tankModels": {
         "name": "background_tanks00",
         "tm": [
@@ -15498,183 +14968,6 @@
       }
     },
     {
-      "squad": {
-        "name": "background_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1731.33,217.274,1524.45]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "background_tanks00"
-          },
-          {
-            "squad_members": "background_tanks01"
-          },
-          {
-            "squad_members": "background_tanks02"
-          },
-          {
-            "squad_members": "background_tanks03"
-          },
-          {
-            "squad_members": "background_tanks04"
-          },
-          {
-            "squad_members": "background_tanks05"
-          },
-          {
-            "squad_members": "background_tanks06"
-          },
-          {
-            "squad_members": "background_tanks07"
-          },
-          {
-            "squad_members": "background_tanks08"
-          },
-          {
-            "squad_members": "background_tanks12"
-          },
-          {
-            "squad_members": "background_tanks11"
-          },
-          {
-            "squad_members": "background_tanks18"
-          },
-          {
-            "squad_members": "background_tanks16"
-          },
-          {
-            "squad_members": "background_tanks22"
-          },
-          {
-            "squad_members": "background_tanks23"
-          },
-          {
-            "squad_members": "background_tanks21"
-          },
-          {
-            "squad_members": "background_tanks27"
-          },
-          {
-            "squad_members": "background_tanks32"
-          },
-          {
-            "squad_members": "background_tanks31"
-          },
-          {
-            "squad_members": "background_tanks37"
-          },
-          {
-            "squad_members": "background_tanks38"
-          },
-          {
-            "squad_members": "background_tanks39"
-          },
-          {
-            "squad_members": "background_tanks35"
-          },
-          {
-            "squad_members": "background_tanks29"
-          },
-          {
-            "squad_members": "background_tanks41"
-          },
-          {
-            "squad_members": "background_tanks34"
-          },
-          {
-            "squad_members": "background_tanks42"
-          },
-          {
-            "squad_members": "background_tanks44"
-          },
-          {
-            "squad_members": "background_tanks14"
-          },
-          {
-            "squad_members": "background_tanks15"
-          },
-          {
-            "squad_members": "background_tanks13"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs40",
-        "tm": [
-          [0.927325,0.10177,-0.360154],
-          [-0.109091,0.994032,0.0],
-          [0.358005,0.0392895,0.932893],
-          [1774.38,217.67,1538.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs20",
-        "tm": [
-          [0.473312,0.160875,0.86608],
-          [0.0,0.983182,-0.182626],
-          [-0.880895,0.0864393,0.465352],
-          [1659.64,217.713,1631.43]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs29",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1785.51,217.044,1604.61]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs30",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1785.51,217.044,1591.89]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "tankModels": {
         "name": "background_tanks13",
         "tm": [
@@ -16609,6 +15902,1222 @@
       }
     },
     {
+      "tankModels": {
+        "name": "target_tank06",
+        "tm": [
+          [-0.999081,0.0,0.0428492],
+          [0.0,1.0,0.0],
+          [-0.0428492,0.0,-0.999081],
+          [2084.59,217.241,1550.02]
+        ],
+        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "target_tank03",
+        "tm": [
+          [-0.0601122,0.0,0.998191],
+          [0.0,1.0,0.0],
+          [-0.998191,0.0,-0.0601122],
+          [1847.47,221.75,1558.02]
+        ],
+        "unit_class": "ussr_t_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "target_tank03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1848.86,217.241,1600.58]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1841.21,217.241,1644.29]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1840.75,217.241,1700.66]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1846.72,217.241,1788.25]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1841.08,217.241,1792.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1769.17,217.241,1793.21]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1760.37,217.241,1804.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1758.77,217.241,1955.53]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank03_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1762.97,217.241,1977.33]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tankModels": {
+        "name": "target_tank07",
+        "tm": [
+          [-0.868451,0.0,-0.495774],
+          [0.0,1.0,0.0],
+          [0.495774,0.0,-0.868451],
+          [1890.6,216.51,1570.23]
+        ],
+        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "target_tank08",
+        "tm": [
+          [-0.853834,0.0,0.520545],
+          [0.0,1.0,0.0],
+          [-0.520545,0.0,-0.853834],
+          [1909.15,216.709,1552.22]
+        ],
+        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 1000,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "target_tank04",
+        "tm": [
+          [-0.0601122,0.0,0.998191],
+          [0.0,1.0,0.0],
+          [-0.998191,0.0,-0.0601122],
+          [1847.47,221.75,1558.02]
+        ],
+        "unit_class": "ussr_t_50",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "target_tank04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1848.86,217.241,1600.58]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1841.21,217.241,1644.29]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1840.75,217.241,1700.66]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1846.72,217.241,1788.25]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1841.08,217.241,1792.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1769.17,217.241,1793.21]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1760.37,217.241,1804.35]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1758.77,217.241,1955.53]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "target_tank04_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [1762.97,217.241,1977.33]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "target_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1921.26,221.75,1571.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_tank01"
+          },
+          {
+            "squad_members": "target_tank02"
+          },
+          {
+            "squad_members": "target_tank06"
+          },
+          {
+            "squad_members": "target_tank03"
+          },
+          {
+            "squad_members": "target_tank07"
+          },
+          {
+            "squad_members": "target_tank08"
+          },
+          {
+            "squad_members": "target_tank04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "background_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1731.33,217.274,1524.45]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "background_tanks00"
+          },
+          {
+            "squad_members": "background_tanks01"
+          },
+          {
+            "squad_members": "background_tanks02"
+          },
+          {
+            "squad_members": "background_tanks03"
+          },
+          {
+            "squad_members": "background_tanks04"
+          },
+          {
+            "squad_members": "background_tanks05"
+          },
+          {
+            "squad_members": "background_tanks06"
+          },
+          {
+            "squad_members": "background_tanks07"
+          },
+          {
+            "squad_members": "background_tanks08"
+          },
+          {
+            "squad_members": "background_tanks12"
+          },
+          {
+            "squad_members": "background_tanks11"
+          },
+          {
+            "squad_members": "background_tanks18"
+          },
+          {
+            "squad_members": "background_tanks16"
+          },
+          {
+            "squad_members": "background_tanks22"
+          },
+          {
+            "squad_members": "background_tanks23"
+          },
+          {
+            "squad_members": "background_tanks21"
+          },
+          {
+            "squad_members": "background_tanks27"
+          },
+          {
+            "squad_members": "background_tanks32"
+          },
+          {
+            "squad_members": "background_tanks31"
+          },
+          {
+            "squad_members": "background_tanks37"
+          },
+          {
+            "squad_members": "background_tanks38"
+          },
+          {
+            "squad_members": "background_tanks39"
+          },
+          {
+            "squad_members": "background_tanks35"
+          },
+          {
+            "squad_members": "background_tanks29"
+          },
+          {
+            "squad_members": "background_tanks41"
+          },
+          {
+            "squad_members": "background_tanks34"
+          },
+          {
+            "squad_members": "background_tanks42"
+          },
+          {
+            "squad_members": "background_tanks44"
+          },
+          {
+            "squad_members": "background_tanks14"
+          },
+          {
+            "squad_members": "background_tanks15"
+          },
+          {
+            "squad_members": "background_tanks13"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "artillery_tutorial_squad",
+        "tm": [
+          [-25234900992.0,0.0,-25234900992.0],
+          [0.0,0.0,0.0],
+          [0.0,0.0,-1129330.0],
+          [1884.98,218.952,1559.03]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "art_hedgehogs01"
+          },
+          {
+            "squad_members": "art_hedgehogs02"
+          },
+          {
+            "squad_members": "art_hedgehogs03"
+          },
+          {
+            "squad_members": "art_hedgehogs04"
+          },
+          {
+            "squad_members": "target_tank07"
+          },
+          {
+            "squad_members": "target_tank08"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs001",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1566.97,217.553,1657.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs02",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1637.35,216.986,1595.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs03",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1649.42,216.99,1590.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs10",
+        "tm": [
+          [0.973864,0.0,0.227132],
+          [0.0,1.0,0.0],
+          [-0.227132,0.0,0.973864],
+          [1655.47,217.073,1623.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs11",
+        "tm": [
+          [0.869017,0.0,-0.494783],
+          [0.0,1.0,0.0],
+          [0.494783,0.0,0.869017],
+          [1601.81,217.553,1626.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs13",
+        "tm": [
+          [0.958144,0.0,-0.286287],
+          [0.0,1.0,0.0],
+          [0.286287,0.0,0.958144],
+          [1754.69,217.553,1628.75]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs16",
+        "tm": [
+          [0.748351,0.0,-0.663303],
+          [0.0,1.0,0.0],
+          [0.663303,0.0,0.748351],
+          [1766.53,217.553,1627.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs17",
+        "tm": [
+          [0.748351,0.0,-0.663303],
+          [0.0,1.0,0.0],
+          [0.663303,0.0,0.748351],
+          [1778.75,217.553,1622.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs23",
+        "tm": [
+          [0.598329,0.0,-0.801251],
+          [0.0,1.0,0.0],
+          [0.801251,0.0,0.598329],
+          [1848.71,217.553,1535.64]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs27",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1660.71,217.227,1585.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs26",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1674.06,217.553,1582.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs39",
+        "tm": [
+          [0.845122,0.0,-0.534573],
+          [0.0,1.0,0.0],
+          [0.534573,0.0,0.845122],
+          [1745.62,217.259,1556.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs38",
+        "tm": [
+          [0.932893,0.0,-0.360154],
+          [0.0,1.0,0.0],
+          [0.360154,0.0,0.932893],
+          [1759.7,217.254,1546.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs50",
+        "tm": [
+          [-0.375247,0.0,-0.926925],
+          [0.0,1.0,0.0],
+          [0.926925,0.0,-0.375247],
+          [1839.53,217.254,1544.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs14",
+        "tm": [
+          [0.984638,0.0,0.174607],
+          [0.0,1.0,0.0],
+          [-0.174607,0.0,0.984638],
+          [1672.15,217.083,1635.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs15",
+        "tm": [
+          [0.984638,0.0,0.174607],
+          [0.0,1.0,0.0],
+          [-0.174607,0.0,0.984638],
+          [1673.21,217.083,1641.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs18",
+        "tm": [
+          [0.744899,-0.0717984,-0.663303],
+          [0.0959422,0.995387,0.0],
+          [0.660243,-0.0636387,0.748351],
+          [1753.5,217.752,1639.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs24",
+        "tm": [
+          [0.991584,0.0,-0.129463],
+          [0.0,1.0,0.0],
+          [0.129463,0.0,0.991584],
+          [1861.84,217.553,1592.21]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs25",
+        "tm": [
+          [0.963998,0.0,0.26591],
+          [0.0,1.0,0.0],
+          [-0.26591,0.0,0.963998],
+          [1813.52,217.553,1583.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs28",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1796.72,217.553,1583.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs51",
+        "tm": [
+          [-0.375247,0.0,-0.926925],
+          [0.0,1.0,0.0],
+          [0.926925,0.0,-0.375247],
+          [1839.77,217.087,1534.65]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs04",
+        "tm": [
+          [0.942734,0.0,-0.333544],
+          [0.0,1.0,0.0],
+          [0.333544,0.0,0.942734],
+          [1586.44,217.553,1655.07]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs05",
+        "tm": [
+          [0.79606,0.0,-0.605217],
+          [0.0,1.0,0.0],
+          [0.605217,0.0,0.79606],
+          [1601.38,219.96,1650.97]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs06",
+        "tm": [
+          [0.79606,0.0,-0.605217],
+          [0.0,1.0,0.0],
+          [0.605217,0.0,0.79606],
+          [1617.39,217.553,1640.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs07",
+        "tm": [
+          [0.882225,0.0,-0.470828],
+          [0.0,1.0,0.0],
+          [0.470828,0.0,0.882225],
+          [1636.07,217.415,1626.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs12",
+        "tm": [
+          [0.869017,0.0,-0.494783],
+          [0.0,1.0,0.0],
+          [0.494783,0.0,0.869017],
+          [1566.36,216.777,1633.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs19",
+        "tm": [
+          [0.993548,0.0227149,0.111119],
+          [0.0,0.979739,-0.200278],
+          [-0.113417,0.198985,0.973418],
+          [1583.86,216.826,1630.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs52",
+        "tm": [
+          [-0.893347,0.0,-0.449368],
+          [0.0,1.0,0.0],
+          [0.449368,0.0,-0.893347],
+          [1829.01,216.614,1522.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs53",
+        "tm": [
+          [-0.997491,0.0,-0.0707989],
+          [0.0,1.0,0.0],
+          [0.0707989,0.0,-0.997491],
+          [1814.52,217.096,1516.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs40",
+        "tm": [
+          [0.927325,0.10177,-0.360154],
+          [-0.109091,0.994032,0.0],
+          [0.358005,0.0392895,0.932893],
+          [1774.38,217.67,1538.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs20",
+        "tm": [
+          [0.473312,0.160875,0.86608],
+          [0.0,0.983182,-0.182626],
+          [-0.880895,0.0864393,0.465352],
+          [1659.64,217.713,1631.43]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs29",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1785.51,217.044,1604.61]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs30",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1785.51,217.044,1591.89]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
       "objectGroups": {
         "name": "hedgehogs21",
         "tm": [
@@ -16691,43 +17200,6 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "target_tank06",
-        "tm": [
-          [-0.999081,0.0,0.0428492],
-          [0.0,1.0,0.0],
-          [-0.0428492,0.0,-0.999081],
-          [2084.59,217.241,1550.02]
-        ],
-        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1000,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
       }
     },
     {
@@ -17258,188 +17730,6 @@
       }
     },
     {
-      "tankModels": {
-        "name": "target_tank03",
-        "tm": [
-          [-0.0601122,0.0,0.998191],
-          [0.0,1.0,0.0],
-          [-0.998191,0.0,-0.0601122],
-          [1847.47,221.75,1558.02]
-        ],
-        "unit_class": "ussr_t_50",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "target_tank03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1848.86,217.241,1600.58]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1841.21,217.241,1644.29]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1840.75,217.241,1700.66]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1846.72,217.241,1788.25]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1841.08,217.241,1792.35]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1769.17,217.241,1793.21]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1760.37,217.241,1804.35]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1758.77,217.241,1955.53]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank03_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1762.97,217.241,1977.33]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
-      }
-    },
-    {
       "objectGroups": {
         "name": "hedgehogs31",
         "tm": [
@@ -17453,262 +17743,6 @@
         "props": {
           "army": 2,
           "active": true
-        }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "target_tank07",
-        "tm": [
-          [-0.868451,0.0,-0.495774],
-          [0.0,1.0,0.0],
-          [0.495774,0.0,-0.868451],
-          [1890.6,216.51,1570.23]
-        ],
-        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1000,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "target_tank08",
-        "tm": [
-          [-0.853834,0.0,0.520545],
-          [0.0,1.0,0.0],
-          [-0.520545,0.0,-0.853834],
-          [1909.15,216.709,1552.22]
-        ],
-        "unit_class": "germ_pzkpfw_III_ausf_L_tutorial",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 1000,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "target_tank04",
-        "tm": [
-          [-0.0601122,0.0,0.998191],
-          [0.0,1.0,0.0],
-          [-0.998191,0.0,-0.0601122],
-          [1847.47,221.75,1558.02]
-        ],
-        "unit_class": "ussr_t_50",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "target_tank04_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1848.86,217.241,1600.58]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1841.21,217.241,1644.29]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1840.75,217.241,1700.66]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1846.72,217.241,1788.25]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1841.08,217.241,1792.35]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1769.17,217.241,1793.21]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1760.37,217.241,1804.35]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1758.77,217.241,1955.53]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "target_tank04_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [1762.97,217.241,1977.33]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
         }
       }
     },
@@ -17778,40 +17812,6 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "artillery_tutorial_squad",
-        "tm": [
-          [-25234900000.0,0.0,-25234900000.0],
-          [0.0,0.0,0.0],
-          [0.0,0.0,-1129330.0],
-          [1884.98,218.952,1559.03]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "art_hedgehogs01"
-          },
-          {
-            "squad_members": "art_hedgehogs02"
-          },
-          {
-            "squad_members": "art_hedgehogs03"
-          },
-          {
-            "squad_members": "art_hedgehogs04"
-          },
-          {
-            "squad_members": "target_tank07"
-          },
-          {
-            "squad_members": "target_tank08"
-          }
-        ]
       }
     },
     {

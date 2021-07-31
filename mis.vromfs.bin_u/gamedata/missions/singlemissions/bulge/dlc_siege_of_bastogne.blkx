@@ -254,28 +254,6 @@
           ]
         },
         {
-          "unitPutToSleep": [
-            {
-              "target": "us_transport_01"
-            },
-            {
-              "target": "us_transport_02"
-            },
-            {
-              "target": "us_transport_03"
-            },
-            {
-              "target": "us_fighters_01"
-            },
-            {
-              "target": "us_fighters_02"
-            },
-            {
-              "target": "us_fighters_03"
-            }
-          ]
-        },
-        {
           "unitSetProperties": [
             {
               "object": "allies"
@@ -309,6 +287,28 @@
                   }
                 }
               ]
+            }
+          ]
+        },
+        {
+          "unitPutToSleep": [
+            {
+              "target": "us_transport_01"
+            },
+            {
+              "target": "us_transport_02"
+            },
+            {
+              "target": "us_transport_03"
+            },
+            {
+              "target": "us_fighters_01"
+            },
+            {
+              "target": "us_fighters_02"
+            },
+            {
+              "target": "us_fighters_03"
             }
           ]
         },
@@ -409,13 +409,13 @@
           }
         },
         {
-          "moAddMissionObjective": {
-            "target": "dlc_siege_of_bastogne_main"
+          "wait": {
+            "time": 10.0
           }
         },
         {
-          "wait": {
-            "time": 10.0
+          "moAddMissionObjective": {
+            "target": "dlc_siege_of_bastogne_main"
           }
         },
         {
@@ -465,20 +465,8 @@
           ]
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target": "us_transport_01"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "first_wave_near_player"
-          }
-        },
-        {
-          "unitMark": {
-            "target_marking": 1,
-            "target": "us_transport_01"
           }
         },
         {
@@ -490,6 +478,18 @@
               "target": "update_indicators"
             }
           ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "us_transport_01"
+          }
+        },
+        {
+          "unitMark": {
+            "target_marking": 1,
+            "target": "us_transport_01"
+          }
         }
       ]
     },
@@ -721,6 +721,11 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "second_wave_near_player"
+          }
+        },
+        {
           "unitSetIndication": {
             "set": true,
             "target": "us_transport_02"
@@ -730,11 +735,6 @@
           "unitMark": {
             "target_marking": 1,
             "target": "us_transport_02"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "second_wave_near_player"
           }
         }
       ]
@@ -849,6 +849,11 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "third_wave_near_player"
+          }
+        },
+        {
           "unitSetIndication": {
             "set": true,
             "target": "us_transport_03"
@@ -858,11 +863,6 @@
           "unitMark": {
             "target_marking": 1,
             "target": "us_transport_03"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "third_wave_near_player"
           }
         }
       ]
@@ -1664,6 +1664,258 @@
         "props": {
           "army": 1,
           "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_transport_01",
+        "tm": [
+          [-0.0436193,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436193],
+          [1609.45,898.95,21621.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "c-47",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 5.0,
+            "col_distances": 5.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_transport_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3541.35,1373.9,25793.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "c-47",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 10,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 5.0,
+            "col_distances": 5.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_transport_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6542.5,2486.6,31163.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "c-47",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 16,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 5.0,
+            "col_distances": 5.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_01",
+        "tm": [
+          [-0.0436193,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436193],
+          [1609.45,1267.55,21621.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "p-51d-5",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3541.35,1742.5,25537.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "p-51d-5",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6542.5,2855.2,30866.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "p-51d-5",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2716.4,1917.2,10146.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109k-4",
+        "weapons": "Bf_109K4_default",
+        "props": {
+          "army": 1,
+          "count": 6,
           "free_distance": 70.0,
           "floating_distance": 50.0,
           "minimum_distance_to_earth": 20.0,
@@ -2560,6 +2812,110 @@
       }
     },
     {
+      "air_defence": {
+        "name": "air_defence_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1100.55,527.45,9281.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_40mm_bofors",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1042.5,527.45,9394.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_40mm_bofors",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_07",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1063.4,540.2,9735.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_40mm_bofors",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "air_defence_08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1325.3,540.2,10012.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_40mm_bofors",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
       "structures": {
         "name": "bomb_01",
         "tm": [
@@ -3041,222 +3397,6 @@
       }
     },
     {
-      "armada": {
-        "name": "us_transport_01",
-        "tm": [
-          [-0.0436193,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436193],
-          [1609.45,898.95,21621.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "c-47",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 5.0,
-            "col_distances": 5.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_transport_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3541.35,1373.9,25793.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "c-47",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 10,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 5.0,
-            "col_distances": 5.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_transport_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6542.5,2486.6,31163.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "c-47",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 16,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 5.0,
-            "col_distances": 5.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_01",
-        "tm": [
-          [-0.0436193,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436193],
-          [1609.45,1267.55,21621.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "p-51d-5",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3541.35,1742.5,25537.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "p-51d-5",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6542.5,2855.2,30866.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "p-51d-5",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "us_squad",
         "tm": [
@@ -3288,146 +3428,6 @@
             "squad_members": "us_fighters_03"
           }
         ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2716.4,1917.2,10146.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109k-4",
-        "weapons": "Bf_109K4_default",
-        "props": {
-          "army": 1,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1100.55,527.45,9281.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_40mm_bofors",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_06",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1042.5,527.45,9394.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_40mm_bofors",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_07",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1063.4,540.2,9735.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_40mm_bofors",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "air_defence_08",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1325.3,540.2,10012.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_40mm_bofors",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
         "way": []
       }
     }

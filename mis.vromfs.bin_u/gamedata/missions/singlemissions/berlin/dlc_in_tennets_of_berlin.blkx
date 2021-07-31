@@ -511,16 +511,16 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/dlc_in_tennets_of_berlin_hint",
             "action": "hide",
             "shouldFadeOut": true
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -679,11 +679,6 @@
           }
         },
         {
-          "unitWakeUp": {
-            "target": "ta_152_03"
-          }
-        },
-        {
           "unitAttackTarget": [
             {
               "playerAttracted": true
@@ -734,6 +729,11 @@
           ]
         },
         {
+          "unitWakeUp": {
+            "target": "ta_152_03"
+          }
+        },
+        {
           "triggerDisable": {
             "target": "fail_mission"
           }
@@ -782,6 +782,11 @@
           }
         },
         {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "dlc_in_tennets_of_berlin_look"
           }
@@ -799,11 +804,6 @@
         {
           "triggerEnable": {
             "target": "player_look_to_bombs"
-          }
-        },
-        {
-          "wait": {
-            "time": 30.0
           }
         },
         {
@@ -861,26 +861,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "look_at_bomb_good"
-            },
-            {
-              "target": "look_at_bomb_bad"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_in_tennets_of_berlin_evacuate"
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -891,8 +871,28 @@
           }
         },
         {
+          "triggerEnable": [
+            {
+              "target": "look_at_bomb_good"
+            },
+            {
+              "target": "look_at_bomb_bad"
+            }
+          ]
+        },
+        {
           "triggerEnable": {
             "target": "complete_mission"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "dlc_in_tennets_of_berlin_evacuate"
           }
         }
       ]
@@ -944,13 +944,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 3.0
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -995,16 +995,16 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/dlc_in_tennets_of_berlin_bombs_good",
             "action": "hide",
             "shouldFadeOut": true
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ]
@@ -1046,16 +1046,16 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/dlc_in_tennets_of_berlin_bombs_bad",
             "action": "hide",
             "shouldFadeOut": true
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ]
@@ -1105,14 +1105,14 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "dlc_in_tennets_of_berlin_main",
-            "status": 2
+          "wait": {
+            "time": 3.0
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "moSetObjectiveStatus": {
+            "target": "dlc_in_tennets_of_berlin_main",
+            "status": 2
           }
         },
         {
@@ -1320,6 +1320,186 @@
         "props": {
           "army": 1,
           "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ta_152_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3559.85,2451.0,8453.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ta-152h-1",
+        "weapons": "Ta_152H1_default",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 200.0,
+          "floating_distance": 120.0,
+          "minimum_distance_to_earth": 50.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "b17",
+        "tm": [
+          [-0.906308,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,-0.906308],
+          [32215.8,1800.0,6387.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "b-17g",
+        "weapons": "B17G_16x500lbs",
+        "props": {
+          "army": 1,
+          "count": 24,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ta_152_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11609.3,2451.0,13420.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ta-152h-1",
+        "weapons": "Ta_152H1_default",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 200.0,
+          "floating_distance": 120.0,
+          "minimum_distance_to_earth": 50.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ta_152_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11386.5,2451.0,5457.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ta-152h-1",
+        "weapons": "Ta_152H1_default",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 200.0,
+          "floating_distance": 120.0,
+          "minimum_distance_to_earth": 50.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "b17_cover",
+        "tm": [
+          [-0.906308,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,-0.906308],
+          [32215.8,2738.75,6387.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "spitfire_ix",
+        "weapons": "SpitfireIX_default",
+        "props": {
+          "army": 1,
+          "count": 6,
           "free_distance": 70.0,
           "floating_distance": 50.0,
           "minimum_distance_to_earth": 20.0,
@@ -2492,406 +2672,6 @@
       }
     },
     {
-      "air_defence": {
-        "name": "search_light01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2358.45,75.2383,8043.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "search_light02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3522.95,45.4736,8214.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "search_light03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [905.95,57.4,7768.85]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "search_light04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-912.0,59.8426,8470.45]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "search_light05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [78.3,65.5449,9867.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "search_light06",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [147.1,63.4,8963.65]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "searchLight",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "88mm_air_def_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1639.75,73.5828,8635.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "88mm_air_def_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2255.5,62.1033,9488.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "88mm_air_def_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3007.1,51.4696,8061.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "88mm_air_def_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1758.95,74.55,6944.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "88mm_air_def_05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4.9,56.5816,7377.55]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_88mm_flak36",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "37mm_air_def_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [655.55,60.2,9452.85]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_flak43",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "37mm_air_def_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1848.9,60.15,7788.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_flak43",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "37mm_air_def_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2860.05,53.1965,8735.25]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_flak43",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "37mm_air_def_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-403.9,48.8456,7102.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_flak43",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "37mm_air_def_05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-825.2,59.4428,9503.15]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_37mm_flak43",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "structures": {
         "name": "high_baloon_47",
         "tm": [
@@ -2963,89 +2743,6 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ta_152_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3559.85,2451.0,8453.65]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ta-152h-1",
-        "weapons": "Ta_152H1_default",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 200.0,
-          "floating_distance": 120.0,
-          "minimum_distance_to_earth": 50.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "germ_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2509.05,63.35,10036.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "88mm_air_def_01"
-          },
-          {
-            "squad_members": "88mm_air_def_02"
-          },
-          {
-            "squad_members": "88mm_air_def_03"
-          },
-          {
-            "squad_members": "88mm_air_def_04"
-          },
-          {
-            "squad_members": "88mm_air_def_05"
-          },
-          {
-            "squad_members": "37mm_air_def_01"
-          },
-          {
-            "squad_members": "37mm_air_def_02"
-          },
-          {
-            "squad_members": "37mm_air_def_03"
-          },
-          {
-            "squad_members": "37mm_air_def_04"
-          },
-          {
-            "squad_members": "37mm_air_def_05"
-          }
-        ],
         "way": []
       }
     },
@@ -3350,41 +3047,6 @@
       }
     },
     {
-      "squad": {
-        "name": "light_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2473.75,59.9,7539.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "search_light01"
-          },
-          {
-            "squad_members": "search_light02"
-          },
-          {
-            "squad_members": "search_light03"
-          },
-          {
-            "squad_members": "search_light04"
-          },
-          {
-            "squad_members": "search_light05"
-          },
-          {
-            "squad_members": "search_light06"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "structures": {
         "name": "high_baloon_62",
         "tm": [
@@ -3480,42 +3142,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "b17",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [32215.8,1800.0,6387.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "b-17g",
-        "weapons": "B17G_16x500lbs",
-        "props": {
-          "army": 1,
-          "count": 24,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }
@@ -3642,282 +3268,6 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "baloons_squad_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1313.2,54.25,5166.55]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "high_baloon_01"
-          },
-          {
-            "squad_members": "high_baloon_02"
-          },
-          {
-            "squad_members": "high_baloon_03"
-          },
-          {
-            "squad_members": "high_baloon_04"
-          },
-          {
-            "squad_members": "high_baloon_05"
-          },
-          {
-            "squad_members": "high_baloon_06"
-          },
-          {
-            "squad_members": "high_baloon_07"
-          },
-          {
-            "squad_members": "high_baloon_08"
-          },
-          {
-            "squad_members": "high_baloon_09"
-          },
-          {
-            "squad_members": "high_baloon_10"
-          },
-          {
-            "squad_members": "high_baloon_11"
-          },
-          {
-            "squad_members": "high_baloon_12"
-          },
-          {
-            "squad_members": "high_baloon_13"
-          },
-          {
-            "squad_members": "high_baloon_14"
-          },
-          {
-            "squad_members": "high_baloon_15"
-          },
-          {
-            "squad_members": "high_baloon_16"
-          },
-          {
-            "squad_members": "high_baloon_17"
-          },
-          {
-            "squad_members": "high_baloon_18"
-          },
-          {
-            "squad_members": "high_baloon_19"
-          },
-          {
-            "squad_members": "high_baloon_20"
-          },
-          {
-            "squad_members": "high_baloon_21"
-          },
-          {
-            "squad_members": "high_baloon_22"
-          },
-          {
-            "squad_members": "high_baloon_23"
-          },
-          {
-            "squad_members": "high_baloon_24"
-          },
-          {
-            "squad_members": "high_baloon_25"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "baloons_squad_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [706.8,60.7,5381.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "high_baloon_31"
-          },
-          {
-            "squad_members": "high_baloon_32"
-          },
-          {
-            "squad_members": "high_baloon_33"
-          },
-          {
-            "squad_members": "high_baloon_34"
-          },
-          {
-            "squad_members": "high_baloon_35"
-          },
-          {
-            "squad_members": "high_baloon_36"
-          },
-          {
-            "squad_members": "high_baloon_37"
-          },
-          {
-            "squad_members": "high_baloon_38"
-          },
-          {
-            "squad_members": "high_baloon_39"
-          },
-          {
-            "squad_members": "high_baloon_40"
-          },
-          {
-            "squad_members": "high_baloon_41"
-          },
-          {
-            "squad_members": "high_baloon_42"
-          },
-          {
-            "squad_members": "high_baloon_43"
-          },
-          {
-            "squad_members": "high_baloon_44"
-          },
-          {
-            "squad_members": "high_baloon_45"
-          },
-          {
-            "squad_members": "high_baloon_46"
-          },
-          {
-            "squad_members": "high_baloon_47"
-          },
-          {
-            "squad_members": "high_baloon_48"
-          },
-          {
-            "squad_members": "high_baloon_49"
-          },
-          {
-            "squad_members": "high_baloon_50"
-          },
-          {
-            "squad_members": "high_baloon_51"
-          },
-          {
-            "squad_members": "high_baloon_52"
-          },
-          {
-            "squad_members": "high_baloon_53"
-          },
-          {
-            "squad_members": "high_baloon_54"
-          },
-          {
-            "squad_members": "high_baloon_55"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "baloons_squad_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9.55,68.9,5523.25]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "high_baloon_61"
-          },
-          {
-            "squad_members": "high_baloon_62"
-          },
-          {
-            "squad_members": "high_baloon_63"
-          },
-          {
-            "squad_members": "high_baloon_64"
-          },
-          {
-            "squad_members": "high_baloon_65"
-          },
-          {
-            "squad_members": "high_baloon_66"
-          },
-          {
-            "squad_members": "high_baloon_67"
-          },
-          {
-            "squad_members": "high_baloon_68"
-          },
-          {
-            "squad_members": "high_baloon_69"
-          },
-          {
-            "squad_members": "high_baloon_70"
-          },
-          {
-            "squad_members": "high_baloon_71"
-          },
-          {
-            "squad_members": "high_baloon_72"
-          },
-          {
-            "squad_members": "high_baloon_73"
-          },
-          {
-            "squad_members": "high_baloon_74"
-          },
-          {
-            "squad_members": "high_baloon_75"
-          },
-          {
-            "squad_members": "high_baloon_76"
-          },
-          {
-            "squad_members": "high_baloon_77"
-          },
-          {
-            "squad_members": "high_baloon_78"
-          },
-          {
-            "squad_members": "high_baloon_79"
-          },
-          {
-            "squad_members": "high_baloon_80"
-          },
-          {
-            "squad_members": "high_baloon_81"
-          },
-          {
-            "squad_members": "high_baloon_82"
-          },
-          {
-            "squad_members": "high_baloon_83"
-          },
-          {
-            "squad_members": "high_baloon_84"
-          },
-          {
-            "squad_members": "high_baloon_85"
-          }
-        ],
         "way": []
       }
     },
@@ -4397,152 +3747,6 @@
       }
     },
     {
-      "squad": {
-        "name": "bomb_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6453.3,153.0,8761.85]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "bomb_target_01"
-          },
-          {
-            "squad_members": "bomb_target_02"
-          },
-          {
-            "squad_members": "bomb_target_03"
-          },
-          {
-            "squad_members": "bomb_target_04"
-          },
-          {
-            "squad_members": "bomb_target_05"
-          },
-          {
-            "squad_members": "bomb_target_06"
-          },
-          {
-            "squad_members": "bomb_target_07"
-          },
-          {
-            "squad_members": "bomb_target_08"
-          },
-          {
-            "squad_members": "bomb_target_09"
-          },
-          {
-            "squad_members": "bomb_target_10"
-          },
-          {
-            "squad_members": "bomb_target_11"
-          },
-          {
-            "squad_members": "bomb_target_12"
-          },
-          {
-            "squad_members": "bomb_target_13"
-          },
-          {
-            "squad_members": "bomb_target_14"
-          },
-          {
-            "squad_members": "bomb_target_15"
-          },
-          {
-            "squad_members": "bomb_target_16"
-          },
-          {
-            "squad_members": "bomb_target_17"
-          },
-          {
-            "squad_members": "bomb_target_18"
-          },
-          {
-            "squad_members": "bomb_target_19"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ta_152_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11609.3,2451.0,13420.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ta-152h-1",
-        "weapons": "Ta_152H1_default",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 200.0,
-          "floating_distance": 120.0,
-          "minimum_distance_to_earth": 50.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ta_152_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11386.5,2451.0,5457.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ta-152h-1",
-        "weapons": "Ta_152H1_default",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 200.0,
-          "floating_distance": 120.0,
-          "minimum_distance_to_earth": 50.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "structures": {
         "name": "high_baloon_71",
         "tm": [
@@ -4843,42 +4047,6 @@
       }
     },
     {
-      "armada": {
-        "name": "b17_cover",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [32215.8,2738.75,6387.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "spitfire_ix",
-        "weapons": "SpitfireIX_default",
-        "props": {
-          "army": 1,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "structures": {
         "name": "high_baloon_83",
         "tm": [
@@ -5080,6 +4248,406 @@
     },
     {
       "air_defence": {
+        "name": "search_light01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2358.45,75.2383,8043.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "search_light02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3522.95,45.4736,8214.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "search_light03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [905.95,57.4,7768.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "search_light04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-912.0,59.8426,8470.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "search_light05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [78.3,65.5449,9867.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "search_light06",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [147.1,63.4,8963.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "searchLight",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "88mm_air_def_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1639.75,73.5828,8635.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "88mm_air_def_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2255.5,62.1033,9488.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "88mm_air_def_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3007.1,51.4696,8061.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "88mm_air_def_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1758.95,74.55,6944.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "88mm_air_def_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4.9,56.5816,7377.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_88mm_flak36",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "37mm_air_def_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [655.55,60.2,9452.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "37mm_air_def_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1848.9,60.15,7788.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "37mm_air_def_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2860.05,53.1965,8735.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "37mm_air_def_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-403.9,48.8456,7102.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "37mm_air_def_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-825.2,59.4428,9503.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_37mm_flak43",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
         "name": "search_light07",
         "tm": [
           [1.0,0.0,0.0],
@@ -5175,6 +4743,438 @@
           "uniqueName": "",
           "attack_type": "fire_at_will"
         },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "germ_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2509.05,63.35,10036.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "88mm_air_def_01"
+          },
+          {
+            "squad_members": "88mm_air_def_02"
+          },
+          {
+            "squad_members": "88mm_air_def_03"
+          },
+          {
+            "squad_members": "88mm_air_def_04"
+          },
+          {
+            "squad_members": "88mm_air_def_05"
+          },
+          {
+            "squad_members": "37mm_air_def_01"
+          },
+          {
+            "squad_members": "37mm_air_def_02"
+          },
+          {
+            "squad_members": "37mm_air_def_03"
+          },
+          {
+            "squad_members": "37mm_air_def_04"
+          },
+          {
+            "squad_members": "37mm_air_def_05"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "light_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2473.75,59.9,7539.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "search_light01"
+          },
+          {
+            "squad_members": "search_light02"
+          },
+          {
+            "squad_members": "search_light03"
+          },
+          {
+            "squad_members": "search_light04"
+          },
+          {
+            "squad_members": "search_light05"
+          },
+          {
+            "squad_members": "search_light06"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "baloons_squad_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1313.2,54.25,5166.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "high_baloon_01"
+          },
+          {
+            "squad_members": "high_baloon_02"
+          },
+          {
+            "squad_members": "high_baloon_03"
+          },
+          {
+            "squad_members": "high_baloon_04"
+          },
+          {
+            "squad_members": "high_baloon_05"
+          },
+          {
+            "squad_members": "high_baloon_06"
+          },
+          {
+            "squad_members": "high_baloon_07"
+          },
+          {
+            "squad_members": "high_baloon_08"
+          },
+          {
+            "squad_members": "high_baloon_09"
+          },
+          {
+            "squad_members": "high_baloon_10"
+          },
+          {
+            "squad_members": "high_baloon_11"
+          },
+          {
+            "squad_members": "high_baloon_12"
+          },
+          {
+            "squad_members": "high_baloon_13"
+          },
+          {
+            "squad_members": "high_baloon_14"
+          },
+          {
+            "squad_members": "high_baloon_15"
+          },
+          {
+            "squad_members": "high_baloon_16"
+          },
+          {
+            "squad_members": "high_baloon_17"
+          },
+          {
+            "squad_members": "high_baloon_18"
+          },
+          {
+            "squad_members": "high_baloon_19"
+          },
+          {
+            "squad_members": "high_baloon_20"
+          },
+          {
+            "squad_members": "high_baloon_21"
+          },
+          {
+            "squad_members": "high_baloon_22"
+          },
+          {
+            "squad_members": "high_baloon_23"
+          },
+          {
+            "squad_members": "high_baloon_24"
+          },
+          {
+            "squad_members": "high_baloon_25"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "baloons_squad_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [706.8,60.7,5381.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "high_baloon_31"
+          },
+          {
+            "squad_members": "high_baloon_32"
+          },
+          {
+            "squad_members": "high_baloon_33"
+          },
+          {
+            "squad_members": "high_baloon_34"
+          },
+          {
+            "squad_members": "high_baloon_35"
+          },
+          {
+            "squad_members": "high_baloon_36"
+          },
+          {
+            "squad_members": "high_baloon_37"
+          },
+          {
+            "squad_members": "high_baloon_38"
+          },
+          {
+            "squad_members": "high_baloon_39"
+          },
+          {
+            "squad_members": "high_baloon_40"
+          },
+          {
+            "squad_members": "high_baloon_41"
+          },
+          {
+            "squad_members": "high_baloon_42"
+          },
+          {
+            "squad_members": "high_baloon_43"
+          },
+          {
+            "squad_members": "high_baloon_44"
+          },
+          {
+            "squad_members": "high_baloon_45"
+          },
+          {
+            "squad_members": "high_baloon_46"
+          },
+          {
+            "squad_members": "high_baloon_47"
+          },
+          {
+            "squad_members": "high_baloon_48"
+          },
+          {
+            "squad_members": "high_baloon_49"
+          },
+          {
+            "squad_members": "high_baloon_50"
+          },
+          {
+            "squad_members": "high_baloon_51"
+          },
+          {
+            "squad_members": "high_baloon_52"
+          },
+          {
+            "squad_members": "high_baloon_53"
+          },
+          {
+            "squad_members": "high_baloon_54"
+          },
+          {
+            "squad_members": "high_baloon_55"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "baloons_squad_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9.55,68.9,5523.25]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "high_baloon_61"
+          },
+          {
+            "squad_members": "high_baloon_62"
+          },
+          {
+            "squad_members": "high_baloon_63"
+          },
+          {
+            "squad_members": "high_baloon_64"
+          },
+          {
+            "squad_members": "high_baloon_65"
+          },
+          {
+            "squad_members": "high_baloon_66"
+          },
+          {
+            "squad_members": "high_baloon_67"
+          },
+          {
+            "squad_members": "high_baloon_68"
+          },
+          {
+            "squad_members": "high_baloon_69"
+          },
+          {
+            "squad_members": "high_baloon_70"
+          },
+          {
+            "squad_members": "high_baloon_71"
+          },
+          {
+            "squad_members": "high_baloon_72"
+          },
+          {
+            "squad_members": "high_baloon_73"
+          },
+          {
+            "squad_members": "high_baloon_74"
+          },
+          {
+            "squad_members": "high_baloon_75"
+          },
+          {
+            "squad_members": "high_baloon_76"
+          },
+          {
+            "squad_members": "high_baloon_77"
+          },
+          {
+            "squad_members": "high_baloon_78"
+          },
+          {
+            "squad_members": "high_baloon_79"
+          },
+          {
+            "squad_members": "high_baloon_80"
+          },
+          {
+            "squad_members": "high_baloon_81"
+          },
+          {
+            "squad_members": "high_baloon_82"
+          },
+          {
+            "squad_members": "high_baloon_83"
+          },
+          {
+            "squad_members": "high_baloon_84"
+          },
+          {
+            "squad_members": "high_baloon_85"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "bomb_targets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6453.3,153.0,8761.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "bomb_target_01"
+          },
+          {
+            "squad_members": "bomb_target_02"
+          },
+          {
+            "squad_members": "bomb_target_03"
+          },
+          {
+            "squad_members": "bomb_target_04"
+          },
+          {
+            "squad_members": "bomb_target_05"
+          },
+          {
+            "squad_members": "bomb_target_06"
+          },
+          {
+            "squad_members": "bomb_target_07"
+          },
+          {
+            "squad_members": "bomb_target_08"
+          },
+          {
+            "squad_members": "bomb_target_09"
+          },
+          {
+            "squad_members": "bomb_target_10"
+          },
+          {
+            "squad_members": "bomb_target_11"
+          },
+          {
+            "squad_members": "bomb_target_12"
+          },
+          {
+            "squad_members": "bomb_target_13"
+          },
+          {
+            "squad_members": "bomb_target_14"
+          },
+          {
+            "squad_members": "bomb_target_15"
+          },
+          {
+            "squad_members": "bomb_target_16"
+          },
+          {
+            "squad_members": "bomb_target_17"
+          },
+          {
+            "squad_members": "bomb_target_18"
+          },
+          {
+            "squad_members": "bomb_target_19"
+          }
+        ],
         "way": []
       }
     },

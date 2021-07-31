@@ -227,6 +227,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "la5_ai_01"
@@ -249,11 +254,6 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "patrol_point"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -893,6 +893,11 @@
           ]
         },
         {
+          "triggerEnable": {
+            "target": "yak_7_time_to_go_home"
+          }
+        },
+        {
           "unitWakeUp": {
             "target": "yak7_ai_01"
           }
@@ -944,11 +949,6 @@
           "unitSetIndication": {
             "set": true,
             "target": "yak7_ai_01"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "yak_7_time_to_go_home"
           }
         }
       ]
@@ -1074,6 +1074,11 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "update_indicator"
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "frontline_airfield_patrol",
             "status": 2
@@ -1148,11 +1153,6 @@
         {
           "wait": {
             "time": 3.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "update_indicator"
           }
         },
         {
@@ -1265,6 +1265,11 @@
           }
         },
         {
+          "wait": {
+            "time": 7.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "frontline_airfield_land"
           }
@@ -1273,11 +1278,6 @@
           "airfieldSetIndication": {
             "set": true,
             "target": "airfield_01_start"
-          }
-        },
-        {
-          "wait": {
-            "time": 7.0
           }
         },
         {
@@ -1491,109 +1491,6 @@
       }
     },
     {
-      "structures": {
-        "name": "germ_artillery_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1763.7,502.15,-4671.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 8,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "ussr_tanks",
-        "tm": [
-          [-0.999048,0.0,0.0436195],
-          [0.0,1.0,0.0],
-          [-0.0436195,0.0,-0.999048],
-          [2924.95,289.65,-4652.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ussr_kv2",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [15.0,10.0],
-          "formation_noise": [0.4,0.4],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.3
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "germ_artillery_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1660.25,502.15,-4887.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_75mm_pak40",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 8,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,3.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "stealthRadius": 0.0
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "ussr_air_def_01",
-        "tm": [
-          [-0.999048,0.0,0.0436195],
-          [0.0,1.0,0.0],
-          [-0.0436195,0.0,-0.999048],
-          [3247.4,289.65,-4652.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ussr_zis5_37mm",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [15.0,10.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "la5_ai_01",
         "tm": [
@@ -1666,31 +1563,6 @@
       }
     },
     {
-      "air_defence": {
-        "name": "germ_air_def",
-        "tm": [
-          [0.991445,0.0,-0.130526],
-          [0.0,1.0,0.0],
-          [0.130526,0.0,0.991445],
-          [-135.299,373.828,-4544.29]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_20mm_flak38",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [3.0,2.5],
-          "formation_noise": [0.1,-0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "yak7_ai_01",
         "tm": [
@@ -1722,6 +1594,134 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "germ_artillery_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1763.7,502.15,-4671.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "germ_artillery_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1660.25,502.15,-4887.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_75mm_pak40",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,3.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "stealthRadius": 0.0
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "ussr_tanks",
+        "tm": [
+          [-0.999048,0.0,0.0436195],
+          [0.0,1.0,0.0],
+          [-0.0436195,0.0,-0.999048],
+          [2924.95,289.65,-4652.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ussr_kv2",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [15.0,10.0],
+          "formation_noise": [0.4,0.4],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.3
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_air_def_01",
+        "tm": [
+          [-0.999048,0.0,0.0436195],
+          [0.0,1.0,0.0],
+          [-0.0436195,0.0,-0.999048],
+          [3247.4,289.65,-4652.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ussr_zis5_37mm",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [15.0,10.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "germ_air_def",
+        "tm": [
+          [0.991445,0.0,-0.130526],
+          [0.0,1.0,0.0],
+          [0.130526,0.0,0.991445],
+          [-135.299,373.828,-4544.29]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_20mm_flak38",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [3.0,2.5],
+          "formation_noise": [0.1,-0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }

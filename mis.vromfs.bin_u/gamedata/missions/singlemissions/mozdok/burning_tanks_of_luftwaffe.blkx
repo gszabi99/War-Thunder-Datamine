@@ -264,6 +264,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "bf_019_02"
@@ -272,6 +277,11 @@
               "target": "hs_129"
             }
           ]
+        },
+        {
+          "unitPutToSleep": {
+            "target": "germ_artillery"
+          }
         },
         {
           "moAddMissionObjective": {
@@ -347,18 +357,8 @@
           ]
         },
         {
-          "unitPutToSleep": {
-            "target": "germ_artillery"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "update_indicator"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -422,13 +422,6 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "timer"
-          }
-        },
-        {
           "missionSetTargetsIndicator": {
             "target_type": "isActive",
             "target_marking": 0,
@@ -454,6 +447,13 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "hs_129"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "timer"
           }
         }
       ],
@@ -743,13 +743,13 @@
           }
         },
         {
-          "wait": {
-            "time": 240.0
+          "triggerEnable": {
+            "target": "hs_129_turning_back"
           }
         },
         {
-          "triggerEnable": {
-            "target": "hs_129_turning_back"
+          "wait": {
+            "time": 240.0
           }
         }
       ],
@@ -1548,192 +1548,6 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "ussr_tanks",
-        "tm": [
-          [-0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,-0.939693],
-          [-11281.8,709.25,-15598.4]
-        ],
-        "unit_class": "ussr_t34_mode41",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 20,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [35.0,7.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "ussr_tanks_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11678.8,636.25,-15405.8]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ussr_tanks_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-11898.8,633.7,-15101.0]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ussr_tanks_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-12529.6,649.0,-14824.2]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ussr_tanks_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-13160.9,651.2,-15217.0]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          },
-          "ussr_tanks_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14188.3,655.8,-13660.3]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "tas": false,
-              "canUsePathFinder": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "structures": {
-        "name": "ussr_artillery",
-        "tm": [
-          [-0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,-0.906308],
-          [-10903.0,709.85,-15742.8]
-        ],
-        "unit_class": "ussr_76mm_zis3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "germ_artillery_units01",
-        "tm": [
-          [0.573576,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,0.573576],
-          [-12819.7,624.926,-14678.2]
-        ],
-        "unit_class": "germ_75mm_pak40",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 3,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [3.0,6.0],
-          "formation_noise": [-0.1,0.2],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "bf_019_01",
         "tm": [
@@ -1918,50 +1732,15 @@
       }
     },
     {
-      "air_defence": {
-        "name": "germ_air_def_01",
+      "tracked_vehicles": {
+        "name": "ussr_tanks",
         "tm": [
-          [0.5373,0.0,-0.843392],
+          [-0.939693,0.0,0.34202],
           [0.0,1.0,0.0],
-          [0.843392,0.0,0.5373],
-          [-12717.1,609.698,-13642.1]
+          [-0.34202,0.0,-0.939693],
+          [-11281.8,709.25,-15598.4]
         ],
-        "unit_class": "germ_37mm_flak43",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 8,
-          "formation_type": "rows",
-          "formation_div": 2,
-          "formation_step": [6.0,7.0],
-          "formation_noise": [0.1,0.2],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "ussr_air_def",
-        "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [-10478.2,657.55,-15800.5]
-        ],
-        "unit_class": "ussr_37mm_61k",
+        "unit_class": "ussr_t34_mode41",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -1976,7 +1755,123 @@
         "bulletsCount3": 0,
         "props": {
           "army": 1,
-          "count": 6,
+          "count": 20,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [35.0,7.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "ussr_tanks_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-11678.8,636.25,-15405.8]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tanks_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-11898.8,633.7,-15101.0]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tanks_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-12529.6,649.0,-14824.2]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tanks_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-13160.9,651.2,-15217.0]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          },
+          "ussr_tanks_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14188.3,655.8,-13660.3]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "tas": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "structures": {
+        "name": "ussr_artillery",
+        "tm": [
+          [-0.906308,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,-0.906308],
+          [-10903.0,709.85,-15742.8]
+        ],
+        "unit_class": "ussr_76mm_zis3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 4,
           "formation_type": "rows",
           "formation_div": 1,
           "formation_step": [5.0,5.0],
@@ -1988,59 +1883,38 @@
       }
     },
     {
-      "squad": {
-        "name": "ussr_squad",
+      "structures": {
+        "name": "germ_artillery_units01",
         "tm": [
-          [1.0,0.0,0.0],
+          [0.573576,0.0,-0.819152],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6715.6,697.65,-12605.5]
+          [0.819152,0.0,0.573576],
+          [-12819.7,624.926,-14678.2]
         ],
-        "props": [
-          {
-            "squad_members": "ussr_tanks"
-          },
-          {
-            "squad_members": "ussr_artillery"
-          },
-          {
-            "squad_members": "ussr_air_def"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "germ_artillery",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13195.8,612.162,-14741.5]
-        ],
-        "props": [
-          {
-            "squad_members": "germ_artillery_units01"
-          },
-          {
-            "squad_members": "germ_artillery_units02"
-          },
-          {
-            "squad_members": "germ_artillery_units03"
-          },
-          {
-            "squad_members": "germ_artillery_units04"
-          },
-          {
-            "squad_members": "germ_artillery_units05"
-          },
-          {
-            "squad_members": "germ_artillery_units06"
-          },
-          {
-            "squad_members": "germ_artillery_units07"
-          }
-        ]
+        "unit_class": "germ_75mm_pak40",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 3,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [3.0,6.0],
+          "formation_noise": [-0.1,0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
@@ -2251,6 +2125,132 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "germ_air_def_01",
+        "tm": [
+          [0.5373,0.0,-0.843392],
+          [0.0,1.0,0.0],
+          [0.843392,0.0,0.5373],
+          [-12717.1,609.698,-13642.1]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 2,
+          "formation_step": [6.0,7.0],
+          "formation_noise": [0.1,0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_air_def",
+        "tm": [
+          [-0.843391,0.0,0.5373],
+          [0.0,1.0,0.0],
+          [-0.5373,0.0,-0.843391],
+          [-10478.2,657.55,-15800.5]
+        ],
+        "unit_class": "ussr_37mm_61k",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "ussr_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6715.6,697.65,-12605.5]
+        ],
+        "props": [
+          {
+            "squad_members": "ussr_tanks"
+          },
+          {
+            "squad_members": "ussr_artillery"
+          },
+          {
+            "squad_members": "ussr_air_def"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "germ_artillery",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-13195.8,612.162,-14741.5]
+        ],
+        "props": [
+          {
+            "squad_members": "germ_artillery_units01"
+          },
+          {
+            "squad_members": "germ_artillery_units02"
+          },
+          {
+            "squad_members": "germ_artillery_units03"
+          },
+          {
+            "squad_members": "germ_artillery_units04"
+          },
+          {
+            "squad_members": "germ_artillery_units05"
+          },
+          {
+            "squad_members": "germ_artillery_units06"
+          },
+          {
+            "squad_members": "germ_artillery_units07"
+          }
+        ]
       }
     }
   ],

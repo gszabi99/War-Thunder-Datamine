@@ -262,6 +262,11 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "mission_start_timer"
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -312,11 +317,6 @@
               "target": "create_pickups"
             }
           ]
-        },
-        {
-          "triggerDisable": {
-            "target": "mission_start_timer"
-          }
         }
       ]
     },
@@ -394,13 +394,6 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "timer_to_next_stage",
-            "input_var": "br_area_change_time_add"
-          }
-        },
-        {
           "varModify": {
             "operator": "mul",
             "value": 1.0,
@@ -419,13 +412,6 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "time_between_battle_area_set",
-            "input_var": "timer_to_next_stage"
-          }
-        },
-        {
           "varModify": {
             "operator": "subAB",
             "value": 1.0,
@@ -441,6 +427,20 @@
             "var": "br_area_warning_time",
             "use_variable": true,
             "var_value": "br_area_warning_time_add"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "timer_to_next_stage",
+            "input_var": "br_area_change_time_add"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "time_between_battle_area_set",
+            "input_var": "timer_to_next_stage"
           }
         },
         {
@@ -626,6 +626,13 @@
           }
         },
         {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "artillery_disable_stage"
+          }
+        },
+        {
           "wait": {
             "time": 5.0
           }
@@ -634,13 +641,6 @@
           "varSetString": {
             "value": "hints/artillery_disable",
             "var": "artillery_disable_hint"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "artillery_disable_stage"
           }
         }
       ],
@@ -711,17 +711,17 @@
           }
         },
         {
-          "varModify": {
-            "operator": "divAB",
-            "value": 2.0,
-            "var": "pickups2_stage"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "pickups2_count",
             "input_var": "pickups_count"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "divAB",
+            "value": 2.0,
+            "var": "pickups2_stage"
           }
         },
         {

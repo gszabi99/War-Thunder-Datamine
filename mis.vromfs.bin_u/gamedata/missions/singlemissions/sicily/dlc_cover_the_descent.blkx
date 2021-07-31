@@ -421,48 +421,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "dlc_cover_the_descent_bots",
-            "object_var_comp_op": "equal",
-            "object_var_name": ""
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "descent_bots"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "update_indicator_bots"
-          }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "bf109_01"
-            },
-            {
-              "target": "bf109_01_add"
-            }
-          ]
-        },
-        {
           "unitMoveTo": [
             {
               "target": "descent_bots"
@@ -530,8 +488,30 @@
           ]
         },
         {
-          "triggerEnable": {
-            "target": "bf109_01_add_seen_player"
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "dlc_cover_the_descent_bots",
+            "object_var_comp_op": "equal",
+            "object_var_name": ""
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "descent_bots"
           }
         },
         {
@@ -551,6 +531,26 @@
             {
               "object_var_value": 0
             },
+            {
+              "target": "bf109_01"
+            },
+            {
+              "target": "bf109_01_add"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "update_indicator_bots"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "bf109_01_add_seen_player"
+          }
+        },
+        {
+          "unitWakeUp": [
             {
               "target": "bf109_01"
             },
@@ -1052,6 +1052,16 @@
           ]
         },
         {
+          "triggerEnable": {
+            "target": "update_indicator_tanks"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "update_indicator_atillery"
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "dlc_cover_the_descent_bots",
             "status": 2,
@@ -1088,6 +1098,16 @@
           }
         },
         {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1098,6 +1118,31 @@
             "attack_type": "fire_at_will",
             "effShootingRate": 0.05,
             "speed": 5.0
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "germ_artillery",
+            "stealthRadius": 3500.0,
+            "attack_type": "fire_at_will",
+            "effShootingRate": 0.5
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "usa_tanks_squad",
+            "stealthRadius": 5500.0,
+            "attack_type": "fire_at_will",
+            "effShootingRate": 0.05,
+            "speed": 20.0
           }
         },
         {
@@ -1141,6 +1186,16 @@
           ]
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "germ_artillery"
+          }
+        },
+        {
           "missionSetTargetsIndicator": {
             "target_type": "isAlive",
             "target_marking": 0,
@@ -1159,61 +1214,6 @@
             "target": "dlc_cover_the_descent_tanks",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "update_indicator_tanks"
-          }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "germ_artillery",
-            "stealthRadius": 3500.0,
-            "attack_type": "fire_at_will",
-            "effShootingRate": 0.5
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "usa_tanks_squad",
-            "stealthRadius": 5500.0,
-            "attack_type": "fire_at_will",
-            "effShootingRate": 0.05,
-            "speed": 20.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "update_indicator_atillery"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "germ_artillery"
           }
         },
         {
@@ -1411,13 +1411,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 3.0
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -2164,6 +2164,374 @@
       }
     },
     {
+      "armada": {
+        "name": "bf109_01",
+        "tm": [
+          [0.965926,0.0,0.258819],
+          [0.0,1.0,0.0],
+          [-0.258819,0.0,0.965926],
+          [13934.5,1600.0,-19021.4]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_SC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_01_add",
+        "tm": [
+          [0.965926,0.0,0.258819],
+          [0.0,1.0,0.0],
+          [-0.258819,0.0,0.965926],
+          [13672.8,1600.0,-19090.5]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_SC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_02",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [25115.5,2418.9,-22381.0]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_SC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_03",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [25115.5,2418.9,-11827.2]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_SC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_02_add",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [25050.0,2418.9,-22381.0]
+        ],
+        "unit_class": "bf-109g-2",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109G-2_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_03_add",
+        "tm": [
+          [0.707107,0.0,0.707107],
+          [0.0,1.0,0.0],
+          [-0.707107,0.0,0.707107],
+          [24987.8,2418.9,-11827.2]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_SC250",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies",
+        "tm": [
+          [0.21644,0.0,-0.976296],
+          [0.0,1.0,0.0],
+          [0.976296,0.0,0.21644],
+          [28122.7,350.0,-9090.5]
+        ],
+        "unit_class": "spitfire_ix",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "SpitfireIX_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf109_for_cannons",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [21555.4,1470.1,-22119.7]
+        ],
+        "unit_class": "bf-109f-4",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109F-4_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "ships": {
         "name": "usa_navy_ship_01",
         "tm": [
@@ -2513,98 +2881,6 @@
       }
     },
     {
-      "armada": {
-        "name": "bf109_01",
-        "tm": [
-          [0.965926,0.0,0.258819],
-          [0.0,1.0,0.0],
-          [-0.258819,0.0,0.965926],
-          [13934.5,1600.0,-19021.4]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_SC250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_01_add",
-        "tm": [
-          [0.965926,0.0,0.258819],
-          [0.0,1.0,0.0],
-          [-0.258819,0.0,0.965926],
-          [13672.8,1600.0,-19090.5]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_SC250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "tracked_vehicles": {
         "name": "usa_tank_01",
         "tm": [
@@ -2670,118 +2946,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "usa_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23238.1,8.2,-18486.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "usa_tank_01"
-          },
-          {
-            "squad_members": "usa_tank_02"
-          },
-          {
-            "squad_members": "usa_tank_03"
-          },
-          {
-            "squad_members": "usa_tank_04"
-          },
-          {
-            "squad_members": "usa_tank_05"
-          },
-          {
-            "squad_members": "usa_tank_06"
-          },
-          {
-            "squad_members": "usa_tank_07"
-          },
-          {
-            "squad_members": "usa_tank_08"
-          },
-          {
-            "squad_members": "usa_tank_09"
-          },
-          {
-            "squad_members": "usa_tank_10"
-          },
-          {
-            "squad_members": "usa_tank_11"
-          },
-          {
-            "squad_members": "usa_tank_12"
-          },
-          {
-            "squad_members": "usa_tank_13"
-          },
-          {
-            "squad_members": "usa_tank_14"
-          },
-          {
-            "squad_members": "usa_tank_15"
-          },
-          {
-            "squad_members": "usa_tank_16"
-          },
-          {
-            "squad_members": "usa_tank_17"
-          },
-          {
-            "squad_members": "usa_tank_18"
-          },
-          {
-            "squad_members": "usa_tank_19"
-          },
-          {
-            "squad_members": "usa_tank_20"
-          }
-        ]
-      }
-    },
-    {
-      "structures": {
-        "name": "germ_artillery",
-        "tm": [
-          [0.906308,0.0,0.422618],
-          [0.0,1.0,0.0],
-          [-0.422618,0.0,0.906308],
-          [21146.9,40.6117,-19334.1]
-        ],
-        "unit_class": "germ_88mm_pak43",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 12,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.4,2.2],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
       }
     },
     {
@@ -4077,15 +4241,91 @@
       }
     },
     {
-      "air_defence": {
-        "name": "germ_air_defence_01",
+      "squad": {
+        "name": "usa_tanks_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [20435.9,74.15,-19036.5]
+          [23238.1,8.2,-18486.5]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "usa_tank_01"
+          },
+          {
+            "squad_members": "usa_tank_02"
+          },
+          {
+            "squad_members": "usa_tank_03"
+          },
+          {
+            "squad_members": "usa_tank_04"
+          },
+          {
+            "squad_members": "usa_tank_05"
+          },
+          {
+            "squad_members": "usa_tank_06"
+          },
+          {
+            "squad_members": "usa_tank_07"
+          },
+          {
+            "squad_members": "usa_tank_08"
+          },
+          {
+            "squad_members": "usa_tank_09"
+          },
+          {
+            "squad_members": "usa_tank_10"
+          },
+          {
+            "squad_members": "usa_tank_11"
+          },
+          {
+            "squad_members": "usa_tank_12"
+          },
+          {
+            "squad_members": "usa_tank_13"
+          },
+          {
+            "squad_members": "usa_tank_14"
+          },
+          {
+            "squad_members": "usa_tank_15"
+          },
+          {
+            "squad_members": "usa_tank_16"
+          },
+          {
+            "squad_members": "usa_tank_17"
+          },
+          {
+            "squad_members": "usa_tank_18"
+          },
+          {
+            "squad_members": "usa_tank_19"
+          },
+          {
+            "squad_members": "usa_tank_20"
+          }
+        ]
+      }
+    },
+    {
+      "structures": {
+        "name": "germ_artillery",
+        "tm": [
+          [0.906308,0.0,0.422618],
+          [0.0,1.0,0.0],
+          [-0.422618,0.0,0.906308],
+          [21146.9,40.6117,-19334.1]
+        ],
+        "unit_class": "germ_88mm_pak43",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
@@ -4100,232 +4340,14 @@
         "bulletsCount3": 0,
         "props": {
           "army": 2,
-          "count": 1,
+          "count": 12,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [5.0,5.0],
+          "formation_step": [2.4,2.2],
           "formation_noise": [1.0,1.0],
           "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_02",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [25115.5,2418.9,-22381.0]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_SC250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
           "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_03",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [25115.5,2418.9,-11827.2]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_SC250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_02_add",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [25050.0,2418.9,-22381.0]
-        ],
-        "unit_class": "bf-109g-2",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109G-2_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_03_add",
-        "tm": [
-          [0.707107,0.0,0.707107],
-          [0.0,1.0,0.0],
-          [-0.707107,0.0,0.707107],
-          [24987.8,2418.9,-11827.2]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_SC250",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "germ_town_aaa_01",
-        "tm": [
-          [0.843391,0.0,-0.5373],
-          [0.0,1.0,0.0],
-          [0.5373,0.0,0.843391],
-          [27039.6,38.15,-11025.2]
-        ],
-        "unit_class": "germ_88mm_flak36",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [3.0,3.0],
-          "formation_noise": [0.5,0.2],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
+          "effShootingRate": 0.1
         },
         "way": []
       }
@@ -4436,19 +4458,19 @@
       }
     },
     {
-      "armada": {
-        "name": "allies",
+      "air_defence": {
+        "name": "germ_air_defence_01",
         "tm": [
-          [0.21644,0.0,-0.976296],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [0.976296,0.0,0.21644],
-          [28122.7,350.0,-9090.5]
+          [0.0,0.0,1.0],
+          [20435.9,74.15,-19036.5]
         ],
-        "unit_class": "spitfire_ix",
+        "unit_class": "germ_88mm_flak36",
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "SpitfireIX_default",
+        "weapons": "",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -4458,25 +4480,49 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 1,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "germ_town_aaa_01",
+        "tm": [
+          [0.843391,0.0,-0.5373],
+          [0.0,1.0,0.0],
+          [0.5373,0.0,0.843391],
+          [27039.6,38.15,-11025.2]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [3.0,3.0],
+          "formation_noise": [0.5,0.2],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }
@@ -4617,52 +4663,6 @@
           "formation_noise": [1.0,1.0],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf109_for_cannons",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [21555.4,1470.1,-22119.7]
-        ],
-        "unit_class": "bf-109f-4",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109F-4_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

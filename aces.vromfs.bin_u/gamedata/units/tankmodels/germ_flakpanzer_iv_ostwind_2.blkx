@@ -108,10 +108,10 @@
     "rearmSmokeTimeOnField": 60.0
   },
   {
-    "canReloadNonGuns": true
+    "rearmSmokeTimeOnField": 60.0
   },
   {
-    "rearmSmokeTimeOnField": 60.0
+    "canReloadNonGuns": true
   },
   {
     "canReloadNonGuns": true
@@ -820,82 +820,6 @@
     ]
   },
   {
-    "controlDevices": [
-      {
-        "device": {
-          "type": "turretTurnH",
-          "turnSpeed": 0.3,
-          "node": "bone_roll_turret_h",
-          "node_handle": "bone_roll_turret_h_handle"
-        }
-      },
-      {
-        "device": {
-          "type": "turretTurnV",
-          "turnSpeed": -0.8,
-          "node": "bone_roll_turret_v",
-          "node_handle": "bone_roll_turret_v_handle"
-        }
-      },
-      {
-        "device": {
-          "type": "steeringWheel",
-          "turnSpeed": -3.0,
-          "node": "bone_roll_driver",
-          "absoluteValue": true
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_01"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_02"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_03"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_04"
-        }
-      },
-      {
-        "device": {
-          "type": "waterJetShutter",
-          "turnSpeed": 1.5,
-          "maxValue": -1.7,
-          "node": "body_shutter_l",
-          "absoluteValue": true,
-          "progressive": true
-        }
-      },
-      {
-        "device": {
-          "type": "waterJetShutter",
-          "turnSpeed": 1.5,
-          "maxValue": 1.7,
-          "node": "body_shutter_r",
-          "absoluteValue": true,
-          "progressive": true
-        }
-      }
-    ]
-  },
-  {
     "ikGunner": [
       {
         "model": "german_gunner_early_char"
@@ -1195,6 +1119,82 @@
           "upNode": "Bip01 R Thigh",
           "targetNode": "pedal_rfoot_",
           "flexionDir": [-0.6,1.0,-1.0]
+        }
+      }
+    ]
+  },
+  {
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.3,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -0.8,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -3.0,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
         }
       }
     ]
@@ -3660,10 +3660,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 1800
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 1800
           },
           {
             "ChainfireTime": 3.0

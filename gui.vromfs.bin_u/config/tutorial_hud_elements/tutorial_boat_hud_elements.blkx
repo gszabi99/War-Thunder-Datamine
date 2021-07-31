@@ -25,153 +25,6 @@
     }
   },
   {
-    "frame": {
-      "id": "boat_tutorial_basic_shooting_screen01",
-      "position": "root",
-      "pos": "0.5sw-0.5w, 1%ph-0%h",
-      "width": "0.67@rw",
-      "height": "594/1098w",
-      "img": [
-        {
-          "size": "pw,ph"
-        },
-        {
-          "display": "show"
-        },
-        {
-          "background-image": "@!ui/images/tutorial/boat_tutorial_cursors_help.jpg?P1"
-        },
-        {
-          "tdiv": {
-            "id": "hud_tutorial_boat_cursor_location",
-            "position": "absolute",
-            "pos": "43%pw-100%w, 33%ph-50%h",
-            "display": "hide",
-            "textareaNoTab": {
-              "shadeStyle": "HudHeader3D",
-              "max-width": "35%p.p.w",
-              "position": "relative",
-              "pos": "0, 50%ph-50%h",
-              "display": "show",
-              "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
-              "text": "#hud_tutorial_boat_mouse_aim_cursor"
-            },
-            "img": {
-              "id": "tutorial_boat_mouse_cursor_location",
-              "position": "relative",
-              "pos": "0.01@scrn_tgt , 50%ph-50%h",
-              "size": "70/720@shHud, 30/720@shHud",
-              "display": "show",
-              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
-            }
-          }
-        },
-        {
-          "tdiv": [
-            {
-              "id": "hud_tutorial_boat_markers_locations"
-            },
-            {
-              "position": "absolute"
-            },
-            {
-              "pos": "67.5%pw-0%w, 9%ph-0%h"
-            },
-            {
-              "flow": "vertical"
-            },
-            {
-              "display": "hide"
-            },
-            {
-              "img": {
-                "id": "tutorial_boat_grey_gun_marker_location",
-                "position": "absolute",
-                "rotation": "270",
-                "pos": "0%pw-w, 42%ph-h",
-                "size": "30/720@shHud, 50/720@shHud",
-                "display": "show",
-                "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-              }
-            },
-            {
-              "textareaNoTab": {
-                "shadeStyle": "HudHeader3D",
-                "position": "relative",
-                "pos": "50%pw-40%w, 0.01@scrn_tgt",
-                "display": "show",
-                "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
-                "text": "#hud_tutorial_boat_turrets_cursors"
-              }
-            },
-            {
-              "img": {
-                "id": "tutorial_boat_white_gun_marker_location",
-                "rotation": "210",
-                "position": "relative",
-                "pos": "10%pw-w, 0%h",
-                "size": "30/720@shHud, 50/720@shHud",
-                "display": "show",
-                "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-              }
-            }
-          ]
-        },
-        {
-          "tdiv": {
-            "id": "hud_tutorial_boat_grey_cursor_explanation",
-            "position": "absolute",
-            "pos": "57%pw-100%w, 7.5%ph-0%h",
-            "display": "hide",
-            "textareaNoTab": {
-              "shadeStyle": "HudHeader3D",
-              "max-width": "35%p.p.w",
-              "position": "relative",
-              "pos": "0, 50%ph-50%h",
-              "display": "show",
-              "style": "font:@fontHudSmall; color:#ffffff;",
-              "text": "#hud_tutorial_boat_grey_turret_cursor"
-            },
-            "img": {
-              "id": "tutorial_boat_arrow_cannon_aiming",
-              "position": "relative",
-              "pos": "0.01@scrn_tgt , 50%ph-50%h",
-              "size": "70/720@shHud, 30/720@shHud",
-              "display": "show",
-              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
-            }
-          }
-        },
-        {
-          "tdiv": {
-            "id": "hud_tutorial_boat_white_cursor_explanation",
-            "position": "absolute",
-            "pos": "65%pw-50%w, 37%ph-0%h",
-            "flow": "vertical",
-            "display": "hide",
-            "img": {
-              "id": "tutorial_boat_arrow_cannon_aiming",
-              "rotation": "0",
-              "position": "relative",
-              "pos": "50%pw-50%w, 0.01@scrn_tgt",
-              "size": "30/720@shHud, 50/720@shHud",
-              "display": "show",
-              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-            },
-            "textareaNoTab": {
-              "shadeStyle": "HudHeader3D",
-              "position": "relative",
-              "pos": "50%pw-50%w, 0",
-              "display": "show",
-              "style": "font:@fontHudSmall; color:#ffffff;",
-              "text": "#hud_tutorial_boat_white_turret_cursor"
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
     "tdiv": [
       {
         "id": "hud_tutorial_boat_xray_all_texts"
@@ -248,17 +101,6 @@
         }
       },
       {
-        "img": {
-          "id": "hud_tutorial_boat_boat_enemy_crew_number_pointer",
-          "position": "relative",
-          "pos": "15%pw-w, 130%ph-h",
-          "size": "30/720@shHud, 30/720@shHud",
-          "rotation": "270",
-          "display": "hide",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
-        }
-      },
-      {
         "textareaNoTab": {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_boat_enemy_crew_number_info",
@@ -268,6 +110,17 @@
           "display": "hide",
           "style": "font:@fontHudSmall; color:#ffffff;",
           "text": "#hud_tutorial_boat_enemy_crew_number_info"
+        }
+      },
+      {
+        "img": {
+          "id": "hud_tutorial_boat_boat_enemy_crew_number_pointer",
+          "position": "relative",
+          "pos": "15%pw-w, 130%ph-h",
+          "size": "30/720@shHud, 30/720@shHud",
+          "rotation": "270",
+          "display": "hide",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
         }
       }
     ]
@@ -413,17 +266,6 @@
         }
       },
       {
-        "img": {
-          "id": "tutorial_tank_arrow_player_map",
-          "position": "absolute",
-          "pos": "6%pw-0%w, 19%ph-0%h",
-          "size": "30/720@shHud, 50/720@shHud",
-          "rotation": "125",
-          "display": "show",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
         "textareaNoTab": {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_enemy_tank",
@@ -435,17 +277,6 @@
         }
       },
       {
-        "img": {
-          "id": "tutorial_tank_arrow_enemy_map",
-          "position": "absolute",
-          "pos": "33%pw-50%w, 16%ph-0%h",
-          "size": "30/720@shHud, 40/720@shHud",
-          "rotation": "180",
-          "display": "show",
-          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
-        }
-      },
-      {
         "textareaNoTab": {
           "shadeStyle": "HudHeader3D",
           "id": "hud_tutorial_tank_minimap_friendly_tank",
@@ -454,6 +285,28 @@
           "display": "show",
           "style": "font:@fontHudMedium; text-align:right; color:#276cff;",
           "text": "#hud_tutorial_tank_minimap_friendly_tank"
+        }
+      },
+      {
+        "img": {
+          "id": "tutorial_tank_arrow_player_map",
+          "position": "absolute",
+          "pos": "6%pw-0%w, 19%ph-0%h",
+          "size": "30/720@shHud, 50/720@shHud",
+          "rotation": "125",
+          "display": "show",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+        }
+      },
+      {
+        "img": {
+          "id": "tutorial_tank_arrow_enemy_map",
+          "position": "absolute",
+          "pos": "33%pw-50%w, 16%ph-0%h",
+          "size": "30/720@shHud, 40/720@shHud",
+          "rotation": "180",
+          "display": "show",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
         }
       },
       {
@@ -621,5 +474,152 @@
         }
       }
     ]
+  },
+  {
+    "frame": {
+      "id": "boat_tutorial_basic_shooting_screen01",
+      "position": "root",
+      "pos": "0.5sw-0.5w, 1%ph-0%h",
+      "width": "0.67@rw",
+      "height": "594/1098w",
+      "img": [
+        {
+          "size": "pw,ph"
+        },
+        {
+          "display": "show"
+        },
+        {
+          "background-image": "@!ui/images/tutorial/boat_tutorial_cursors_help.jpg?P1"
+        },
+        {
+          "tdiv": {
+            "id": "hud_tutorial_boat_cursor_location",
+            "position": "absolute",
+            "pos": "43%pw-100%w, 33%ph-50%h",
+            "display": "hide",
+            "textareaNoTab": {
+              "shadeStyle": "HudHeader3D",
+              "max-width": "35%p.p.w",
+              "position": "relative",
+              "pos": "0, 50%ph-50%h",
+              "display": "show",
+              "style": "font:@fontHudMedium; text-align:right; color:#ffffff;",
+              "text": "#hud_tutorial_boat_mouse_aim_cursor"
+            },
+            "img": {
+              "id": "tutorial_boat_mouse_cursor_location",
+              "position": "relative",
+              "pos": "0.01@scrn_tgt , 50%ph-50%h",
+              "size": "70/720@shHud, 30/720@shHud",
+              "display": "show",
+              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
+            }
+          }
+        },
+        {
+          "tdiv": [
+            {
+              "id": "hud_tutorial_boat_markers_locations"
+            },
+            {
+              "position": "absolute"
+            },
+            {
+              "pos": "67.5%pw-0%w, 9%ph-0%h"
+            },
+            {
+              "flow": "vertical"
+            },
+            {
+              "display": "hide"
+            },
+            {
+              "img": {
+                "id": "tutorial_boat_grey_gun_marker_location",
+                "position": "absolute",
+                "rotation": "270",
+                "pos": "0%pw-w, 42%ph-h",
+                "size": "30/720@shHud, 50/720@shHud",
+                "display": "show",
+                "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+              }
+            },
+            {
+              "img": {
+                "id": "tutorial_boat_white_gun_marker_location",
+                "rotation": "210",
+                "position": "relative",
+                "pos": "10%pw-w, 0%h",
+                "size": "30/720@shHud, 50/720@shHud",
+                "display": "show",
+                "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+              }
+            },
+            {
+              "textareaNoTab": {
+                "shadeStyle": "HudHeader3D",
+                "position": "relative",
+                "pos": "50%pw-40%w, 0.01@scrn_tgt",
+                "display": "show",
+                "style": "font:@fontHudMedium; text-align:center; color:#ffffff;",
+                "text": "#hud_tutorial_boat_turrets_cursors"
+              }
+            }
+          ]
+        },
+        {
+          "tdiv": {
+            "id": "hud_tutorial_boat_grey_cursor_explanation",
+            "position": "absolute",
+            "pos": "57%pw-100%w, 7.5%ph-0%h",
+            "display": "hide",
+            "textareaNoTab": {
+              "shadeStyle": "HudHeader3D",
+              "max-width": "35%p.p.w",
+              "position": "relative",
+              "pos": "0, 50%ph-50%h",
+              "display": "show",
+              "style": "font:@fontHudSmall; color:#ffffff;",
+              "text": "#hud_tutorial_boat_grey_turret_cursor"
+            },
+            "img": {
+              "id": "tutorial_boat_arrow_cannon_aiming",
+              "position": "relative",
+              "pos": "0.01@scrn_tgt , 50%ph-50%h",
+              "size": "70/720@shHud, 30/720@shHud",
+              "display": "show",
+              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow_right.png"
+            }
+          }
+        },
+        {
+          "tdiv": {
+            "id": "hud_tutorial_boat_white_cursor_explanation",
+            "position": "absolute",
+            "pos": "65%pw-50%w, 37%ph-0%h",
+            "flow": "vertical",
+            "display": "hide",
+            "img": {
+              "id": "tutorial_boat_arrow_cannon_aiming",
+              "rotation": "0",
+              "position": "relative",
+              "pos": "50%pw-50%w, 0.01@scrn_tgt",
+              "size": "30/720@shHud, 50/720@shHud",
+              "display": "show",
+              "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow.png"
+            },
+            "textareaNoTab": {
+              "shadeStyle": "HudHeader3D",
+              "position": "relative",
+              "pos": "50%pw-50%w, 0",
+              "display": "show",
+              "style": "font:@fontHudSmall; color:#ffffff;",
+              "text": "#hud_tutorial_boat_white_turret_cursor"
+            }
+          }
+        }
+      ]
+    }
   }
 ]

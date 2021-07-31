@@ -2339,10 +2339,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 1890
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 1890
           },
           {
             "ChainfireTime": 3.0
@@ -2534,18 +2534,18 @@
           }
         },
         {
+          "direction": {
+            "point": "suspension_01_02",
+            "from": "wheel_03",
+            "to": "wheel_04"
+          }
+        },
+        {
           "projection": {
             "point": "suspension_01_01",
             "from": "wheel_01",
             "to": "wheel_02",
             "moveEdge": true
-          }
-        },
-        {
-          "direction": {
-            "point": "suspension_01_02",
-            "from": "wheel_03",
-            "to": "wheel_04"
           }
         },
         {
@@ -3197,6 +3197,17 @@
     }
   },
   {
+    "skin": {
+      "name": "green",
+      "nameLocId": "skin/ussr_camo_green",
+      "descLocId": "skin/ussr_camo_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_winter_net*",
+        "to": "ussr_camo_green*"
+      }
+    }
+  },
+  {
     "default_skin": {
       "replace_tex": {
         "from": "ussr_camo_green*",
@@ -3214,17 +3225,6 @@
       "name": "ussr_t_26_1940_1st_GvTBr",
       "replace_tex": {
         "from": "ussr_camo_green*"
-      }
-    }
-  },
-  {
-    "skin": {
-      "name": "green",
-      "nameLocId": "skin/ussr_camo_green",
-      "descLocId": "skin/ussr_camo_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_winter_net*",
-        "to": "ussr_camo_green*"
       }
     }
   }

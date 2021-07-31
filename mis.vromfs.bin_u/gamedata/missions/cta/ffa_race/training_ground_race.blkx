@@ -438,7 +438,7 @@
               "enableFromStart": false
             },
             {
-              "racePathColor": "#1356e6ff"
+              "racePathColor": [230,86,19,255]
             },
             {
               "excludeRange": {
@@ -493,6 +493,11 @@
               "target": "player_in_spawnpoint04"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "a_player_is_active_requirement"
+          }
         },
         {
           "missionMarkAsRespawnPoint": [
@@ -615,11 +620,6 @@
               "target": "2nd_polygon_squad"
             }
           ]
-        },
-        {
-          "triggerEnable": {
-            "target": "a_player_is_active_requirement"
-          }
         },
         {
           "raceParamsModify": {
@@ -1708,11 +1708,6 @@
           }
         },
         {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "standard",
             "name": "",
@@ -1728,6 +1723,11 @@
             "shouldBlink": false,
             "target": "players_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
           }
         }
       ],
@@ -1997,11 +1997,6 @@
           }
         },
         {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "standard",
             "name": "",
@@ -2017,6 +2012,11 @@
             "shouldBlink": false,
             "target": "players_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
           }
         }
       ],
@@ -2314,11 +2314,6 @@
           }
         },
         {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "standard",
             "name": "",
@@ -2334,6 +2329,11 @@
             "shouldBlink": false,
             "target": "players_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
           }
         }
       ],
@@ -2631,11 +2631,6 @@
           }
         },
         {
-          "wait": {
-            "time": 7.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "standard",
             "name": "",
@@ -2651,6 +2646,11 @@
             "shouldBlink": false,
             "target": "players_squad",
             "target_type": "isMarked"
+          }
+        },
+        {
+          "wait": {
+            "time": 7.0
           }
         }
       ],
@@ -3397,6 +3397,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "missionKillEffects": {
             "area": "kill_effects_area",
             "effect": true,
@@ -3426,6 +3444,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitVulnerableFrom": {
             "target_marking": 0,
             "player_marking": 1,
@@ -3444,29 +3467,6 @@
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player01_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 1,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         },
         {
@@ -3630,6 +3630,12 @@
           }
         },
         {
+          "varSetString": {
+            "value": "hints/biathlon_2nd_range_targets_counter",
+            "var": "player01_range_hint_str"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
@@ -3649,12 +3655,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player01_range_hint_str"
           }
         },
         {
@@ -3686,6 +3686,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player01_target_str"
@@ -3704,11 +3709,6 @@
             "target": "@player01_target_str",
             "player": "players_squad",
             "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
           }
         },
         {
@@ -3917,6 +3917,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 1,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "player_finished_snake_route01"
           }
@@ -3978,24 +3996,6 @@
         {
           "wait": {
             "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 1,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         }
       ],
@@ -4389,6 +4389,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "missionKillEffects": {
             "area": "kill_effects_area",
             "effect": true,
@@ -4418,6 +4436,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitVulnerableFrom": {
             "target_marking": 0,
             "player_marking": 2,
@@ -4436,29 +4459,6 @@
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player02_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 2,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         },
         {
@@ -4622,6 +4622,12 @@
           }
         },
         {
+          "varSetString": {
+            "value": "hints/biathlon_2nd_range_targets_counter",
+            "var": "player02_range_hint_str"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
@@ -4641,12 +4647,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player02_range_hint_str"
           }
         },
         {
@@ -4678,6 +4678,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player02_target_str"
@@ -4696,11 +4701,6 @@
             "target": "@player02_target_str",
             "player": "players_squad",
             "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
           }
         },
         {
@@ -4906,6 +4906,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 2,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "player_finished_snake_route02"
           }
@@ -4967,24 +4985,6 @@
         {
           "wait": {
             "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 2,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         }
       ],
@@ -5378,6 +5378,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 3,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "missionKillEffects": {
             "area": "kill_effects_area",
             "effect": true,
@@ -5407,6 +5425,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitVulnerableFrom": {
             "target_marking": 0,
             "player_marking": 3,
@@ -5425,29 +5448,6 @@
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player03_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 3,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         },
         {
@@ -5611,6 +5611,12 @@
           }
         },
         {
+          "varSetString": {
+            "value": "hints/biathlon_2nd_range_targets_counter",
+            "var": "player03_range_hint_str"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
@@ -5630,12 +5636,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player03_range_hint_str"
           }
         },
         {
@@ -5667,6 +5667,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player03_target_str"
@@ -5685,11 +5690,6 @@
             "target": "@player03_target_str",
             "player": "players_squad",
             "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
           }
         },
         {
@@ -5895,6 +5895,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 3,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "player_finished_snake_route03"
           }
@@ -5956,24 +5974,6 @@
         {
           "wait": {
             "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 3,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         }
       ],
@@ -6367,6 +6367,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 4,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "missionKillEffects": {
             "area": "kill_effects_area",
             "effect": true,
@@ -6396,6 +6414,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitVulnerableFrom": {
             "target_marking": 0,
             "player_marking": 4,
@@ -6414,29 +6437,6 @@
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player04_target_str"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 4,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         },
         {
@@ -6600,6 +6600,12 @@
           }
         },
         {
+          "varSetString": {
+            "value": "hints/biathlon_2nd_range_targets_counter",
+            "var": "player04_range_hint_str"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
@@ -6619,12 +6625,6 @@
             "object_type": "isMarked",
             "isImmortal": true,
             "cannotShoot": false
-          }
-        },
-        {
-          "varSetString": {
-            "value": "hints/biathlon_2nd_range_targets_counter",
-            "var": "player04_range_hint_str"
           }
         },
         {
@@ -6656,6 +6656,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.4
+          }
+        },
+        {
           "unitPlayAnim": {
             "animName": "work_anim",
             "target": "@player04_target_str"
@@ -6674,11 +6679,6 @@
             "target": "@player04_target_str",
             "player": "players_squad",
             "player_type": "isMarked"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.4
           }
         },
         {
@@ -6884,6 +6884,24 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 4,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false,
+            "target": "players_squad",
+            "target_type": "isMarked"
+          }
+        },
+        {
           "triggerEnable": {
             "target": "player_finished_snake_route04"
           }
@@ -6945,24 +6963,6 @@
         {
           "wait": {
             "time": 7.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 4,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false,
-            "target": "players_squad",
-            "target_type": "isMarked"
           }
         }
       ],
@@ -7124,6 +7124,21 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "standard",
+            "name": "TARGET UP",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -7154,21 +7169,6 @@
         {
           "wait": {
             "time": 3.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "standard",
-            "name": "TARGET UP",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
           }
         },
         {
@@ -8031,6 +8031,1190 @@
       }
     },
     {
+      "tankModels": {
+        "name": "player02",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1370.36,217.25,2520.72]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player03",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1309.17,217.25,2453.63]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player04",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1229.9,217.25,2376.31]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player05",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1190.01,217.25,2278.42]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player06",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1139.49,217.25,2174.09]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player07",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1068.63,217.25,2098.39]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player08",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1041.76,217.25,1966.71]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player09",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1016.49,217.25,1895.37]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player10",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1419.34,217.25,2426.01]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player11",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1493.22,217.25,2503.67]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player12",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1599.48,217.25,2536.66]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player13",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1080.6,217.25,1724.56]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player14",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1084.15,217.25,1778.47]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player15",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1094.62,217.25,1844.45]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player16",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1073.06,217.25,1929.23]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player17",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1118.2,217.25,1992.57]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player18",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1173.88,217.25,2025.17]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player19",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1188.07,217.25,2075.28]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player20",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1218.14,217.25,2135.01]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player21",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1257.8,217.25,2158.51]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player22",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1287.67,217.25,2230.18]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player23",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1344.39,217.25,2263.99]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player24",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1399.13,217.25,2295.21]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player25",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1479.66,217.25,2335.45]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player26",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1560.77,221.977,2400.1]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player27",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1642.26,221.977,2435.6]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player28",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1161.41,221.977,1671.53]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player29",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1168.61,221.977,1753.51]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player30",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1186.14,221.977,1830.65]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player31",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1241.38,221.977,1865.8]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player32",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1258.58,221.977,1927.05]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player33",
+        "tm": [
+          [0.999878,0.0,-0.0156449],
+          [0.0,1.0,0.0],
+          [0.0156449,0.0,0.999878],
+          [1264.14,221.977,1970.43]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 7,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "1st_polygon_squad",
         "tm": [
@@ -8090,23 +9274,6 @@
             "squad_members": "2nd_polygon_mid_targets_squad"
           }
         ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "ammo_zone_circle",
-        "tm": [
-          [0.840881,0.0,0.0],
-          [0.0,0.840881,0.0],
-          [0.0,0.0,0.840881],
-          [1708.16,217.45,1564.48]
-        ],
-        "unit_class": "capture_zone_circle_color",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
       }
     },
     {
@@ -8955,6 +10122,1496 @@
             "squad_members": "2nd_polygon_target03_07"
           }
         ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_polygon_targets_group08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2720.54,226.424,697.546]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "1st_polygon_target01_08"
+          },
+          {
+            "squad_members": "1st_polygon_target02_08"
+          },
+          {
+            "squad_members": "1st_polygon_target03_08"
+          },
+          {
+            "squad_members": "1st_polygon_target04_08"
+          },
+          {
+            "squad_members": "1st_polygon_target05_08"
+          },
+          {
+            "squad_members": "1st_polygon_target06_08"
+          },
+          {
+            "squad_members": "1st_polygon_target07_08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_polygon_800_targets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2558.92,217.241,1503.15]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "1st_polygon_target07_01"
+          },
+          {
+            "squad_members": "1st_polygon_target07_02"
+          },
+          {
+            "squad_members": "1st_polygon_target07_03"
+          },
+          {
+            "squad_members": "1st_polygon_target07_04"
+          },
+          {
+            "squad_members": "1st_polygon_target07_05"
+          },
+          {
+            "squad_members": "1st_polygon_target07_06"
+          },
+          {
+            "squad_members": "1st_polygon_target07_07"
+          },
+          {
+            "squad_members": "1st_polygon_target07_08"
+          },
+          {
+            "squad_members": "1st_polygon_target07_09"
+          },
+          {
+            "squad_members": "1st_polygon_target07_10"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_polygon_targets_group08",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2781.59,217.241,1551.72]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "2nd_polygon_target01_08"
+          },
+          {
+            "squad_members": "2nd_polygon_target02_08"
+          },
+          {
+            "squad_members": "2nd_polygon_target03_08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_polygon_targets_group09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2785.12,217.241,1479.02]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "2nd_polygon_target01_09"
+          },
+          {
+            "squad_members": "2nd_polygon_target02_09"
+          },
+          {
+            "squad_members": "2nd_polygon_target03_09"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "2nd_polygon_targets_group10",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2775.8,217.241,1409.21]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "2nd_polygon_target01_10"
+          },
+          {
+            "squad_members": "2nd_polygon_target02_10"
+          },
+          {
+            "squad_members": "2nd_polygon_target03_10"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_polygon_targets_group09",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2686.08,226.424,641.024]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "1st_polygon_target01_09"
+          },
+          {
+            "squad_members": "1st_polygon_target02_09"
+          },
+          {
+            "squad_members": "1st_polygon_target03_09"
+          },
+          {
+            "squad_members": "1st_polygon_target04_09"
+          },
+          {
+            "squad_members": "1st_polygon_target05_09"
+          },
+          {
+            "squad_members": "1st_polygon_target06_09"
+          },
+          {
+            "squad_members": "1st_polygon_target07_09"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "1st_polygon_targets_group10",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2645.5,226.424,571.283]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "1st_polygon_target01_10"
+          },
+          {
+            "squad_members": "1st_polygon_target02_10"
+          },
+          {
+            "squad_members": "1st_polygon_target03_10"
+          },
+          {
+            "squad_members": "1st_polygon_target04_10"
+          },
+          {
+            "squad_members": "1st_polygon_target05_10"
+          },
+          {
+            "squad_members": "1st_polygon_target06_10"
+          },
+          {
+            "squad_members": "1st_polygon_target07_10"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "players_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1204.73,261.098,1916.57]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "player01"
+          },
+          {
+            "squad_members": "player02"
+          },
+          {
+            "squad_members": "player03"
+          },
+          {
+            "squad_members": "player04"
+          },
+          {
+            "squad_members": "player05"
+          },
+          {
+            "squad_members": "player06"
+          },
+          {
+            "squad_members": "player07"
+          },
+          {
+            "squad_members": "player08"
+          },
+          {
+            "squad_members": "player09"
+          },
+          {
+            "squad_members": "player10"
+          },
+          {
+            "squad_members": "player11"
+          },
+          {
+            "squad_members": "player12"
+          },
+          {
+            "squad_members": "player13"
+          },
+          {
+            "squad_members": "player14"
+          },
+          {
+            "squad_members": "player15"
+          },
+          {
+            "squad_members": "player16"
+          },
+          {
+            "squad_members": "player17"
+          },
+          {
+            "squad_members": "player18"
+          },
+          {
+            "squad_members": "player19"
+          },
+          {
+            "squad_members": "player20"
+          },
+          {
+            "squad_members": "player21"
+          },
+          {
+            "squad_members": "player22"
+          },
+          {
+            "squad_members": "player23"
+          },
+          {
+            "squad_members": "player24"
+          },
+          {
+            "squad_members": "player25"
+          },
+          {
+            "squad_members": "player26"
+          },
+          {
+            "squad_members": "player27"
+          },
+          {
+            "squad_members": "player28"
+          },
+          {
+            "squad_members": "player29"
+          },
+          {
+            "squad_members": "player30"
+          },
+          {
+            "squad_members": "player31"
+          },
+          {
+            "squad_members": "player32"
+          },
+          {
+            "squad_members": "player33"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pillars_squad01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1694.32,217.241,854.653]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "pillar_border20"
+          },
+          {
+            "squad_members": "pillar_border21"
+          },
+          {
+            "squad_members": "pillar_border22"
+          },
+          {
+            "squad_members": "pillar_border23"
+          },
+          {
+            "squad_members": "pillar_border24"
+          },
+          {
+            "squad_members": "pillar_border25"
+          },
+          {
+            "squad_members": "pillar_border26"
+          },
+          {
+            "squad_members": "pillar_border27"
+          },
+          {
+            "squad_members": "pillar_border28"
+          },
+          {
+            "squad_members": "pillar_border29"
+          },
+          {
+            "squad_members": "pillar_border30"
+          },
+          {
+            "squad_members": "pillar_border31"
+          },
+          {
+            "squad_members": "pillar_border32"
+          },
+          {
+            "squad_members": "pillar_border33"
+          },
+          {
+            "squad_members": "pillar_border34"
+          },
+          {
+            "squad_members": "pillar_border35"
+          },
+          {
+            "squad_members": "pillar_border36"
+          },
+          {
+            "squad_members": "pillar_border37"
+          },
+          {
+            "squad_members": "pillar_border38"
+          },
+          {
+            "squad_members": "pillar_border39"
+          },
+          {
+            "squad_members": "pillar_border40"
+          },
+          {
+            "squad_members": "pillar_border41"
+          },
+          {
+            "squad_members": "pillar_border42"
+          },
+          {
+            "squad_members": "pillar_border43"
+          },
+          {
+            "squad_members": "pillar_border44"
+          },
+          {
+            "squad_members": "pillar_border45"
+          },
+          {
+            "squad_members": "pillar_border46"
+          },
+          {
+            "squad_members": "pillar_border47"
+          },
+          {
+            "squad_members": "pillar_border48"
+          },
+          {
+            "squad_members": "pillar_border49"
+          },
+          {
+            "squad_members": "pillar_border50"
+          },
+          {
+            "squad_members": "pillar_border51"
+          },
+          {
+            "squad_members": "pillar_border52"
+          },
+          {
+            "squad_members": "pillar_border53"
+          },
+          {
+            "squad_members": "pillar_border54"
+          },
+          {
+            "squad_members": "pillar_border55"
+          },
+          {
+            "squad_members": "pillar_border56"
+          },
+          {
+            "squad_members": "pillar_border57"
+          },
+          {
+            "squad_members": "pillar_border58"
+          },
+          {
+            "squad_members": "pillar_border59"
+          },
+          {
+            "squad_members": "pillar_border60"
+          },
+          {
+            "squad_members": "pillar_border61"
+          },
+          {
+            "squad_members": "pillar_border62"
+          },
+          {
+            "squad_members": "pillar_border63"
+          },
+          {
+            "squad_members": "pillar_border64"
+          },
+          {
+            "squad_members": "pillar_border66"
+          },
+          {
+            "squad_members": "pillar_border67"
+          },
+          {
+            "squad_members": "pillar_border68"
+          },
+          {
+            "squad_members": "pillar_border69"
+          },
+          {
+            "squad_members": "pillar_border70"
+          },
+          {
+            "squad_members": "pillar_border71"
+          },
+          {
+            "squad_members": "pillar_border72"
+          },
+          {
+            "squad_members": "pillar_border73"
+          },
+          {
+            "squad_members": "pillar_border74"
+          },
+          {
+            "squad_members": "pillar_border75"
+          },
+          {
+            "squad_members": "pillar_border76"
+          },
+          {
+            "squad_members": "pillar_border77"
+          },
+          {
+            "squad_members": "pillar_border78"
+          },
+          {
+            "squad_members": "pillar_border79"
+          },
+          {
+            "squad_members": "pillar_border80"
+          },
+          {
+            "squad_members": "pillar_border81"
+          },
+          {
+            "squad_members": "pillar_border82"
+          },
+          {
+            "squad_members": "pillar_border83"
+          },
+          {
+            "squad_members": "pillar_border84"
+          },
+          {
+            "squad_members": "pillar_border85"
+          },
+          {
+            "squad_members": "pillar_border86"
+          },
+          {
+            "squad_members": "pillar_border87"
+          },
+          {
+            "squad_members": "pillar_border88"
+          },
+          {
+            "squad_members": "pillar_border89"
+          },
+          {
+            "squad_members": "pillar_border90"
+          },
+          {
+            "squad_members": "pillar_border91"
+          },
+          {
+            "squad_members": "pillar_border92"
+          },
+          {
+            "squad_members": "pillar_border93"
+          },
+          {
+            "squad_members": "pillar_border94"
+          },
+          {
+            "squad_members": "pillar_border95"
+          },
+          {
+            "squad_members": "pillar_border96"
+          },
+          {
+            "squad_members": "pillar_border97"
+          },
+          {
+            "squad_members": "pillar_border98"
+          },
+          {
+            "squad_members": "pillar_border99"
+          },
+          {
+            "squad_members": "pillar_border100"
+          },
+          {
+            "squad_members": "pillar_border101"
+          },
+          {
+            "squad_members": "pillar_border102"
+          },
+          {
+            "squad_members": "pillar_border103"
+          },
+          {
+            "squad_members": "pillar_border188"
+          },
+          {
+            "squad_members": "pillar_border189"
+          },
+          {
+            "squad_members": "pillar_border190"
+          },
+          {
+            "squad_members": "pillar_border191"
+          },
+          {
+            "squad_members": "pillar_border192"
+          },
+          {
+            "squad_members": "pillar_border193"
+          },
+          {
+            "squad_members": "pillar_border194"
+          },
+          {
+            "squad_members": "pillar_border195"
+          },
+          {
+            "squad_members": "pillar_border196"
+          },
+          {
+            "squad_members": "pillar_border197"
+          },
+          {
+            "squad_members": "pillar_border198"
+          },
+          {
+            "squad_members": "pillar_border199"
+          },
+          {
+            "squad_members": "pillar_border200"
+          },
+          {
+            "squad_members": "pillar_border201"
+          },
+          {
+            "squad_members": "pillar_border202"
+          },
+          {
+            "squad_members": "pillar_border203"
+          },
+          {
+            "squad_members": "pillar_border204"
+          },
+          {
+            "squad_members": "pillar_border205"
+          },
+          {
+            "squad_members": "pillar_border206"
+          },
+          {
+            "squad_members": "pillar_border207"
+          },
+          {
+            "squad_members": "pillar_border208"
+          },
+          {
+            "squad_members": "pillar_border209"
+          },
+          {
+            "squad_members": "pillar_border210"
+          },
+          {
+            "squad_members": "pillar_border211"
+          },
+          {
+            "squad_members": "pillar_border212"
+          },
+          {
+            "squad_members": "pillar_border213"
+          },
+          {
+            "squad_members": "pillar_border214"
+          },
+          {
+            "squad_members": "pillar_border215"
+          },
+          {
+            "squad_members": "pillar_border216"
+          },
+          {
+            "squad_members": "pillar_border217"
+          },
+          {
+            "squad_members": "pillar_border218"
+          },
+          {
+            "squad_members": "pillar_border219"
+          },
+          {
+            "squad_members": "pillar_border220"
+          },
+          {
+            "squad_members": "pillar_border222"
+          },
+          {
+            "squad_members": "pillar_border223"
+          },
+          {
+            "squad_members": "pillar_border224"
+          },
+          {
+            "squad_members": "pillar_border225"
+          },
+          {
+            "squad_members": "pillar_border226"
+          },
+          {
+            "squad_members": "pillar_border227"
+          },
+          {
+            "squad_members": "pillar_border228"
+          },
+          {
+            "squad_members": "pillar_border229"
+          },
+          {
+            "squad_members": "pillar_border230"
+          },
+          {
+            "squad_members": "pillar_border231"
+          },
+          {
+            "squad_members": "pillar_border232"
+          },
+          {
+            "squad_members": "pillar_border233"
+          },
+          {
+            "squad_members": "pillar_border234"
+          },
+          {
+            "squad_members": "pillar_border235"
+          },
+          {
+            "squad_members": "pillar_border236"
+          },
+          {
+            "squad_members": "pillar_border237"
+          },
+          {
+            "squad_members": "pillar_border238"
+          },
+          {
+            "squad_members": "pillar_border239"
+          },
+          {
+            "squad_members": "pillar_border240"
+          },
+          {
+            "squad_members": "pillar_border241"
+          },
+          {
+            "squad_members": "pillar_border242"
+          },
+          {
+            "squad_members": "pillar_border243"
+          },
+          {
+            "squad_members": "pillar_border244"
+          },
+          {
+            "squad_members": "pillar_border245"
+          },
+          {
+            "squad_members": "pillar_border246"
+          },
+          {
+            "squad_members": "pillar_border247"
+          },
+          {
+            "squad_members": "pillar_border250"
+          },
+          {
+            "squad_members": "pillar_border251"
+          },
+          {
+            "squad_members": "pillar_border252"
+          },
+          {
+            "squad_members": "pillar_border253"
+          },
+          {
+            "squad_members": "pillar_border254"
+          },
+          {
+            "squad_members": "pillar_border255"
+          },
+          {
+            "squad_members": "pillar_border256"
+          },
+          {
+            "squad_members": "pillar_border257"
+          },
+          {
+            "squad_members": "pillar_border258"
+          },
+          {
+            "squad_members": "pillar_border259"
+          },
+          {
+            "squad_members": "pillar_border260"
+          },
+          {
+            "squad_members": "pillar_border261"
+          },
+          {
+            "squad_members": "pillar_border262"
+          },
+          {
+            "squad_members": "pillar_border263"
+          },
+          {
+            "squad_members": "pillar_border264"
+          },
+          {
+            "squad_members": "pillar_border265"
+          },
+          {
+            "squad_members": "pillar_border266"
+          },
+          {
+            "squad_members": "pillar_border267"
+          },
+          {
+            "squad_members": "pillar_border268"
+          },
+          {
+            "squad_members": "pillar_border269"
+          },
+          {
+            "squad_members": "pillar_border270"
+          },
+          {
+            "squad_members": "pillar_border187"
+          },
+          {
+            "squad_members": "pillar_border271"
+          },
+          {
+            "squad_members": "pillar_border248"
+          },
+          {
+            "squad_members": "pillar_border249"
+          },
+          {
+            "squad_members": "pillar_border272"
+          },
+          {
+            "squad_members": "pillar_border273"
+          },
+          {
+            "squad_members": "pillar_border274"
+          },
+          {
+            "squad_members": "pillar_border275"
+          },
+          {
+            "squad_members": "pillar_border276"
+          },
+          {
+            "squad_members": "pillar_border277"
+          },
+          {
+            "squad_members": "pillar_border278"
+          },
+          {
+            "squad_members": "pillar_border279"
+          },
+          {
+            "squad_members": "pillar_border280"
+          },
+          {
+            "squad_members": "pillar_border281"
+          },
+          {
+            "squad_members": "pillar_border282"
+          },
+          {
+            "squad_members": "pillar_border283"
+          },
+          {
+            "squad_members": "pillar_border284"
+          },
+          {
+            "squad_members": "pillar_border285"
+          },
+          {
+            "squad_members": "pillar_border286"
+          },
+          {
+            "squad_members": "pillar_border287"
+          },
+          {
+            "squad_members": "pillar_border288"
+          },
+          {
+            "squad_members": "pillar_border289"
+          },
+          {
+            "squad_members": "pillar_border290"
+          },
+          {
+            "squad_members": "pillar_border291"
+          },
+          {
+            "squad_members": "pillar_border104"
+          },
+          {
+            "squad_members": "pillar_border105"
+          },
+          {
+            "squad_members": "pillar_border106"
+          },
+          {
+            "squad_members": "pillar_border107"
+          },
+          {
+            "squad_members": "pillar_border108"
+          },
+          {
+            "squad_members": "pillar_border109"
+          },
+          {
+            "squad_members": "pillar_border110"
+          },
+          {
+            "squad_members": "pillar_border111"
+          },
+          {
+            "squad_members": "pillar_border112"
+          },
+          {
+            "squad_members": "pillar_border113"
+          },
+          {
+            "squad_members": "pillar_border114"
+          },
+          {
+            "squad_members": "pillar_border115"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pillars_squad02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1684.22,217.241,963.591]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "pillar_wb009"
+          },
+          {
+            "squad_members": "pillar_wb010"
+          },
+          {
+            "squad_members": "pillar_wb011"
+          },
+          {
+            "squad_members": "pillar_wb012"
+          },
+          {
+            "squad_members": "pillar_wb013"
+          },
+          {
+            "squad_members": "pillar_wb014"
+          },
+          {
+            "squad_members": "pillar_wb015"
+          },
+          {
+            "squad_members": "pillar_wb016"
+          },
+          {
+            "squad_members": "pillar_wb017"
+          },
+          {
+            "squad_members": "pillar_wb018"
+          },
+          {
+            "squad_members": "pillar_wb019"
+          },
+          {
+            "squad_members": "pillar_wb020"
+          },
+          {
+            "squad_members": "pillar_wb021"
+          },
+          {
+            "squad_members": "pillar_wb022"
+          },
+          {
+            "squad_members": "pillar_wb023"
+          },
+          {
+            "squad_members": "pillar_wb024"
+          },
+          {
+            "squad_members": "pillar_wb025"
+          },
+          {
+            "squad_members": "pillar_wb026"
+          },
+          {
+            "squad_members": "pillar_wb027"
+          },
+          {
+            "squad_members": "pillar_wb028"
+          },
+          {
+            "squad_members": "pillar_wb029"
+          },
+          {
+            "squad_members": "pillar_wb030"
+          },
+          {
+            "squad_members": "pillar_wb031"
+          },
+          {
+            "squad_members": "pillar_wb032"
+          },
+          {
+            "squad_members": "pillar_wb033"
+          },
+          {
+            "squad_members": "pillar_wb034"
+          },
+          {
+            "squad_members": "pillar_wb035"
+          },
+          {
+            "squad_members": "pillar_wb036"
+          },
+          {
+            "squad_members": "pillar_wb037"
+          },
+          {
+            "squad_members": "pillar_wb038"
+          },
+          {
+            "squad_members": "pillar_wb039"
+          },
+          {
+            "squad_members": "pillar_wb040"
+          },
+          {
+            "squad_members": "pillar_wb041"
+          },
+          {
+            "squad_members": "pillar_wb042"
+          },
+          {
+            "squad_members": "pillar_wb043"
+          },
+          {
+            "squad_members": "pillar_wb044"
+          },
+          {
+            "squad_members": "pillar_wb045"
+          },
+          {
+            "squad_members": "pillar_wb046"
+          },
+          {
+            "squad_members": "pillar_wb047"
+          },
+          {
+            "squad_members": "pillar_wb048"
+          },
+          {
+            "squad_members": "pillar_border01"
+          },
+          {
+            "squad_members": "pillar_border02"
+          },
+          {
+            "squad_members": "pillar_border03"
+          },
+          {
+            "squad_members": "pillar_border04"
+          },
+          {
+            "squad_members": "pillar_border05"
+          },
+          {
+            "squad_members": "pillar_border06"
+          },
+          {
+            "squad_members": "pillar_border07"
+          },
+          {
+            "squad_members": "pillar_border08"
+          },
+          {
+            "squad_members": "pillar_border09"
+          },
+          {
+            "squad_members": "pillar_border10"
+          },
+          {
+            "squad_members": "pillar_border11"
+          },
+          {
+            "squad_members": "pillar_border12"
+          },
+          {
+            "squad_members": "pillar_border13"
+          },
+          {
+            "squad_members": "pillar_border14"
+          },
+          {
+            "squad_members": "pillar_wb46"
+          },
+          {
+            "squad_members": "pillar_wb30"
+          },
+          {
+            "squad_members": "pillar_wb39"
+          },
+          {
+            "squad_members": "pillar_border15"
+          },
+          {
+            "squad_members": "pillar_border16"
+          },
+          {
+            "squad_members": "pillar_border17"
+          },
+          {
+            "squad_members": "pillar_border18"
+          },
+          {
+            "squad_members": "pillar_border19"
+          },
+          {
+            "squad_members": "pillar_wb40"
+          },
+          {
+            "squad_members": "pillar_wb19"
+          },
+          {
+            "squad_members": "pillar_wb20"
+          },
+          {
+            "squad_members": "pillar_wb21"
+          },
+          {
+            "squad_members": "pillar_wb22"
+          },
+          {
+            "squad_members": "pillar_wb23"
+          },
+          {
+            "squad_members": "pillar_wb17"
+          },
+          {
+            "squad_members": "pillar_wb18"
+          },
+          {
+            "squad_members": "pillar_wb24"
+          },
+          {
+            "squad_members": "pillar_wb25"
+          },
+          {
+            "squad_members": "pillar_wb10"
+          },
+          {
+            "squad_members": "pillar_wb11"
+          },
+          {
+            "squad_members": "pillar_wb26"
+          },
+          {
+            "squad_members": "pillar_wb27"
+          },
+          {
+            "squad_members": "pillar_wb28"
+          },
+          {
+            "squad_members": "pillar_wb29"
+          },
+          {
+            "squad_members": "pillar_wb33"
+          },
+          {
+            "squad_members": "pillar_wb31"
+          },
+          {
+            "squad_members": "pillar_wb32"
+          },
+          {
+            "squad_members": "pillar_wb34"
+          },
+          {
+            "squad_members": "pillar_wb35"
+          },
+          {
+            "squad_members": "pillar_wb36"
+          },
+          {
+            "squad_members": "pillar_wb37"
+          },
+          {
+            "squad_members": "pillar_wb38"
+          },
+          {
+            "squad_members": "pillar_wb41"
+          },
+          {
+            "squad_members": "pillar_wb42"
+          },
+          {
+            "squad_members": "pillar_wb43"
+          },
+          {
+            "squad_members": "pillar_wb44"
+          },
+          {
+            "squad_members": "pillar_wb45"
+          },
+          {
+            "squad_members": "pillar_wb47"
+          },
+          {
+            "squad_members": "pillar_wb12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pillars_squad_common",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1758.36,217.241,973.099]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "pillars_squad01"
+          },
+          {
+            "squad_members": "pillars_squad02"
+          },
+          {
+            "squad_members": "pillars_squad03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pillars_squad03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1678.64,217.241,831.947]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "pillar_border292"
+          },
+          {
+            "squad_members": "pillar_border293"
+          },
+          {
+            "squad_members": "pillar_border294"
+          },
+          {
+            "squad_members": "pillar_border295"
+          },
+          {
+            "squad_members": "pillar_border296"
+          },
+          {
+            "squad_members": "pillar_border297"
+          },
+          {
+            "squad_members": "pillar_border298"
+          },
+          {
+            "squad_members": "pillar_border299"
+          },
+          {
+            "squad_members": "pillar_border300"
+          },
+          {
+            "squad_members": "pillar_border301"
+          },
+          {
+            "squad_members": "pillar_border302"
+          },
+          {
+            "squad_members": "pillar_border303"
+          },
+          {
+            "squad_members": "pillar_border304"
+          },
+          {
+            "squad_members": "pillar_border305"
+          },
+          {
+            "squad_members": "pillar_border306"
+          },
+          {
+            "squad_members": "pillar_border308"
+          },
+          {
+            "squad_members": "pillar_border311"
+          },
+          {
+            "squad_members": "pillar_border313"
+          },
+          {
+            "squad_members": "pillar_border314"
+          },
+          {
+            "squad_members": "pillar_border315"
+          },
+          {
+            "squad_members": "pillar_border316"
+          },
+          {
+            "squad_members": "pillar_border317"
+          },
+          {
+            "squad_members": "pillar_border318"
+          },
+          {
+            "squad_members": "pillar_border319"
+          },
+          {
+            "squad_members": "pillar_border320"
+          },
+          {
+            "squad_members": "pillar_border321"
+          },
+          {
+            "squad_members": "pillar_border322"
+          },
+          {
+            "squad_members": "pillar_border323"
+          },
+          {
+            "squad_members": "pillar_border324"
+          },
+          {
+            "squad_members": "pillar_border325"
+          },
+          {
+            "squad_members": "pillar_border326"
+          },
+          {
+            "squad_members": "pillar_border327"
+          },
+          {
+            "squad_members": "pillar_border328"
+          },
+          {
+            "squad_members": "pillar_border329"
+          },
+          {
+            "squad_members": "pillar_border221"
+          },
+          {
+            "squad_members": "pillar_border330"
+          },
+          {
+            "squad_members": "pillar_border331"
+          },
+          {
+            "squad_members": "pillar_border332"
+          },
+          {
+            "squad_members": "pillar_border116"
+          },
+          {
+            "squad_members": "pillar_border333"
+          },
+          {
+            "squad_members": "pillar_border335"
+          },
+          {
+            "squad_members": "pillar_border336"
+          },
+          {
+            "squad_members": "pillar_border338"
+          },
+          {
+            "squad_members": "pillar_border339"
+          },
+          {
+            "squad_members": "pillar_border340"
+          },
+          {
+            "squad_members": "pillar_border341"
+          },
+          {
+            "squad_members": "pillar_border342"
+          },
+          {
+            "squad_members": "pillar_border343"
+          },
+          {
+            "squad_members": "pillar_border344"
+          },
+          {
+            "squad_members": "pillar_border65"
+          },
+          {
+            "squad_members": "pillar_border117"
+          },
+          {
+            "squad_members": "pillar_border118"
+          },
+          {
+            "squad_members": "pillar_border119"
+          },
+          {
+            "squad_members": "pillar_border345"
+          },
+          {
+            "squad_members": "pillar_border346"
+          },
+          {
+            "squad_members": "pillar_border347"
+          },
+          {
+            "squad_members": "pillar_border348"
+          },
+          {
+            "squad_members": "pillar_border349"
+          },
+          {
+            "squad_members": "pillar_border350"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "ammo_zone_circle",
+        "tm": [
+          [0.840881,0.0,0.0],
+          [0.0,0.840881,0.0],
+          [0.0,0.0,0.840881],
+          [1708.16,217.45,1564.48]
+        ],
+        "unit_class": "capture_zone_circle_color",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
       }
     },
     {
@@ -12646,1691 +15303,6 @@
         "crewSkillK": 0.0,
         "props": {
           "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_polygon_targets_group08",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2720.54,226.424,697.546]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1st_polygon_target01_08"
-          },
-          {
-            "squad_members": "1st_polygon_target02_08"
-          },
-          {
-            "squad_members": "1st_polygon_target03_08"
-          },
-          {
-            "squad_members": "1st_polygon_target04_08"
-          },
-          {
-            "squad_members": "1st_polygon_target05_08"
-          },
-          {
-            "squad_members": "1st_polygon_target06_08"
-          },
-          {
-            "squad_members": "1st_polygon_target07_08"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_polygon_800_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2558.92,217.241,1503.15]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1st_polygon_target07_01"
-          },
-          {
-            "squad_members": "1st_polygon_target07_02"
-          },
-          {
-            "squad_members": "1st_polygon_target07_03"
-          },
-          {
-            "squad_members": "1st_polygon_target07_04"
-          },
-          {
-            "squad_members": "1st_polygon_target07_05"
-          },
-          {
-            "squad_members": "1st_polygon_target07_06"
-          },
-          {
-            "squad_members": "1st_polygon_target07_07"
-          },
-          {
-            "squad_members": "1st_polygon_target07_08"
-          },
-          {
-            "squad_members": "1st_polygon_target07_09"
-          },
-          {
-            "squad_members": "1st_polygon_target07_10"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_polygon_targets_group08",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2781.59,217.241,1551.72]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "2nd_polygon_target01_08"
-          },
-          {
-            "squad_members": "2nd_polygon_target02_08"
-          },
-          {
-            "squad_members": "2nd_polygon_target03_08"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_polygon_targets_group09",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2785.12,217.241,1479.02]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "2nd_polygon_target01_09"
-          },
-          {
-            "squad_members": "2nd_polygon_target02_09"
-          },
-          {
-            "squad_members": "2nd_polygon_target03_09"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "2nd_polygon_targets_group10",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2775.8,217.241,1409.21]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "2nd_polygon_target01_10"
-          },
-          {
-            "squad_members": "2nd_polygon_target02_10"
-          },
-          {
-            "squad_members": "2nd_polygon_target03_10"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_polygon_targets_group09",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2686.08,226.424,641.024]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1st_polygon_target01_09"
-          },
-          {
-            "squad_members": "1st_polygon_target02_09"
-          },
-          {
-            "squad_members": "1st_polygon_target03_09"
-          },
-          {
-            "squad_members": "1st_polygon_target04_09"
-          },
-          {
-            "squad_members": "1st_polygon_target05_09"
-          },
-          {
-            "squad_members": "1st_polygon_target06_09"
-          },
-          {
-            "squad_members": "1st_polygon_target07_09"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "1st_polygon_targets_group10",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2645.5,226.424,571.283]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "1st_polygon_target01_10"
-          },
-          {
-            "squad_members": "1st_polygon_target02_10"
-          },
-          {
-            "squad_members": "1st_polygon_target03_10"
-          },
-          {
-            "squad_members": "1st_polygon_target04_10"
-          },
-          {
-            "squad_members": "1st_polygon_target05_10"
-          },
-          {
-            "squad_members": "1st_polygon_target06_10"
-          },
-          {
-            "squad_members": "1st_polygon_target07_10"
-          }
-        ]
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player02",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1370.36,217.25,2520.72]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player03",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1309.17,217.25,2453.63]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player04",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1229.9,217.25,2376.31]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player05",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1190.01,217.25,2278.42]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player06",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1139.49,217.25,2174.09]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player07",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1068.63,217.25,2098.39]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player08",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1041.76,217.25,1966.71]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player09",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1016.49,217.25,1895.37]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "players_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1204.73,261.098,1916.57]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "player01"
-          },
-          {
-            "squad_members": "player02"
-          },
-          {
-            "squad_members": "player03"
-          },
-          {
-            "squad_members": "player04"
-          },
-          {
-            "squad_members": "player05"
-          },
-          {
-            "squad_members": "player06"
-          },
-          {
-            "squad_members": "player07"
-          },
-          {
-            "squad_members": "player08"
-          },
-          {
-            "squad_members": "player09"
-          },
-          {
-            "squad_members": "player10"
-          },
-          {
-            "squad_members": "player11"
-          },
-          {
-            "squad_members": "player12"
-          },
-          {
-            "squad_members": "player13"
-          },
-          {
-            "squad_members": "player14"
-          },
-          {
-            "squad_members": "player15"
-          },
-          {
-            "squad_members": "player16"
-          },
-          {
-            "squad_members": "player17"
-          },
-          {
-            "squad_members": "player18"
-          },
-          {
-            "squad_members": "player19"
-          },
-          {
-            "squad_members": "player20"
-          },
-          {
-            "squad_members": "player21"
-          },
-          {
-            "squad_members": "player22"
-          },
-          {
-            "squad_members": "player23"
-          },
-          {
-            "squad_members": "player24"
-          },
-          {
-            "squad_members": "player25"
-          },
-          {
-            "squad_members": "player26"
-          },
-          {
-            "squad_members": "player27"
-          },
-          {
-            "squad_members": "player28"
-          },
-          {
-            "squad_members": "player29"
-          },
-          {
-            "squad_members": "player30"
-          },
-          {
-            "squad_members": "player31"
-          },
-          {
-            "squad_members": "player32"
-          },
-          {
-            "squad_members": "player33"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "spawn_areas_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1631.66,217.104,1568.88]
-        ],
-        "props": [
-          {
-            "squad_members": "spawnpoint01"
-          },
-          {
-            "squad_members": "spawnpoint02"
-          },
-          {
-            "squad_members": "spawnpoint03"
-          },
-          {
-            "squad_members": "spawnpoint04"
-          },
-          {
-            "squad_members": "spawnpoint05"
-          },
-          {
-            "squad_members": "spawnpoint06"
-          },
-          {
-            "squad_members": "spawnpoint07"
-          },
-          {
-            "squad_members": "spawnpoint08"
-          },
-          {
-            "squad_members": "spawnpoint09"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "1st_range_spots_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1802.51,217.644,1525.81]
-        ],
-        "props": [
-          {
-            "squad_members": "waypoint46.7"
-          },
-          {
-            "squad_members": "waypoint46.8"
-          },
-          {
-            "squad_members": "waypoint46.1"
-          },
-          {
-            "squad_members": "waypoint46.2"
-          },
-          {
-            "squad_members": "waypoint46.3"
-          },
-          {
-            "squad_members": "waypoint46.4"
-          },
-          {
-            "squad_members": "waypoint46.5"
-          },
-          {
-            "squad_members": "waypoint46.6"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "2nd_range_spots_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1793.47,217.241,1940.69]
-        ],
-        "props": [
-          {
-            "squad_members": "waypoint50.1"
-          },
-          {
-            "squad_members": "waypoint50.2"
-          },
-          {
-            "squad_members": "waypoint50.3"
-          },
-          {
-            "squad_members": "waypoint50.4"
-          },
-          {
-            "squad_members": "waypoint50.5"
-          },
-          {
-            "squad_members": "waypoint50.6"
-          },
-          {
-            "squad_members": "waypoint50.7"
-          },
-          {
-            "squad_members": "waypoint50.8"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "spawnpoints_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1671.03,217.241,1500.03]
-        ],
-        "props": [
-          {
-            "squad_members": "spawnpoint01"
-          },
-          {
-            "squad_members": "spawnpoint02"
-          },
-          {
-            "squad_members": "spawnpoint03"
-          },
-          {
-            "squad_members": "spawnpoint04"
-          },
-          {
-            "squad_members": "spawnpoint05"
-          },
-          {
-            "squad_members": "spawnpoint06"
-          },
-          {
-            "squad_members": "spawnpoint07"
-          },
-          {
-            "squad_members": "spawnpoint08"
-          },
-          {
-            "squad_members": "spawnpoint09"
-          }
-        ]
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player10",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1419.34,217.25,2426.01]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player11",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1493.22,217.25,2503.67]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player12",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1599.48,217.25,2536.66]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player13",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1080.6,217.25,1724.56]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player14",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1084.15,217.25,1778.47]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player15",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1094.62,217.25,1844.45]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player16",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1073.06,217.25,1929.23]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player17",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1118.2,217.25,1992.57]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player18",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1173.88,217.25,2025.17]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player19",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1188.07,217.25,2075.28]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player20",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1218.14,217.25,2135.01]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player21",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1257.8,217.25,2158.51]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player22",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1287.67,217.25,2230.18]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player23",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1344.39,217.25,2263.99]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player24",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1399.13,217.25,2295.21]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player25",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1479.66,217.25,2335.45]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player26",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1560.77,221.977,2400.1]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player27",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1642.26,221.977,2435.6]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player28",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1161.41,221.977,1671.53]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player29",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1168.61,221.977,1753.51]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player30",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1186.14,221.977,1830.65]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player31",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1241.38,221.977,1865.8]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player32",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1258.58,221.977,1927.05]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player33",
-        "tm": [
-          [0.999878,0.0,-0.0156449],
-          [0.0,1.0,0.0],
-          [0.0156449,0.0,0.999878],
-          [1264.14,221.977,1970.43]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 7,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
@@ -25184,939 +26156,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pillars_squad01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1694.32,217.241,854.653]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "pillar_border20"
-          },
-          {
-            "squad_members": "pillar_border21"
-          },
-          {
-            "squad_members": "pillar_border22"
-          },
-          {
-            "squad_members": "pillar_border23"
-          },
-          {
-            "squad_members": "pillar_border24"
-          },
-          {
-            "squad_members": "pillar_border25"
-          },
-          {
-            "squad_members": "pillar_border26"
-          },
-          {
-            "squad_members": "pillar_border27"
-          },
-          {
-            "squad_members": "pillar_border28"
-          },
-          {
-            "squad_members": "pillar_border29"
-          },
-          {
-            "squad_members": "pillar_border30"
-          },
-          {
-            "squad_members": "pillar_border31"
-          },
-          {
-            "squad_members": "pillar_border32"
-          },
-          {
-            "squad_members": "pillar_border33"
-          },
-          {
-            "squad_members": "pillar_border34"
-          },
-          {
-            "squad_members": "pillar_border35"
-          },
-          {
-            "squad_members": "pillar_border36"
-          },
-          {
-            "squad_members": "pillar_border37"
-          },
-          {
-            "squad_members": "pillar_border38"
-          },
-          {
-            "squad_members": "pillar_border39"
-          },
-          {
-            "squad_members": "pillar_border40"
-          },
-          {
-            "squad_members": "pillar_border41"
-          },
-          {
-            "squad_members": "pillar_border42"
-          },
-          {
-            "squad_members": "pillar_border43"
-          },
-          {
-            "squad_members": "pillar_border44"
-          },
-          {
-            "squad_members": "pillar_border45"
-          },
-          {
-            "squad_members": "pillar_border46"
-          },
-          {
-            "squad_members": "pillar_border47"
-          },
-          {
-            "squad_members": "pillar_border48"
-          },
-          {
-            "squad_members": "pillar_border49"
-          },
-          {
-            "squad_members": "pillar_border50"
-          },
-          {
-            "squad_members": "pillar_border51"
-          },
-          {
-            "squad_members": "pillar_border52"
-          },
-          {
-            "squad_members": "pillar_border53"
-          },
-          {
-            "squad_members": "pillar_border54"
-          },
-          {
-            "squad_members": "pillar_border55"
-          },
-          {
-            "squad_members": "pillar_border56"
-          },
-          {
-            "squad_members": "pillar_border57"
-          },
-          {
-            "squad_members": "pillar_border58"
-          },
-          {
-            "squad_members": "pillar_border59"
-          },
-          {
-            "squad_members": "pillar_border60"
-          },
-          {
-            "squad_members": "pillar_border61"
-          },
-          {
-            "squad_members": "pillar_border62"
-          },
-          {
-            "squad_members": "pillar_border63"
-          },
-          {
-            "squad_members": "pillar_border64"
-          },
-          {
-            "squad_members": "pillar_border66"
-          },
-          {
-            "squad_members": "pillar_border67"
-          },
-          {
-            "squad_members": "pillar_border68"
-          },
-          {
-            "squad_members": "pillar_border69"
-          },
-          {
-            "squad_members": "pillar_border70"
-          },
-          {
-            "squad_members": "pillar_border71"
-          },
-          {
-            "squad_members": "pillar_border72"
-          },
-          {
-            "squad_members": "pillar_border73"
-          },
-          {
-            "squad_members": "pillar_border74"
-          },
-          {
-            "squad_members": "pillar_border75"
-          },
-          {
-            "squad_members": "pillar_border76"
-          },
-          {
-            "squad_members": "pillar_border77"
-          },
-          {
-            "squad_members": "pillar_border78"
-          },
-          {
-            "squad_members": "pillar_border79"
-          },
-          {
-            "squad_members": "pillar_border80"
-          },
-          {
-            "squad_members": "pillar_border81"
-          },
-          {
-            "squad_members": "pillar_border82"
-          },
-          {
-            "squad_members": "pillar_border83"
-          },
-          {
-            "squad_members": "pillar_border84"
-          },
-          {
-            "squad_members": "pillar_border85"
-          },
-          {
-            "squad_members": "pillar_border86"
-          },
-          {
-            "squad_members": "pillar_border87"
-          },
-          {
-            "squad_members": "pillar_border88"
-          },
-          {
-            "squad_members": "pillar_border89"
-          },
-          {
-            "squad_members": "pillar_border90"
-          },
-          {
-            "squad_members": "pillar_border91"
-          },
-          {
-            "squad_members": "pillar_border92"
-          },
-          {
-            "squad_members": "pillar_border93"
-          },
-          {
-            "squad_members": "pillar_border94"
-          },
-          {
-            "squad_members": "pillar_border95"
-          },
-          {
-            "squad_members": "pillar_border96"
-          },
-          {
-            "squad_members": "pillar_border97"
-          },
-          {
-            "squad_members": "pillar_border98"
-          },
-          {
-            "squad_members": "pillar_border99"
-          },
-          {
-            "squad_members": "pillar_border100"
-          },
-          {
-            "squad_members": "pillar_border101"
-          },
-          {
-            "squad_members": "pillar_border102"
-          },
-          {
-            "squad_members": "pillar_border103"
-          },
-          {
-            "squad_members": "pillar_border188"
-          },
-          {
-            "squad_members": "pillar_border189"
-          },
-          {
-            "squad_members": "pillar_border190"
-          },
-          {
-            "squad_members": "pillar_border191"
-          },
-          {
-            "squad_members": "pillar_border192"
-          },
-          {
-            "squad_members": "pillar_border193"
-          },
-          {
-            "squad_members": "pillar_border194"
-          },
-          {
-            "squad_members": "pillar_border195"
-          },
-          {
-            "squad_members": "pillar_border196"
-          },
-          {
-            "squad_members": "pillar_border197"
-          },
-          {
-            "squad_members": "pillar_border198"
-          },
-          {
-            "squad_members": "pillar_border199"
-          },
-          {
-            "squad_members": "pillar_border200"
-          },
-          {
-            "squad_members": "pillar_border201"
-          },
-          {
-            "squad_members": "pillar_border202"
-          },
-          {
-            "squad_members": "pillar_border203"
-          },
-          {
-            "squad_members": "pillar_border204"
-          },
-          {
-            "squad_members": "pillar_border205"
-          },
-          {
-            "squad_members": "pillar_border206"
-          },
-          {
-            "squad_members": "pillar_border207"
-          },
-          {
-            "squad_members": "pillar_border208"
-          },
-          {
-            "squad_members": "pillar_border209"
-          },
-          {
-            "squad_members": "pillar_border210"
-          },
-          {
-            "squad_members": "pillar_border211"
-          },
-          {
-            "squad_members": "pillar_border212"
-          },
-          {
-            "squad_members": "pillar_border213"
-          },
-          {
-            "squad_members": "pillar_border214"
-          },
-          {
-            "squad_members": "pillar_border215"
-          },
-          {
-            "squad_members": "pillar_border216"
-          },
-          {
-            "squad_members": "pillar_border217"
-          },
-          {
-            "squad_members": "pillar_border218"
-          },
-          {
-            "squad_members": "pillar_border219"
-          },
-          {
-            "squad_members": "pillar_border220"
-          },
-          {
-            "squad_members": "pillar_border222"
-          },
-          {
-            "squad_members": "pillar_border223"
-          },
-          {
-            "squad_members": "pillar_border224"
-          },
-          {
-            "squad_members": "pillar_border225"
-          },
-          {
-            "squad_members": "pillar_border226"
-          },
-          {
-            "squad_members": "pillar_border227"
-          },
-          {
-            "squad_members": "pillar_border228"
-          },
-          {
-            "squad_members": "pillar_border229"
-          },
-          {
-            "squad_members": "pillar_border230"
-          },
-          {
-            "squad_members": "pillar_border231"
-          },
-          {
-            "squad_members": "pillar_border232"
-          },
-          {
-            "squad_members": "pillar_border233"
-          },
-          {
-            "squad_members": "pillar_border234"
-          },
-          {
-            "squad_members": "pillar_border235"
-          },
-          {
-            "squad_members": "pillar_border236"
-          },
-          {
-            "squad_members": "pillar_border237"
-          },
-          {
-            "squad_members": "pillar_border238"
-          },
-          {
-            "squad_members": "pillar_border239"
-          },
-          {
-            "squad_members": "pillar_border240"
-          },
-          {
-            "squad_members": "pillar_border241"
-          },
-          {
-            "squad_members": "pillar_border242"
-          },
-          {
-            "squad_members": "pillar_border243"
-          },
-          {
-            "squad_members": "pillar_border244"
-          },
-          {
-            "squad_members": "pillar_border245"
-          },
-          {
-            "squad_members": "pillar_border246"
-          },
-          {
-            "squad_members": "pillar_border247"
-          },
-          {
-            "squad_members": "pillar_border250"
-          },
-          {
-            "squad_members": "pillar_border251"
-          },
-          {
-            "squad_members": "pillar_border252"
-          },
-          {
-            "squad_members": "pillar_border253"
-          },
-          {
-            "squad_members": "pillar_border254"
-          },
-          {
-            "squad_members": "pillar_border255"
-          },
-          {
-            "squad_members": "pillar_border256"
-          },
-          {
-            "squad_members": "pillar_border257"
-          },
-          {
-            "squad_members": "pillar_border258"
-          },
-          {
-            "squad_members": "pillar_border259"
-          },
-          {
-            "squad_members": "pillar_border260"
-          },
-          {
-            "squad_members": "pillar_border261"
-          },
-          {
-            "squad_members": "pillar_border262"
-          },
-          {
-            "squad_members": "pillar_border263"
-          },
-          {
-            "squad_members": "pillar_border264"
-          },
-          {
-            "squad_members": "pillar_border265"
-          },
-          {
-            "squad_members": "pillar_border266"
-          },
-          {
-            "squad_members": "pillar_border267"
-          },
-          {
-            "squad_members": "pillar_border268"
-          },
-          {
-            "squad_members": "pillar_border269"
-          },
-          {
-            "squad_members": "pillar_border270"
-          },
-          {
-            "squad_members": "pillar_border187"
-          },
-          {
-            "squad_members": "pillar_border271"
-          },
-          {
-            "squad_members": "pillar_border248"
-          },
-          {
-            "squad_members": "pillar_border249"
-          },
-          {
-            "squad_members": "pillar_border272"
-          },
-          {
-            "squad_members": "pillar_border273"
-          },
-          {
-            "squad_members": "pillar_border274"
-          },
-          {
-            "squad_members": "pillar_border275"
-          },
-          {
-            "squad_members": "pillar_border276"
-          },
-          {
-            "squad_members": "pillar_border277"
-          },
-          {
-            "squad_members": "pillar_border278"
-          },
-          {
-            "squad_members": "pillar_border279"
-          },
-          {
-            "squad_members": "pillar_border280"
-          },
-          {
-            "squad_members": "pillar_border281"
-          },
-          {
-            "squad_members": "pillar_border282"
-          },
-          {
-            "squad_members": "pillar_border283"
-          },
-          {
-            "squad_members": "pillar_border284"
-          },
-          {
-            "squad_members": "pillar_border285"
-          },
-          {
-            "squad_members": "pillar_border286"
-          },
-          {
-            "squad_members": "pillar_border287"
-          },
-          {
-            "squad_members": "pillar_border288"
-          },
-          {
-            "squad_members": "pillar_border289"
-          },
-          {
-            "squad_members": "pillar_border290"
-          },
-          {
-            "squad_members": "pillar_border291"
-          },
-          {
-            "squad_members": "pillar_border104"
-          },
-          {
-            "squad_members": "pillar_border105"
-          },
-          {
-            "squad_members": "pillar_border106"
-          },
-          {
-            "squad_members": "pillar_border107"
-          },
-          {
-            "squad_members": "pillar_border108"
-          },
-          {
-            "squad_members": "pillar_border109"
-          },
-          {
-            "squad_members": "pillar_border110"
-          },
-          {
-            "squad_members": "pillar_border111"
-          },
-          {
-            "squad_members": "pillar_border112"
-          },
-          {
-            "squad_members": "pillar_border113"
-          },
-          {
-            "squad_members": "pillar_border114"
-          },
-          {
-            "squad_members": "pillar_border115"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "pillars_squad02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1684.22,217.241,963.591]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "pillar_wb009"
-          },
-          {
-            "squad_members": "pillar_wb010"
-          },
-          {
-            "squad_members": "pillar_wb011"
-          },
-          {
-            "squad_members": "pillar_wb012"
-          },
-          {
-            "squad_members": "pillar_wb013"
-          },
-          {
-            "squad_members": "pillar_wb014"
-          },
-          {
-            "squad_members": "pillar_wb015"
-          },
-          {
-            "squad_members": "pillar_wb016"
-          },
-          {
-            "squad_members": "pillar_wb017"
-          },
-          {
-            "squad_members": "pillar_wb018"
-          },
-          {
-            "squad_members": "pillar_wb019"
-          },
-          {
-            "squad_members": "pillar_wb020"
-          },
-          {
-            "squad_members": "pillar_wb021"
-          },
-          {
-            "squad_members": "pillar_wb022"
-          },
-          {
-            "squad_members": "pillar_wb023"
-          },
-          {
-            "squad_members": "pillar_wb024"
-          },
-          {
-            "squad_members": "pillar_wb025"
-          },
-          {
-            "squad_members": "pillar_wb026"
-          },
-          {
-            "squad_members": "pillar_wb027"
-          },
-          {
-            "squad_members": "pillar_wb028"
-          },
-          {
-            "squad_members": "pillar_wb029"
-          },
-          {
-            "squad_members": "pillar_wb030"
-          },
-          {
-            "squad_members": "pillar_wb031"
-          },
-          {
-            "squad_members": "pillar_wb032"
-          },
-          {
-            "squad_members": "pillar_wb033"
-          },
-          {
-            "squad_members": "pillar_wb034"
-          },
-          {
-            "squad_members": "pillar_wb035"
-          },
-          {
-            "squad_members": "pillar_wb036"
-          },
-          {
-            "squad_members": "pillar_wb037"
-          },
-          {
-            "squad_members": "pillar_wb038"
-          },
-          {
-            "squad_members": "pillar_wb039"
-          },
-          {
-            "squad_members": "pillar_wb040"
-          },
-          {
-            "squad_members": "pillar_wb041"
-          },
-          {
-            "squad_members": "pillar_wb042"
-          },
-          {
-            "squad_members": "pillar_wb043"
-          },
-          {
-            "squad_members": "pillar_wb044"
-          },
-          {
-            "squad_members": "pillar_wb045"
-          },
-          {
-            "squad_members": "pillar_wb046"
-          },
-          {
-            "squad_members": "pillar_wb047"
-          },
-          {
-            "squad_members": "pillar_wb048"
-          },
-          {
-            "squad_members": "pillar_border01"
-          },
-          {
-            "squad_members": "pillar_border02"
-          },
-          {
-            "squad_members": "pillar_border03"
-          },
-          {
-            "squad_members": "pillar_border04"
-          },
-          {
-            "squad_members": "pillar_border05"
-          },
-          {
-            "squad_members": "pillar_border06"
-          },
-          {
-            "squad_members": "pillar_border07"
-          },
-          {
-            "squad_members": "pillar_border08"
-          },
-          {
-            "squad_members": "pillar_border09"
-          },
-          {
-            "squad_members": "pillar_border10"
-          },
-          {
-            "squad_members": "pillar_border11"
-          },
-          {
-            "squad_members": "pillar_border12"
-          },
-          {
-            "squad_members": "pillar_border13"
-          },
-          {
-            "squad_members": "pillar_border14"
-          },
-          {
-            "squad_members": "pillar_wb46"
-          },
-          {
-            "squad_members": "pillar_wb30"
-          },
-          {
-            "squad_members": "pillar_wb39"
-          },
-          {
-            "squad_members": "pillar_border15"
-          },
-          {
-            "squad_members": "pillar_border16"
-          },
-          {
-            "squad_members": "pillar_border17"
-          },
-          {
-            "squad_members": "pillar_border18"
-          },
-          {
-            "squad_members": "pillar_border19"
-          },
-          {
-            "squad_members": "pillar_wb40"
-          },
-          {
-            "squad_members": "pillar_wb19"
-          },
-          {
-            "squad_members": "pillar_wb20"
-          },
-          {
-            "squad_members": "pillar_wb21"
-          },
-          {
-            "squad_members": "pillar_wb22"
-          },
-          {
-            "squad_members": "pillar_wb23"
-          },
-          {
-            "squad_members": "pillar_wb17"
-          },
-          {
-            "squad_members": "pillar_wb18"
-          },
-          {
-            "squad_members": "pillar_wb24"
-          },
-          {
-            "squad_members": "pillar_wb25"
-          },
-          {
-            "squad_members": "pillar_wb10"
-          },
-          {
-            "squad_members": "pillar_wb11"
-          },
-          {
-            "squad_members": "pillar_wb26"
-          },
-          {
-            "squad_members": "pillar_wb27"
-          },
-          {
-            "squad_members": "pillar_wb28"
-          },
-          {
-            "squad_members": "pillar_wb29"
-          },
-          {
-            "squad_members": "pillar_wb33"
-          },
-          {
-            "squad_members": "pillar_wb31"
-          },
-          {
-            "squad_members": "pillar_wb32"
-          },
-          {
-            "squad_members": "pillar_wb34"
-          },
-          {
-            "squad_members": "pillar_wb35"
-          },
-          {
-            "squad_members": "pillar_wb36"
-          },
-          {
-            "squad_members": "pillar_wb37"
-          },
-          {
-            "squad_members": "pillar_wb38"
-          },
-          {
-            "squad_members": "pillar_wb41"
-          },
-          {
-            "squad_members": "pillar_wb42"
-          },
-          {
-            "squad_members": "pillar_wb43"
-          },
-          {
-            "squad_members": "pillar_wb44"
-          },
-          {
-            "squad_members": "pillar_wb45"
-          },
-          {
-            "squad_members": "pillar_wb47"
-          },
-          {
-            "squad_members": "pillar_wb12"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "pillars_squad_common",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1758.36,217.241,973.099]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "pillars_squad01"
-          },
-          {
-            "squad_members": "pillars_squad02"
-          },
-          {
-            "squad_members": "pillars_squad03"
-          }
-        ]
-      }
-    },
-    {
       "structures": {
         "name": "pillar_border292",
         "tm": [
@@ -28300,194 +28339,155 @@
       }
     },
     {
-      "squad": {
-        "name": "pillars_squad03",
+      "area_squad": {
+        "name": "spawn_areas_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [1678.64,217.241,831.947]
+          [1631.66,217.104,1568.88]
         ],
         "props": [
           {
-            "object_marking": 0
+            "squad_members": "spawnpoint01"
           },
           {
-            "squad_members": "pillar_border292"
+            "squad_members": "spawnpoint02"
           },
           {
-            "squad_members": "pillar_border293"
+            "squad_members": "spawnpoint03"
           },
           {
-            "squad_members": "pillar_border294"
+            "squad_members": "spawnpoint04"
           },
           {
-            "squad_members": "pillar_border295"
+            "squad_members": "spawnpoint05"
           },
           {
-            "squad_members": "pillar_border296"
+            "squad_members": "spawnpoint06"
           },
           {
-            "squad_members": "pillar_border297"
+            "squad_members": "spawnpoint07"
           },
           {
-            "squad_members": "pillar_border298"
+            "squad_members": "spawnpoint08"
           },
           {
-            "squad_members": "pillar_border299"
+            "squad_members": "spawnpoint09"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "1st_range_spots_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1802.51,217.644,1525.81]
+        ],
+        "props": [
+          {
+            "squad_members": "waypoint46.7"
           },
           {
-            "squad_members": "pillar_border300"
+            "squad_members": "waypoint46.8"
           },
           {
-            "squad_members": "pillar_border301"
+            "squad_members": "waypoint46.1"
           },
           {
-            "squad_members": "pillar_border302"
+            "squad_members": "waypoint46.2"
           },
           {
-            "squad_members": "pillar_border303"
+            "squad_members": "waypoint46.3"
           },
           {
-            "squad_members": "pillar_border304"
+            "squad_members": "waypoint46.4"
           },
           {
-            "squad_members": "pillar_border305"
+            "squad_members": "waypoint46.5"
           },
           {
-            "squad_members": "pillar_border306"
+            "squad_members": "waypoint46.6"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "2nd_range_spots_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1793.47,217.241,1940.69]
+        ],
+        "props": [
+          {
+            "squad_members": "waypoint50.1"
           },
           {
-            "squad_members": "pillar_border308"
+            "squad_members": "waypoint50.2"
           },
           {
-            "squad_members": "pillar_border311"
+            "squad_members": "waypoint50.3"
           },
           {
-            "squad_members": "pillar_border313"
+            "squad_members": "waypoint50.4"
           },
           {
-            "squad_members": "pillar_border314"
+            "squad_members": "waypoint50.5"
           },
           {
-            "squad_members": "pillar_border315"
+            "squad_members": "waypoint50.6"
           },
           {
-            "squad_members": "pillar_border316"
+            "squad_members": "waypoint50.7"
           },
           {
-            "squad_members": "pillar_border317"
+            "squad_members": "waypoint50.8"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "spawnpoints_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1671.03,217.241,1500.03]
+        ],
+        "props": [
+          {
+            "squad_members": "spawnpoint01"
           },
           {
-            "squad_members": "pillar_border318"
+            "squad_members": "spawnpoint02"
           },
           {
-            "squad_members": "pillar_border319"
+            "squad_members": "spawnpoint03"
           },
           {
-            "squad_members": "pillar_border320"
+            "squad_members": "spawnpoint04"
           },
           {
-            "squad_members": "pillar_border321"
+            "squad_members": "spawnpoint05"
           },
           {
-            "squad_members": "pillar_border322"
+            "squad_members": "spawnpoint06"
           },
           {
-            "squad_members": "pillar_border323"
+            "squad_members": "spawnpoint07"
           },
           {
-            "squad_members": "pillar_border324"
+            "squad_members": "spawnpoint08"
           },
           {
-            "squad_members": "pillar_border325"
-          },
-          {
-            "squad_members": "pillar_border326"
-          },
-          {
-            "squad_members": "pillar_border327"
-          },
-          {
-            "squad_members": "pillar_border328"
-          },
-          {
-            "squad_members": "pillar_border329"
-          },
-          {
-            "squad_members": "pillar_border221"
-          },
-          {
-            "squad_members": "pillar_border330"
-          },
-          {
-            "squad_members": "pillar_border331"
-          },
-          {
-            "squad_members": "pillar_border332"
-          },
-          {
-            "squad_members": "pillar_border116"
-          },
-          {
-            "squad_members": "pillar_border333"
-          },
-          {
-            "squad_members": "pillar_border335"
-          },
-          {
-            "squad_members": "pillar_border336"
-          },
-          {
-            "squad_members": "pillar_border338"
-          },
-          {
-            "squad_members": "pillar_border339"
-          },
-          {
-            "squad_members": "pillar_border340"
-          },
-          {
-            "squad_members": "pillar_border341"
-          },
-          {
-            "squad_members": "pillar_border342"
-          },
-          {
-            "squad_members": "pillar_border343"
-          },
-          {
-            "squad_members": "pillar_border344"
-          },
-          {
-            "squad_members": "pillar_border65"
-          },
-          {
-            "squad_members": "pillar_border117"
-          },
-          {
-            "squad_members": "pillar_border118"
-          },
-          {
-            "squad_members": "pillar_border119"
-          },
-          {
-            "squad_members": "pillar_border345"
-          },
-          {
-            "squad_members": "pillar_border346"
-          },
-          {
-            "squad_members": "pillar_border347"
-          },
-          {
-            "squad_members": "pillar_border348"
-          },
-          {
-            "squad_members": "pillar_border349"
-          },
-          {
-            "squad_members": "pillar_border350"
+            "squad_members": "spawnpoint09"
           }
         ]
       }

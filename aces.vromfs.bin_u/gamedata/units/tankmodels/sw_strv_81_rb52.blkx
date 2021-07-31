@@ -114,10 +114,10 @@
     "canReloadNonGuns": true
   },
   {
-    "rearmSmokeTimeOnField": 60.0
+    "canReloadNonGuns": true
   },
   {
-    "canReloadNonGuns": true
+    "rearmSmokeTimeOnField": 60.0
   },
   {
     "customClassIco": "!#ui/gameuiskin#uk_centurion_mk_3_ss11_ico.svg"
@@ -1649,10 +1649,10 @@
             "fireConeAngle": 1.0
           },
           {
-            "bullets": 3600
+            "fireConeAngle": 15.0
           },
           {
-            "fireConeAngle": 15.0
+            "bullets": 3600
           },
           {
             "ChainfireTime": 3.0
@@ -1750,6 +1750,9 @@
               "gunnerDm": "gunner_dm"
             },
             {
+              "gunnerDm": "gunner_dm"
+            },
+            {
               "dependOnParent": false
             },
             {
@@ -1757,9 +1760,6 @@
             },
             {
               "pitchParentScale": 0.9
-            },
-            {
-              "gunnerDm": "gunner_dm"
             }
           ],
           "limits": {
@@ -2894,10 +2894,10 @@
                   "fireConeAngle": 1.0
                 },
                 {
-                  "bullets": 3600
+                  "fireConeAngle": 15.0
                 },
                 {
-                  "fireConeAngle": 15.0
+                  "bullets": 3600
                 },
                 {
                   "ChainfireTime": 3.0
@@ -2995,6 +2995,9 @@
                     "gunnerDm": "gunner_dm"
                   },
                   {
+                    "gunnerDm": "gunner_dm"
+                  },
+                  {
                     "dependOnParent": false
                   },
                   {
@@ -3002,9 +3005,6 @@
                   },
                   {
                     "pitchParentScale": 0.9
-                  },
-                  {
-                    "gunnerDm": "gunner_dm"
                   }
                 ],
                 "limits": {
@@ -3035,11 +3035,6 @@
                   "yaw": [-180.0,180.0],
                   "pitch": [-5.0,10.0]
                 }
-              }
-            },
-            {
-              "hideNodes": {
-                "node": "ex_decor_l_04"
               }
             },
             {
@@ -3086,6 +3081,11 @@
                   "yaw": [-0.0,0.0],
                   "pitch": [0.0,0.0]
                 }
+              }
+            },
+            {
+              "hideNodes": {
+                "node": "ex_decor_l_04"
               }
             }
           ]

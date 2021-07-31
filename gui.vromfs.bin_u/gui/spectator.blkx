@@ -116,89 +116,6 @@
         }
       },
       {
-        "spectatorFrame": {
-          "id": "log_div",
-          "css-hier-invalidate": "yes",
-          "position": "absolute",
-          "pos": "-1@spectatorBw -4@dp, ph-h",
-          "min-height": "2@sIco",
-          "padding-left": "1@spectatorBw",
-          "flow": "vertical",
-          "tdiv": {
-            "id": "content",
-            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
-            "flow": "vertical",
-            "HorizontalListBox": {
-              "id": "tabs",
-              "width": "pw",
-              "class": "tabs",
-              "smallFont": "yes",
-              "navigatorShortcuts": "yes",
-              "on_select": "onBtnLogTabSwitch"
-            },
-            "tdiv": [
-              {
-                "size": "pw, fh"
-              },
-              {
-                "tdiv": {
-                  "id": "history_container",
-                  "position": "absolute",
-                  "size": "pw, ph",
-                  "display": "show",
-                  "overflow-y": "auto",
-                  "scroll-align": "left",
-                  "auto-scroll": "yes",
-                  "css-hier-invalidate": "yes",
-                  "historyLog": {
-                    "id": "history_log",
-                    "width": "pw",
-                    "punctuation-exception": "-.,'\"():/\\@[]=^+",
-                    "text": ""
-                  }
-                }
-              },
-              {
-                "chatPlaceSpectator": {
-                  "id": "chat_container",
-                  "position": "absolute",
-                  "size": "pw, ph",
-                  "display": "hide"
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "order_status",
-                  "position": "absolute",
-                  "size": "pw, ph"
-                }
-              }
-            ]
-          }
-        }
-      },
-      {
-        "spectatorFrame": {
-          "id": "map_div",
-          "css-hier-invalidate": "yes",
-          "position": "absolute",
-          "pos": "pw - w + 4@dp + 1@spectatorBw, ph-h",
-          "min-height": "2@sIco",
-          "padding": "1@framePadding",
-          "padding-right": "1@spectatorBw+4@dp",
-          "flow": "vertical",
-          "tdiv": {
-            "id": "content",
-            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
-            "tacticalMap": {
-              "size": "pw, ph",
-              "behaviour": "button",
-              "on_click": "onMapClick"
-            }
-          }
-        }
-      },
-      {
         "tdiv": {
           "id": "spectator_hud_damage",
           "size": "0.15@shHud, 0.15@shHud",
@@ -283,23 +200,6 @@
               ]
             },
             {
-              "hudMessages": {
-                "id": "hud_message_zone_capture_notification",
-                "width": "pw",
-                "height": "0.065@shHud",
-                "message_style": "zone_capture_notification",
-                "input-transparent": "yes"
-              }
-            },
-            {
-              "div": {
-                "id": "display_timers",
-                "height": "0.08@shHud",
-                "position": "relative",
-                "left": "pw/2 - w/2"
-              }
-            },
-            {
               "tdiv": {
                 "id": "actionbar_hints_nest",
                 "width": "1@shHud",
@@ -320,15 +220,6 @@
               }
             },
             {
-              "textAreaCentered": {
-                "id": "low-quality-model-warning",
-                "width": "pw",
-                "style": "color:@warningTextColor; font:@fontHudNormal;",
-                "text": "#low_quality_model_in_hangar",
-                "display": "hide"
-              }
-            },
-            {
               "tdiv": {
                 "id": "tutorial_hints",
                 "width": "pw",
@@ -344,6 +235,32 @@
                 "position": "root",
                 "pos": "50%sw-50%w, @shHud - h",
                 "flow": "vertical"
+              }
+            },
+            {
+              "hudMessages": {
+                "id": "hud_message_zone_capture_notification",
+                "width": "pw",
+                "height": "0.065@shHud",
+                "message_style": "zone_capture_notification",
+                "input-transparent": "yes"
+              }
+            },
+            {
+              "div": {
+                "id": "display_timers",
+                "height": "0.08@shHud",
+                "position": "relative",
+                "left": "pw/2 - w/2"
+              }
+            },
+            {
+              "textAreaCentered": {
+                "id": "low-quality-model-warning",
+                "width": "pw",
+                "style": "color:@warningTextColor; font:@fontHudNormal;",
+                "text": "#low_quality_model_in_hangar",
+                "display": "hide"
               }
             }
           ],
@@ -372,6 +289,97 @@
               "pos": "pw/2-w/2, 0",
               "position": "relative",
               "display": "hide"
+            }
+          }
+        }
+      },
+      {
+        "tdiv": {
+          "behaviour": "darg",
+          "position": "root",
+          "pos": "0, 0",
+          "size": "sw, sh"
+        }
+      },
+      {
+        "spectatorFrame": {
+          "id": "log_div",
+          "css-hier-invalidate": "yes",
+          "position": "absolute",
+          "pos": "-1@spectatorBw -4@dp, ph-h",
+          "min-height": "2@sIco",
+          "padding-left": "1@spectatorBw",
+          "flow": "vertical",
+          "tdiv": {
+            "id": "content",
+            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
+            "flow": "vertical",
+            "HorizontalListBox": {
+              "id": "tabs",
+              "width": "pw",
+              "class": "tabs",
+              "smallFont": "yes",
+              "navigatorShortcuts": "yes",
+              "on_select": "onBtnLogTabSwitch"
+            },
+            "tdiv": [
+              {
+                "size": "pw, fh"
+              },
+              {
+                "tdiv": {
+                  "id": "history_container",
+                  "position": "absolute",
+                  "size": "pw, ph",
+                  "display": "show",
+                  "overflow-y": "auto",
+                  "scroll-align": "left",
+                  "auto-scroll": "yes",
+                  "css-hier-invalidate": "yes",
+                  "historyLog": {
+                    "id": "history_log",
+                    "width": "pw",
+                    "punctuation-exception": "-.,'\"():/\\@[]=^+",
+                    "text": ""
+                  }
+                }
+              },
+              {
+                "tdiv": {
+                  "id": "order_status",
+                  "position": "absolute",
+                  "size": "pw, ph"
+                }
+              },
+              {
+                "chatPlaceSpectator": {
+                  "id": "chat_container",
+                  "position": "absolute",
+                  "size": "pw, ph",
+                  "display": "hide"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "spectatorFrame": {
+          "id": "map_div",
+          "css-hier-invalidate": "yes",
+          "position": "absolute",
+          "pos": "pw - w + 4@dp + 1@spectatorBw, ph-h",
+          "min-height": "2@sIco",
+          "padding": "1@framePadding",
+          "padding-right": "1@spectatorBw+4@dp",
+          "flow": "vertical",
+          "tdiv": {
+            "id": "content",
+            "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
+            "tacticalMap": {
+              "size": "pw, ph",
+              "behaviour": "button",
+              "on_click": "onMapClick"
             }
           }
         }
@@ -457,24 +465,6 @@
               "icon": {
                 "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
                 "rotation": "90"
-              }
-            }
-          },
-          {
-            "tdiv": {
-              "id": "controls_cameras_icon",
-              "top": "ph/2-h/2",
-              "position": "relative",
-              "size": "@spectatorToolbarBtnSize, @spectatorToolbarBtnSize",
-              "inactive": "yes",
-              "img": {
-                "pos": "pw-1.2w, ph/2-h/2",
-                "position": "relative",
-                "size": "@sIco, @sIco",
-                "style": "background-color:#4c4c4c4c",
-                "input-transparent": "yes",
-                "background-image": "#ui/gameuiskin#player_spectator.svg",
-                "background-svg-size": "@sIco, @sIco"
               }
             }
           },
@@ -608,16 +598,6 @@
             }
           },
           {
-            "text": {
-              "id": "txt_replay_time_speed",
-              "top": "ph/2-h/2",
-              "position": "relative",
-              "width": "0.07@sf;",
-              "text": "#ui/not_applicable",
-              "enable": "no"
-            }
-          },
-          {
             "hoverButton": {
               "id": "ID_REPLAY_FASTER",
               "on_click": "onBtnShortcut",
@@ -636,6 +616,24 @@
               "icon": {
                 "id": "icon",
                 "background-image": "#ui/gameuiskin#replay_pause.svg"
+              }
+            }
+          },
+          {
+            "tdiv": {
+              "id": "controls_cameras_icon",
+              "top": "ph/2-h/2",
+              "position": "relative",
+              "size": "@spectatorToolbarBtnSize, @spectatorToolbarBtnSize",
+              "inactive": "yes",
+              "img": {
+                "pos": "pw-1.2w, ph/2-h/2",
+                "position": "relative",
+                "size": "@sIco, @sIco",
+                "style": "background-color:#4c4c4c4c",
+                "input-transparent": "yes",
+                "background-image": "#ui/gameuiskin#player_spectator.svg",
+                "background-svg-size": "@sIco, @sIco"
               }
             }
           },
@@ -663,6 +661,15 @@
                 }
               },
               {
+                "text": {
+                  "id": "txt_replay_time_total",
+                  "width": "0.10@sf",
+                  "top": "ph/2-h/2",
+                  "position": "relative",
+                  "text": "#ui/not_applicable"
+                }
+              },
+              {
                 "expProgress": {
                   "id": "timeline_progress",
                   "top": "ph/2-h/2",
@@ -671,17 +678,18 @@
                   "max": "1000",
                   "value": "0"
                 }
-              },
-              {
-                "text": {
-                  "id": "txt_replay_time_total",
-                  "width": "0.10@sf",
-                  "top": "ph/2-h/2",
-                  "position": "relative",
-                  "text": "#ui/not_applicable"
-                }
               }
             ]
+          },
+          {
+            "text": {
+              "id": "txt_replay_time_speed",
+              "top": "ph/2-h/2",
+              "position": "relative",
+              "width": "0.07@sf;",
+              "text": "#ui/not_applicable",
+              "enable": "no"
+            }
           },
           {
             "buttons_block": {
@@ -698,6 +706,36 @@
             }
           }
         ]
+      },
+      {
+        "spectatorFrame": {
+          "id": "map_large_div",
+          "display": "hide",
+          "width": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
+          "height": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
+          "pos": "pw/2-w/2, ph/2-h/2",
+          "position": "absolute",
+          "css-hier-invalidate": "yes",
+          "padding": "1@framePadding",
+          "behaviour": "button",
+          "on_click": "onMapClick",
+          "tacticalMap": {
+            "id": "tactical_map",
+            "enable": "no",
+            "display": "hide",
+            "width": "pw",
+            "height": "ph",
+            "behaviour": "button",
+            "on_click": "onMapClick"
+          },
+          "Button_close": {
+            "id": "btnCloseMap",
+            "on_click": "onMapClick",
+            "pos": "pw-w-1@framePadding, 1@framePadding",
+            "position": "absolute",
+            "have_shortcut": "no"
+          }
+        }
       },
       {
         "toggleButton": {
@@ -748,36 +786,6 @@
         }
       },
       {
-        "spectatorFrame": {
-          "id": "map_large_div",
-          "display": "hide",
-          "width": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
-          "height": "1@rh $min (1@rw -2@spectatorTableWidth -16@sf/@pf)",
-          "pos": "pw/2-w/2, ph/2-h/2",
-          "position": "absolute",
-          "css-hier-invalidate": "yes",
-          "padding": "1@framePadding",
-          "behaviour": "button",
-          "on_click": "onMapClick",
-          "tacticalMap": {
-            "id": "tactical_map",
-            "enable": "no",
-            "display": "hide",
-            "width": "pw",
-            "height": "ph",
-            "behaviour": "button",
-            "on_click": "onMapClick"
-          },
-          "Button_close": {
-            "id": "btnCloseMap",
-            "on_click": "onMapClick",
-            "pos": "pw-w-1@framePadding, 1@framePadding",
-            "position": "absolute",
-            "have_shortcut": "no"
-          }
-        }
-      },
-      {
         "hitCamera": {
           "id": "hud_hitcamera",
           "position": "absolute",
@@ -810,14 +818,6 @@
         "timer": {
           "id": "update_timer",
           "timer_handler_func": "onUpdate"
-        }
-      },
-      {
-        "tdiv": {
-          "behaviour": "darg",
-          "position": "root",
-          "pos": "0, 0",
-          "size": "sw, sh"
         }
       }
     ]

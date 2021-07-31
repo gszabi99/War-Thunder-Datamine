@@ -548,6 +548,13 @@
             }
           },
           {
+            "varSetString": {
+              "value": "",
+              "var": "starshell_cz_name",
+              "input_var": "@starshell_cz_paramname"
+            }
+          },
+          {
             "varAddString": {
               "value": "",
               "digits": 2,
@@ -560,13 +567,6 @@
               "value": "_name",
               "digits": 0,
               "var": "starshell_cz_paramname"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "starshell_cz_name",
-              "input_var": "@starshell_cz_paramname"
             }
           },
           {
@@ -709,6 +709,13 @@
             }
           },
           {
+            "varSetString": {
+              "value": "",
+              "var": "starshell_cz_name",
+              "input_var": "@starshell_cz_paramname"
+            }
+          },
+          {
             "varAddString": {
               "value": "",
               "digits": 1,
@@ -721,13 +728,6 @@
               "value": "_zone_name",
               "digits": 0,
               "var": "starshell_cz_paramname"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "starshell_cz_name",
-              "input_var": "@starshell_cz_paramname"
             }
           },
           {
@@ -906,11 +906,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "missionUnitShootAtLine": {
             "areaNameFrom": "@starshell_cz_name",
             "areaNameTo": "@starshell_sz_t2_choosen_name",
@@ -919,6 +914,11 @@
             "attackLineRange": [0.3,0.5],
             "heightRange": [600.0,650.0],
             "lateralOffset": 120.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         }
       ],

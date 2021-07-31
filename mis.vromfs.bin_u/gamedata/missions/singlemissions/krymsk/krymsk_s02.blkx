@@ -256,15 +256,25 @@
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "enemy_fighters00",
-            "target": "player"
+          "wait": {
+            "time": 20.0
           }
         },
         {
           "wait": {
-            "time": 20.0
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "enemy_fighters00",
+            "target": "player"
           }
         },
         {
@@ -284,18 +294,8 @@
           ]
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "unitWakeUp": {
             "target": "searchlight01"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -380,6 +380,16 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "enemy_fighters00",
@@ -403,18 +413,8 @@
           ]
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "unitWakeUp": {
             "target": "searchlight01"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -681,21 +681,6 @@
       }
     },
     {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-8939.65,248.95,8057.95]
-        ],
-        "props": {
-          "squad_members": "player",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
       "air_defence": {
         "name": "searchlight01",
         "tm": [
@@ -759,6 +744,21 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-8939.65,248.95,8057.95]
+        ],
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
       }
     }
   ],

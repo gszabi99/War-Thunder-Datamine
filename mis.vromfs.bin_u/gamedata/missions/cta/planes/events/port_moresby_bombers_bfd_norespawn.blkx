@@ -428,6 +428,12 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object": "t1_bomb_targets_squad",
+            "isImmortal": true
+          }
+        },
+        {
           "unitSetIndication": {
             "set": true,
             "target": "t1_quest_units_squad"
@@ -440,14 +446,13 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object": "t1_bomb_targets_squad",
-            "isImmortal": true
+          "wait": {
+            "time": 5.0
           }
         },
         {
           "wait": {
-            "time": 5.0
+            "time": 12.0
           }
         },
         {
@@ -458,11 +463,6 @@
         {
           "moAddMissionObjective": {
             "target": "destroy_airfield"
-          }
-        },
-        {
-          "wait": {
-            "time": 12.0
           }
         },
         {
@@ -684,11 +684,6 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "destroy_bombers",
             "status": 3,
@@ -700,6 +695,11 @@
             "target": "defend_bombers",
             "status": 2,
             "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -1021,508 +1021,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "structures_01",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-4468.55,137.2,-15063.0]
-        ],
-        "unit_class": "dummy",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_land_squad",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-9439.05,-1.0,-2600.18]
-        ],
-        "props": {
-          "squad_members": "t1_aaa_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_land_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8118.75,-1.0,-3592.1]
-        ],
-        "props": {
-          "squad_members": "structures_01"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9521.41,-1.0,-5169.75]
-        ],
-        "props": {
-          "squad_members": "structures_01"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_bombers_squad",
-        "tm": [
-          [0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,0.707107],
-          [-16831.2,75.7998,-29580.0]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_ai_bomber_01"
-          },
-          {
-            "squad_members": "t2_ai_bomber_02"
-          },
-          {
-            "squad_members": "t2_ai_bomber_03"
-          },
-          {
-            "squad_members": "t2_ai_bomber_04"
-          },
-          {
-            "squad_members": "t2_ai_bomber_05"
-          },
-          {
-            "squad_members": "t2_ai_bomber_06"
-          },
-          {
-            "squad_members": "t2_ai_bomber_07"
-          },
-          {
-            "squad_members": "t2_ai_bomber_08"
-          },
-          {
-            "squad_members": "t2_ai_bomber_09"
-          },
-          {
-            "squad_members": "t2_ai_bomber_10"
-          },
-          {
-            "squad_members": "t2_ai_bomber_11"
-          },
-          {
-            "squad_members": "t2_ai_bomber_12"
-          },
-          {
-            "squad_members": "t2_ai_bomber_13"
-          },
-          {
-            "squad_members": "t2_ai_bomber_14"
-          },
-          {
-            "squad_members": "t2_ai_bomber_15"
-          },
-          {
-            "squad_members": "t2_ai_bomber_16"
-          },
-          {
-            "squad_members": "t2_ai_bomber_17"
-          },
-          {
-            "squad_members": "t2_ai_bomber_18"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_aaa_squad",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-7696.16,207.0,-234.649]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_big_aaa_01"
-          },
-          {
-            "squad_members": "t1_big_aaa_02"
-          },
-          {
-            "squad_members": "t1_big_aaa_03"
-          },
-          {
-            "squad_members": "t1_big_aaa_04"
-          },
-          {
-            "squad_members": "t1_big_aaa_05"
-          },
-          {
-            "squad_members": "t1_big_aaa_06"
-          },
-          {
-            "squad_members": "t1_big_aaa_07"
-          },
-          {
-            "squad_members": "t1_big_aaa_08"
-          },
-          {
-            "squad_members": "t1_big_aaa_09"
-          },
-          {
-            "squad_members": "t1_big_aaa_10"
-          },
-          {
-            "squad_members": "t1_big_aaa_11"
-          }
-        ]
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_01",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-7980.4,59.9,3292.65]
-        ],
-        "unit_class": "ussr_85mm_52k",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_02",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-7968.97,332.1,3019.57]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_03",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-8250.3,324.6,3725.3]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_04",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-7232.41,336.017,4910.25]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_05",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-8167.82,323.282,4460.35]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_06",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-8565.35,116.6,2610.25]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_07",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-7478.9,337.95,4288.0]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_08",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-7547.82,329.368,4123.24]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_09",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-7558.65,330.302,3119.53]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_quest_units_squad",
-        "tm": [
-          [-0.5373,0.0,-0.843391],
-          [0.0,1.0,0.0],
-          [0.843391,0.0,-0.5373],
-          [-51022.5,-1.0,16738.9]
-        ],
-        "props": {
-          "squad_members": "t2_bombers_squad"
-        }
       }
     },
     {
@@ -1957,72 +1455,6 @@
       }
     },
     {
-      "air_defence": {
-        "name": "t1_big_aaa_10",
-        "tm": [
-          [0.793354,0.0,0.608761],
-          [0.0,1.0,0.0],
-          [-0.608761,0.0,0.793354],
-          [-8699.0,32.8355,1664.92]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "t1_big_aaa_11",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-8893.45,32.85,1376.05]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "t2_ai_bomber_07",
         "tm": [
@@ -2106,49 +1538,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_bomb_targets_squad",
-        "tm": [
-          [0.984808,0.0,0.173648],
-          [0.0,1.0,0.0],
-          [-0.173648,0.0,0.984808],
-          [-8715.01,34.3,-3504.75]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_bomb_target_01"
-          },
-          {
-            "squad_members": "t1_bomb_target_02"
-          },
-          {
-            "squad_members": "t1_bomb_target_03"
-          },
-          {
-            "squad_members": "t1_bomb_target_04"
-          },
-          {
-            "squad_members": "t1_bomb_target_05"
-          },
-          {
-            "squad_members": "t1_bomb_target_06"
-          },
-          {
-            "squad_members": "t1_bomb_target_07"
-          },
-          {
-            "squad_members": "t1_bomb_target_08"
-          },
-          {
-            "squad_members": "t1_bomb_target_09"
-          },
-          {
-            "squad_members": "t1_bomb_target_10"
-          }
-        ]
       }
     },
     {
@@ -2319,6 +1708,128 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "t2_ai_bomber_17",
+        "tm": [
+          [-0.422619,0.0,-0.906307],
+          [0.0,1.0,0.0],
+          [0.906307,0.0,-0.422619],
+          [23648.5,3000.0,22598.7]
+        ],
+        "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "weapons": "b5n2_mod80mk1_bomb",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "t2_ai_bomber_18",
+        "tm": [
+          [-0.422619,0.0,-0.906307],
+          [0.0,1.0,0.0],
+          [0.906307,0.0,-0.422619],
+          [23215.1,3000.0,22804.7]
+        ],
+        "unit_class": "b5n2",
+        "closed_waypoints": false,
+        "weapons": "b5n2_mod80mk1_bomb",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "structures_01",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-4468.55,137.2,-15063.0]
+        ],
+        "unit_class": "dummy",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 0.0,
+          "setStealth": true
         },
         "way": []
       }
@@ -2674,17 +2185,229 @@
       }
     },
     {
-      "armada": {
-        "name": "t2_ai_bomber_17",
+      "squad": {
+        "name": "t1_land_squad",
         "tm": [
-          [-0.422619,0.0,-0.906307],
+          [0.984808,0.0,0.173648],
           [0.0,1.0,0.0],
-          [0.906307,0.0,-0.422619],
-          [23648.5,3000.0,22598.7]
+          [-0.173648,0.0,0.984808],
+          [-9439.05,-1.0,-2600.18]
         ],
-        "unit_class": "b5n2",
+        "props": {
+          "squad_members": "t1_aaa_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_land_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8118.75,-1.0,-3592.1]
+        ],
+        "props": {
+          "squad_members": "structures_01"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9521.41,-1.0,-5169.75]
+        ],
+        "props": {
+          "squad_members": "structures_01"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_bombers_squad",
+        "tm": [
+          [0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,0.707107],
+          [-16831.2,75.7998,-29580.0]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_ai_bomber_01"
+          },
+          {
+            "squad_members": "t2_ai_bomber_02"
+          },
+          {
+            "squad_members": "t2_ai_bomber_03"
+          },
+          {
+            "squad_members": "t2_ai_bomber_04"
+          },
+          {
+            "squad_members": "t2_ai_bomber_05"
+          },
+          {
+            "squad_members": "t2_ai_bomber_06"
+          },
+          {
+            "squad_members": "t2_ai_bomber_07"
+          },
+          {
+            "squad_members": "t2_ai_bomber_08"
+          },
+          {
+            "squad_members": "t2_ai_bomber_09"
+          },
+          {
+            "squad_members": "t2_ai_bomber_10"
+          },
+          {
+            "squad_members": "t2_ai_bomber_11"
+          },
+          {
+            "squad_members": "t2_ai_bomber_12"
+          },
+          {
+            "squad_members": "t2_ai_bomber_13"
+          },
+          {
+            "squad_members": "t2_ai_bomber_14"
+          },
+          {
+            "squad_members": "t2_ai_bomber_15"
+          },
+          {
+            "squad_members": "t2_ai_bomber_16"
+          },
+          {
+            "squad_members": "t2_ai_bomber_17"
+          },
+          {
+            "squad_members": "t2_ai_bomber_18"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_aaa_squad",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-7696.16,207.0,-234.649]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_big_aaa_01"
+          },
+          {
+            "squad_members": "t1_big_aaa_02"
+          },
+          {
+            "squad_members": "t1_big_aaa_03"
+          },
+          {
+            "squad_members": "t1_big_aaa_04"
+          },
+          {
+            "squad_members": "t1_big_aaa_05"
+          },
+          {
+            "squad_members": "t1_big_aaa_06"
+          },
+          {
+            "squad_members": "t1_big_aaa_07"
+          },
+          {
+            "squad_members": "t1_big_aaa_08"
+          },
+          {
+            "squad_members": "t1_big_aaa_09"
+          },
+          {
+            "squad_members": "t1_big_aaa_10"
+          },
+          {
+            "squad_members": "t1_big_aaa_11"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [-0.5373,0.0,-0.843391],
+          [0.0,1.0,0.0],
+          [0.843391,0.0,-0.5373],
+          [-51022.5,-1.0,16738.9]
+        ],
+        "props": {
+          "squad_members": "t2_bombers_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_bomb_targets_squad",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-8715.01,34.3,-3504.75]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_bomb_target_01"
+          },
+          {
+            "squad_members": "t1_bomb_target_02"
+          },
+          {
+            "squad_members": "t1_bomb_target_03"
+          },
+          {
+            "squad_members": "t1_bomb_target_04"
+          },
+          {
+            "squad_members": "t1_bomb_target_05"
+          },
+          {
+            "squad_members": "t1_bomb_target_06"
+          },
+          {
+            "squad_members": "t1_bomb_target_07"
+          },
+          {
+            "squad_members": "t1_bomb_target_08"
+          },
+          {
+            "squad_members": "t1_bomb_target_09"
+          },
+          {
+            "squad_members": "t1_bomb_target_10"
+          }
+        ]
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_01",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-7980.4,59.9,3292.65]
+        ],
+        "unit_class": "ussr_85mm_52k",
         "closed_waypoints": false,
-        "weapons": "b5n2_mod80mk1_bomb",
+        "weapons": "",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -2694,40 +2417,30 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 2,
+          "army": 1,
           "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }
     },
     {
-      "armada": {
-        "name": "t2_ai_bomber_18",
+      "air_defence": {
+        "name": "t1_big_aaa_02",
         "tm": [
-          [-0.422619,0.0,-0.906307],
+          [0.793354,0.0,0.608761],
           [0.0,1.0,0.0],
-          [0.906307,0.0,-0.422619],
-          [23215.1,3000.0,22804.7]
+          [-0.608761,0.0,0.793354],
+          [-7968.97,332.1,3019.57]
         ],
-        "unit_class": "b5n2",
+        "unit_class": "us_90mm_m1",
         "closed_waypoints": false,
-        "weapons": "b5n2_mod80mk1_bomb",
+        "weapons": "",
         "bullets0": "",
         "bullets1": "",
         "bullets2": "",
@@ -2737,24 +2450,311 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 2,
+          "army": 1,
           "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_03",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-8250.3,324.6,3725.3]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_04",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-7232.41,336.017,4910.25]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_05",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-8167.82,323.282,4460.35]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_06",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-8565.35,116.6,2610.25]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_07",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-7478.9,337.95,4288.0]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_08",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-7547.82,329.368,4123.24]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_09",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-7558.65,330.302,3119.53]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_10",
+        "tm": [
+          [0.793354,0.0,0.608761],
+          [0.0,1.0,0.0],
+          [-0.608761,0.0,0.793354],
+          [-8699.0,32.8355,1664.92]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "t1_big_aaa_11",
+        "tm": [
+          [0.984808,0.0,0.173648],
+          [0.0,1.0,0.0],
+          [-0.173648,0.0,0.984808],
+          [-8893.45,32.85,1376.05]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
         },
         "way": []
       }

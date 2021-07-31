@@ -48,19 +48,9 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "varSetString": {
             "value": "bto_battle_area",
             "var": "battle_area_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -79,11 +69,6 @@
           "varSetString": {
             "value": "t1_bto_capture_zone_01",
             "var": "t1_capture_area_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -110,6 +95,26 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "varSetInt": [
             {
               "value": 1
@@ -121,11 +126,6 @@
               "var": "t2_bto_cur_zone_num"
             }
           ]
-        },
-        {
-          "comment": {
-            "value": ""
-          }
         },
         {
           "triggerEnable": {
@@ -196,6 +196,11 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "avg_Bto_objective_01"
           }
@@ -203,11 +208,6 @@
         {
           "moAddMissionObjective": {
             "target": "avg_Bto_objective_02"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -276,10 +276,8 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "t1_bto_draw_line_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -288,10 +286,15 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "t1_bto_draw_next_line_idx",
-            "input_var": "t1_bto_draw_line_idx"
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t1_bto_draw_line_idx"
           }
         },
         {
@@ -302,14 +305,22 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "varSetInt": {
+            "value": 0,
+            "var": "t1_bto_draw_next_line_idx",
+            "input_var": "t1_bto_draw_line_idx"
           }
         },
         {
           "varSetString": {
             "value": "t1_bto_effect_",
             "var": "t1_bto_line_start_point"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_bto_effect_",
+            "var": "t1_bto_line_end_point"
           }
         },
         {
@@ -320,21 +331,10 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t1_bto_effect_",
-            "var": "t1_bto_line_end_point"
-          }
-        },
-        {
           "varAddString": {
             "value": "@t1_bto_draw_next_line_idx",
             "digits": 2,
             "var": "t1_bto_line_end_point"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -366,10 +366,8 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "t2_bto_draw_line_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -378,10 +376,10 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "t2_bto_draw_next_line_idx",
-            "input_var": "t2_bto_draw_line_idx"
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "t2_bto_draw_line_idx"
           }
         },
         {
@@ -392,20 +390,15 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "varSetInt": {
+            "value": 0,
+            "var": "t2_bto_draw_next_line_idx",
+            "input_var": "t2_bto_draw_line_idx"
           }
         },
         {
           "varSetString": {
             "value": "t2_bto_effect_",
-            "var": "t2_bto_line_start_point"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@t2_bto_draw_line_idx",
-            "digits": 2,
             "var": "t2_bto_line_start_point"
           }
         },
@@ -413,6 +406,13 @@
           "varSetString": {
             "value": "t2_bto_effect_",
             "var": "t2_bto_line_end_point"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t2_bto_draw_line_idx",
+            "digits": 2,
+            "var": "t2_bto_line_start_point"
           }
         },
         {
@@ -616,6 +616,11 @@
           }
         },
         {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u043e\u0432\u044b\u0439 \u0441\u043f\u0430\u0432\u043d \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u0439\u043e \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "bto_t1_draw_lines_start"
@@ -629,11 +634,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "проверяем новый спавн противоположнйо команды"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bto_t2_check_new_spawn"
           }
@@ -641,7 +641,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "захвачена финальная зона"
+          "value": "\u0437\u0430\u0445\u0432\u0430\u0447\u0435\u043d\u0430 \u0444\u0438\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u043e\u043d\u0430"
         },
         "triggerEnable": {
           "target": "bto_t2_win"
@@ -706,6 +706,11 @@
           }
         },
         {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043d\u043e\u0432\u044b\u0439 \u0441\u043f\u0430\u0432\u043d \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u0439\u043e \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "bto_t1_draw_lines_start"
@@ -719,11 +724,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "проверяем новый спавн противоположнйо команды"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bto_t1_check_new_spawn"
           }
@@ -731,7 +731,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "захвачена финальная зона"
+          "value": "\u0437\u0430\u0445\u0432\u0430\u0447\u0435\u043d\u0430 \u0444\u0438\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u043e\u043d\u0430"
         },
         "triggerEnable": {
           "target": "bto_t1_win"
@@ -765,12 +765,17 @@
       "actions": [
         {
           "comment": {
-            "value": "на спавн 1 ничего не делаем"
+            "value": "\u043d\u0430 \u0441\u043f\u0430\u0432\u043d 1 \u043d\u0438\u0447\u0435\u0433\u043e \u043d\u0435 \u0434\u0435\u043b\u0430\u0435\u043c"
           }
         },
         {
           "comment": {
-            "value": "добавляем индекс зоны противоположной команды"
+            "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0437\u043e\u043d\u044b \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -808,11 +813,6 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
@@ -824,11 +824,6 @@
           }
         },
         {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
@@ -837,6 +832,11 @@
             "time": 0.0,
             "priority": 0,
             "team": "A"
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
           }
         }
       ],
@@ -869,12 +869,12 @@
       "actions": [
         {
           "comment": {
-            "value": "на спавн 1 ничего не делаем"
+            "value": "\u043d\u0430 \u0441\u043f\u0430\u0432\u043d 1 \u043d\u0438\u0447\u0435\u0433\u043e \u043d\u0435 \u0434\u0435\u043b\u0430\u0435\u043c"
           }
         },
         {
           "comment": {
-            "value": "добавляем индекс зоны противоположной команды"
+            "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0437\u043e\u043d\u044b \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
           }
         },
         {
@@ -923,11 +923,6 @@
           }
         },
         {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/new_respawn_point",
@@ -936,6 +931,11 @@
             "time": 0.0,
             "priority": 0,
             "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
           }
         }
       ],
@@ -972,6 +972,16 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
@@ -989,11 +999,6 @@
             "colorCode": "Team A",
             "scale": 0.75,
             "clear": true
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1016,11 +1021,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_next_default",
             "colorCode": "Team A",
             "scale": 0.75
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1069,6 +1069,16 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "missionMarkAsCaptureZone": {
             "army": 0,
             "timeMultiplier": 1.0,
@@ -1086,11 +1096,6 @@
             "colorCode": "Team B",
             "scale": 0.75,
             "clear": true
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1113,11 +1118,6 @@
             "iconName": "ui/gameuiskin#objective_captureZone_next_default",
             "colorCode": "Team B",
             "scale": 0.75
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1157,33 +1157,9 @@
           }
         },
         {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "varSetString": {
             "value": "t1_bto_circle_",
             "var": "t1_circle_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_circle_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1193,10 +1169,50 @@
           }
         },
         {
+          "varSetString": {
+            "value": "t1_bto_capture_zone_",
+            "var": "t1_capture_area_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t2_bto_spawn_",
+            "var": "t2_spawn_01_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t1_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t1_spawn_01_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t1_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t1_circle_name"
+          }
+        },
+        {
           "varAddString": {
             "value": "@t1_bto_cur_zone_num",
             "digits": 2,
             "var": "t1_effect_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t1_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t1_capture_area_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t1_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t2_spawn_01_name"
           }
         },
         {
@@ -1205,16 +1221,23 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t1_bto_capture_zone_",
-            "var": "t1_capture_area_name"
+          "comment": {
+            "value": ""
           }
         },
         {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_capture_area_name"
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
           }
         },
         {
@@ -1230,13 +1253,6 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "t2_bto_draw_line_idx",
@@ -1247,30 +1263,14 @@
           "varModify": {
             "operator": "add",
             "value": -1.0,
+            "var": "t1_bto_draw_line_idx"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
             "var": "t2_bto_draw_line_idx"
-          }
-        },
-        {
-          "comment": {
-            "value": "заполняем спавн противоположной команды"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_bto_spawn_",
-            "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@t1_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1303,33 +1303,9 @@
           }
         },
         {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_spawn_01_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "varSetString": {
             "value": "t2_bto_circle_",
             "var": "t2_circle_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_circle_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1339,10 +1315,50 @@
           }
         },
         {
+          "varSetString": {
+            "value": "t2_bto_capture_zone_",
+            "var": "t2_capture_area_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_bto_spawn_",
+            "var": "t1_spawn_01_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t2_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t2_spawn_01_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t2_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t2_circle_name"
+          }
+        },
+        {
           "varAddString": {
             "value": "@t2_bto_cur_zone_num",
             "digits": 2,
             "var": "t2_effect_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t2_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t2_capture_area_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "@t2_bto_cur_zone_num",
+            "digits": 2,
+            "var": "t1_spawn_01_name"
           }
         },
         {
@@ -1351,16 +1367,23 @@
           }
         },
         {
-          "varSetString": {
-            "value": "t2_bto_capture_zone_",
-            "var": "t2_capture_area_name"
+          "comment": {
+            "value": ""
           }
         },
         {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t2_capture_area_name"
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u043f\u043e\u043b\u043e\u0436\u043d\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b"
           }
         },
         {
@@ -1376,13 +1399,6 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "t1_bto_draw_line_idx"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "t2_bto_draw_line_idx",
@@ -1393,30 +1409,14 @@
           "varModify": {
             "operator": "add",
             "value": -1.0,
+            "var": "t1_bto_draw_line_idx"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": -1.0,
             "var": "t2_bto_draw_line_idx"
-          }
-        },
-        {
-          "comment": {
-            "value": "заполняем спавн противоположной команды"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t1_bto_spawn_",
-            "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@t2_bto_cur_zone_num",
-            "digits": 2,
-            "var": "t1_spawn_01_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {

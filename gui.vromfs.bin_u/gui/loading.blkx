@@ -51,6 +51,37 @@
       }
     },
     {
+      "tdiv": {
+        "width": "0.67@rw $min 2@rh",
+        "pos": "50%pw-50%w, 83%sh - 1@bh -50%h",
+        "position": "absolute",
+        "flow": "vertical",
+        "background-color": "@shadeBackgroundColor4",
+        "background-repeat": "expand",
+        "padding": "0.005sw, 0.01sh, 0.005sw, 0.02sh",
+        "textAreaCentered": {
+          "id": "help_text",
+          "text": "",
+          "style": "color:@helpF1Color;",
+          "pos": "(pw-w)/2, 0",
+          "position": "relative",
+          "width": "pw"
+        },
+        "loadingTip": {
+          "pos": "(pw-w)/2, 10",
+          "position": "relative",
+          "width": "pw",
+          "behaviour": "bhvLoadingTip",
+          "loadingHint": {
+            "id": "tip_hint",
+            "width": "pw",
+            "behaviour": "bhvHint",
+            "isWrapInRowAllowed": "yes"
+          }
+        }
+      }
+    },
+    {
       "BottomMenuPanel": {
         "shadowSafeArea": [],
         "line": [],
@@ -97,37 +128,6 @@
         "copyright": {
           "pos": "pw-w-1@bw, 50%ph - 50%h",
           "position": "absolute"
-        }
-      }
-    },
-    {
-      "tdiv": {
-        "width": "0.67@rw $min 2@rh",
-        "pos": "50%pw-50%w, 83%sh - 1@bh -50%h",
-        "position": "absolute",
-        "flow": "vertical",
-        "background-color": "@shadeBackgroundColor4",
-        "background-repeat": "expand",
-        "padding": "0.005sw, 0.01sh, 0.005sw, 0.02sh",
-        "textAreaCentered": {
-          "id": "help_text",
-          "text": "",
-          "style": "color:@helpF1Color;",
-          "pos": "(pw-w)/2, 0",
-          "position": "relative",
-          "width": "pw"
-        },
-        "loadingTip": {
-          "pos": "(pw-w)/2, 10",
-          "position": "relative",
-          "width": "pw",
-          "behaviour": "bhvLoadingTip",
-          "loadingHint": {
-            "id": "tip_hint",
-            "width": "pw",
-            "behaviour": "bhvHint",
-            "isWrapInRowAllowed": "yes"
-          }
         }
       }
     }

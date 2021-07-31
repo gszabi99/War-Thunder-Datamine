@@ -197,6 +197,36 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "ground_squad",
+            "targetableByAi": false,
+            "stealthRadius": 0.0,
+            "attack_type": "hold_fire",
+            "speed": 30.0,
+            "hasExhaust": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "instructor",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 0.0,
+                "limits": [0.0,0.0]
+              }
+            }
+          }
+        },
+        {
           "addAirfield": [
             {
               "runwayStart": "airfield00"
@@ -217,20 +247,6 @@
               "spawnPoint": "spawnpoint01"
             }
           ]
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "ground_squad",
-            "targetableByAi": false,
-            "stealthRadius": 0.0,
-            "attack_type": "hold_fire",
-            "speed": 30.0,
-            "hasExhaust": false
-          }
         },
         {
           "playerControls": [
@@ -280,6 +296,11 @@
           ]
         },
         {
+          "unitPutToSleep": {
+            "target": "cutscene_planes"
+          }
+        },
+        {
           "unitSetStealth": [
             {
               "set": true
@@ -326,24 +347,23 @@
           }
         },
         {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "instructor",
-            "plane": {
-              "targetDeviation": {
-                "trigger": "machine gun",
-                "defaultVal": 0.0,
-                "limits": [0.0,0.0]
-              }
-            }
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 11.0
           }
         },
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.1
           }
         },
         {
@@ -353,6 +373,19 @@
             },
             {
               "target": "initial_cutscene_skip"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "viewTest_toggleView01"
+            },
+            {
+              "target": "movement"
+            },
+            {
+              "target": "viewTest_simulator"
             }
           ]
         },
@@ -374,16 +407,6 @@
           }
         },
         {
-          "wait": {
-            "time": 11.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "initial_cutscene_skip"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/cutsc_skip",
@@ -401,8 +424,8 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "triggerDisable": {
+            "target": "initial_cutscene_skip"
           }
         },
         {
@@ -414,29 +437,6 @@
               "target": "instructor"
             }
           ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "viewTest_toggleView01"
-            },
-            {
-              "target": "movement"
-            },
-            {
-              "target": "viewTest_simulator"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 0.1
-          }
-        },
-        {
-          "unitPutToSleep": {
-            "target": "cutscene_planes"
-          }
         }
       ],
       "else_actions": []
@@ -1160,16 +1160,16 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "tutorial_mission2_views",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -1290,6 +1290,38 @@
           }
         },
         {
+          "wait": {
+            "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 0.3
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 16.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "unitSetStealth": {
+            "set": true,
+            "radius": 20000.0,
+            "target": "balloons"
+          }
+        },
+        {
           "unitSetStealth": {
             "set": true,
             "radius": 20000.0,
@@ -1304,13 +1336,21 @@
           }
         },
         {
-          "wait": {
-            "time": 0.6
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
           }
         },
         {
           "triggerDisable": {
             "target": "pre_playerRestore_views"
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "fight_cutscene_skip_sim"
           }
         },
         {
@@ -1384,20 +1424,8 @@
           ]
         },
         {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 20000.0,
-            "target": "balloons"
-          }
-        },
-        {
           "missionKillEffects": {
             "area": "balloons_area"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.3
           }
         },
         {
@@ -1405,14 +1433,6 @@
             "playerAttracted": false,
             "object": "instructor",
             "target": "balloon02"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -1441,11 +1461,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "fight_cutscene_skip_sim"
@@ -1454,6 +1469,11 @@
               "target": "fight_balloons02"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "fight_attackBalloons01"
+          }
         },
         {
           "playHint": {
@@ -1470,16 +1490,6 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 16.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "fight_cutscene_skip_sim"
           }
         },
         {
@@ -1500,20 +1510,10 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "tutorial_mission2_fight",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "fight_attackBalloons01"
           }
         }
       ],
@@ -1617,6 +1617,11 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "fight_cutscene_skip_arc"
+          }
+        },
+        {
           "missionSetFade": {
             "mode": "fadeOut",
             "colour": [0.0,0.0,0.0],
@@ -1625,8 +1630,36 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 1.0,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
           "wait": {
             "time": 0.7
+          }
+        },
+        {
+          "wait": {
+            "time": 0.3
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 16.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -1655,6 +1688,33 @@
               "target": "balloon02"
             }
           ]
+        },
+        {
+          "unitRestore": [
+            {
+              "ressurectIfDead": true
+            },
+            {
+              "fullRestore": true
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "target": "balloons"
+            },
+            {
+              "target": "balloons01"
+            },
+            {
+              "target": "balloon02"
+            }
+          ]
+        },
+        {
+          "missionKillEffects": {
+            "area": "balloons_area"
+          }
         },
         {
           "missionKillEffects": {
@@ -1710,28 +1770,6 @@
           }
         },
         {
-          "unitRestore": [
-            {
-              "ressurectIfDead": true
-            },
-            {
-              "fullRestore": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "balloons"
-            },
-            {
-              "target": "balloons01"
-            },
-            {
-              "target": "balloon02"
-            }
-          ]
-        },
-        {
           "unitSetStealth": {
             "set": true,
             "radius": 20000.0,
@@ -1739,13 +1777,10 @@
           }
         },
         {
-          "missionKillEffects": {
-            "area": "balloons_area"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.3
+          "unitSetStealth": {
+            "set": true,
+            "radius": 0.0,
+            "target": "balloons01"
           }
         },
         {
@@ -1753,14 +1788,6 @@
             "playerAttracted": false,
             "object": "instructor",
             "target": "balloon02"
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 1.0,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -1789,11 +1816,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/cutsc_skip",
@@ -1808,26 +1830,6 @@
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
             "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "fight_cutscene_skip_arc"
-            },
-            {
-              "target": "fight_balloons02"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 16.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "fight_cutscene_skip_arc"
           }
         },
         {
@@ -1848,8 +1850,35 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_lockTarget",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "fight_cutscene_skip_arc"
+            },
+            {
+              "target": "fight_balloons02"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "fight_lockTarget02"
           }
         },
         {
@@ -1872,13 +1901,6 @@
           }
         },
         {
-          "unitSetStealth": {
-            "set": true,
-            "radius": 0.0,
-            "target": "balloons01"
-          }
-        },
-        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -1895,31 +1917,9 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_lockTarget",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_LOCK_TARGET",
-            "shouldBlink": false
-          }
-        },
-        {
           "varSetInt": {
             "value": 1,
             "var": "mission_state"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "fight_lockTarget02"
           }
         }
       ],
@@ -1971,6 +1971,23 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_lockTarget",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET",
             "shouldBlink": false
           }
         },
@@ -2039,23 +2056,6 @@
           "playerControls": {
             "setStatus": "enable",
             "control": "ID_LOCK_TARGET"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_lockTarget",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_LOCK_TARGET",
-            "shouldBlink": false
           }
         },
         {
@@ -2478,11 +2478,6 @@
           ]
         },
         {
-          "triggerEnable": {
-            "target": "fight_attackBalloons03"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_destroyBalloons",
@@ -2499,12 +2494,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m2_d04",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_destroyBalloons",
@@ -2518,6 +2507,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "fight_attackBalloons03"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m2_d04",
+            "subtitles": true
           }
         },
         {
@@ -2839,13 +2839,33 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "land_cutscene_skip"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "land_start"
+            },
+            {
+              "target": "instructor_takeoff"
+            }
+          ]
+        },
+        {
           "wait": {
             "time": 2.0
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_cutscene_skip"
+          "wait": {
+            "time": 296.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -2866,16 +2886,6 @@
           }
         },
         {
-          "wait": {
-            "time": 296.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "land_cutscene_skip"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/cutsc_skip",
@@ -2893,19 +2903,9 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "triggerDisable": {
+            "target": "land_cutscene_skip"
           }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "land_start"
-            },
-            {
-              "target": "instructor_takeoff"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -3023,6 +3023,11 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "land_cutscene"
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/cutsc_skip",
@@ -3042,11 +3047,6 @@
         {
           "wait": {
             "time": 2.0
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "land_cutscene"
           }
         },
         {
@@ -3133,23 +3133,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "time": -1.0,
-            "shouldFadeOut": false,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "instructor_way03",
             "follow_target": false,
@@ -3168,6 +3151,23 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "instructor"
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "time": -1.0,
+            "shouldFadeOut": false,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -3328,6 +3328,12 @@
           }
         },
         {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m2_d08_2",
+            "subtitles": true
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_approach",
@@ -3341,12 +3347,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m2_d08_2",
-            "subtitles": true
           }
         },
         {
@@ -3418,16 +3418,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_airfieldSight01"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_landWP01",
@@ -3442,6 +3432,16 @@
             "object_var_value": 0,
             "item": "throttle=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_airfieldSight01"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -3491,28 +3491,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_deployGears"
-          }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": "airfield00"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": false,
-            "target": "airfield00"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_airfieldSight",
@@ -3527,6 +3505,28 @@
             "object_var_value": 0,
             "item": "camx=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_deployGears"
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": true,
+            "target": "airfield00"
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": false,
+            "target": "airfield00"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -3576,16 +3576,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_airfieldSight02"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_gears04",
@@ -3600,6 +3590,16 @@
             "object_var_value": 0,
             "item": "ID_GEAR",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_airfieldSight02"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -3649,28 +3649,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_decreaseTh50"
-          }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": "airfield00"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": false,
-            "target": "airfield00"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_airfieldSight",
@@ -3685,6 +3663,28 @@
             "object_var_value": 0,
             "item": "camx=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_decreaseTh50"
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": true,
+            "target": "airfield00"
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": false,
+            "target": "airfield00"
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -3734,21 +3734,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "land_decreaseTh30_sim"
-            },
-            {
-              "target": "land_decreaseTh30"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_landWP04",
@@ -3763,6 +3748,21 @@
             "object_var_value": 0,
             "item": "throttle=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "land_decreaseTh30_sim"
+            },
+            {
+              "target": "land_decreaseTh30"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -3825,11 +3825,6 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_landWP02",
@@ -3844,6 +3839,11 @@
             "object_var_value": 0,
             "item": "throttle=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -3914,6 +3914,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_landWP02",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "throttle=min",
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerEnable": [
             {
               "target": "land_tooFast"
@@ -3935,23 +3952,6 @@
         {
           "wait": {
             "time": 5.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_landWP02",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "throttle=min",
-            "shouldBlink": false
           }
         }
       ],
@@ -4003,11 +4003,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_gears03",
@@ -4022,6 +4017,11 @@
             "object_var_value": 0,
             "item": "ID_FLAPS",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -4080,11 +4080,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_gears03",
@@ -4099,6 +4094,11 @@
             "object_var_value": 0,
             "item": "ID_FLAPS",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4147,11 +4147,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_levelAircraft",
@@ -4166,6 +4161,11 @@
             "object_var_value": 0,
             "item": "elevator=max",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4224,11 +4224,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_levelAircraft",
@@ -4243,6 +4238,11 @@
             "object_var_value": 0,
             "item": "elevator=max",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4314,21 +4314,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "land_brake"
-            },
-            {
-              "target": "land_brake_pre_ps4"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_throttle04",
@@ -4343,6 +4328,21 @@
             "object_var_value": 0,
             "item": "throttle=min",
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "land_brake"
+            },
+            {
+              "target": "land_brake_pre_ps4"
+            }
+          ]
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         }
       ],
@@ -4456,16 +4456,6 @@
           ]
         },
         {
-          "triggerEnable": {
-            "target": "land_brake_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": [
             {
               "hintType": "tutorialHint"
@@ -4516,7 +4506,17 @@
         },
         {
           "triggerEnable": {
+            "target": "land_brake_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "land_brakeStop"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4643,16 +4643,6 @@
           ]
         },
         {
-          "triggerEnable": {
-            "target": "land_brake_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": [
             {
               "hintType": "tutorialHint"
@@ -4703,7 +4693,17 @@
         },
         {
           "triggerEnable": {
+            "target": "land_brake_dialogue"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "land_brakeStop_ps4"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4777,11 +4777,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_brakeRel",
@@ -4796,6 +4791,11 @@
             "object_var_value": 0,
             "item": "brakes",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4846,11 +4846,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_brakeRel",
@@ -4865,6 +4860,11 @@
             "object_var_value": 0,
             "item": "brakes",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         }
       ],
@@ -4970,17 +4970,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_setWaypoints"
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m2_d13",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tooFast",
@@ -4994,6 +4983,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_setWaypoints"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m2_d13",
+            "subtitles": true
           }
         },
         {
@@ -5102,17 +5102,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "land_setWaypoints"
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m2_d14",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tooHigh",
@@ -5126,6 +5115,17 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "land_setWaypoints"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m2_d14",
+            "subtitles": true
           }
         },
         {
@@ -5246,12 +5246,6 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "tutorial_m2_d15",
-            "subtitles": true
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_highAndFast",
@@ -5265,6 +5259,12 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "tutorial_m2_d15",
+            "subtitles": true
           }
         },
         {
@@ -10388,6 +10388,12 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_CONTINUE"
+          }
+        },
+        {
           "wait": {
             "time": 1.5
           }
@@ -10403,12 +10409,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "player",
             "partName": "pilot_dm"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_CONTINUE"
           }
         },
         {
@@ -10456,6 +10456,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -10466,11 +10479,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -10496,14 +10504,6 @@
             "follow_radius": 300.0,
             "lookat": "balloons_area",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -10556,6 +10556,12 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_CONTINUE"
+          }
+        },
+        {
           "wait": {
             "time": 1.5
           }
@@ -10571,12 +10577,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "player",
             "partName": "pilot_dm"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_CONTINUE"
           }
         },
         {
@@ -10624,6 +10624,19 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.5
           }
@@ -10642,11 +10655,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "balloons"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -10677,14 +10685,6 @@
             "move_type": "teleport",
             "lookat": "balloons_area",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
           }
         },
         {
@@ -10737,6 +10737,12 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_CONTINUE"
+          }
+        },
+        {
           "wait": {
             "time": 1.5
           }
@@ -10752,12 +10758,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "player",
             "partName": "pilot_dm"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_CONTINUE"
           }
         },
         {
@@ -10805,6 +10805,14 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
           "triggerDisable": [
             {
               "target": "playerRestore_views"
@@ -10820,24 +10828,16 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "player"
-          }
-        },
-        {
           "wait": {
             "time": 0.5
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
+          "unitRestore": {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "player"
           }
         },
         {
@@ -10993,6 +10993,12 @@
           }
         },
         {
+          "playerControls": {
+            "setStatus": "enable",
+            "control": "ID_CONTINUE"
+          }
+        },
+        {
           "wait": {
             "time": 1.5
           }
@@ -11008,12 +11014,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "player",
             "partName": "pilot_dm"
-          }
-        },
-        {
-          "playerControls": {
-            "setStatus": "enable",
-            "control": "ID_CONTINUE"
           }
         },
         {
@@ -11057,8 +11057,31 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "colour": [0.0,0.0,0.0],
+            "time": 0.5,
+            "color": [0.0,0.0,0.0]
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -11067,11 +11090,6 @@
             "fullRestore": true,
             "target_marking": 0,
             "target": "player"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -11109,19 +11127,6 @@
           ]
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "colour": [0.0,0.0,0.0],
-            "time": 0.5,
-            "color": [0.0,0.0,0.0]
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_approach",
@@ -11135,11 +11140,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -12129,6 +12129,135 @@
       }
     },
     {
+      "armada": {
+        "name": "cutscene_planes",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [529.8,-58.25,-11623.2]
+        ],
+        "unit_class": "f2a-1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f2a-1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 2,
+          "uniqueName": "",
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "player_fake",
+        "tm": [
+          [-0.999048,0.0,-0.0436193],
+          [0.0,1.0,0.0],
+          [0.0436193,0.0,-0.999048],
+          [2013.15,1012.45,-14946.0]
+        ],
+        "unit_class": "f2a-1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f2a-1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "uniqueName": "",
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 1.5,
+            "col_distances": 1.5,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {
+          "player01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [4022.75,600.0,-11724.6]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          },
+          "player01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [506.05,600.0,-15166.4]
+            ],
+            "props": {
+              "speed": 300.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false,
+              "tas": false
+            }
+          }
+        }
+      }
+    },
+    {
       "structures": {
         "name": "balloon01",
         "tm": [
@@ -12199,88 +12328,6 @@
           "stealthRadius": 0.0
         },
         "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "cutscene_planes",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [529.8,-58.25,-11623.2]
-        ],
-        "unit_class": "f2a-1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f2a-1_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 2,
-          "uniqueName": "",
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "balloons03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4210.2,874.6,-13898.5]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "balloon09"
-          },
-          {
-            "squad_members": "balloon10"
-          },
-          {
-            "squad_members": "balloon11"
-          },
-          {
-            "squad_members": "balloon12"
-          },
-          {
-            "squad_members": "balloon13"
-          },
-          {
-            "squad_members": "balloon14"
-          }
-        ]
       }
     },
     {
@@ -12425,59 +12472,6 @@
           "uniqueName": ""
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "balloons",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-14049.9,165.4,-13036.6]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "balloon01"
-          },
-          {
-            "squad_members": "balloon03"
-          },
-          {
-            "squad_members": "balloon04"
-          },
-          {
-            "squad_members": "balloon05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "balloons01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-11741.7,165.4,-10572.0]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "balloon06"
-          },
-          {
-            "squad_members": "balloon07"
-          },
-          {
-            "squad_members": "balloon08"
-          }
-        ]
       }
     },
     {
@@ -12774,6 +12768,151 @@
           "isDelayed": true
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "balloons03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4210.2,874.6,-13898.5]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "balloon09"
+          },
+          {
+            "squad_members": "balloon10"
+          },
+          {
+            "squad_members": "balloon11"
+          },
+          {
+            "squad_members": "balloon12"
+          },
+          {
+            "squad_members": "balloon13"
+          },
+          {
+            "squad_members": "balloon14"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "balloons",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-14049.9,165.4,-13036.6]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "balloon01"
+          },
+          {
+            "squad_members": "balloon03"
+          },
+          {
+            "squad_members": "balloon04"
+          },
+          {
+            "squad_members": "balloon05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "balloons01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-11741.7,165.4,-10572.0]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "balloon06"
+          },
+          {
+            "squad_members": "balloon07"
+          },
+          {
+            "squad_members": "balloon08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ground_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1488.05,2.0,-11547.8]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ships_01"
+          },
+          {
+            "squad_members": "ships_02"
+          },
+          {
+            "squad_members": "ships_03"
+          },
+          {
+            "squad_members": "ships_04"
+          },
+          {
+            "squad_members": "ships_05"
+          },
+          {
+            "squad_members": "ships_06"
+          },
+          {
+            "squad_members": "wheeled_vehicles_01"
+          },
+          {
+            "squad_members": "wheeled_vehicles_02"
+          },
+          {
+            "squad_members": "wheeled_vehicles_03"
+          },
+          {
+            "squad_members": "wheeled_vehicles_04"
+          },
+          {
+            "squad_members": "wheeled_vehicles_05"
+          },
+          {
+            "squad_members": "wheeled_vehicles_06"
+          },
+          {
+            "squad_members": "wheeled_vehicles_07"
+          },
+          {
+            "squad_members": "wheeled_vehicles_08"
+          }
+        ]
       }
     },
     {
@@ -13119,64 +13258,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ground_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1488.05,2.0,-11547.8]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ships_01"
-          },
-          {
-            "squad_members": "ships_02"
-          },
-          {
-            "squad_members": "ships_03"
-          },
-          {
-            "squad_members": "ships_04"
-          },
-          {
-            "squad_members": "ships_05"
-          },
-          {
-            "squad_members": "ships_06"
-          },
-          {
-            "squad_members": "wheeled_vehicles_01"
-          },
-          {
-            "squad_members": "wheeled_vehicles_02"
-          },
-          {
-            "squad_members": "wheeled_vehicles_03"
-          },
-          {
-            "squad_members": "wheeled_vehicles_04"
-          },
-          {
-            "squad_members": "wheeled_vehicles_05"
-          },
-          {
-            "squad_members": "wheeled_vehicles_06"
-          },
-          {
-            "squad_members": "wheeled_vehicles_07"
-          },
-          {
-            "squad_members": "wheeled_vehicles_08"
-          }
-        ]
       }
     },
     {
@@ -14601,87 +14682,6 @@
           "formation_noise": [0.1,0.1]
         },
         "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "player_fake",
-        "tm": [
-          [-0.999048,0.0,-0.0436193],
-          [0.0,1.0,0.0],
-          [0.0436193,0.0,-0.999048],
-          [2013.15,1012.45,-14946.0]
-        ],
-        "unit_class": "f2a-1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f2a-1_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "uniqueName": "",
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 1.5,
-            "col_distances": 1.5,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": {
-          "player01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [4022.75,600.0,-11724.6]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          },
-          "player01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [506.05,600.0,-15166.4]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false,
-              "tas": false
-            }
-          }
-        }
       }
     }
   ],

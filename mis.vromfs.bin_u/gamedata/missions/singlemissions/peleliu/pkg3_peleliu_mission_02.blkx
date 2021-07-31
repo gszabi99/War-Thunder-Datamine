@@ -190,6 +190,55 @@
           ]
         },
         {
+          "unitSetProperties": [
+            {
+              "object": "destroyed_ship_01"
+            },
+            {
+              "object": "destroyed_ship_02"
+            },
+            {
+              "object": "destroyed_ship_03"
+            },
+            {
+              "object": "destroyed_ship_04"
+            },
+            {
+              "object": "destroyed_ship_05"
+            },
+            {
+              "object": "destroyed_ship_06"
+            },
+            {
+              "object": "destroyed_ship_07"
+            },
+            {
+              "object": "destroyed_ship_08"
+            },
+            {
+              "object": "destroyed_tanks_01"
+            },
+            {
+              "attack_type": "hold_fire"
+            },
+            {
+              "stealthRadius": 0.0
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object": "f6f3_ai",
+            "plane": {
+              "targetDeviation": {
+                "trigger": "machine gun",
+                "defaultVal": 1.8,
+                "limits": [0.6,1.8]
+              }
+            }
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "us_tanks"
@@ -251,43 +300,6 @@
           }
         },
         {
-          "unitSetProperties": [
-            {
-              "object": "destroyed_ship_01"
-            },
-            {
-              "object": "destroyed_ship_02"
-            },
-            {
-              "object": "destroyed_ship_03"
-            },
-            {
-              "object": "destroyed_ship_04"
-            },
-            {
-              "object": "destroyed_ship_05"
-            },
-            {
-              "object": "destroyed_ship_06"
-            },
-            {
-              "object": "destroyed_ship_07"
-            },
-            {
-              "object": "destroyed_ship_08"
-            },
-            {
-              "object": "destroyed_tanks_01"
-            },
-            {
-              "attack_type": "hold_fire"
-            },
-            {
-              "stealthRadius": 0.0
-            }
-          ]
-        },
-        {
           "wait": {
             "time": 3.0
           }
@@ -305,18 +317,6 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "jpn_patrol_point"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object": "f6f3_ai",
-            "plane": {
-              "targetDeviation": {
-                "trigger": "machine gun",
-                "defaultVal": 1.8,
-                "limits": [0.6,1.8]
-              }
-            }
           }
         }
       ]
@@ -940,6 +940,115 @@
       }
     },
     {
+      "armada": {
+        "name": "jpn_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-310.2,439.65,-9704.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "a6m5_zero",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "jpn_fighters_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3412.8,439.65,-1844.65]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "a6m5_zero",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "f6f3_ai",
+        "tm": [
+          [0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,0.130526],
+          [-960.6,1827.1,-20140.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "skin": "us_navy",
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "ships": {
         "name": "destroyed_ship_01",
         "tm": [
@@ -1140,31 +1249,6 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "destroyed_tanks_01",
-        "tm": [
-          [0.0436195,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436195],
-          [-1079.1,21.75,-13140.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "us_m5a1_stuart6",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 8,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [30.0,20.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "us_lcvp",
         "tm": [
@@ -1230,6 +1314,156 @@
             }
           }
         }
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_01",
+        "tm": [
+          [-0.130526,0.0,0.991445],
+          [0.0,1.0,0.0],
+          [-0.991445,0.0,-0.130526],
+          [-453.85,-17.2,-22004.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_lexington",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_02",
+        "tm": [
+          [0.0436195,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,0.0436195],
+          [212.25,-17.2,-21675.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_cv_wasp",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_03",
+        "tm": [
+          [-0.21644,0.0,0.976296],
+          [0.0,1.0,0.0],
+          [-0.976296,0.0,-0.21644],
+          [953.25,-17.2,-21393.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_04",
+        "tm": [
+          [-0.258819,0.0,0.965926],
+          [0.0,1.0,0.0],
+          [-0.965926,0.0,-0.258819],
+          [118.25,-17.2,-21151.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "ships": {
+        "name": "us_ship_05",
+        "tm": [
+          [0.382683,0.0,0.92388],
+          [0.0,1.0,0.0],
+          [-0.92388,0.0,0.382683],
+          [-1037.1,-17.2,-21637.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "uss_dd_sims",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "destroyed_tanks_01",
+        "tm": [
+          [0.0436195,0.0,0.999048],
+          [0.0,1.0,0.0],
+          [-0.999048,0.0,0.0436195],
+          [-1079.1,21.75,-13140.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "us_m5a1_stuart6",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 8,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [30.0,20.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
@@ -1640,240 +1874,6 @@
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "effShootingRate": 0.7
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "us_ship_01",
-        "tm": [
-          [-0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,-0.130526],
-          [-453.85,-17.2,-22004.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "uss_cv_lexington",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "us_ship_02",
-        "tm": [
-          [0.0436195,0.0,0.999048],
-          [0.0,1.0,0.0],
-          [-0.999048,0.0,0.0436195],
-          [212.25,-17.2,-21675.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "uss_cv_wasp",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "us_ship_03",
-        "tm": [
-          [-0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,-0.21644],
-          [953.25,-17.2,-21393.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "uss_dd_sims",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "us_ship_04",
-        "tm": [
-          [-0.258819,0.0,0.965926],
-          [0.0,1.0,0.0],
-          [-0.965926,0.0,-0.258819],
-          [118.25,-17.2,-21151.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "uss_dd_sims",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "ships": {
-        "name": "us_ship_05",
-        "tm": [
-          [0.382683,0.0,0.92388],
-          [0.0,1.0,0.0],
-          [-0.92388,0.0,0.382683],
-          [-1037.1,-17.2,-21637.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "uss_dd_sims",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "jpn_fighters_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-310.2,439.65,-9704.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "a6m5_zero",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "jpn_fighters_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3412.8,439.65,-1844.65]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "a6m5_zero",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "f6f3_ai",
-        "tm": [
-          [0.130526,0.0,0.991445],
-          [0.0,1.0,0.0],
-          [-0.991445,0.0,0.130526],
-          [-960.6,1827.1,-20140.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "skin": "us_navy",
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

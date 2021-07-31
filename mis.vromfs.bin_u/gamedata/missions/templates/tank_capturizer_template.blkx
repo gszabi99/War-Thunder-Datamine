@@ -101,7 +101,7 @@
         },
         {
           "comment": {
-            "value": "принудительно стартуем центральную точку"
+            "value": "\u043f\u0440\u0438\u043d\u0443\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e \u0441\u0442\u0430\u0440\u0442\u0443\u0435\u043c \u0446\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u0443\u044e \u0442\u043e\u0447\u043a\u0443"
           }
         },
         {
@@ -316,7 +316,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "на 1 точку больше, так как добавляем центральную"
+          "value": "\u043d\u0430 1 \u0442\u043e\u0447\u043a\u0443 \u0431\u043e\u043b\u044c\u0448\u0435, \u0442\u0430\u043a \u043a\u0430\u043a \u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0446\u0435\u043d\u0442\u0440\u0430\u043b\u044c\u043d\u0443\u044e"
         },
         "varSetRandomInt": {
           "var": "tcp_point_randomizer",
@@ -679,7 +679,7 @@
       "actions": [
         {
           "comment": {
-            "value": "все зоны были использованы по разу.  начинаем новый круг"
+            "value": "\u0432\u0441\u0435 \u0437\u043e\u043d\u044b \u0431\u044b\u043b\u0438 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u044b \u043f\u043e \u0440\u0430\u0437\u0443.  \u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043d\u043e\u0432\u044b\u0439 \u043a\u0440\u0443\u0433"
           }
         },
         {
@@ -774,7 +774,7 @@
       "actions": [
         {
           "comment": {
-            "value": "все зоны были использованы по разу.  начинаем новый круг"
+            "value": "\u0432\u0441\u0435 \u0437\u043e\u043d\u044b \u0431\u044b\u043b\u0438 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u044b \u043f\u043e \u0440\u0430\u0437\u0443.  \u043d\u0430\u0447\u0438\u043d\u0430\u0435\u043c \u043d\u043e\u0432\u044b\u0439 \u043a\u0440\u0443\u0433"
           }
         },
         {
@@ -976,6 +976,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_group",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_area_01",
             "value": "@tcp_cur_point",
@@ -983,8 +995,42 @@
           }
         },
         {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "@tcp_area_01",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "_group",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "@tcp_area_01",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "_effect",
+            "digits": 0
+          }
+        },
+        {
           "varSetInt": {
             "var": "tcp_point_01_timer",
+            "value": 0
+          }
+        },
+        {
+          "varSetInt": {
+            "var": "tcp_point_spawn_timer",
             "value": 0
           }
         },
@@ -1003,23 +1049,10 @@
           }
         },
         {
-          "varSetString": {
-            "var": "tcp_capture_group",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "@tcp_area_01",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "_group",
-            "digits": 0
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": 1.0
           }
         },
         {
@@ -1038,39 +1071,6 @@
             "canCaptureInAir": false,
             "canCaptureByGM": true,
             "captureNoPenalty": true
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": 1.0
-          }
-        },
-        {
-          "varSetInt": {
-            "var": "tcp_point_spawn_timer",
-            "value": 0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "@tcp_area_01",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "_effect",
-            "digits": 0
           }
         },
         {
@@ -1141,6 +1141,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_area_01",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_capture_group",
             "value": "@tcp_area_01",
@@ -1155,24 +1167,6 @@
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
           "varAddString": {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_01",
@@ -1184,6 +1178,18 @@
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "@tcp_capture_group"
+          }
+        },
+        {
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": -1.0
           }
         },
         {
@@ -1209,12 +1215,6 @@
               "target": "tcp_t1_captured_zone_02"
             }
           ]
-        },
-        {
-          "varSetString": {
-            "var": "tcp_area_01",
-            "value": ""
-          }
         }
       ],
       "else_actions": []
@@ -1335,6 +1335,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_group",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_area_02",
             "value": "@tcp_cur_point",
@@ -1342,8 +1354,42 @@
           }
         },
         {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "@tcp_area_02",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "_group",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "@tcp_area_02",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "_effect",
+            "digits": 0
+          }
+        },
+        {
           "varSetInt": {
             "var": "tcp_point_02_timer",
+            "value": 0
+          }
+        },
+        {
+          "varSetInt": {
+            "var": "tcp_point_spawn_timer",
             "value": 0
           }
         },
@@ -1362,23 +1408,10 @@
           }
         },
         {
-          "varSetString": {
-            "var": "tcp_capture_group",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "@tcp_area_02",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "_group",
-            "digits": 0
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": 1.0
           }
         },
         {
@@ -1397,39 +1430,6 @@
             "canCaptureInAir": false,
             "canCaptureByGM": true,
             "captureNoPenalty": true
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": 1.0
-          }
-        },
-        {
-          "varSetInt": {
-            "var": "tcp_point_spawn_timer",
-            "value": 0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "@tcp_area_02",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "_effect",
-            "digits": 0
           }
         },
         {
@@ -1500,6 +1500,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_area_02",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_capture_group",
             "value": "@tcp_area_02",
@@ -1514,24 +1526,6 @@
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
           "varAddString": {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_02",
@@ -1543,6 +1537,18 @@
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "@tcp_capture_group"
+          }
+        },
+        {
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": -1.0
           }
         },
         {
@@ -1568,12 +1574,6 @@
               "target": "tcp_t2_captured_zone_02"
             }
           ]
-        },
-        {
-          "varSetString": {
-            "var": "tcp_area_02",
-            "value": ""
-          }
         }
       ],
       "else_actions": []
@@ -1694,6 +1694,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_group",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_area_03",
             "value": "@tcp_cur_point",
@@ -1701,8 +1713,42 @@
           }
         },
         {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "@tcp_area_03",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_group",
+            "value": "_group",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "@tcp_area_03",
+            "digits": 0
+          }
+        },
+        {
+          "varAddString": {
+            "var": "tcp_capture_effect",
+            "value": "_effect",
+            "digits": 0
+          }
+        },
+        {
           "varSetInt": {
             "var": "tcp_point_03_timer",
+            "value": 0
+          }
+        },
+        {
+          "varSetInt": {
+            "var": "tcp_point_spawn_timer",
             "value": 0
           }
         },
@@ -1721,23 +1767,10 @@
           }
         },
         {
-          "varSetString": {
-            "var": "tcp_capture_group",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "@tcp_area_03",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_group",
-            "value": "_group",
-            "digits": 0
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": 1.0
           }
         },
         {
@@ -1756,39 +1789,6 @@
             "canCaptureInAir": false,
             "canCaptureByGM": true,
             "captureNoPenalty": true
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": 1.0
-          }
-        },
-        {
-          "varSetInt": {
-            "var": "tcp_point_spawn_timer",
-            "value": 0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "@tcp_area_03",
-            "digits": 0
-          }
-        },
-        {
-          "varAddString": {
-            "var": "tcp_capture_effect",
-            "value": "_effect",
-            "digits": 0
           }
         },
         {
@@ -1859,6 +1859,18 @@
           }
         },
         {
+          "varSetString": {
+            "var": "tcp_capture_effect",
+            "value": ""
+          }
+        },
+        {
+          "varSetString": {
+            "var": "tcp_area_03",
+            "value": ""
+          }
+        },
+        {
           "varAddString": {
             "var": "tcp_capture_group",
             "value": "@tcp_area_03",
@@ -1873,24 +1885,6 @@
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "@tcp_capture_group"
-          }
-        },
-        {
-          "varModify": {
-            "var": "tcp_active_zones_counter",
-            "operator": "add",
-            "value": -1.0
-          }
-        },
-        {
-          "varSetString": {
-            "var": "tcp_capture_effect",
-            "value": ""
-          }
-        },
-        {
           "varAddString": {
             "var": "tcp_capture_effect",
             "value": "@tcp_area_03",
@@ -1902,6 +1896,18 @@
             "var": "tcp_capture_effect",
             "value": "_effect",
             "digits": 0
+          }
+        },
+        {
+          "unitPutToSleep": {
+            "target": "@tcp_capture_group"
+          }
+        },
+        {
+          "varModify": {
+            "var": "tcp_active_zones_counter",
+            "operator": "add",
+            "value": -1.0
           }
         },
         {
@@ -1927,12 +1933,6 @@
               "target": "tcp_t2_captured_zone_03"
             }
           ]
-        },
-        {
-          "varSetString": {
-            "var": "tcp_area_03",
-            "value": ""
-          }
         }
       ],
       "else_actions": []

@@ -63,110 +63,6 @@
               }
             },
             {
-              "massTransp": [
-                {
-                  "id": "reward_roullete"
-                },
-                {
-                  "pos": "pw/2-w/2, ph/2-h/2"
-                },
-                {
-                  "position": "absolute"
-                },
-                {
-                  "display": "hide"
-                },
-                {
-                  "type": "roulette"
-                },
-                {
-                  "behaviour": "Timer"
-                },
-                {
-                  "animation": "hide"
-                },
-                {
-                  "height": "1@itemHeight"
-                },
-                {
-                  "width": "4@itemWidth"
-                },
-                {
-                  "max-width": "pw"
-                },
-                {
-                  "css-hier-invalidate": "yes"
-                },
-                {
-                  "totalLen": "45"
-                },
-                {
-                  "insertRewardFromEnd": "2"
-                },
-                {
-                  "roulette": {
-                    "size": "pw, ph",
-                    "padding": "1@framePadding, 0",
-                    "overflow": "hidden",
-                    "css-hier-invalidate": "yes",
-                    "tdiv": {
-                      "pos": "50%pw-50%w, 0",
-                      "position": "relative",
-                      "height": "ph",
-                      "css-hier-invalidate": "yes",
-                      "roulette_scroll": {
-                        "id": "rewards_list",
-                        "height": "ph",
-                        "position": "absolute"
-                      },
-                      "tdiv": [
-                        {
-                          "height": "ph"
-                        },
-                        {
-                          "width": "2"
-                        },
-                        {
-                          "pos": "50%pw-50%w, 50%ph-50%h"
-                        },
-                        {
-                          "position": "absolute"
-                        },
-                        {
-                          "recieved_reward_indicator": {
-                            "pos": "50%pw-50%w, 2",
-                            "position": "absolute",
-                            "rotation": "180"
-                          }
-                        },
-                        {
-                          "recieved_reward_indicator": {
-                            "pos": "50%pw-50%w, ph -h -1",
-                            "position": "absolute"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "rewards_fade": {
-                    "pos": "2, 3",
-                    "position": "absolute",
-                    "size": "50%pw-0.5@itemWidth, ph-6"
-                  }
-                },
-                {
-                  "rewards_fade": {
-                    "pos": "pw-w-2, 3",
-                    "position": "absolute",
-                    "rotation": "180",
-                    "size": "50%pw-0.5@itemWidth, ph-6"
-                  }
-                }
-              ]
-            },
-            {
               "tdiv": [
                 {
                   "id": "open_chest_animation"
@@ -467,6 +363,12 @@
                       }
                     },
                     {
+                      "rankUpList": {
+                        "id": "periodic_reward_aircrafts",
+                        "holdTooltipChildren": "yes"
+                      }
+                    },
+                    {
                       "textareaNoTab": {
                         "id": "reward_text",
                         "caption": "yes",
@@ -474,16 +376,6 @@
                         "pos": "0, 50%ph-50%h",
                         "position": "relative",
                         "text": ""
-                      }
-                    },
-                    {
-                      "cardImg": {
-                        "id": "reward_join_img",
-                        "type": "medium",
-                        "pos": "0, 50%ph-50%h",
-                        "position": "relative",
-                        "margin": "0.02@scrn_tgt, 0",
-                        "background-image": "#ui/gameuiskin#btn_inc.svg"
                       }
                     },
                     {
@@ -497,9 +389,13 @@
                       }
                     },
                     {
-                      "rankUpList": {
-                        "id": "periodic_reward_aircrafts",
-                        "holdTooltipChildren": "yes"
+                      "cardImg": {
+                        "id": "reward_join_img",
+                        "type": "medium",
+                        "pos": "0, 50%ph-50%h",
+                        "position": "relative",
+                        "margin": "0.02@scrn_tgt, 0",
+                        "background-image": "#ui/gameuiskin#btn_inc.svg"
                       }
                     }
                   ]
@@ -551,6 +447,110 @@
                       "id": "btn_open_text",
                       "text": "#items/getReward"
                     }
+                  }
+                }
+              ]
+            },
+            {
+              "massTransp": [
+                {
+                  "id": "reward_roullete"
+                },
+                {
+                  "pos": "pw/2-w/2, ph/2-h/2"
+                },
+                {
+                  "position": "absolute"
+                },
+                {
+                  "display": "hide"
+                },
+                {
+                  "type": "roulette"
+                },
+                {
+                  "behaviour": "Timer"
+                },
+                {
+                  "animation": "hide"
+                },
+                {
+                  "height": "1@itemHeight"
+                },
+                {
+                  "width": "4@itemWidth"
+                },
+                {
+                  "max-width": "pw"
+                },
+                {
+                  "css-hier-invalidate": "yes"
+                },
+                {
+                  "totalLen": "45"
+                },
+                {
+                  "insertRewardFromEnd": "2"
+                },
+                {
+                  "roulette": {
+                    "size": "pw, ph",
+                    "padding": "1@framePadding, 0",
+                    "overflow": "hidden",
+                    "css-hier-invalidate": "yes",
+                    "tdiv": {
+                      "pos": "50%pw-50%w, 0",
+                      "position": "relative",
+                      "height": "ph",
+                      "css-hier-invalidate": "yes",
+                      "roulette_scroll": {
+                        "id": "rewards_list",
+                        "height": "ph",
+                        "position": "absolute"
+                      },
+                      "tdiv": [
+                        {
+                          "height": "ph"
+                        },
+                        {
+                          "width": "2"
+                        },
+                        {
+                          "pos": "50%pw-50%w, 50%ph-50%h"
+                        },
+                        {
+                          "position": "absolute"
+                        },
+                        {
+                          "recieved_reward_indicator": {
+                            "pos": "50%pw-50%w, 2",
+                            "position": "absolute",
+                            "rotation": "180"
+                          }
+                        },
+                        {
+                          "recieved_reward_indicator": {
+                            "pos": "50%pw-50%w, ph -h -1",
+                            "position": "absolute"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "rewards_fade": {
+                    "pos": "2, 3",
+                    "position": "absolute",
+                    "size": "50%pw-0.5@itemWidth, ph-6"
+                  }
+                },
+                {
+                  "rewards_fade": {
+                    "pos": "pw-w-2, 3",
+                    "position": "absolute",
+                    "rotation": "180",
+                    "size": "50%pw-0.5@itemWidth, ph-6"
                   }
                 }
               ]

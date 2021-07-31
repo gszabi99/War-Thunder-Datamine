@@ -955,6 +955,16 @@
           ]
         },
         {
+          "triggerEnable": [
+            {
+              "target": "t1_flag_pickup_by_t2_player"
+            },
+            {
+              "target": "t2_flag_pickup_by_t1_player"
+            }
+          ]
+        },
+        {
           "triggerDisable": [
             {
               "target": "t1_flag_holder_dead"
@@ -991,6 +1001,20 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "t1_capture_the_enemy_flag",
+            "status": 1,
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_capture_the_enemy_flag",
+            "status": 1,
+            "team": "B"
+          }
+        },
+        {
           "gameMPChangeScore": {
             "value": -1000,
             "valueSystem": "amount",
@@ -1000,6 +1024,11 @@
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -1047,11 +1076,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1167,20 +1191,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "t1_capture_the_enemy_flag",
-            "status": 1,
-            "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "t2_capture_the_enemy_flag",
-            "status": 1,
-            "team": "B"
-          }
-        },
-        {
           "unitSetIndication": [
             {
               "set": true
@@ -1205,16 +1215,6 @@
             },
             {
               "team": "Both"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_flag_pickup_by_t2_player"
-            },
-            {
-              "target": "t2_flag_pickup_by_t1_player"
             }
           ]
         }
@@ -1260,6 +1260,16 @@
           ]
         },
         {
+          "triggerEnable": [
+            {
+              "target": "t1_flag_pickup_by_t2_player"
+            },
+            {
+              "target": "t2_flag_pickup_by_t1_player"
+            }
+          ]
+        },
+        {
           "triggerDisable": [
             {
               "target": "t1_flag_holder_dead"
@@ -1296,6 +1306,20 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "t1_capture_the_enemy_flag",
+            "status": 1,
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_capture_the_enemy_flag",
+            "status": 1,
+            "team": "B"
+          }
+        },
+        {
           "gameMPChangeScore": {
             "value": -1000,
             "valueSystem": "amount",
@@ -1305,6 +1329,11 @@
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -1352,11 +1381,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1472,20 +1496,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "t1_capture_the_enemy_flag",
-            "status": 1,
-            "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "t2_capture_the_enemy_flag",
-            "status": 1,
-            "team": "B"
-          }
-        },
-        {
           "unitSetIndication": [
             {
               "set": true
@@ -1510,16 +1520,6 @@
             },
             {
               "team": "Both"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_flag_pickup_by_t2_player"
-            },
-            {
-              "target": "t2_flag_pickup_by_t1_player"
             }
           ]
         }
@@ -1587,11 +1587,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t1_flag_captured_teamA",
@@ -1621,6 +1616,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1694,11 +1694,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t2_flag_captured_teamA",
@@ -1728,6 +1723,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1801,11 +1801,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t1_flag_returned_teamA",
@@ -1835,6 +1830,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1908,11 +1908,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t2_flag_returned_teamA",
@@ -1942,6 +1937,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -2015,11 +2015,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t1_flag_dropped_teamA",
@@ -2049,6 +2044,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -2122,11 +2122,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/t2_flag_dropped_teamA",
@@ -2156,6 +2151,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {

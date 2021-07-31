@@ -108,12 +108,6 @@
           }
         },
         {
-          "spawnOnAirfield": {
-            "runwayName": "airfield_start",
-            "objects": "player"
-          }
-        },
-        {
           "addAirfield": [
             {
               "runwayStart": "jpn_airfield_start_01"
@@ -339,8 +333,38 @@
         },
         {
           "spawnOnAirfield": {
+            "runwayName": "airfield_start",
+            "objects": "player"
+          }
+        },
+        {
+          "spawnOnAirfield": {
             "runwayName": "jpn_airfield_start_05",
             "objects": "us_b24_land"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_01",
+            "objects": "us_fighters_01"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_02",
+            "objects": "us_fighters_02"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_03",
+            "objects": "us_fighters_03"
+          }
+        },
+        {
+          "spawnOnAirfield": {
+            "runwayName": "jpn_airfield_start_04",
+            "objects": "us_fighters_04"
           }
         },
         {
@@ -369,32 +393,14 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object": "us_air_def_squad",
+            "attack_type": "dont_aim"
+          }
+        },
+        {
           "unitPutToSleep": {
             "target": "us_fighters_05"
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "jpn_airfield_start_01",
-            "objects": "us_fighters_01"
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "jpn_airfield_start_02",
-            "objects": "us_fighters_02"
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "jpn_airfield_start_03",
-            "objects": "us_fighters_03"
-          }
-        },
-        {
-          "spawnOnAirfield": {
-            "runwayName": "jpn_airfield_start_04",
-            "objects": "us_fighters_04"
           }
         },
         {
@@ -406,12 +412,6 @@
               "target": "stop_the_fighters"
             }
           ]
-        },
-        {
-          "unitSetProperties": {
-            "object": "us_air_def_squad",
-            "attack_type": "dont_aim"
-          }
         },
         {
           "wait": {
@@ -1347,6 +1347,43 @@
       }
     },
     {
+      "squad": {
+        "name": "us_air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1114.75,346.7,3309.9]
+        ],
+        "props": [
+          {
+            "squad_members": "air_defence_01"
+          },
+          {
+            "squad_members": "air_defence_02"
+          },
+          {
+            "squad_members": "air_defence_03"
+          },
+          {
+            "squad_members": "air_defence_04"
+          },
+          {
+            "squad_members": "air_defence_05"
+          },
+          {
+            "squad_members": "air_defence_06"
+          },
+          {
+            "squad_members": "air_defence_07"
+          },
+          {
+            "squad_members": "air_defence_08"
+          }
+        ]
+      }
+    },
+    {
       "air_defence": {
         "name": "air_defence_01",
         "tm": [
@@ -1608,43 +1645,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "us_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1114.75,346.7,3309.9]
-        ],
-        "props": [
-          {
-            "squad_members": "air_defence_01"
-          },
-          {
-            "squad_members": "air_defence_02"
-          },
-          {
-            "squad_members": "air_defence_03"
-          },
-          {
-            "squad_members": "air_defence_04"
-          },
-          {
-            "squad_members": "air_defence_05"
-          },
-          {
-            "squad_members": "air_defence_06"
-          },
-          {
-            "squad_members": "air_defence_07"
-          },
-          {
-            "squad_members": "air_defence_08"
-          }
-        ]
       }
     }
   ],

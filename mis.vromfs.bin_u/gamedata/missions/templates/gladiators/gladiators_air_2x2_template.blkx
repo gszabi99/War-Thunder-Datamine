@@ -450,13 +450,13 @@
           }
         },
         {
-          "missionSetTimeIndicator": {
-            "var": "shooting_timer"
+          "wait": {
+            "time": 2.0
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "missionSetTimeIndicator": {
+            "var": "shooting_timer"
           }
         },
         {
@@ -497,6 +497,38 @@
               "action": "hide",
               "shouldFadeOut": true,
               "time": -1.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "shouldBlink": false
+            }
+          },
+          {
+            "playHint": {
+              "hintType": "standard",
+              "name": "hints/duel_2x2_begin",
+              "action": "show",
+              "shouldFadeOut": false,
+              "time": 4.0,
+              "priority": 0,
+              "isOverFade": false,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0,
+              "shouldBlink": false
+            }
+          },
+          {
+            "playHint": {
+              "hintType": "standard",
+              "name": "hints/duel_battle_cost_1000",
+              "action": "show",
+              "shouldFadeOut": false,
+              "time": 4.0,
               "priority": 0,
               "isOverFade": false,
               "target_marking": 0,
@@ -707,54 +739,6 @@
             ]
           },
           {
-            "missionSetTimeSpeed": {
-              "speed": 1.0,
-              "realtimeTriggers": false
-            }
-          },
-          {
-            "playHint": {
-              "hintType": "standard",
-              "name": "hints/duel_2x2_begin",
-              "action": "show",
-              "shouldFadeOut": false,
-              "time": 4.0,
-              "priority": 0,
-              "isOverFade": false,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "shouldBlink": false
-            }
-          },
-          {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
-            "playHint": {
-              "hintType": "standard",
-              "name": "hints/duel_battle_cost_1000",
-              "action": "show",
-              "shouldFadeOut": false,
-              "time": 4.0,
-              "priority": 0,
-              "isOverFade": false,
-              "target_marking": 0,
-              "object_var_name": "",
-              "object_var_comp_op": "equal",
-              "object_var_value": 0,
-              "shouldBlink": false
-            }
-          },
-          {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "triggerEnable": [
               {
                 "target": "unit_near_killarea_mark"
@@ -769,6 +753,22 @@
                 "target": "unit_near_killarea_message_disable"
               }
             ]
+          },
+          {
+            "missionSetTimeSpeed": {
+              "speed": 1.0,
+              "realtimeTriggers": false
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
+            }
           }
         ],
         "else_actions": []
@@ -806,6 +806,11 @@
           {
             "wait": {
               "time": 3.0
+            }
+          },
+          {
+            "wait": {
+              "time": 1.0
             }
           },
           {
@@ -852,11 +857,6 @@
           {
             "triggerDisable": {
               "target": "unit respawn"
-            }
-          },
-          {
-            "wait": {
-              "time": 1.0
             }
           },
           {

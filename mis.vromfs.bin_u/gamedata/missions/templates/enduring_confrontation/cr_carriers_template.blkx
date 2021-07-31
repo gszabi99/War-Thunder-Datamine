@@ -53,7 +53,12 @@
       "actions": [
         {
           "comment": {
-            "value": "авики разрешены к спавну. инитим"
+            "value": "\u0430\u0432\u0438\u043a\u0438 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u044b \u043a \u0441\u043f\u0430\u0432\u043d\u0443. \u0438\u043d\u0438\u0442\u0438\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -69,11 +74,6 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "cr_t1_carriers_start"
@@ -86,7 +86,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "авики запрещены. дизейблим триггер"
+          "value": "\u0430\u0432\u0438\u043a\u0438 \u0437\u0430\u043f\u0440\u0435\u0449\u0435\u043d\u044b. \u0434\u0438\u0437\u0435\u0439\u0431\u043b\u0438\u043c \u0442\u0440\u0438\u0433\u0433\u0435\u0440"
         },
         "triggerDisable": {
           "target": "cr_carriers_init"
@@ -117,7 +117,22 @@
         "actions": [
           {
             "comment": {
-              "value": "генерируем одну из 4-х точек спавна"
+              "value": "\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0435\u043c \u043e\u0434\u043d\u0443 \u0438\u0437 4-\u0445 \u0442\u043e\u0447\u0435\u043a \u0441\u043f\u0430\u0432\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043f\u0430\u0432\u043d \u0442\u043e\u0447\u043a\u0438 \u0430\u0432\u0438\u0430\u043d\u043e\u0441\u0446\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043f\u0430\u0432\u043d \u0442\u043e\u0447\u043a\u0438 \u0444\u043b\u043e\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0443\u0436\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
@@ -129,26 +144,9 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя спавн точки авианосца"
-            }
-          },
-          {
             "varSetString": {
               "value": "cr_t1_carrier_spawn_point_",
               "var": "cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя спавн точки флота"
             }
           },
           {
@@ -161,12 +159,14 @@
             "varAddString": {
               "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t1_fleet_spawn_name"
+              "var": "cr_t1_carrier_spawn_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем есть ли нужные объекты"
+            "varAddString": {
+              "value": "@cr_t1_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t1_fleet_spawn_name"
             }
           },
           {
@@ -198,25 +198,23 @@
         "actions": [
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0443\u0442\u0438 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u0432\u043a\u0430\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0443\u0436\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
             "varSetString": {
               "value": "cr_t1_carrier_route_",
               "var": "cr_t1_carrier_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_carrier_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя свкада"
             }
           },
           {
@@ -227,14 +225,16 @@
           },
           {
             "varAddString": {
-              "value": "@cr_t1_respawns_left",
+              "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t1_carrier_squad_name"
+              "var": "cr_t1_carrier_route_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем есть ли нужные объекты"
+            "varAddString": {
+              "value": "@cr_t1_respawns_left",
+              "digits": 2,
+              "var": "cr_t1_carrier_squad_name"
             }
           },
           {
@@ -270,7 +270,22 @@
         "actions": [
           {
             "comment": {
-              "value": "генерируем одну из 4-х точек спавна"
+              "value": "\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u0443\u0435\u043c \u043e\u0434\u043d\u0443 \u0438\u0437 4-\u0445 \u0442\u043e\u0447\u0435\u043a \u0441\u043f\u0430\u0432\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043f\u0430\u0432\u043d \u0442\u043e\u0447\u043a\u0438 \u0430\u0432\u0438\u0430\u043d\u043e\u0441\u0446\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u043f\u0430\u0432\u043d \u0442\u043e\u0447\u043a\u0438 \u0444\u043b\u043e\u0442\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0443\u0436\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
@@ -282,26 +297,9 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя спавн точки авианосца"
-            }
-          },
-          {
             "varSetString": {
               "value": "cr_t2_carrier_spawn_point_",
               "var": "cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя спавн точки флота"
             }
           },
           {
@@ -314,12 +312,14 @@
             "varAddString": {
               "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t2_fleet_spawn_name"
+              "var": "cr_t2_carrier_spawn_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем есть ли нужные объекты"
+            "varAddString": {
+              "value": "@cr_t2_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t2_fleet_spawn_name"
             }
           },
           {
@@ -351,25 +351,23 @@
         "actions": [
           {
             "comment": {
-              "value": "создаем имя пути движения"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0443\u0442\u0438 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0441\u0432\u043a\u0430\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0443\u0436\u043d\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
             "varSetString": {
               "value": "cr_t2_carrier_route_",
               "var": "cr_t2_carrier_route_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_carrier_route_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя свкада"
             }
           },
           {
@@ -380,14 +378,16 @@
           },
           {
             "varAddString": {
-              "value": "@cr_t2_respawns_left",
+              "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t2_carrier_squad_name"
+              "var": "cr_t2_carrier_route_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем есть ли нужные объекты"
+            "varAddString": {
+              "value": "@cr_t2_respawns_left",
+              "digits": 2,
+              "var": "cr_t2_carrier_squad_name"
             }
           },
           {
@@ -432,7 +432,37 @@
         "actions": [
           {
             "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
+              "value": "\u0432\u0441\u0435 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0438 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442. \u043c\u043e\u0436\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u0438\u0442\u044c \u0430\u0432\u0438\u0430\u043d\u043e\u0441\u0435\u0446"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u043e\u0447\u043d\u043e\u0441\u0442\u044c \u0437\u0435\u043d\u0438\u0442\u043a\u0430\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0432\u0438\u0434\u0438\u043c\u043e\u0441\u0442\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u044b\u0442\u0430\u0435\u043c\u0441\u044f \u0440\u043e\u0434\u0438\u0442\u044c \u0444\u043b\u043e\u0442 \u0441\u043e\u043f\u0440\u043e\u0432\u043e\u0436\u0434\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u0435\u0440\u0435\u0440\u043e\u0436\u0434\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
             }
           },
           {
@@ -462,11 +492,6 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
             "unitSetProperties": {
               "object_marking": 0,
               "object_var_name": "",
@@ -479,11 +504,6 @@
               "airEffShootingRate": 0.8,
               "fireRandom": true,
               "targetChangeInterval": 5.0
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем спавн"
             }
           },
           {
@@ -515,19 +535,9 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем видимость"
-            }
-          },
-          {
             "airfieldSetVisibility": {
               "target": "@cr_t1_carrier_name",
               "team": "A"
-            }
-          },
-          {
-            "comment": {
-              "value": "пытаемся родить флот сопровождения"
             }
           },
           {
@@ -536,18 +546,8 @@
             }
           },
           {
-            "comment": {
-              "value": "включаем отслеживание перерождения"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "cr_t1_carrier_dead_start"
-            }
-          },
-          {
-            "comment": {
-              "value": "включаем отслеживание обнаружения"
             }
           },
           {
@@ -588,7 +588,42 @@
         "actions": [
           {
             "comment": {
-              "value": "все сущности существуют. можем спавнить авианосец"
+              "value": "\u0432\u0441\u0435 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0438 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442. \u043c\u043e\u0436\u0435\u043c \u0441\u043f\u0430\u0432\u043d\u0438\u0442\u044c \u0430\u0432\u0438\u0430\u043d\u043e\u0441\u0435\u0446"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0442\u043e\u0447\u043d\u043e\u0441\u0442\u044c \u0437\u0435\u043d\u0438\u0442\u043a\u0430\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0432\u0438\u0434\u0438\u043c\u043e\u0441\u0442\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u044b\u0442\u0430\u0435\u043c\u0441\u044f \u0440\u043e\u0434\u0438\u0442\u044c \u0444\u043b\u043e\u0442 \u0441\u043e\u043f\u0440\u043e\u0432\u043e\u0436\u0434\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u0435\u0440\u0435\u0440\u043e\u0436\u0434\u0435\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
             }
           },
           {
@@ -618,11 +653,6 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем точность зениткам"
-            }
-          },
-          {
             "unitSetProperties": {
               "object_marking": 0,
               "object_var_name": "",
@@ -635,16 +665,6 @@
               "airEffShootingRate": 0.8,
               "fireRandom": true,
               "targetChangeInterval": 5.0
-            }
-          },
-          {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
-            "comment": {
-              "value": "назначаем спавн"
             }
           },
           {
@@ -676,19 +696,9 @@
             }
           },
           {
-            "comment": {
-              "value": "назначаем видимость"
-            }
-          },
-          {
             "airfieldSetVisibility": {
               "target": "@cr_t2_carrier_name",
               "team": "B"
-            }
-          },
-          {
-            "comment": {
-              "value": "пытаемся родить флот сопровождения"
             }
           },
           {
@@ -697,18 +707,8 @@
             }
           },
           {
-            "comment": {
-              "value": "включаем отслеживание перерождения"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "cr_t2_carrier_dead_start"
-            }
-          },
-          {
-            "comment": {
-              "value": "включаем отслеживание обнаружения"
             }
           },
           {
@@ -807,6 +807,26 @@
             }
           },
           {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": "properties must be set after allother things"
+            }
+          },
+          {
             "setHeadSquad": [
               {
                 "name": "@cr_t1_carrier_squad_name"
@@ -832,11 +852,6 @@
             ]
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitSetRoute": {
               "object_var_name": "",
               "object_var_comp_op": "equal",
@@ -846,19 +861,9 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitLoadBehTree": {
               "name": "shipBot",
               "objects": "@cr_t1_carrier_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -869,11 +874,6 @@
               "formation_noise": [0.3,0.4],
               "object": "@cr_t1_carrier_squad_name",
               "allUnitsInOneFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "properties must be set after allother things"
             }
           },
           {
@@ -978,6 +978,26 @@
             }
           },
           {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": "properties must be set after allother things"
+            }
+          },
+          {
             "setHeadSquad": [
               {
                 "name": "@cr_t2_carrier_squad_name"
@@ -1003,11 +1023,6 @@
             ]
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitSetRoute": {
               "object_var_name": "",
               "object_var_comp_op": "equal",
@@ -1017,19 +1032,9 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "unitLoadBehTree": {
               "name": "shipBot",
               "objects": "@cr_t2_carrier_squad_name"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -1040,11 +1045,6 @@
               "formation_noise": [0.3,0.4],
               "object": "@cr_t2_carrier_squad_name",
               "allUnitsInOneFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "properties must be set after allother things"
             }
           },
           {
@@ -1103,25 +1103,23 @@
           },
           {
             "comment": {
-              "value": "создаем имя респауна"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0440\u0435\u0441\u043f\u0430\u0443\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0440\u0435\u0441\u043f\u0430\u0443\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0440\u0435\u0441\u043f\u0430\u0432\u043d\u0438\u043c"
             }
           },
           {
             "varSetString": {
               "value": "cr_t1_carrier_respawn_point_",
               "var": "cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t1_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t1_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя респауна"
             }
           },
           {
@@ -1134,12 +1132,14 @@
             "varAddString": {
               "value": "@cr_t1_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t1_fleet_spawn_name"
+              "var": "cr_t1_carrier_spawn_name"
             }
           },
           {
-            "comment": {
-              "value": "респавним"
+            "varAddString": {
+              "value": "@cr_t1_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t1_fleet_spawn_name"
             }
           },
           {
@@ -1150,7 +1150,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "респавны кончились"
+            "value": "\u0440\u0435\u0441\u043f\u0430\u0432\u043d\u044b \u043a\u043e\u043d\u0447\u0438\u043b\u0438\u0441\u044c"
           },
           "triggerDisable": {
             "target": "cr_t1_carrier_respawn_timer"
@@ -1195,25 +1195,23 @@
           },
           {
             "comment": {
-              "value": "создаем имя респауна"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0440\u0435\u0441\u043f\u0430\u0443\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u0440\u0435\u0441\u043f\u0430\u0443\u043d\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0440\u0435\u0441\u043f\u0430\u0432\u043d\u0438\u043c"
             }
           },
           {
             "varSetString": {
               "value": "cr_t2_carrier_respawn_point_",
               "var": "cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@cr_t2_carrier_random_idx",
-              "digits": 2,
-              "var": "cr_t2_carrier_spawn_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя респауна"
             }
           },
           {
@@ -1226,12 +1224,14 @@
             "varAddString": {
               "value": "@cr_t2_carrier_random_idx",
               "digits": 2,
-              "var": "cr_t2_fleet_spawn_name"
+              "var": "cr_t2_carrier_spawn_name"
             }
           },
           {
-            "comment": {
-              "value": "респавним"
+            "varAddString": {
+              "value": "@cr_t2_carrier_random_idx",
+              "digits": 2,
+              "var": "cr_t2_fleet_spawn_name"
             }
           },
           {
@@ -1242,7 +1242,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "респавны кончились"
+            "value": "\u0440\u0435\u0441\u043f\u0430\u0432\u043d\u044b \u043a\u043e\u043d\u0447\u0438\u043b\u0438\u0441\u044c"
           },
           "triggerDisable": {
             "target": "cr_t2_carrier_respawn_timer"
@@ -1275,7 +1275,7 @@
         },
         "actions": {
           "comment": {
-            "value": "кариер должен быть обнаружен перед показом на карте"
+            "value": "\u043a\u0430\u0440\u0438\u0435\u0440 \u0434\u043e\u043b\u0436\u0435\u043d \u0431\u044b\u0442\u044c \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d \u043f\u0435\u0440\u0435\u0434 \u043f\u043e\u043a\u0430\u0437\u043e\u043c \u043d\u0430 \u043a\u0430\u0440\u0442\u0435"
           },
           "triggerEnable": [
             {
@@ -1288,7 +1288,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "включаем показ авианосца на карте для всех"
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043f\u043e\u043a\u0430\u0437 \u0430\u0432\u0438\u0430\u043d\u043e\u0441\u0446\u0430 \u043d\u0430 \u043a\u0430\u0440\u0442\u0435 \u0434\u043b\u044f \u0432\u0441\u0435\u0445"
           },
           "airfieldSetVisibility": [
             {
@@ -1326,17 +1326,17 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили, что запуск авиков для этой команды разрешен"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438, \u0447\u0442\u043e \u0437\u0430\u043f\u0443\u0441\u043a \u0430\u0432\u0438\u043a\u043e\u0432 \u0434\u043b\u044f \u044d\u0442\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0442\u043e \u043d\u0443\u0436\u0434\u0435\u043d \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
             }
           },
           {
             "triggerEnable": {
               "target": "cr_t1_detection_rotator"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем проверку на то нужден ли квест на обнаружение"
             }
           },
           {
@@ -1347,7 +1347,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выдачу задание на уничтожение"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u0434\u0430\u0447\u0443 \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u0435"
           },
           "triggerEnable": {
             "target": "cr_t1_dead_quest_start_check"
@@ -1377,17 +1377,17 @@
         "actions": [
           {
             "comment": {
-              "value": "проверили, что запуск авиков для этой команды разрешен"
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043b\u0438, \u0447\u0442\u043e \u0437\u0430\u043f\u0443\u0441\u043a \u0430\u0432\u0438\u043a\u043e\u0432 \u0434\u043b\u044f \u044d\u0442\u043e\u0439 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u0442\u043e \u043d\u0443\u0436\u0434\u0435\u043d \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
             }
           },
           {
             "triggerEnable": {
               "target": "cr_t2_detection_rotator"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаем проверку на то нужден ли квест на обнаружение"
             }
           },
           {
@@ -1398,7 +1398,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверяем выдачу задание на уничтожение"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u044b\u0434\u0430\u0447\u0443 \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u0435"
           },
           "triggerEnable": {
             "target": "cr_t2_dead_quest_start_check"
@@ -1427,7 +1427,17 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем дистанцию обнаружения "
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f "
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u043e\u0442 \u043a\u043e\u0440\u0440\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0449\u0438\u043a\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
             }
           },
           {
@@ -1447,11 +1457,6 @@
             ]
           },
           {
-            "comment": {
-              "value": "добавляем значение от корректировщика"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -1467,11 +1472,6 @@
               "var": "cr_t2_detection_range",
               "use_variable": true,
               "var_value": "lpt_t2_detection_bonus"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем дистанцию"
             }
           },
           {
@@ -1508,7 +1508,17 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем дистанцию обнаружения "
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f "
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u043e\u0442 \u043a\u043e\u0440\u0440\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0449\u0438\u043a\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0434\u0438\u0441\u0442\u0430\u043d\u0446\u0438\u044e"
             }
           },
           {
@@ -1528,11 +1538,6 @@
             ]
           },
           {
-            "comment": {
-              "value": "добавляем значение от корректировщика"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
@@ -1548,11 +1553,6 @@
               "var": "cr_t2_detection_range",
               "use_variable": true,
               "var_value": "lpt_t2_detection_bonus"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем дистанцию"
             }
           },
           {
@@ -1601,7 +1601,17 @@
         "actions": [
           {
             "comment": {
-              "value": "игроки обнаружили авик"
+              "value": "\u0438\u0433\u0440\u043e\u043a\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b\u0438 \u0430\u0432\u0438\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
@@ -1611,18 +1621,8 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "triggerEnable": {
               "target": "t2_detection_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -1633,7 +1633,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "запускаем проверку на любого противника"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u043b\u044e\u0431\u043e\u0433\u043e \u043f\u0440\u043e\u0442\u0438\u0432\u043d\u0438\u043a\u0430"
           },
           "triggerEnable": {
             "target": "cr_t1_detection_distance_check"
@@ -1675,7 +1675,17 @@
         "actions": [
           {
             "comment": {
-              "value": "игроки обнаружили авик"
+              "value": "\u0438\u0433\u0440\u043e\u043a\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b\u0438 \u0430\u0432\u0438\u043a"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
@@ -1685,18 +1695,8 @@
             }
           },
           {
-            "comment": {
-              "value": ""
-            }
-          },
-          {
             "triggerEnable": {
               "target": "t1_detection_task_completed"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -1707,7 +1707,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "запускаем проверку на любого противника"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0443 \u043d\u0430 \u043b\u044e\u0431\u043e\u0433\u043e \u043f\u0440\u043e\u0442\u0438\u0432\u043d\u0438\u043a\u0430"
           },
           "triggerEnable": {
             "target": "cr_t2_detection_distance_check"
@@ -1745,18 +1745,18 @@
         "actions": [
           {
             "comment": {
-              "value": "обнаружили не игроки"
+              "value": "\u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b\u0438 \u043d\u0435 \u0438\u0433\u0440\u043e\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "airfieldSetVisibility": {
               "target": "@cr_t1_carrier_name",
               "team": "Both"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -1767,7 +1767,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "запускаем ротацию снова"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0441\u043d\u043e\u0432\u0430"
           },
           "triggerEnable": {
             "target": "cr_t1_detection_rotator"
@@ -1805,18 +1805,18 @@
         "actions": [
           {
             "comment": {
-              "value": "обнаружили не игроки"
+              "value": "\u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b\u0438 \u043d\u0435 \u0438\u0433\u0440\u043e\u043a\u0438"
+            }
+          },
+          {
+            "comment": {
+              "value": ""
             }
           },
           {
             "airfieldSetVisibility": {
               "target": "@cr_t2_carrier_name",
               "team": "Both"
-            }
-          },
-          {
-            "comment": {
-              "value": ""
             }
           },
           {
@@ -1827,7 +1827,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "запускаем ротацию снова"
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0441\u043d\u043e\u0432\u0430"
           },
           "triggerEnable": {
             "target": "cr_t2_detection_rotator"
@@ -1857,12 +1857,12 @@
         "actions": [
           {
             "comment": {
-              "value": "разрешен квест на нахождение авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
             "comment": {
-              "value": "даем квест команде Б"
+              "value": "\u0434\u0430\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043a\u043e\u043c\u0430\u043d\u0434\u0435 \u0411"
             }
           },
           {
@@ -1902,12 +1902,12 @@
         "actions": [
           {
             "comment": {
-              "value": "разрешен квест на нахождение авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
             "comment": {
-              "value": "даем квест команде А"
+              "value": "\u0434\u0430\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043a\u043e\u043c\u0430\u043d\u0434\u0435 \u0410"
             }
           },
           {
@@ -1956,7 +1956,7 @@
           },
           {
             "comment": {
-              "value": "разрешен квест на нахождение авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
@@ -1969,17 +1969,17 @@
             }
           },
           {
-            "wait": {
-              "time": 20.0
-            }
-          },
-          {
             "moSetObjectiveStatus": {
               "target": "cr_t1_detect_carrier_quest",
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "team": "A"
+            }
+          },
+          {
+            "wait": {
+              "time": 20.0
             }
           }
         ],
@@ -2021,7 +2021,7 @@
           },
           {
             "comment": {
-              "value": "разрешен квест на нахождение авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
@@ -2034,17 +2034,17 @@
             }
           },
           {
-            "wait": {
-              "time": 20.0
-            }
-          },
-          {
             "moSetObjectiveStatus": {
               "target": "cr_t2_detect_carrier_quest",
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 20.0
             }
           }
         ],
@@ -2085,17 +2085,17 @@
         "actions": [
           {
             "comment": {
-              "value": "карриер умер. можно включить респавн"
+              "value": "\u043a\u0430\u0440\u0440\u0438\u0435\u0440 \u0443\u043c\u0435\u0440. \u043c\u043e\u0436\u043d\u043e \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0440\u0435\u0441\u043f\u0430\u0432\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043e \u043b\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e"
             }
           },
           {
             "triggerEnable": {
               "target": "cr_t1_carrier_respawn_timer"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем разрешено ли задание на убийство"
             }
           },
           {
@@ -2133,17 +2133,17 @@
         "actions": [
           {
             "comment": {
-              "value": "карриер умер. можно включить респавн"
+              "value": "\u043a\u0430\u0440\u0440\u0438\u0435\u0440 \u0443\u043c\u0435\u0440. \u043c\u043e\u0436\u043d\u043e \u0432\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0440\u0435\u0441\u043f\u0430\u0432\u043d"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043e \u043b\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e"
             }
           },
           {
             "triggerEnable": {
               "target": "cr_t2_carrier_respawn_timer"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем разрешено ли задание на убийство"
             }
           },
           {
@@ -2176,7 +2176,7 @@
         },
         "actions": {
           "comment": {
-            "value": "разрешен квест на нахождение авика"
+            "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
           },
           "moAddMissionObjective": {
             "target": "cr_t1_destroy_carrier_quest",
@@ -2212,7 +2212,7 @@
         },
         "actions": {
           "comment": {
-            "value": "разрешен квест на нахождение авика"
+            "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u043d\u0430\u0445\u043e\u0436\u0434\u0435\u043d\u0438\u0435 \u0430\u0432\u0438\u043a\u0430"
           },
           "moAddMissionObjective": {
             "target": "cr_t2_destroy_carrier_quest",
@@ -2253,7 +2253,7 @@
           },
           {
             "comment": {
-              "value": "разрешен квест на убийство авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
@@ -2269,17 +2269,17 @@
             }
           },
           {
-            "wait": {
-              "time": 20.0
-            }
-          },
-          {
             "moSetObjectiveStatus": {
               "target": "cr_t1_destroy_carrier_quest",
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "team": "A"
+            }
+          },
+          {
+            "wait": {
+              "time": 20.0
             }
           }
         ],
@@ -2316,7 +2316,7 @@
           },
           {
             "comment": {
-              "value": "разрешен квест на убийство авика"
+              "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u043e \u0430\u0432\u0438\u043a\u0430"
             }
           },
           {
@@ -2332,17 +2332,17 @@
             }
           },
           {
-            "wait": {
-              "time": 20.0
-            }
-          },
-          {
             "moSetObjectiveStatus": {
               "target": "cr_t2_destroy_carrier_quest",
               "status": 0,
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 20.0
             }
           }
         ],

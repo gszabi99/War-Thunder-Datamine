@@ -114,6 +114,13 @@
           }
         },
         {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "secondary_loot_rng"
+          }
+        },
+        {
           "varSetString": {
             "value": "secondary_loot_pt_",
             "var": "secondary_loot_str"
@@ -133,13 +140,6 @@
             "from": 0,
             "to_not_including": 10,
             "var_to_not_including": "secondary_loot_spots_total"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "secondary_loot_rng"
           }
         },
         {
@@ -298,17 +298,17 @@
           }
         },
         {
+          "varSetString": {
+            "value": "secondary_loot_spot_",
+            "var": "secondary_loot_str2"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str",
             "input_var": "secondary_loot_i"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "secondary_loot_spot_",
-            "var": "secondary_loot_str2"
           }
         },
         {
@@ -411,17 +411,17 @@
           }
         },
         {
+          "varSetString": {
+            "value": "secondary_loot_spot_",
+            "var": "secondary_loot_str"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
             "var": "secondary_loot_str2",
             "input_var": "secondary_loot_i"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "secondary_loot_spot_",
-            "var": "secondary_loot_str"
           }
         },
         {
@@ -802,6 +802,45 @@
       }
     },
     {
+      "tankModels": {
+        "name": "objectGroups_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-204.5,65.3,-155.85]
+        ],
+        "unit_class": "ussr_at_spg_9",
+        "objLayer": 2,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 0,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "dont_aim",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
       "armada": {
         "name": "armada_01",
         "tm": [
@@ -846,45 +885,6 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
-        },
-        "way": []
-      }
-    },
-    {
-      "tankModels": {
-        "name": "objectGroups_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-204.5,65.3,-155.85]
-        ],
-        "unit_class": "ussr_at_spg_9",
-        "objLayer": 2,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
-        "props": {
-          "army": 0,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "dont_aim",
-          "isDelayed": true
         },
         "way": []
       }

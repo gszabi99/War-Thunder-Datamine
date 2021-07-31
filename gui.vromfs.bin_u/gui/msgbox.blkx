@@ -74,6 +74,14 @@
         }
       },
       {
+        "div": {
+          "id": "msg_bottom_div",
+          "pos": "0.5(pw-w), 0.01@scrn_tgt",
+          "position": "relative",
+          "display": "hide"
+        }
+      },
+      {
         "animated_wait_icon": {
           "id": "msgWaitAnimation",
           "display": "hide",
@@ -90,14 +98,6 @@
           "behavior": "PosNavigator",
           "navigatorShortcuts": "noSelect",
           "total-input-transparent": "yes"
-        }
-      },
-      {
-        "div": {
-          "id": "msg_bottom_div",
-          "pos": "0.5(pw-w), 0.01@scrn_tgt",
-          "position": "relative",
-          "display": "hide"
         }
       }
     ]
@@ -116,6 +116,11 @@
     "voiceChatWidgetNest": [
       {
         "isClanOnly": "no"
+      },
+      {
+        "blockSeparator": {
+          "display": "hide"
+        }
       },
       {
         "blockSeparator": {
@@ -150,11 +155,6 @@
           "voiceChatWidget": {
             "value": "{\"viewId\": \"VOICE_CHAT\"}"
           }
-        }
-      },
-      {
-        "blockSeparator": {
-          "display": "hide"
         }
       }
     ]

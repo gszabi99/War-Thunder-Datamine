@@ -328,11 +328,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -340,6 +335,11 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "point_02"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -441,15 +441,15 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "dlc_korsun_fly_over_mist_air_def_add",
             "object_var_comp_op": "equal",
             "object_var_name": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -708,11 +708,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -720,6 +715,11 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "point_04"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -771,11 +771,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -783,6 +778,11 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "point_06"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -834,11 +834,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -846,6 +841,11 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "point_08"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         }
       ],
@@ -915,6 +915,11 @@
           }
         },
         {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
           "triggerDisable": {
             "target": "point_06_check"
           }
@@ -952,21 +957,6 @@
           }
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "bf_109_01"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "germ_fighters_lost_player"
@@ -978,6 +968,16 @@
               "target": "lost_fighters_attack_repeat"
             }
           ]
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "bf_109_01"
+          }
         }
       ],
       "else_actions": []
@@ -1214,11 +1214,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -1226,6 +1221,11 @@
             "ignoreDifficulty": false,
             "scale": 1.0,
             "target": "point_09"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -1572,13 +1572,13 @@
           }
         },
         {
-          "missionCompleted": {
-            "timer": false
+          "wait": {
+            "time": 1.0
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "missionCompleted": {
+            "timer": false
           }
         },
         {
@@ -1724,6 +1724,149 @@
       }
     },
     {
+      "armada": {
+        "name": "bf_109_01",
+        "tm": [
+          [-0.976296,0.0,-0.216439],
+          [0.0,1.0,0.0],
+          [0.216439,0.0,-0.976296],
+          [-8453.1,750.0,3117.65]
+        ],
+        "unit_class": "bf-109g-6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109G-6_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "stealthRadius": 1000.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ally_fighters",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23320.4,441.75,434.5]
+        ],
+        "unit_class": "la-5fn",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "LA5_FN_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bf_109_02",
+        "tm": [
+          [-0.976296,0.0,-0.216439],
+          [0.0,1.0,0.0],
+          [0.216439,0.0,-0.976296],
+          [-22234.3,750.0,335.55]
+        ],
+        "unit_class": "bf-109g-6",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "Bf-109G-6_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 1,
+          "numInWing": 2,
+          "stealthRadius": 1000.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "air_defence": {
         "name": "germ_air_def_01",
         "tm": [
@@ -1795,85 +1938,6 @@
           "stealthRadius": 500.0
         },
         "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf_109_01",
-        "tm": [
-          [-0.976296,0.0,-0.216439],
-          [0.0,1.0,0.0],
-          [0.216439,0.0,-0.976296],
-          [-8453.1,750.0,3117.65]
-        ],
-        "unit_class": "bf-109g-6",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109G-6_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "stealthRadius": 1000.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "germ_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7759.6,8.1281,10407.7]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "germ_air_def_01"
-          },
-          {
-            "squad_members": "germ_air_def_02"
-          },
-          {
-            "squad_members": "germ_air_def_04"
-          },
-          {
-            "squad_members": "germ_air_def_06"
-          },
-          {
-            "squad_members": "germ_air_def_08"
-          }
-        ]
       }
     },
     {
@@ -2025,34 +2089,6 @@
       }
     },
     {
-      "squad": {
-        "name": "ussr_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-23792.1,150.0,878.2]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ussr_air_def_01"
-          },
-          {
-            "squad_members": "ussr_air_def_02"
-          },
-          {
-            "squad_members": "ussr_air_def_03"
-          },
-          {
-            "squad_members": "ussr_air_def_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "germ_air_def_04",
         "tm": [
@@ -2161,6 +2197,65 @@
           "stealthRadius": 500.0
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "germ_air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7759.6,8.1281,10407.7]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "germ_air_def_01"
+          },
+          {
+            "squad_members": "germ_air_def_02"
+          },
+          {
+            "squad_members": "germ_air_def_04"
+          },
+          {
+            "squad_members": "germ_air_def_06"
+          },
+          {
+            "squad_members": "germ_air_def_08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ussr_air_def_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-23792.1,150.0,878.2]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ussr_air_def_01"
+          },
+          {
+            "squad_members": "ussr_air_def_02"
+          },
+          {
+            "squad_members": "ussr_air_def_03"
+          },
+          {
+            "squad_members": "ussr_air_def_04"
+          }
+        ]
       }
     },
     {
@@ -2431,101 +2526,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "armada": {
-        "name": "ally_fighters",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-23320.4,441.75,434.5]
-        ],
-        "unit_class": "la-5fn",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "LA5_FN_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bf_109_02",
-        "tm": [
-          [-0.976296,0.0,-0.216439],
-          [0.0,1.0,0.0],
-          [0.216439,0.0,-0.976296],
-          [-22234.3,750.0,335.55]
-        ],
-        "unit_class": "bf-109g-6",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "Bf-109G-6_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 1,
-          "numInWing": 2,
-          "stealthRadius": 1000.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     },
     {

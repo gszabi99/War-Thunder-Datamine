@@ -443,16 +443,16 @@
           }
         },
         {
+          "varSetString": {
+            "value": "t2_capture_and_hold_all_zones_round_",
+            "var": "t2_objective_str"
+          }
+        },
+        {
           "varAddString": {
             "value": "@rounds_counter",
             "digits": 1,
             "var": "t1_objective_str"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_capture_and_hold_all_zones_round_",
-            "var": "t2_objective_str"
           }
         },
         {
@@ -587,6 +587,13 @@
           }
         },
         {
+          "varAddString": {
+            "value": "@domination_timer_int",
+            "digits": 2,
+            "var": "domination_hint_enemy_id_str"
+          }
+        },
+        {
           "playHint": {
             "hintType": "custom",
             "name": "@domination_hint_ally_id_str",
@@ -600,19 +607,6 @@
           }
         },
         {
-          "varSetString": {
-            "value": "hints/ally_round_will_end_in_",
-            "var": "domination_hint_ally_id_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@domination_timer_int",
-            "digits": 2,
-            "var": "domination_hint_enemy_id_str"
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "@domination_hint_enemy_id_str",
@@ -623,6 +617,12 @@
             "isOverFade": false,
             "shouldBlink": false,
             "team": "B"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "hints/ally_round_will_end_in_",
+            "var": "domination_hint_ally_id_str"
           }
         },
         {
@@ -720,14 +720,14 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "is_mission_end"
-          }
-        },
-        {
           "varSetInt": {
             "value": 15,
             "var": "domination_timer_int"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "is_mission_end"
           }
         },
         {
@@ -875,6 +875,13 @@
           }
         },
         {
+          "varAddString": {
+            "value": "@domination_timer_int",
+            "digits": 2,
+            "var": "domination_hint_enemy_id_str"
+          }
+        },
+        {
           "playHint": {
             "hintType": "custom",
             "name": "@domination_hint_ally_id_str",
@@ -888,19 +895,6 @@
           }
         },
         {
-          "varSetString": {
-            "value": "hints/ally_round_will_end_in_",
-            "var": "domination_hint_ally_id_str"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@domination_timer_int",
-            "digits": 2,
-            "var": "domination_hint_enemy_id_str"
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "@domination_hint_enemy_id_str",
@@ -911,6 +905,12 @@
             "isOverFade": false,
             "shouldBlink": false,
             "team": "A"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "hints/ally_round_will_end_in_",
+            "var": "domination_hint_ally_id_str"
           }
         },
         {
@@ -1008,14 +1008,14 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "is_mission_end"
-          }
-        },
-        {
           "varSetInt": {
             "value": 15,
             "var": "domination_timer_int"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "is_mission_end"
           }
         },
         {
@@ -1425,147 +1425,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1140.45,12.3269,2071.89]
-        ],
-        "props": [
-          {
-            "squad_members": "player_01"
-          },
-          {
-            "squad_members": "player_02"
-          },
-          {
-            "squad_members": "player_03"
-          },
-          {
-            "squad_members": "player_04"
-          },
-          {
-            "squad_members": "player_05"
-          },
-          {
-            "squad_members": "player_06"
-          },
-          {
-            "squad_members": "player_07"
-          },
-          {
-            "squad_members": "player_08"
-          },
-          {
-            "squad_members": "player_09"
-          },
-          {
-            "squad_members": "player_10"
-          },
-          {
-            "squad_members": "player_11"
-          },
-          {
-            "squad_members": "player_12"
-          },
-          {
-            "squad_members": "player_13"
-          },
-          {
-            "squad_members": "player_14"
-          },
-          {
-            "squad_members": "player_15"
-          },
-          {
-            "squad_members": "player_16"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1143.28,12.2817,2229.35]
-        ],
-        "props": [
-          {
-            "squad_members": "player_17"
-          },
-          {
-            "squad_members": "player_18"
-          },
-          {
-            "squad_members": "player_19"
-          },
-          {
-            "squad_members": "player_20"
-          },
-          {
-            "squad_members": "player_21"
-          },
-          {
-            "squad_members": "player_22"
-          },
-          {
-            "squad_members": "player_23"
-          },
-          {
-            "squad_members": "player_24"
-          },
-          {
-            "squad_members": "player_25"
-          },
-          {
-            "squad_members": "player_26"
-          },
-          {
-            "squad_members": "player_27"
-          },
-          {
-            "squad_members": "player_28"
-          },
-          {
-            "squad_members": "player_29"
-          },
-          {
-            "squad_members": "player_30"
-          },
-          {
-            "squad_members": "player_31"
-          },
-          {
-            "squad_members": "player_32"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "all_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1120.96,10.8531,1966.85]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_squad"
-          },
-          {
-            "squad_members": "t2_squad"
-          }
-        ]
       }
     },
     {
@@ -2992,6 +2851,147 @@
           }
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1140.45,12.3269,2071.89]
+        ],
+        "props": [
+          {
+            "squad_members": "player_01"
+          },
+          {
+            "squad_members": "player_02"
+          },
+          {
+            "squad_members": "player_03"
+          },
+          {
+            "squad_members": "player_04"
+          },
+          {
+            "squad_members": "player_05"
+          },
+          {
+            "squad_members": "player_06"
+          },
+          {
+            "squad_members": "player_07"
+          },
+          {
+            "squad_members": "player_08"
+          },
+          {
+            "squad_members": "player_09"
+          },
+          {
+            "squad_members": "player_10"
+          },
+          {
+            "squad_members": "player_11"
+          },
+          {
+            "squad_members": "player_12"
+          },
+          {
+            "squad_members": "player_13"
+          },
+          {
+            "squad_members": "player_14"
+          },
+          {
+            "squad_members": "player_15"
+          },
+          {
+            "squad_members": "player_16"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1143.28,12.2817,2229.35]
+        ],
+        "props": [
+          {
+            "squad_members": "player_17"
+          },
+          {
+            "squad_members": "player_18"
+          },
+          {
+            "squad_members": "player_19"
+          },
+          {
+            "squad_members": "player_20"
+          },
+          {
+            "squad_members": "player_21"
+          },
+          {
+            "squad_members": "player_22"
+          },
+          {
+            "squad_members": "player_23"
+          },
+          {
+            "squad_members": "player_24"
+          },
+          {
+            "squad_members": "player_25"
+          },
+          {
+            "squad_members": "player_26"
+          },
+          {
+            "squad_members": "player_27"
+          },
+          {
+            "squad_members": "player_28"
+          },
+          {
+            "squad_members": "player_29"
+          },
+          {
+            "squad_members": "player_30"
+          },
+          {
+            "squad_members": "player_31"
+          },
+          {
+            "squad_members": "player_32"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "all_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1120.96,10.8531,1966.85]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_squad"
+          },
+          {
+            "squad_members": "t2_squad"
+          }
+        ]
       }
     }
   ],

@@ -131,6 +131,9 @@
                     "text": "#yn1/waiting_for_game_query"
                   },
                   {
+                    "text": ""
+                  },
+                  {
                     "style": "color:@userlogColoredText;"
                   },
                   {
@@ -141,9 +144,6 @@
                   },
                   {
                     "hideEmptyText": "yes"
-                  },
-                  {
-                    "text": ""
                   }
                 ]
               },
@@ -151,6 +151,9 @@
                 "activeText": [
                   {
                     "id": "queue_players_total"
+                  },
+                  {
+                    "text": ""
                   },
                   {
                     "text": ""
@@ -169,20 +172,10 @@
                   },
                   {
                     "hideEmptyText": "yes"
-                  },
-                  {
-                    "text": ""
                   }
                 ]
               }
             ]
-          },
-          {
-            "timer": {
-              "id": "queue_update_timer",
-              "timer_handler_func": "onUpdate",
-              "timer_interval_msec": "1000"
-            }
           },
           {
             "tdiv": {
@@ -219,15 +212,6 @@
                 }
               },
               {
-                "activeText": {
-                  "text": "#multiplayer/hint",
-                  "commonButtonColor": "yes",
-                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                  "position": "absolute",
-                  "smallFont": "yes"
-                }
-              },
-              {
                 "tdiv": {
                   "size": "0.35pw, 3@sf/@pf",
                   "bgcolor": "#0E1114",
@@ -235,24 +219,17 @@
                   "top": "0.5ph-0.5h",
                   "right": "0"
                 }
+              },
+              {
+                "activeText": {
+                  "text": "#multiplayer/hint",
+                  "commonButtonColor": "yes",
+                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                  "position": "absolute",
+                  "smallFont": "yes"
+                }
               }
             ]
-          },
-          {
-            "loadingTip": {
-              "id": "queue_tip",
-              "width": "pw",
-              "padding": "0, 0.5*@scrn_tgt/100.0",
-              "behaviour": "bhvLoadingTip",
-              "loadingHint": {
-                "id": "tip_hint",
-                "width": "pw",
-                "commonTextColor": "yes",
-                "smallFont": "yes",
-                "behaviour": "bhvHint",
-                "isWrapInRowAllowed": "yes"
-              }
-            }
           },
           {
             "tdiv": {
@@ -279,21 +256,21 @@
                   }
                 },
                 {
-                  "activeText": {
-                    "text": "#options/ps4_crossplay",
-                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                    "position": "absolute",
-                    "smallFont": "yes",
-                    "overlayTextColor": "warning"
-                  }
-                },
-                {
                   "tdiv": {
                     "size": "0.2pw, 3@sf/@pf",
                     "bgcolor": "#0E1114",
                     "position": "absolute",
                     "top": "0.5ph-0.5h",
                     "right": "0"
+                  }
+                },
+                {
+                  "activeText": {
+                    "text": "#options/ps4_crossplay",
+                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                    "position": "absolute",
+                    "smallFont": "yes",
+                    "overlayTextColor": "warning"
                   }
                 }
               ],
@@ -304,6 +281,29 @@
                 "padding": "0.01@scrn_tgt, 0.005@scrn_tgt",
                 "text": "#queue/crossPlay",
                 "overlayTextColor": "warning"
+              }
+            }
+          },
+          {
+            "timer": {
+              "id": "queue_update_timer",
+              "timer_handler_func": "onUpdate",
+              "timer_interval_msec": "1000"
+            }
+          },
+          {
+            "loadingTip": {
+              "id": "queue_tip",
+              "width": "pw",
+              "padding": "0, 0.5*@scrn_tgt/100.0",
+              "behaviour": "bhvLoadingTip",
+              "loadingHint": {
+                "id": "tip_hint",
+                "width": "pw",
+                "commonTextColor": "yes",
+                "smallFont": "yes",
+                "behaviour": "bhvHint",
+                "isWrapInRowAllowed": "yes"
               }
             }
           }

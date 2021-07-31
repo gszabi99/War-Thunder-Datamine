@@ -239,6 +239,11 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "reach_waypoint_01",
             "status": 2
@@ -252,11 +257,6 @@
         {
           "moAddMissionObjective": {
             "target": "reach_waypoint_02"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -328,6 +328,11 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "reach_waypoint_02",
             "status": 2
@@ -341,11 +346,6 @@
         {
           "moAddMissionObjective": {
             "target": "destroy_airfield_planes"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -384,9 +384,77 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "varSetString": {
             "value": "enemy_airfield_",
             "var": "enemy_airfield_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "airfield_trigger_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "enemy_aaa_name"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "enemy_airfield_",
+            "var": "dead_pe2_spawn_name"
           }
         },
         {
@@ -404,17 +472,6 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "enemy_airfield_",
-            "var": "airfield_trigger_name"
-          }
-        },
-        {
           "varAddString": {
             "value": "@enemy_airfield_idx",
             "digits": 2,
@@ -426,17 +483,6 @@
             "value": "_activate",
             "digits": 2,
             "var": "airfield_trigger_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "enemy_airfield_",
-            "var": "enemy_aaa_name"
           }
         },
         {
@@ -454,8 +500,17 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "varAddString": {
+            "value": "@enemy_airfield_idx",
+            "digits": 2,
+            "var": "dead_pe2_spawn_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_pe2_spawn",
+            "digits": 2,
+            "var": "dead_pe2_spawn_name"
           }
         },
         {
@@ -472,18 +527,13 @@
           ]
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "triggerEnable": {
             "target": "@airfield_trigger_name"
           }
         },
         {
-          "comment": {
-            "value": ""
+          "triggerEnable": {
+            "target": "destroy_airfield_fighters_completed"
           }
         },
         {
@@ -492,8 +542,13 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -513,16 +568,19 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "unitRespawn": {
+            "delay": 0.0,
+            "offset": [0.0,0.0,0.0],
+            "object": "enemy_fighters_03",
+            "target": "enemy_fighters_respawn"
           }
         },
         {
           "unitRespawn": {
             "delay": 0.0,
             "offset": [0.0,0.0,0.0],
-            "object": "enemy_fighters_03",
-            "target": "enemy_fighters_respawn"
+            "object": "dead_pe_2",
+            "target": "@dead_pe2_spawn_name"
           }
         },
         {
@@ -551,11 +609,6 @@
           ]
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "unitAttackTarget": [
             {
               "playerAttracted": false
@@ -573,22 +626,6 @@
               "fireRandom": true
             }
           ]
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "unitLoadBehTree": {
-            "name": "missionAssault",
-            "objects": "ally_bombers"
-          }
         },
         {
           "unitAttackTarget": [
@@ -613,46 +650,9 @@
           ]
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "destroy_airfield_fighters_completed"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "enemy_airfield_",
-            "var": "dead_pe2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "@enemy_airfield_idx",
-            "digits": 2,
-            "var": "dead_pe2_spawn_name"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "_pe2_spawn",
-            "digits": 2,
-            "var": "dead_pe2_spawn_name"
-          }
-        },
-        {
-          "unitRespawn": {
-            "delay": 0.0,
-            "offset": [0.0,0.0,0.0],
-            "object": "dead_pe_2",
-            "target": "@dead_pe2_spawn_name"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
+          "unitLoadBehTree": {
+            "name": "missionAssault",
+            "objects": "ally_bombers"
           }
         },
         {
@@ -1047,6 +1047,40 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "enemy_airfield_02_object",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [-2246.7,65.0114,-5728.8]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "enemy_airfield_03_object",
+        "tm": [
+          [0.965926,0.0,-0.258819],
+          [0.0,1.0,0.0],
+          [0.258819,0.0,0.965926],
+          [1833.65,44.7715,-5737.2]
+        ],
+        "unit_class": "dynAF_kh_gol_airfield_gumrak",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
       "armada": {
         "name": "player_armada",
         "tm": [
@@ -1275,40 +1309,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "enemy_airfield_02_object",
-        "tm": [
-          [0.965926,0.0,-0.258819],
-          [0.0,1.0,0.0],
-          [0.258819,0.0,0.965926],
-          [-2246.7,65.0114,-5728.8]
-        ],
-        "unit_class": "dynAF_kh_gol_airfield_gumrak",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": false
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "enemy_airfield_03_object",
-        "tm": [
-          [0.965926,0.0,-0.258819],
-          [0.0,1.0,0.0],
-          [0.258819,0.0,0.965926],
-          [1833.65,44.7715,-5737.2]
-        ],
-        "unit_class": "dynAF_kh_gol_airfield_gumrak",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": false
-        }
-      }
-    },
-    {
       "armada": {
         "name": "ally_bombers",
         "tm": [
@@ -1346,6 +1346,97 @@
             "super_formation": "Diamond",
             "super_row_distances": 2.0,
             "super_col_distances": 2.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "dead_pe_2",
+        "tm": [
+          [0.939693,0.0,0.34202],
+          [0.0,1.0,0.0],
+          [-0.34202,0.0,0.939693],
+          [17821.6,414.95,20970.6]
+        ],
+        "unit_class": "pe-2-359",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "isDelayed": true,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "enemy_fighters_01_assist",
+        "tm": [
+          [0.996195,0.0,0.0871558],
+          [0.0,1.0,0.0],
+          [-0.0871558,0.0,0.996195],
+          [15348.5,1500.7,19335.8]
+        ],
+        "unit_class": "fw-190a-5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
@@ -1846,97 +1937,6 @@
             "squad_members": "enemy_airfield_03_aaa_04"
           }
         ]
-      }
-    },
-    {
-      "armada": {
-        "name": "dead_pe_2",
-        "tm": [
-          [0.939693,0.0,0.34202],
-          [0.0,1.0,0.0],
-          [-0.34202,0.0,0.939693],
-          [17821.6,414.95,20970.6]
-        ],
-        "unit_class": "pe-2-359",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "isDelayed": true,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "enemy_fighters_01_assist",
-        "tm": [
-          [0.996195,0.0,0.0871558],
-          [0.0,1.0,0.0],
-          [-0.0871558,0.0,0.996195],
-          [15348.5,1500.7,19335.8]
-        ],
-        "unit_class": "fw-190a-5",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
       }
     }
   ],

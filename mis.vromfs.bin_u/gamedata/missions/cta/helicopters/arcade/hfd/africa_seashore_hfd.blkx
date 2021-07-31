@@ -416,7 +416,32 @@
       "actions": [
         {
           "comment": {
-            "value": "задаем начальную скорость уничтожения наземки с заниженым коэфициентом"
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u043d\u0430\u0447\u0430\u043b\u044c\u043d\u0443\u044e \u0441\u043a\u043e\u0440\u043e\u0441\u0442\u044c \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0438\u044f \u043d\u0430\u0437\u0435\u043c\u043a\u0438 \u0441 \u0437\u0430\u043d\u0438\u0436\u0435\u043d\u044b\u043c \u043a\u043e\u044d\u0444\u0438\u0446\u0438\u0435\u043d\u0442\u043e\u043c"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f \u0434\u043b\u044f \u043f\u0440\u0435\u0434\u043e\u0442\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u044f \u0434\u043b\u0438\u043d\u043d\u044b\u0445 \u0441\u0435\u0441\u0441\u0438\u0439"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u043b\u0438\u043d\u0430 \u0441\u0435\u0441\u0441\u0438\u0438 \u043f\u043e\u0441\u043b\u0435 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043f\u0440\u0438\u043c\u0435\u043d\u044f\u0435\u043c \u043d\u043e\u0432\u044b\u0435 \u043f\u0440\u0430\u0432\u0438\u043b\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0440\u0435\u0430\u043b\u044c\u043d\u0430\u044f \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u0434\u043b\u0438\u043d\u0430 \u0441\u0435\u0441\u0441\u0438\u0438 \u043a \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043c\u044b \u0441\u0442\u0440\u0435\u043c\u0438\u0441\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0447\u0438\u043d\u0430\u0435\u0442\u0441\u044f \u043b\u043e\u0433\u0438\u043a\u0430 \u043c\u0438\u0441\u0441\u0438\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -433,24 +458,15 @@
           ]
         },
         {
-          "comment": {
-            "value": "задаем значения для предотвращения длинных сессий"
-          }
-        },
-        {
-          "comment": {
-            "value": "длина сессии после которой применяем новые правила"
+          "varSetReal": {
+            "value": 250.0,
+            "var": "nearDamageDistance"
           }
         },
         {
           "varSetInt": {
             "value": 600,
             "var": "long_time_is"
-          }
-        },
-        {
-          "comment": {
-            "value": "реальная максимальная длина сессии к которой мы стремися"
           }
         },
         {
@@ -463,17 +479,6 @@
           "varSetInt": {
             "value": 64000,
             "var": "long_time_arcade_distance"
-          }
-        },
-        {
-          "comment": {
-            "value": "начинается логика миссии"
-          }
-        },
-        {
-          "varSetReal": {
-            "value": 250.0,
-            "var": "nearDamageDistance"
           }
         },
         {
@@ -573,11 +578,6 @@
             "object_var_value": 0,
             "target": "t2_quest_units_squad",
             "team": "A"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -720,6 +720,632 @@
         "props": {
           "squad_members": "t2_trucks_squad"
         }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_bunkers_light_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9729.96,0.0,-3215.66]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_bunker_light_01"
+          },
+          {
+            "squad_members": "t1_bunker_light_02"
+          },
+          {
+            "squad_members": "t1_bunker_light_03"
+          },
+          {
+            "squad_members": "t1_bunker_light_04"
+          },
+          {
+            "squad_members": "t1_bunker_light_05"
+          },
+          {
+            "squad_members": "t1_bunker_light_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_bunkers_light_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9590.71,0.000976563,1624.76]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_bunker_light_01"
+          },
+          {
+            "squad_members": "t2_bunker_light_02"
+          },
+          {
+            "squad_members": "t2_bunker_light_03"
+          },
+          {
+            "squad_members": "t2_bunker_light_04"
+          },
+          {
+            "squad_members": "t2_bunker_light_05"
+          },
+          {
+            "squad_members": "t2_bunker_light_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9745.12,0.000488281,-3717.65]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_tank_01"
+          },
+          {
+            "squad_members": "t1_tank_02"
+          },
+          {
+            "squad_members": "t1_tank_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9490.59,0.00195313,2179.46]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_tank_01"
+          },
+          {
+            "squad_members": "t2_tank_02"
+          },
+          {
+            "squad_members": "t2_tank_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9036.4,0.0,-5057.95]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_truck_02"
+          },
+          {
+            "squad_members": "t1_truck_03"
+          },
+          {
+            "squad_members": "t1_truck_05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_trucks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7429.3,0.0,6726.6]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_truck_01"
+          },
+          {
+            "squad_members": "t2_truck_02"
+          },
+          {
+            "squad_members": "t2_truck_05"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6075.25,0.0,-7224.35]
+        ],
+        "props": {
+          "squad_members": "t1_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_heavy_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9809.35,0.0,3458.2]
+        ],
+        "props": {
+          "squad_members": "t2_tanks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5927.5,0.0,-7460.85]
+        ],
+        "props": {
+          "squad_members": "t1_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_light_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-10344.1,0.0,2615.95]
+        ],
+        "props": {
+          "squad_members": "t2_trucks_squad"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3865.55,0.0,-7634.85]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_heavy_units_squad"
+          },
+          {
+            "squad_members": "t1_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_movable_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2639.2,0.0,4963.0]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_heavy_units_squad"
+          },
+          {
+            "squad_members": "t2_light_units_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4981.75,0.0,-10892.4]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_bunkers_light_squad"
+          },
+          {
+            "squad_members": "t1_tanks_squad"
+          },
+          {
+            "squad_members": "t1_navy_ships_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_quest_units_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-13016.0,0.0,14812.5]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_bunkers_light_squad"
+          },
+          {
+            "squad_members": "t2_tanks_squad"
+          },
+          {
+            "squad_members": "t2_navy_ships_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_navy_ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9784.04,0.000488281,-2537.65]
+        ],
+        "props": [
+          {
+            "squad_members": "t1_navy_boat_01"
+          },
+          {
+            "squad_members": "t1_navy_boat_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_navy_ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-9575.75,0.0,1271.92]
+        ],
+        "props": [
+          {
+            "squad_members": "t2_navy_boat_01"
+          },
+          {
+            "squad_members": "t2_navy_boat_02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_01_squad",
+        "tm": [
+          [0.907722,0.0,0.419572],
+          [0.0,1.0,0.0],
+          [-0.419572,0.0,0.907722],
+          [1715.36,373.165,-1835.9]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_01_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_01_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_01_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_01_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2252.61,108.273,-2446.55]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_02_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_02_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_02_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_02_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_03_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7041.8,25.7543,-2278.36]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_03_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_03_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_03_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_03_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_04_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2040.81,236.499,1177.3]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_04_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_04_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_04_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_04_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_05_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1939.81,84.6988,2096.03]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_05_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_05_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_05_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_05_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t1_aa_06_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6854.74,62.9555,3192.36]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t1_aa_06_01"
+          },
+          {
+            "squad_members": "pad_t1_aa_06_02"
+          },
+          {
+            "squad_members": "pad_t1_aa_06_03"
+          },
+          {
+            "squad_members": "pad_t1_aa_06_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_01_squad",
+        "tm": [
+          [0.907722,0.0,0.419572],
+          [0.0,1.0,0.0],
+          [-0.419572,0.0,0.907722],
+          [1715.36,373.165,-1835.9]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_01_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_01_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_01_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_01_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2269.96,108.291,-2413.84]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_02_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_02_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_02_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_02_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_03_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-7026.67,25.7543,-2261.18]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_03_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_03_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_03_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_03_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_04_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2077.79,236.501,1134.11]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_04_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_04_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_04_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_04_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_05_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1977.82,84.6988,2088.28]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_05_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_05_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_05_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_05_04"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "pad_t2_aa_06_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-6842.72,62.9555,3181.68]
+        ],
+        "props": [
+          {
+            "squad_members": "pad_t2_aa_06_01"
+          },
+          {
+            "squad_members": "pad_t2_aa_06_02"
+          },
+          {
+            "squad_members": "pad_t2_aa_06_03"
+          },
+          {
+            "squad_members": "pad_t2_aa_06_04"
+          }
+        ]
       }
     },
     {
@@ -933,37 +1559,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_bunkers_light_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9729.96,0.0,-3215.66]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_bunker_light_01"
-          },
-          {
-            "squad_members": "t1_bunker_light_02"
-          },
-          {
-            "squad_members": "t1_bunker_light_03"
-          },
-          {
-            "squad_members": "t1_bunker_light_04"
-          },
-          {
-            "squad_members": "t1_bunker_light_05"
-          },
-          {
-            "squad_members": "t1_bunker_light_06"
-          }
-        ]
-      }
-    },
-    {
       "structures": {
         "name": "t2_bunker_light_01",
         "tm": [
@@ -1171,37 +1766,6 @@
           "attack_type": "fire_at_will"
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_bunkers_light_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9590.71,0.000976563,1624.76]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_bunker_light_01"
-          },
-          {
-            "squad_members": "t2_bunker_light_02"
-          },
-          {
-            "squad_members": "t2_bunker_light_03"
-          },
-          {
-            "squad_members": "t2_bunker_light_04"
-          },
-          {
-            "squad_members": "t2_bunker_light_05"
-          },
-          {
-            "squad_members": "t2_bunker_light_06"
-          }
-        ]
       }
     },
     {
@@ -1722,28 +2286,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9745.12,0.000488281,-3717.65]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_tank_01"
-          },
-          {
-            "squad_members": "t1_tank_02"
-          },
-          {
-            "squad_members": "t1_tank_03"
-          }
-        ]
       }
     },
     {
@@ -2347,28 +2889,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9490.59,0.00195313,2179.46]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_tank_01"
-          },
-          {
-            "squad_members": "t2_tank_02"
-          },
-          {
-            "squad_members": "t2_tank_03"
-          }
-        ]
-      }
-    },
-    {
       "tankModels": {
         "name": "t1_tank_03",
         "tm": [
@@ -2854,188 +3374,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9036.4,0.0,-5057.95]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_truck_02"
-          },
-          {
-            "squad_members": "t1_truck_03"
-          },
-          {
-            "squad_members": "t1_truck_05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_trucks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7429.3,0.0,6726.6]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_truck_01"
-          },
-          {
-            "squad_members": "t2_truck_02"
-          },
-          {
-            "squad_members": "t2_truck_05"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6075.25,0.0,-7224.35]
-        ],
-        "props": {
-          "squad_members": "t1_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_heavy_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9809.35,0.0,3458.2]
-        ],
-        "props": {
-          "squad_members": "t2_tanks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5927.5,0.0,-7460.85]
-        ],
-        "props": {
-          "squad_members": "t1_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_light_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-10344.1,0.0,2615.95]
-        ],
-        "props": {
-          "squad_members": "t2_trucks_squad"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3865.55,0.0,-7634.85]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_heavy_units_squad"
-          },
-          {
-            "squad_members": "t1_light_units_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_movable_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2639.2,0.0,4963.0]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_heavy_units_squad"
-          },
-          {
-            "squad_members": "t2_light_units_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4981.75,0.0,-10892.4]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_bunkers_light_squad"
-          },
-          {
-            "squad_members": "t1_tanks_squad"
-          },
-          {
-            "squad_members": "t1_navy_ships_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_quest_units_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13016.0,0.0,14812.5]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_bunkers_light_squad"
-          },
-          {
-            "squad_members": "t2_tanks_squad"
-          },
-          {
-            "squad_members": "t2_navy_ships_squad"
-          }
-        ]
       }
     },
     {
@@ -4711,6 +5049,38 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "pad_object_06",
+        "tm": [
+          [0.608761,0.0,-0.793353],
+          [0.0,1.0,0.0],
+          [0.793353,0.0,0.608761],
+          [-6869.54,63.1163,3174.31]
+        ],
+        "unit_class": "dynHelipad_dirt_a_usa",
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "pad_object_03",
+        "tm": [
+          [0.819152,0.0,0.573576],
+          [0.0,1.0,0.0],
+          [-0.573576,0.0,0.819152],
+          [-7021.21,31.7858,-2294.08]
+        ],
+        "unit_class": "dynHelipad_beton_a_usa",
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    },
+    {
       "ships": {
         "name": "t1_navy_boat_01",
         "tm": [
@@ -5036,25 +5406,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_navy_ships_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9784.04,0.000488281,-2537.65]
-        ],
-        "props": [
-          {
-            "squad_members": "t1_navy_boat_01"
-          },
-          {
-            "squad_members": "t1_navy_boat_02"
-          }
-        ]
-      }
-    },
-    {
       "ships": {
         "name": "t2_navy_boat_01",
         "tm": [
@@ -5329,25 +5680,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_navy_ships_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-9575.75,0.0,1271.92]
-        ],
-        "props": [
-          {
-            "squad_members": "t2_navy_boat_01"
-          },
-          {
-            "squad_members": "t2_navy_boat_02"
-          }
-        ]
       }
     },
     {
@@ -5953,38 +6285,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "pad_object_06",
-        "tm": [
-          [0.608761,0.0,-0.793353],
-          [0.0,1.0,0.0],
-          [0.793353,0.0,0.608761],
-          [-6869.54,63.1163,3174.31]
-        ],
-        "unit_class": "dynHelipad_dirt_a_usa",
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "pad_object_03",
-        "tm": [
-          [0.819152,0.0,0.573576],
-          [0.0,1.0,0.0],
-          [-0.573576,0.0,0.819152],
-          [-7021.21,31.7858,-2294.08]
-        ],
-        "unit_class": "dynHelipad_beton_a_usa",
-        "props": {
-          "army": 1,
-          "active": true
-        }
-      }
-    },
-    {
       "area_squad": {
         "name": "t1_helicopter_spawn_02",
         "tm": [
@@ -6562,31 +6862,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t1_aa_01_squad",
-        "tm": [
-          [0.907722,0.0,0.419572],
-          [0.0,1.0,0.0],
-          [-0.419572,0.0,0.907722],
-          [1715.36,373.165,-1835.9]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_01_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_01_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_01_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_01_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t1_aa_02_02",
         "tm": [
@@ -6695,31 +6970,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t1_aa_02_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2252.61,108.273,-2446.55]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_02_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_02_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_02_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_02_04"
-          }
-        ]
       }
     },
     {
@@ -6834,31 +7084,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t1_aa_03_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7041.8,25.7543,-2278.36]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_03_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_03_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_03_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_03_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t1_aa_04_02",
         "tm": [
@@ -6967,31 +7192,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t1_aa_04_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2040.81,236.499,1177.3]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_04_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_04_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_04_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_04_04"
-          }
-        ]
       }
     },
     {
@@ -7106,31 +7306,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t1_aa_05_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1939.81,84.6988,2096.03]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_05_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_05_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_05_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_05_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t1_aa_06_02",
         "tm": [
@@ -7239,31 +7414,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t1_aa_06_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6854.74,62.9555,3192.36]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t1_aa_06_01"
-          },
-          {
-            "squad_members": "pad_t1_aa_06_02"
-          },
-          {
-            "squad_members": "pad_t1_aa_06_03"
-          },
-          {
-            "squad_members": "pad_t1_aa_06_04"
-          }
-        ]
       }
     },
     {
@@ -7415,31 +7565,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t2_aa_01_squad",
-        "tm": [
-          [0.907722,0.0,0.419572],
-          [0.0,1.0,0.0],
-          [-0.419572,0.0,0.907722],
-          [1715.36,373.165,-1835.9]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_01_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_01_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_01_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_01_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t2_aa_02_01",
         "tm": [
@@ -7585,31 +7710,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t2_aa_02_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2269.96,108.291,-2413.84]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_02_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_02_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_02_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_02_04"
-          }
-        ]
       }
     },
     {
@@ -7761,31 +7861,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t2_aa_03_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-7026.67,25.7543,-2261.18]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_03_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_03_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_03_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_03_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t2_aa_04_01",
         "tm": [
@@ -7931,31 +8006,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t2_aa_04_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2077.79,236.501,1134.11]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_04_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_04_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_04_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_04_04"
-          }
-        ]
       }
     },
     {
@@ -8107,31 +8157,6 @@
       }
     },
     {
-      "squad": {
-        "name": "pad_t2_aa_05_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1977.82,84.6988,2088.28]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_05_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_05_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_05_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_05_04"
-          }
-        ]
-      }
-    },
-    {
       "air_defence": {
         "name": "pad_t2_aa_06_01",
         "tm": [
@@ -8277,31 +8302,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "pad_t2_aa_06_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6842.72,62.9555,3181.68]
-        ],
-        "props": [
-          {
-            "squad_members": "pad_t2_aa_06_01"
-          },
-          {
-            "squad_members": "pad_t2_aa_06_02"
-          },
-          {
-            "squad_members": "pad_t2_aa_06_03"
-          },
-          {
-            "squad_members": "pad_t2_aa_06_04"
-          }
-        ]
       }
     }
   ],

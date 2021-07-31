@@ -53,7 +53,12 @@
       "actions": [
         {
           "comment": {
-            "value": "указываем максимальное количество баз +1"
+            "value": "\u0443\u043a\u0430\u0437\u044b\u0432\u0430\u0435\u043c \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u0430\u0437 +1"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0441\u0430\u043c \u0441\u0435\u0431\u044f \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u0442"
           }
         },
         {
@@ -66,11 +71,6 @@
           "varSetInt": {
             "value": 11,
             "var": "bdt_t2_total_bases_max_count"
-          }
-        },
-        {
-          "comment": {
-            "value": "говорим что шаблон сам себя рестартит"
           }
         },
         {
@@ -360,6 +360,74 @@
         "objLayer": 2,
         "props": {
           "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_09",
+        "tm": [
+          [0.92388,0.0,0.382684],
+          [0.0,1.0,0.0],
+          [-0.382684,0.0,0.92388],
+          [-15076.0,164.23,-13606.3]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t2_bomb_object_10",
+        "tm": [
+          [1.0,0.0,8.9407e-08],
+          [0.0,1.0,0.0],
+          [-8.9407e-08,0.0,1.0],
+          [-19326.8,75.4,-19482.2]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_09",
+        "tm": [
+          [0.996195,0.0,0.0871551],
+          [0.0,1.0,0.0],
+          [-0.0871551,0.0,0.996195],
+          [21635.0,144.517,-3432.25]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "bdt_t1_bomb_object_10",
+        "tm": [
+          [0.843392,0.0,0.5373],
+          [0.0,1.0,0.0],
+          [-0.5373,0.0,0.843392],
+          [18496.1,49.3792,-17367.7]
+        ],
+        "unit_class": "cargo_zone_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
           "active": false
         }
       }
@@ -1043,166 +1111,6 @@
       }
     },
     {
-      "squad": {
-        "name": "bdt_t1_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [14610.8,1.75,-8440.15]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_01_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_02_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_03_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_04_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_05_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_06_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_07_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_08_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_09_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t1_bomb_zone_10_bomb_target"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "bdt_t2_targets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2783.75,13.8,10784.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_01_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_02_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_03_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_04_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_05_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_06_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_07_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_08_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_09_bomb_target"
-          },
-          {
-            "squad_members": "bdt_t2_bomb_zone_10_bomb_target"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "bdt_t2_bomb_object_09",
-        "tm": [
-          [0.92388,0.0,0.382684],
-          [0.0,1.0,0.0],
-          [-0.382684,0.0,0.92388],
-          [-15076.0,164.23,-13606.3]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": false
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "bdt_t2_bomb_object_10",
-        "tm": [
-          [1.0,0.0,8.9407e-08],
-          [0.0,1.0,0.0],
-          [-8.9407e-08,0.0,1.0],
-          [-19326.8,75.4,-19482.2]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": false
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "bdt_t1_bomb_object_09",
-        "tm": [
-          [0.996195,0.0,0.0871551],
-          [0.0,1.0,0.0],
-          [-0.0871551,0.0,0.996195],
-          [21635.0,144.517,-3432.25]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": false
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "bdt_t1_bomb_object_10",
-        "tm": [
-          [0.843392,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,0.843392],
-          [18496.1,49.3792,-17367.7]
-        ],
-        "unit_class": "cargo_zone_square",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": false
-        }
-      }
-    },
-    {
       "structures": {
         "name": "bdt_t2_bomb_zone_09_bomb_target",
         "tm": [
@@ -1409,6 +1317,128 @@
       }
     },
     {
+      "squad": {
+        "name": "bdt_t1_targets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [14610.8,1.75,-8440.15]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_01_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_02_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_03_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_04_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_05_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_06_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_07_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_08_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_09_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t1_bomb_zone_10_bomb_target"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t2_targets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2783.75,13.8,10784.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_01_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_02_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_03_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_04_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_05_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_06_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_07_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_08_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_09_bomb_target"
+          },
+          {
+            "squad_members": "bdt_t2_bomb_zone_10_bomb_target"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t1_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-34993.0,0.0,16114.9]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "bdt_t1_aaa_unit"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "bdt_t2_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-36451.9,0.0,15820.7]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "bdt_t2_aaa_unit"
+        }
+      }
+    },
+    {
       "air_defence": {
         "name": "bdt_t1_aaa_unit",
         "tm": [
@@ -1484,36 +1514,6 @@
           "isDelayed": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "bdt_t1_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-34993.0,0.0,16114.9]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "bdt_t1_aaa_unit"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "bdt_t2_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-36451.9,0.0,15820.7]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "bdt_t2_aaa_unit"
-        }
       }
     }
   ],

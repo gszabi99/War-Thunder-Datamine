@@ -455,6 +455,11 @@
           }
         },
         {
+          "unitPutToSleep": {
+            "target": "b5n_end_cut"
+          }
+        },
+        {
           "spawnOnAirfield": {
             "runwayName": "ijn_hiryu",
             "objects": "armada_01"
@@ -553,11 +558,6 @@
             "target": "jpn_b5n2",
             "target_type": "isFormationLeader"
           }
-        },
-        {
-          "unitPutToSleep": {
-            "target": "b5n_end_cut"
-          }
         }
       ],
       "else_actions": []
@@ -616,6 +616,11 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "missionSetFade": {
             "mode": "fadeOut",
             "color": [0.0,0.0,0.0],
@@ -623,7 +628,9 @@
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [1.0,1.0,1.0],
             "time": 1.0
           }
         },
@@ -736,13 +743,6 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [1.0,1.0,1.0],
-            "time": 1.0
-          }
-        },
-        {
           "triggerEnable": {
             "target": "start_cutscene"
           }
@@ -806,44 +806,6 @@
           }
         },
         {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/jpn_midway_m3_t1",
-            "duration": 6.0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "isOverFade": false,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "right2front",
@@ -865,41 +827,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "b5n_start_cut_leader"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "jpn_midway_m3_dialog1",
-            "subtitles": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
           }
         },
         {
@@ -970,8 +897,61 @@
           ]
         },
         {
+          "showCutsceneInfo": {
+            "text": "cutscene_text/jpn_midway_m3_t1",
+            "duration": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -992,18 +972,38 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "start_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
           "triggerEnable": {
             "target": "battle_start"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "jpn_midway_m3_dialog1",
+            "subtitles": false
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "start_cut_skip"
           }
         }
       ],
@@ -1075,8 +1075,20 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [1.0,1.0,1.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -1241,18 +1253,6 @@
               "target": "TF17_fleet_sq"
             }
           ]
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [1.0,1.0,1.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
         },
         {
           "tacticalMapControl": {
@@ -2215,6 +2215,11 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
           "unitDamage": {
             "part": 0,
             "power": 1.0,
@@ -2224,11 +2229,6 @@
             "offset": [0.0,0.0,0.0],
             "radiusOffset": [10.0,15.0],
             "target": "tf17_cv5"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -2639,8 +2639,18 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "tf16_objective_failed"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "end_tele_cut"
           }
         },
         {
@@ -2651,7 +2661,9 @@
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
             "time": 1.0
           }
         },
@@ -2711,18 +2723,6 @@
             "use_scale": true,
             "scale": [23000.0,23000.0]
           }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "end_tele_cut"
-          }
         }
       ],
       "else_actions": []
@@ -2753,6 +2753,11 @@
           }
         },
         {
+          "unitWakeUp": {
+            "target": "b5n_end_tomanoga_cut"
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
@@ -2765,6 +2770,38 @@
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
             "isOverFade": false,
@@ -2800,71 +2837,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "isOverFade": false,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "end_tele_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "jpn_midway_m3_dialog3_part1",
-            "subtitles": true
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "b5n_end_tomanoga_cut"
-          }
-        },
-        {
-          "unitDropAmmo": {
-            "object": "b5n_end_tomanoga_cut"
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "b5n_end_tomanoga_cut",
-            "isImmortal": true,
-            "engineFire": true,
-            "aiEnabled": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "duration": 12.0,
@@ -2886,16 +2858,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "b5n_end_tomanoga_cut"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "dialog3_part2"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -2923,11 +2885,6 @@
           }
         },
         {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "far",
@@ -2952,8 +2909,23 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "dialog3_part3"
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
           }
         },
         {
@@ -2962,23 +2934,13 @@
           }
         },
         {
-          "triggerDisable": {
-            "target": "end_tele_cut_skip"
+          "wait": {
+            "time": 4.0
           }
         },
         {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "isOverFade": false,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -2988,12 +2950,50 @@
         },
         {
           "triggerEnable": {
+            "target": "end_tele_cut_skip"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dialog3_part2"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "dialog3_part3"
+          }
+        },
+        {
+          "triggerEnable": {
             "target": "landing_start"
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "missionPlayDialogue": {
+            "dialog": "jpn_midway_m3_dialog3_part1",
+            "subtitles": true
+          }
+        },
+        {
+          "unitDropAmmo": {
+            "object": "b5n_end_tomanoga_cut"
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "b5n_end_tomanoga_cut",
+            "isImmortal": true,
+            "engineFire": true,
+            "aiEnabled": false
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "end_tele_cut_skip"
           }
         },
         {
@@ -3124,8 +3124,30 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
           }
         },
         {
@@ -3168,18 +3190,6 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "tacticalMapControl": {
             "follow_player": false,
             "use_scale": false,
@@ -3200,19 +3210,9 @@
           }
         },
         {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
           "missionCompleted": {
             "timer": true,
             "afterComplete": "debriefing_cut"
-          }
-        },
-        {
-          "wait": {
-            "time": 15.0
           }
         },
         {
@@ -3301,14 +3301,14 @@
           ]
         },
         {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
+          "triggerDisable": {
+            "target": "debriefing_cut_skip"
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
             "time": 1.0
           }
         },
@@ -3320,11 +3320,74 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 12.0
+          }
+        },
+        {
+          "wait": {
+            "time": 12.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.5
+          }
+        },
+        {
+          "wait": {
+            "time": 57.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "unitRestore": {
             "ressurectIfDead": true,
             "fullRestore": true,
             "target_marking": 0,
             "target": "player_sq"
+          }
+        },
+        {
+          "unitRestore": {
+            "ressurectIfDead": true,
+            "fullRestore": true,
+            "target_marking": 0,
+            "target": "TF17_fleet_sq"
           }
         },
         {
@@ -3443,6 +3506,29 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "b5n_cut_spawn_point",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "b5n_cut",
+            "move_type": "teleport",
+            "lookat": "tf17_1500"
+          }
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "f4f_cut",
@@ -3451,11 +3537,19 @@
           }
         },
         {
-          "unitRestore": {
-            "ressurectIfDead": true,
-            "fullRestore": true,
-            "target_marking": 0,
-            "target": "TF17_fleet_sq"
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "zero_cut",
+            "target": "f4f_cut",
+            "fireRandom": true
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "b5n_cut",
+            "target": "tf17_cv5",
+            "fireRandom": true
           }
         },
         {
@@ -3468,6 +3562,40 @@
             "hintType": "custom",
             "name": "hints/cutsc_skip",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "isOverFade": false,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
             "shouldFadeOut": false,
             "time": -1.0,
             "isOverFade": false,
@@ -3548,56 +3676,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_dialog"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "isOverFade": false,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "zero_cut",
-            "target": "f4f_cut",
-            "fireRandom": true
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "duration": 1.0,
@@ -3673,11 +3751,6 @@
           }
         },
         {
-          "wait": {
-            "time": 12.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "unit_attack_unit",
             "duration": 1.0,
@@ -3728,42 +3801,6 @@
           }
         },
         {
-          "wait": {
-            "time": 12.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "b5n_cut_spawn_point",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "b5n_cut",
-            "move_type": "teleport",
-            "lookat": "tf17_1500"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "b5n_cut",
-            "target": "tf17_cv5",
-            "fireRandom": true
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "duration": 6.0,
@@ -3785,11 +3822,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "tomanoga_cut_sq"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -3818,11 +3850,6 @@
           }
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
@@ -3847,8 +3874,13 @@
           }
         },
         {
-          "wait": {
-            "time": 4.5
+          "triggerEnable": {
+            "target": "debriefing_dialog"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "debriefing_cut_skip"
           }
         },
         {
@@ -3875,38 +3907,6 @@
             "radiusOffset": [10.0,15.0],
             "target": "tf17_cv5",
             "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 57.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "isOverFade": false,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerDisable": {
-            "target": "debriefing_cut_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -4194,6 +4194,11 @@
           }
         },
         {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/changePlaneT",
@@ -4208,11 +4213,6 @@
             "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
           }
         },
         {
@@ -5901,6 +5901,144 @@
       }
     },
     {
+      "squad": {
+        "name": "us_force",
+        "tm": [
+          [-1.0,0.0,-1.19209e-07],
+          [0.0,1.0,0.0],
+          [1.19209e-07,0.0,-1.0],
+          [2682.39,0.0,8165.05]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "TF17_fleet_sq"
+          },
+          {
+            "squad_members": "TF16_fleet_sq"
+          },
+          {
+            "squad_members": "us_f4f01"
+          },
+          {
+            "squad_members": "us_f4f02"
+          },
+          {
+            "squad_members": "us_f4f_05"
+          },
+          {
+            "squad_members": "us_f4f_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "player_sq",
+        "tm": [
+          [-1.0,0.0,-1.19209e-07],
+          [0.0,1.0,0.0],
+          [1.19209e-07,0.0,-1.0],
+          [-36441.7,0.0,685.647]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "armada_01",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "tomanoga_cut_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [271.4,0.0,7609.5]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "b5n_cut",
+          "object_type": "isFormationLeader"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "jpn_all",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-32813.6,0.0,-3622.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "jpn_zero01"
+          },
+          {
+            "squad_members": "jpn_zero02"
+          },
+          {
+            "squad_members": "jpn_b5n2"
+          },
+          {
+            "squad_members": "ijn_fleet_sq"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "b5n_start_cut_leader",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-12623.7,0.0,10165.7]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "b5n_start_cut",
+          "object_type": "isFormationLeader"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "us_planes",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [3937.65,0.0,12031.3]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "us_f4f01"
+          },
+          {
+            "squad_members": "us_f4f02"
+          },
+          {
+            "squad_members": "us_f4f_05"
+          },
+          {
+            "squad_members": "us_f4f_06"
+          }
+        ]
+      }
+    },
+    {
       "armada": {
         "name": "armada_01",
         "tm": [
@@ -6086,40 +6224,6 @@
           }
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "us_force",
-        "tm": [
-          [-1.0,0.0,-1.19209e-07],
-          [0.0,1.0,0.0],
-          [1.19209e-07,0.0,-1.0],
-          [2682.39,0.0,8165.05]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "TF17_fleet_sq"
-          },
-          {
-            "squad_members": "TF16_fleet_sq"
-          },
-          {
-            "squad_members": "us_f4f01"
-          },
-          {
-            "squad_members": "us_f4f02"
-          },
-          {
-            "squad_members": "us_f4f_05"
-          },
-          {
-            "squad_members": "us_f4f_06"
-          }
-        ]
       }
     },
     {
@@ -6363,22 +6467,6 @@
       }
     },
     {
-      "squad": {
-        "name": "player_sq",
-        "tm": [
-          [-1.0,0.0,-1.19209e-07],
-          [0.0,1.0,0.0],
-          [1.19209e-07,0.0,-1.0],
-          [-36441.7,0.0,685.647]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "armada_01",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
       "armada": {
         "name": "jpn_zero02",
         "tm": [
@@ -6570,50 +6658,6 @@
       }
     },
     {
-      "squad": {
-        "name": "tomanoga_cut_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [271.4,0.0,7609.5]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "b5n_cut",
-          "object_type": "isFormationLeader"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "jpn_all",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-32813.6,0.0,-3622.65]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "jpn_zero01"
-          },
-          {
-            "squad_members": "jpn_zero02"
-          },
-          {
-            "squad_members": "jpn_b5n2"
-          },
-          {
-            "squad_members": "ijn_fleet_sq"
-          }
-        ]
-      }
-    },
-    {
       "armada": {
         "name": "b5n_start_cut",
         "tm": [
@@ -6741,50 +6785,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "squad": {
-        "name": "b5n_start_cut_leader",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-12623.7,0.0,10165.7]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "b5n_start_cut",
-          "object_type": "isFormationLeader"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "us_planes",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [3937.65,0.0,12031.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "us_f4f01"
-          },
-          {
-            "squad_members": "us_f4f02"
-          },
-          {
-            "squad_members": "us_f4f_05"
-          },
-          {
-            "squad_members": "us_f4f_06"
-          }
-        ]
       }
     },
     {

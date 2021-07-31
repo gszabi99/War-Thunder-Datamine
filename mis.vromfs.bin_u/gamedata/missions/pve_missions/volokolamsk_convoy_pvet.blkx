@@ -492,15 +492,15 @@
           }
         },
         {
-          "unitWakeUp": {
-            "target": "t1_ai_truck_sq",
-            "varNameNumToWakeUp": "convoy_n_trucks"
-          }
-        },
-        {
           "varSetInt": {
             "value": -100,
             "var": "ticket_per_truck"
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "t1_ai_truck_sq",
+            "varNameNumToWakeUp": "convoy_n_trucks"
           }
         },
         {
@@ -1027,17 +1027,17 @@
           }
         },
         {
+          "varSetString": {
+            "value": "ai_stage1_ambush_sq_",
+            "var": "str_name_container2"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
             "var": "str_name_container",
             "input_var": "int_iterator"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "ai_stage1_ambush_sq_",
-            "var": "str_name_container2"
           }
         },
         {
@@ -1144,6 +1144,16 @@
           }
         },
         {
+          "wait": {
+            "time": 30.0
+          }
+        },
+        {
+          "wait": {
+            "time": 60.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "convoy_pvet_defend",
             "object_var_comp_op": "equal",
@@ -1173,21 +1183,6 @@
           }
         },
         {
-          "triggerEnable": [
-            {
-              "target": "stage1__disperse"
-            },
-            {
-              "target": "stage1__dont_attack_trucks"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1197,11 +1192,6 @@
             "detectableFromCameraPos": true,
             "accuracy": 0.5,
             "maxDeviationAngle": 5.0
-          }
-        },
-        {
-          "wait": {
-            "time": 60.0
           }
         },
         {
@@ -1215,6 +1205,16 @@
             "accuracy": 0.75,
             "maxDeviationAngle": 5.0
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "stage1__disperse"
+            },
+            {
+              "target": "stage1__dont_attack_trucks"
+            }
+          ]
         },
         {
           "unitSetIndication": {
@@ -1264,6 +1264,18 @@
           }
         },
         {
+          "varSetString": {
+            "value": "way_to_cover_",
+            "var": "str_name_container"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "t1_ai_truck_",
+            "var": "str_name_container2"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
@@ -1272,23 +1284,11 @@
           }
         },
         {
-          "varSetString": {
-            "value": "way_to_cover_",
-            "var": "str_name_container"
-          }
-        },
-        {
           "varAddString": {
             "value": "",
             "digits": 2,
             "var": "str_name_container",
             "input_var": "@str_name_container2"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t1_ai_truck_",
-            "var": "str_name_container2"
           }
         },
         {
@@ -1486,17 +1486,17 @@
           }
         },
         {
+          "varSetString": {
+            "value": "way_back_to_road_",
+            "var": "str_name_container2"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 2,
             "var": "str_name_container",
             "input_var": "int_iterator2"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "way_back_to_road_",
-            "var": "str_name_container2"
           }
         },
         {
@@ -1722,6 +1722,18 @@
           }
         },
         {
+          "missionBattleArea": {
+            "air": false,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": "battlearea_stage1"
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -1763,25 +1775,18 @@
           }
         },
         {
-          "unitPutToSleep": {
-            "target": "ai_stage1_tank_sq"
-          }
-        },
-        {
           "wait": {
             "time": 10.0
           }
         },
         {
-          "missionBattleArea": {
-            "air": false,
-            "ground": false,
-            "mapArea": false,
-            "airMapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": false,
-            "area": "battlearea_stage1"
+          "unitPutToSleep": {
+            "target": "ai_stage1_tank_sq"
+          }
+        },
+        {
+          "__wait": {
+            "time": 5.0
           }
         },
         {
@@ -1795,19 +1800,14 @@
           }
         },
         {
-          "__wait": {
-            "time": 5.0
+          "__triggerEnable": {
+            "target": "secondary_dstraa__roll"
           }
         },
         {
           "__varSetString": {
             "value": "secondary_dstraa_target",
             "var": "secondary_dstraa_target"
-          }
-        },
-        {
-          "__triggerEnable": {
-            "target": "secondary_dstraa__roll"
           }
         }
       ],
@@ -2338,6 +2338,18 @@
           }
         },
         {
+          "missionBattleArea": {
+            "air": false,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": false,
+            "area": "battlearea_stage2"
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "convoy_pvet_escape",
             "object_var_comp_op": "equal",
@@ -2365,21 +2377,6 @@
           }
         },
         {
-          "unitSetRoute": {
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "route": "convoy_way_stage3",
-            "teleportToStart": true,
-            "object": "t1_ai_truck_sq"
-          }
-        },
-        {
-          "unitFollowWaypoints": {
-            "followWaypoints": true,
-            "target": "t1_ai_truck_sq"
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -2394,6 +2391,21 @@
             "lockSpeed": true,
             "waypointReachedDist": 10.0,
             "moveSpeedKAtShooting": 0.0
+          }
+        },
+        {
+          "unitSetRoute": {
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "route": "convoy_way_stage3",
+            "teleportToStart": true,
+            "object": "t1_ai_truck_sq"
+          }
+        },
+        {
+          "unitFollowWaypoints": {
+            "followWaypoints": true,
+            "target": "t1_ai_truck_sq"
           }
         },
         {
@@ -2433,6 +2445,11 @@
           }
         },
         {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "standard",
             "name": "hints/rearm_available",
@@ -2456,23 +2473,6 @@
               "target": "ai_stage2_destroyer_sq"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
-          "missionBattleArea": {
-            "air": false,
-            "ground": false,
-            "mapArea": false,
-            "airMapArea": false,
-            "killArea": false,
-            "detectionArea": false,
-            "killOutOfBattleArea": false,
-            "area": "battlearea_stage2"
-          }
         }
       ],
       "else_actions": []
@@ -2555,6 +2555,26 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_02"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_03"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_04"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_05"
+          }
+        },
+        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_01_a",
             "areaNameTo": "briefing_stage3_01_b",
@@ -2562,16 +2582,6 @@
             "colorCode": "Enemy",
             "scale": 0.5,
             "arrow": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.01
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_02"
           }
         },
         {
@@ -2585,16 +2595,6 @@
           }
         },
         {
-          "wait": {
-            "time": 40.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_03"
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_03_a",
             "areaNameTo": "briefing_stage3_03_b",
@@ -2602,16 +2602,6 @@
             "colorCode": "Enemy",
             "scale": 0.45,
             "arrow": true
-          }
-        },
-        {
-          "wait": {
-            "time": 80.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_04"
           }
         },
         {
@@ -2625,16 +2615,6 @@
           }
         },
         {
-          "wait": {
-            "time": 40.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_05"
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_05_a",
             "areaNameTo": "briefing_stage3_05_b",
@@ -2642,6 +2622,26 @@
             "colorCode": "Enemy",
             "scale": 0.45,
             "arrow": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.01
+          }
+        },
+        {
+          "wait": {
+            "time": 40.0
+          }
+        },
+        {
+          "wait": {
+            "time": 80.0
+          }
+        },
+        {
+          "wait": {
+            "time": 40.0
           }
         }
       ],
@@ -2652,6 +2652,26 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_02"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_03"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_04"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "stage3__continuous_respawn_05"
+          }
+        },
+        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_01_a",
             "areaNameTo": "briefing_stage3_01_b",
@@ -2659,16 +2679,6 @@
             "colorCode": "Enemy",
             "scale": 0.5,
             "arrow": true
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_02"
           }
         },
         {
@@ -2682,16 +2692,6 @@
           }
         },
         {
-          "wait": {
-            "time": 60.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_03"
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_03_a",
             "areaNameTo": "briefing_stage3_03_b",
@@ -2699,16 +2699,6 @@
             "colorCode": "Enemy",
             "scale": 0.45,
             "arrow": true
-          }
-        },
-        {
-          "wait": {
-            "time": 120.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_04"
           }
         },
         {
@@ -2722,16 +2712,6 @@
           }
         },
         {
-          "wait": {
-            "time": 60.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "stage3__continuous_respawn_05"
-          }
-        },
-        {
           "missionShowMapLine": {
             "areaNameFrom": "briefing_stage3_05_a",
             "areaNameTo": "briefing_stage3_05_b",
@@ -2739,6 +2719,26 @@
             "colorCode": "Enemy",
             "scale": 0.45,
             "arrow": true
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 60.0
+          }
+        },
+        {
+          "wait": {
+            "time": 120.0
+          }
+        },
+        {
+          "wait": {
+            "time": 60.0
           }
         }
       ]
@@ -2778,16 +2778,16 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "convoy_pvet_guard",
             "status": 2,
             "object_var_comp_op": "equal",
             "object_var_name": ""
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -3599,17 +3599,41 @@
           }
         },
         {
+          "varSetString": {
+            "value": "ai_stage3_sp",
+            "var": "str_name_container2"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "stage3__way_spread_",
+            "var": "str_name_container"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "respawn_pl_stage3_",
+            "var": "str_name_container"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "respawn_pl_stage3_",
+            "var": "str_name_container"
+          }
+        },
+        {
+          "varSetString": {
+            "value": "stage3_ai_advance_",
+            "var": "str_name_container"
+          }
+        },
+        {
           "varAddString": {
             "value": "",
             "digits": 1,
             "var": "str_name_container",
             "input_var": "int_iterator"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "ai_stage3_sp",
-            "var": "str_name_container2"
           }
         },
         {
@@ -3625,6 +3649,38 @@
             "value": "_tank_sq",
             "digits": 0,
             "var": "str_name_container2"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "str_name_container",
+            "input_var": "int_iterator"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "str_name_container",
+            "input_var": "int_iterator"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "str_name_container",
+            "input_var": "int_iterator"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
+            "var": "str_name_container",
+            "input_var": "int_iterator"
           }
         },
         {
@@ -3646,36 +3702,8 @@
           }
         },
         {
-          "varSetString": {
-            "value": "stage3__way_spread_",
-            "var": "str_name_container"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "str_name_container",
-            "input_var": "int_iterator"
-          }
-        },
-        {
           "triggerDisable": {
             "target": "@str_name_container"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "respawn_pl_stage3_",
-            "var": "str_name_container"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "str_name_container",
-            "input_var": "int_iterator"
           }
         },
         {
@@ -3702,27 +3730,6 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "int_iterator"
-          }
-        },
-        {
-          "varSetString": {
-            "value": "respawn_pl_stage3_",
-            "var": "str_name_container"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "str_name_container",
-            "input_var": "int_iterator"
-          }
-        },
-        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "",
             "spawnEffect": false,
@@ -3745,17 +3752,10 @@
           }
         },
         {
-          "varSetString": {
-            "value": "stage3_ai_advance_",
-            "var": "str_name_container"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "str_name_container",
-            "input_var": "int_iterator"
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "int_iterator"
           }
         }
       ],
@@ -3853,27 +3853,6 @@
           }
         },
         {
-          "varSetString": {
-            "value": "ai_stage3_tank_",
-            "var": "str_name_container3"
-          }
-        },
-        {
-          "varAddString": {
-            "value": "",
-            "digits": 2,
-            "var": "str_name_container3",
-            "input_var": "int_iterator2"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "int_iterator3",
-            "input_var": "int_iterator2"
-          }
-        },
-        {
           "varModify": {
             "operator": "add",
             "value": -1.0,
@@ -3896,6 +3875,12 @@
         },
         {
           "varSetString": {
+            "value": "ai_stage3_tank_",
+            "var": "str_name_container3"
+          }
+        },
+        {
+          "varSetString": {
             "value": "stage3_way_spread_",
             "var": "str_name_container4"
           }
@@ -3904,8 +3889,23 @@
           "varAddString": {
             "value": "",
             "digits": 2,
+            "var": "str_name_container3",
+            "input_var": "int_iterator2"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "",
+            "digits": 2,
             "var": "str_name_container4",
             "input_var": "int_iterator3"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "int_iterator3",
+            "input_var": "int_iterator2"
           }
         },
         {
@@ -4658,6 +4658,999 @@
       }
     },
     {
+      "squad": {
+        "name": "t1_ai_truck_sq",
+        "tm": [
+          [-0.608761,0.0,0.793353],
+          [0.0,1.0,0.0],
+          [-0.793353,0.0,-0.608761],
+          [-145.724,94.8,987.08]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "t1_ai_truck_01"
+          },
+          {
+            "squad_members": "t1_ai_truck_02"
+          },
+          {
+            "squad_members": "t1_ai_truck_03"
+          },
+          {
+            "squad_members": "t1_ai_truck_04"
+          },
+          {
+            "squad_members": "t1_ai_truck_05"
+          },
+          {
+            "squad_members": "t1_ai_truck_06"
+          },
+          {
+            "squad_members": "t1_ai_truck_07"
+          },
+          {
+            "squad_members": "t1_ai_truck_08"
+          },
+          {
+            "squad_members": "t1_ai_truck_09"
+          },
+          {
+            "squad_members": "t1_ai_truck_10"
+          },
+          {
+            "squad_members": "t1_ai_truck_11"
+          },
+          {
+            "squad_members": "t1_ai_truck_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-497.0,90.85,1076.95]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_04"
+          },
+          {
+            "squad_members": "ai_stage1_tank_05"
+          },
+          {
+            "squad_members": "ai_stage1_tank_06"
+          },
+          {
+            "squad_members": "ai_stage1_tank_01"
+          },
+          {
+            "squad_members": "ai_stage1_tank_02"
+          },
+          {
+            "squad_members": "ai_stage1_tank_03"
+          },
+          {
+            "squad_members": "ai_stage1_tank_10"
+          },
+          {
+            "squad_members": "ai_stage1_tank_11"
+          },
+          {
+            "squad_members": "ai_stage1_tank_09"
+          },
+          {
+            "squad_members": "ai_stage1_tank_18"
+          },
+          {
+            "squad_members": "ai_stage1_tank_22"
+          },
+          {
+            "squad_members": "ai_stage1_tank_17"
+          },
+          {
+            "squad_members": "ai_stage1_tank_25"
+          },
+          {
+            "squad_members": "ai_stage1_tank_26"
+          },
+          {
+            "squad_members": "ai_stage1_tank_24"
+          },
+          {
+            "squad_members": "ai_stage1_tank_20"
+          },
+          {
+            "squad_members": "ai_stage1_tank_21"
+          },
+          {
+            "squad_members": "ai_stage1_tank_19"
+          },
+          {
+            "squad_members": "ai_stage1_tank_15"
+          },
+          {
+            "squad_members": "ai_stage1_tank_16"
+          },
+          {
+            "squad_members": "ai_stage1_tank_14"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-515.743,79.4006,569.673]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_18"
+          },
+          {
+            "squad_members": "ai_stage1_tank_22"
+          },
+          {
+            "squad_members": "ai_stage1_tank_17"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-525.037,73.5189,754.193]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_25"
+          },
+          {
+            "squad_members": "ai_stage1_tank_26"
+          },
+          {
+            "squad_members": "ai_stage1_tank_24"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_01",
+        "tm": [
+          [-0.996194,0.0,0.0871558],
+          [0.0,1.0,0.0],
+          [-0.0871558,0.0,-0.996194],
+          [159.979,76.0489,396.537]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_20"
+          },
+          {
+            "squad_members": "ai_stage1_tank_21"
+          },
+          {
+            "squad_members": "ai_stage1_tank_19"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_07",
+        "tm": [
+          [0.999048,0.0,-0.0436194],
+          [0.0,1.0,0.0],
+          [0.0436194,0.0,0.999048],
+          [236.164,81.3817,633.043]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_15"
+          },
+          {
+            "squad_members": "ai_stage1_tank_16"
+          },
+          {
+            "squad_members": "ai_stage1_tank_14"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_06",
+        "tm": [
+          [0.999048,0.0,-0.0436194],
+          [0.0,1.0,0.0],
+          [0.0436194,0.0,0.999048],
+          [183.064,77.9999,558.111]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_04"
+          },
+          {
+            "squad_members": "ai_stage1_tank_05"
+          },
+          {
+            "squad_members": "ai_stage1_tank_06"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_05",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-536.759,71.9715,842.409]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_01"
+          },
+          {
+            "squad_members": "ai_stage1_tank_02"
+          },
+          {
+            "squad_members": "ai_stage1_tank_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage1_ambush_sq_04",
+        "tm": [
+          [0.999048,0.0,-0.0436194],
+          [0.0,1.0,0.0],
+          [0.0436194,0.0,0.999048],
+          [276.337,87.4317,730.516]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_10"
+          },
+          {
+            "squad_members": "ai_stage1_tank_11"
+          },
+          {
+            "squad_members": "ai_stage1_tank_09"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage2_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-508.15,86.4,-310.55]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage2_tank_01"
+          },
+          {
+            "squad_members": "ai_stage2_tank_02"
+          },
+          {
+            "squad_members": "ai_stage2_tank_05"
+          },
+          {
+            "squad_members": "ai_stage2_tank_06"
+          },
+          {
+            "squad_members": "ai_stage2_tank_04"
+          },
+          {
+            "squad_members": "ai_stage2_tank_03"
+          },
+          {
+            "squad_members": "ai_stage2_tank_07"
+          },
+          {
+            "squad_members": "ai_stage2_tank_08"
+          },
+          {
+            "squad_members": "ai_stage2_tank_09"
+          },
+          {
+            "squad_members": "ai_stage2_tank_10"
+          },
+          {
+            "squad_members": "ai_stage2_tank_11"
+          },
+          {
+            "squad_members": "ai_stage2_tank_12"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_sp1_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-874.775,77.1497,-1211.47]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_01"
+          },
+          {
+            "squad_members": "ai_stage3_tank_02"
+          },
+          {
+            "squad_members": "ai_stage3_tank_03"
+          },
+          {
+            "squad_members": "ai_stage3_tank_04"
+          },
+          {
+            "squad_members": "ai_stage3_tank_05"
+          },
+          {
+            "squad_members": "ai_stage3_tank_06"
+          },
+          {
+            "squad_members": "ai_stage3_tank_07"
+          },
+          {
+            "squad_members": "ai_stage3_tank_08"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_sp2_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-772.425,79.1497,-1235.07]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_09"
+          },
+          {
+            "squad_members": "ai_stage3_tank_10"
+          },
+          {
+            "squad_members": "ai_stage3_tank_11"
+          },
+          {
+            "squad_members": "ai_stage3_tank_12"
+          },
+          {
+            "squad_members": "ai_stage3_tank_13"
+          },
+          {
+            "squad_members": "ai_stage3_tank_14"
+          },
+          {
+            "squad_members": "ai_stage3_tank_15"
+          },
+          {
+            "squad_members": "ai_stage3_tank_16"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_sp3_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-881.975,77.1497,-1151.17]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_17"
+          },
+          {
+            "squad_members": "ai_stage3_tank_18"
+          },
+          {
+            "squad_members": "ai_stage3_tank_19"
+          },
+          {
+            "squad_members": "ai_stage3_tank_20"
+          },
+          {
+            "squad_members": "ai_stage3_tank_21"
+          },
+          {
+            "squad_members": "ai_stage3_tank_22"
+          },
+          {
+            "squad_members": "ai_stage3_tank_23"
+          },
+          {
+            "squad_members": "ai_stage3_tank_24"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_sp4_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-779.875,77.1497,-1174.97]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_25"
+          },
+          {
+            "squad_members": "ai_stage3_tank_26"
+          },
+          {
+            "squad_members": "ai_stage3_tank_27"
+          },
+          {
+            "squad_members": "ai_stage3_tank_28"
+          },
+          {
+            "squad_members": "ai_stage3_tank_29"
+          },
+          {
+            "squad_members": "ai_stage3_tank_30"
+          },
+          {
+            "squad_members": "ai_stage3_tank_31"
+          },
+          {
+            "squad_members": "ai_stage3_tank_32"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_sp5_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-764.575,77.1497,-1118.92]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_33"
+          },
+          {
+            "squad_members": "ai_stage3_tank_34"
+          },
+          {
+            "squad_members": "ai_stage3_tank_35"
+          },
+          {
+            "squad_members": "ai_stage3_tank_36"
+          },
+          {
+            "squad_members": "ai_stage3_tank_37"
+          },
+          {
+            "squad_members": "ai_stage3_tank_38"
+          },
+          {
+            "squad_members": "ai_stage3_tank_39"
+          },
+          {
+            "squad_members": "ai_stage3_tank_40"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage3_tank_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-736.525,77.5497,-1232.97]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage3_tank_01"
+          },
+          {
+            "squad_members": "ai_stage3_tank_03"
+          },
+          {
+            "squad_members": "ai_stage3_tank_05"
+          },
+          {
+            "squad_members": "ai_stage3_tank_02"
+          },
+          {
+            "squad_members": "ai_stage3_tank_04"
+          },
+          {
+            "squad_members": "ai_stage3_tank_06"
+          },
+          {
+            "squad_members": "ai_stage3_tank_07"
+          },
+          {
+            "squad_members": "ai_stage3_tank_08"
+          },
+          {
+            "squad_members": "ai_stage3_tank_09"
+          },
+          {
+            "squad_members": "ai_stage3_tank_10"
+          },
+          {
+            "squad_members": "ai_stage3_tank_11"
+          },
+          {
+            "squad_members": "ai_stage3_tank_12"
+          },
+          {
+            "squad_members": "ai_stage3_tank_13"
+          },
+          {
+            "squad_members": "ai_stage3_tank_14"
+          },
+          {
+            "squad_members": "ai_stage3_tank_15"
+          },
+          {
+            "squad_members": "ai_stage3_tank_16"
+          },
+          {
+            "squad_members": "ai_stage3_tank_17"
+          },
+          {
+            "squad_members": "ai_stage3_tank_18"
+          },
+          {
+            "squad_members": "ai_stage3_tank_19"
+          },
+          {
+            "squad_members": "ai_stage3_tank_20"
+          },
+          {
+            "squad_members": "ai_stage3_tank_21"
+          },
+          {
+            "squad_members": "ai_stage3_tank_22"
+          },
+          {
+            "squad_members": "ai_stage3_tank_23"
+          },
+          {
+            "squad_members": "ai_stage3_tank_24"
+          },
+          {
+            "squad_members": "ai_stage3_tank_25"
+          },
+          {
+            "squad_members": "ai_stage3_tank_26"
+          },
+          {
+            "squad_members": "ai_stage3_tank_27"
+          },
+          {
+            "squad_members": "ai_stage3_tank_28"
+          },
+          {
+            "squad_members": "ai_stage3_tank_29"
+          },
+          {
+            "squad_members": "ai_stage3_tank_30"
+          },
+          {
+            "squad_members": "ai_stage3_tank_31"
+          },
+          {
+            "squad_members": "ai_stage3_tank_32"
+          },
+          {
+            "squad_members": "ai_stage3_tank_33"
+          },
+          {
+            "squad_members": "ai_stage3_tank_34"
+          },
+          {
+            "squad_members": "ai_stage3_tank_35"
+          },
+          {
+            "squad_members": "ai_stage3_tank_36"
+          },
+          {
+            "squad_members": "ai_stage3_tank_37"
+          },
+          {
+            "squad_members": "ai_stage3_tank_38"
+          },
+          {
+            "squad_members": "ai_stage3_tank_39"
+          },
+          {
+            "squad_members": "ai_stage3_tank_40"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "ai_stage2_destroyer_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-322.649,72.3089,-369.854]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_01"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_02"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_03"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_04"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_05"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_08"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_06"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_07"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "secondary_dstraa_target",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-154.693,75.7258,-105.434]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ai_stage1_tank_20"
+          },
+          {
+            "squad_members": "ai_stage1_tank_21"
+          },
+          {
+            "squad_members": "ai_stage1_tank_19"
+          },
+          {
+            "squad_members": "ai_stage1_tank_04"
+          },
+          {
+            "squad_members": "ai_stage1_tank_05"
+          },
+          {
+            "squad_members": "ai_stage1_tank_06"
+          },
+          {
+            "squad_members": "ai_stage1_tank_15"
+          },
+          {
+            "squad_members": "ai_stage1_tank_16"
+          },
+          {
+            "squad_members": "ai_stage1_tank_14"
+          },
+          {
+            "squad_members": "ai_stage1_tank_10"
+          },
+          {
+            "squad_members": "ai_stage1_tank_11"
+          },
+          {
+            "squad_members": "ai_stage1_tank_09"
+          },
+          {
+            "squad_members": "ai_stage1_tank_18"
+          },
+          {
+            "squad_members": "ai_stage1_tank_22"
+          },
+          {
+            "squad_members": "ai_stage1_tank_17"
+          },
+          {
+            "squad_members": "ai_stage1_tank_25"
+          },
+          {
+            "squad_members": "ai_stage1_tank_26"
+          },
+          {
+            "squad_members": "ai_stage1_tank_24"
+          },
+          {
+            "squad_members": "ai_stage1_tank_01"
+          },
+          {
+            "squad_members": "ai_stage1_tank_02"
+          },
+          {
+            "squad_members": "ai_stage1_tank_03"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_01"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_02"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_03"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_04"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_05"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_06"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_07"
+          },
+          {
+            "squad_members": "ai_stage2_destroyer_08"
+          },
+          {
+            "squad_members": "ai_stage3_tank_09"
+          },
+          {
+            "squad_members": "ai_stage3_tank_10"
+          },
+          {
+            "squad_members": "ai_stage3_tank_11"
+          },
+          {
+            "squad_members": "ai_stage3_tank_13"
+          },
+          {
+            "squad_members": "ai_stage3_tank_12"
+          },
+          {
+            "squad_members": "ai_stage3_tank_14"
+          },
+          {
+            "squad_members": "ai_stage3_tank_15"
+          },
+          {
+            "squad_members": "ai_stage3_tank_16"
+          },
+          {
+            "squad_members": "ai_stage3_tank_01"
+          },
+          {
+            "squad_members": "ai_stage3_tank_02"
+          },
+          {
+            "squad_members": "ai_stage3_tank_03"
+          },
+          {
+            "squad_members": "ai_stage3_tank_04"
+          },
+          {
+            "squad_members": "ai_stage3_tank_05"
+          },
+          {
+            "squad_members": "ai_stage3_tank_06"
+          },
+          {
+            "squad_members": "ai_stage3_tank_07"
+          },
+          {
+            "squad_members": "ai_stage3_tank_08"
+          },
+          {
+            "squad_members": "ai_stage3_tank_25"
+          },
+          {
+            "squad_members": "ai_stage3_tank_26"
+          },
+          {
+            "squad_members": "ai_stage3_tank_27"
+          },
+          {
+            "squad_members": "ai_stage3_tank_29"
+          },
+          {
+            "squad_members": "ai_stage3_tank_28"
+          },
+          {
+            "squad_members": "ai_stage3_tank_30"
+          },
+          {
+            "squad_members": "ai_stage3_tank_31"
+          },
+          {
+            "squad_members": "ai_stage3_tank_32"
+          },
+          {
+            "squad_members": "ai_stage3_tank_33"
+          },
+          {
+            "squad_members": "ai_stage3_tank_34"
+          },
+          {
+            "squad_members": "ai_stage3_tank_35"
+          },
+          {
+            "squad_members": "ai_stage3_tank_37"
+          },
+          {
+            "squad_members": "ai_stage3_tank_36"
+          },
+          {
+            "squad_members": "ai_stage3_tank_38"
+          },
+          {
+            "squad_members": "ai_stage3_tank_39"
+          },
+          {
+            "squad_members": "ai_stage3_tank_40"
+          },
+          {
+            "squad_members": "ai_stage3_tank_17"
+          },
+          {
+            "squad_members": "ai_stage3_tank_18"
+          },
+          {
+            "squad_members": "ai_stage3_tank_19"
+          },
+          {
+            "squad_members": "ai_stage3_tank_21"
+          },
+          {
+            "squad_members": "ai_stage3_tank_20"
+          },
+          {
+            "squad_members": "ai_stage3_tank_22"
+          },
+          {
+            "squad_members": "ai_stage3_tank_23"
+          },
+          {
+            "squad_members": "ai_stage3_tank_24"
+          },
+          {
+            "squad_members": "ai_stage2_tank_06"
+          },
+          {
+            "squad_members": "ai_stage2_tank_05"
+          },
+          {
+            "squad_members": "ai_stage2_tank_07"
+          },
+          {
+            "squad_members": "ai_stage2_tank_02"
+          },
+          {
+            "squad_members": "ai_stage2_tank_03"
+          },
+          {
+            "squad_members": "ai_stage2_tank_01"
+          },
+          {
+            "squad_members": "ai_stage2_tank_04"
+          },
+          {
+            "squad_members": "ai_stage2_tank_09"
+          },
+          {
+            "squad_members": "ai_stage2_tank_12"
+          },
+          {
+            "squad_members": "ai_stage2_tank_10"
+          },
+          {
+            "squad_members": "ai_stage2_tank_11"
+          },
+          {
+            "squad_members": "ai_stage2_tank_08"
+          }
+        ]
+      }
+    },
+    {
       "area_squad": {
         "name": "respawn_pl_stage1",
         "tm": [
@@ -4690,6 +5683,333 @@
           },
           {
             "squad_members": "respawn_stage1_08"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "stage3_enemy_spawns",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-713.052,79.2001,-1304.73]
+        ],
+        "props": [
+          {
+            "squad_members": "stage3_enemy_spawn_01"
+          },
+          {
+            "squad_members": "stage3_enemy_spawn_02"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage2",
+        "tm": [
+          [-0.965926,0.0,0.258818],
+          [0.0,1.0,0.0],
+          [-0.258818,0.0,-0.965926],
+          [-330.3,69.4,215.7]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage2_01"
+          },
+          {
+            "squad_members": "respawn_stage2_02"
+          },
+          {
+            "squad_members": "respawn_stage2_03"
+          },
+          {
+            "squad_members": "respawn_stage2_04"
+          },
+          {
+            "squad_members": "respawn_stage2_05"
+          },
+          {
+            "squad_members": "respawn_stage2_06"
+          },
+          {
+            "squad_members": "respawn_stage2_07"
+          },
+          {
+            "squad_members": "respawn_stage2_08"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_01",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [-225.574,77.7001,-289.213]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_01"
+          },
+          {
+            "squad_members": "respawn_stage3_02"
+          },
+          {
+            "squad_members": "respawn_stage3_03"
+          },
+          {
+            "squad_members": "respawn_stage3_04"
+          },
+          {
+            "squad_members": "respawn_stage3_05"
+          },
+          {
+            "squad_members": "respawn_stage3_06"
+          },
+          {
+            "squad_members": "respawn_stage3_07"
+          },
+          {
+            "squad_members": "respawn_stage3_08"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "disperse_area_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-460.6,91.3,1084.6]
+        ],
+        "props": [
+          {
+            "squad_members": "disperse_area_01"
+          },
+          {
+            "squad_members": "disperse_area_02"
+          },
+          {
+            "squad_members": "disperse_area_03"
+          },
+          {
+            "squad_members": "disperse_area_04"
+          },
+          {
+            "squad_members": "disperse_area_05"
+          },
+          {
+            "squad_members": "disperse_area_06"
+          },
+          {
+            "squad_members": "disperse_area_07"
+          },
+          {
+            "squad_members": "disperse_area_08"
+          },
+          {
+            "squad_members": "disperse_area_09"
+          },
+          {
+            "squad_members": "disperse_area_10"
+          },
+          {
+            "squad_members": "disperse_area_11"
+          },
+          {
+            "squad_members": "disperse_area_12"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_02",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [-212.184,77.7,-509.785]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_09"
+          },
+          {
+            "squad_members": "respawn_stage3_10"
+          },
+          {
+            "squad_members": "respawn_stage3_11"
+          },
+          {
+            "squad_members": "respawn_stage3_12"
+          },
+          {
+            "squad_members": "respawn_stage3_13"
+          },
+          {
+            "squad_members": "respawn_stage3_14"
+          },
+          {
+            "squad_members": "respawn_stage3_15"
+          },
+          {
+            "squad_members": "respawn_stage3_16"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_03",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [134.625,77.6999,-764.335]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_17"
+          },
+          {
+            "squad_members": "respawn_stage3_18"
+          },
+          {
+            "squad_members": "respawn_stage3_19"
+          },
+          {
+            "squad_members": "respawn_stage3_20"
+          },
+          {
+            "squad_members": "respawn_stage3_21"
+          },
+          {
+            "squad_members": "respawn_stage3_22"
+          },
+          {
+            "squad_members": "respawn_stage3_23"
+          },
+          {
+            "squad_members": "respawn_stage3_24"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_04",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [411.184,77.7,-837.251]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_25"
+          },
+          {
+            "squad_members": "respawn_stage3_26"
+          },
+          {
+            "squad_members": "respawn_stage3_27"
+          },
+          {
+            "squad_members": "respawn_stage3_28"
+          },
+          {
+            "squad_members": "respawn_stage3_29"
+          },
+          {
+            "squad_members": "respawn_stage3_30"
+          },
+          {
+            "squad_members": "respawn_stage3_31"
+          },
+          {
+            "squad_members": "respawn_stage3_32"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_05",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [1295.71,77.6999,-780.575]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_33"
+          },
+          {
+            "squad_members": "respawn_stage3_34"
+          },
+          {
+            "squad_members": "respawn_stage3_35"
+          },
+          {
+            "squad_members": "respawn_stage3_36"
+          },
+          {
+            "squad_members": "respawn_stage3_37"
+          },
+          {
+            "squad_members": "respawn_stage3_38"
+          },
+          {
+            "squad_members": "respawn_stage3_39"
+          },
+          {
+            "squad_members": "respawn_stage3_40"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "respawn_pl_stage3_06",
+        "tm": [
+          [-0.93891,0.0,-0.344161],
+          [0.0,1.0,0.0],
+          [0.344161,0.0,-0.93891],
+          [1653.13,77.7,-979.945]
+        ],
+        "props": [
+          {
+            "squad_members": "respawn_stage3_41"
+          },
+          {
+            "squad_members": "respawn_stage3_42"
+          },
+          {
+            "squad_members": "respawn_stage3_43"
+          },
+          {
+            "squad_members": "respawn_stage3_44"
+          },
+          {
+            "squad_members": "respawn_stage3_45"
+          },
+          {
+            "squad_members": "respawn_stage3_46"
+          },
+          {
+            "squad_members": "respawn_stage3_47"
+          },
+          {
+            "squad_members": "respawn_stage3_48"
           }
         ]
       }
@@ -5259,58 +6579,6 @@
           "way": []
         }
       ]
-    },
-    {
-      "squad": {
-        "name": "t1_ai_truck_sq",
-        "tm": [
-          [-0.608761,0.0,0.793353],
-          [0.0,1.0,0.0],
-          [-0.793353,0.0,-0.608761],
-          [-145.724,94.8,987.08]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "t1_ai_truck_01"
-          },
-          {
-            "squad_members": "t1_ai_truck_02"
-          },
-          {
-            "squad_members": "t1_ai_truck_03"
-          },
-          {
-            "squad_members": "t1_ai_truck_04"
-          },
-          {
-            "squad_members": "t1_ai_truck_05"
-          },
-          {
-            "squad_members": "t1_ai_truck_06"
-          },
-          {
-            "squad_members": "t1_ai_truck_07"
-          },
-          {
-            "squad_members": "t1_ai_truck_08"
-          },
-          {
-            "squad_members": "t1_ai_truck_09"
-          },
-          {
-            "squad_members": "t1_ai_truck_10"
-          },
-          {
-            "squad_members": "t1_ai_truck_11"
-          },
-          {
-            "squad_members": "t1_ai_truck_12"
-          }
-        ]
-      }
     },
     {
       "tankModels": {
@@ -8582,260 +9850,6 @@
       ]
     },
     {
-      "squad": {
-        "name": "ai_stage1_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-497.0,90.85,1076.95]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_04"
-          },
-          {
-            "squad_members": "ai_stage1_tank_05"
-          },
-          {
-            "squad_members": "ai_stage1_tank_06"
-          },
-          {
-            "squad_members": "ai_stage1_tank_01"
-          },
-          {
-            "squad_members": "ai_stage1_tank_02"
-          },
-          {
-            "squad_members": "ai_stage1_tank_03"
-          },
-          {
-            "squad_members": "ai_stage1_tank_10"
-          },
-          {
-            "squad_members": "ai_stage1_tank_11"
-          },
-          {
-            "squad_members": "ai_stage1_tank_09"
-          },
-          {
-            "squad_members": "ai_stage1_tank_18"
-          },
-          {
-            "squad_members": "ai_stage1_tank_22"
-          },
-          {
-            "squad_members": "ai_stage1_tank_17"
-          },
-          {
-            "squad_members": "ai_stage1_tank_25"
-          },
-          {
-            "squad_members": "ai_stage1_tank_26"
-          },
-          {
-            "squad_members": "ai_stage1_tank_24"
-          },
-          {
-            "squad_members": "ai_stage1_tank_20"
-          },
-          {
-            "squad_members": "ai_stage1_tank_21"
-          },
-          {
-            "squad_members": "ai_stage1_tank_19"
-          },
-          {
-            "squad_members": "ai_stage1_tank_15"
-          },
-          {
-            "squad_members": "ai_stage1_tank_16"
-          },
-          {
-            "squad_members": "ai_stage1_tank_14"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-515.743,79.4006,569.673]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_18"
-          },
-          {
-            "squad_members": "ai_stage1_tank_22"
-          },
-          {
-            "squad_members": "ai_stage1_tank_17"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-525.037,73.5189,754.193]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_25"
-          },
-          {
-            "squad_members": "ai_stage1_tank_26"
-          },
-          {
-            "squad_members": "ai_stage1_tank_24"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_01",
-        "tm": [
-          [-0.996194,0.0,0.0871558],
-          [0.0,1.0,0.0],
-          [-0.0871558,0.0,-0.996194],
-          [159.979,76.0489,396.537]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_20"
-          },
-          {
-            "squad_members": "ai_stage1_tank_21"
-          },
-          {
-            "squad_members": "ai_stage1_tank_19"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_07",
-        "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [236.164,81.3817,633.043]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_15"
-          },
-          {
-            "squad_members": "ai_stage1_tank_16"
-          },
-          {
-            "squad_members": "ai_stage1_tank_14"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_06",
-        "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [183.064,77.9999,558.111]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_04"
-          },
-          {
-            "squad_members": "ai_stage1_tank_05"
-          },
-          {
-            "squad_members": "ai_stage1_tank_06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_05",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-536.759,71.9715,842.409]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_01"
-          },
-          {
-            "squad_members": "ai_stage1_tank_02"
-          },
-          {
-            "squad_members": "ai_stage1_tank_03"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage1_ambush_sq_04",
-        "tm": [
-          [0.999048,0.0,-0.0436194],
-          [0.0,1.0,0.0],
-          [0.0436194,0.0,0.999048],
-          [276.337,87.4317,730.516]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_10"
-          },
-          {
-            "squad_members": "ai_stage1_tank_11"
-          },
-          {
-            "squad_members": "ai_stage1_tank_09"
-          }
-        ]
-      }
-    },
-    {
       "tankModels": [
         {
           "name": "ai_stage2_tank_01"
@@ -9006,58 +10020,6 @@
           "way": []
         }
       ]
-    },
-    {
-      "squad": {
-        "name": "ai_stage2_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-508.15,86.4,-310.55]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage2_tank_01"
-          },
-          {
-            "squad_members": "ai_stage2_tank_02"
-          },
-          {
-            "squad_members": "ai_stage2_tank_05"
-          },
-          {
-            "squad_members": "ai_stage2_tank_06"
-          },
-          {
-            "squad_members": "ai_stage2_tank_04"
-          },
-          {
-            "squad_members": "ai_stage2_tank_03"
-          },
-          {
-            "squad_members": "ai_stage2_tank_07"
-          },
-          {
-            "squad_members": "ai_stage2_tank_08"
-          },
-          {
-            "squad_members": "ai_stage2_tank_09"
-          },
-          {
-            "squad_members": "ai_stage2_tank_10"
-          },
-          {
-            "squad_members": "ai_stage2_tank_11"
-          },
-          {
-            "squad_members": "ai_stage2_tank_12"
-          }
-        ]
-      }
     },
     {
       "tankModels": [
@@ -9832,65 +10794,6 @@
           "way": []
         }
       ]
-    },
-    {
-      "squad": {
-        "name": "ai_stage3_sp1_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-874.775,77.1497,-1211.47]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_01"
-          },
-          {
-            "squad_members": "ai_stage3_tank_02"
-          },
-          {
-            "squad_members": "ai_stage3_tank_03"
-          },
-          {
-            "squad_members": "ai_stage3_tank_04"
-          },
-          {
-            "squad_members": "ai_stage3_tank_05"
-          },
-          {
-            "squad_members": "ai_stage3_tank_06"
-          },
-          {
-            "squad_members": "ai_stage3_tank_07"
-          },
-          {
-            "squad_members": "ai_stage3_tank_08"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "stage3_enemy_spawns",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-713.052,79.2001,-1304.73]
-        ],
-        "props": [
-          {
-            "squad_members": "stage3_enemy_spawn_01"
-          },
-          {
-            "squad_members": "stage3_enemy_spawn_02"
-          }
-        ]
-      }
     },
     {
       "tankModels": [
@@ -11613,166 +12516,6 @@
       ]
     },
     {
-      "squad": {
-        "name": "ai_stage3_sp2_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-772.425,79.1497,-1235.07]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_09"
-          },
-          {
-            "squad_members": "ai_stage3_tank_10"
-          },
-          {
-            "squad_members": "ai_stage3_tank_11"
-          },
-          {
-            "squad_members": "ai_stage3_tank_12"
-          },
-          {
-            "squad_members": "ai_stage3_tank_13"
-          },
-          {
-            "squad_members": "ai_stage3_tank_14"
-          },
-          {
-            "squad_members": "ai_stage3_tank_15"
-          },
-          {
-            "squad_members": "ai_stage3_tank_16"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage3_sp3_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-881.975,77.1497,-1151.17]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_17"
-          },
-          {
-            "squad_members": "ai_stage3_tank_18"
-          },
-          {
-            "squad_members": "ai_stage3_tank_19"
-          },
-          {
-            "squad_members": "ai_stage3_tank_20"
-          },
-          {
-            "squad_members": "ai_stage3_tank_21"
-          },
-          {
-            "squad_members": "ai_stage3_tank_22"
-          },
-          {
-            "squad_members": "ai_stage3_tank_23"
-          },
-          {
-            "squad_members": "ai_stage3_tank_24"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage3_sp4_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-779.875,77.1497,-1174.97]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_25"
-          },
-          {
-            "squad_members": "ai_stage3_tank_26"
-          },
-          {
-            "squad_members": "ai_stage3_tank_27"
-          },
-          {
-            "squad_members": "ai_stage3_tank_28"
-          },
-          {
-            "squad_members": "ai_stage3_tank_29"
-          },
-          {
-            "squad_members": "ai_stage3_tank_30"
-          },
-          {
-            "squad_members": "ai_stage3_tank_31"
-          },
-          {
-            "squad_members": "ai_stage3_tank_32"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "ai_stage3_sp5_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-764.575,77.1497,-1118.92]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_33"
-          },
-          {
-            "squad_members": "ai_stage3_tank_34"
-          },
-          {
-            "squad_members": "ai_stage3_tank_35"
-          },
-          {
-            "squad_members": "ai_stage3_tank_36"
-          },
-          {
-            "squad_members": "ai_stage3_tank_37"
-          },
-          {
-            "squad_members": "ai_stage3_tank_38"
-          },
-          {
-            "squad_members": "ai_stage3_tank_39"
-          },
-          {
-            "squad_members": "ai_stage3_tank_40"
-          }
-        ]
-      }
-    },
-    {
       "tankModels": [
         {
           "name": "ai_stage2_tank_07"
@@ -11942,129 +12685,6 @@
           "way": []
         }
       ]
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage2",
-        "tm": [
-          [-0.965926,0.0,0.258818],
-          [0.0,1.0,0.0],
-          [-0.258818,0.0,-0.965926],
-          [-330.3,69.4,215.7]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage2_01"
-          },
-          {
-            "squad_members": "respawn_stage2_02"
-          },
-          {
-            "squad_members": "respawn_stage2_03"
-          },
-          {
-            "squad_members": "respawn_stage2_04"
-          },
-          {
-            "squad_members": "respawn_stage2_05"
-          },
-          {
-            "squad_members": "respawn_stage2_06"
-          },
-          {
-            "squad_members": "respawn_stage2_07"
-          },
-          {
-            "squad_members": "respawn_stage2_08"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_01",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [-225.574,77.7001,-289.213]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_01"
-          },
-          {
-            "squad_members": "respawn_stage3_02"
-          },
-          {
-            "squad_members": "respawn_stage3_03"
-          },
-          {
-            "squad_members": "respawn_stage3_04"
-          },
-          {
-            "squad_members": "respawn_stage3_05"
-          },
-          {
-            "squad_members": "respawn_stage3_06"
-          },
-          {
-            "squad_members": "respawn_stage3_07"
-          },
-          {
-            "squad_members": "respawn_stage3_08"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "disperse_area_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-460.6,91.3,1084.6]
-        ],
-        "props": [
-          {
-            "squad_members": "disperse_area_01"
-          },
-          {
-            "squad_members": "disperse_area_02"
-          },
-          {
-            "squad_members": "disperse_area_03"
-          },
-          {
-            "squad_members": "disperse_area_04"
-          },
-          {
-            "squad_members": "disperse_area_05"
-          },
-          {
-            "squad_members": "disperse_area_06"
-          },
-          {
-            "squad_members": "disperse_area_07"
-          },
-          {
-            "squad_members": "disperse_area_08"
-          },
-          {
-            "squad_members": "disperse_area_09"
-          },
-          {
-            "squad_members": "disperse_area_10"
-          },
-          {
-            "squad_members": "disperse_area_11"
-          },
-          {
-            "squad_members": "disperse_area_12"
-          }
-        ]
-      }
     },
     {
       "tankModels": [
@@ -13867,142 +14487,6 @@
       ]
     },
     {
-      "squad": {
-        "name": "ai_stage3_tank_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-736.525,77.5497,-1232.97]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage3_tank_01"
-          },
-          {
-            "squad_members": "ai_stage3_tank_03"
-          },
-          {
-            "squad_members": "ai_stage3_tank_05"
-          },
-          {
-            "squad_members": "ai_stage3_tank_02"
-          },
-          {
-            "squad_members": "ai_stage3_tank_04"
-          },
-          {
-            "squad_members": "ai_stage3_tank_06"
-          },
-          {
-            "squad_members": "ai_stage3_tank_07"
-          },
-          {
-            "squad_members": "ai_stage3_tank_08"
-          },
-          {
-            "squad_members": "ai_stage3_tank_09"
-          },
-          {
-            "squad_members": "ai_stage3_tank_10"
-          },
-          {
-            "squad_members": "ai_stage3_tank_11"
-          },
-          {
-            "squad_members": "ai_stage3_tank_12"
-          },
-          {
-            "squad_members": "ai_stage3_tank_13"
-          },
-          {
-            "squad_members": "ai_stage3_tank_14"
-          },
-          {
-            "squad_members": "ai_stage3_tank_15"
-          },
-          {
-            "squad_members": "ai_stage3_tank_16"
-          },
-          {
-            "squad_members": "ai_stage3_tank_17"
-          },
-          {
-            "squad_members": "ai_stage3_tank_18"
-          },
-          {
-            "squad_members": "ai_stage3_tank_19"
-          },
-          {
-            "squad_members": "ai_stage3_tank_20"
-          },
-          {
-            "squad_members": "ai_stage3_tank_21"
-          },
-          {
-            "squad_members": "ai_stage3_tank_22"
-          },
-          {
-            "squad_members": "ai_stage3_tank_23"
-          },
-          {
-            "squad_members": "ai_stage3_tank_24"
-          },
-          {
-            "squad_members": "ai_stage3_tank_25"
-          },
-          {
-            "squad_members": "ai_stage3_tank_26"
-          },
-          {
-            "squad_members": "ai_stage3_tank_27"
-          },
-          {
-            "squad_members": "ai_stage3_tank_28"
-          },
-          {
-            "squad_members": "ai_stage3_tank_29"
-          },
-          {
-            "squad_members": "ai_stage3_tank_30"
-          },
-          {
-            "squad_members": "ai_stage3_tank_31"
-          },
-          {
-            "squad_members": "ai_stage3_tank_32"
-          },
-          {
-            "squad_members": "ai_stage3_tank_33"
-          },
-          {
-            "squad_members": "ai_stage3_tank_34"
-          },
-          {
-            "squad_members": "ai_stage3_tank_35"
-          },
-          {
-            "squad_members": "ai_stage3_tank_36"
-          },
-          {
-            "squad_members": "ai_stage3_tank_37"
-          },
-          {
-            "squad_members": "ai_stage3_tank_38"
-          },
-          {
-            "squad_members": "ai_stage3_tank_39"
-          },
-          {
-            "squad_members": "ai_stage3_tank_40"
-          }
-        ]
-      }
-    },
-    {
       "tankModels": [
         {
           "name": "ai_stage2_tank_08"
@@ -15113,46 +15597,6 @@
       ]
     },
     {
-      "squad": {
-        "name": "ai_stage2_destroyer_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-322.649,72.3089,-369.854]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_01"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_02"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_03"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_04"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_05"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_08"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_06"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_07"
-          }
-        ]
-      }
-    },
-    {
       "objectGroups": {
         "name": "structures_01",
         "tm": [
@@ -15694,450 +16138,6 @@
           "army": 0,
           "active": true
         }
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_02",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [-212.184,77.7,-509.785]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_09"
-          },
-          {
-            "squad_members": "respawn_stage3_10"
-          },
-          {
-            "squad_members": "respawn_stage3_11"
-          },
-          {
-            "squad_members": "respawn_stage3_12"
-          },
-          {
-            "squad_members": "respawn_stage3_13"
-          },
-          {
-            "squad_members": "respawn_stage3_14"
-          },
-          {
-            "squad_members": "respawn_stage3_15"
-          },
-          {
-            "squad_members": "respawn_stage3_16"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_03",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [134.625,77.6999,-764.335]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_17"
-          },
-          {
-            "squad_members": "respawn_stage3_18"
-          },
-          {
-            "squad_members": "respawn_stage3_19"
-          },
-          {
-            "squad_members": "respawn_stage3_20"
-          },
-          {
-            "squad_members": "respawn_stage3_21"
-          },
-          {
-            "squad_members": "respawn_stage3_22"
-          },
-          {
-            "squad_members": "respawn_stage3_23"
-          },
-          {
-            "squad_members": "respawn_stage3_24"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_04",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [411.184,77.7,-837.251]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_25"
-          },
-          {
-            "squad_members": "respawn_stage3_26"
-          },
-          {
-            "squad_members": "respawn_stage3_27"
-          },
-          {
-            "squad_members": "respawn_stage3_28"
-          },
-          {
-            "squad_members": "respawn_stage3_29"
-          },
-          {
-            "squad_members": "respawn_stage3_30"
-          },
-          {
-            "squad_members": "respawn_stage3_31"
-          },
-          {
-            "squad_members": "respawn_stage3_32"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_05",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [1295.71,77.6999,-780.575]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_33"
-          },
-          {
-            "squad_members": "respawn_stage3_34"
-          },
-          {
-            "squad_members": "respawn_stage3_35"
-          },
-          {
-            "squad_members": "respawn_stage3_36"
-          },
-          {
-            "squad_members": "respawn_stage3_37"
-          },
-          {
-            "squad_members": "respawn_stage3_38"
-          },
-          {
-            "squad_members": "respawn_stage3_39"
-          },
-          {
-            "squad_members": "respawn_stage3_40"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "respawn_pl_stage3_06",
-        "tm": [
-          [-0.93891,0.0,-0.344161],
-          [0.0,1.0,0.0],
-          [0.344161,0.0,-0.93891],
-          [1653.13,77.7,-979.945]
-        ],
-        "props": [
-          {
-            "squad_members": "respawn_stage3_41"
-          },
-          {
-            "squad_members": "respawn_stage3_42"
-          },
-          {
-            "squad_members": "respawn_stage3_43"
-          },
-          {
-            "squad_members": "respawn_stage3_44"
-          },
-          {
-            "squad_members": "respawn_stage3_45"
-          },
-          {
-            "squad_members": "respawn_stage3_46"
-          },
-          {
-            "squad_members": "respawn_stage3_47"
-          },
-          {
-            "squad_members": "respawn_stage3_48"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "secondary_dstraa_target",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-154.693,75.7258,-105.434]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ai_stage1_tank_20"
-          },
-          {
-            "squad_members": "ai_stage1_tank_21"
-          },
-          {
-            "squad_members": "ai_stage1_tank_19"
-          },
-          {
-            "squad_members": "ai_stage1_tank_04"
-          },
-          {
-            "squad_members": "ai_stage1_tank_05"
-          },
-          {
-            "squad_members": "ai_stage1_tank_06"
-          },
-          {
-            "squad_members": "ai_stage1_tank_15"
-          },
-          {
-            "squad_members": "ai_stage1_tank_16"
-          },
-          {
-            "squad_members": "ai_stage1_tank_14"
-          },
-          {
-            "squad_members": "ai_stage1_tank_10"
-          },
-          {
-            "squad_members": "ai_stage1_tank_11"
-          },
-          {
-            "squad_members": "ai_stage1_tank_09"
-          },
-          {
-            "squad_members": "ai_stage1_tank_18"
-          },
-          {
-            "squad_members": "ai_stage1_tank_22"
-          },
-          {
-            "squad_members": "ai_stage1_tank_17"
-          },
-          {
-            "squad_members": "ai_stage1_tank_25"
-          },
-          {
-            "squad_members": "ai_stage1_tank_26"
-          },
-          {
-            "squad_members": "ai_stage1_tank_24"
-          },
-          {
-            "squad_members": "ai_stage1_tank_01"
-          },
-          {
-            "squad_members": "ai_stage1_tank_02"
-          },
-          {
-            "squad_members": "ai_stage1_tank_03"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_01"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_02"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_03"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_04"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_05"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_06"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_07"
-          },
-          {
-            "squad_members": "ai_stage2_destroyer_08"
-          },
-          {
-            "squad_members": "ai_stage3_tank_09"
-          },
-          {
-            "squad_members": "ai_stage3_tank_10"
-          },
-          {
-            "squad_members": "ai_stage3_tank_11"
-          },
-          {
-            "squad_members": "ai_stage3_tank_13"
-          },
-          {
-            "squad_members": "ai_stage3_tank_12"
-          },
-          {
-            "squad_members": "ai_stage3_tank_14"
-          },
-          {
-            "squad_members": "ai_stage3_tank_15"
-          },
-          {
-            "squad_members": "ai_stage3_tank_16"
-          },
-          {
-            "squad_members": "ai_stage3_tank_01"
-          },
-          {
-            "squad_members": "ai_stage3_tank_02"
-          },
-          {
-            "squad_members": "ai_stage3_tank_03"
-          },
-          {
-            "squad_members": "ai_stage3_tank_04"
-          },
-          {
-            "squad_members": "ai_stage3_tank_05"
-          },
-          {
-            "squad_members": "ai_stage3_tank_06"
-          },
-          {
-            "squad_members": "ai_stage3_tank_07"
-          },
-          {
-            "squad_members": "ai_stage3_tank_08"
-          },
-          {
-            "squad_members": "ai_stage3_tank_25"
-          },
-          {
-            "squad_members": "ai_stage3_tank_26"
-          },
-          {
-            "squad_members": "ai_stage3_tank_27"
-          },
-          {
-            "squad_members": "ai_stage3_tank_29"
-          },
-          {
-            "squad_members": "ai_stage3_tank_28"
-          },
-          {
-            "squad_members": "ai_stage3_tank_30"
-          },
-          {
-            "squad_members": "ai_stage3_tank_31"
-          },
-          {
-            "squad_members": "ai_stage3_tank_32"
-          },
-          {
-            "squad_members": "ai_stage3_tank_33"
-          },
-          {
-            "squad_members": "ai_stage3_tank_34"
-          },
-          {
-            "squad_members": "ai_stage3_tank_35"
-          },
-          {
-            "squad_members": "ai_stage3_tank_37"
-          },
-          {
-            "squad_members": "ai_stage3_tank_36"
-          },
-          {
-            "squad_members": "ai_stage3_tank_38"
-          },
-          {
-            "squad_members": "ai_stage3_tank_39"
-          },
-          {
-            "squad_members": "ai_stage3_tank_40"
-          },
-          {
-            "squad_members": "ai_stage3_tank_17"
-          },
-          {
-            "squad_members": "ai_stage3_tank_18"
-          },
-          {
-            "squad_members": "ai_stage3_tank_19"
-          },
-          {
-            "squad_members": "ai_stage3_tank_21"
-          },
-          {
-            "squad_members": "ai_stage3_tank_20"
-          },
-          {
-            "squad_members": "ai_stage3_tank_22"
-          },
-          {
-            "squad_members": "ai_stage3_tank_23"
-          },
-          {
-            "squad_members": "ai_stage3_tank_24"
-          },
-          {
-            "squad_members": "ai_stage2_tank_06"
-          },
-          {
-            "squad_members": "ai_stage2_tank_05"
-          },
-          {
-            "squad_members": "ai_stage2_tank_07"
-          },
-          {
-            "squad_members": "ai_stage2_tank_02"
-          },
-          {
-            "squad_members": "ai_stage2_tank_03"
-          },
-          {
-            "squad_members": "ai_stage2_tank_01"
-          },
-          {
-            "squad_members": "ai_stage2_tank_04"
-          },
-          {
-            "squad_members": "ai_stage2_tank_09"
-          },
-          {
-            "squad_members": "ai_stage2_tank_12"
-          },
-          {
-            "squad_members": "ai_stage2_tank_10"
-          },
-          {
-            "squad_members": "ai_stage2_tank_11"
-          },
-          {
-            "squad_members": "ai_stage2_tank_08"
-          }
-        ]
       }
     },
     {

@@ -42,7 +42,16 @@
     "radarAnimVar": "radar_drive"
   },
   {
+    "radarAnimVar": "radar_drive"
+  },
+  {
     "radarDeployTime": 0.0
+  },
+  {
+    "radarDeployTime": 3.0
+  },
+  {
+    "radarAntenaSpeed": 720.0
   },
   {
     "radarAntenaSpeed": 720.0
@@ -111,16 +120,7 @@
     "destroysTrees": true
   },
   {
-    "radarAnimVar": "radar_drive"
-  },
-  {
     "radarAnimPitchVar": "radar_drive2"
-  },
-  {
-    "radarAntenaSpeed": 720.0
-  },
-  {
-    "radarDeployTime": 3.0
   },
   {
     "type": "typeSPAA"
@@ -2716,6 +2716,9 @@
               "gunnerDm": "gunner_dm"
             },
             {
+              "gunnerDm": "gunner_dm"
+            },
+            {
               "dependOnParent": false
             },
             {
@@ -2723,9 +2726,6 @@
             },
             {
               "pitchParentScale": 0.9
-            },
-            {
-              "gunnerDm": "gunner_dm"
             }
           ],
           "limits": {
@@ -3869,6 +3869,9 @@
                     "gunnerDm": "gunner_dm"
                   },
                   {
+                    "gunnerDm": "gunner_dm"
+                  },
+                  {
                     "dependOnParent": false
                   },
                   {
@@ -3876,9 +3879,6 @@
                   },
                   {
                     "pitchParentScale": 0.9
-                  },
-                  {
-                    "gunnerDm": "gunner_dm"
                   }
                 ],
                 "limits": {
@@ -3886,16 +3886,6 @@
                   "pitch": [0.0,0.0]
                 }
               }
-            },
-            {
-              "animatedBones": [
-                {
-                  "node": "antenna_target_location"
-                },
-                {
-                  "node": "antenna_target_location_mount"
-                }
-              ]
             },
             {
               "Weapon": {
@@ -3942,6 +3932,16 @@
                   "pitch": [0.0,0.0]
                 }
               }
+            },
+            {
+              "animatedBones": [
+                {
+                  "node": "antenna_target_location"
+                },
+                {
+                  "node": "antenna_target_location_mount"
+                }
+              ]
             }
           ]
         }

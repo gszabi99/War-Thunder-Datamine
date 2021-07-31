@@ -573,6 +573,20 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 0,
+            "var": "bda_tickets_for_1_kill",
+            "source_var": "mpTi1"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 0,
+            "var": "bdb_tickets_for_1_kill",
+            "source_var": "mpTi1"
+          }
+        },
+        {
           "unitWakeUp": {
             "target": "t1_ai_bombers",
             "varNameNumToWakeUp": "bda_ai_max_count",
@@ -626,15 +640,18 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "wait": {
             "time": 5.0
           }
         },
         {
-          "varSetInt": {
-            "value": 0,
-            "var": "bda_tickets_for_1_kill",
-            "source_var": "mpTi1"
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -651,13 +668,6 @@
             "operator": "mul",
             "value": -1.0,
             "var": "bda_tickets_for_1_kill"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 0,
-            "var": "bdb_tickets_for_1_kill",
-            "source_var": "mpTi1"
           }
         },
         {
@@ -693,6 +703,22 @@
           ]
         },
         {
+          "unitSetIndication": [
+            {
+              "set": true
+            },
+            {
+              "target_marking": 0
+            },
+            {
+              "target": "t1_ai_bombers"
+            },
+            {
+              "target": "t2_ai_bombers"
+            }
+          ]
+        },
+        {
           "moAddMissionObjective": {
             "target": "bt_t1_defend_bombers",
             "unit_or_area": "t1_ai_bombers",
@@ -704,11 +730,6 @@
             "target": "bt_t2_defend_bombers",
             "unit_or_area": "t2_ai_bombers",
             "object_type": "isActive"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -724,27 +745,6 @@
             "unit_or_area": "t1_ai_bombers",
             "object_type": "isActive"
           }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "unitSetIndication": [
-            {
-              "set": true
-            },
-            {
-              "target_marking": 0
-            },
-            {
-              "target": "t1_ai_bombers"
-            },
-            {
-              "target": "t2_ai_bombers"
-            }
-          ]
         },
         {
           "missionShowMapIcon": {
@@ -928,6 +928,11 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "bt_t1_defend_bombers",
             "status": 3,
@@ -939,11 +944,6 @@
             "target": "bt_t2_attack_bombers",
             "status": 2,
             "team": "B"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1217,6 +1217,11 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "moSetObjectiveStatus": {
             "target": "bt_t2_defend_bombers",
             "status": 3,
@@ -1228,11 +1233,6 @@
             "target": "bt_t1_attack_bombers",
             "status": 2,
             "team": "A"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {

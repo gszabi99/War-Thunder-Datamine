@@ -47,11 +47,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "triggerEnable": [
             {
               "target": "ha_t1_repair_restart"
@@ -60,6 +55,11 @@
               "target": "ha_t2_repair_restart"
             }
           ]
+        },
+        {
+          "wait": {
+            "time": 20.0
+          }
         }
       ],
       "else_actions": []
@@ -92,15 +92,20 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ha_t1_area_generate_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ha_t1_area_generate_idx"
           }
         },
         {
@@ -114,11 +119,6 @@
             "value": "@ha_t1_area_generate_idx",
             "digits": 2,
             "var": "ha_t1_area_generate_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -155,17 +155,17 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "missionSetBombingArea": {
             "army": 1,
             "target": "@ha_t1_area_generate_name",
             "hp": 10000.0,
             "hpFire": 100.0,
             "fireSpeed": 1.0
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -208,15 +208,20 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ha_t2_area_generate_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ha_t2_area_generate_idx"
           }
         },
         {
@@ -230,11 +235,6 @@
             "value": "@ha_t2_area_generate_idx",
             "digits": 2,
             "var": "ha_t2_area_generate_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -271,17 +271,17 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "missionSetBombingArea": {
             "army": 2,
             "target": "@ha_t2_area_generate_name",
             "hp": 10000.0,
             "hpFire": 100.0,
             "fireSpeed": 1.0
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -352,15 +352,20 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ha_t1_area_repair_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ha_t1_area_repair_idx"
           }
         },
         {
@@ -374,11 +379,6 @@
             "value": "@ha_t1_area_repair_idx",
             "digits": 2,
             "var": "ha_t1_area_repair_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -419,14 +419,14 @@
           }
         },
         {
-          "missionGetBombingAreaHP": {
-            "target": "@ha_t1_area_repair_name",
-            "input_var": "ht_t1_area_repair_cur_hp"
+          "comment": {
+            "value": ""
           }
         },
         {
-          "comment": {
-            "value": ""
+          "missionGetBombingAreaHP": {
+            "target": "@ha_t1_area_repair_name",
+            "input_var": "ht_t1_area_repair_cur_hp"
           }
         },
         {
@@ -478,14 +478,14 @@
           }
         },
         {
-          "missionBombingAreaDamage": {
-            "target": "@ha_t1_area_repair_name",
-            "damageHP": -100.0
+          "comment": {
+            "value": ""
           }
         },
         {
-          "comment": {
-            "value": ""
+          "missionBombingAreaDamage": {
+            "target": "@ha_t1_area_repair_name",
+            "damageHP": -100.0
           }
         },
         {
@@ -556,15 +556,20 @@
           }
         },
         {
-          "varModify": {
-            "operator": "add",
-            "value": 1.0,
-            "var": "ha_t2_area_repair_idx"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "ha_t2_area_repair_idx"
           }
         },
         {
@@ -578,11 +583,6 @@
             "value": "@ha_t2_area_repair_idx",
             "digits": 2,
             "var": "ha_t2_area_repair_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -623,14 +623,14 @@
           }
         },
         {
-          "missionGetBombingAreaHP": {
-            "target": "@ha_t2_area_repair_name",
-            "input_var": "ht_t2_area_repair_cur_hp"
+          "comment": {
+            "value": ""
           }
         },
         {
-          "comment": {
-            "value": ""
+          "missionGetBombingAreaHP": {
+            "target": "@ha_t2_area_repair_name",
+            "input_var": "ht_t2_area_repair_cur_hp"
           }
         },
         {
@@ -682,14 +682,14 @@
           }
         },
         {
-          "missionBombingAreaDamage": {
-            "target": "@ha_t2_area_repair_name",
-            "damageHP": -100.0
+          "comment": {
+            "value": ""
           }
         },
         {
-          "comment": {
-            "value": ""
+          "missionBombingAreaDamage": {
+            "target": "@ha_t2_area_repair_name",
+            "damageHP": -100.0
           }
         },
         {
@@ -760,6 +760,21 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -767,14 +782,15 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "varSetString": {
+            "value": "t1_camp_area_",
+            "var": "ha_t1_area_check_name"
           }
         },
         {
           "varSetString": {
             "value": "t1_camp_area_",
-            "var": "ha_t1_area_check_name"
+            "var": "ht_t1_check_status_var"
           }
         },
         {
@@ -782,17 +798,6 @@
             "value": "@ha_t1_area_repair_idx",
             "digits": 2,
             "var": "ha_t1_area_check_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t1_camp_area_",
-            "var": "ht_t1_check_status_var"
           }
         },
         {
@@ -807,11 +812,6 @@
             "value": "_destroyed",
             "digits": 0,
             "var": "ht_t1_check_status_var"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -857,14 +857,19 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 1,
-            "var": "@ht_t1_check_status_var"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1,
+            "var": "@ht_t1_check_status_var"
           }
         },
         {
@@ -872,11 +877,6 @@
             "value": -34,
             "valueSystem": "percentage",
             "team": "A"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -947,6 +947,21 @@
           }
         },
         {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
           "varModify": {
             "operator": "add",
             "value": 1.0,
@@ -954,14 +969,15 @@
           }
         },
         {
-          "comment": {
-            "value": ""
+          "varSetString": {
+            "value": "t2_camp_area_",
+            "var": "ha_t2_area_check_name"
           }
         },
         {
           "varSetString": {
             "value": "t2_camp_area_",
-            "var": "ha_t2_area_check_name"
+            "var": "ht_t2_check_status_var"
           }
         },
         {
@@ -969,17 +985,6 @@
             "value": "@ha_t2_area_repair_idx",
             "digits": 2,
             "var": "ha_t2_area_check_name"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetString": {
-            "value": "t2_camp_area_",
-            "var": "ht_t2_check_status_var"
           }
         },
         {
@@ -994,11 +999,6 @@
             "value": "_destroyed",
             "digits": 0,
             "var": "ht_t2_check_status_var"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -1044,14 +1044,19 @@
           }
         },
         {
-          "varSetInt": {
-            "value": 1,
-            "var": "@ht_t2_check_status_var"
+          "comment": {
+            "value": ""
           }
         },
         {
           "comment": {
             "value": ""
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 1,
+            "var": "@ht_t2_check_status_var"
           }
         },
         {
@@ -1059,11 +1064,6 @@
             "value": -34,
             "valueSystem": "percentage",
             "team": "B"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {

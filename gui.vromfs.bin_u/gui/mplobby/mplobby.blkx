@@ -91,6 +91,13 @@
                         }
                       },
                       {
+                        "tdiv": {
+                          "id": "countries2",
+                          "pos": "0.01@sf, 50%ph-50%h",
+                          "position": "relative"
+                        }
+                      },
+                      {
                         "activeText": {
                           "id": "vsText",
                           "text": "#country/VS",
@@ -98,15 +105,21 @@
                           "position": "relative",
                           "style": "font:@fontMedium;"
                         }
-                      },
-                      {
-                        "tdiv": {
-                          "id": "countries2",
-                          "pos": "0.01@sf, 50%ph-50%h",
-                          "position": "relative"
-                        }
                       }
                     ]
+                  },
+                  {
+                    "tdiv": {
+                      "id": "vehicles_info_button_block",
+                      "pos": "pw-w, 0",
+                      "position": "relative",
+                      "Button_text": {
+                        "text": "#lobby/vehicles",
+                        "on_click": "onVehiclesInfo",
+                        "btnName": "L3",
+                        "ButtonImg": []
+                      }
+                    }
                   },
                   {
                     "sessionInfoText": {
@@ -222,19 +235,6 @@
                     "sessionInfoText": {
                       "id": "content_allowed_preset"
                     }
-                  },
-                  {
-                    "tdiv": {
-                      "id": "vehicles_info_button_block",
-                      "pos": "pw-w, 0",
-                      "position": "relative",
-                      "Button_text": {
-                        "text": "#lobby/vehicles",
-                        "on_click": "onVehiclesInfo",
-                        "btnName": "L3",
-                        "ButtonImg": []
-                      }
-                    }
                   }
                 ]
               }
@@ -318,6 +318,14 @@
                     ]
                   },
                   {
+                    "tdiv": {
+                      "id": "curAircraft",
+                      "display": "hide",
+                      "pos": "pw -w, -0.003@sf",
+                      "position": "relative"
+                    }
+                  },
+                  {
                     "textarea": {
                       "id": "player_title",
                       "hideEmptyText": "yes",
@@ -332,14 +340,6 @@
                       "hideEmptyText": "yes",
                       "smallFont": "yes",
                       "pos": "pw-w, 0",
-                      "position": "relative"
-                    }
-                  },
-                  {
-                    "tdiv": {
-                      "id": "curAircraft",
-                      "display": "hide",
-                      "pos": "pw -w, -0.003@sf",
                       "position": "relative"
                     }
                   },
@@ -411,16 +411,16 @@
                       }
                     },
                     {
-                      "teamBImg": {
-                        "margin-left": "1*@scrn_tgt/100.0"
-                      }
-                    },
-                    {
                       "activeText": {
                         "id": "num_teamB",
                         "text": "",
                         "left": "0.002*@scrn_tgt",
                         "position": "relative"
+                      }
+                    },
+                    {
+                      "teamBImg": {
+                        "margin-left": "1*@scrn_tgt/100.0"
                       }
                     }
                   ]
@@ -457,11 +457,6 @@
                   }
                 },
                 {
-                  "tdiv": {
-                    "width": "fw"
-                  }
-                },
-                {
                   "activeText": {
                     "id": "num_teamB",
                     "top": "50%ph-50%h",
@@ -470,11 +465,22 @@
                   }
                 },
                 {
+                  "tdiv": {
+                    "width": "fw"
+                  }
+                },
+                {
                   "teamBImg": {
                     "margin-left": "1@blockInterval"
                   }
                 }
               ]
+            },
+            {
+              "tdiv": {
+                "id": "lobby_chat_place",
+                "size": "pw, fh"
+              }
             },
             {
               "div": [
@@ -501,21 +507,21 @@
                   }
                 },
                 {
-                  "textareaNoTab": {
-                    "id": "team_status_A",
-                    "width": "50%p.p.w",
-                    "pos": "0, 50%ph-50%h",
-                    "position": "relative",
-                    "display": "hide"
-                  }
-                },
-                {
                   "textarea": {
                     "id": "team_status_B",
                     "width": "50%p.p.w",
                     "pos": "0, 50%ph-50%h",
                     "position": "relative",
                     "text-align": "right",
+                    "display": "hide"
+                  }
+                },
+                {
+                  "textareaNoTab": {
+                    "id": "team_status_A",
+                    "width": "50%p.p.w",
+                    "pos": "0, 50%ph-50%h",
+                    "position": "relative",
                     "display": "hide"
                   }
                 }
@@ -533,12 +539,6 @@
                 "behaviour": "window-size",
                 "window-size-border-mask": "B",
                 "padding-bottom": "5"
-              }
-            },
-            {
-              "tdiv": {
-                "id": "lobby_chat_place",
-                "size": "pw, fh"
               }
             }
           ]
@@ -599,17 +599,6 @@
         }
       },
       {
-        "textareaNoTab": {
-          "id": "cant_ready_reason",
-          "position": "relative",
-          "pos": "0, 50%ph-50%h",
-          "padding-right": "@buttonMargin",
-          "text-align": "right",
-          "hideEmptyText": "yes",
-          "text": ""
-        }
-      },
-      {
         "Button_text": {
           "id": "btn_not_ready",
           "text": "#multiplayer/btnNotReady",
@@ -637,6 +626,17 @@
             "id": "btn_ready_text",
             "text": "#mainmenu/btnReady"
           }
+        }
+      },
+      {
+        "textareaNoTab": {
+          "id": "cant_ready_reason",
+          "position": "relative",
+          "pos": "0, 50%ph-50%h",
+          "padding-right": "@buttonMargin",
+          "text-align": "right",
+          "hideEmptyText": "yes",
+          "text": ""
         }
       }
     ]
@@ -758,6 +758,19 @@
                   }
                 },
                 {
+                  "TopMenuPanelBg": {
+                    "width": "0.5fw",
+                    "overflow": "hidden",
+                    "css-hier-invalidate": "yes",
+                    "Red_shadow_light": {
+                      "pos": "-50%w, 0",
+                      "position": "absolute",
+                      "size": "1@titleLogoPlateWidth, 1@topBarHeight",
+                      "class": "inverted"
+                    }
+                  }
+                },
+                {
                   "tdiv": {
                     "id": "gamercard_logo_place",
                     "pos": "0, 1@titleLogoSafeareaOffsetTop",
@@ -795,19 +808,6 @@
                       "margin-left": "-1@titleLogoPlatePadding/2",
                       "allowDecreaseFont": "yes",
                       "display": "hide"
-                    }
-                  }
-                },
-                {
-                  "TopMenuPanelBg": {
-                    "width": "0.5fw",
-                    "overflow": "hidden",
-                    "css-hier-invalidate": "yes",
-                    "Red_shadow_light": {
-                      "pos": "-50%w, 0",
-                      "position": "absolute",
-                      "size": "1@titleLogoPlateWidth, 1@topBarHeight",
-                      "class": "inverted"
                     }
                   }
                 }
@@ -900,19 +900,6 @@
                       }
                     },
                     {
-                      "tdiv": {
-                        "id": "topmenu_menu_panel",
-                        "height": "ph",
-                        "padding": "-1@gcButtonsInterval, 0"
-                      }
-                    },
-                    {
-                      "tdiv": {
-                        "id": "left_gc_panel_free_width",
-                        "width": "fw"
-                      }
-                    },
-                    {
                       "gcButtonsHolder": [
                         {
                           "id": "gamercard_panel_left"
@@ -996,6 +983,19 @@
                           }
                         }
                       ]
+                    },
+                    {
+                      "tdiv": {
+                        "id": "topmenu_menu_panel",
+                        "height": "ph",
+                        "padding": "-1@gcButtonsInterval, 0"
+                      }
+                    },
+                    {
+                      "tdiv": {
+                        "id": "left_gc_panel_free_width",
+                        "width": "fw"
+                      }
                     }
                   ]
                 },
@@ -1186,6 +1186,15 @@
               ]
             },
             {
+              "tdiv": {
+                "id": "chatPopupNest",
+                "size": "0.4@sf+10, 0.075*@sf+10",
+                "position": "absolute",
+                "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                "flow": "vertical"
+              }
+            },
+            {
               "infoBlock": {
                 "css-hier-invalidate": "yes",
                 "activeText": {
@@ -1209,15 +1218,6 @@
                     "display": "hide"
                   }
                 }
-              }
-            },
-            {
-              "tdiv": {
-                "id": "chatPopupNest",
-                "size": "0.4@sf+10, 0.075*@sf+10",
-                "position": "absolute",
-                "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                "flow": "vertical"
               }
             }
           ]
@@ -1294,6 +1294,11 @@
                   }
                 },
                 {
+                  "blockSeparator": {
+                    "display": "hide"
+                  }
+                },
+                {
                   "emptyVoiceChat": {
                     "tooltip": "#clan/voice_chat/widget",
                     "usertalk": {
@@ -1321,11 +1326,6 @@
                     "voiceChatWidget": {
                       "value": "{\"viewId\": \"VOICE_CHAT\"}"
                     }
-                  }
-                },
-                {
-                  "blockSeparator": {
-                    "display": "hide"
                   }
                 }
               ],

@@ -367,6 +367,19 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 8,
+            "var": "artillery_disable_stage",
+            "fromDescriptor": "artillery_disable_stage"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 8,
+            "var": "pickups_count"
+          }
+        },
+        {
           "comment": {
             "value": "(br_area_div * 2 - 1 = 15) - number of total stages"
           }
@@ -384,13 +397,6 @@
         {
           "comment": {
             "value": "artillery have radius 150m radius and sector side is 1600/8=200m"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "artillery_disable_stage",
-            "fromDescriptor": "artillery_disable_stage"
           }
         },
         {
@@ -438,12 +444,6 @@
             "object_var_value": 0,
             "object": "object_groups_squad",
             "stealthRadius": 0.0
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 8,
-            "var": "pickups_count"
           }
         }
       ],
@@ -581,42 +581,6 @@
       }
     },
     {
-      "tankModels": {
-        "name": "player01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [357.984,4.15169,-159.935]
-        ],
-        "unit_class": "aaa_dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
       "area_squad": {
         "name": "spawn_area_sq",
         "tm": [
@@ -723,6 +687,42 @@
             "squad_members": "spawn32"
           }
         ]
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [357.984,4.15169,-159.935]
+        ],
+        "unit_class": "aaa_dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     },
     {
@@ -2324,6 +2324,74 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "objectGroups_79",
+        "tm": [
+          [-0.548166,0.0,0.83637],
+          [0.0,1.0,0.0],
+          [-0.83637,0.0,-0.548166],
+          [-630.2,5.1,-458.75]
+        ],
+        "unit_class": "det_road_block_with_bags_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_96",
+        "tm": [
+          [-0.876877,0.0,0.480714],
+          [0.0,1.0,0.0],
+          [-0.480714,0.0,-0.876877],
+          [-645.25,5.1,-449.95]
+        ],
+        "unit_class": "det_road_block_with_bags_c",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_78",
+        "tm": [
+          [0.855287,0.0,-0.518154],
+          [0.0,1.0,0.0],
+          [0.518154,0.0,0.855287],
+          [-660.45,5.1,-446.45]
+        ],
+        "unit_class": "det_road_block_with_bags_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_102",
+        "tm": [
+          [0.869679,0.0,-0.493618],
+          [0.0,1.0,0.0],
+          [0.493618,0.0,0.869679],
+          [-643.3,5.1,-452.45]
+        ],
+        "unit_class": "det_road_block_with_bags_a",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
       "squad": {
         "name": "object_groups_squad",
         "tm": [
@@ -2631,74 +2699,6 @@
             "squad_members": "objectGroups_102"
           }
         ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_79",
-        "tm": [
-          [-0.548166,0.0,0.83637],
-          [0.0,1.0,0.0],
-          [-0.83637,0.0,-0.548166],
-          [-630.2,5.1,-458.75]
-        ],
-        "unit_class": "det_road_block_with_bags_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_96",
-        "tm": [
-          [-0.876877,0.0,0.480714],
-          [0.0,1.0,0.0],
-          [-0.480714,0.0,-0.876877],
-          [-645.25,5.1,-449.95]
-        ],
-        "unit_class": "det_road_block_with_bags_c",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_78",
-        "tm": [
-          [0.855287,0.0,-0.518154],
-          [0.0,1.0,0.0],
-          [0.518154,0.0,0.855287],
-          [-660.45,5.1,-446.45]
-        ],
-        "unit_class": "det_road_block_with_bags_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_102",
-        "tm": [
-          [0.869679,0.0,-0.493618],
-          [0.0,1.0,0.0],
-          [0.493618,0.0,0.869679],
-          [-643.3,5.1,-452.45]
-        ],
-        "unit_class": "det_road_block_with_bags_a",
-        "objLayer": 2,
-        "props": {
-          "army": 0,
-          "active": true
-        }
       }
     }
   ],

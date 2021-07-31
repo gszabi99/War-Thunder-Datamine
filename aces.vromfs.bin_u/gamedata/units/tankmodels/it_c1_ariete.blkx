@@ -2084,6 +2084,29 @@
         }
       },
       {
+        "armorArrayHullFront": {
+          "xrayDmPart": "composite_armor_turret_05_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_05_dm"
+            }
+          }
+        }
+      },
+      {
+        "armorArrayHullFront": {
+          "xrayDmPart": "composite_armor_turret_06_dm",
+          "titleLoc": "RHA_tank_modern",
+          "armorArrayText": {
+            "layer": {
+              "dmPart": "composite_armor_turret_06_dm",
+              "xrayTextThickness": 90.0
+            }
+          }
+        }
+      },
+      {
         "armorArrayTurret": {
           "xrayDmPart": "composite_armor_turret_01_dm",
           "armorArrayText": [
@@ -2177,29 +2200,6 @@
               }
             }
           ]
-        }
-      },
-      {
-        "armorArrayHullFront": {
-          "xrayDmPart": "composite_armor_turret_05_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_turret_05_dm"
-            }
-          }
-        }
-      },
-      {
-        "armorArrayHullFront": {
-          "xrayDmPart": "composite_armor_turret_06_dm",
-          "titleLoc": "RHA_tank_modern",
-          "armorArrayText": {
-            "layer": {
-              "dmPart": "composite_armor_turret_06_dm",
-              "xrayTextThickness": 90.0
-            }
-          }
         }
       },
       {
@@ -2941,13 +2941,13 @@
             "fireConeAngle": 1.0
           },
           {
+            "fireConeAngle": 15.0
+          },
+          {
             "bullets": 4500
           },
           {
             "isBulletBelt": true
-          },
-          {
-            "fireConeAngle": 15.0
           },
           {
             "ChainfireTime": 3.0
@@ -3079,16 +3079,6 @@
         }
       },
       {
-        "hideNodes": [
-          {
-            "node": "ex_decor_l_05"
-          },
-          {
-            "node": "ex_decor_r_05"
-          }
-        ]
-      },
-      {
         "Weapon": {
           "trigger": "gunner3",
           "triggerGroup": "commander",
@@ -3133,6 +3123,16 @@
             ]
           }
         }
+      },
+      {
+        "hideNodes": [
+          {
+            "node": "ex_decor_l_05"
+          },
+          {
+            "node": "ex_decor_r_05"
+          }
+        ]
       }
     ]
   },
@@ -3934,13 +3934,13 @@
                   "fireConeAngle": 1.0
                 },
                 {
+                  "fireConeAngle": 15.0
+                },
+                {
                   "bullets": 4500
                 },
                 {
                   "isBulletBelt": true
-                },
-                {
-                  "fireConeAngle": 15.0
                 },
                 {
                   "ChainfireTime": 3.0
@@ -4072,16 +4072,6 @@
               }
             },
             {
-              "hideNodes": [
-                {
-                  "node": "ex_decor_l_05"
-                },
-                {
-                  "node": "ex_decor_r_05"
-                }
-              ]
-            },
-            {
               "Weapon": {
                 "trigger": "gunner3",
                 "triggerGroup": "commander",
@@ -4172,6 +4162,16 @@
                   "pitch": [0.0,0.0]
                 }
               }
+            },
+            {
+              "hideNodes": [
+                {
+                  "node": "ex_decor_l_05"
+                },
+                {
+                  "node": "ex_decor_r_05"
+                }
+              ]
             }
           ]
         }

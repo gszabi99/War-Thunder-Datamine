@@ -213,11 +213,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -225,6 +220,11 @@
             "object_var_value": 0,
             "object": "player_himself",
             "targetableByAi": true
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         }
       ],
@@ -268,11 +268,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -280,6 +275,11 @@
             "ignoreDifficulty": false,
             "scale": 0.5,
             "target": "waypoint01"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -328,11 +328,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -340,6 +335,11 @@
             "ignoreDifficulty": false,
             "scale": 0.5,
             "target": "waypoint02"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -388,11 +388,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -400,6 +395,11 @@
             "ignoreDifficulty": false,
             "scale": 0.5,
             "target": "waypoint03"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -487,9 +487,48 @@
           }
         },
         {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "friendly_fighters01"
+            },
+            {
+              "target": "enemy_fighters00"
+            },
+            {
+              "target": "enemy_fighters01"
+            }
+          ]
+        },
+        {
           "triggerEnable": {
             "target": "more_players_more_planes"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "enemy_fighters_indicator"
+            },
+            {
+              "target": "45_percent_killed"
+            },
+            {
+              "target": "75_percent_killed"
+            }
+          ]
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "friendly_scouts_indicator"
+            },
+            {
+              "target": "defence_failed"
+            }
+          ]
         },
         {
           "unitSetProperties": {
@@ -502,6 +541,21 @@
           }
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "friendly_scouts00",
+            "isImmortal": false
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "wait": {
             "time": 2.0
           }
@@ -509,6 +563,11 @@
         {
           "moAddMissionObjective": {
             "target": "single_saipan_m01_att00"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "single_saipan_m01_def00"
           }
         },
         {
@@ -533,65 +592,6 @@
             },
             {
               "target": "enemy_fighters01"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "enemy_fighters_indicator"
-            },
-            {
-              "target": "45_percent_killed"
-            },
-            {
-              "target": "75_percent_killed"
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "friendly_fighters01"
-            },
-            {
-              "target": "enemy_fighters00"
-            },
-            {
-              "target": "enemy_fighters01"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "friendly_scouts00",
-            "isImmortal": false
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "single_saipan_m01_def00"
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "friendly_scouts_indicator"
-            },
-            {
-              "target": "defence_failed"
             }
           ]
         },
@@ -1068,22 +1068,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "single_saipan_m01_att00",
-            "status": 2
-          }
-        },
-        {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.5,
-            "target": "waypoint05"
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "player",
             "follow_target": true,
@@ -1100,6 +1084,22 @@
             "recalculatePathDist": -1.0,
             "horizontalDirectionForTeleport": true,
             "object": "friendly_fighters01"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "single_saipan_m01_att00",
+            "status": 2
+          }
+        },
+        {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.5,
+            "target": "waypoint05"
           }
         },
         {
@@ -1163,11 +1163,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -1175,6 +1170,11 @@
             "ignoreDifficulty": false,
             "scale": 0.5,
             "target": "waypoint06"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -1553,21 +1553,6 @@
       }
     },
     {
-      "squad": {
-        "name": "player_himself",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-16311.4,-21.9,-6793.35]
-        ],
-        "props": {
-          "squad_members": "player",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
       "armada": {
         "name": "enemy_fighters01",
         "tm": [
@@ -1611,6 +1596,21 @@
           }
         },
         "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "player_himself",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-16311.4,-21.9,-6793.35]
+        ],
+        "props": {
+          "squad_members": "player",
+          "object_type": "isPlayer"
+        }
       }
     }
   ],

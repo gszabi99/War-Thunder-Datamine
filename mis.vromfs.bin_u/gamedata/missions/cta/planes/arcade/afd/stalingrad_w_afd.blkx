@@ -458,6 +458,28 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_land_squad",
+            "team": "B"
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t1_land_squad",
+            "team": "A"
+          }
+        },
+        {
           "unitSetProperties": [
             {
               "object_marking": 0
@@ -521,28 +543,6 @@
               "moveSpeedKAtShooting": 0.4
             }
           ]
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_land_squad",
-            "team": "B"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": true,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "t1_land_squad",
-            "team": "A"
-          }
         },
         {
           "moAddMissionObjective": {
@@ -767,84 +767,6 @@
               "canUsePathFinder": false
             }
           }
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "t1_player01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-15878.2,1592.0,-11588.0]
-        ],
-        "unit_class": "dummy_plane",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "player": true,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "airfield_01",
-        "tm": [
-          [1.29505,0.0,0.113302],
-          [0.0,1.3,0.0],
-          [-0.113302,0.0,1.29505],
-          [-15713.4,219.826,-15795.7]
-        ],
-        "unit_class": "dynAF_st_winter_ally",
-        "props": {
-          "army": 0,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "airfield_02",
-        "tm": [
-          [1.28025,0.0,-0.225743],
-          [0.0,1.3,0.0],
-          [0.225743,0.0,1.28025],
-          [-15713.4,188.252,-6603.12]
-        ],
-        "unit_class": "dynAF_st_winter_ally",
-        "props": {
-          "army": 0,
-          "active": true
         }
       }
     },
@@ -1117,6 +1039,100 @@
               "canUsePathFinder": false
             }
           }
+        }
+      }
+    },
+    {
+      "armada": {
+        "name": "t1_player01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-15878.2,1592.0,-11588.0]
+        ],
+        "unit_class": "dummy_plane",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_01",
+        "tm": [
+          [1.29505,0.0,0.113302],
+          [0.0,1.3,0.0],
+          [-0.113302,0.0,1.29505],
+          [-15713.4,219.826,-15795.7]
+        ],
+        "unit_class": "dynAF_st_winter_ally",
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_02",
+        "tm": [
+          [1.28025,0.0,-0.225743],
+          [0.0,1.3,0.0],
+          [0.225743,0.0,1.28025],
+          [-15713.4,188.252,-6603.12]
+        ],
+        "unit_class": "dynAF_st_winter_ally",
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "airfield_03",
+        "tm": [
+          [-0.336465,0.0,-1.2557],
+          [0.0,1.3,0.0],
+          [1.2557,0.0,-0.336465],
+          [-15914.7,202.062,-11112.8]
+        ],
+        "unit_class": "dynAF_st_winter_ally",
+        "props": {
+          "army": 0,
+          "active": true
         }
       }
     },
@@ -1679,22 +1695,6 @@
         ],
         "props": {
           "squad_members": "t2_land_squad"
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "airfield_03",
-        "tm": [
-          [-0.336465,0.0,-1.2557],
-          [0.0,1.3,0.0],
-          [1.2557,0.0,-0.336465],
-          [-15914.7,202.062,-11112.8]
-        ],
-        "unit_class": "dynAF_st_winter_ally",
-        "props": {
-          "army": 0,
-          "active": true
         }
       }
     }

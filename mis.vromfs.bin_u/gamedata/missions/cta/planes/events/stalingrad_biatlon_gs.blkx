@@ -1520,6 +1520,11 @@
           }
         },
         {
+          "triggerEnable": {
+            "target": "t1_complete_tank_quest_at_05"
+          }
+        },
+        {
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
@@ -1573,11 +1578,6 @@
           "moAddMissionObjective": {
             "target": "t1_second_tanks"
           }
-        },
-        {
-          "triggerEnable": {
-            "target": "t1_complete_tank_quest_at_05"
-          }
         }
       ]
     },
@@ -1623,6 +1623,11 @@
         {
           "triggerEnable": {
             "target": "t2_waypoint_reward"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "t2_complete_tank_quest_at_05"
           }
         },
         {
@@ -1678,11 +1683,6 @@
         {
           "moAddMissionObjective": {
             "target": "t2_second_tanks"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "t2_complete_tank_quest_at_05"
           }
         }
       ]
@@ -3170,6 +3170,1106 @@
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
               [5665.2,2.35,8164.1]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_01",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6854.54,76.2498,-4124.47]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [6041.98,1.48932,-4698.4]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_01",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-683.349,101.914,1535.36]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1364.15,76.2249,909.352]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_01_02",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [11347.4,-5.8,7220.85]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11342.5,1.0,6411.9]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_01_03",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [11435.3,-5.8,7175.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11430.4,1.0,6366.05]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_01_04",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [11156.3,-5.8,7240.45]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11151.4,1.0,6431.5]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_01_05",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [11069.5,-5.8,7218.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [11064.6,1.0,6409.45]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_01_06",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [10953.5,-5.8,7180.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10948.6,1.0,6371.65]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_01_02",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5743.1,28.85,9041.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5750.5,2.35,8158.0]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_01_03",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5819.7,28.85,9018.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5827.1,2.35,8134.6]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_01_04",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5897.35,28.85,8982.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5904.75,2.35,8099.1]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_01_05",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5561.35,28.85,9038.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5568.75,2.35,8154.55]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_01_06",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5444.75,28.85,9016.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5452.15,2.35,8133.1]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_02",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6877.48,76.2498,-4178.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [6064.93,1.48932,-4752.32]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_03",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6898.05,76.2498,-4232.35]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [6085.5,1.48932,-4806.28]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_04",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6913.28,76.2498,-4285.54]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [6100.73,1.48932,-4859.46]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_05",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6796.57,76.2498,-4080.68]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5984.02,1.48932,-4654.6]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t1_tank_02_06",
+        "tm": [
+          [-0.707107,0.0,-0.707107],
+          [0.0,1.0,0.0],
+          [0.707107,0.0,-0.707107],
+          [6731.63,76.2498,-4024.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_02_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5919.08,1.48932,-4598.22]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_02",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-614.928,99.2967,1433.73]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1295.73,76.2249,807.728]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_03",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-559.61,96.7452,1301.76]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1240.42,76.2249,675.754]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_04",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-812.644,103.661,1586.44]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1493.45,76.2249,960.435]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_05",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-898.324,105.137,1649.09]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1579.13,76.2249,1023.09]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "t2_tank_02_06",
+        "tm": [
+          [-0.766044,0.0,-0.642788],
+          [0.0,1.0,0.0],
+          [0.642788,0.0,-0.766044],
+          [-1010.72,109.048,1672.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [24.0,12.0],
+          "formation_noise": [0.4,0.5],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_02_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-1691.53,76.2249,1046.74]
             ],
             "props": {
               "speed": 10.0,
@@ -4847,6 +5947,594 @@
       }
     },
     {
+      "squad": {
+        "name": "t2_bunkers_01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6777.75,38.15,6854.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_bunker_01"
+          },
+          {
+            "squad_members": "t2_bunker_02"
+          },
+          {
+            "squad_members": "t2_bunker_03"
+          },
+          {
+            "squad_members": "t2_bunker_04"
+          },
+          {
+            "squad_members": "t2_bunker_05"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_bunkers_01_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13860.7,38.15,7788.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t1_bunker_01"
+          },
+          {
+            "squad_members": "t1_bunker_02"
+          },
+          {
+            "squad_members": "t1_bunker_03"
+          },
+          {
+            "squad_members": "t1_bunker_04"
+          },
+          {
+            "squad_members": "t1_bunker_05"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4728.3,19.4,8826.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t1_tank_01"
+          },
+          {
+            "squad_members": "t1_tank_02"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4675.2,41.05,8417.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_tank_01"
+          },
+          {
+            "squad_members": "t2_tank_02"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_bunkers_02_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [4082.15,3.05,-5112.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_bunker_06"
+          },
+          {
+            "squad_members": "t2_bunker_07"
+          },
+          {
+            "squad_members": "t2_bunker_08"
+          },
+          {
+            "squad_members": "t2_bunker_09"
+          },
+          {
+            "squad_members": "t2_bunker_10"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_bunkers_02_squad",
+        "tm": [
+          [0.642788,0.0,0.766044],
+          [0.0,1.0,0.0],
+          [-0.766044,0.0,0.642788],
+          [-1412.03,174.6,736.192]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t1_bunker_06"
+          },
+          {
+            "squad_members": "t1_bunker_07"
+          },
+          {
+            "squad_members": "t1_bunker_08"
+          },
+          {
+            "squad_members": "t1_bunker_09"
+          },
+          {
+            "squad_members": "t1_bunker_10"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tank_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [12625.3,4.1,6825.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_tank_01_01"
+          },
+          {
+            "squad_members": "t2_tank_01_02"
+          },
+          {
+            "squad_members": "t2_tank_01_03"
+          },
+          {
+            "squad_members": "t2_tank_01_04"
+          },
+          {
+            "squad_members": "t2_tank_01_05"
+          },
+          {
+            "squad_members": "t2_tank_01_06"
+          },
+          {
+            "squad_members": "t2_tank_01_07"
+          },
+          {
+            "squad_members": "t2_tank_01_08"
+          },
+          {
+            "squad_members": "t2_tank_01_09"
+          },
+          {
+            "squad_members": "t2_tank_01_10"
+          },
+          {
+            "squad_members": "t2_tank_01_11"
+          },
+          {
+            "squad_members": "t2_tank_01_12"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tank_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5223.45,65.95,9271.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_tank_01_01"
+          },
+          {
+            "squad_members": "t1_tank_01_02"
+          },
+          {
+            "squad_members": "t1_tank_01_03"
+          },
+          {
+            "squad_members": "t1_tank_01_04"
+          },
+          {
+            "squad_members": "t1_tank_01_05"
+          },
+          {
+            "squad_members": "t1_tank_01_06"
+          },
+          {
+            "squad_members": "t1_tank_01_07"
+          },
+          {
+            "squad_members": "t1_tank_01_08"
+          },
+          {
+            "squad_members": "t1_tank_01_09"
+          },
+          {
+            "squad_members": "t1_tank_01_10"
+          },
+          {
+            "squad_members": "t1_tank_01_11"
+          },
+          {
+            "squad_members": "t1_tank_01_12"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_baloon_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [8994.65,838.9,-3944.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t1_baloon_01"
+          },
+          {
+            "squad_members": "t1_baloon_02"
+          },
+          {
+            "squad_members": "t1_baloon_03"
+          },
+          {
+            "squad_members": "t1_baloon_04"
+          },
+          {
+            "squad_members": "t1_baloon_05"
+          },
+          {
+            "squad_members": "t1_baloon_06"
+          },
+          {
+            "squad_members": "t1_baloon_07"
+          },
+          {
+            "squad_members": "t1_baloon_08"
+          },
+          {
+            "squad_members": "t1_baloon_09"
+          },
+          {
+            "squad_members": "t1_baloon_10"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_baloon_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13.65,944.45,3333.6]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_baloon_01"
+          },
+          {
+            "squad_members": "t2_baloon_02"
+          },
+          {
+            "squad_members": "t2_baloon_03"
+          },
+          {
+            "squad_members": "t2_baloon_04"
+          },
+          {
+            "squad_members": "t2_baloon_05"
+          },
+          {
+            "squad_members": "t2_baloon_06"
+          },
+          {
+            "squad_members": "t2_baloon_07"
+          },
+          {
+            "squad_members": "t2_baloon_08"
+          },
+          {
+            "squad_members": "t2_baloon_09"
+          },
+          {
+            "squad_members": "t2_baloon_10"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t1_tank_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7510.82,1.76099,-4438.43]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t1_tank_02_01"
+          },
+          {
+            "squad_members": "t1_tank_02_02"
+          },
+          {
+            "squad_members": "t1_tank_02_03"
+          },
+          {
+            "squad_members": "t1_tank_02_04"
+          },
+          {
+            "squad_members": "t1_tank_02_05"
+          },
+          {
+            "squad_members": "t1_tank_02_06"
+          },
+          {
+            "squad_members": "t1_tank_02_07"
+          },
+          {
+            "squad_members": "t1_tank_02_08"
+          },
+          {
+            "squad_members": "t1_tank_02_09"
+          },
+          {
+            "squad_members": "t1_tank_02_10"
+          },
+          {
+            "squad_members": "t1_tank_02_11"
+          },
+          {
+            "squad_members": "t1_tank_02_12"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "t2_tank_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3035.65,159.793,1281.84]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "t2_tank_02_01"
+          },
+          {
+            "squad_members": "t2_tank_02_02"
+          },
+          {
+            "squad_members": "t2_tank_02_03"
+          },
+          {
+            "squad_members": "t2_tank_02_04"
+          },
+          {
+            "squad_members": "t2_tank_02_05"
+          },
+          {
+            "squad_members": "t2_tank_02_06"
+          },
+          {
+            "squad_members": "t2_tank_02_07"
+          },
+          {
+            "squad_members": "t2_tank_02_08"
+          },
+          {
+            "squad_members": "t2_tank_02_09"
+          },
+          {
+            "squad_members": "t2_tank_02_10"
+          },
+          {
+            "squad_members": "t2_tank_02_11"
+          },
+          {
+            "squad_members": "t2_tank_02_12"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
       "structures": {
         "name": "t1_bunker_01",
         "tm": [
@@ -5217,252 +6905,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_bunkers_01_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6777.75,38.15,6854.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_bunker_01"
-          },
-          {
-            "squad_members": "t2_bunker_02"
-          },
-          {
-            "squad_members": "t2_bunker_03"
-          },
-          {
-            "squad_members": "t2_bunker_04"
-          },
-          {
-            "squad_members": "t2_bunker_05"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_bunkers_01_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13860.7,38.15,7788.55]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t1_bunker_01"
-          },
-          {
-            "squad_members": "t1_bunker_02"
-          },
-          {
-            "squad_members": "t1_bunker_03"
-          },
-          {
-            "squad_members": "t1_bunker_04"
-          },
-          {
-            "squad_members": "t1_bunker_05"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4728.3,19.4,8826.05]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t1_tank_01"
-          },
-          {
-            "squad_members": "t1_tank_02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4675.2,41.05,8417.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_tank_01"
-          },
-          {
-            "squad_members": "t2_tank_02"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_01",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6854.54,76.2498,-4124.47]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_02_01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [6041.98,1.48932,-4698.4]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_01",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-683.349,101.914,1535.36]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_01_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1364.15,76.2249,909.352]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
       "structures": {
         "name": "t2_bunker_06",
         "tm": [
@@ -5648,47 +7090,6 @@
       }
     },
     {
-      "squad": {
-        "name": "t2_bunkers_02_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [4082.15,3.05,-5112.05]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_bunker_06"
-          },
-          {
-            "squad_members": "t2_bunker_07"
-          },
-          {
-            "squad_members": "t2_bunker_08"
-          },
-          {
-            "squad_members": "t2_bunker_09"
-          },
-          {
-            "squad_members": "t2_bunker_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
       "structures": {
         "name": "t1_bunker_06",
         "tm": [
@@ -5870,47 +7271,6 @@
           "stealthRadius": 0.0,
           "setStealth": true
         },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_bunkers_02_squad",
-        "tm": [
-          [0.642788,0.0,0.766044],
-          [0.0,1.0,0.0],
-          [-0.766044,0.0,0.642788],
-          [-1412.03,174.6,736.192]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t1_bunker_06"
-          },
-          {
-            "squad_members": "t1_bunker_07"
-          },
-          {
-            "squad_members": "t1_bunker_08"
-          },
-          {
-            "squad_members": "t1_bunker_09"
-          },
-          {
-            "squad_members": "t1_bunker_10"
-          }
-        ],
         "way": []
       }
     },
@@ -6488,1230 +7848,6 @@
           "setStealth": true
         },
         "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_tank_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [12625.3,4.1,6825.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_tank_01_01"
-          },
-          {
-            "squad_members": "t2_tank_01_02"
-          },
-          {
-            "squad_members": "t2_tank_01_03"
-          },
-          {
-            "squad_members": "t2_tank_01_04"
-          },
-          {
-            "squad_members": "t2_tank_01_05"
-          },
-          {
-            "squad_members": "t2_tank_01_06"
-          },
-          {
-            "squad_members": "t2_tank_01_07"
-          },
-          {
-            "squad_members": "t2_tank_01_08"
-          },
-          {
-            "squad_members": "t2_tank_01_09"
-          },
-          {
-            "squad_members": "t2_tank_01_10"
-          },
-          {
-            "squad_members": "t2_tank_01_11"
-          },
-          {
-            "squad_members": "t2_tank_01_12"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_01_02",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11347.4,-5.8,7220.85]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11342.5,1.0,6411.9]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_01_03",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11435.3,-5.8,7175.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11430.4,1.0,6366.05]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_01_04",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11156.3,-5.8,7240.45]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_04_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11151.4,1.0,6431.5]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_01_05",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11069.5,-5.8,7218.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11064.6,1.0,6409.45]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_01_06",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [10953.5,-5.8,7180.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_06_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10948.6,1.0,6371.65]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_tank_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5223.45,65.95,9271.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_tank_01_01"
-          },
-          {
-            "squad_members": "t1_tank_01_02"
-          },
-          {
-            "squad_members": "t1_tank_01_03"
-          },
-          {
-            "squad_members": "t1_tank_01_04"
-          },
-          {
-            "squad_members": "t1_tank_01_05"
-          },
-          {
-            "squad_members": "t1_tank_01_06"
-          },
-          {
-            "squad_members": "t1_tank_01_07"
-          },
-          {
-            "squad_members": "t1_tank_01_08"
-          },
-          {
-            "squad_members": "t1_tank_01_09"
-          },
-          {
-            "squad_members": "t1_tank_01_10"
-          },
-          {
-            "squad_members": "t1_tank_01_11"
-          },
-          {
-            "squad_members": "t1_tank_01_12"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_01_02",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5743.1,28.85,9041.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5750.5,2.35,8158.0]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_01_03",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5819.7,28.85,9018.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5827.1,2.35,8134.6]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_01_04",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5897.35,28.85,8982.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_04_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5904.75,2.35,8099.1]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_01_05",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5561.35,28.85,9038.05]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5568.75,2.35,8154.55]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_01_06",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5444.75,28.85,9016.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_06_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5452.15,2.35,8133.1]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_07",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11457.7,-5.8,7215.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_07_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11452.8,1.0,6407.0]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_08",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11387.4,-5.8,7248.25]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_08_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11382.5,1.0,6439.3]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_09",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11306.5,-5.8,7278.65]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_09_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11301.6,1.0,6469.7]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_10",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [11122.9,-5.8,7284.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_10_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [11118.0,1.0,6475.35]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_11",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [10992.4,-5.8,7246.55]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_11_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10987.5,1.0,6437.6]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t2_tank_01_12",
-        "tm": [
-          [-0.0436195,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,-0.0436195],
-          [10888.0,-5.8,7181.15]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_01_12_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [10883.2,1.0,6372.2]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_07",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5865.15,28.85,9037.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_07_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5934.9,2.35,8125.05]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_08",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5794.0,28.85,9065.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_08_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5801.4,2.35,8182.45]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_09",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5699.2,28.85,9083.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_09_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5706.6,2.35,8199.8]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_10",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5607.0,28.85,9083.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_10_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5614.4,2.35,8200.3]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_11",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5498.85,28.85,9068.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_11_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5506.25,2.35,8185.0]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "t1_tank_01_12",
-        "tm": [
-          [-1.19209e-07,0.0,-1.0],
-          [0.0,1.0,0.0],
-          [1.0,0.0,-1.19209e-07],
-          [5397.15,28.85,9045.05]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_sdKfz_251",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t1_tank_01_12_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [5404.55,2.35,8161.55]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
       }
     },
     {
@@ -8415,190 +8551,16 @@
       }
     },
     {
-      "squad": {
-        "name": "t1_baloon_squad",
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_07",
         "tm": [
-          [1.0,0.0,0.0],
+          [-0.0436195,0.0,-0.999048],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [8994.65,838.9,-3944.4]
+          [0.999048,0.0,-0.0436195],
+          [11457.7,-5.8,7215.95]
         ],
         "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t1_baloon_01"
-          },
-          {
-            "squad_members": "t1_baloon_02"
-          },
-          {
-            "squad_members": "t1_baloon_03"
-          },
-          {
-            "squad_members": "t1_baloon_04"
-          },
-          {
-            "squad_members": "t1_baloon_05"
-          },
-          {
-            "squad_members": "t1_baloon_06"
-          },
-          {
-            "squad_members": "t1_baloon_07"
-          },
-          {
-            "squad_members": "t1_baloon_08"
-          },
-          {
-            "squad_members": "t1_baloon_09"
-          },
-          {
-            "squad_members": "t1_baloon_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_baloon_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13.65,944.45,3333.6]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_baloon_01"
-          },
-          {
-            "squad_members": "t2_baloon_02"
-          },
-          {
-            "squad_members": "t2_baloon_03"
-          },
-          {
-            "squad_members": "t2_baloon_04"
-          },
-          {
-            "squad_members": "t2_baloon_05"
-          },
-          {
-            "squad_members": "t2_baloon_06"
-          },
-          {
-            "squad_members": "t2_baloon_07"
-          },
-          {
-            "squad_members": "t2_baloon_08"
-          },
-          {
-            "squad_members": "t2_baloon_09"
-          },
-          {
-            "squad_members": "t2_baloon_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "t1_tank_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7510.82,1.76099,-4438.43]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t1_tank_02_01"
-          },
-          {
-            "squad_members": "t1_tank_02_02"
-          },
-          {
-            "squad_members": "t1_tank_02_03"
-          },
-          {
-            "squad_members": "t1_tank_02_04"
-          },
-          {
-            "squad_members": "t1_tank_02_05"
-          },
-          {
-            "squad_members": "t1_tank_02_06"
-          },
-          {
-            "squad_members": "t1_tank_02_07"
-          },
-          {
-            "squad_members": "t1_tank_02_08"
-          },
-          {
-            "squad_members": "t1_tank_02_09"
-          },
-          {
-            "squad_members": "t1_tank_02_10"
-          },
-          {
-            "squad_members": "t1_tank_02_11"
-          },
-          {
-            "squad_members": "t1_tank_02_12"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_02",
-        "tm": [
-          [-0.707107,0.0,-0.707107],
-          [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6877.48,76.2498,-4178.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
+        "unit_class": "germ_sdKfz_251",
         "weapons": "",
         "objLayer": 1,
         "bullets0": "",
@@ -8610,24 +8572,24 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 1,
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
         "way": {
-          "t1_tank_02_02_wp_01": {
+          "t2_tank_01_07_wp_01": {
             "type": "normal",
             "tm": [
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [6064.93,1.48932,-4752.32]
+              [11452.8,1.0,6407.0]
             ],
             "props": {
               "speed": 10.0,
@@ -8639,16 +8601,16 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_03",
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_08",
         "tm": [
-          [-0.707107,0.0,-0.707107],
+          [-0.0436195,0.0,-0.999048],
           [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6898.05,76.2498,-4232.35]
+          [0.999048,0.0,-0.0436195],
+          [11387.4,-5.8,7248.25]
         ],
         "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
+        "unit_class": "germ_sdKfz_251",
         "weapons": "",
         "objLayer": 1,
         "bullets0": "",
@@ -8660,24 +8622,24 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 1,
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
         "way": {
-          "t1_tank_02_03_wp_01": {
+          "t2_tank_01_08_wp_01": {
             "type": "normal",
             "tm": [
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [6085.5,1.48932,-4806.28]
+              [11382.5,1.0,6439.3]
             ],
             "props": {
               "speed": 10.0,
@@ -8689,16 +8651,16 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_04",
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_09",
         "tm": [
-          [-0.707107,0.0,-0.707107],
+          [-0.0436195,0.0,-0.999048],
           [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6913.28,76.2498,-4285.54]
+          [0.999048,0.0,-0.0436195],
+          [11306.5,-5.8,7278.65]
         ],
         "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
+        "unit_class": "germ_sdKfz_251",
         "weapons": "",
         "objLayer": 1,
         "bullets0": "",
@@ -8710,24 +8672,24 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 1,
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
         "way": {
-          "t1_tank_02_04_wp_01": {
+          "t2_tank_01_09_wp_01": {
             "type": "normal",
             "tm": [
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [6100.73,1.48932,-4859.46]
+              [11301.6,1.0,6469.7]
             ],
             "props": {
               "speed": 10.0,
@@ -8739,16 +8701,16 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_05",
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_10",
         "tm": [
-          [-0.707107,0.0,-0.707107],
+          [-0.0436195,0.0,-0.999048],
           [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6796.57,76.2498,-4080.68]
+          [0.999048,0.0,-0.0436195],
+          [11122.9,-5.8,7284.3]
         ],
         "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
+        "unit_class": "germ_sdKfz_251",
         "weapons": "",
         "objLayer": 1,
         "bullets0": "",
@@ -8760,24 +8722,24 @@
         "bulletsCount2": 0,
         "bulletsCount3": 0,
         "props": {
-          "army": 1,
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
         "way": {
-          "t1_tank_02_05_wp_01": {
+          "t2_tank_01_10_wp_01": {
             "type": "normal",
             "tm": [
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [5984.02,1.48932,-4654.6]
+              [11118.0,1.0,6475.35]
             ],
             "props": {
               "speed": 10.0,
@@ -8789,16 +8751,116 @@
       }
     },
     {
-      "tracked_vehicles": {
-        "name": "t1_tank_02_06",
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_11",
         "tm": [
-          [-0.707107,0.0,-0.707107],
+          [-0.0436195,0.0,-0.999048],
           [0.0,1.0,0.0],
-          [0.707107,0.0,-0.707107],
-          [6731.63,76.2498,-4024.3]
+          [0.999048,0.0,-0.0436195],
+          [10992.4,-5.8,7246.55]
         ],
         "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_11_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10987.5,1.0,6437.6]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t2_tank_01_12",
+        "tm": [
+          [-0.0436195,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,-0.0436195],
+          [10888.0,-5.8,7181.15]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t2_tank_01_12_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [10883.2,1.0,6372.2]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_07",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5865.15,28.85,9037.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
         "weapons": "",
         "objLayer": 1,
         "bullets0": "",
@@ -8814,20 +8876,270 @@
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will",
           "isDelayed": true
         },
         "way": {
-          "t1_tank_02_06_wp_01": {
+          "t1_tank_01_07_wp_01": {
             "type": "normal",
             "tm": [
               [1.0,0.0,0.0],
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
-              [5919.08,1.48932,-4598.22]
+              [5934.9,2.35,8125.05]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_08",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5794.0,28.85,9065.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_08_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5801.4,2.35,8182.45]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_09",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5699.2,28.85,9083.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_09_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5706.6,2.35,8199.8]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_10",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5607.0,28.85,9083.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_10_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5614.4,2.35,8200.3]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_11",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5498.85,28.85,9068.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_11_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5506.25,2.35,8185.0]
+            ],
+            "props": {
+              "speed": 10.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "shouldKeepFormation": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "t1_tank_01_12",
+        "tm": [
+          [-1.19209e-07,0.0,-1.0],
+          [0.0,1.0,0.0],
+          [1.0,0.0,-1.19209e-07],
+          [5397.15,28.85,9045.05]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_sdKfz_251",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true
+        },
+        "way": {
+          "t1_tank_01_12_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [5404.55,2.35,8161.55]
             ],
             "props": {
               "speed": 10.0,
@@ -9128,318 +9440,6 @@
               [0.0,1.0,0.0],
               [0.0,0.0,1.0],
               [5874.62,1.48944,-4565.97]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "t2_tank_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3035.65,159.793,1281.84]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "t2_tank_02_01"
-          },
-          {
-            "squad_members": "t2_tank_02_02"
-          },
-          {
-            "squad_members": "t2_tank_02_03"
-          },
-          {
-            "squad_members": "t2_tank_02_04"
-          },
-          {
-            "squad_members": "t2_tank_02_05"
-          },
-          {
-            "squad_members": "t2_tank_02_06"
-          },
-          {
-            "squad_members": "t2_tank_02_07"
-          },
-          {
-            "squad_members": "t2_tank_02_08"
-          },
-          {
-            "squad_members": "t2_tank_02_09"
-          },
-          {
-            "squad_members": "t2_tank_02_10"
-          },
-          {
-            "squad_members": "t2_tank_02_11"
-          },
-          {
-            "squad_members": "t2_tank_02_12"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_02",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-614.928,99.2967,1433.73]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_02_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1295.73,76.2249,807.728]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_03",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-559.61,96.7452,1301.76]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_03_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1240.42,76.2249,675.754]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_04",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-812.644,103.661,1586.44]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_04_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1493.45,76.2249,960.435]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_05",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-898.324,105.137,1649.09]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_05_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1579.13,76.2249,1023.09]
-            ],
-            "props": {
-              "speed": 10.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "shouldKeepFormation": false
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "t2_tank_02_06",
-        "tm": [
-          [-0.766044,0.0,-0.642788],
-          [0.0,1.0,0.0],
-          [0.642788,0.0,-0.766044],
-          [-1010.72,109.048,1672.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [24.0,12.0],
-          "formation_noise": [0.4,0.5],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true
-        },
-        "way": {
-          "t2_tank_02_06_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-1691.53,76.2249,1046.74]
             ],
             "props": {
               "speed": 10.0,

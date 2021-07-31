@@ -101,9 +101,29 @@
             }
           },
           {
+            "Button_text": {
+              "id": "btn_refresh",
+              "class": "image",
+              "btnName": "RB",
+              "tooltip": "#filesystem/btnRefresh",
+              "on_click": "onRefresh",
+              "ButtonImg": [],
+              "img": {
+                "id": "btn_refresh_img",
+                "background-image": "#ui/gameuiskin#refresh.svg"
+              }
+            }
+          },
+          {
             "DummyButton": {
               "accesskey": "Backspace",
               "on_click": "onUp"
+            }
+          },
+          {
+            "DummyButton": {
+              "btnName": "Y",
+              "on_click": "onToggleFocusDirPath"
             }
           },
           {
@@ -119,26 +139,6 @@
               "on_activate": "onDirPathEditBoxActivate",
               "on_cancel_edit": "onDirPathEditBoxCancelEdit",
               "ButtonImg": []
-            }
-          },
-          {
-            "DummyButton": {
-              "btnName": "Y",
-              "on_click": "onToggleFocusDirPath"
-            }
-          },
-          {
-            "Button_text": {
-              "id": "btn_refresh",
-              "class": "image",
-              "btnName": "RB",
-              "tooltip": "#filesystem/btnRefresh",
-              "on_click": "onRefresh",
-              "ButtonImg": [],
-              "img": {
-                "id": "btn_refresh_img",
-                "background-image": "#ui/gameuiskin#refresh.svg"
-              }
             }
           }
         ]
@@ -359,6 +359,19 @@
                     }
                   },
                   {
+                    "TopMenuPanelBg": {
+                      "width": "0.5fw",
+                      "overflow": "hidden",
+                      "css-hier-invalidate": "yes",
+                      "Red_shadow_light": {
+                        "pos": "-50%w, 0",
+                        "position": "absolute",
+                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
+                        "class": "inverted"
+                      }
+                    }
+                  },
+                  {
                     "tdiv": {
                       "id": "gamercard_logo_place",
                       "pos": "0, 1@titleLogoSafeareaOffsetTop",
@@ -396,19 +409,6 @@
                         "margin-left": "-1@titleLogoPlatePadding/2",
                         "allowDecreaseFont": "yes",
                         "display": "hide"
-                      }
-                    }
-                  },
-                  {
-                    "TopMenuPanelBg": {
-                      "width": "0.5fw",
-                      "overflow": "hidden",
-                      "css-hier-invalidate": "yes",
-                      "Red_shadow_light": {
-                        "pos": "-50%w, 0",
-                        "position": "absolute",
-                        "size": "1@titleLogoPlateWidth, 1@topBarHeight",
-                        "class": "inverted"
                       }
                     }
                   }
@@ -501,19 +501,6 @@
                         }
                       },
                       {
-                        "tdiv": {
-                          "id": "topmenu_menu_panel",
-                          "height": "ph",
-                          "padding": "-1@gcButtonsInterval, 0"
-                        }
-                      },
-                      {
-                        "tdiv": {
-                          "id": "left_gc_panel_free_width",
-                          "width": "fw"
-                        }
-                      },
-                      {
                         "gcButtonsHolder": [
                           {
                             "id": "gamercard_panel_left"
@@ -597,6 +584,19 @@
                             }
                           }
                         ]
+                      },
+                      {
+                        "tdiv": {
+                          "id": "topmenu_menu_panel",
+                          "height": "ph",
+                          "padding": "-1@gcButtonsInterval, 0"
+                        }
+                      },
+                      {
+                        "tdiv": {
+                          "id": "left_gc_panel_free_width",
+                          "width": "fw"
+                        }
                       }
                     ]
                   },
@@ -787,6 +787,15 @@
                 ]
               },
               {
+                "tdiv": {
+                  "id": "chatPopupNest",
+                  "size": "0.4@sf+10, 0.075*@sf+10",
+                  "position": "absolute",
+                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
+                  "flow": "vertical"
+                }
+              },
+              {
                 "infoBlock": {
                   "css-hier-invalidate": "yes",
                   "activeText": {
@@ -810,15 +819,6 @@
                       "display": "hide"
                     }
                   }
-                }
-              },
-              {
-                "tdiv": {
-                  "id": "chatPopupNest",
-                  "size": "0.4@sf+10, 0.075*@sf+10",
-                  "position": "absolute",
-                  "pos": "1@bw + 0.5@rw-w-0.55@titleLogoPlateWidth, @topBarHeight",
-                  "flow": "vertical"
                 }
               }
             ]
@@ -895,6 +895,11 @@
                     }
                   },
                   {
+                    "blockSeparator": {
+                      "display": "hide"
+                    }
+                  },
+                  {
                     "emptyVoiceChat": {
                       "tooltip": "#clan/voice_chat/widget",
                       "usertalk": {
@@ -922,11 +927,6 @@
                       "voiceChatWidget": {
                         "value": "{\"viewId\": \"VOICE_CHAT\"}"
                       }
-                    }
-                  },
-                  {
-                    "blockSeparator": {
-                      "display": "hide"
                     }
                   }
                 ],

@@ -186,6 +186,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -205,11 +210,6 @@
             "scale": 1.0,
             "target": "patrol_waypoint02",
             "team": "A"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
           }
         },
         {
@@ -536,6 +536,21 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "spain_hot_day_dogfight"
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "spain_hot_day_dogfight"
           }
@@ -577,8 +592,13 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/dlc_in_tennets_of_berlin_hint",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "team": "A"
           }
         },
         {
@@ -621,26 +641,6 @@
               "team": "Both"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "spain_hot_day_dogfight"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/dlc_in_tennets_of_berlin_hint",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "team": "A"
-          }
         }
       ],
       "else_actions": []
@@ -824,8 +824,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/dlc_britain_battle_of_britain_day_hint",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "team": "A"
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 10.0
           }
         },
         {
@@ -861,23 +876,8 @@
           }
         },
         {
-          "wait": {
-            "time": 10.0
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "spain_hot_day_destroy_bombers"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/dlc_britain_battle_of_britain_day_hint",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "team": "A"
           }
         }
       ],
@@ -1497,6 +1497,51 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "bomber_wave2_02",
+        "tm": [
+          [0.258819,0.0,-0.965926],
+          [0.0,1.0,0.0],
+          [0.965926,0.0,0.258819],
+          [-19423.9,851.8,26122.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "sb_2m_100",
+        "weapons": "sb_2m_100_6xfab100",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 2,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "skin": "spain36",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -2192,6 +2237,42 @@
       }
     },
     {
+      "structures": {
+        "name": "dummy01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-21045.5,51.45,26947.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "dummy",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "germ_howitzer_squad",
         "tm": [
@@ -2278,42 +2359,6 @@
       }
     },
     {
-      "structures": {
-        "name": "dummy01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-21045.5,51.45,26947.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "dummy",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "ussr_air_squad",
         "tm": [
@@ -2348,51 +2393,6 @@
             "squad_members": "i16_wave2_02"
           }
         ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "bomber_wave2_02",
-        "tm": [
-          [0.258819,0.0,-0.965926],
-          [0.0,1.0,0.0],
-          [0.965926,0.0,0.258819],
-          [-19423.9,851.8,26122.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "sb_2m_100",
-        "weapons": "sb_2m_100_6xfab100",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 2,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "skin": "spain36",
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
         "way": []
       }
     },
@@ -2467,6 +2467,34 @@
         ],
         "closed_waypoints": false,
         "unit_class": "alliance_big_camp_pit_entrenchment_s",
+        "weapons": "",
+        "objLayer": 2,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "active": true
+        },
+        "way": []
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "objectGroups_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-16209.0,104.4,11889.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "cargo_zone_square",
         "weapons": "",
         "objLayer": 2,
         "bullets0": "",
@@ -2702,34 +2730,6 @@
           "calmDetection": true,
           "accuracy": 0.1,
           "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "objectGroups_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-16209.0,104.4,11889.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "cargo_zone_square",
-        "weapons": "",
-        "objLayer": 2,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "active": true
         },
         "way": []
       }

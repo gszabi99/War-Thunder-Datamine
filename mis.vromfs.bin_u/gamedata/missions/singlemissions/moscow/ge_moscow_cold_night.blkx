@@ -266,9 +266,24 @@
           }
         },
         {
+          "wait": {
+            "time": 50.0
+          }
+        },
+        {
           "unitWakeUp": {
             "target": "ussr_fighters_01"
           }
+        },
+        {
+          "unitWakeUp": [
+            {
+              "target": "ussr_air_defence_squad"
+            },
+            {
+              "target": "ussr_searchlights_squad"
+            }
+          ]
         },
         {
           "unitAttackTarget": {
@@ -310,21 +325,6 @@
           "triggerEnable": {
             "target": "fighters_second_wave"
           }
-        },
-        {
-          "wait": {
-            "time": 50.0
-          }
-        },
-        {
-          "unitWakeUp": [
-            {
-              "target": "ussr_air_defence_squad"
-            },
-            {
-              "target": "ussr_searchlights_squad"
-            }
-          ]
         }
       ],
       "else_actions": []
@@ -542,17 +542,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "de_single_moscow01_cover_obj",
-            "status": 2
-          }
-        },
-        {
-          "unitWakeUp": {
-            "target": "ussr_fighters_04"
-          }
-        },
-        {
           "unitAttackTarget": [
             {
               "playerAttracted": true
@@ -583,6 +572,28 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "de_single_moscow01_cover_obj",
+            "status": 2
+          }
+        },
+        {
+          "unitWakeUp": {
+            "target": "ussr_fighters_04"
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "air",
+            "icon army": 1,
+            "set": false,
+            "target": "ge_bombers_squad"
+          }
+        },
+        {
           "missionSetTargetsIndicator": {
             "target_type": "isAlive",
             "target_marking": 0,
@@ -599,8 +610,18 @@
           }
         },
         {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "de_single_moscow01_destroy_fighters_obj"
+          }
+        },
+        {
+          "moAddMissionObjective": {
+            "target": "de_single_moscow01_destroy_searchlights_obj"
           }
         },
         {
@@ -621,27 +642,6 @@
               "target": "searchlights_are_dead"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 6.0
-          }
-        },
-        {
-          "moAddMissionObjective": {
-            "target": "de_single_moscow01_destroy_searchlights_obj"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "air",
-            "icon army": 1,
-            "set": false,
-            "target": "ge_bombers_squad"
-          }
         }
       ],
       "else_actions": []
@@ -1003,6 +1003,411 @@
           "altLimit": 6000.0,
           "attack_type": "fire_at_will",
           "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_fighters_01",
+        "tm": [
+          [-0.994905,0.0,-0.100818],
+          [0.0,1.0,0.0],
+          [0.100818,0.0,-0.994905],
+          [7187.8,2476.5,28641.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "i-16_type28",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_fighters_02",
+        "tm": [
+          [-0.994905,0.0,-0.100818],
+          [0.0,1.0,0.0],
+          [0.100818,0.0,-0.994905],
+          [14481.5,2476.5,30957.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "i-16_type28",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ge_bombers_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1115.85,2451.35,27509.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-16_winter",
+        "weapons": "He_111H16_8x250kg",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ge_bombers_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2192.0,2451.35,27483.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-16_winter",
+        "weapons": "He_111H16_8x250kg",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ge_bombers_03",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1562.8,2451.35,26403.8]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-16_winter",
+        "weapons": "He_111H16_8x250kg",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ge_bombers_04",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1867.9,2451.35,28405.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-16_winter",
+        "weapons": "He_111H16_8x250kg",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ge_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3461.35,2842.4,27156.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109f-4",
+        "weapons": "Bf-109F-4_4xSC50",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 9,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_fighters_03",
+        "tm": [
+          [-0.994905,0.0,-0.100818],
+          [0.0,1.0,0.0],
+          [0.100818,0.0,-0.994905],
+          [23739.3,3019.55,30742.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "i-16_type28",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 18,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ussr_fighters_04",
+        "tm": [
+          [-0.994905,0.0,-0.100818],
+          [0.0,1.0,0.0],
+          [0.100818,0.0,-0.994905],
+          [38190.9,1728.55,31565.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "i-16_type28",
+        "weapons": "",
+        "objLayer": 1,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -1392,321 +1797,6 @@
       }
     },
     {
-      "armada": {
-        "name": "ussr_fighters_01",
-        "tm": [
-          [-0.994905,0.0,-0.100818],
-          [0.0,1.0,0.0],
-          [0.100818,0.0,-0.994905],
-          [7187.8,2476.5,28641.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "i-16_type28",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ussr_fighters_02",
-        "tm": [
-          [-0.994905,0.0,-0.100818],
-          [0.0,1.0,0.0],
-          [0.100818,0.0,-0.994905],
-          [14481.5,2476.5,30957.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "i-16_type28",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ge_bombers_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1115.85,2451.35,27509.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-16_winter",
-        "weapons": "He_111H16_8x250kg",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ge_bombers_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2192.0,2451.35,27483.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-16_winter",
-        "weapons": "He_111H16_8x250kg",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ge_bombers_03",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1562.8,2451.35,26403.8]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-16_winter",
-        "weapons": "He_111H16_8x250kg",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ge_bombers_04",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1867.9,2451.35,28405.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-16_winter",
-        "weapons": "He_111H16_8x250kg",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ge_fighters_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3461.35,2842.4,27156.4]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109f-4",
-        "weapons": "Bf-109F-4_4xSC50",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 9,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 3,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "ge_bombers_squad",
         "tm": [
@@ -1776,51 +1866,6 @@
             "squad_members": "ussr_fighters_03"
           }
         ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ussr_fighters_03",
-        "tm": [
-          [-0.994905,0.0,-0.100818],
-          [0.0,1.0,0.0],
-          [0.100818,0.0,-0.994905],
-          [23739.3,3019.55,30742.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "i-16_type28",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 18,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
         "way": []
       }
     },
@@ -1904,6 +1949,68 @@
           },
           {
             "squad_members": "ussr_air_def_11"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "bombtargets_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [27200.4,37.2,27194.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "objLayer": 3,
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": [
+          {
+            "squad_members": "bombtarget_01"
+          },
+          {
+            "squad_members": "bombtarget_02"
+          },
+          {
+            "squad_members": "bombtarget_03"
+          },
+          {
+            "squad_members": "bombtarget_04"
+          },
+          {
+            "squad_members": "bombtarget_05"
+          },
+          {
+            "squad_members": "bombtarget_06"
+          },
+          {
+            "squad_members": "bombtarget_07"
+          },
+          {
+            "squad_members": "bombtarget_08"
+          },
+          {
+            "squad_members": "bombtarget_09"
+          },
+          {
+            "squad_members": "bombtarget_10"
+          },
+          {
+            "squad_members": "bombtarget_11"
+          },
+          {
+            "squad_members": "bombtarget_12"
           }
         ],
         "way": []
@@ -2313,113 +2420,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "bombtargets_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [27200.4,37.2,27194.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "objLayer": 3,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": [
-          {
-            "squad_members": "bombtarget_01"
-          },
-          {
-            "squad_members": "bombtarget_02"
-          },
-          {
-            "squad_members": "bombtarget_03"
-          },
-          {
-            "squad_members": "bombtarget_04"
-          },
-          {
-            "squad_members": "bombtarget_05"
-          },
-          {
-            "squad_members": "bombtarget_06"
-          },
-          {
-            "squad_members": "bombtarget_07"
-          },
-          {
-            "squad_members": "bombtarget_08"
-          },
-          {
-            "squad_members": "bombtarget_09"
-          },
-          {
-            "squad_members": "bombtarget_10"
-          },
-          {
-            "squad_members": "bombtarget_11"
-          },
-          {
-            "squad_members": "bombtarget_12"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "ussr_fighters_04",
-        "tm": [
-          [-0.994905,0.0,-0.100818],
-          [0.0,1.0,0.0],
-          [0.100818,0.0,-0.994905],
-          [38190.9,1728.55,31565.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "i-16_type28",
-        "weapons": "",
-        "objLayer": 1,
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

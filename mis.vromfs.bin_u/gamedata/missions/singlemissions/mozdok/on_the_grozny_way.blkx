@@ -211,6 +211,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "unitPutToSleep": [
             {
               "target": "ussr_planes_01"
@@ -246,11 +251,6 @@
           "unitSetIndication": {
             "set": true,
             "target": "hs129_ai"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -308,6 +308,11 @@
           }
         },
         {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "on_the_grozny_way_wait"
           }
@@ -316,11 +321,6 @@
           "varSetInt": {
             "var": "timer",
             "value": 0
-          }
-        },
-        {
-          "wait": {
-            "time": 15.0
           }
         },
         {
@@ -428,17 +428,17 @@
           }
         },
         {
-          "unitSetIndication": {
-            "set": true,
-            "target": "ussr_planes_05"
-          }
-        },
-        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "bf109_ai_01",
             "target": "ussr_squad",
             "fireRandom": true
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": true,
+            "target": "ussr_planes_05"
           }
         }
       ]
@@ -527,17 +527,6 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": false,
-            "target": "ussr_planes_01"
-          }
-        },
-        {
           "unitMoveTo": {
             "target": "ussr_escape_point",
             "follow_target": false,
@@ -547,6 +536,17 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "ussr_planes_01"
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "unitSetIndication": {
+            "set": false,
+            "target": "ussr_planes_01"
           }
         },
         {
@@ -596,6 +596,12 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": false,
+            "target": "hs129_ai"
+          }
+        },
+        {
           "unitMoveTo": {
             "target": "ussr_escape_point",
             "follow_target": false,
@@ -605,35 +611,6 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "ussr_planes_05"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "on_the_grozny_way_wait",
-            "status": 2
-          }
-        },
-        {
-          "varSetBool": {
-            "var": "isEnableIndicator",
-            "value": false
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": false,
-            "target": "hs129_ai"
-          }
-        },
-        {
-          "missionSetTargetsIndicator": {
-            "target_type": "isAlive",
-            "target_marking": 0,
-            "delta": 0,
-            "icon": "bomber",
-            "icon army": 1,
-            "set": false,
-            "target": "hs129_ai"
           }
         },
         {
@@ -658,6 +635,29 @@
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
             "object": "hs129_ai"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "on_the_grozny_way_wait",
+            "status": 2
+          }
+        },
+        {
+          "varSetBool": {
+            "var": "isEnableIndicator",
+            "value": false
+          }
+        },
+        {
+          "missionSetTargetsIndicator": {
+            "target_type": "isAlive",
+            "target_marking": 0,
+            "delta": 0,
+            "icon": "bomber",
+            "icon army": 1,
+            "set": false,
+            "target": "hs129_ai"
           }
         },
         {
@@ -732,6 +732,16 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/wait_for_orders",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "shouldBlink": false
+          }
+        },
+        {
           "addAirfield": {
             "runwayStart": "airfield00",
             "runwayEnd": "airfield01",
@@ -752,16 +762,6 @@
         {
           "wait": {
             "time": 10.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/wait_for_orders",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "shouldBlink": false
           }
         },
         {
@@ -860,6 +860,18 @@
           ]
         },
         {
+          "unitMoveTo": {
+            "target": "safe_bombers_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "hs129_ai"
+          }
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": true,
             "object": "ussr_planes_04",
@@ -908,18 +920,6 @@
           ]
         },
         {
-          "unitMoveTo": {
-            "target": "safe_bombers_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "hs129_ai"
-          }
-        },
-        {
           "unitDropAmmo": {
             "object": "hs129_ai"
           }
@@ -927,6 +927,16 @@
         {
           "wait": {
             "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -973,11 +983,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 5.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/on_the_grozny_way",
@@ -985,11 +990,6 @@
             "shouldFadeOut": false,
             "time": -1.0,
             "shouldBlink": true
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1202,6 +1202,12 @@
           }
         },
         {
+          "unitSetIndication": {
+            "set": false,
+            "target": "hs129_ai"
+          }
+        },
+        {
           "missionCompleted": {
             "timer": true
           }
@@ -1220,12 +1226,6 @@
           "airfieldSetIndication": {
             "set": true,
             "target": "airfield00"
-          }
-        },
-        {
-          "unitSetIndication": {
-            "set": false,
-            "target": "hs129_ai"
           }
         },
         {

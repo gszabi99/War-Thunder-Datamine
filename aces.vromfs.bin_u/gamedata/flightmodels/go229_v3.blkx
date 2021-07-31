@@ -3846,6 +3846,50 @@
     }
   },
   {
+    "wiki": {
+      "general": {
+        "length": 7.47,
+        "wingspan": 16.8,
+        "wingArea": 50.58,
+        "emptyWeight": 4800.0,
+        "normalWeight": 7615.0,
+        "maxTakeoffWeight": 7500.0,
+        "powerPlantType": 2,
+        "thrustMaxMil": 17300.0
+      },
+      "performance": {
+        "table": {
+          "rpmMil": 10000.0,
+          "airSpeedMil0": [0.0,862.0],
+          "airSpeedMil1": [8000.0,913.0],
+          "climbRateMil0": [0.0,21.0],
+          "climbTimeMil0": [2000.0,105.285],
+          "climbTimeMil1": [4000.0,227.67],
+          "climbTimeMil2": [6000.0,376.664],
+          "climbTimeMil3": [8000.0,568.329],
+          "turnTimeMil": [1000.0,28.0],
+          "takeoffDistance": 586.255,
+          "ceiling": 13300.0,
+          "rollRate": 70.0,
+          "wingLoading": 151.0,
+          "thrustToWeightRatio": 0.28
+        },
+        "plot": {
+          "airSpeedMil0": [0.0,862.0],
+          "airSpeedMil1": [6100.0,909.0],
+          "airSpeedMil2": [9100.0,903.0],
+          "airSpeedMil3": [11600.0,861.0],
+          "airSpeedMil4": [12000.0,847.0],
+          "airSpeedMil5": [12600.0,765.0],
+          "airSpeedMil6": [13300.0,715.0],
+          "climbRateMil0": [0.0,21.0],
+          "climbRateMil1": [12000.0,2.8],
+          "climbRateMil2": [13300.0,3.6]
+        }
+      }
+    }
+  },
+  {
     "DamageParts": {
       "armor10": {
         "cannon1_dm": {
@@ -6364,28 +6408,6 @@
         }
       },
       {
-        "enginesAutoConfiguration": [
-          {
-            "engine": "engine1_dm"
-          },
-          {
-            "engine": "engine2_dm"
-          },
-          {
-            "engine": "engine3_dm"
-          },
-          {
-            "engine": "engine4_dm"
-          },
-          {
-            "engine": "engine5_dm"
-          },
-          {
-            "engine": "engine6_dm"
-          }
-        ]
-      },
-      {
         "fm": {
           "fm": "engine_shaft1",
           "dm": "engine_shaft1_dm"
@@ -6504,110 +6526,6 @@
           "fm": "transmission2",
           "dm": "transmission2_dm"
         }
-      },
-      {
-        "fuelTanksAutoConfiguration": [
-          {
-            "fuelTank": "tank1_dm"
-          },
-          {
-            "fuelTank": "tank2_dm"
-          },
-          {
-            "fuelTank": "tank3_dm"
-          },
-          {
-            "fuelTank": "tank4_dm"
-          },
-          {
-            "fuelTank": "tank5_dm"
-          },
-          {
-            "fuelTank": "tank6_dm"
-          },
-          {
-            "fuelTank": "tank7_dm"
-          },
-          {
-            "fuelTank": "tank8_dm"
-          }
-        ]
-      },
-      {
-        "radiatorsAutoConfiguration": [
-          {
-            "engine": "engine1_dm"
-          },
-          {
-            "engine": "engine2_dm"
-          },
-          {
-            "engine": "engine3_dm"
-          },
-          {
-            "engine": "engine4_dm"
-          },
-          {
-            "engine": "engine5_dm"
-          },
-          {
-            "engine": "engine6_dm"
-          },
-          {
-            "oil": "oil1_dm"
-          },
-          {
-            "oil": "oil2_dm"
-          },
-          {
-            "oil": "oil3_dm"
-          },
-          {
-            "oil": "oil4_dm"
-          },
-          {
-            "oil": "oil5_dm"
-          },
-          {
-            "oil": "oil6_dm"
-          },
-          {
-            "oil": "oil7_dm"
-          },
-          {
-            "oil": "oil8_dm"
-          },
-          {
-            "oil": "oil9_dm"
-          },
-          {
-            "oil": "oil10_dm"
-          },
-          {
-            "oil": "oil11_dm"
-          },
-          {
-            "oil": "oil12_dm"
-          },
-          {
-            "water": "water1_dm"
-          },
-          {
-            "water": "water2_dm"
-          },
-          {
-            "water": "water3_dm"
-          },
-          {
-            "water": "water4_dm"
-          },
-          {
-            "water": "water5_dm"
-          },
-          {
-            "water": "water6_dm"
-          }
-        ]
       },
       {
         "fm": {
@@ -6756,52 +6674,134 @@
             ]
           }
         ]
+      },
+      {
+        "enginesAutoConfiguration": [
+          {
+            "engine": "engine1_dm"
+          },
+          {
+            "engine": "engine2_dm"
+          },
+          {
+            "engine": "engine3_dm"
+          },
+          {
+            "engine": "engine4_dm"
+          },
+          {
+            "engine": "engine5_dm"
+          },
+          {
+            "engine": "engine6_dm"
+          }
+        ]
+      },
+      {
+        "fuelTanksAutoConfiguration": [
+          {
+            "fuelTank": "tank1_dm"
+          },
+          {
+            "fuelTank": "tank2_dm"
+          },
+          {
+            "fuelTank": "tank3_dm"
+          },
+          {
+            "fuelTank": "tank4_dm"
+          },
+          {
+            "fuelTank": "tank5_dm"
+          },
+          {
+            "fuelTank": "tank6_dm"
+          },
+          {
+            "fuelTank": "tank7_dm"
+          },
+          {
+            "fuelTank": "tank8_dm"
+          }
+        ]
+      },
+      {
+        "radiatorsAutoConfiguration": [
+          {
+            "engine": "engine1_dm"
+          },
+          {
+            "engine": "engine2_dm"
+          },
+          {
+            "engine": "engine3_dm"
+          },
+          {
+            "engine": "engine4_dm"
+          },
+          {
+            "engine": "engine5_dm"
+          },
+          {
+            "engine": "engine6_dm"
+          },
+          {
+            "oil": "oil1_dm"
+          },
+          {
+            "oil": "oil2_dm"
+          },
+          {
+            "oil": "oil3_dm"
+          },
+          {
+            "oil": "oil4_dm"
+          },
+          {
+            "oil": "oil5_dm"
+          },
+          {
+            "oil": "oil6_dm"
+          },
+          {
+            "oil": "oil7_dm"
+          },
+          {
+            "oil": "oil8_dm"
+          },
+          {
+            "oil": "oil9_dm"
+          },
+          {
+            "oil": "oil10_dm"
+          },
+          {
+            "oil": "oil11_dm"
+          },
+          {
+            "oil": "oil12_dm"
+          },
+          {
+            "water": "water1_dm"
+          },
+          {
+            "water": "water2_dm"
+          },
+          {
+            "water": "water3_dm"
+          },
+          {
+            "water": "water4_dm"
+          },
+          {
+            "water": "water5_dm"
+          },
+          {
+            "water": "water6_dm"
+          }
+        ]
       }
     ]
-  },
-  {
-    "wiki": {
-      "general": {
-        "length": 7.47,
-        "wingspan": 16.8,
-        "wingArea": 50.58,
-        "emptyWeight": 4800.0,
-        "normalWeight": 7615.0,
-        "maxTakeoffWeight": 7500.0,
-        "powerPlantType": 2,
-        "thrustMaxMil": 17300.0
-      },
-      "performance": {
-        "table": {
-          "rpmMil": 10000.0,
-          "airSpeedMil0": [0.0,862.0],
-          "airSpeedMil1": [8000.0,913.0],
-          "climbRateMil0": [0.0,21.0],
-          "climbTimeMil0": [2000.0,105.285],
-          "climbTimeMil1": [4000.0,227.67],
-          "climbTimeMil2": [6000.0,376.664],
-          "climbTimeMil3": [8000.0,568.329],
-          "turnTimeMil": [1000.0,28.0],
-          "takeoffDistance": 586.255,
-          "ceiling": 13300.0,
-          "rollRate": 70.0,
-          "wingLoading": 151.0,
-          "thrustToWeightRatio": 0.28
-        },
-        "plot": {
-          "airSpeedMil0": [0.0,862.0],
-          "airSpeedMil1": [6100.0,909.0],
-          "airSpeedMil2": [9100.0,903.0],
-          "airSpeedMil3": [11600.0,861.0],
-          "airSpeedMil4": [12000.0,847.0],
-          "airSpeedMil5": [12600.0,765.0],
-          "airSpeedMil6": [13300.0,715.0],
-          "climbRateMil0": [0.0,21.0],
-          "climbRateMil1": [12000.0,2.8],
-          "climbRateMil2": [13300.0,3.6]
-        }
-      }
-    }
   },
   {
     "balanceData": {

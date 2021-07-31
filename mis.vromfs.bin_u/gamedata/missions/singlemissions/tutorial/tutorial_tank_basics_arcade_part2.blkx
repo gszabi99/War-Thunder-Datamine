@@ -185,8 +185,23 @@
           ]
         },
         {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -218,21 +233,6 @@
             "target": "tutorial_tank_basics_ammo_piercing",
             "object_var_comp_op": "equal",
             "object_var_name": ""
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player",
-            "isImmortal": true
           }
         },
         {
@@ -314,6 +314,44 @@
           ]
         },
         {
+          "unitSetProperties": [
+            {
+              "object_marking": 0
+            },
+            {
+              "object_var_name": ""
+            },
+            {
+              "object_var_comp_op": "equal"
+            },
+            {
+              "object_var_value": 0
+            },
+            {
+              "object": "background_tanks12"
+            },
+            {
+              "object": "background_tanks13"
+            },
+            {
+              "speed": 25.0
+            },
+            {
+              "lockSpeed": true
+            }
+          ]
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "player",
+            "isImmortal": true
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -370,34 +408,6 @@
           ]
         },
         {
-          "unitSetProperties": [
-            {
-              "object_marking": 0
-            },
-            {
-              "object_var_name": ""
-            },
-            {
-              "object_var_comp_op": "equal"
-            },
-            {
-              "object_var_value": 0
-            },
-            {
-              "object": "background_tanks12"
-            },
-            {
-              "object": "background_tanks13"
-            },
-            {
-              "speed": 25.0
-            },
-            {
-              "lockSpeed": true
-            }
-          ]
-        },
-        {
           "missionBattleArea": {
             "air": true,
             "ground": true,
@@ -413,6 +423,11 @@
         {
           "wait": {
             "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -432,9 +447,35 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_hello_part2_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_025_second_tutorial_intro01"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "initial_armor_introduction"
+            },
+            {
+              "target": "player_respawn"
+            }
+          ]
         },
         {
           "unitPlayEffect": {
@@ -457,21 +498,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "initial_armor_introduction"
-            },
-            {
-              "target": "player_respawn"
-            }
-          ]
-        },
-        {
           "missionMarkAsWaypoint": {
             "visible": true,
             "primary": true,
@@ -479,32 +505,6 @@
             "ignoreDifficulty": false,
             "scale": 0.01,
             "target": "waypoint05_underground"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_hello_part2_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "player",
-            "isImmortal": true
           }
         }
       ],
@@ -554,6 +554,38 @@
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_armor_intro",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_armor_intro_continue",
+            "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
@@ -626,6 +658,11 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "playerEmulateShortcut": {
             "control": "ID_TRANS_GEAR_NEUTRAL"
           }
@@ -634,50 +671,13 @@
           "missionStopSpeech": []
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_armor_intro",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_025_second_tutorial_start01"
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "triggerEnable": {
             "target": "shootingP2_player_at_the_start"
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_armor_intro_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         }
       ],
@@ -729,6 +729,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_aim_at_front_plate",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "unitSetProperties": {
             "object_marking": 0,
             "object_var_name": "",
@@ -754,32 +770,16 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "playerLockTarget": {
-            "target": "target_tank03"
-          }
-        },
-        {
           "wait": {
             "time": 0.5
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_aim_at_front_plate",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "missionStopSpeech": []
+        },
+        {
+          "playerLockTarget": {
+            "target": "target_tank03"
           }
         },
         {
@@ -826,13 +826,18 @@
           }
         },
         {
-          "hudElementSelectionShade": {
-            "element": ""
+          "wait": {
+            "time": 1.0
           }
         },
         {
           "wait": {
-            "time": 1.0
+            "time": 2.0
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": ""
           }
         },
         {
@@ -860,14 +865,6 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "missionStopSpeech": []
         },
         {
           "playHint": [
@@ -916,8 +913,16 @@
           ]
         },
         {
+          "missionStopSpeech": []
+        },
+        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_008_first_target_zoom_in01"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "shootingP2_find_weak_point"
           }
         },
         {
@@ -928,11 +933,6 @@
             "object_var_value": 0,
             "object": "target_tank03",
             "isImmortal": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "shootingP2_find_weak_point"
           }
         }
       ],
@@ -984,10 +984,31 @@
           }
         },
         {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
             "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_find_weak_point_and_shoot_the_tank",
+            "action": "show",
             "shouldFadeOut": false,
             "time": -1.0,
             "priority": 0,
@@ -1007,33 +1028,25 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "missionStopSpeech": []
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_find_weak_point_and_shoot_the_tank",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
         },
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_027_third_target_intro02"
           }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "shootingP2_3rd_tank_damaged"
+            },
+            {
+              "target": "shootingP2_week_point_player_shot"
+            },
+            {
+              "target": "shootingP2_weak_point_hint"
+            }
+          ]
         },
         {
           "playerControls": [
@@ -1048,19 +1061,6 @@
             },
             {
               "control": "ID_FIRE_GM"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "shootingP2_3rd_tank_damaged"
-            },
-            {
-              "target": "shootingP2_week_point_player_shot"
-            },
-            {
-              "target": "shootingP2_weak_point_hint"
             }
           ]
         },
@@ -1256,19 +1256,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_030_third_target_hint02"
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_keep_shooting_at_weak_point",
@@ -1283,6 +1270,19 @@
             "object_var_value": 0,
             "item": "ID_FIRE_GM",
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_030_third_target_hint02"
           }
         },
         {
@@ -1311,6 +1311,11 @@
         {
           "wait": {
             "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -1352,11 +1357,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_aim_at_the_green_cross",
@@ -1389,7 +1389,7 @@
         {
           "unitBlinkPart": {
             "blink": true,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank03",
             "part": "body_front_hatch",
             "freq": 5.0
@@ -1446,7 +1446,7 @@
       "actions": {
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff00ff",
+          "color": [0,255,0,255],
           "target": "target_tank03",
           "part": "body_front_hatch",
           "freq": 5.0
@@ -1492,7 +1492,7 @@
       "actions": {
         "unitBlinkPart": {
           "blink": false,
-          "color": "#00ff00ff",
+          "color": [0,255,0,255],
           "target": "target_tank03",
           "part": "optic_body_02",
           "freq": 5.0
@@ -1639,7 +1639,7 @@
               "blink": false
             },
             {
-              "color": "#00ff00ff"
+              "color": [0,255,0,255]
             },
             {
               "target": "target_tank03"
@@ -1658,7 +1658,7 @@
         {
           "unitBlinkPart": {
             "blink": false,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank03",
             "part": "body_front_hatch",
             "freq": 5.0
@@ -1823,6 +1823,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -1836,24 +1841,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "playerLockTarget": {
-            "target": "target_tank04"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "hudElementSelectionShade": {
-            "element": "curTarget"
           }
         },
         {
@@ -1871,6 +1858,19 @@
             "object_var_value": 0,
             "item": "mouse_aim",
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "playerLockTarget": {
+            "target": "target_tank04"
+          }
+        },
+        {
+          "hudElementSelectionShade": {
+            "element": "curTarget"
           }
         },
         {
@@ -1930,6 +1930,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -1949,21 +1954,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "unitSetProperties": {
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "target_tank04",
-            "isImmortal": false
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shoot_at_angled_tank",
@@ -1978,6 +1968,16 @@
             "object_var_value": 0,
             "item": "fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "unitSetProperties": {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "target_tank04",
+            "isImmortal": false
           }
         },
         {
@@ -2077,6 +2077,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_shells_are_ineffective_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -2098,29 +2114,13 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_shells_are_ineffective_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "triggerEnable": {
             "target": "shellsExplanation_ineffective"
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         }
       ],
@@ -2167,14 +2167,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_the_shell_icon",
@@ -2191,16 +2183,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_034_fourth_target_ammo01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_the_shell_icon_continue",
@@ -2214,6 +2196,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_034_fourth_target_ammo01"
           }
         },
         {
@@ -2270,14 +2270,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_what_is_shown_on_icon",
@@ -2292,6 +2284,35 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_what_is_shown_on_icon_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "hudElementShow": {
@@ -2323,27 +2344,6 @@
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_034_fourth_target_ammo02"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_what_is_shown_on_icon_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -2400,14 +2400,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shells_comparison",
@@ -2424,23 +2416,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_ammo_damage_full_info",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_034_fourth_target_ammo03"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shells_comparison_continue",
@@ -2454,6 +2429,31 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_ammo_damage_full_info",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_034_fourth_target_ammo03"
           }
         },
         {
@@ -2510,14 +2510,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shells_are_ineffective_again",
@@ -2534,16 +2526,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_034_fourth_target_ammo04"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shells_are_ineffective_again_continue",
@@ -2557,6 +2539,24 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_034_fourth_target_ammo04"
           }
         },
         {
@@ -2613,21 +2613,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_ammo_penetration_full_info",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_2nd_type_of_shells",
@@ -2644,16 +2629,6 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_034_fourth_target_ammo05"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_look_at_2nd_type_of_shells_continue",
@@ -2667,6 +2642,31 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_ammo_penetration_full_info",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_034_fourth_target_ammo05"
           }
         },
         {
@@ -2723,21 +2723,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementShow": {
-            "element": "hud_tutorial_tank_ammo_final",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_shells_conclusion",
@@ -2755,13 +2740,33 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_034_fourth_target_ammo06"
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementShow": {
+            "element": "hud_tutorial_tank_ammo_final",
+            "show": true,
+            "time": -1
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_034_fourth_target_ammo06"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "shootingP2_ap_shells_loaded"
           }
         },
         {
@@ -2782,11 +2787,6 @@
               "control": "ID_ACTION_BAR_ITEM_2"
             }
           ]
-        },
-        {
-          "triggerEnable": {
-            "target": "shootingP2_ap_shells_loaded"
-          }
         }
       ],
       "else_actions": []
@@ -2894,6 +2894,11 @@
           }
         },
         {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -2913,18 +2918,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "tutorial_tank_ammo_explanation_img",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_fire_off_previous_shells",
@@ -2939,6 +2932,13 @@
             "object_var_value": 0,
             "item": "fire",
             "shouldBlink": false
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tutorial_tank_ammo_explanation_img",
+            "show": false,
+            "time": -1
           }
         },
         {
@@ -3006,14 +3006,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "triggerDisable": [
             {
               "target": "tutorial_tank_arcade_034_fourth_target_shells01"
@@ -3022,6 +3014,19 @@
               "target": "tutorial_tank_arcade_035_fourth_target_shells02"
             }
           ]
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "playHint": {
@@ -3037,11 +3042,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -3090,7 +3090,7 @@
         {
           "__unitBlinkPart": {
             "blink": true,
-            "color": "#00ff00ff",
+            "color": [0,255,0,255],
             "target": "target_tank04",
             "part": "ammo_body_02",
             "freq": 1.0
@@ -3174,8 +3174,50 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_ammo_summary",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_ammo_summary_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 100,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
           }
         },
         {
@@ -3216,27 +3258,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_ammo_summary",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -3255,27 +3276,6 @@
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_034_fourth_target_ammo_conclusion01"
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_ammo_summary_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 100,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
           }
         },
         {
@@ -3322,26 +3322,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementShow": {
-            "element": "tutorial_tank_ammo_summary_all_texts",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_press_id_continue",
@@ -3355,6 +3335,26 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "hudElementShow": {
+            "element": "tutorial_tank_ammo_summary_all_texts",
+            "show": true,
+            "time": -1
           }
         },
         {
@@ -3401,6 +3401,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_move_to_new_position",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "gm_throttle+gm_steering",
+            "shouldBlink": false
+          }
+        },
+        {
           "unitPlayEffect": {
             "effect_type": "specify",
             "loopSpawn": true,
@@ -3434,16 +3451,6 @@
           ]
         },
         {
-          "missionMarkAsWaypoint": {
-            "visible": true,
-            "primary": true,
-            "oriented": false,
-            "ignoreDifficulty": false,
-            "scale": 0.0,
-            "target": "waypoint07_underground"
-          }
-        },
-        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -3466,6 +3473,16 @@
           }
         },
         {
+          "missionMarkAsWaypoint": {
+            "visible": true,
+            "primary": true,
+            "oriented": false,
+            "ignoreDifficulty": false,
+            "scale": 0.0,
+            "target": "waypoint07_underground"
+          }
+        },
+        {
           "hudElementShow": {
             "element": "tutorial_tank_ammo_summary_all_texts",
             "show": false,
@@ -3475,23 +3492,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_move_to_new_position",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "gm_throttle+gm_steering",
-            "shouldBlink": false
           }
         },
         {
@@ -3709,9 +3709,48 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_video_01",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_video_01_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
             "element": "tutorial_tank_advanced_shooting_in_short",
             "show": false,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_advanced_shooting_screen01",
+            "show": true,
             "time": -1
           }
         },
@@ -3737,45 +3776,8 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
           "wait": {
             "time": 1.0
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 0.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting_screen01",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_video_01",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_038_long_range_details01"
           }
         },
         {
@@ -3784,19 +3786,17 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_video_01_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "missionStopSpeech": []
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 0.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_038_long_range_details01"
           }
         },
         {
@@ -3853,8 +3853,45 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_video_02",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_video_02_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 17.0
           }
         },
         {
@@ -3875,32 +3912,6 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_video_02",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_038_long_range_details02"
-          }
-        },
-        {
-          "wait": {
-            "time": 17.0
-          }
-        },
-        {
           "hudElementShow": {
             "element": "tank_tutorial_advanced_shooting_screen02",
             "show": true,
@@ -3908,19 +3919,8 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_video_02_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_038_long_range_details02"
           }
         },
         {
@@ -3980,28 +3980,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting01",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting02",
-            "show": true,
-            "time": -1
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_long_range_video_03",
@@ -4018,20 +3996,40 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_video_03_continue",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting_screen02",
+            "element": "tank_tutorial_advanced_shooting01",
             "show": false,
             "time": -1
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_038_long_range_details03"
+          "hudElementShow": {
+            "element": "tank_tutorial_advanced_shooting02",
+            "show": true,
+            "time": -1
           }
         },
         {
-          "wait": {
-            "time": 15.0
+          "hudElementShow": {
+            "element": "tank_tutorial_advanced_shooting_screen02",
+            "show": false,
+            "time": -1
           }
         },
         {
@@ -4049,19 +4047,21 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_video_03_continue",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_038_long_range_details03"
           }
         },
         {
@@ -4188,34 +4188,6 @@
           }
         },
         {
-          "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting_screen03",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "hudElementShow": {
-            "element": "tank_tutorial_advanced_shooting02",
-            "show": false,
-            "time": -1
-          }
-        },
-        {
-          "missionSetTimeSpeed": {
-            "speed": 1.0,
-            "realtimeTriggers": true
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": [
             {
               "hintType": "tutorialHint"
@@ -4260,6 +4232,34 @@
               "shouldBlink": false
             }
           ]
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_advanced_shooting_screen03",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "hudElementShow": {
+            "element": "tank_tutorial_advanced_shooting02",
+            "show": false,
+            "time": -1
+          }
+        },
+        {
+          "missionSetTimeSpeed": {
+            "speed": 1.0,
+            "realtimeTriggers": true
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": [
@@ -4356,14 +4356,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_cannon_deviation",
@@ -4381,8 +4373,16 @@
         },
         {
           "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
             "time": 2.0
           }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": [
@@ -4427,6 +4427,11 @@
           }
         },
         {
+          "triggerDisable": {
+            "target": "shootingLR_player_shot_counter"
+          }
+        },
+        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "",
@@ -4441,14 +4446,6 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
         },
         {
           "playHint": {
@@ -4468,13 +4465,16 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "shootingLR_hint01"
+          "wait": {
+            "time": 0.5
           }
         },
         {
-          "triggerDisable": {
-            "target": "shootingLR_player_shot_counter"
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "shootingLR_hint01"
           }
         }
       ],
@@ -4502,6 +4502,11 @@
         {
           "wait": {
             "time": 20.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
@@ -4534,14 +4539,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_long_range_explanation_start",
@@ -4556,6 +4553,9 @@
             "object_var_value": 0,
             "shouldBlink": false
           }
+        },
+        {
+          "missionStopSpeech": []
         },
         {
           "triggerEnable": [
@@ -4619,6 +4619,55 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_destroy_targets",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "fire",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_watch_video_again",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -4654,8 +4703,41 @@
           }
         },
         {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_041_long_range_explanation01"
+          }
+        },
+        {
+          "triggerEnable": [
+            {
+              "target": "shootingLR_target_05_killed"
+            },
+            {
+              "target": "shootingLR_target_07_killed"
+            },
+            {
+              "target": "shootingLR_target_killed"
+            }
+          ]
+        },
+        {
+          "triggerEnable": {
+            "target": "shootingLR_hint02"
           }
         },
         {
@@ -4698,88 +4780,6 @@
               "isImmortal": false
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_destroy_targets",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "fire",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "shootingLR_target_05_killed"
-            },
-            {
-              "target": "shootingLR_target_07_killed"
-            },
-            {
-              "target": "shootingLR_target_killed"
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_watch_video_again",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "shootingLR_hint02"
-          }
         }
       ],
       "else_actions": []
@@ -4867,14 +4867,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_long_range_explanation03",
@@ -4892,13 +4884,21 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_043_long_range_explanation03"
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_043_long_range_explanation03"
           }
         },
         {
@@ -4950,14 +4950,6 @@
           }
         },
         {
-          "missionStopSpeech": []
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_long_range_explanation04",
@@ -4975,13 +4967,21 @@
           }
         },
         {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_044_long_range_explanation04"
+          "missionStopSpeech": []
+        },
+        {
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_044_long_range_explanation04"
           }
         },
         {
@@ -5062,6 +5062,23 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_destroy_targets",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "fire",
+            "shouldBlink": false
+          }
+        },
+        {
           "missionStopSpeech": []
         },
         {
@@ -5092,23 +5109,6 @@
         {
           "wait": {
             "time": 0.5
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_destroy_targets",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "fire",
-            "shouldBlink": false
           }
         },
         {
@@ -5628,6 +5628,22 @@
           }
         },
         {
+          "playHint": {
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_tank_long_range_final_hint",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "shouldBlink": false
+          }
+        },
+        {
           "playerControls": [
             {
               "setStatus": "disable"
@@ -5665,29 +5681,13 @@
           }
         },
         {
-          "playHint": {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_tank_long_range_final_hint",
-            "action": "hideCur",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "shouldBlink": false
+          "wait": {
+            "time": 0.5
           }
         },
         {
           "triggerEnable": {
             "target": "tutorial_tank_arcade_045_long_range_targets_killed01"
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
           }
         },
         {
@@ -5743,11 +5743,6 @@
           }
         },
         {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
           "playHint": {
             "hintType": "tutorialHint",
             "name": "hints/tutorial_tank_final_hint",
@@ -5761,19 +5756,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionStopSpeech": []
-        },
-        {
-          "triggerEnable": {
-            "target": "tutorial_tank_arcade_060_victory"
           }
         },
         {
@@ -5795,6 +5777,24 @@
         {
           "wait": {
             "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "missionStopSpeech": []
+        },
+        {
+          "triggerEnable": {
+            "target": "tutorial_tank_arcade_060_victory"
           }
         },
         {
@@ -5869,8 +5869,20 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
           "wait": {
             "time": 0.6
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
           }
         },
         {
@@ -5902,18 +5914,6 @@
             "object": "player",
             "move_type": "teleport",
             "lookat": "waypoint01"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
           }
         }
       ],
@@ -8563,527 +8563,6 @@
       }
     },
     {
-      "squad": {
-        "name": "target_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1921.26,221.75,1571.65]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "target_tank03"
-          },
-          {
-            "squad_members": "target_tank04"
-          },
-          {
-            "squad_members": "target_tank05"
-          },
-          {
-            "squad_members": "target_tank07"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs001",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1566.97,217.553,1657.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs02",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1637.35,216.986,1595.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs03",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1649.42,216.99,1590.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs10",
-        "tm": [
-          [0.973864,0.0,0.227132],
-          [0.0,1.0,0.0],
-          [-0.227132,0.0,0.973864],
-          [1655.47,217.073,1623.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs11",
-        "tm": [
-          [0.869017,0.0,-0.494783],
-          [0.0,1.0,0.0],
-          [0.494783,0.0,0.869017],
-          [1601.81,217.553,1626.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs13",
-        "tm": [
-          [0.958144,0.0,-0.286287],
-          [0.0,1.0,0.0],
-          [0.286287,0.0,0.958144],
-          [1754.69,217.553,1628.75]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs16",
-        "tm": [
-          [0.748351,0.0,-0.663303],
-          [0.0,1.0,0.0],
-          [0.663303,0.0,0.748351],
-          [1766.53,217.553,1627.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs17",
-        "tm": [
-          [0.891677,0.0,-0.452672],
-          [0.0,1.0,0.0],
-          [0.452672,0.0,0.891677],
-          [1778.75,217.553,1622.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs23",
-        "tm": [
-          [0.598329,0.0,-0.801251],
-          [0.0,1.0,0.0],
-          [0.801251,0.0,0.598329],
-          [1848.71,217.553,1535.64]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs27",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1660.71,217.227,1585.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs26",
-        "tm": [
-          [0.99421,0.0,-0.107454],
-          [0.0,1.0,0.0],
-          [0.107454,0.0,0.99421],
-          [1674.06,217.553,1582.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs39",
-        "tm": [
-          [0.845122,0.0,-0.534573],
-          [0.0,1.0,0.0],
-          [0.534573,0.0,0.845122],
-          [1745.62,217.259,1556.15]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs38",
-        "tm": [
-          [0.932893,0.0,-0.360154],
-          [0.0,1.0,0.0],
-          [0.360154,0.0,0.932893],
-          [1759.7,217.254,1546.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs50",
-        "tm": [
-          [-0.375247,0.0,-0.926925],
-          [0.0,1.0,0.0],
-          [0.926925,0.0,-0.375247],
-          [1839.53,217.254,1544.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs14",
-        "tm": [
-          [0.984638,0.0,0.174607],
-          [0.0,1.0,0.0],
-          [-0.174607,0.0,0.984638],
-          [1672.15,217.083,1635.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs15",
-        "tm": [
-          [0.984638,0.0,0.174607],
-          [0.0,1.0,0.0],
-          [-0.174607,0.0,0.984638],
-          [1673.21,217.083,1641.25]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs18",
-        "tm": [
-          [0.744899,-0.0717984,-0.663303],
-          [0.0959422,0.995387,0.0],
-          [0.660243,-0.0636387,0.748351],
-          [1753.5,217.752,1639.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs24",
-        "tm": [
-          [0.991584,0.0,-0.129463],
-          [0.0,1.0,0.0],
-          [0.129463,0.0,0.991584],
-          [1861.84,217.553,1592.21]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs25",
-        "tm": [
-          [0.963998,0.0,0.26591],
-          [0.0,1.0,0.0],
-          [-0.26591,0.0,0.963998],
-          [1813.52,217.553,1583.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs28",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1796.72,217.553,1583.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs51",
-        "tm": [
-          [-0.375247,0.0,-0.926925],
-          [0.0,1.0,0.0],
-          [0.926925,0.0,-0.375247],
-          [1839.77,217.087,1534.65]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs04",
-        "tm": [
-          [0.942734,0.0,-0.333544],
-          [0.0,1.0,0.0],
-          [0.333544,0.0,0.942734],
-          [1585.51,217.553,1654.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs05",
-        "tm": [
-          [0.79606,0.0,-0.605217],
-          [0.0,1.0,0.0],
-          [0.605217,0.0,0.79606],
-          [1601.53,217.553,1648.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs06",
-        "tm": [
-          [0.79606,0.0,-0.605217],
-          [0.0,1.0,0.0],
-          [0.605217,0.0,0.79606],
-          [1617.39,217.553,1640.95]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs07",
-        "tm": [
-          [0.882225,0.0,-0.470828],
-          [0.0,1.0,0.0],
-          [0.470828,0.0,0.882225],
-          [1636.07,217.415,1626.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs12",
-        "tm": [
-          [0.869017,0.0,-0.494783],
-          [0.0,1.0,0.0],
-          [0.494783,0.0,0.869017],
-          [1566.36,216.777,1633.35]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs19",
-        "tm": [
-          [0.993548,0.0227149,0.111119],
-          [0.0,0.979739,-0.200278],
-          [-0.113417,0.198985,0.973418],
-          [1583.86,216.826,1630.05]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs52",
-        "tm": [
-          [-0.893347,0.0,-0.449368],
-          [0.0,1.0,0.0],
-          [0.449368,0.0,-0.893347],
-          [1829.01,216.614,1522.85]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs53",
-        "tm": [
-          [-0.898893,0.0,-0.438168],
-          [0.0,1.0,0.0],
-          [0.438168,0.0,-0.898893],
-          [1814.52,217.096,1516.45]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "tankModels": {
         "name": "background_tanks00",
         "tm": [
@@ -10863,171 +10342,6 @@
       }
     },
     {
-      "squad": {
-        "name": "background_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1731.33,217.274,1524.45]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "background_tanks00"
-          },
-          {
-            "squad_members": "background_tanks01"
-          },
-          {
-            "squad_members": "background_tanks02"
-          },
-          {
-            "squad_members": "background_tanks03"
-          },
-          {
-            "squad_members": "background_tanks05"
-          },
-          {
-            "squad_members": "background_tanks06"
-          },
-          {
-            "squad_members": "background_tanks12"
-          },
-          {
-            "squad_members": "background_tanks11"
-          },
-          {
-            "squad_members": "background_tanks18"
-          },
-          {
-            "squad_members": "background_tanks16"
-          },
-          {
-            "squad_members": "background_tanks22"
-          },
-          {
-            "squad_members": "background_tanks23"
-          },
-          {
-            "squad_members": "background_tanks21"
-          },
-          {
-            "squad_members": "background_tanks27"
-          },
-          {
-            "squad_members": "background_tanks32"
-          },
-          {
-            "squad_members": "background_tanks31"
-          },
-          {
-            "squad_members": "background_tanks37"
-          },
-          {
-            "squad_members": "background_tanks38"
-          },
-          {
-            "squad_members": "background_tanks39"
-          },
-          {
-            "squad_members": "background_tanks35"
-          },
-          {
-            "squad_members": "background_tanks29"
-          },
-          {
-            "squad_members": "background_tanks41"
-          },
-          {
-            "squad_members": "background_tanks34"
-          },
-          {
-            "squad_members": "background_tanks44"
-          },
-          {
-            "squad_members": "background_tanks14"
-          },
-          {
-            "squad_members": "background_tanks15"
-          },
-          {
-            "squad_members": "background_tanks13"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs40",
-        "tm": [
-          [0.927325,0.10177,-0.360154],
-          [-0.109091,0.994032,0.0],
-          [0.358005,0.0392895,0.932893],
-          [1774.38,217.67,1538.55]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs20",
-        "tm": [
-          [0.473312,0.160875,0.86608],
-          [0.0,0.983182,-0.182626],
-          [-0.880895,0.0864393,0.465352],
-          [1659.64,217.713,1631.43]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs29",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1785.51,217.044,1604.61]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs30",
-        "tm": [
-          [0.988465,0.0,-0.151452],
-          [0.0,1.0,0.0],
-          [0.151452,0.0,0.988465],
-          [1785.51,217.044,1591.89]
-        ],
-        "unit_class": "czech_hedgehog_dynamic",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "tankModels": {
         "name": "background_tanks13",
         "tm": [
@@ -11962,40 +11276,6 @@
       }
     },
     {
-      "objectGroups": {
-        "name": "hedgehogs21",
-        "tm": [
-          [0.639365,0.0,-0.768904],
-          [0.0,1.0,0.0],
-          [0.768904,0.0,0.639365],
-          [1612.82,217.553,1613.77]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "hedgehogs22",
-        "tm": [
-          [0.676981,0.0,-0.736001],
-          [0.0,1.0,0.0],
-          [0.736001,0.0,0.676981],
-          [1620.74,217.553,1599.15]
-        ],
-        "unit_class": "czech_hedgehog_dynamic_5blocks",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": true
-        }
-      }
-    },
-    {
       "tankModels": {
         "name": "target_tank05",
         "tm": [
@@ -12030,6 +11310,763 @@
           "attack_type": "fire_at_will"
         },
         "way": []
+      }
+    },
+    {
+      "tankModels": {
+        "name": "target_tank07",
+        "tm": [
+          [0.0566344,0.0,0.998395],
+          [0.0,1.0,0.0],
+          [-0.998395,0.0,0.0566344],
+          [2984.04,238.508,1537.54]
+        ],
+        "unit_class": "germ_pzkpfw_II_ausf_C",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_pzkpfw_II_ausf_C_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 100,
+        "bulletsCount1": 100,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "target_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1921.26,221.75,1571.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "target_tank03"
+          },
+          {
+            "squad_members": "target_tank04"
+          },
+          {
+            "squad_members": "target_tank05"
+          },
+          {
+            "squad_members": "target_tank07"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "background_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1731.33,217.274,1524.45]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "background_tanks00"
+          },
+          {
+            "squad_members": "background_tanks01"
+          },
+          {
+            "squad_members": "background_tanks02"
+          },
+          {
+            "squad_members": "background_tanks03"
+          },
+          {
+            "squad_members": "background_tanks05"
+          },
+          {
+            "squad_members": "background_tanks06"
+          },
+          {
+            "squad_members": "background_tanks12"
+          },
+          {
+            "squad_members": "background_tanks11"
+          },
+          {
+            "squad_members": "background_tanks18"
+          },
+          {
+            "squad_members": "background_tanks16"
+          },
+          {
+            "squad_members": "background_tanks22"
+          },
+          {
+            "squad_members": "background_tanks23"
+          },
+          {
+            "squad_members": "background_tanks21"
+          },
+          {
+            "squad_members": "background_tanks27"
+          },
+          {
+            "squad_members": "background_tanks32"
+          },
+          {
+            "squad_members": "background_tanks31"
+          },
+          {
+            "squad_members": "background_tanks37"
+          },
+          {
+            "squad_members": "background_tanks38"
+          },
+          {
+            "squad_members": "background_tanks39"
+          },
+          {
+            "squad_members": "background_tanks35"
+          },
+          {
+            "squad_members": "background_tanks29"
+          },
+          {
+            "squad_members": "background_tanks41"
+          },
+          {
+            "squad_members": "background_tanks34"
+          },
+          {
+            "squad_members": "background_tanks44"
+          },
+          {
+            "squad_members": "background_tanks14"
+          },
+          {
+            "squad_members": "background_tanks15"
+          },
+          {
+            "squad_members": "background_tanks13"
+          }
+        ]
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs001",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1566.97,217.553,1657.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs02",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1637.35,216.986,1595.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs03",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1649.42,216.99,1590.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs10",
+        "tm": [
+          [0.973864,0.0,0.227132],
+          [0.0,1.0,0.0],
+          [-0.227132,0.0,0.973864],
+          [1655.47,217.073,1623.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs11",
+        "tm": [
+          [0.869017,0.0,-0.494783],
+          [0.0,1.0,0.0],
+          [0.494783,0.0,0.869017],
+          [1601.81,217.553,1626.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs13",
+        "tm": [
+          [0.958144,0.0,-0.286287],
+          [0.0,1.0,0.0],
+          [0.286287,0.0,0.958144],
+          [1754.69,217.553,1628.75]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs16",
+        "tm": [
+          [0.748351,0.0,-0.663303],
+          [0.0,1.0,0.0],
+          [0.663303,0.0,0.748351],
+          [1766.53,217.553,1627.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs17",
+        "tm": [
+          [0.891677,0.0,-0.452672],
+          [0.0,1.0,0.0],
+          [0.452672,0.0,0.891677],
+          [1778.75,217.553,1622.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs23",
+        "tm": [
+          [0.598329,0.0,-0.801251],
+          [0.0,1.0,0.0],
+          [0.801251,0.0,0.598329],
+          [1848.71,217.553,1535.64]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs27",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1660.71,217.227,1585.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs26",
+        "tm": [
+          [0.99421,0.0,-0.107454],
+          [0.0,1.0,0.0],
+          [0.107454,0.0,0.99421],
+          [1674.06,217.553,1582.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs39",
+        "tm": [
+          [0.845122,0.0,-0.534573],
+          [0.0,1.0,0.0],
+          [0.534573,0.0,0.845122],
+          [1745.62,217.259,1556.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs38",
+        "tm": [
+          [0.932893,0.0,-0.360154],
+          [0.0,1.0,0.0],
+          [0.360154,0.0,0.932893],
+          [1759.7,217.254,1546.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs50",
+        "tm": [
+          [-0.375247,0.0,-0.926925],
+          [0.0,1.0,0.0],
+          [0.926925,0.0,-0.375247],
+          [1839.53,217.254,1544.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs14",
+        "tm": [
+          [0.984638,0.0,0.174607],
+          [0.0,1.0,0.0],
+          [-0.174607,0.0,0.984638],
+          [1672.15,217.083,1635.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs15",
+        "tm": [
+          [0.984638,0.0,0.174607],
+          [0.0,1.0,0.0],
+          [-0.174607,0.0,0.984638],
+          [1673.21,217.083,1641.25]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs18",
+        "tm": [
+          [0.744899,-0.0717984,-0.663303],
+          [0.0959422,0.995387,0.0],
+          [0.660243,-0.0636387,0.748351],
+          [1753.5,217.752,1639.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs24",
+        "tm": [
+          [0.991584,0.0,-0.129463],
+          [0.0,1.0,0.0],
+          [0.129463,0.0,0.991584],
+          [1861.84,217.553,1592.21]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs25",
+        "tm": [
+          [0.963998,0.0,0.26591],
+          [0.0,1.0,0.0],
+          [-0.26591,0.0,0.963998],
+          [1813.52,217.553,1583.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs28",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1796.72,217.553,1583.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs51",
+        "tm": [
+          [-0.375247,0.0,-0.926925],
+          [0.0,1.0,0.0],
+          [0.926925,0.0,-0.375247],
+          [1839.77,217.087,1534.65]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs04",
+        "tm": [
+          [0.942734,0.0,-0.333544],
+          [0.0,1.0,0.0],
+          [0.333544,0.0,0.942734],
+          [1585.51,217.553,1654.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs05",
+        "tm": [
+          [0.79606,0.0,-0.605217],
+          [0.0,1.0,0.0],
+          [0.605217,0.0,0.79606],
+          [1601.53,217.553,1648.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs06",
+        "tm": [
+          [0.79606,0.0,-0.605217],
+          [0.0,1.0,0.0],
+          [0.605217,0.0,0.79606],
+          [1617.39,217.553,1640.95]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs07",
+        "tm": [
+          [0.882225,0.0,-0.470828],
+          [0.0,1.0,0.0],
+          [0.470828,0.0,0.882225],
+          [1636.07,217.415,1626.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs12",
+        "tm": [
+          [0.869017,0.0,-0.494783],
+          [0.0,1.0,0.0],
+          [0.494783,0.0,0.869017],
+          [1566.36,216.777,1633.35]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs19",
+        "tm": [
+          [0.993548,0.0227149,0.111119],
+          [0.0,0.979739,-0.200278],
+          [-0.113417,0.198985,0.973418],
+          [1583.86,216.826,1630.05]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs52",
+        "tm": [
+          [-0.893347,0.0,-0.449368],
+          [0.0,1.0,0.0],
+          [0.449368,0.0,-0.893347],
+          [1829.01,216.614,1522.85]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs53",
+        "tm": [
+          [-0.898893,0.0,-0.438168],
+          [0.0,1.0,0.0],
+          [0.438168,0.0,-0.898893],
+          [1814.52,217.096,1516.45]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs40",
+        "tm": [
+          [0.927325,0.10177,-0.360154],
+          [-0.109091,0.994032,0.0],
+          [0.358005,0.0392895,0.932893],
+          [1774.38,217.67,1538.55]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs20",
+        "tm": [
+          [0.473312,0.160875,0.86608],
+          [0.0,0.983182,-0.182626],
+          [-0.880895,0.0864393,0.465352],
+          [1659.64,217.713,1631.43]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs29",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1785.51,217.044,1604.61]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs30",
+        "tm": [
+          [0.988465,0.0,-0.151452],
+          [0.0,1.0,0.0],
+          [0.151452,0.0,0.988465],
+          [1785.51,217.044,1591.89]
+        ],
+        "unit_class": "czech_hedgehog_dynamic",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs21",
+        "tm": [
+          [0.639365,0.0,-0.768904],
+          [0.0,1.0,0.0],
+          [0.768904,0.0,0.639365],
+          [1612.82,217.553,1613.77]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "hedgehogs22",
+        "tm": [
+          [0.676981,0.0,-0.736001],
+          [0.0,1.0,0.0],
+          [0.736001,0.0,0.676981],
+          [1620.74,217.553,1599.15]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
       }
     },
     {
@@ -12625,43 +12662,6 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "tankModels": {
-        "name": "target_tank07",
-        "tm": [
-          [0.0566344,0.0,0.998395],
-          [0.0,1.0,0.0],
-          [-0.998395,0.0,0.0566344],
-          [2984.04,238.508,1537.54]
-        ],
-        "unit_class": "germ_pzkpfw_II_ausf_C",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "germ_pzkpfw_II_ausf_C_default",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 100,
-        "bulletsCount1": 100,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
       }
     },
     {

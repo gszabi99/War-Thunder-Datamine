@@ -155,6 +155,11 @@
           }
         },
         {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "night_breakktrough_takeoff"
           }
@@ -186,11 +191,6 @@
             "fightInArea": "battle_area",
             "fightAreaRadius": 2500.0,
             "fightAreaOuterRadius": 3500.0
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -785,6 +785,11 @@
           }
         },
         {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
           "moAddMissionObjective": {
             "target": "night_breakktrough_landing"
           }
@@ -793,11 +798,6 @@
           "airfieldSetIndication": {
             "set": true,
             "target": "airfield"
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
           }
         },
         {
@@ -1045,6 +1045,77 @@
       }
     },
     {
+      "armada": {
+        "name": "germ_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-17469.0,2526.3,15854.0]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109g-2",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 16,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "ju87",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-27382.8,1000.0,18908.4]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ju-87d-3",
+        "weapons": "Ju87_D3_default",
+        "props": {
+          "army": 2,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "objectGroups": {
         "name": "airfield",
         "tm": [
@@ -1221,455 +1292,6 @@
           "attack_type": "fire_at_will",
           "stealthRadius": 4500.0,
           "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ussr_artillery_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-15610.2,75.55,15576.5]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "ussr_artillery_01"
-          },
-          {
-            "squad_members": "ussr_artillery_02"
-          },
-          {
-            "squad_members": "ussr_artillery_03"
-          },
-          {
-            "squad_members": "ussr_artillery_04"
-          },
-          {
-            "squad_members": "ussr_artillery_05"
-          },
-          {
-            "squad_members": "ussr_artillery_06"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "wheeled_vehicles": {
-        "name": "ussr_truck",
-        "tm": [
-          [-0.300706,0.0,0.953717],
-          [0.0,1.0,0.0],
-          [-0.953717,0.0,-0.300706],
-          [-14927.8,31.65,15240.0]
-        ],
-        "closed_waypoints": true,
-        "unit_class": "ussr_zis5_fuel",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 4,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": {
-          "ussr_truck_wp_01": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14964.3,27.55,15340.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_02": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14979.5,58.75,15411.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_03": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15082.7,43.2,15677.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_04": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14897.8,29.95,15619.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_05": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14871.7,39.05,15706.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_06": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14840.2,49.1,15790.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_07": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14812.6,59.7,15875.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_08": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14751.8,68.0,15949.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_09": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14784.9,69.35,15952.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_10": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14861.2,70.6,15949.2]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_11": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14946.7,69.3,15952.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_12": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15032.3,67.45,15948.1]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_13": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15169.0,63.7,15928.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_14": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15226.8,74.35,16065.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_15": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15290.9,82.6,16051.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_16": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15382.5,94.15,16024.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_17": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15375.8,89.85,15949.7]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_18": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15342.0,79.6,15823.9]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_19": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15199.8,56.15,15750.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_20": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15161.5,60.95,15666.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_21": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15061.2,33.6,15396.8]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_22": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-15003.4,11.4,15254.5]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          },
-          "ussr_truck_wp_23": {
-            "type": "normal",
-            "tm": [
-              [1.0,0.0,0.0],
-              [0.0,1.0,0.0],
-              [0.0,0.0,1.0],
-              [-14940.9,18.4,15280.0]
-            ],
-            "props": {
-              "speed": 30.0,
-              "moveType": "MOVETO_STRAIGHT"
-            }
-          }
-        }
-      }
-    },
-    {
-      "tracked_vehicles": {
-        "name": "germ_tanks_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-19364.2,145.75,15190.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "germ_pzIVc",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 45,
-          "formation_type": "rows",
-          "formation_div": 8,
-          "formation_step": [25.0,10.0],
-          "formation_noise": [1.0,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "ussr_air_def_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-15566.4,68.1,15444.1]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "ussr_zis5_37mm",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "stealthRadius": 2500.0,
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "germ_fighters_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-17469.0,2526.3,15854.0]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109g-2",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 16,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "numInWing": 2,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }
@@ -2092,6 +1714,41 @@
     },
     {
       "squad": {
+        "name": "ussr_artillery_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-15610.2,75.55,15576.5]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "ussr_artillery_01"
+          },
+          {
+            "squad_members": "ussr_artillery_02"
+          },
+          {
+            "squad_members": "ussr_artillery_03"
+          },
+          {
+            "squad_members": "ussr_artillery_04"
+          },
+          {
+            "squad_members": "ussr_artillery_05"
+          },
+          {
+            "squad_members": "ussr_artillery_06"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
         "name": "bombtargets_squad",
         "tm": [
           [1.0,0.0,0.0],
@@ -2156,36 +1813,420 @@
       }
     },
     {
-      "armada": {
-        "name": "ju87",
+      "squad": {
+        "name": "ussr_air_def_squad",
         "tm": [
           [1.0,0.0,0.0],
           [0.0,1.0,0.0],
           [0.0,0.0,1.0],
-          [-27382.8,1000.0,18908.4]
+          [-13218.7,16.1,16552.2]
         ],
         "closed_waypoints": false,
-        "unit_class": "ju-87d-3",
-        "weapons": "Ju87_D3_default",
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "ussr_air_def_01"
+          },
+          {
+            "squad_members": "ussr_air_def_02"
+          },
+          {
+            "squad_members": "ussr_air_def_03"
+          },
+          {
+            "squad_members": "ussr_air_def_04"
+          },
+          {
+            "squad_members": "ussr_air_def_05"
+          },
+          {
+            "squad_members": "ussr_air_def_06"
+          },
+          {
+            "squad_members": "ussr_air_def_07"
+          },
+          {
+            "squad_members": "ussr_air_def_08"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "wheeled_vehicles": {
+        "name": "ussr_truck",
+        "tm": [
+          [-0.300706,0.0,0.953717],
+          [0.0,1.0,0.0],
+          [-0.953717,0.0,-0.300706],
+          [-14927.8,31.65,15240.0]
+        ],
+        "closed_waypoints": true,
+        "unit_class": "ussr_zis5_fuel",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 4,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "ussr_truck_wp_01": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14964.3,27.55,15340.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_02": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14979.5,58.75,15411.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_03": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15082.7,43.2,15677.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_04": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14897.8,29.95,15619.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_05": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14871.7,39.05,15706.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_06": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14840.2,49.1,15790.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_07": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14812.6,59.7,15875.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_08": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14751.8,68.0,15949.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_09": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14784.9,69.35,15952.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_10": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14861.2,70.6,15949.2]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_11": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14946.7,69.3,15952.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_12": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15032.3,67.45,15948.1]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_13": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15169.0,63.7,15928.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_14": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15226.8,74.35,16065.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_15": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15290.9,82.6,16051.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_16": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15382.5,94.15,16024.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_17": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15375.8,89.85,15949.7]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_18": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15342.0,79.6,15823.9]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_19": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15199.8,56.15,15750.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_20": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15161.5,60.95,15666.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_21": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15061.2,33.6,15396.8]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_22": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-15003.4,11.4,15254.5]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "ussr_truck_wp_23": {
+            "type": "normal",
+            "tm": [
+              [1.0,0.0,0.0],
+              [0.0,1.0,0.0],
+              [0.0,0.0,1.0],
+              [-14940.9,18.4,15280.0]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      }
+    },
+    {
+      "tracked_vehicles": {
+        "name": "germ_tanks_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-19364.2,145.75,15190.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "germ_pzIVc",
+        "weapons": "",
         "props": {
           "army": 2,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
+          "count": 45,
+          "formation_type": "rows",
+          "formation_div": 8,
+          "formation_step": [25.0,10.0],
+          "formation_noise": [1.0,1.0],
+          "uniqueName": "",
           "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
+          "effShootingRate": 0.1
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_air_def_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-15566.4,68.1,15444.1]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "ussr_zis5_37mm",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 2500.0,
+          "effShootingRate": 0.1
         },
         "way": []
       }
@@ -2322,47 +2363,6 @@
           "stealthRadius": 2500.0,
           "effShootingRate": 0.1
         },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "ussr_air_def_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-13218.7,16.1,16552.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "ussr_air_def_01"
-          },
-          {
-            "squad_members": "ussr_air_def_02"
-          },
-          {
-            "squad_members": "ussr_air_def_03"
-          },
-          {
-            "squad_members": "ussr_air_def_04"
-          },
-          {
-            "squad_members": "ussr_air_def_05"
-          },
-          {
-            "squad_members": "ussr_air_def_06"
-          },
-          {
-            "squad_members": "ussr_air_def_07"
-          },
-          {
-            "squad_members": "ussr_air_def_08"
-          }
-        ],
         "way": []
       }
     },

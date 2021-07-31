@@ -155,28 +155,73 @@
       "actions": [
         {
           "comment": {
-            "value": "запрещаем генерирование начального стейта"
+            "value": "\u0437\u0430\u043f\u0440\u0435\u0449\u0430\u0435\u043c \u0433\u0435\u043d\u0435\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u043d\u0430\u0447\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0441\u0442\u0435\u0439\u0442\u0430"
           }
         },
         {
           "comment": {
-            "value": "так как сложная локация"
+            "value": "\u0442\u0430\u043a \u043a\u0430\u043a \u0441\u043b\u043e\u0436\u043d\u0430\u044f \u043b\u043e\u043a\u0430\u0446\u0438\u044f"
           }
         },
         {
           "comment": {
-            "value": "укажем стейты вручную"
+            "value": "\u0443\u043a\u0430\u0436\u0435\u043c \u0441\u0442\u0435\u0439\u0442\u044b \u0432\u0440\u0443\u0447\u043d\u0443\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0443\u043c\u0435\u043d\u044c\u0448\u0430\u0435\u043c \u0431\u043e\u0435\u0432\u0443\u044e \u0437\u043e\u043d\u0443"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 \u0444\u0440\u043e\u043d\u0442\u043b\u0430\u0439\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e col \u0438 row"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0441\u0447\u0438\u0442\u044b\u0432\u0430\u0435\u043c \u043e\u0431\u0449\u0435\u0435 \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0437\u043e\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0432\u0441\u0435 \u0437\u043e\u043d\u044b \u043c\u043e\u0440\u0441\u043a\u0438\u043c\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043a\u043e\u043c\u0430\u043d\u0434\u044b B"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043c\u0435\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u044b \u043a\u043e\u043c\u0430\u043d\u0434 (\u0432 \u0446\u0438\u043a\u043b\u0435 \u043f\u043e \u0430\u043b\u0433\u043e\u0440\u0438\u0442\u043c\u0443)"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0442\u0435\u0441\u0442\u043e\u0432\u044b\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0440\u0438\u0441\u0443\u0435\u043c \u043b\u0438\u043d\u0438\u044e \u0444\u0440\u043e\u043d\u0442\u0430"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "flt_disable_state_filling"
-          }
-        },
-        {
-          "comment": {
-            "value": "уменьшаем боевую зону"
           }
         },
         {
@@ -217,11 +262,6 @@
           }
         },
         {
-          "comment": {
-            "value": "настройки фронтлайна"
-          }
-        },
-        {
           "varSetInt": {
             "value": 8,
             "var": "flt_start_cell"
@@ -231,11 +271,6 @@
           "varSetInt": {
             "value": 2,
             "var": "flt_offset"
-          }
-        },
-        {
-          "comment": {
-            "value": "количество col и row"
           }
         },
         {
@@ -251,37 +286,9 @@
           }
         },
         {
-          "comment": {
-            "value": "высчитываем общее количество зон"
-          }
-        },
-        {
           "varSetInt": {
             "value": 0,
             "var": "flt_total_zones"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "add",
-            "value": 0.0,
-            "var": "flt_total_zones",
-            "use_variable": true,
-            "var_value": "flt_zones_in_row"
-          }
-        },
-        {
-          "varModify": {
-            "operator": "mul",
-            "value": 3.0,
-            "var": "flt_total_zones",
-            "use_variable": true,
-            "var_value": "flt_zones_in_col"
-          }
-        },
-        {
-          "comment": {
-            "value": "помечаем все зоны морскими"
           }
         },
         {
@@ -439,6 +446,68 @@
           ]
         },
         {
+          "varSetInt": [
+            {
+              "value": 1
+            },
+            {
+              "var": "flt_area_24_state"
+            },
+            {
+              "var": "flt_area_30_state"
+            },
+            {
+              "var": "flt_area_31_state"
+            },
+            {
+              "var": "flt_area_32_state"
+            }
+          ]
+        },
+        {
+          "varSetInt": [
+            {
+              "value": 2
+            },
+            {
+              "var": "flt_area_12_state"
+            },
+            {
+              "var": "flt_area_13_state"
+            },
+            {
+              "var": "flt_area_18_state"
+            },
+            {
+              "var": "flt_area_19_state"
+            },
+            {
+              "var": "flt_area_20_state"
+            },
+            {
+              "var": "flt_area_25_state"
+            }
+          ]
+        },
+        {
+          "varModify": {
+            "operator": "add",
+            "value": 0.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_row"
+          }
+        },
+        {
+          "varModify": {
+            "operator": "mul",
+            "value": 3.0,
+            "var": "flt_total_zones",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          }
+        },
+        {
           "varSetString": [
             {
               "value": "sea"
@@ -593,112 +662,43 @@
           ]
         },
         {
-          "comment": {
-            "value": "помечаем зоны команды А"
-          }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "flt_area_24_state"
-            },
-            {
-              "var": "flt_area_30_state"
-            },
-            {
-              "var": "flt_area_31_state"
-            },
-            {
-              "var": "flt_area_32_state"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "помечаем зоны команды B"
-          }
-        },
-        {
-          "varSetInt": [
-            {
-              "value": 2
-            },
-            {
-              "var": "flt_area_12_state"
-            },
-            {
-              "var": "flt_area_13_state"
-            },
-            {
-              "var": "flt_area_18_state"
-            },
-            {
-              "var": "flt_area_19_state"
-            },
-            {
-              "var": "flt_area_20_state"
-            },
-            {
-              "var": "flt_area_25_state"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "помечаем зоны команд (в цикле по алгоритму)"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "flt_army_state_start"
-          }
-        },
-        {
-          "comment": {
-            "value": "тестовые значения"
-          }
-        },
-        {
-          "__varSetInt": [
-            {
-              "value": 1
-            },
-            {
-              "var": "flt_area_20_state"
-            },
-            {
-              "var": "flt_area_25_state"
-            }
-          ]
-        },
-        {
-          "__varSetInt": [
-            {
-              "value": 2
-            },
-            {
-              "var": "flt_area_30_state"
-            },
-            {
-              "var": "flt_area_32_state"
-            },
-            {
-              "var": "flt_area_24_state"
-            }
-          ]
-        },
-        {
-          "comment": {
-            "value": "рисуем линию фронта"
           }
         },
         {
           "triggerEnable": {
             "target": "flt_draw_frontline"
           }
+        },
+        {
+          "__varSetInt": [
+            {
+              "value": 1
+            },
+            {
+              "var": "flt_area_20_state"
+            },
+            {
+              "var": "flt_area_25_state"
+            }
+          ]
+        },
+        {
+          "__varSetInt": [
+            {
+              "value": 2
+            },
+            {
+              "var": "flt_area_30_state"
+            },
+            {
+              "var": "flt_area_32_state"
+            },
+            {
+              "var": "flt_area_24_state"
+            }
+          ]
         }
       ],
       "else_actions": []
@@ -789,770 +789,6 @@
           "setStealth": true
         },
         "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "flt_t1_big_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [33484.9,-12.0,33220.9]
-        ],
-        "unit_class": "ussr_85mm_52k",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "flt_t1_art",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [40679.2,-12.0,31782.3]
-        ],
-        "unit_class": "ussr_76mm_zis3",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "flt_t2_big_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [19881.3,127.4,55388.3]
-        ],
-        "unit_class": "germ_88mm_flak36",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 10,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "flt_t2_art",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11540.2,185.45,53247.6]
-        ],
-        "unit_class": "germ_75mm_pak40",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_big_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [11135.8,-4.9,8208.55]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t1_big_aaa"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_art_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9947.55,-12.0,2033.25]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t1_art"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_big_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3416.3,-4.9,9323.65]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t2_big_aaa"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_art_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3265.0,-12.0,5411.5]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t2_art"
-        }
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_forces_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6539.5,1.2,-2011.4]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t1_big_aaa_squad"
-          },
-          {
-            "squad_members": "flt_t1_small_aaa_squad"
-          },
-          {
-            "squad_members": "flt_t1_art_squad"
-          },
-          {
-            "squad_members": "flt_t1_tanks_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_forces_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-2948.55,106.35,2368.85]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t2_big_aaa_squad"
-          },
-          {
-            "squad_members": "flt_t2_small_aaa_squad"
-          },
-          {
-            "squad_members": "flt_t2_art_squad"
-          },
-          {
-            "squad_members": "flt_t2_tanks_squad"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_small_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [9183.55,-4.9,11428.0]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t1_small_aaa"
-        }
-      }
-    },
-    {
-      "air_defence": {
-        "name": "flt_t1_small_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [37561.0,-12.0,32663.2]
-        ],
-        "unit_class": "ussr_37mm_61k",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "flt_t2_small_aaa",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [23750.3,131.1,56362.4]
-        ],
-        "unit_class": "germ_37mm_flak43",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 20,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "isDelayed": true,
-          "stealthRadius": 1250.0,
-          "setStealth": true,
-          "calmDetection": true
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_small_aaa_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [6008.6,-4.9,13658.5]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "flt_t2_small_aaa"
-        }
-      }
-    },
-    {
-      "armada": {
-        "name": "flt_armada",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-1886.8,1388.0,-6765.8]
-        ],
-        "unit_class": "yak-1_early",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t2_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [7227.45,176.55,59392.1]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t2_tank_01"
-          },
-          {
-            "squad_members": "flt_t2_tank_02"
-          },
-          {
-            "squad_members": "flt_t2_tank_03"
-          },
-          {
-            "squad_members": "flt_t2_tank_04"
-          },
-          {
-            "squad_members": "flt_t2_tank_05"
-          },
-          {
-            "squad_members": "flt_t2_tank_06"
-          },
-          {
-            "squad_members": "flt_t2_tank_07"
-          },
-          {
-            "squad_members": "flt_t2_tank_08"
-          },
-          {
-            "squad_members": "flt_t2_tank_09"
-          },
-          {
-            "squad_members": "flt_t2_tank_10"
-          },
-          {
-            "squad_members": "flt_t2_tank_11"
-          },
-          {
-            "squad_members": "flt_t2_tank_12"
-          },
-          {
-            "squad_members": "flt_t2_tank_13"
-          },
-          {
-            "squad_members": "flt_t2_tank_14"
-          },
-          {
-            "squad_members": "flt_t2_tank_15"
-          },
-          {
-            "squad_members": "flt_t2_tank_16"
-          },
-          {
-            "squad_members": "flt_t2_tank_17"
-          },
-          {
-            "squad_members": "flt_t2_tank_18"
-          },
-          {
-            "squad_members": "flt_t2_tank_19"
-          },
-          {
-            "squad_members": "flt_t2_tank_20"
-          },
-          {
-            "squad_members": "flt_t2_tank_21"
-          },
-          {
-            "squad_members": "flt_t2_tank_22"
-          },
-          {
-            "squad_members": "flt_t2_tank_23"
-          },
-          {
-            "squad_members": "flt_t2_tank_24"
-          },
-          {
-            "squad_members": "flt_t2_tank_25"
-          },
-          {
-            "squad_members": "flt_t2_tank_26"
-          },
-          {
-            "squad_members": "flt_t2_tank_27"
-          },
-          {
-            "squad_members": "flt_t2_tank_28"
-          },
-          {
-            "squad_members": "flt_t2_tank_29"
-          },
-          {
-            "squad_members": "flt_t2_tank_30"
-          },
-          {
-            "squad_members": "flt_t2_tank_31"
-          },
-          {
-            "squad_members": "flt_t2_tank_32"
-          },
-          {
-            "squad_members": "flt_t2_tank_33"
-          },
-          {
-            "squad_members": "flt_t2_tank_34"
-          },
-          {
-            "squad_members": "flt_t2_tank_35"
-          },
-          {
-            "squad_members": "flt_t2_tank_36"
-          },
-          {
-            "squad_members": "flt_t2_tank_37"
-          },
-          {
-            "squad_members": "flt_t2_tank_38"
-          },
-          {
-            "squad_members": "flt_t2_tank_39"
-          },
-          {
-            "squad_members": "flt_t2_tank_40"
-          },
-          {
-            "squad_members": "flt_t2_tank_41"
-          },
-          {
-            "squad_members": "flt_t2_tank_42"
-          },
-          {
-            "squad_members": "flt_t2_tank_43"
-          },
-          {
-            "squad_members": "flt_t2_tank_44"
-          },
-          {
-            "squad_members": "flt_t2_tank_45"
-          },
-          {
-            "squad_members": "flt_t2_tank_46"
-          },
-          {
-            "squad_members": "flt_t2_tank_47"
-          },
-          {
-            "squad_members": "flt_t2_tank_48"
-          },
-          {
-            "squad_members": "flt_t2_tank_49"
-          },
-          {
-            "squad_members": "flt_t2_tank_50"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "flt_t1_tanks_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [41946.2,1.8,38216.4]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "flt_t1_tank_01"
-          },
-          {
-            "squad_members": "flt_t1_tank_02"
-          },
-          {
-            "squad_members": "flt_t1_tank_03"
-          },
-          {
-            "squad_members": "flt_t1_tank_04"
-          },
-          {
-            "squad_members": "flt_t1_tank_05"
-          },
-          {
-            "squad_members": "flt_t1_tank_06"
-          },
-          {
-            "squad_members": "flt_t1_tank_07"
-          },
-          {
-            "squad_members": "flt_t1_tank_08"
-          },
-          {
-            "squad_members": "flt_t1_tank_09"
-          },
-          {
-            "squad_members": "flt_t1_tank_10"
-          },
-          {
-            "squad_members": "flt_t1_tank_11"
-          },
-          {
-            "squad_members": "flt_t1_tank_12"
-          },
-          {
-            "squad_members": "flt_t1_tank_13"
-          },
-          {
-            "squad_members": "flt_t1_tank_14"
-          },
-          {
-            "squad_members": "flt_t1_tank_15"
-          },
-          {
-            "squad_members": "flt_t1_tank_16"
-          },
-          {
-            "squad_members": "flt_t1_tank_17"
-          },
-          {
-            "squad_members": "flt_t1_tank_18"
-          },
-          {
-            "squad_members": "flt_t1_tank_19"
-          },
-          {
-            "squad_members": "flt_t1_tank_20"
-          },
-          {
-            "squad_members": "flt_t1_tank_21"
-          },
-          {
-            "squad_members": "flt_t1_tank_22"
-          },
-          {
-            "squad_members": "flt_t1_tank_23"
-          },
-          {
-            "squad_members": "flt_t1_tank_24"
-          },
-          {
-            "squad_members": "flt_t1_tank_25"
-          },
-          {
-            "squad_members": "flt_t1_tank_26"
-          },
-          {
-            "squad_members": "flt_t1_tank_27"
-          },
-          {
-            "squad_members": "flt_t1_tank_28"
-          },
-          {
-            "squad_members": "flt_t1_tank_29"
-          },
-          {
-            "squad_members": "flt_t1_tank_30"
-          },
-          {
-            "squad_members": "flt_t1_tank_31"
-          },
-          {
-            "squad_members": "flt_t1_tank_32"
-          },
-          {
-            "squad_members": "flt_t1_tank_33"
-          },
-          {
-            "squad_members": "flt_t1_tank_34"
-          },
-          {
-            "squad_members": "flt_t1_tank_35"
-          },
-          {
-            "squad_members": "flt_t1_tank_36"
-          },
-          {
-            "squad_members": "flt_t1_tank_37"
-          },
-          {
-            "squad_members": "flt_t1_tank_38"
-          },
-          {
-            "squad_members": "flt_t1_tank_39"
-          },
-          {
-            "squad_members": "flt_t1_tank_40"
-          },
-          {
-            "squad_members": "flt_t1_tank_41"
-          },
-          {
-            "squad_members": "flt_t1_tank_42"
-          },
-          {
-            "squad_members": "flt_t1_tank_43"
-          },
-          {
-            "squad_members": "flt_t1_tank_44"
-          },
-          {
-            "squad_members": "flt_t1_tank_45"
-          },
-          {
-            "squad_members": "flt_t1_tank_46"
-          },
-          {
-            "squad_members": "flt_t1_tank_47"
-          },
-          {
-            "squad_members": "flt_t1_tank_48"
-          },
-          {
-            "squad_members": "flt_t1_tank_49"
-          },
-          {
-            "squad_members": "flt_t1_tank_50"
-          }
-        ]
       }
     },
     {
@@ -5373,6 +4609,770 @@
           "isDelayed": true,
           "stealthRadius": 0.0,
           "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "flt_t1_big_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [33484.9,-12.0,33220.9]
+        ],
+        "unit_class": "ussr_85mm_52k",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "flt_t2_big_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [19881.3,127.4,55388.3]
+        ],
+        "unit_class": "germ_88mm_flak36",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 10,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "flt_t1_small_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [37561.0,-12.0,32663.2]
+        ],
+        "unit_class": "ussr_37mm_61k",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 20,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "flt_t2_small_aaa",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [23750.3,131.1,56362.4]
+        ],
+        "unit_class": "germ_37mm_flak43",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 20,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "flt_t1_art",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [40679.2,-12.0,31782.3]
+        ],
+        "unit_class": "ussr_76mm_zis3",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 20,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "flt_t2_art",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11540.2,185.45,53247.6]
+        ],
+        "unit_class": "germ_75mm_pak40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 20,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "isDelayed": true,
+          "stealthRadius": 1250.0,
+          "setStealth": true,
+          "calmDetection": true
+        },
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_big_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [11135.8,-4.9,8208.55]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t1_big_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_art_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9947.55,-12.0,2033.25]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t1_art"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_big_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3416.3,-4.9,9323.65]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t2_big_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_art_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3265.0,-12.0,5411.5]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t2_art"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_forces_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6539.5,1.2,-2011.4]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t1_big_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t1_small_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t1_art_squad"
+          },
+          {
+            "squad_members": "flt_t1_tanks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_forces_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-2948.55,106.35,2368.85]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t2_big_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t2_small_aaa_squad"
+          },
+          {
+            "squad_members": "flt_t2_art_squad"
+          },
+          {
+            "squad_members": "flt_t2_tanks_squad"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_small_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [9183.55,-4.9,11428.0]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t1_small_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_small_aaa_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [6008.6,-4.9,13658.5]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "flt_t2_small_aaa"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t2_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [7227.45,176.55,59392.1]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t2_tank_01"
+          },
+          {
+            "squad_members": "flt_t2_tank_02"
+          },
+          {
+            "squad_members": "flt_t2_tank_03"
+          },
+          {
+            "squad_members": "flt_t2_tank_04"
+          },
+          {
+            "squad_members": "flt_t2_tank_05"
+          },
+          {
+            "squad_members": "flt_t2_tank_06"
+          },
+          {
+            "squad_members": "flt_t2_tank_07"
+          },
+          {
+            "squad_members": "flt_t2_tank_08"
+          },
+          {
+            "squad_members": "flt_t2_tank_09"
+          },
+          {
+            "squad_members": "flt_t2_tank_10"
+          },
+          {
+            "squad_members": "flt_t2_tank_11"
+          },
+          {
+            "squad_members": "flt_t2_tank_12"
+          },
+          {
+            "squad_members": "flt_t2_tank_13"
+          },
+          {
+            "squad_members": "flt_t2_tank_14"
+          },
+          {
+            "squad_members": "flt_t2_tank_15"
+          },
+          {
+            "squad_members": "flt_t2_tank_16"
+          },
+          {
+            "squad_members": "flt_t2_tank_17"
+          },
+          {
+            "squad_members": "flt_t2_tank_18"
+          },
+          {
+            "squad_members": "flt_t2_tank_19"
+          },
+          {
+            "squad_members": "flt_t2_tank_20"
+          },
+          {
+            "squad_members": "flt_t2_tank_21"
+          },
+          {
+            "squad_members": "flt_t2_tank_22"
+          },
+          {
+            "squad_members": "flt_t2_tank_23"
+          },
+          {
+            "squad_members": "flt_t2_tank_24"
+          },
+          {
+            "squad_members": "flt_t2_tank_25"
+          },
+          {
+            "squad_members": "flt_t2_tank_26"
+          },
+          {
+            "squad_members": "flt_t2_tank_27"
+          },
+          {
+            "squad_members": "flt_t2_tank_28"
+          },
+          {
+            "squad_members": "flt_t2_tank_29"
+          },
+          {
+            "squad_members": "flt_t2_tank_30"
+          },
+          {
+            "squad_members": "flt_t2_tank_31"
+          },
+          {
+            "squad_members": "flt_t2_tank_32"
+          },
+          {
+            "squad_members": "flt_t2_tank_33"
+          },
+          {
+            "squad_members": "flt_t2_tank_34"
+          },
+          {
+            "squad_members": "flt_t2_tank_35"
+          },
+          {
+            "squad_members": "flt_t2_tank_36"
+          },
+          {
+            "squad_members": "flt_t2_tank_37"
+          },
+          {
+            "squad_members": "flt_t2_tank_38"
+          },
+          {
+            "squad_members": "flt_t2_tank_39"
+          },
+          {
+            "squad_members": "flt_t2_tank_40"
+          },
+          {
+            "squad_members": "flt_t2_tank_41"
+          },
+          {
+            "squad_members": "flt_t2_tank_42"
+          },
+          {
+            "squad_members": "flt_t2_tank_43"
+          },
+          {
+            "squad_members": "flt_t2_tank_44"
+          },
+          {
+            "squad_members": "flt_t2_tank_45"
+          },
+          {
+            "squad_members": "flt_t2_tank_46"
+          },
+          {
+            "squad_members": "flt_t2_tank_47"
+          },
+          {
+            "squad_members": "flt_t2_tank_48"
+          },
+          {
+            "squad_members": "flt_t2_tank_49"
+          },
+          {
+            "squad_members": "flt_t2_tank_50"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "flt_t1_tanks_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [41946.2,1.8,38216.4]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "flt_t1_tank_01"
+          },
+          {
+            "squad_members": "flt_t1_tank_02"
+          },
+          {
+            "squad_members": "flt_t1_tank_03"
+          },
+          {
+            "squad_members": "flt_t1_tank_04"
+          },
+          {
+            "squad_members": "flt_t1_tank_05"
+          },
+          {
+            "squad_members": "flt_t1_tank_06"
+          },
+          {
+            "squad_members": "flt_t1_tank_07"
+          },
+          {
+            "squad_members": "flt_t1_tank_08"
+          },
+          {
+            "squad_members": "flt_t1_tank_09"
+          },
+          {
+            "squad_members": "flt_t1_tank_10"
+          },
+          {
+            "squad_members": "flt_t1_tank_11"
+          },
+          {
+            "squad_members": "flt_t1_tank_12"
+          },
+          {
+            "squad_members": "flt_t1_tank_13"
+          },
+          {
+            "squad_members": "flt_t1_tank_14"
+          },
+          {
+            "squad_members": "flt_t1_tank_15"
+          },
+          {
+            "squad_members": "flt_t1_tank_16"
+          },
+          {
+            "squad_members": "flt_t1_tank_17"
+          },
+          {
+            "squad_members": "flt_t1_tank_18"
+          },
+          {
+            "squad_members": "flt_t1_tank_19"
+          },
+          {
+            "squad_members": "flt_t1_tank_20"
+          },
+          {
+            "squad_members": "flt_t1_tank_21"
+          },
+          {
+            "squad_members": "flt_t1_tank_22"
+          },
+          {
+            "squad_members": "flt_t1_tank_23"
+          },
+          {
+            "squad_members": "flt_t1_tank_24"
+          },
+          {
+            "squad_members": "flt_t1_tank_25"
+          },
+          {
+            "squad_members": "flt_t1_tank_26"
+          },
+          {
+            "squad_members": "flt_t1_tank_27"
+          },
+          {
+            "squad_members": "flt_t1_tank_28"
+          },
+          {
+            "squad_members": "flt_t1_tank_29"
+          },
+          {
+            "squad_members": "flt_t1_tank_30"
+          },
+          {
+            "squad_members": "flt_t1_tank_31"
+          },
+          {
+            "squad_members": "flt_t1_tank_32"
+          },
+          {
+            "squad_members": "flt_t1_tank_33"
+          },
+          {
+            "squad_members": "flt_t1_tank_34"
+          },
+          {
+            "squad_members": "flt_t1_tank_35"
+          },
+          {
+            "squad_members": "flt_t1_tank_36"
+          },
+          {
+            "squad_members": "flt_t1_tank_37"
+          },
+          {
+            "squad_members": "flt_t1_tank_38"
+          },
+          {
+            "squad_members": "flt_t1_tank_39"
+          },
+          {
+            "squad_members": "flt_t1_tank_40"
+          },
+          {
+            "squad_members": "flt_t1_tank_41"
+          },
+          {
+            "squad_members": "flt_t1_tank_42"
+          },
+          {
+            "squad_members": "flt_t1_tank_43"
+          },
+          {
+            "squad_members": "flt_t1_tank_44"
+          },
+          {
+            "squad_members": "flt_t1_tank_45"
+          },
+          {
+            "squad_members": "flt_t1_tank_46"
+          },
+          {
+            "squad_members": "flt_t1_tank_47"
+          },
+          {
+            "squad_members": "flt_t1_tank_48"
+          },
+          {
+            "squad_members": "flt_t1_tank_49"
+          },
+          {
+            "squad_members": "flt_t1_tank_50"
+          }
+        ]
+      }
+    },
+    {
+      "armada": {
+        "name": "flt_armada",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-1886.8,1388.0,-6765.8]
+        ],
+        "unit_class": "yak-1_early",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
         },
         "way": []
       }

@@ -38,17 +38,22 @@
       "actions": [
         {
           "comment": {
-            "value": "шаблон бомбардировщиков"
+            "value": "\u0448\u0430\u0431\u043b\u043e\u043d \u0431\u043e\u043c\u0431\u0430\u0440\u0434\u0438\u0440\u043e\u0432\u0449\u0438\u043a\u043e\u0432"
           }
         },
         {
           "comment": {
-            "value": "не может выдаваться двум сторонам одновременно"
+            "value": "\u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0432\u044b\u0434\u0430\u0432\u0430\u0442\u044c\u0441\u044f \u0434\u0432\u0443\u043c \u0441\u0442\u043e\u0440\u043e\u043d\u0430\u043c \u043e\u0434\u043d\u043e\u0432\u0440\u0435\u043c\u0435\u043d\u043d\u043e"
           }
         },
         {
           "comment": {
-            "value": "не может выдаваться если активны штурмовики"
+            "value": "\u043d\u0435 \u043c\u043e\u0436\u0435\u0442 \u0432\u044b\u0434\u0430\u0432\u0430\u0442\u044c\u0441\u044f \u0435\u0441\u043b\u0438 \u0430\u043a\u0442\u0438\u0432\u043d\u044b \u0448\u0442\u0443\u0440\u043c\u043e\u0432\u0438\u043a\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
           }
         },
         {
@@ -97,11 +102,6 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
           "varSetString": {
             "value": "bt_t1_bomber",
             "var": "bt_t1_bomber_name"
@@ -145,7 +145,7 @@
       "conditions": [],
       "actions": {
         "comment": {
-          "value": "запускаем"
+          "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c"
         },
         "triggerEnable": {
           "target": "bt_choose_army"
@@ -181,12 +181,12 @@
       "actions": [
         {
           "comment": {
-            "value": "разрешено чередование"
+            "value": "\u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u043e \u0447\u0435\u0440\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435"
           }
         },
         {
           "comment": {
-            "value": "и армия не равна 0 - запускается не для двух сторон"
+            "value": "\u0438 \u0430\u0440\u043c\u0438\u044f \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 0 - \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u0442\u0441\u044f \u043d\u0435 \u0434\u043b\u044f \u0434\u0432\u0443\u0445 \u0441\u0442\u043e\u0440\u043e\u043d"
           }
         },
         {
@@ -202,7 +202,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "запускаем обычный режим"
+          "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0431\u044b\u0447\u043d\u044b\u0439 \u0440\u0435\u0436\u0438\u043c"
         },
         "triggerEnable": {
           "target": "bt_choose_bomber"
@@ -237,7 +237,12 @@
         },
         {
           "comment": {
-            "value": "была вторая армия. ставим первую"
+            "value": "\u0431\u044b\u043b\u0430 \u0432\u0442\u043e\u0440\u0430\u044f \u0430\u0440\u043c\u0438\u044f. \u0441\u0442\u0430\u0432\u0438\u043c \u043f\u0435\u0440\u0432\u0443\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
           }
         },
         {
@@ -250,11 +255,6 @@
           "varSetInt": {
             "value": 2,
             "var": "bt_last_army"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем создание бомберов"
           }
         },
         {
@@ -293,7 +293,12 @@
         },
         {
           "comment": {
-            "value": "была вторая армия. ставим первую"
+            "value": "\u0431\u044b\u043b\u0430 \u0432\u0442\u043e\u0440\u0430\u044f \u0430\u0440\u043c\u0438\u044f. \u0441\u0442\u0430\u0432\u0438\u043c \u043f\u0435\u0440\u0432\u0443\u044e"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
           }
         },
         {
@@ -306,11 +311,6 @@
           "varSetInt": {
             "value": 1,
             "var": "bt_last_army"
-          }
-        },
-        {
-          "comment": {
-            "value": "запускаем создание бомберов"
           }
         },
         {
@@ -416,12 +416,22 @@
       "actions": [
         {
           "comment": {
-            "value": "армия равна 1. запускаем ветку скриптов первой армии"
+            "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 1. \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0432\u0435\u0442\u043a\u0443 \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432 \u043f\u0435\u0440\u0432\u043e\u0439 \u0430\u0440\u043c\u0438\u0438"
           }
         },
         {
           "comment": {
-            "value": "обнуляем имя цели"
+            "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0435\u0435 \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0432 \u0441\u043a\u0440\u0438\u043f\u0442 \u0431\u0443\u0434\u0435\u0442 \u0438\u0437 \u0442\u043e\u0433\u043e \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -437,30 +447,30 @@
           }
         },
         {
-          "comment": {
-            "value": "запускаем обнаружение цели"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bt_t1_check_base_target"
-          }
-        },
-        {
-          "comment": {
-            "value": "дальнейшее возвращение в скрипт будет из того шаблона"
           }
         }
       ],
       "else_actions": [
         {
           "comment": {
-            "value": "армия равна 2. запускаем ветку скриптов второй армии"
+            "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 2. \u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0432\u0435\u0442\u043a\u0443 \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432 \u0432\u0442\u043e\u0440\u043e\u0439 \u0430\u0440\u043c\u0438\u0438"
           }
         },
         {
           "comment": {
-            "value": "обнуляем имя цели"
+            "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0438\u043c\u044f \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435 \u0446\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0434\u0430\u043b\u044c\u043d\u0435\u0439\u0448\u0435\u0435 \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0435\u043d\u0438\u0435 \u0432 \u0441\u043a\u0440\u0438\u043f\u0442 \u0431\u0443\u0434\u0435\u0442 \u0438\u0437 \u0442\u043e\u0433\u043e \u0448\u0430\u0431\u043b\u043e\u043d\u0430"
           }
         },
         {
@@ -476,18 +486,8 @@
           }
         },
         {
-          "comment": {
-            "value": "запускаем обнаружение цели"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bt_t2_check_base_target"
-          }
-        },
-        {
-          "comment": {
-            "value": "дальнейшее возвращение в скрипт будет из того шаблона"
           }
         }
       ]
@@ -524,13 +524,6 @@
           }
         },
         {
-          "varAddString": {
-            "value": "_bomb_target",
-            "digits": 0,
-            "var": "bt_t1_target_name"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "bdt_t2_base_as_target_for_t1_name",
             "var": "bt_t1_target_area_name"
@@ -540,6 +533,13 @@
           "varGetStringValue": {
             "from_var_name": "bdt_t2_base_as_target_for_t1_name",
             "var": "bt_t1_target_point_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_bomb_target",
+            "digits": 0,
+            "var": "bt_t1_target_name"
           }
         },
         {
@@ -557,7 +557,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "цель не найдена. пробуем аэродром"
+          "value": "\u0446\u0435\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
         },
         "triggerEnable": {
           "target": "ft_t1_bombers_start"
@@ -591,12 +591,27 @@
       "actions": [
         {
           "comment": {
-            "value": "имя  цели не пустое. можно делать его целью"
+            "value": "\u0438\u043c\u044f  \u0446\u0435\u043b\u0438 \u043d\u0435 \u043f\u0443\u0441\u0442\u043e\u0435. \u043c\u043e\u0436\u043d\u043e \u0434\u0435\u043b\u0430\u0442\u044c \u0435\u0433\u043e \u0446\u0435\u043b\u044c\u044e"
           }
         },
         {
           "comment": {
-            "value": "целью является специальный юнит на аэродроме"
+            "value": "\u0446\u0435\u043b\u044c\u044e \u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u044e\u043d\u0438\u0442 \u043d\u0430 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u043e\u0447\u043a\u0438 \u043f\u043e\u043b\u0435\u0442\u0430 \u043a \u0437\u043e\u043d\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u0431\u0440\u043e\u0432"
           }
         },
         {
@@ -606,30 +621,15 @@
           }
         },
         {
-          "comment": {
-            "value": "получаем имя точки полета к зоне"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "@ft_t1_bombers_field_zone",
             "var": "bt_t1_target_point_name"
           }
         },
         {
-          "comment": {
-            "value": "получаем имя зоны"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "@ft_t1_bombers_field_zone",
             "var": "bt_t1_target_area_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "спавним бобров"
           }
         },
         {
@@ -640,7 +640,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "цель не найдена. завершаем шаблон"
+          "value": "\u0446\u0435\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430. \u0437\u0430\u0432\u0435\u0440\u0448\u0430\u0435\u043c \u0448\u0430\u0431\u043b\u043e\u043d"
         },
         "triggerEnable": {
           "target": "bt_template_end"
@@ -677,18 +677,28 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим что шаблон за первую армию активен"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430 \u043f\u0435\u0440\u0432\u0443\u044e \u0430\u0440\u043c\u0438\u044e \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u0441\u043f\u0430\u0432\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0447\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "bt_t1_is_active"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -746,11 +756,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "выбираем точку спавна"
-          }
-        },
-        {
           "varSetRandomInt": {
             "var": "bt_t1_spawn_idx",
             "from": 1,
@@ -768,11 +773,6 @@
             "value": "@bt_t1_spawn_idx",
             "digits": 2,
             "var": "bt_t1_bomber_spawn_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "спачним бомберов"
           }
         },
         {
@@ -818,7 +818,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "точки полета не существует. шаблон не работает"
+          "value": "\u0442\u043e\u0447\u043a\u0438 \u043f\u043e\u043b\u0435\u0442\u0430 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442"
         },
         "varSetBool": {
           "value": false,
@@ -857,7 +857,12 @@
       "actions": [
         {
           "comment": {
-            "value": "все бомберы умерли или улетели"
+            "value": "\u0432\u0441\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0443\u043c\u0435\u0440\u043b\u0438 \u0438\u043b\u0438 \u0443\u043b\u0435\u0442\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0444\u0430\u0439\u0442\u0435\u0440\u043e\u0432 \u0434\u043e\u0441\u0442\u0438\u0433\u0448\u0438\u0445 \u0442\u043e\u0447\u043a\u0438 \u0441\u043f\u0430\u0441\u0435\u043d\u0438\u044f"
           }
         },
         {
@@ -879,11 +884,6 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@bt_t1_fighter_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "прячем файтеров достигших точки спасения"
           }
         },
         {
@@ -928,7 +928,7 @@
       },
       "actions": {
         "comment": {
-          "value": "еще есть активные файтеры. прячем того, кто спасся"
+          "value": "\u0435\u0449\u0435 \u0435\u0441\u0442\u044c \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0444\u0430\u0439\u0442\u0435\u0440\u044b. \u043f\u0440\u044f\u0447\u0435\u043c \u0442\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u043f\u0430\u0441\u0441\u044f"
         },
         "unitPutToSleep": {
           "target": "@bt_t1_fighter_name",
@@ -971,7 +971,7 @@
       },
       "actions": {
         "comment": {
-          "value": "бомберы рядом с целью"
+          "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0440\u044f\u0434\u043e\u043c \u0441 \u0446\u0435\u043b\u044c\u044e"
         },
         "unitMoveTo": {
           "target": "bt_t1_retreat_point",
@@ -1035,7 +1035,7 @@
           "time": 10.0
         },
         "comment": {
-          "value": "цель уничтожена. скидываем бомбы и летим домой"
+          "value": "\u0446\u0435\u043b\u044c \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0430. \u0441\u043a\u0438\u0434\u044b\u0432\u0430\u0435\u043c \u0431\u043e\u043c\u0431\u044b \u0438 \u043b\u0435\u0442\u0438\u043c \u0434\u043e\u043c\u043e\u0439"
         },
         "unitDropAmmo": {
           "object": "@bt_t1_bomber_name"
@@ -1092,7 +1092,7 @@
       },
       "actions": {
         "comment": {
-          "value": "самолет сильно поврежден и хочет лететь домой"
+          "value": "\u0441\u0430\u043c\u043e\u043b\u0435\u0442 \u0441\u0438\u043b\u044c\u043d\u043e \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0435\u043d \u0438 \u0445\u043e\u0447\u0435\u0442 \u043b\u0435\u0442\u0435\u0442\u044c \u0434\u043e\u043c\u043e\u0439"
         }
       },
       "else_actions": []
@@ -1149,7 +1149,7 @@
           }
         ],
         "comment": {
-          "value": "еще есть активные бомберы прячем того, кто спасся"
+          "value": "\u0435\u0449\u0435 \u0435\u0441\u0442\u044c \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043f\u0440\u044f\u0447\u0435\u043c \u0442\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u043f\u0430\u0441\u0441\u044f"
         },
         "unitPutToSleep": {
           "target": "@bt_t1_bomber_name",
@@ -1161,7 +1161,7 @@
       },
       "else_actions": {
         "comment": {
-          "value": "активных больше не осталось"
+          "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0431\u043e\u043b\u044c\u0448\u0435 \u043d\u0435 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c"
         },
         "__triggerDisable": {
           "target": "bt_t1_bombers_disable"
@@ -1209,7 +1209,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "нет активных самолетов. можно дизейблить"
+          "value": "\u043d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0441\u0430\u043c\u043e\u043b\u0435\u0442\u043e\u0432. \u043c\u043e\u0436\u043d\u043e \u0434\u0438\u0437\u0435\u0439\u0431\u043b\u0438\u0442\u044c"
         },
         "varSetBool": {
           "value": false,
@@ -1247,18 +1247,33 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим что бомберы не обнаружены"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043d\u0430\u0447\u0430\u043b\u0430 \u043d\u0430\u0434\u043e \u043d\u0430\u0439\u0442\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432. \u043f\u0440\u044f\u0447\u0435\u043c \u0438\u0445"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0434\u0430\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043a\u0440\u0438\u043f\u0442 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
           }
         },
         {
           "varSetBool": {
             "value": false,
             "var": "bt_t1_is_detected"
-          }
-        },
-        {
-          "comment": {
-            "value": "сначала надо найти бомберов. прячем их"
           }
         },
         {
@@ -1303,11 +1318,6 @@
           }
         },
         {
-          "comment": {
-            "value": "выдаем квест на защиту"
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "bt_t1_defend_bombers",
             "object_var_comp_op": "equal",
@@ -1317,18 +1327,8 @@
           }
         },
         {
-          "comment": {
-            "value": "включаем отслеживание позиции бомберов"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bt_t1_mis_obj_update"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем скрипт обнаружения"
           }
         },
         {
@@ -1348,7 +1348,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "бомберы известны сразу"
+            "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b \u0441\u0440\u0430\u0437\u0443"
           }
         },
         {
@@ -1423,7 +1423,7 @@
       "actions": [
         {
           "comment": {
-            "value": "бомберы обнаружены обновляем оба квеста"
+            "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u043c \u043e\u0431\u0430 \u043a\u0432\u0435\u0441\u0442\u0430"
           }
         },
         {
@@ -1477,7 +1477,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "бомберы не обнаружены обновляем только квест на защиту"
+          "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u043c \u0442\u043e\u043b\u044c\u043a\u043e \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443"
         },
         "moSetObjectiveStatus": {
           "target": "bt_t1_defend_bombers",
@@ -1531,7 +1531,7 @@
           "target": "bt_t1_bombers_detected_by_players"
         },
         "comment": {
-          "value": "враг обнаружил бомберов"
+          "value": "\u0432\u0440\u0430\u0433 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
         },
         "unitSetStealth": {
           "set": true,
@@ -1602,7 +1602,12 @@
         },
         {
           "comment": {
-            "value": "Все бомберы ушли с локации и в живых осталось больше 3"
+            "value": "\u0412\u0441\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0443\u0448\u043b\u0438 \u0441 \u043b\u043e\u043a\u0430\u0446\u0438\u0438 \u0438 \u0432 \u0436\u0438\u0432\u044b\u0445 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c \u0431\u043e\u043b\u044c\u0448\u0435 3"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0431\u044b\u043b \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         },
         {
@@ -1618,8 +1623,15 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем был ли квест у команды Б"
+          "moSetObjectiveStatus": {
+            "target": "bt_t1_defend_bombers",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "extendedEnding": true,
+            "team": "A",
+            "unit_or_area": "@bt_t1_bomber_name",
+            "object_type": "any"
           }
         },
         {
@@ -1635,18 +1647,6 @@
         {
           "wait": {
             "time": 20.0
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "bt_t1_defend_bombers",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "extendedEnding": true,
-            "team": "A",
-            "unit_or_area": "@bt_t1_bomber_name",
-            "object_type": "any"
           }
         }
       ],
@@ -1693,7 +1693,12 @@
         },
         {
           "comment": {
-            "value": "живых бомберов осталось меньше 4"
+            "value": "\u0436\u0438\u0432\u044b\u0445 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c \u043c\u0435\u043d\u044c\u0448\u0435 4"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0431\u044b\u043b \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         },
         {
@@ -1719,8 +1724,12 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем был ли квест у команды Б"
+          "moSetObjectiveStatus": {
+            "target": "bt_t1_defend_bombers",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
           }
         },
         {
@@ -1731,15 +1740,6 @@
         {
           "wait": {
             "time": 20.0
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "bt_t1_defend_bombers",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
           }
         }
       ],
@@ -1783,17 +1783,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "bt_t2_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -1842,17 +1842,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "bt_t2_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "B"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -1890,13 +1890,6 @@
           }
         },
         {
-          "varAddString": {
-            "value": "_bomb_target",
-            "digits": 0,
-            "var": "bt_t2_target_name"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "bdt_t1_base_as_target_for_t2_name",
             "var": "bt_t2_target_area_name"
@@ -1906,6 +1899,13 @@
           "varGetStringValue": {
             "from_var_name": "bdt_t1_base_as_target_for_t2_name",
             "var": "bt_t2_target_point_name"
+          }
+        },
+        {
+          "varAddString": {
+            "value": "_bomb_target",
+            "digits": 0,
+            "var": "bt_t2_target_name"
           }
         },
         {
@@ -1923,7 +1923,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "цель не найдена. пробуем аэродром"
+          "value": "\u0446\u0435\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
         },
         "triggerEnable": {
           "target": "ft_t2_bombers_start"
@@ -1957,12 +1957,27 @@
       "actions": [
         {
           "comment": {
-            "value": "имя  цели не пустое. можно делать его целью"
+            "value": "\u0438\u043c\u044f  \u0446\u0435\u043b\u0438 \u043d\u0435 \u043f\u0443\u0441\u0442\u043e\u0435. \u043c\u043e\u0436\u043d\u043e \u0434\u0435\u043b\u0430\u0442\u044c \u0435\u0433\u043e \u0446\u0435\u043b\u044c\u044e"
           }
         },
         {
           "comment": {
-            "value": "целью является специальный юнит на аэродроме"
+            "value": "\u0446\u0435\u043b\u044c\u044e \u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u044e\u043d\u0438\u0442 \u043d\u0430 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0442\u043e\u0447\u043a\u0438 \u043f\u043e\u043b\u0435\u0442\u0430 \u043a \u0437\u043e\u043d\u0435"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u0431\u0440\u043e\u0432"
           }
         },
         {
@@ -1972,30 +1987,15 @@
           }
         },
         {
-          "comment": {
-            "value": "получаем имя точки полета к зоне"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "@ft_t2_bombers_field_zone",
             "var": "bt_t2_target_point_name"
           }
         },
         {
-          "comment": {
-            "value": "получаем имя зоны"
-          }
-        },
-        {
           "varGetStringValue": {
             "from_var_name": "@ft_t2_bombers_field_zone",
             "var": "bt_t2_target_area_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "спавним бобров"
           }
         },
         {
@@ -2006,7 +2006,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "цель не найдена. завершаем шаблон"
+          "value": "\u0446\u0435\u043b\u044c \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u0430. \u0437\u0430\u0432\u0435\u0440\u0448\u0430\u0435\u043c \u0448\u0430\u0431\u043b\u043e\u043d"
         },
         "triggerEnable": {
           "target": "bt_template_end"
@@ -2043,18 +2043,28 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим что шаблон за первую армию активен"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0448\u0430\u0431\u043b\u043e\u043d \u0437\u0430 \u043f\u0435\u0440\u0432\u0443\u044e \u0430\u0440\u043c\u0438\u044e \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
+          }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0442\u043e\u0447\u043a\u0443 \u0441\u043f\u0430\u0432\u043d\u0430"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043f\u0430\u0447\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
           }
         },
         {
           "varSetBool": {
             "value": true,
             "var": "bt_t2_is_active"
-          }
-        },
-        {
-          "comment": {
-            "value": ""
           }
         },
         {
@@ -2112,11 +2122,6 @@
           ]
         },
         {
-          "comment": {
-            "value": "выбираем точку спавна"
-          }
-        },
-        {
           "varSetRandomInt": {
             "var": "bt_t2_spawn_idx",
             "from": 1,
@@ -2134,11 +2139,6 @@
             "value": "@bt_t2_spawn_idx",
             "digits": 2,
             "var": "bt_t2_bomber_spawn_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "спачним бомберов"
           }
         },
         {
@@ -2184,7 +2184,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "точки полета не существует. шаблон не работает"
+          "value": "\u0442\u043e\u0447\u043a\u0438 \u043f\u043e\u043b\u0435\u0442\u0430 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0448\u0430\u0431\u043b\u043e\u043d \u043d\u0435 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442"
         },
         "varSetBool": {
           "value": false,
@@ -2223,7 +2223,12 @@
       "actions": [
         {
           "comment": {
-            "value": "все бомберы умерли или улетели"
+            "value": "\u0432\u0441\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0443\u043c\u0435\u0440\u043b\u0438 \u0438\u043b\u0438 \u0443\u043b\u0435\u0442\u0435\u043b\u0438"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0444\u0430\u0439\u0442\u0435\u0440\u043e\u0432 \u0434\u043e\u0441\u0442\u0438\u0433\u0448\u0438\u0445 \u0442\u043e\u0447\u043a\u0438 \u0441\u043f\u0430\u0441\u0435\u043d\u0438\u044f"
           }
         },
         {
@@ -2245,11 +2250,6 @@
             "fastClimb": false,
             "destTimeMode": false,
             "object": "@bt_t2_fighter_name"
-          }
-        },
-        {
-          "comment": {
-            "value": "прячем файтеров достигших точки спасения"
           }
         },
         {
@@ -2294,7 +2294,7 @@
       },
       "actions": {
         "comment": {
-          "value": "еще есть активные файтеры. прячем того, кто спасся"
+          "value": "\u0435\u0449\u0435 \u0435\u0441\u0442\u044c \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0444\u0430\u0439\u0442\u0435\u0440\u044b. \u043f\u0440\u044f\u0447\u0435\u043c \u0442\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u043f\u0430\u0441\u0441\u044f"
         },
         "unitPutToSleep": {
           "target": "@bt_t2_fighter_name",
@@ -2337,7 +2337,7 @@
       },
       "actions": {
         "comment": {
-          "value": "бомберы рядом с целью"
+          "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0440\u044f\u0434\u043e\u043c \u0441 \u0446\u0435\u043b\u044c\u044e"
         },
         "unitMoveTo": {
           "target": "bt_t2_retreat_point",
@@ -2398,7 +2398,7 @@
           "target": "bt_t2_bombers_attack"
         },
         "comment": {
-          "value": "цель уничтожена. скидываем бомбы и летим домой"
+          "value": "\u0446\u0435\u043b\u044c \u0443\u043d\u0438\u0447\u0442\u043e\u0436\u0435\u043d\u0430. \u0441\u043a\u0438\u0434\u044b\u0432\u0430\u0435\u043c \u0431\u043e\u043c\u0431\u044b \u0438 \u043b\u0435\u0442\u0438\u043c \u0434\u043e\u043c\u043e\u0439"
         },
         "unitDropAmmo": {
           "object": "@bt_t2_bomber_name"
@@ -2455,7 +2455,7 @@
       },
       "actions": {
         "comment": {
-          "value": "самолет сильно поврежден и хочет лететь домой"
+          "value": "\u0441\u0430\u043c\u043e\u043b\u0435\u0442 \u0441\u0438\u043b\u044c\u043d\u043e \u043f\u043e\u0432\u0440\u0435\u0436\u0434\u0435\u043d \u0438 \u0445\u043e\u0447\u0435\u0442 \u043b\u0435\u0442\u0435\u0442\u044c \u0434\u043e\u043c\u043e\u0439"
         }
       },
       "else_actions": []
@@ -2512,7 +2512,7 @@
           }
         ],
         "comment": {
-          "value": "еще есть активные бомберы прячем того, кто спасся"
+          "value": "\u0435\u0449\u0435 \u0435\u0441\u0442\u044c \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043f\u0440\u044f\u0447\u0435\u043c \u0442\u043e\u0433\u043e, \u043a\u0442\u043e \u0441\u043f\u0430\u0441\u0441\u044f"
         },
         "unitPutToSleep": {
           "target": "@bt_t2_bomber_name",
@@ -2565,7 +2565,7 @@
       ],
       "actions": {
         "comment": {
-          "value": "нет активных самолетов. можно дизейблить"
+          "value": "\u043d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0441\u0430\u043c\u043e\u043b\u0435\u0442\u043e\u0432. \u043c\u043e\u0436\u043d\u043e \u0434\u0438\u0437\u0435\u0439\u0431\u043b\u0438\u0442\u044c"
         },
         "varSetBool": {
           "value": false,
@@ -2603,18 +2603,33 @@
       "actions": [
         {
           "comment": {
-            "value": "говорим что бомберы не обнаружены"
+            "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0441\u043d\u0430\u0447\u0430\u043b\u0430 \u043d\u0430\u0434\u043e \u043d\u0430\u0439\u0442\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432. \u043f\u0440\u044f\u0447\u0435\u043c \u0438\u0445"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u044b\u0434\u0430\u0435\u043c \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u043e\u0442\u0441\u043b\u0435\u0436\u0438\u0432\u0430\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043a\u0440\u0438\u043f\u0442 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u044f"
           }
         },
         {
           "varSetBool": {
             "value": false,
             "var": "bt_t2_is_detected"
-          }
-        },
-        {
-          "comment": {
-            "value": "сначала надо найти бомберов. прячем их"
           }
         },
         {
@@ -2659,11 +2674,6 @@
           }
         },
         {
-          "comment": {
-            "value": "выдаем квест на защиту"
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "bt_t2_defend_bombers",
             "object_var_comp_op": "equal",
@@ -2673,18 +2683,8 @@
           }
         },
         {
-          "comment": {
-            "value": "включаем отслеживание позиции бомберов"
-          }
-        },
-        {
           "triggerEnable": {
             "target": "bt_t2_mis_obj_update"
-          }
-        },
-        {
-          "comment": {
-            "value": "включаем скрипт обнаружения"
           }
         },
         {
@@ -2704,7 +2704,7 @@
       "else_actions": [
         {
           "comment": {
-            "value": "бомберы известны сразу"
+            "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b \u0441\u0440\u0430\u0437\u0443"
           }
         },
         {
@@ -2779,7 +2779,7 @@
       "actions": [
         {
           "comment": {
-            "value": "бомберы обнаружены обновляем оба квеста"
+            "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u043c \u043e\u0431\u0430 \u043a\u0432\u0435\u0441\u0442\u0430"
           }
         },
         {
@@ -2833,7 +2833,7 @@
       ],
       "else_actions": {
         "comment": {
-          "value": "бомберы не обнаружены обновляем только квест на защиту"
+          "value": "\u0431\u043e\u043c\u0431\u0435\u0440\u044b \u043d\u0435 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u044b \u043e\u0431\u043d\u043e\u0432\u043b\u044f\u0435\u043c \u0442\u043e\u043b\u044c\u043a\u043e \u043a\u0432\u0435\u0441\u0442 \u043d\u0430 \u0437\u0430\u0449\u0438\u0442\u0443"
         },
         "moSetObjectiveStatus": {
           "target": "bt_t2_defend_bombers",
@@ -2887,7 +2887,7 @@
           "target": "bt_t2_bombers_detected_by_players"
         },
         "comment": {
-          "value": "враг обнаружил бомберов"
+          "value": "\u0432\u0440\u0430\u0433 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
         },
         "unitSetStealth": {
           "set": true,
@@ -2958,7 +2958,12 @@
         },
         {
           "comment": {
-            "value": "Все бомберы ушли с локации и в живых осталось больше 3"
+            "value": "\u0412\u0441\u0435 \u0431\u043e\u043c\u0431\u0435\u0440\u044b \u0443\u0448\u043b\u0438 \u0441 \u043b\u043e\u043a\u0430\u0446\u0438\u0438 \u0438 \u0432 \u0436\u0438\u0432\u044b\u0445 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c \u0431\u043e\u043b\u044c\u0448\u0435 3"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0431\u044b\u043b \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         },
         {
@@ -2974,8 +2979,12 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем был ли квест у команды Б"
+          "moSetObjectiveStatus": {
+            "target": "bt_t2_defend_bombers",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
           }
         },
         {
@@ -2991,15 +3000,6 @@
         {
           "wait": {
             "time": 20.0
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "bt_t2_defend_bombers",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
           }
         }
       ],
@@ -3046,7 +3046,12 @@
         },
         {
           "comment": {
-            "value": "живых бомберов осталось меньше 4"
+            "value": "\u0436\u0438\u0432\u044b\u0445 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c \u043c\u0435\u043d\u044c\u0448\u0435 4"
+          }
+        },
+        {
+          "comment": {
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0431\u044b\u043b \u043b\u0438 \u043a\u0432\u0435\u0441\u0442 \u0443 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         },
         {
@@ -3072,8 +3077,12 @@
           }
         },
         {
-          "comment": {
-            "value": "проверяем был ли квест у команды Б"
+          "moSetObjectiveStatus": {
+            "target": "bt_t2_defend_bombers",
+            "status": 0,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
           }
         },
         {
@@ -3084,15 +3093,6 @@
         {
           "wait": {
             "time": 20.0
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "bt_t2_defend_bombers",
-            "status": 0,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
           }
         }
       ],
@@ -3136,17 +3136,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "bt_t1_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -3195,17 +3195,17 @@
           }
         },
         {
-          "wait": {
-            "time": 20.0
-          }
-        },
-        {
           "moSetObjectiveStatus": {
             "target": "bt_t1_attack_bombers",
             "status": 0,
             "object_var_comp_op": "equal",
             "object_var_name": "",
             "team": "A"
+          }
+        },
+        {
+          "wait": {
+            "time": 20.0
           }
         }
       ],
@@ -3249,6 +3249,19 @@
             },
             {
               "var": "bt_t1_player_detection_range"
+            }
+          ]
+        },
+        {
+          "varSetReal": [
+            {
+              "value": 0.0
+            },
+            {
+              "var": "bt_t2_detection_range"
+            },
+            {
+              "var": "bt_t2_player_detection_range"
             }
           ]
         },
@@ -3304,24 +3317,6 @@
           }
         },
         {
-          "comment": {
-            "value": ""
-          }
-        },
-        {
-          "varSetReal": [
-            {
-              "value": 0.0
-            },
-            {
-              "var": "bt_t2_detection_range"
-            },
-            {
-              "var": "bt_t2_player_detection_range"
-            }
-          ]
-        },
-        {
           "varModify": [
             {
               "operator": "add"
@@ -3371,6 +3366,11 @@
             "value": 2000.0,
             "var": "bt_t2_player_detection_range"
           }
+        },
+        {
+          "comment": {
+            "value": ""
+          }
         }
       ],
       "else_actions": []
@@ -3401,7 +3401,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3411,11 +3416,6 @@
               "object": "@bt_t1_bomber_name",
               "target": "@bt_t1_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3458,7 +3458,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3468,11 +3473,6 @@
               "object": "@bt_t1_bomber_name",
               "target": "@bt_t1_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3515,7 +3515,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3525,11 +3530,6 @@
               "object": "@bt_t1_bomber_name",
               "target": "@bt_t1_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3572,7 +3572,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3582,11 +3587,6 @@
               "object": "@bt_t1_bomber_name",
               "target": "@bt_t1_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3620,7 +3620,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3630,11 +3635,6 @@
               "object": "@bt_t1_bomber_name",
               "target": "@bt_t1_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3662,7 +3662,37 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним истребителей"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0438\u0441\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b \u043f\u0440\u0438\u043a\u0440\u044b\u0448\u043a\u0435 \u0438 \u0431\u043e\u0431\u0440\u0430\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u044f\u0441\u0442\u0440\u0435\u0431\u0430\u043c \u043f\u0440\u0438\u043a\u0440\u044b\u0432\u0430\u0442\u044c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u0438 \u0438\u0441\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0434\u043e\u043f \u0441\u043a\u0440\u0438\u043f\u0442\u044b"
             }
           },
           {
@@ -3697,11 +3727,6 @@
             }
           },
           {
-            "comment": {
-              "value": "задаем параметры прикрышке и бобрам"
-            }
-          },
-          {
             "unitSetProperties": {
               "object_marking": 0,
               "object_var_name": "",
@@ -3730,11 +3755,6 @@
             }
           },
           {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
-            }
-          },
-          {
             "varSetString": {
               "value": "bt_t1_matching_move_",
               "var": "bt_matching_t1_move_trigger_name"
@@ -3753,13 +3773,46 @@
             }
           },
           {
+            "triggerEnable": [
+              {
+                "target": "bt_t1_fighters_retreat"
+              },
+              {
+                "target": "bt_t1_fighters_disable"
+              }
+            ]
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "bt_t1_bombers_attack"
+              },
+              {
+                "target": "bt_t1_bombers_target_destroyed"
+              }
+            ]
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "bt_t1_activity_end"
+              },
+              {
+                "target": "bt_t1_is_detect_alowed"
+              },
+              {
+                "target": "bt_t1_bombers_not_saved"
+              }
+            ]
+          },
+          {
             "wait": {
               "time": 1.0
             }
           },
           {
-            "comment": {
-              "value": "говорим ястребам прикрывать бомберов"
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -3798,59 +3851,6 @@
               "targetToAnchorDist": [3000.0,4000.0],
               "resetObjectToFollow": false
             }
-          },
-          {
-            "comment": {
-              "value": "включаем аи истребителей"
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t1_fighters_retreat"
-              },
-              {
-                "target": "bt_t1_fighters_disable"
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": "включаем аи бомберов"
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t1_bombers_attack"
-              },
-              {
-                "target": "bt_t1_bombers_target_destroyed"
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": "включаем доп скрипты"
-            }
-          },
-          {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t1_activity_end"
-              },
-              {
-                "target": "bt_t1_is_detect_alowed"
-              },
-              {
-                "target": "bt_t1_bombers_not_saved"
-              }
-            ]
           }
         ],
         "else_actions": []
@@ -3878,7 +3878,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3888,11 +3893,6 @@
               "object": "@bt_t2_bomber_name",
               "target": "@bt_t2_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3935,7 +3935,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -3945,11 +3950,6 @@
               "object": "@bt_t2_bomber_name",
               "target": "@bt_t2_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -3992,7 +3992,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -4002,11 +4007,6 @@
               "object": "@bt_t2_bomber_name",
               "target": "@bt_t2_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -4049,7 +4049,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -4059,11 +4064,6 @@
               "object": "@bt_t2_bomber_name",
               "target": "@bt_t2_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -4097,7 +4097,12 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним бомберов"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
             }
           },
           {
@@ -4107,11 +4112,6 @@
               "object": "@bt_t2_bomber_name",
               "target": "@bt_t2_bomber_spawn_name",
               "resetFormation": true
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
             }
           },
           {
@@ -4139,7 +4139,37 @@
         "actions": [
           {
             "comment": {
-              "value": "спавним истребителей"
+              "value": "\u0441\u043f\u0430\u0432\u043d\u0438\u043c \u0438\u0441\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u0434\u0430\u0435\u043c \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b \u043f\u0440\u0438\u043a\u0440\u044b\u0448\u043a\u0435 \u0438 \u0431\u043e\u0431\u0440\u0430\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0431\u043e\u043c\u0431\u0435\u0440\u0443 \u0434\u0432\u0438\u0433\u0430\u0442\u044c\u0441\u044f \u043a \u0442\u043e\u0447\u043a\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u044f\u0441\u0442\u0440\u0435\u0431\u0430\u043c \u043f\u0440\u0438\u043a\u0440\u044b\u0432\u0430\u0442\u044c \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u0438 \u0438\u0441\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u0435\u0439"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0430\u0438 \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0434\u043e\u043f \u0441\u043a\u0440\u0438\u043f\u0442\u044b"
             }
           },
           {
@@ -4174,11 +4204,6 @@
             }
           },
           {
-            "comment": {
-              "value": "задаем параметры прикрышке и бобрам"
-            }
-          },
-          {
             "unitSetProperties": {
               "object_marking": 0,
               "object_var_name": "",
@@ -4207,11 +4232,6 @@
             }
           },
           {
-            "comment": {
-              "value": "говорим бомберу двигаться к точке"
-            }
-          },
-          {
             "varSetString": {
               "value": "bt_t2_matching_move_",
               "var": "bt_matching_t2_move_trigger_name"
@@ -4230,13 +4250,46 @@
             }
           },
           {
+            "triggerEnable": [
+              {
+                "target": "bt_t2_fighters_retreat"
+              },
+              {
+                "target": "bt_t2_fighters_disable"
+              }
+            ]
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "bt_t2_bombers_attack"
+              },
+              {
+                "target": "bt_t2_bombers_target_destroyed"
+              }
+            ]
+          },
+          {
+            "triggerEnable": [
+              {
+                "target": "bt_t2_activity_end"
+              },
+              {
+                "target": "bt_t2_is_detect_alowed"
+              },
+              {
+                "target": "bt_t2_bombers_not_saved"
+              }
+            ]
+          },
+          {
             "wait": {
               "time": 1.0
             }
           },
           {
-            "comment": {
-              "value": "говорим ястребам прикрывать бомберов"
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -4275,59 +4328,6 @@
               "targetToAnchorDist": [3000.0,4000.0],
               "resetObjectToFollow": false
             }
-          },
-          {
-            "comment": {
-              "value": "включаем аи истребителей"
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t2_fighters_retreat"
-              },
-              {
-                "target": "bt_t2_fighters_disable"
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": "включаем аи бомберов"
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t2_bombers_attack"
-              },
-              {
-                "target": "bt_t2_bombers_target_destroyed"
-              }
-            ]
-          },
-          {
-            "comment": {
-              "value": "включаем доп скрипты"
-            }
-          },
-          {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
-            "triggerEnable": [
-              {
-                "target": "bt_t2_activity_end"
-              },
-              {
-                "target": "bt_t2_is_detect_alowed"
-              },
-              {
-                "target": "bt_t2_bombers_not_saved"
-              }
-            ]
           }
         ],
         "else_actions": []
@@ -5148,7 +5148,7 @@
           "target": "bt_t1_bombers_detected"
         },
         "comment": {
-          "value": "враг обнаружил бомберов"
+          "value": "\u0432\u0440\u0430\u0433 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
         },
         "unitSetStealth": {
           "set": true,
@@ -5219,7 +5219,7 @@
           "target": "bt_t2_bombers_detected"
         },
         "comment": {
-          "value": "враг обнаружил бомберов"
+          "value": "\u0432\u0440\u0430\u0433 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u043b \u0431\u043e\u043c\u0431\u0435\u0440\u043e\u0432"
         },
         "unitSetStealth": {
           "set": true,
@@ -5290,7 +5290,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           },
           "varModify": {
             "operator": "add",
@@ -5300,7 +5300,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           }
         }
       },
@@ -5339,7 +5339,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           },
           "varModify": {
             "operator": "add",
@@ -5349,7 +5349,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды А"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0410"
           }
         }
       },
@@ -5388,7 +5388,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "varModify": {
             "operator": "add",
@@ -5398,7 +5398,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         }
       },
@@ -5437,7 +5437,7 @@
         },
         "actions": {
           "comment": {
-            "value": "рядом есть один из игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u0435\u0441\u0442\u044c \u043e\u0434\u0438\u043d \u0438\u0437 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           },
           "varModify": {
             "operator": "add",
@@ -5447,7 +5447,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "рядом нет игроков команды Б"
+            "value": "\u0440\u044f\u0434\u043e\u043c \u043d\u0435\u0442 \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0411"
           }
         }
       },
@@ -5468,7 +5468,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -5492,11 +5497,6 @@
               "var": "bt_t1_def_player_activity_calc",
               "use_variable": true,
               "var_value": "bt_t1_def_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -5529,7 +5529,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t1_major_task_completed"
@@ -5537,7 +5537,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -5561,7 +5561,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -5585,11 +5590,6 @@
               "var": "bt_t2_def_player_activity_calc",
               "use_variable": true,
               "var_value": "bt_t2_def_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -5622,7 +5622,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t2_major_task_completed"
@@ -5630,7 +5630,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"
@@ -5654,7 +5654,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -5678,11 +5683,6 @@
               "var": "bt_t1_kill_player_activity_calc",
               "use_variable": true,
               "var_value": "bt_t1_kill_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -5725,7 +5725,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t1_major_task_completed"
@@ -5733,7 +5733,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t1_tiny_task_completed"
@@ -5757,7 +5757,12 @@
         "actions": [
           {
             "comment": {
-              "value": "считаем процент активности от обющей активности задания"
+              "value": "\u0441\u0447\u0438\u0442\u0430\u0435\u043c \u043f\u0440\u043e\u0446\u0435\u043d\u0442 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u043e\u0442 \u043e\u0431\u044e\u0449\u0435\u0439 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c"
             }
           },
           {
@@ -5781,11 +5786,6 @@
               "var": "bt_t2_kill_player_activity_calc",
               "use_variable": true,
               "var_value": "bt_t2_kill_time"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем активность"
             }
           },
           {
@@ -5828,7 +5828,7 @@
         },
         "actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была 25% или выше"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 25% \u0438\u043b\u0438 \u0432\u044b\u0448\u0435"
           },
           "triggerEnable": {
             "target": "t2_major_task_completed"
@@ -5836,7 +5836,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "активность игроков при выполнении задания была ниже 25%"
+            "value": "\u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043f\u0440\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0438 \u0437\u0430\u0434\u0430\u043d\u0438\u044f \u0431\u044b\u043b\u0430 \u043d\u0438\u0436\u0435 25%"
           },
           "triggerEnable": {
             "target": "t2_tiny_task_completed"

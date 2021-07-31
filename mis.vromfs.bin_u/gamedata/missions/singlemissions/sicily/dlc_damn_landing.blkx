@@ -173,12 +173,110 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "evacuation_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object": "allies_bombers_01"
+          }
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "he111_squad",
             "target": "us_dd_ships_squad",
             "fireRandom": false
           }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "us_fighters_01"
+            },
+            {
+              "object": "us_fighters_02"
+            },
+            {
+              "object": "us_fighters_03"
+            },
+            {
+              "target": "allies_fighters_00"
+            },
+            {
+              "target": "allies_fighters_01"
+            },
+            {
+              "fireRandom": true
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": false
+            },
+            {
+              "object": "allies_fighters_00"
+            },
+            {
+              "object": "allies_fighters_01"
+            },
+            {
+              "target": "us_fighters_01"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "fightInArea": "battle_area"
+            },
+            {
+              "fightAreaRadius": 2000.0
+            },
+            {
+              "fightAreaOuterRadius": 5000.0
+            }
+          ]
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "allies_bombers_01",
+            "target": "us_dd_ships_squad",
+            "delayForObjects": [1.0,5.0],
+            "fireRandom": true
+          }
+        },
+        {
+          "unitAttackTarget": [
+            {
+              "playerAttracted": true
+            },
+            {
+              "object": "us_fighters_02"
+            },
+            {
+              "target": "he111_squad"
+            },
+            {
+              "target": "player_wing"
+            },
+            {
+              "fireRandom": true
+            },
+            {
+              "playerAttractedCount": 1
+            },
+            {
+              "playerAttractedEffRate": 0.8
+            }
+          ]
         },
         {
           "unitSetProperties": {
@@ -309,81 +407,13 @@
           ]
         },
         {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "us_fighters_01"
-            },
-            {
-              "object": "us_fighters_02"
-            },
-            {
-              "object": "us_fighters_03"
-            },
-            {
-              "target": "allies_fighters_00"
-            },
-            {
-              "target": "allies_fighters_01"
-            },
-            {
-              "fireRandom": true
-            }
-          ]
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": false
-            },
-            {
-              "object": "allies_fighters_00"
-            },
-            {
-              "object": "allies_fighters_01"
-            },
-            {
-              "target": "us_fighters_01"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "fightInArea": "battle_area"
-            },
-            {
-              "fightAreaRadius": 2000.0
-            },
-            {
-              "fightAreaOuterRadius": 5000.0
-            }
-          ]
-        },
-        {
-          "unitMoveTo": {
-            "target": "evacuation_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "allies_bombers_01"
-          }
-        },
-        {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "allies_bombers_01",
-            "target": "us_dd_ships_squad",
-            "delayForObjects": [1.0,5.0],
-            "fireRandom": true
+          "wait": {
+            "time": 3.0
           }
         },
         {
           "wait": {
-            "time": 3.0
+            "time": 30.0
           }
         },
         {
@@ -396,36 +426,6 @@
             "set": true,
             "target": "he111_squad"
           }
-        },
-        {
-          "wait": {
-            "time": 30.0
-          }
-        },
-        {
-          "unitAttackTarget": [
-            {
-              "playerAttracted": true
-            },
-            {
-              "object": "us_fighters_02"
-            },
-            {
-              "target": "he111_squad"
-            },
-            {
-              "target": "player_wing"
-            },
-            {
-              "fireRandom": true
-            },
-            {
-              "playerAttractedCount": 1
-            },
-            {
-              "playerAttractedEffRate": 0.8
-            }
-          ]
         },
         {
           "varSetInt": {
@@ -482,6 +482,11 @@
               "target": "second_wave_near_bomb_point"
             }
           ]
+        },
+        {
+          "triggerEnable": {
+            "target": "us_fighters_03_died"
+          }
         },
         {
           "unitAttackTarget": [
@@ -573,11 +578,6 @@
               "object": "allies_bombers_02"
             }
           ]
-        },
-        {
-          "triggerEnable": {
-            "target": "us_fighters_03_died"
-          }
         }
       ]
     },
@@ -728,6 +728,11 @@
           }
         },
         {
+          "wait": {
+            "time": 20.0
+          }
+        },
+        {
           "varSetBool": {
             "var": "is_landing_free",
             "value": true
@@ -736,11 +741,6 @@
         {
           "triggerEnable": {
             "target": "he111_check_landing"
-          }
-        },
-        {
-          "wait": {
-            "time": 20.0
           }
         },
         {
@@ -935,18 +935,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_01"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1054,18 +1054,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_02"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1173,18 +1173,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_03"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1292,18 +1292,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_04"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1411,18 +1411,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_05"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1530,18 +1530,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_06"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1649,18 +1649,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_07"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1771,18 +1771,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_08"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -1896,18 +1896,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_09"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2024,18 +2024,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_10"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2149,18 +2149,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_11"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2274,18 +2274,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_12"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2399,18 +2399,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_13"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2524,18 +2524,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_14"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2649,18 +2649,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_15"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -2774,18 +2774,18 @@
           }
         },
         {
-          "varCompareBool": {
-            "var_value": "is_landing_free",
-            "value": true,
-            "comparasion_func": "equal"
-          }
-        },
-        {
           "unitWhenStatus": {
             "object_type": "isAlive",
             "object_marking": 1,
             "check_objects": "any",
             "object": "he111_16"
+          }
+        },
+        {
+          "varCompareBool": {
+            "var_value": "is_landing_free",
+            "value": true,
+            "comparasion_func": "equal"
           }
         }
       ],
@@ -3022,6 +3022,11 @@
           }
         },
         {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
           "unitDamage": [
             {
               "part": 1
@@ -3050,11 +3055,6 @@
           "moSetObjectiveStatus": {
             "target": "dlc_damn_landing_return",
             "status": 2
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -3210,17 +3210,6 @@
           }
         },
         {
-          "unitMoveTo": {
-            "target": "evacuation_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "object": "allies_bombers_02"
-          }
-        },
-        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "allies_bombers_02",
@@ -3247,6 +3236,17 @@
               "target": "allies_fighters_02"
             }
           ]
+        },
+        {
+          "unitMoveTo": {
+            "target": "evacuation_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "object": "allies_bombers_02"
+          }
         }
       ]
     },
@@ -4192,6 +4192,391 @@
       }
     },
     {
+      "armada": {
+        "name": "allies_bombers_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20865.6,1277.5,5261.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-2",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies_fighters_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [20865.6,1989.3,5261.3]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109f-4_trop",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_01",
+        "tm": [
+          [-0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,-0.92388],
+          [24248.5,1400.0,5613.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies_fighters_00",
+        "tm": [
+          [0.866025,0.0,0.5],
+          [0.0,1.0,0.0],
+          [-0.5,0.0,0.866025],
+          [23878.8,1989.3,5767.75]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109f-4_trop",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_02",
+        "tm": [
+          [-0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,-0.92388],
+          [24720.1,1400.0,5613.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_03",
+        "tm": [
+          [-0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,-0.92388],
+          [25296.8,1400.0,5613.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 6,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies_fighters_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-5315.1,1989.3,-29283.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "bf-109f-4_trop",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 4,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "allies_bombers_02",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-4563.75,1277.5,-28381.2]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "he-111h-2",
+        "weapons": "",
+        "props": {
+          "army": 1,
+          "count": 12,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_04",
+        "tm": [
+          [-0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,-0.92388],
+          [23731.4,2400.0,14946.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 8,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_05",
+        "tm": [
+          [-0.92388,0.0,-0.382683],
+          [0.0,1.0,0.0],
+          [0.382683,0.0,-0.92388],
+          [23897.7,1800.0,15121.7]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 10,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "us_fighters_06",
+        "tm": [
+          [-0.642788,0.0,0.766044],
+          [0.0,1.0,0.0],
+          [-0.766044,0.0,-0.642788],
+          [24248.5,567.5,5613.9]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "f6f-3",
+        "weapons": "",
+        "props": {
+          "army": 2,
+          "count": 10,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "he111_squad",
         "tm": [
@@ -4251,6 +4636,109 @@
           },
           {
             "squad_members": "he111_16"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "us_ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [26839.6,0.00012207,1175.95]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "us_ship_01"
+          },
+          {
+            "squad_members": "us_ship_02"
+          },
+          {
+            "squad_members": "us_ship_03"
+          },
+          {
+            "squad_members": "us_ship_04"
+          },
+          {
+            "squad_members": "us_ship_05"
+          },
+          {
+            "squad_members": "us_ship_06"
+          },
+          {
+            "squad_members": "us_ship_07"
+          },
+          {
+            "squad_members": "us_ship_08"
+          },
+          {
+            "squad_members": "us_ship_09"
+          },
+          {
+            "squad_members": "us_ship_10"
+          },
+          {
+            "squad_members": "us_carrrier_01"
+          },
+          {
+            "squad_members": "us_carrrier_02"
+          },
+          {
+            "squad_members": "us_carrrier_03"
+          }
+        ],
+        "way": []
+      }
+    },
+    {
+      "squad": {
+        "name": "us_dd_ships_squad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [26400.3,0.00012207,2058.55]
+        ],
+        "closed_waypoints": false,
+        "unit_class": "",
+        "weapons": "",
+        "props": [
+          {
+            "squad_members": "us_ship_01"
+          },
+          {
+            "squad_members": "us_ship_02"
+          },
+          {
+            "squad_members": "us_ship_03"
+          },
+          {
+            "squad_members": "us_ship_04"
+          },
+          {
+            "squad_members": "us_ship_05"
+          },
+          {
+            "squad_members": "us_ship_06"
+          },
+          {
+            "squad_members": "us_ship_07"
+          },
+          {
+            "squad_members": "us_ship_08"
+          },
+          {
+            "squad_members": "us_ship_09"
+          },
+          {
+            "squad_members": "us_ship_10"
           }
         ],
         "way": []
@@ -4577,494 +5065,6 @@
           "formation_noise": [0.1,0.1],
           "uniqueName": "",
           "attack_type": "fire_at_will"
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "us_ships_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [26839.6,0.00012207,1175.95]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "us_ship_01"
-          },
-          {
-            "squad_members": "us_ship_02"
-          },
-          {
-            "squad_members": "us_ship_03"
-          },
-          {
-            "squad_members": "us_ship_04"
-          },
-          {
-            "squad_members": "us_ship_05"
-          },
-          {
-            "squad_members": "us_ship_06"
-          },
-          {
-            "squad_members": "us_ship_07"
-          },
-          {
-            "squad_members": "us_ship_08"
-          },
-          {
-            "squad_members": "us_ship_09"
-          },
-          {
-            "squad_members": "us_ship_10"
-          },
-          {
-            "squad_members": "us_carrrier_01"
-          },
-          {
-            "squad_members": "us_carrrier_02"
-          },
-          {
-            "squad_members": "us_carrrier_03"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies_bombers_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20865.6,1277.5,5261.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-2",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies_fighters_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [20865.6,1989.3,5261.3]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109f-4_trop",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_01",
-        "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [24248.5,1400.0,5613.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies_fighters_00",
-        "tm": [
-          [0.866025,0.0,0.5],
-          [0.0,1.0,0.0],
-          [-0.5,0.0,0.866025],
-          [23878.8,1989.3,5767.75]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109f-4_trop",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "squad": {
-        "name": "us_dd_ships_squad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [26400.3,0.00012207,2058.55]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "",
-        "weapons": "",
-        "props": [
-          {
-            "squad_members": "us_ship_01"
-          },
-          {
-            "squad_members": "us_ship_02"
-          },
-          {
-            "squad_members": "us_ship_03"
-          },
-          {
-            "squad_members": "us_ship_04"
-          },
-          {
-            "squad_members": "us_ship_05"
-          },
-          {
-            "squad_members": "us_ship_06"
-          },
-          {
-            "squad_members": "us_ship_07"
-          },
-          {
-            "squad_members": "us_ship_08"
-          },
-          {
-            "squad_members": "us_ship_09"
-          },
-          {
-            "squad_members": "us_ship_10"
-          }
-        ],
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_02",
-        "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [24720.1,1400.0,5613.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_03",
-        "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [25296.8,1400.0,5613.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 6,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies_fighters_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-5315.1,1989.3,-29283.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "bf-109f-4_trop",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 4,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "allies_bombers_02",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-4563.75,1277.5,-28381.2]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "he-111h-2",
-        "weapons": "",
-        "props": {
-          "army": 1,
-          "count": 12,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_04",
-        "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [23731.4,2400.0,14946.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 8,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_05",
-        "tm": [
-          [-0.92388,0.0,-0.382683],
-          [0.0,1.0,0.0],
-          [0.382683,0.0,-0.92388],
-          [23897.7,1800.0,15121.7]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 10,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "us_fighters_06",
-        "tm": [
-          [-0.642788,0.0,0.766044],
-          [0.0,1.0,0.0],
-          [-0.766044,0.0,-0.642788],
-          [24248.5,567.5,5613.9]
-        ],
-        "closed_waypoints": false,
-        "unit_class": "f6f-3",
-        "weapons": "",
-        "props": {
-          "army": 2,
-          "count": 10,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
         },
         "way": []
       }

@@ -367,6 +367,19 @@
           }
         },
         {
+          "varSetInt": {
+            "value": 7,
+            "var": "artillery_disable_stage",
+            "fromDescriptor": "artillery_disable_stage"
+          }
+        },
+        {
+          "varSetInt": {
+            "value": 12,
+            "var": "pickups_count"
+          }
+        },
+        {
           "comment": {
             "value": "br_area_div - number of total stages(for 2 sides deduction each time)"
           }
@@ -384,13 +397,6 @@
         {
           "comment": {
             "value": "artillery have radius 200m radius and sector side is 2400/10=240m"
-          }
-        },
-        {
-          "varSetInt": {
-            "value": 7,
-            "var": "artillery_disable_stage",
-            "fromDescriptor": "artillery_disable_stage"
           }
         },
         {
@@ -429,12 +435,6 @@
             "var": "br_final_sector_exclude",
             "fromDescriptor": "br_final_sector_exclude"
           }
-        },
-        {
-          "varSetInt": {
-            "value": 12,
-            "var": "pickups_count"
-          }
         }
       ],
       "else_actions": []
@@ -464,552 +464,6 @@
           "army": 2,
           "active": true
         }
-      }
-    },
-    {
-      "area_squad": {
-        "name": "spawn_area_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1201.73,443.58,-709.015]
-        ],
-        "props": [
-          {
-            "squad_members": "spawn01"
-          },
-          {
-            "squad_members": "spawn02"
-          },
-          {
-            "squad_members": "spawn03"
-          },
-          {
-            "squad_members": "spawn04"
-          },
-          {
-            "squad_members": "spawn05"
-          },
-          {
-            "squad_members": "spawn06"
-          },
-          {
-            "squad_members": "spawn07"
-          },
-          {
-            "squad_members": "spawn08"
-          },
-          {
-            "squad_members": "spawn09"
-          },
-          {
-            "squad_members": "spawn10"
-          },
-          {
-            "squad_members": "spawn11"
-          },
-          {
-            "squad_members": "spawn12"
-          },
-          {
-            "squad_members": "spawn13"
-          },
-          {
-            "squad_members": "spawn14"
-          },
-          {
-            "squad_members": "spawn15"
-          },
-          {
-            "squad_members": "spawn16"
-          },
-          {
-            "squad_members": "spawn17"
-          },
-          {
-            "squad_members": "spawn18"
-          },
-          {
-            "squad_members": "spawn19"
-          },
-          {
-            "squad_members": "spawn20"
-          },
-          {
-            "squad_members": "spawn21"
-          },
-          {
-            "squad_members": "spawn22"
-          },
-          {
-            "squad_members": "spawn23"
-          },
-          {
-            "squad_members": "spawn24"
-          },
-          {
-            "squad_members": "spawn25"
-          },
-          {
-            "squad_members": "spawn26"
-          },
-          {
-            "squad_members": "spawn27"
-          },
-          {
-            "squad_members": "spawn28"
-          },
-          {
-            "squad_members": "spawn29"
-          },
-          {
-            "squad_members": "spawn30"
-          },
-          {
-            "squad_members": "spawn31"
-          },
-          {
-            "squad_members": "spawn32"
-          }
-        ]
-      }
-    },
-    {
-      "area_squad": {
-        "name": "pickups_area_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [1703.73,468.043,-596.035]
-        ],
-        "props": [
-          {
-            "squad_members": "pickupArea01"
-          },
-          {
-            "squad_members": "pickupArea02"
-          },
-          {
-            "squad_members": "pickupArea03"
-          },
-          {
-            "squad_members": "pickupArea04"
-          },
-          {
-            "squad_members": "pickupArea05"
-          },
-          {
-            "squad_members": "pickupArea06"
-          },
-          {
-            "squad_members": "pickupArea07"
-          },
-          {
-            "squad_members": "pickupArea08"
-          },
-          {
-            "squad_members": "pickupArea09"
-          },
-          {
-            "squad_members": "pickupArea10"
-          },
-          {
-            "squad_members": "pickupArea11"
-          },
-          {
-            "squad_members": "pickupArea12"
-          },
-          {
-            "squad_members": "pickupArea13"
-          },
-          {
-            "squad_members": "pickupArea14"
-          },
-          {
-            "squad_members": "pickupArea15"
-          },
-          {
-            "squad_members": "pickupArea16"
-          },
-          {
-            "squad_members": "pickupArea17"
-          },
-          {
-            "squad_members": "pickupArea18"
-          },
-          {
-            "squad_members": "pickupArea19"
-          },
-          {
-            "squad_members": "pickupArea20"
-          },
-          {
-            "squad_members": "pickupArea21"
-          },
-          {
-            "squad_members": "pickupArea22"
-          },
-          {
-            "squad_members": "pickupArea23"
-          },
-          {
-            "squad_members": "pickupArea24"
-          },
-          {
-            "squad_members": "pickupArea25"
-          },
-          {
-            "squad_members": "pickupArea26"
-          },
-          {
-            "squad_members": "pickupArea27"
-          },
-          {
-            "squad_members": "pickupArea28"
-          },
-          {
-            "squad_members": "pickupArea29"
-          },
-          {
-            "squad_members": "pickupArea30"
-          },
-          {
-            "squad_members": "pickupArea31"
-          },
-          {
-            "squad_members": "pickupArea32"
-          },
-          {
-            "squad_members": "pickupArea33"
-          },
-          {
-            "squad_members": "pickupArea34"
-          },
-          {
-            "squad_members": "pickupArea35"
-          },
-          {
-            "squad_members": "pickupArea36"
-          },
-          {
-            "squad_members": "pickupArea37"
-          },
-          {
-            "squad_members": "pickupArea38"
-          },
-          {
-            "squad_members": "pickupArea39"
-          },
-          {
-            "squad_members": "pickupArea40"
-          },
-          {
-            "squad_members": "pickupArea41"
-          },
-          {
-            "squad_members": "pickupArea42"
-          },
-          {
-            "squad_members": "pickupArea43"
-          },
-          {
-            "squad_members": "pickupArea44"
-          },
-          {
-            "squad_members": "pickupArea45"
-          },
-          {
-            "squad_members": "pickupArea46"
-          },
-          {
-            "squad_members": "pickupArea47"
-          },
-          {
-            "squad_members": "pickupArea48"
-          },
-          {
-            "squad_members": "pickupArea49"
-          },
-          {
-            "squad_members": "pickupArea50"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "object_groups_sqad",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-209.462,452.45,-453.215]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "objectGroups_01"
-          },
-          {
-            "squad_members": "objectGroups_02"
-          },
-          {
-            "squad_members": "objectGroups_03"
-          },
-          {
-            "squad_members": "objectGroups_04"
-          },
-          {
-            "squad_members": "objectGroups_05"
-          },
-          {
-            "squad_members": "objectGroups_06"
-          },
-          {
-            "squad_members": "objectGroups_07"
-          },
-          {
-            "squad_members": "objectGroups_08"
-          },
-          {
-            "squad_members": "objectGroups_09"
-          },
-          {
-            "squad_members": "objectGroups_10"
-          },
-          {
-            "squad_members": "objectGroups_11"
-          },
-          {
-            "squad_members": "objectGroups_12"
-          },
-          {
-            "squad_members": "objectGroups_13"
-          },
-          {
-            "squad_members": "objectGroups_14"
-          },
-          {
-            "squad_members": "objectGroups_15"
-          },
-          {
-            "squad_members": "objectGroups_16"
-          },
-          {
-            "squad_members": "objectGroups_17"
-          },
-          {
-            "squad_members": "objectGroups_18"
-          },
-          {
-            "squad_members": "objectGroups_19"
-          },
-          {
-            "squad_members": "objectGroups_20"
-          },
-          {
-            "squad_members": "objectGroups_21"
-          },
-          {
-            "squad_members": "objectGroups_22"
-          },
-          {
-            "squad_members": "objectGroups_23"
-          },
-          {
-            "squad_members": "objectGroups_24"
-          },
-          {
-            "squad_members": "objectGroups_25"
-          },
-          {
-            "squad_members": "objectGroups_26"
-          },
-          {
-            "squad_members": "objectGroups_27"
-          },
-          {
-            "squad_members": "objectGroups_28"
-          },
-          {
-            "squad_members": "objectGroups_29"
-          },
-          {
-            "squad_members": "objectGroups_30"
-          },
-          {
-            "squad_members": "objectGroups_31"
-          },
-          {
-            "squad_members": "objectGroups_32"
-          },
-          {
-            "squad_members": "objectGroups_33"
-          },
-          {
-            "squad_members": "objectGroups_34"
-          },
-          {
-            "squad_members": "objectGroups_35"
-          },
-          {
-            "squad_members": "objectGroups_36"
-          },
-          {
-            "squad_members": "objectGroups_37"
-          },
-          {
-            "squad_members": "objectGroups_38"
-          },
-          {
-            "squad_members": "objectGroups_39"
-          },
-          {
-            "squad_members": "objectGroups_40"
-          },
-          {
-            "squad_members": "objectGroups_41"
-          },
-          {
-            "squad_members": "objectGroups_42"
-          },
-          {
-            "squad_members": "objectGroups_43"
-          },
-          {
-            "squad_members": "objectGroups_44"
-          },
-          {
-            "squad_members": "objectGroups_45"
-          },
-          {
-            "squad_members": "objectGroups_46"
-          },
-          {
-            "squad_members": "objectGroups_47"
-          },
-          {
-            "squad_members": "objectGroups_48"
-          },
-          {
-            "squad_members": "objectGroups_49"
-          },
-          {
-            "squad_members": "objectGroups_50"
-          },
-          {
-            "squad_members": "objectGroups_51"
-          },
-          {
-            "squad_members": "objectGroups_52"
-          },
-          {
-            "squad_members": "objectGroups_53"
-          },
-          {
-            "squad_members": "objectGroups_54"
-          },
-          {
-            "squad_members": "objectGroups_55"
-          },
-          {
-            "squad_members": "objectGroups_56"
-          },
-          {
-            "squad_members": "objectGroups_57"
-          },
-          {
-            "squad_members": "objectGroups_58"
-          },
-          {
-            "squad_members": "objectGroups_59"
-          },
-          {
-            "squad_members": "objectGroups_60"
-          },
-          {
-            "squad_members": "objectGroups_61"
-          },
-          {
-            "squad_members": "objectGroups_62"
-          },
-          {
-            "squad_members": "objectGroups_63"
-          },
-          {
-            "squad_members": "objectGroups_64"
-          },
-          {
-            "squad_members": "objectGroups_65"
-          },
-          {
-            "squad_members": "objectGroups_66"
-          },
-          {
-            "squad_members": "objectGroups_67"
-          },
-          {
-            "squad_members": "objectGroups_68"
-          },
-          {
-            "squad_members": "objectGroups_69"
-          },
-          {
-            "squad_members": "objectGroups_70"
-          },
-          {
-            "squad_members": "objectGroups_71"
-          },
-          {
-            "squad_members": "objectGroups_72"
-          },
-          {
-            "squad_members": "objectGroups_73"
-          },
-          {
-            "squad_members": "objectGroups_74"
-          }
-        ]
-      }
-    },
-    {
-      "tankModels": {
-        "name": "player01",
-        "tm": [
-          [-0.999479,0.0,0.0322793],
-          [0.0,1.0,0.0],
-          [-0.0322793,0.0,-0.999479],
-          [727.187,15.35,-1499.25]
-        ],
-        "unit_class": "cn_bt_5",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will"
-        },
-        "way": []
       }
     },
     {
@@ -2251,6 +1705,552 @@
           "army": 2,
           "active": true
         }
+      }
+    },
+    {
+      "area_squad": {
+        "name": "spawn_area_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1201.73,443.58,-709.015]
+        ],
+        "props": [
+          {
+            "squad_members": "spawn01"
+          },
+          {
+            "squad_members": "spawn02"
+          },
+          {
+            "squad_members": "spawn03"
+          },
+          {
+            "squad_members": "spawn04"
+          },
+          {
+            "squad_members": "spawn05"
+          },
+          {
+            "squad_members": "spawn06"
+          },
+          {
+            "squad_members": "spawn07"
+          },
+          {
+            "squad_members": "spawn08"
+          },
+          {
+            "squad_members": "spawn09"
+          },
+          {
+            "squad_members": "spawn10"
+          },
+          {
+            "squad_members": "spawn11"
+          },
+          {
+            "squad_members": "spawn12"
+          },
+          {
+            "squad_members": "spawn13"
+          },
+          {
+            "squad_members": "spawn14"
+          },
+          {
+            "squad_members": "spawn15"
+          },
+          {
+            "squad_members": "spawn16"
+          },
+          {
+            "squad_members": "spawn17"
+          },
+          {
+            "squad_members": "spawn18"
+          },
+          {
+            "squad_members": "spawn19"
+          },
+          {
+            "squad_members": "spawn20"
+          },
+          {
+            "squad_members": "spawn21"
+          },
+          {
+            "squad_members": "spawn22"
+          },
+          {
+            "squad_members": "spawn23"
+          },
+          {
+            "squad_members": "spawn24"
+          },
+          {
+            "squad_members": "spawn25"
+          },
+          {
+            "squad_members": "spawn26"
+          },
+          {
+            "squad_members": "spawn27"
+          },
+          {
+            "squad_members": "spawn28"
+          },
+          {
+            "squad_members": "spawn29"
+          },
+          {
+            "squad_members": "spawn30"
+          },
+          {
+            "squad_members": "spawn31"
+          },
+          {
+            "squad_members": "spawn32"
+          }
+        ]
+      }
+    },
+    {
+      "area_squad": {
+        "name": "pickups_area_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [1703.73,468.043,-596.035]
+        ],
+        "props": [
+          {
+            "squad_members": "pickupArea01"
+          },
+          {
+            "squad_members": "pickupArea02"
+          },
+          {
+            "squad_members": "pickupArea03"
+          },
+          {
+            "squad_members": "pickupArea04"
+          },
+          {
+            "squad_members": "pickupArea05"
+          },
+          {
+            "squad_members": "pickupArea06"
+          },
+          {
+            "squad_members": "pickupArea07"
+          },
+          {
+            "squad_members": "pickupArea08"
+          },
+          {
+            "squad_members": "pickupArea09"
+          },
+          {
+            "squad_members": "pickupArea10"
+          },
+          {
+            "squad_members": "pickupArea11"
+          },
+          {
+            "squad_members": "pickupArea12"
+          },
+          {
+            "squad_members": "pickupArea13"
+          },
+          {
+            "squad_members": "pickupArea14"
+          },
+          {
+            "squad_members": "pickupArea15"
+          },
+          {
+            "squad_members": "pickupArea16"
+          },
+          {
+            "squad_members": "pickupArea17"
+          },
+          {
+            "squad_members": "pickupArea18"
+          },
+          {
+            "squad_members": "pickupArea19"
+          },
+          {
+            "squad_members": "pickupArea20"
+          },
+          {
+            "squad_members": "pickupArea21"
+          },
+          {
+            "squad_members": "pickupArea22"
+          },
+          {
+            "squad_members": "pickupArea23"
+          },
+          {
+            "squad_members": "pickupArea24"
+          },
+          {
+            "squad_members": "pickupArea25"
+          },
+          {
+            "squad_members": "pickupArea26"
+          },
+          {
+            "squad_members": "pickupArea27"
+          },
+          {
+            "squad_members": "pickupArea28"
+          },
+          {
+            "squad_members": "pickupArea29"
+          },
+          {
+            "squad_members": "pickupArea30"
+          },
+          {
+            "squad_members": "pickupArea31"
+          },
+          {
+            "squad_members": "pickupArea32"
+          },
+          {
+            "squad_members": "pickupArea33"
+          },
+          {
+            "squad_members": "pickupArea34"
+          },
+          {
+            "squad_members": "pickupArea35"
+          },
+          {
+            "squad_members": "pickupArea36"
+          },
+          {
+            "squad_members": "pickupArea37"
+          },
+          {
+            "squad_members": "pickupArea38"
+          },
+          {
+            "squad_members": "pickupArea39"
+          },
+          {
+            "squad_members": "pickupArea40"
+          },
+          {
+            "squad_members": "pickupArea41"
+          },
+          {
+            "squad_members": "pickupArea42"
+          },
+          {
+            "squad_members": "pickupArea43"
+          },
+          {
+            "squad_members": "pickupArea44"
+          },
+          {
+            "squad_members": "pickupArea45"
+          },
+          {
+            "squad_members": "pickupArea46"
+          },
+          {
+            "squad_members": "pickupArea47"
+          },
+          {
+            "squad_members": "pickupArea48"
+          },
+          {
+            "squad_members": "pickupArea49"
+          },
+          {
+            "squad_members": "pickupArea50"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "object_groups_sqad",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-209.462,452.45,-453.215]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "objectGroups_01"
+          },
+          {
+            "squad_members": "objectGroups_02"
+          },
+          {
+            "squad_members": "objectGroups_03"
+          },
+          {
+            "squad_members": "objectGroups_04"
+          },
+          {
+            "squad_members": "objectGroups_05"
+          },
+          {
+            "squad_members": "objectGroups_06"
+          },
+          {
+            "squad_members": "objectGroups_07"
+          },
+          {
+            "squad_members": "objectGroups_08"
+          },
+          {
+            "squad_members": "objectGroups_09"
+          },
+          {
+            "squad_members": "objectGroups_10"
+          },
+          {
+            "squad_members": "objectGroups_11"
+          },
+          {
+            "squad_members": "objectGroups_12"
+          },
+          {
+            "squad_members": "objectGroups_13"
+          },
+          {
+            "squad_members": "objectGroups_14"
+          },
+          {
+            "squad_members": "objectGroups_15"
+          },
+          {
+            "squad_members": "objectGroups_16"
+          },
+          {
+            "squad_members": "objectGroups_17"
+          },
+          {
+            "squad_members": "objectGroups_18"
+          },
+          {
+            "squad_members": "objectGroups_19"
+          },
+          {
+            "squad_members": "objectGroups_20"
+          },
+          {
+            "squad_members": "objectGroups_21"
+          },
+          {
+            "squad_members": "objectGroups_22"
+          },
+          {
+            "squad_members": "objectGroups_23"
+          },
+          {
+            "squad_members": "objectGroups_24"
+          },
+          {
+            "squad_members": "objectGroups_25"
+          },
+          {
+            "squad_members": "objectGroups_26"
+          },
+          {
+            "squad_members": "objectGroups_27"
+          },
+          {
+            "squad_members": "objectGroups_28"
+          },
+          {
+            "squad_members": "objectGroups_29"
+          },
+          {
+            "squad_members": "objectGroups_30"
+          },
+          {
+            "squad_members": "objectGroups_31"
+          },
+          {
+            "squad_members": "objectGroups_32"
+          },
+          {
+            "squad_members": "objectGroups_33"
+          },
+          {
+            "squad_members": "objectGroups_34"
+          },
+          {
+            "squad_members": "objectGroups_35"
+          },
+          {
+            "squad_members": "objectGroups_36"
+          },
+          {
+            "squad_members": "objectGroups_37"
+          },
+          {
+            "squad_members": "objectGroups_38"
+          },
+          {
+            "squad_members": "objectGroups_39"
+          },
+          {
+            "squad_members": "objectGroups_40"
+          },
+          {
+            "squad_members": "objectGroups_41"
+          },
+          {
+            "squad_members": "objectGroups_42"
+          },
+          {
+            "squad_members": "objectGroups_43"
+          },
+          {
+            "squad_members": "objectGroups_44"
+          },
+          {
+            "squad_members": "objectGroups_45"
+          },
+          {
+            "squad_members": "objectGroups_46"
+          },
+          {
+            "squad_members": "objectGroups_47"
+          },
+          {
+            "squad_members": "objectGroups_48"
+          },
+          {
+            "squad_members": "objectGroups_49"
+          },
+          {
+            "squad_members": "objectGroups_50"
+          },
+          {
+            "squad_members": "objectGroups_51"
+          },
+          {
+            "squad_members": "objectGroups_52"
+          },
+          {
+            "squad_members": "objectGroups_53"
+          },
+          {
+            "squad_members": "objectGroups_54"
+          },
+          {
+            "squad_members": "objectGroups_55"
+          },
+          {
+            "squad_members": "objectGroups_56"
+          },
+          {
+            "squad_members": "objectGroups_57"
+          },
+          {
+            "squad_members": "objectGroups_58"
+          },
+          {
+            "squad_members": "objectGroups_59"
+          },
+          {
+            "squad_members": "objectGroups_60"
+          },
+          {
+            "squad_members": "objectGroups_61"
+          },
+          {
+            "squad_members": "objectGroups_62"
+          },
+          {
+            "squad_members": "objectGroups_63"
+          },
+          {
+            "squad_members": "objectGroups_64"
+          },
+          {
+            "squad_members": "objectGroups_65"
+          },
+          {
+            "squad_members": "objectGroups_66"
+          },
+          {
+            "squad_members": "objectGroups_67"
+          },
+          {
+            "squad_members": "objectGroups_68"
+          },
+          {
+            "squad_members": "objectGroups_69"
+          },
+          {
+            "squad_members": "objectGroups_70"
+          },
+          {
+            "squad_members": "objectGroups_71"
+          },
+          {
+            "squad_members": "objectGroups_72"
+          },
+          {
+            "squad_members": "objectGroups_73"
+          },
+          {
+            "squad_members": "objectGroups_74"
+          }
+        ]
+      }
+    },
+    {
+      "tankModels": {
+        "name": "player01",
+        "tm": [
+          [-0.999479,0.0,0.0322793],
+          [0.0,1.0,0.0],
+          [-0.0322793,0.0,-0.999479],
+          [727.187,15.35,-1499.25]
+        ],
+        "unit_class": "cn_bt_5",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": []
       }
     }
   ],

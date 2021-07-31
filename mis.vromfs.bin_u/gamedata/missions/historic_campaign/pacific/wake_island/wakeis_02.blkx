@@ -303,44 +303,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "showCutsceneInfo": {
-            "text": "cutscene_text/wake_m2_p1",
-            "duration": 6.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "cutscene_skip01"
-          }
-        },
-        {
-          "wait": {
-            "time": 4.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "two_units",
             "startSubTypeOnTheMarch": "",
@@ -364,11 +326,6 @@
             "object": "start_cut_point",
             "target": "btry_A",
             "zoom": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -400,15 +357,17 @@
         },
         {
           "wait": {
-            "time": 1.0
+            "time": 2.0
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "btry_A01",
-            "target": "cutscene_cruisers02",
-            "fireRandom": true
+          "wait": {
+            "time": 4.0
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
           }
         },
         {
@@ -417,16 +376,41 @@
           }
         },
         {
-          "unitAttackTarget": {
-            "playerAttracted": false,
-            "object": "btry_A02",
-            "target": "cutscene_cruisers02",
-            "fireRandom": true
+          "wait": {
+            "time": 1.0
           }
         },
         {
           "wait": {
             "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "showCutsceneInfo": {
+            "text": "cutscene_text/wake_m2_p1",
+            "duration": 6.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -447,18 +431,34 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "cutscene_skip01"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
           "triggerEnable": {
             "target": "takeoff"
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "btry_A01",
+            "target": "cutscene_cruisers02",
+            "fireRandom": true
+          }
+        },
+        {
+          "unitAttackTarget": {
+            "playerAttracted": false,
+            "object": "btry_A02",
+            "target": "cutscene_cruisers02",
+            "fireRandom": true
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "cutscene_skip01"
           }
         }
       ],
@@ -535,8 +535,20 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
           }
         },
         {
@@ -741,18 +753,6 @@
           ]
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "wakeIs_mission2_fly00",
             "object_var_comp_op": "equal",
@@ -813,14 +813,14 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+          "wait": {
             "time": 1.0
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
             "time": 1.0
           }
         },
@@ -953,63 +953,6 @@
           }
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "cutscene_skip_after_teleport"
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "wake_m1_dialogue_01_part1",
-            "subtitles": true
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
-          "wait": {
-            "time": 0.5
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 0.5
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "on_the_march",
             "startSubTypeOnTheMarch": "back",
@@ -1034,16 +977,6 @@
             "finalLook": "merchant_ships01",
             "changeLookTime": 4.0,
             "finalZoom": 15.0
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "after_tele_cut_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 6.0
           }
         },
         {
@@ -1073,9 +1006,45 @@
           }
         },
         {
-          "missionPlayDialogue": {
-            "dialog": "wake_m1_dialogue_01_part3",
-            "subtitles": true
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 0.5
+          }
+        },
+        {
+          "wait": {
+            "time": 6.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
           }
         },
         {
@@ -1096,18 +1065,49 @@
           }
         },
         {
-          "triggerDisable": {
+          "triggerEnable": {
             "target": "cutscene_skip_after_teleport"
           }
         },
         {
-          "wait": {
-            "time": 1.0
+          "triggerEnable": {
+            "target": "after_tele_cut_dialogue"
           }
         },
         {
           "triggerEnable": {
             "target": "after_teleport"
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "wake_m1_dialogue_01_part1",
+            "subtitles": true
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "wake_m1_dialogue_01_part3",
+            "subtitles": true
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 0.5
+          }
+        },
+        {
+          "triggerDisable": {
+            "target": "cutscene_skip_after_teleport"
           }
         }
       ],
@@ -1206,17 +1206,29 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 0.6
           }
         },
         {
-          "missionStopCutscene": []
-        },
-        {
           "wait": {
             "time": 0.5
           }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "missionStopCutscene": []
         },
         {
           "playerControls": {
@@ -1251,18 +1263,6 @@
             "move_type": "teleport",
             "lookat": "merchant_ships",
             "velocity": 300.0
-          }
-        },
-        {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
-            "time": 1.0
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -1421,17 +1421,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "missionPlayDialogue": {
-            "dialog": "wake_m1_dialogue_02_part2",
-            "subtitles": false
-          }
-        },
-        {
           "unitSetIndication": {
             "set": true,
             "target_marking": 0,
@@ -1439,6 +1428,22 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "target": "kisaragi"
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
+          }
+        },
+        {
+          "missionPlayDialogue": {
+            "dialog": "wake_m1_dialogue_02_part2",
+            "subtitles": false
           }
         },
         {
@@ -1460,11 +1465,6 @@
               "target": "kisaragi_died"
             }
           ]
-        },
-        {
-          "wait": {
-            "time": 5.0
-          }
         },
         {
           "triggerEnable": {
@@ -1734,14 +1734,14 @@
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeOut",
-            "color": [0.0,0.0,0.0],
+          "wait": {
             "time": 1.0
           }
         },
         {
-          "wait": {
+          "missionSetFade": {
+            "mode": "fadeOut",
+            "color": [0.0,0.0,0.0],
             "time": 1.0
           }
         },
@@ -1997,14 +1997,59 @@
           }
         },
         {
+          "missionSetFade": {
+            "mode": "fadeIn",
+            "color": [0.0,0.0,0.0],
+            "time": 1.0
+          }
+        },
+        {
           "wait": {
             "time": 1.0
           }
         },
         {
-          "missionSetFade": {
-            "mode": "fadeIn",
-            "color": [0.0,0.0,0.0],
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 2.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 25.0
+          }
+        },
+        {
+          "wait": {
+            "time": 58.0
+          }
+        },
+        {
+          "wait": {
             "time": 1.0
           }
         },
@@ -2103,6 +2148,19 @@
           }
         },
         {
+          "unitDamage": {
+            "part": 0,
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [1.0,1.0],
+            "offset": [0.0,0.0,0.0],
+            "radiusOffset": [10.0,15.0],
+            "target": "dd_for_deb_cut02",
+            "doExplosion": true
+          }
+        },
+        {
           "showSmartCutscene": {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
@@ -2124,11 +2182,6 @@
             "allowDeadUnits": false,
             "wait": false,
             "object": "deb_cut_area"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -2202,38 +2255,6 @@
           ]
         },
         {
-          "wait": {
-            "time": 2.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "area",
             "startSubTypeOnTheMarch": "",
@@ -2255,16 +2276,6 @@
             "startSubTypeFlyBy": "",
             "wait": false,
             "object": "deb_cut_art_area"
-          }
-        },
-        {
-          "triggerEnable": {
-            "target": "debriefing_dialogue"
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
           }
         },
         {
@@ -2293,29 +2304,6 @@
           }
         },
         {
-          "wait": {
-            "time": 1.0
-          }
-        },
-        {
-          "unitDamage": {
-            "part": 0,
-            "power": 1.0,
-            "useEffect": false,
-            "countEffects": 1,
-            "delay": [1.0,1.0],
-            "offset": [0.0,0.0,0.0],
-            "radiusOffset": [10.0,15.0],
-            "target": "dd_for_deb_cut02",
-            "doExplosion": true
-          }
-        },
-        {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "showSmartCutscene": {
             "sceneType": "bomber_attack_ground",
             "startSubTypeOnTheMarch": "",
@@ -2338,35 +2326,6 @@
             "wait": false,
             "object": "cutscene_planes",
             "target": "dd_for_deb_cut01"
-          }
-        },
-        {
-          "wait": {
-            "time": 25.0
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "deb_cut_tele",
-            "follow_target": false,
-            "teleportHeightType": "target",
-            "useUnitHeightForTele": false,
-            "shouldKeepFormation": true,
-            "teleportHeightValue": 0.0,
-            "horizontalDirectionForTeleport": true,
-            "waypointReachedDist": 10.0,
-            "recalculatePathDist": -1.0,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target_marking": 0,
-            "fastClimb": false,
-            "destTimeMode": false,
-            "object": "cutscene_planes",
-            "move_type": "teleport",
-            "lookat": "deb_cut_move",
-            "velocity": 250.0
           }
         },
         {
@@ -2394,14 +2353,72 @@
           }
         },
         {
-          "unitPutToSleep": [
-            {
-              "target": "dd_for_deb_cut02"
-            },
-            {
-              "target": "dd_for_deb_cut01"
-            }
-          ]
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "playHint": {
+            "hintType": "custom",
+            "name": "hints/cutsc_skip",
+            "action": "hide",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_SKIP_CUTSCENE",
+            "shouldBlink": false
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "debriefing_skip"
+          }
+        },
+        {
+          "triggerEnable": {
+            "target": "debriefing_dialogue"
+          }
+        },
+        {
+          "unitMoveTo": {
+            "target": "deb_cut_tele",
+            "follow_target": false,
+            "teleportHeightType": "target",
+            "useUnitHeightForTele": false,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 0.0,
+            "horizontalDirectionForTeleport": true,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target_marking": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "object": "cutscene_planes",
+            "move_type": "teleport",
+            "lookat": "deb_cut_move",
+            "velocity": 250.0
+          }
         },
         {
           "unitMoveTo": {
@@ -2427,35 +2444,18 @@
           }
         },
         {
-          "wait": {
-            "time": 58.0
-          }
-        },
-        {
-          "playHint": {
-            "hintType": "custom",
-            "name": "hints/cutsc_skip",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ID_SKIP_CUTSCENE",
-            "shouldBlink": false
-          }
+          "unitPutToSleep": [
+            {
+              "target": "dd_for_deb_cut02"
+            },
+            {
+              "target": "dd_for_deb_cut01"
+            }
+          ]
         },
         {
           "triggerDisable": {
             "target": "debriefing_skip"
-          }
-        },
-        {
-          "wait": {
-            "time": 1.0
           }
         },
         {
@@ -2660,6 +2660,11 @@
           }
         },
         {
+          "wait": {
+            "time": 10.0
+          }
+        },
+        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/changePlaneB",
@@ -2674,11 +2679,6 @@
             "object_var_value": 0,
             "item": "ID_MPSTATSCREEN",
             "shouldBlink": false
-          }
-        },
-        {
-          "wait": {
-            "time": 10.0
           }
         },
         {
@@ -2765,23 +2765,6 @@
           }
         },
         {
-          "airfieldSetIndication": {
-            "set": true,
-            "target": "airfield00"
-          }
-        },
-        {
-          "wait": {
-            "time": 15.0
-          }
-        },
-        {
-          "airfieldSetIndication": {
-            "set": false,
-            "target": "airfield00"
-          }
-        },
-        {
           "playHint": {
             "hintType": "custom",
             "name": "hints/realistic_repair",
@@ -2794,6 +2777,23 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": true,
+            "target": "airfield00"
+          }
+        },
+        {
+          "airfieldSetIndication": {
+            "set": false,
+            "target": "airfield00"
+          }
+        },
+        {
+          "wait": {
+            "time": 15.0
           }
         }
       ],
@@ -3099,6 +3099,153 @@
           [0.0,1.0,0.0],
           [0.67559,0.0,-0.737277],
           [1736.16,1000.0,-2167.43]
+        ],
+        "unit_class": "f4f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-3_bombs_hidden",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 4,
+          "numInWing": 4,
+          "targetableByAi": false,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Finger",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "cutscene_planes",
+        "tm": [
+          [-0.819152,0.0,0.573576],
+          [0.0,1.0,0.0],
+          [-0.573576,0.0,-0.819152],
+          [-1924.6,1000.0,-2829.15]
+        ],
+        "unit_class": "f4f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-3_bombs_hidden",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 3,
+          "numInWing": 2,
+          "isDelayed": true,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 2.0,
+            "col_distances": 2.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 3.0,
+            "super_col_distances": 3.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "cutscene_crushed_plane",
+        "tm": [
+          [-0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,-0.737277],
+          [1928.55,18.3,-2538.9]
+        ],
+        "unit_class": "f4f-3",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "f4f-3_bombs_hidden",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "count": 1,
+          "numInWing": 1,
+          "isDelayed": true,
+          "aiEnabled": false,
+          "targetableByAi": false,
+          "speed": 0.0,
+          "plane": {
+            "wing_formation": "Finger",
+            "row_distances": 2.0,
+            "col_distances": 2.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 3.0,
+            "super_col_distances": 3.0,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
+      "armada": {
+        "name": "armada_01_cut",
+        "tm": [
+          [-0.737277,0.0,-0.67559],
+          [0.0,1.0,0.0],
+          [0.67559,0.0,-0.737277],
+          [1830.7,1000.0,-2071.1]
         ],
         "unit_class": "f4f-3",
         "closed_waypoints": false,
@@ -3541,330 +3688,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "air_defence": {
-        "name": "btry_D",
-        "tm": [
-          [0.608761,0.0,-0.793354],
-          [0.0,1.0,0.0],
-          [0.793354,0.0,0.608761],
-          [-1335.6,6.35283,2026.6]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [0.6,0.5],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "btry_B00",
-        "tm": [
-          [-0.642788,0.0,-0.766044],
-          [0.0,1.0,0.0],
-          [0.766044,0.0,-0.642788],
-          [-1512.5,7.30035,1988.25]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [0.8,1.2],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "btry_B01",
-        "tm": [
-          [-0.573577,0.0,-0.819152],
-          [0.0,1.0,0.0],
-          [0.819152,0.0,-0.573577],
-          [-1448.2,15.1287,2096.65]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "btry_L",
-        "tm": [
-          [-0.5,0.0,-0.866025],
-          [0.0,1.0,0.0],
-          [0.866025,0.0,-0.5],
-          [-3093.1,17.65,-93.65]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 2,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [1.25,0.5],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "btry_F",
-        "tm": [
-          [-0.643429,-0.114367,-0.756914],
-          [-0.128325,0.990899,-0.0406361],
-          [0.754674,0.0709842,-0.652249],
-          [-2749.8,6.99468,-324.75]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [1.25,0.5],
-          "formation_noise": [-0.5,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "btry_E",
-        "tm": [
-          [-0.843391,0.0,0.5373],
-          [0.0,1.0,0.0],
-          [-0.5373,0.0,-0.843391],
-          [1327.2,17.0977,-2449.8]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 4,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [1.0,1.25],
-          "formation_noise": [-0.2,0.1],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "btry_A01",
-        "tm": [
-          [0.0436201,0.0,-0.999048],
-          [0.0,1.0,0.0],
-          [0.999048,0.0,0.0436201],
-          [2575.25,3.90011,-3117.7]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "cols",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "attack_type": "hold_fire",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "btry_3inch",
-        "tm": [
-          [-0.953685,0.0166924,0.300343],
-          [0.00380168,0.999048,-0.0434534],
-          [-0.300782,-0.0402991,-0.952841],
-          [147.65,17.0303,-1910.2]
-        ],
-        "unit_class": "us_90mm_m1",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 3,
-          "formation_type": "cols",
-          "formation_div": 1,
-          "formation_step": [1.0,1.25],
-          "formation_noise": [-0.1,0.2],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "btry_30mm",
-        "tm": [
-          [-0.996085,0.0166924,0.0868083],
-          [0.0131166,0.999048,-0.0416005],
-          [-0.0874201,-0.0402991,-0.995356],
-          [1148.25,8.71477,1225.6]
-        ],
-        "unit_class": "us_40mm_bofors",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 5,
-          "formation_type": "cols",
-          "formation_div": 1,
-          "formation_step": [1.0,1.5],
-          "formation_noise": [-0.1,0.2],
-          "attack_type": "fire_at_will",
-          "uniqueName": ""
-        },
-        "way": []
       }
     },
     {
@@ -4698,191 +4521,6 @@
       }
     },
     {
-      "squad": {
-        "name": "cutscene_ships",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-6107.3,0.0,977.3]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "cutscene_cruisers01"
-          },
-          {
-            "squad_members": "cutscene_cruisers02"
-          },
-          {
-            "squad_members": "cutscene_merchant_ships"
-          },
-          {
-            "squad_members": "cutscene_destroyers01"
-          },
-          {
-            "squad_members": "cutscene_kisaragi"
-          },
-          {
-            "squad_members": "cutscene_cruisers03"
-          },
-          {
-            "squad_members": "cutscene_cruisers04"
-          },
-          {
-            "squad_members": "cutscene_cruisers05"
-          },
-          {
-            "squad_members": "cutscene_cruisers06"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "wake_artillery",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3598.95,-91.0,2540.85]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "btry_D"
-          },
-          {
-            "squad_members": "btry_B00"
-          },
-          {
-            "squad_members": "btry_B01"
-          },
-          {
-            "squad_members": "btry_L"
-          },
-          {
-            "squad_members": "btry_F"
-          },
-          {
-            "squad_members": "btry_E"
-          },
-          {
-            "squad_members": "btry_A"
-          },
-          {
-            "squad_members": "btry_3inch"
-          },
-          {
-            "squad_members": "btry_30mm"
-          }
-        ]
-      }
-    },
-    {
-      "armada": {
-        "name": "cutscene_planes",
-        "tm": [
-          [-0.819152,0.0,0.573576],
-          [0.0,1.0,0.0],
-          [-0.573576,0.0,-0.819152],
-          [-1924.6,1000.0,-2829.15]
-        ],
-        "unit_class": "f4f-3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-3_bombs_hidden",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 3,
-          "numInWing": 2,
-          "isDelayed": true,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 2.0,
-            "col_distances": 2.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 3.0,
-            "super_col_distances": 3.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "armada": {
-        "name": "cutscene_crushed_plane",
-        "tm": [
-          [-0.737277,0.0,-0.67559],
-          [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737277],
-          [1928.55,18.3,-2538.9]
-        ],
-        "unit_class": "f4f-3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-3_bombs_hidden",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 1,
-          "numInWing": 1,
-          "isDelayed": true,
-          "aiEnabled": false,
-          "targetableByAi": false,
-          "speed": 0.0,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 2.0,
-            "col_distances": 2.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 3.0,
-            "super_col_distances": 3.0,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "cutscene_cruisers04",
         "tm": [
@@ -5070,81 +4708,6 @@
       }
     },
     {
-      "squad": {
-        "name": "merchant_ships",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [-3468.4,0.0,-7745.45]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "merchant_ships01"
-          },
-          {
-            "squad_members": "merchant_ships02"
-          }
-        ]
-      }
-    },
-    {
-      "squad": {
-        "name": "player_sq",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2929.1,-91.0,-1552.75]
-        ],
-        "props": {
-          "object_marking": 0,
-          "squad_members": "armada_01",
-          "object_type": "isPlayer"
-        }
-      }
-    },
-    {
-      "structures": {
-        "name": "art_for_deb_cut02",
-        "tm": [
-          [-0.999048,0.0,0.0436192],
-          [0.0,1.0,0.0],
-          [-0.0436192,0.0,-0.999048],
-          [-3325.35,5.75,96.05]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "isDelayed": true
-        },
-        "way": []
-      }
-    },
-    {
       "ships": {
         "name": "dd_for_deb_cut02",
         "tm": [
@@ -5196,43 +4759,6 @@
             }
           }
         }
-      }
-    },
-    {
-      "structures": {
-        "name": "art_for_deb_cut01",
-        "tm": [
-          [-0.999048,0.0,0.0436192],
-          [0.0,1.0,0.0],
-          [-0.0436192,0.0,-0.999048],
-          [-3338.35,5.75,105.4]
-        ],
-        "unit_class": "us_155mm_m114_ultimate",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "isDelayed": true
-        },
-        "way": []
       }
     },
     {
@@ -5462,25 +4988,401 @@
       }
     },
     {
-      "squad": {
-        "name": "btry_A",
+      "air_defence": {
+        "name": "btry_D",
         "tm": [
-          [1.0,0.0,0.0],
+          [0.608761,0.0,-0.793354],
           [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [2534.45,4.1,-3119.65]
+          [0.793354,0.0,0.608761],
+          [-1335.6,6.35283,2026.6]
         ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "btry_A01"
-          },
-          {
-            "squad_members": "btry_A02"
-          }
-        ]
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [0.6,0.5],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "btry_F",
+        "tm": [
+          [-0.643429,-0.114367,-0.756914],
+          [-0.128325,0.990899,-0.0406361],
+          [0.754674,0.0709842,-0.652249],
+          [-2749.8,6.99468,-324.75]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [1.25,0.5],
+          "formation_noise": [-0.5,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "btry_E",
+        "tm": [
+          [-0.843391,0.0,0.5373],
+          [0.0,1.0,0.0],
+          [-0.5373,0.0,-0.843391],
+          [1327.2,17.0977,-2449.8]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 4,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [1.0,1.25],
+          "formation_noise": [-0.2,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "btry_3inch",
+        "tm": [
+          [-0.953685,0.0166924,0.300343],
+          [0.00380168,0.999048,-0.0434534],
+          [-0.300782,-0.0402991,-0.952841],
+          [147.65,17.0303,-1910.2]
+        ],
+        "unit_class": "us_90mm_m1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [1.0,1.25],
+          "formation_noise": [-0.1,0.2],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "btry_30mm",
+        "tm": [
+          [-0.996085,0.0166924,0.0868083],
+          [0.0131166,0.999048,-0.0416005],
+          [-0.0874201,-0.0402991,-0.995356],
+          [1148.25,8.71477,1225.6]
+        ],
+        "unit_class": "us_40mm_bofors",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 5,
+          "formation_type": "cols",
+          "formation_div": 1,
+          "formation_step": [1.0,1.5],
+          "formation_noise": [-0.1,0.2],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "btry_B00",
+        "tm": [
+          [-0.642788,0.0,-0.766044],
+          [0.0,1.0,0.0],
+          [0.766044,0.0,-0.642788],
+          [-1512.5,7.30035,1988.25]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [0.8,1.2],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "btry_B01",
+        "tm": [
+          [-0.573577,0.0,-0.819152],
+          [0.0,1.0,0.0],
+          [0.819152,0.0,-0.573577],
+          [-1448.2,15.1287,2096.65]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "btry_L",
+        "tm": [
+          [-0.5,0.0,-0.866025],
+          [0.0,1.0,0.0],
+          [0.866025,0.0,-0.5],
+          [-3093.1,17.65,-93.65]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 2,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [1.25,0.5],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "fire_at_will",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "btry_A01",
+        "tm": [
+          [0.0436201,0.0,-0.999048],
+          [0.0,1.0,0.0],
+          [0.999048,0.0,0.0436201],
+          [2575.25,3.90011,-3117.7]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "cols",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "attack_type": "hold_fire",
+          "uniqueName": ""
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "art_for_deb_cut02",
+        "tm": [
+          [-0.999048,0.0,0.0436192],
+          [0.0,1.0,0.0],
+          [-0.0436192,0.0,-0.999048],
+          [-3325.35,5.75,96.05]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "isDelayed": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "art_for_deb_cut01",
+        "tm": [
+          [-0.999048,0.0,0.0436192],
+          [0.0,1.0,0.0],
+          [-0.0436192,0.0,-0.999048],
+          [-3338.35,5.75,105.4]
+        ],
+        "unit_class": "us_155mm_m114_ultimate",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "isDelayed": true
+        },
+        "way": []
       }
     },
     {
@@ -5520,51 +5422,149 @@
       }
     },
     {
-      "armada": {
-        "name": "armada_01_cut",
+      "squad": {
+        "name": "cutscene_ships",
         "tm": [
-          [-0.737277,0.0,-0.67559],
+          [1.0,0.0,0.0],
           [0.0,1.0,0.0],
-          [0.67559,0.0,-0.737277],
-          [1830.7,1000.0,-2071.1]
+          [0.0,0.0,1.0],
+          [-6107.3,0.0,977.3]
         ],
-        "unit_class": "f4f-3",
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "f4f-3_bombs_hidden",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "props": {
-          "army": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "count": 4,
-          "numInWing": 4,
-          "targetableByAi": false,
-          "plane": {
-            "wing_formation": "Finger",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Finger",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "cutscene_cruisers01"
+          },
+          {
+            "squad_members": "cutscene_cruisers02"
+          },
+          {
+            "squad_members": "cutscene_merchant_ships"
+          },
+          {
+            "squad_members": "cutscene_destroyers01"
+          },
+          {
+            "squad_members": "cutscene_kisaragi"
+          },
+          {
+            "squad_members": "cutscene_cruisers03"
+          },
+          {
+            "squad_members": "cutscene_cruisers04"
+          },
+          {
+            "squad_members": "cutscene_cruisers05"
+          },
+          {
+            "squad_members": "cutscene_cruisers06"
           }
-        },
-        "way": []
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "wake_artillery",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3598.95,-91.0,2540.85]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "btry_D"
+          },
+          {
+            "squad_members": "btry_B00"
+          },
+          {
+            "squad_members": "btry_B01"
+          },
+          {
+            "squad_members": "btry_L"
+          },
+          {
+            "squad_members": "btry_F"
+          },
+          {
+            "squad_members": "btry_E"
+          },
+          {
+            "squad_members": "btry_A"
+          },
+          {
+            "squad_members": "btry_3inch"
+          },
+          {
+            "squad_members": "btry_30mm"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "merchant_ships",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [-3468.4,0.0,-7745.45]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "merchant_ships01"
+          },
+          {
+            "squad_members": "merchant_ships02"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "player_sq",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2929.1,-91.0,-1552.75]
+        ],
+        "props": {
+          "object_marking": 0,
+          "squad_members": "armada_01",
+          "object_type": "isPlayer"
+        }
+      }
+    },
+    {
+      "squad": {
+        "name": "btry_A",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [2534.45,4.1,-3119.65]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "btry_A01"
+          },
+          {
+            "squad_members": "btry_A02"
+          }
+        ]
       }
     }
   ],

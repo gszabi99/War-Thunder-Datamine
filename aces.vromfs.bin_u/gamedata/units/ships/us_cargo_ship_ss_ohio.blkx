@@ -290,6 +290,82 @@
     ]
   },
   {
+    "controlDevices": [
+      {
+        "device": {
+          "type": "turretTurnH",
+          "turnSpeed": 0.6,
+          "node": "bone_roll_turret_h",
+          "node_handle": "bone_roll_turret_h_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "turretTurnV",
+          "turnSpeed": -1.0,
+          "node": "bone_roll_turret_v",
+          "node_handle": "bone_roll_turret_v_handle"
+        }
+      },
+      {
+        "device": {
+          "type": "steeringWheel",
+          "turnSpeed": -3.0,
+          "node": "bone_roll_driver",
+          "absoluteValue": true
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_01"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_02"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_03"
+        }
+      },
+      {
+        "device": {
+          "type": "engineFan",
+          "turnSpeed": 1.0,
+          "node": "bone_roll_engine_04"
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": -1.7,
+          "node": "body_shutter_l",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      },
+      {
+        "device": {
+          "type": "waterJetShutter",
+          "turnSpeed": 1.5,
+          "maxValue": 1.7,
+          "node": "body_shutter_r",
+          "absoluteValue": true,
+          "progressive": true
+        }
+      }
+    ]
+  },
+  {
     "ikGunner": [
       {
         "model": "usa_sailor_navy_char"
@@ -1023,82 +1099,6 @@
     }
   },
   {
-    "controlDevices": [
-      {
-        "device": {
-          "type": "turretTurnH",
-          "turnSpeed": 0.6,
-          "node": "bone_roll_turret_h",
-          "node_handle": "bone_roll_turret_h_handle"
-        }
-      },
-      {
-        "device": {
-          "type": "turretTurnV",
-          "turnSpeed": -1.0,
-          "node": "bone_roll_turret_v",
-          "node_handle": "bone_roll_turret_v_handle"
-        }
-      },
-      {
-        "device": {
-          "type": "steeringWheel",
-          "turnSpeed": -3.0,
-          "node": "bone_roll_driver",
-          "absoluteValue": true
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_01"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_02"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_03"
-        }
-      },
-      {
-        "device": {
-          "type": "engineFan",
-          "turnSpeed": 1.0,
-          "node": "bone_roll_engine_04"
-        }
-      },
-      {
-        "device": {
-          "type": "waterJetShutter",
-          "turnSpeed": 1.5,
-          "maxValue": -1.7,
-          "node": "body_shutter_l",
-          "absoluteValue": true,
-          "progressive": true
-        }
-      },
-      {
-        "device": {
-          "type": "waterJetShutter",
-          "turnSpeed": 1.5,
-          "maxValue": 1.7,
-          "node": "body_shutter_r",
-          "absoluteValue": true,
-          "progressive": true
-        }
-      }
-    ]
-  },
-  {
     "DamageEffects": [
       {
         "ammunition_storage_fixed": {
@@ -1261,66 +1261,6 @@
               "damageType": "generic",
               "fire": 0.5,
               "damage": 100.0,
-              "fHitCritical": false
-            }
-          }
-        ]
-      },
-      {
-        "ammunition_first_stage": [
-          {
-            "onKill": {
-              "fire": 1.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "fire": 1.0,
-              "damage": 200.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.11,
-              "fire": 1.0,
-              "damage": 300.0,
-              "fHitCritical": false
-            }
-          }
-        ]
-      },
-      {
-        "ammunition_depth_charges": {
-          "onKill": {
-            "expl": 0.05,
-            "nothing": 0.95
-          },
-          "onHit": {
-            "damageType": "fire",
-            "damage": 150.0,
-            "expl": 0.1
-          }
-        }
-      },
-      {
-        "ammunition_torpedoes": [
-          {
-            "onHit": {
-              "damageType": "explosion",
-              "expl": 0.01,
-              "damage": 400.0,
-              "fHitCritical": false
-            }
-          },
-          {
-            "onHit": {
-              "damageType": "fire",
-              "expl": 0.1,
-              "damage": 250.0,
               "fHitCritical": false
             }
           }
@@ -1900,6 +1840,66 @@
             }
           }
         ]
+      },
+      {
+        "ammunition_first_stage": [
+          {
+            "onKill": {
+              "fire": 1.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "fire": 1.0,
+              "damage": 200.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.11,
+              "fire": 1.0,
+              "damage": 300.0,
+              "fHitCritical": false
+            }
+          }
+        ]
+      },
+      {
+        "ammunition_depth_charges": {
+          "onKill": {
+            "expl": 0.05,
+            "nothing": 0.95
+          },
+          "onHit": {
+            "damageType": "fire",
+            "damage": 150.0,
+            "expl": 0.1
+          }
+        }
+      },
+      {
+        "ammunition_torpedoes": [
+          {
+            "onHit": {
+              "damageType": "explosion",
+              "expl": 0.01,
+              "damage": 400.0,
+              "fHitCritical": false
+            }
+          },
+          {
+            "onHit": {
+              "damageType": "fire",
+              "expl": 0.1,
+              "damage": 250.0,
+              "fHitCritical": false
+            }
+          }
+        ]
       }
     ]
   },
@@ -2103,16 +2103,16 @@
             "fireConeAngle": 1.0
           },
           {
-            "ChainfireTime": 1.0
-          },
-          {
-            "bullets": 2400
-          },
-          {
             "fireConeAngle": 15.0
           },
           {
+            "ChainfireTime": 1.0
+          },
+          {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "DelayAfterShoot": 3.0
@@ -2214,16 +2214,16 @@
             "fireConeAngle": 1.0
           },
           {
-            "ChainfireTime": 1.0
-          },
-          {
-            "bullets": 2400
-          },
-          {
             "fireConeAngle": 15.0
           },
           {
+            "ChainfireTime": 1.0
+          },
+          {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "DelayAfterShoot": 3.0
@@ -2325,16 +2325,16 @@
             "fireConeAngle": 1.0
           },
           {
-            "ChainfireTime": 1.0
-          },
-          {
-            "bullets": 2400
-          },
-          {
             "fireConeAngle": 15.0
           },
           {
+            "ChainfireTime": 1.0
+          },
+          {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "DelayAfterShoot": 3.0
@@ -2436,16 +2436,16 @@
             "fireConeAngle": 1.0
           },
           {
-            "ChainfireTime": 1.0
-          },
-          {
-            "bullets": 2400
-          },
-          {
             "fireConeAngle": 15.0
           },
           {
+            "ChainfireTime": 1.0
+          },
+          {
             "ChainfireTime": 3.0
+          },
+          {
+            "bullets": 2400
           },
           {
             "DelayAfterShoot": 3.0

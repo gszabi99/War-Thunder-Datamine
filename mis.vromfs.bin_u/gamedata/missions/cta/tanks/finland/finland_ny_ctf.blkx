@@ -993,6 +993,16 @@
           ]
         },
         {
+          "triggerEnable": [
+            {
+              "target": "t1_flag_pickup_by_t2_player"
+            },
+            {
+              "target": "t2_flag_pickup_by_t1_player"
+            }
+          ]
+        },
+        {
           "triggerDisable": [
             {
               "target": "t1_flag_holder_dead"
@@ -1033,6 +1043,24 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "t1_ny_ctf_capture_the_enemy_flag",
+            "status": 1,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_ny_ctf_capture_the_enemy_flag",
+            "status": 1,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
           "gameMPChangeScore": {
             "value": -1000,
             "valueSystem": "amount",
@@ -1042,6 +1070,11 @@
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -1089,11 +1122,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1213,24 +1241,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "t1_ny_ctf_capture_the_enemy_flag",
-            "status": 1,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "t2_ny_ctf_capture_the_enemy_flag",
-            "status": 1,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
-          }
-        },
-        {
           "unitSetIndication": [
             {
               "set": true
@@ -1255,16 +1265,6 @@
             },
             {
               "team": "Both"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_flag_pickup_by_t2_player"
-            },
-            {
-              "target": "t2_flag_pickup_by_t1_player"
             }
           ]
         }
@@ -1310,6 +1310,16 @@
           ]
         },
         {
+          "triggerEnable": [
+            {
+              "target": "t1_flag_pickup_by_t2_player"
+            },
+            {
+              "target": "t2_flag_pickup_by_t1_player"
+            }
+          ]
+        },
+        {
           "triggerDisable": [
             {
               "target": "t1_flag_holder_dead"
@@ -1350,6 +1360,24 @@
           }
         },
         {
+          "moSetObjectiveStatus": {
+            "target": "t1_ny_ctf_capture_the_enemy_flag",
+            "status": 1,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "A"
+          }
+        },
+        {
+          "moSetObjectiveStatus": {
+            "target": "t2_ny_ctf_capture_the_enemy_flag",
+            "status": 1,
+            "object_var_comp_op": "equal",
+            "object_var_name": "",
+            "team": "B"
+          }
+        },
+        {
           "gameMPChangeScore": {
             "value": -1000,
             "valueSystem": "amount",
@@ -1359,6 +1387,11 @@
         {
           "wait": {
             "time": 1.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -1406,11 +1439,6 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "team": "B"
-          }
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1530,24 +1558,6 @@
           }
         },
         {
-          "moSetObjectiveStatus": {
-            "target": "t1_ny_ctf_capture_the_enemy_flag",
-            "status": 1,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "A"
-          }
-        },
-        {
-          "moSetObjectiveStatus": {
-            "target": "t2_ny_ctf_capture_the_enemy_flag",
-            "status": 1,
-            "object_var_comp_op": "equal",
-            "object_var_name": "",
-            "team": "B"
-          }
-        },
-        {
           "unitSetIndication": [
             {
               "set": true
@@ -1572,16 +1582,6 @@
             },
             {
               "team": "Both"
-            }
-          ]
-        },
-        {
-          "triggerEnable": [
-            {
-              "target": "t1_flag_pickup_by_t2_player"
-            },
-            {
-              "target": "t2_flag_pickup_by_t1_player"
             }
           ]
         }
@@ -1649,11 +1649,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t1_flag_captured_teamA",
@@ -1683,6 +1678,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1756,11 +1756,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t2_flag_captured_teamA",
@@ -1790,6 +1785,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1863,11 +1863,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t1_flag_returned_teamA",
@@ -1897,6 +1892,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -1970,11 +1970,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t2_flag_returned_teamA",
@@ -2004,6 +1999,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -2077,11 +2077,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t1_flag_dropped_teamA",
@@ -2111,6 +2106,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -2184,11 +2184,6 @@
             }
           },
           {
-            "wait": {
-              "time": 3.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/ny_ctf_t2_flag_dropped_teamA",
@@ -2218,6 +2213,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "team": "B"
+            }
+          },
+          {
+            "wait": {
+              "time": 3.0
             }
           },
           {
@@ -2922,6 +2922,43 @@
         "bulletsCount3": 0,
         "props": {
           "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "setStealth": true
+        },
+        "way": []
+      }
+    },
+    {
+      "structures": {
+        "name": "t2_flag",
+        "tm": [
+          [-0.70743,0.0,-0.706783],
+          [0.0,1.0,0.0],
+          [0.706783,0.0,-0.70743],
+          [738.6,1.23232,912.0]
+        ],
+        "unit_class": "fir_ny",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
           "count": 1,
           "formation_type": "rows",
           "formation_div": 3,
@@ -4736,43 +4773,6 @@
             "object_type": "isTeamB"
           }
         ]
-      }
-    },
-    {
-      "structures": {
-        "name": "t2_flag",
-        "tm": [
-          [-0.70743,0.0,-0.706783],
-          [0.0,1.0,0.0],
-          [0.706783,0.0,-0.70743],
-          [738.6,1.23232,912.0]
-        ],
-        "unit_class": "fir_ny",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "setStealth": true
-        },
-        "way": []
       }
     }
   ],

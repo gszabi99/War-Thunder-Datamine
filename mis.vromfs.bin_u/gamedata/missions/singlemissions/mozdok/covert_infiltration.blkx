@@ -166,6 +166,37 @@
           }
         },
         {
+          "unitSetProperties": [
+            {
+              "object": "yak7_ai_01"
+            },
+            {
+              "object": "yak7_ai_02"
+            },
+            {
+              "object": "yak7_ai_03"
+            },
+            {
+              "object": "yak7_ai_04"
+            },
+            {
+              "object": "yak7_ai_05"
+            },
+            {
+              "effShootingRate": 0.3
+            },
+            {
+              "plane": {
+                "targetDeviation": {
+                  "trigger": "machine gun",
+                  "defaultVal": 0.6,
+                  "limits": [0.6,1.8]
+                }
+              }
+            }
+          ]
+        },
+        {
           "unitAttackTarget": {
             "playerAttracted": false,
             "object": "bf109_ai",
@@ -224,8 +255,30 @@
           }
         },
         {
+          "unitMoveTo": {
+            "target": "bombing_point",
+            "follow_target": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": "yak7_ai_04"
+          }
+        },
+        {
           "wait": {
             "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 3.0
+          }
+        },
+        {
+          "wait": {
+            "time": 5.0
           }
         },
         {
@@ -249,61 +302,8 @@
           }
         },
         {
-          "wait": {
-            "time": 3.0
-          }
-        },
-        {
           "moAddMissionObjective": {
             "target": "covert_infiltration_hide"
-          }
-        },
-        {
-          "unitMoveTo": {
-            "target": "bombing_point",
-            "follow_target": false,
-            "teleportHeightType": "absolute",
-            "useUnitHeightForTele": true,
-            "shouldKeepFormation": false,
-            "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "yak7_ai_04"
-          }
-        },
-        {
-          "unitSetProperties": [
-            {
-              "object": "yak7_ai_01"
-            },
-            {
-              "object": "yak7_ai_02"
-            },
-            {
-              "object": "yak7_ai_03"
-            },
-            {
-              "object": "yak7_ai_04"
-            },
-            {
-              "object": "yak7_ai_05"
-            },
-            {
-              "effShootingRate": 0.3
-            },
-            {
-              "plane": {
-                "targetDeviation": {
-                  "trigger": "machine gun",
-                  "defaultVal": 0.6,
-                  "limits": [0.6,1.8]
-                }
-              }
-            }
-          ]
-        },
-        {
-          "wait": {
-            "time": 5.0
           }
         },
         {
@@ -1480,110 +1480,6 @@
       }
     },
     {
-      "air_defence": {
-        "name": "ussr_side_air_def_02",
-        "tm": [
-          [0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,0.21644],
-          [8769.5,303.65,-5073.6]
-        ],
-        "unit_class": "ussr_37mm_61k",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [0.1,1.0],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "stealthRadius": 1500.0,
-          "effShootingRate": 1.0
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "ussr_side_air_def_01",
-        "tm": [
-          [0.21644,0.0,0.976296],
-          [0.0,1.0,0.0],
-          [-0.976296,0.0,0.21644],
-          [8757.9,415.5,-13171.5]
-        ],
-        "unit_class": "ussr_37mm_61k",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [0.1,1.0],
-          "uniqueName": "",
-          "attack_type": "hold_fire",
-          "stealthRadius": 1500.0,
-          "effShootingRate": 1.0
-        },
-        "way": []
-      }
-    },
-    {
-      "air_defence": {
-        "name": "ussr_main_air_def",
-        "tm": [
-          [-0.984808,0.0,-0.173648],
-          [0.0,1.0,0.0],
-          [0.173648,0.0,-0.984808],
-          [17521.0,412.25,-8852.26]
-        ],
-        "unit_class": "ussr_37mm_61k",
-        "closed_waypoints": false,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 6,
-          "formation_type": "rows",
-          "formation_div": 1,
-          "formation_step": [5.0,5.0],
-          "formation_noise": [0.1,1.0],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "effShootingRate": 0.1
-        },
-        "way": []
-      }
-    },
-    {
       "armada": {
         "name": "bf109_ai",
         "tm": [
@@ -1845,6 +1741,110 @@
             "ai_skill": "NORMAL",
             "task": "FLY_WAYPOINT"
           }
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_side_air_def_02",
+        "tm": [
+          [0.21644,0.0,0.976296],
+          [0.0,1.0,0.0],
+          [-0.976296,0.0,0.21644],
+          [8769.5,303.65,-5073.6]
+        ],
+        "unit_class": "ussr_37mm_61k",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,1.0],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "stealthRadius": 1500.0,
+          "effShootingRate": 1.0
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_side_air_def_01",
+        "tm": [
+          [0.21644,0.0,0.976296],
+          [0.0,1.0,0.0],
+          [-0.976296,0.0,0.21644],
+          [8757.9,415.5,-13171.5]
+        ],
+        "unit_class": "ussr_37mm_61k",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,1.0],
+          "uniqueName": "",
+          "attack_type": "hold_fire",
+          "stealthRadius": 1500.0,
+          "effShootingRate": 1.0
+        },
+        "way": []
+      }
+    },
+    {
+      "air_defence": {
+        "name": "ussr_main_air_def",
+        "tm": [
+          [-0.984808,0.0,-0.173648],
+          [0.0,1.0,0.0],
+          [0.173648,0.0,-0.984808],
+          [17521.0,412.25,-8852.26]
+        ],
+        "unit_class": "ussr_37mm_61k",
+        "closed_waypoints": false,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 6,
+          "formation_type": "rows",
+          "formation_div": 1,
+          "formation_step": [5.0,5.0],
+          "formation_noise": [0.1,1.0],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "effShootingRate": 0.1
         },
         "way": []
       }

@@ -3,10 +3,10 @@
     "fmFile": "fm/bf-109g-2_romania.blk"
   },
   {
-    "model": "bf_109g_2"
+    "fmFile": "fm/bf-109g-2.blk"
   },
   {
-    "fmFile": "fm/bf-109g-2.blk"
+    "model": "bf_109g_2"
   },
   {
     "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk"
@@ -2277,10 +2277,10 @@
         "headPos": [-1.05,0.76,-0.045]
       },
       {
-        "headPosOnShooting": [-1.0,0.76,-0.045]
+        "headPos": [-0.955,0.76,-0.03]
       },
       {
-        "headPos": [-0.955,0.76,-0.03]
+        "headPosOnShooting": [-1.0,0.76,-0.045]
       },
       {
         "headPosOnShooting": [-1.0,0.76,-0.03]
@@ -2360,6 +2360,9 @@
             "turn": [-0.23562,0.23562]
           },
           {
+            "turn": [-0.23562,0.23562]
+          },
+          {
             "clock_hour": [0.0,12.0]
           },
           {
@@ -2403,9 +2406,6 @@
           },
           {
             "slip": [-2.0,2.0]
-          },
-          {
-            "turn": [-0.23562,0.23562]
           },
           {
             "aviahorizon_pitch": [-60.0,60.0]
@@ -2604,55 +2604,6 @@
     }
   },
   {
-    "balanceData": {
-      "accSpd": 2.7025,
-      "climbSpeed": 23.15,
-      "maxSpeed": 176.667,
-      "turnTime": 20.9225
-    }
-  },
-  {
-    "modifications": {
-      "cd_98": [],
-      "CdMin_Fuse": [],
-      "new_cover": [],
-      "structure_str": [],
-      "hp_105": [],
-      "new_radiator": [],
-      "new_compressor": [],
-      "new_engine_injection": [],
-      "mg_universal": [],
-      "mg_all_tracers": [],
-      "mg_stealth": [],
-      "mg151_universal": [],
-      "mg151_air_targets": [],
-      "mg151_armor_targets": [],
-      "mg151_all_tracers": [],
-      "mg151_stealth": [],
-      "mg_belt_pack": [],
-      "mg17_new_gun": {
-        "reqModification": "mg_belt_pack"
-      },
-      "mg15120_belt_pack": [],
-      "mg15120_new_gun": {
-        "reqModification": "mg15120_belt_pack"
-      },
-      "Bf-109G-2_4xSC50": {
-        "modClass": "weapon",
-        "tier": 1
-      },
-      "Bf-109G-2_SC250": {
-        "modClass": "weapon",
-        "tier": 3,
-        "reqModification": "Bf-109G-2_4xSC50"
-      },
-      "Bf-109G-2_R6": {
-        "modClass": "weapon",
-        "tier": 4
-      }
-    }
-  },
-  {
     "wiki": {
       "general": {
         "length": 9.16,
@@ -2715,6 +2666,55 @@
           "climbRateMil2": [5900.0,15.7],
           "climbRateMil3": [12200.0,2.0]
         }
+      }
+    }
+  },
+  {
+    "balanceData": {
+      "accSpd": 2.7025,
+      "climbSpeed": 23.15,
+      "maxSpeed": 176.667,
+      "turnTime": 20.9225
+    }
+  },
+  {
+    "modifications": {
+      "cd_98": [],
+      "CdMin_Fuse": [],
+      "new_cover": [],
+      "structure_str": [],
+      "hp_105": [],
+      "new_radiator": [],
+      "new_compressor": [],
+      "new_engine_injection": [],
+      "mg_universal": [],
+      "mg_all_tracers": [],
+      "mg_stealth": [],
+      "mg151_universal": [],
+      "mg151_air_targets": [],
+      "mg151_armor_targets": [],
+      "mg151_all_tracers": [],
+      "mg151_stealth": [],
+      "mg_belt_pack": [],
+      "mg17_new_gun": {
+        "reqModification": "mg_belt_pack"
+      },
+      "mg15120_belt_pack": [],
+      "mg15120_new_gun": {
+        "reqModification": "mg15120_belt_pack"
+      },
+      "Bf-109G-2_4xSC50": {
+        "modClass": "weapon",
+        "tier": 1
+      },
+      "Bf-109G-2_SC250": {
+        "modClass": "weapon",
+        "tier": 3,
+        "reqModification": "Bf-109G-2_4xSC50"
+      },
+      "Bf-109G-2_R6": {
+        "modClass": "weapon",
+        "tier": 4
       }
     }
   },

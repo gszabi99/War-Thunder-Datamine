@@ -37,7 +37,22 @@
         "actions": [
           {
             "comment": {
-              "value": "обнуляем текущий индекс филда"
+              "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u0438\u0431\u0430\u0432\u043b\u044f\u0435\u043c \u043a \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u043c\u0443 \u0447\u0438\u0441\u043b\u0443 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 1 \u0434\u043b\u044f \u0440\u0430\u043d\u0434\u043e\u043c\u0438\u0437\u0430\u0442\u043e\u0440\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0433\u043e\u0432\u043e\u0440\u0438\u043c \u0447\u0442\u043e \u0432\u0441\u0435 dummy \u0431\u0435\u0441\u0441\u043c\u0435\u0440\u0442\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u043c\u0435 \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
@@ -47,20 +62,10 @@
             }
           },
           {
-            "comment": {
-              "value": "прибавляем к максимальному числу аэродромов 1 для рандомизатора"
-            }
-          },
-          {
             "varModify": {
               "operator": "add",
               "value": 1.0,
               "var": "afp_field_max_count"
-            }
-          },
-          {
-            "comment": {
-              "value": "говорим что все dummy бессмертны"
             }
           },
           {
@@ -74,11 +79,6 @@
               "isImmortal": true,
               "stealthRadius": 0.0,
               "calmDetection": true
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаме ротацию генерации аэродрома"
             }
           },
           {
@@ -134,7 +134,22 @@
         "actions": [
           {
             "comment": {
-              "value": "количество активных аэродромов меньше чем количество максимальных"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0435\u043d\u044c\u0448\u0435 \u0447\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u044b\u0445"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0431\u0438\u0440\u0430\u0435\u043c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043c\u0438\u043d\u0430\u0435\u043c \u0432\u044b\u043f\u0430\u0432\u0448\u0435\u0435 \u0437\u043d\u0430\u04476\u0435\u043d\u0438\u0435, \u0447\u0442\u043e\u0431\u044b \u0432 \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0446\u0438\u043a\u043b \u043e\u043d\u043e \u043d\u0435 \u043f\u043e\u0432\u0442\u043e\u0440\u0438\u043b\u043e\u0441\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441"
             }
           },
           {
@@ -142,11 +157,6 @@
               "operator": "add",
               "value": 1.0,
               "var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "выбираем случайный индекс аэродрома"
             }
           },
           {
@@ -159,20 +169,10 @@
             }
           },
           {
-            "comment": {
-              "value": "запоминаем выпавшее знач6ение, чтобы в следующий цикл оно не повторилось"
-            }
-          },
-          {
             "__varSetInt": {
               "value": 0,
               "var": "afp_generation_prev_random_value",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем индекс"
             }
           },
           {
@@ -184,12 +184,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "аэродромы сгенерировались"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u044b \u0441\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u043e\u0432\u0430\u043b\u0438\u0441\u044c"
             }
           },
           {
             "comment": {
-              "value": "переходим в режим паузы"
+              "value": "\u043f\u0435\u0440\u0435\u0445\u043e\u0434\u0438\u043c \u0432 \u0440\u0435\u0436\u0438\u043c \u043f\u0430\u0443\u0437\u044b"
             }
           },
           {
@@ -228,12 +228,27 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс текущего аэродрмоа меньше максимального количества аэродромов"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0442\u0435\u043a\u0443\u0449\u0435\u0433\u043e \u0430\u044d\u0440\u043e\u0434\u0440\u043c\u043e\u0430 \u043c\u0435\u043d\u044c\u0448\u0435 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432"
             }
           },
           {
             "comment": {
-              "value": "заполняем имя аэродрома"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f dummy"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442 \u043b\u0438 \u0442\u0430\u043a\u0438\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
@@ -243,35 +258,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "afp_generation_field_name",
-              "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя dummy"
-            }
-          },
-          {
             "varSetString": {
               "value": "afp_dummy_",
               "var": "afp_generation_dummy_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "",
-              "digits": 2,
-              "var": "afp_generation_dummy_name",
-              "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зоны"
             }
           },
           {
@@ -284,13 +273,24 @@
             "varAddString": {
               "value": "",
               "digits": 2,
-              "var": "afp_generation_zone_name",
+              "var": "afp_generation_field_name",
               "input_var": "afp_generation_cur_airfield_num"
             }
           },
           {
-            "comment": {
-              "value": "проверяем существуют ли такие объекты"
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_dummy_name",
+              "input_var": "afp_generation_cur_airfield_num"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "",
+              "digits": 2,
+              "var": "afp_generation_zone_name",
+              "input_var": "afp_generation_cur_airfield_num"
             }
           },
           {
@@ -301,7 +301,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "индекс аэродрома вышел за пределы. перезапускаем генерацию"
+            "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430 \u0432\u044b\u0448\u0435\u043b \u0437\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u044b. \u043f\u0435\u0440\u0435\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -344,12 +344,32 @@
         "actions": [
           {
             "comment": {
-              "value": "все сущности существуют, можно создавать аэродром"
+              "value": "\u0432\u0441\u0435 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0438 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442, \u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
             }
           },
           {
             "comment": {
-              "value": "получаем имя зоны (защита от дураков)"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b (\u0437\u0430\u0449\u0438\u0442\u0430 \u043e\u0442 \u0434\u0443\u0440\u0430\u043a\u043e\u0432)"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u0440\u043c\u0438\u0438 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0430\u0440\u043c\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
@@ -360,39 +380,10 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя переменной, где хранится армия зоны"
-            }
-          },
-          {
             "varSetString": {
               "value": "",
               "var": "afp_generation_own_zone_army_var_name",
               "input_var": "afp_generation_own_zone_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "afp_generation_own_zone_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем индекс армии зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_generation_own_zone_army_value",
-              "input_var": "@afp_generation_own_zone_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где хранится армия аэродрома"
             }
           },
           {
@@ -403,14 +394,23 @@
           },
           {
             "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "afp_generation_own_zone_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
               "value": "@afp_generation_cur_airfield_num",
               "digits": 2,
               "var": "afp_generation_field_army_var_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем значение армии аэродрома"
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_own_zone_army_value",
+              "input_var": "@afp_generation_own_zone_army_var_name"
             }
           },
           {
@@ -421,7 +421,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "какой-либо из сущностей не существует. рестартим генерацию"
+            "value": "\u043a\u0430\u043a\u043e\u0439-\u043b\u0438\u0431\u043e \u0438\u0437 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0435\u0439 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -452,42 +452,38 @@
         "actions": [
           {
             "comment": {
-              "value": "армии совпадают"
+              "value": "\u0430\u0440\u043c\u0438\u0438 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u044e\u0442"
             }
           },
           {
             "comment": {
-              "value": "заполняем имя переменной, хранящей в себе активность аэродрома"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432 \u0441\u0435\u0431\u0435 \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0441\u0442\u044c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432 \u0441\u0435\u0431\u0435 \u0442\u0438\u043f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0442\u0438\u043f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
             "varSetString": {
               "value": "afp_field_state_",
               "var": "afp_generation_state_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@afp_generation_cur_airfield_num",
-              "digits": 2,
-              "var": "afp_generation_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем состояние"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_generation_state_value",
-              "input_var": "@afp_generation_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя переменной, хранящей в себе тип аэродрома"
             }
           },
           {
@@ -500,23 +496,27 @@
             "varAddString": {
               "value": "@afp_generation_cur_airfield_num",
               "digits": 2,
+              "var": "afp_generation_state_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_generation_cur_airfield_num",
+              "digits": 2,
               "var": "afp_generation_type_var_name"
             }
           },
           {
-            "comment": {
-              "value": "получаем тип"
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_state_value",
+              "input_var": "@afp_generation_state_var_name"
             }
           },
           {
             "varGetStringValue": {
               "from_var_name": "@afp_generation_type_var_name",
               "var": "afp_generation_type_value"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем состояние аэродрома"
             }
           },
           {
@@ -527,7 +527,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "армии не совпадают. рестартим генерацию"
+            "value": "\u0430\u0440\u043c\u0438\u0438 \u043d\u0435 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u044e\u0442. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -557,18 +557,66 @@
         "actions": [
           {
             "comment": {
-              "value": "состояние аэродрома меньше нуля - он не активен"
+              "value": "\u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430 \u043c\u0435\u043d\u044c\u0448\u0435 \u043d\u0443\u043b\u044f - \u043e\u043d \u043d\u0435 \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
             }
           },
           {
             "comment": {
-              "value": "заполняем имя переменной, хранящей в себе армию аэродрома"
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432 \u0441\u0435\u0431\u0435 \u0430\u0440\u043c\u0438\u044e \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0445\u0440\u0430\u043d\u044f\u0449\u0435\u0439 \u0432 \u0441\u0435\u0431\u0435 \u0442\u0438\u043f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0442\u0438\u043f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b, \u0432 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441 \u043a\u0430\u043a\u043e\u0439 \u0430\u0440\u043c\u0438\u0435\u0439 \u043c\u044b \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u043c"
             }
           },
           {
             "varSetString": {
               "value": "afp_field_army_",
               "var": "afp_generation_army_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "afp_field_position_",
+              "var": "afp_generation_position_var_name"
+            }
+          },
+          {
+            "varSetString": {
+              "value": "",
+              "var": "afp_generation_position_value",
+              "input_var": "@afp_generation_position_var_name"
             }
           },
           {
@@ -580,69 +628,11 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем армию"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_generation_army_value",
-              "input_var": "@afp_generation_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя переменной, хранящей в себе тип аэродрома"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "afp_field_position_",
-              "var": "afp_generation_position_var_name"
-            }
-          },
-          {
             "varAddString": {
               "value": "",
               "digits": 2,
               "var": "afp_generation_position_var_name",
               "input_var": "afp_generation_cur_airfield_num"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем тип аэродрома"
-            }
-          },
-          {
-            "varSetString": {
-              "value": "",
-              "var": "afp_generation_position_value",
-              "input_var": "@afp_generation_position_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя зоны, в которой находится аэродром"
-            }
-          },
-          {
-            "getOwnArea": {
-              "name": "@afp_generation_dummy_name",
-              "template": "flt_area_",
-              "out_var": "afp_generation_parent_zone_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем имя переменной, где хранится армия зоны"
-            }
-          },
-          {
-            "varGetStringValue": {
-              "from_var_name": "afp_generation_parent_zone_name",
-              "var": "afp_generation_parent_army_var_name"
             }
           },
           {
@@ -653,8 +643,10 @@
             }
           },
           {
-            "comment": {
-              "value": "получаем армию зоны"
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_generation_army_value",
+              "input_var": "@afp_generation_army_var_name"
             }
           },
           {
@@ -665,8 +657,16 @@
             }
           },
           {
-            "comment": {
-              "value": "проверяем с какой армией мы работаем"
+            "getOwnArea": {
+              "name": "@afp_generation_dummy_name",
+              "template": "flt_area_",
+              "out_var": "afp_generation_parent_zone_name"
+            }
+          },
+          {
+            "varGetStringValue": {
+              "from_var_name": "afp_generation_parent_zone_name",
+              "var": "afp_generation_parent_army_var_name"
             }
           },
           {
@@ -685,7 +685,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "аэродром уже активен"
+            "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u0443\u0436\u0435 \u0430\u043a\u0442\u0438\u0432\u0435\u043d"
           },
           "triggerEnable": {
             "target": "afp_generation_rotator"
@@ -715,7 +715,12 @@
         "actions": [
           {
             "comment": {
-              "value": "нулевая армия"
+              "value": "\u043d\u0443\u043b\u0435\u0432\u0430\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0435 \u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0442\u0430\u043a\u043e\u0433\u043e \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430. \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u043c\u0441\u044f \u0432 \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438"
             }
           },
           {
@@ -727,11 +732,6 @@
                 "target": "afp_generation_army_2_check"
               }
             ]
-          },
-          {
-            "comment": {
-              "value": "не создаем такого аэродрома. возвращаемся в ротацию генерации"
-            }
           },
           {
             "triggerEnable": {
@@ -764,7 +764,12 @@
         "actions": [
           {
             "comment": {
-              "value": "аэродром находится в нужной зоне и его армия равна 1"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c \u043d\u0430\u0445\u043e\u0434\u0438\u0442\u0441\u044f \u0432 \u043d\u0443\u0436\u043d\u043e\u0439 \u0437\u043e\u043d\u0435 \u0438 \u0435\u0433\u043e \u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043c\u043e\u0436\u043d\u043e \u043b\u0438 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0431\u043b\u0438\u0436\u043d\u0438\u0439 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
             }
           },
           {
@@ -776,11 +781,6 @@
                 "target": "afp_generation_army_2_check"
               }
             ]
-          },
-          {
-            "comment": {
-              "value": "проверяем можно ли поставить ближний аэродром"
-            }
           },
           {
             "triggerEnable": {
@@ -817,7 +817,12 @@
         "actions": [
           {
             "comment": {
-              "value": "вторая армия"
+              "value": "\u0432\u0442\u043e\u0440\u0430\u044f \u0430\u0440\u043c\u0438\u044f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u043b\u0438\u0437\u043a\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u0434\u043b\u044f \u0430\u0440\u043c\u0438\u0438 2"
             }
           },
           {
@@ -829,11 +834,6 @@
                 "target": "afp_generation_army_1_check"
               }
             ]
-          },
-          {
-            "comment": {
-              "value": "проверяем количество близких аэродромов для армии 2"
-            }
           },
           {
             "triggerEnable": {
@@ -874,12 +874,12 @@
           "actions": [
             {
               "comment": {
-                "value": "армия равна 1 и зона равна 1"
+                "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 1 \u0438 \u0437\u043e\u043d\u0430 \u0440\u0430\u0432\u043d\u0430 1"
               }
             },
             {
               "comment": {
-                "value": "проверяем  можно-ли поставить ближний аэродром"
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c  \u043c\u043e\u0436\u043d\u043e-\u043b\u0438 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0431\u043b\u0438\u0436\u043d\u0438\u0439 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
               }
             },
             {
@@ -891,12 +891,12 @@
           "else_actions": [
             {
               "comment": {
-                "value": "армия равна 1 но зона не равна 1"
+                "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 1 \u043d\u043e \u0437\u043e\u043d\u0430 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 1"
               }
             },
             {
               "comment": {
-                "value": "покаа перезапускаем ротацию, потмо добавить логику"
+                "value": "\u043f\u043e\u043a\u0430\u0430 \u043f\u0435\u0440\u0435\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e, \u043f\u043e\u0442\u043c\u043e \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043b\u043e\u0433\u0438\u043a\u0443"
               }
             },
             {
@@ -930,7 +930,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -941,18 +956,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -972,11 +977,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -984,7 +984,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество ближних аэродромов максимально. пробуем средний"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u043b\u0438\u0436\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0441\u0440\u0435\u0434\u043d\u0438\u0439"
             },
             "triggerEnable": {
               "target": "afp_generation_t1_middle_check"
@@ -1015,7 +1015,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -1026,18 +1041,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -1057,11 +1062,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -1069,7 +1069,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество средних аэродромов максимально. пробуем дальний"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0440\u0435\u0434\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0438\u0439"
             },
             "triggerEnable": {
               "target": "afp_generation_t1_far_check"
@@ -1100,7 +1100,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -1111,18 +1126,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -1142,11 +1147,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -1154,7 +1154,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество дальних аэродромов максимально. возвращаемся в ротацию"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0434\u0430\u043b\u044c\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u043c\u0441\u044f \u0432 \u0440\u043e\u0442\u0430\u0446\u0438\u044e"
             },
             "triggerEnable": {
               "target": "afp_generation_rotator"
@@ -1178,7 +1178,17 @@
           "actions": [
             {
               "comment": {
-                "value": "создаем пустой спавн команды 2"
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0443\u0441\u0442\u043e\u0439 \u0441\u043f\u0430\u0432\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b 2"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0443"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
               }
             },
             {
@@ -1204,11 +1214,6 @@
                 "tags": {
                   "none_can_spawn": true
                 }
-              }
-            },
-            {
-              "comment": {
-                "value": "назначаем спавн на площадку"
               }
             },
             {
@@ -1243,11 +1248,6 @@
                   "artillery": false,
                   "aaa": false
                 }
-              }
-            },
-            {
-              "comment": {
-                "value": "идем дальше по циклу"
               }
             },
             {
@@ -1286,12 +1286,12 @@
           "actions": [
             {
               "comment": {
-                "value": "армия равна 2 и зона равна 2"
+                "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 2 \u0438 \u0437\u043e\u043d\u0430 \u0440\u0430\u0432\u043d\u0430 2"
               }
             },
             {
               "comment": {
-                "value": "проверяем  можно-ли поставить ближний аэродром"
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c  \u043c\u043e\u0436\u043d\u043e-\u043b\u0438 \u043f\u043e\u0441\u0442\u0430\u0432\u0438\u0442\u044c \u0431\u043b\u0438\u0436\u043d\u0438\u0439 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
               }
             },
             {
@@ -1303,12 +1303,12 @@
           "else_actions": [
             {
               "comment": {
-                "value": "армия равна 2 но зона не равна 2"
+                "value": "\u0430\u0440\u043c\u0438\u044f \u0440\u0430\u0432\u043d\u0430 2 \u043d\u043e \u0437\u043e\u043d\u0430 \u043d\u0435 \u0440\u0430\u0432\u043d\u0430 2"
               }
             },
             {
               "comment": {
-                "value": "покаа перезапускаем ротацию, потмо добавить логику"
+                "value": "\u043f\u043e\u043a\u0430\u0430 \u043f\u0435\u0440\u0435\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u0435\u043c \u0440\u043e\u0442\u0430\u0446\u0438\u044e, \u043f\u043e\u0442\u043c\u043e \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u043b\u043e\u0433\u0438\u043a\u0443"
               }
             },
             {
@@ -1342,7 +1342,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -1353,18 +1368,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -1384,11 +1389,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -1396,7 +1396,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество ближних аэродромов максимально. пробуем средний"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0431\u043b\u0438\u0436\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0441\u0440\u0435\u0434\u043d\u0438\u0439"
             },
             "triggerEnable": {
               "target": "afp_generation_t2_middle_check"
@@ -1427,7 +1427,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -1438,18 +1453,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -1469,11 +1474,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -1481,7 +1481,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество средних аэродромов максимально. пробуем дальний"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0441\u0440\u0435\u0434\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u043f\u0440\u043e\u0431\u0443\u0435\u043c \u0434\u0430\u043b\u044c\u043d\u0438\u0439"
             },
             "triggerEnable": {
               "target": "afp_generation_t2_far_check"
@@ -1512,7 +1512,22 @@
           "actions": [
             {
               "comment": {
-                "value": "можно разместить еще один ближний"
+                "value": "\u043c\u043e\u0436\u043d\u043e \u0440\u0430\u0437\u043c\u0435\u0441\u0442\u0438\u0442\u044c \u0435\u0449\u0435 \u043e\u0434\u0438\u043d \u0431\u043b\u0438\u0436\u043d\u0438\u0439"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0432\u043a\u043b\u044e\u0447\u0435\u043d\u043e-\u043b\u0438 \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d\u0438\u0435"
               }
             },
             {
@@ -1523,18 +1538,8 @@
               }
             },
             {
-              "comment": {
-                "value": "пробуждаем аэродром"
-              }
-            },
-            {
               "unitWakeUp": {
                 "target": "@afp_generation_field_name"
-              }
-            },
-            {
-              "comment": {
-                "value": "меняем армию"
               }
             },
             {
@@ -1554,11 +1559,6 @@
               }
             },
             {
-              "comment": {
-                "value": "проверяем включено-ли обнаружение"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_scout_enabled_check"
               }
@@ -1566,7 +1566,7 @@
           ],
           "else_actions": {
             "comment": {
-              "value": "количество дальних аэродромов максимально. возвращаемся в ротацию"
+              "value": "\u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0434\u0430\u043b\u044c\u043d\u0438\u0445 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u043e\u0432 \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u043e. \u0432\u043e\u0437\u0432\u0440\u0430\u0449\u0430\u0435\u043c\u0441\u044f \u0432 \u0440\u043e\u0442\u0430\u0446\u0438\u044e"
             },
             "triggerEnable": {
               "target": "afp_generation_rotator"
@@ -1590,7 +1590,17 @@
           "actions": [
             {
               "comment": {
-                "value": "создаем пустой спавн команды 1"
+                "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u043f\u0443\u0441\u0442\u043e\u0439 \u0441\u043f\u0430\u0432\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b 1"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0443"
+              }
+            },
+            {
+              "comment": {
+                "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
               }
             },
             {
@@ -1616,11 +1626,6 @@
                 "tags": {
                   "none_can_spawn": true
                 }
-              }
-            },
-            {
-              "comment": {
-                "value": "назначаем спавн на площадку"
               }
             },
             {
@@ -1658,11 +1663,6 @@
               }
             },
             {
-              "comment": {
-                "value": "идем дальше по циклу"
-              }
-            },
-            {
               "triggerEnable": {
                 "target": "afp_generation_rotator"
               }
@@ -1694,23 +1694,23 @@
         "actions": [
           {
             "comment": {
-              "value": "аэродромы надо обнаруживать"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u044b \u043d\u0430\u0434\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0432\u0430\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "выставляем состояние в 0"
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u0432 0"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "@afp_generation_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -1722,7 +1722,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "аэродромы не надо обнаруживать"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u044b \u043d\u0435 \u043d\u0430\u0434\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0432\u0430\u0442\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0443 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0442\u0438\u043f, \u0447\u0442\u043e\u0431\u044b \u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u043e \u043d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c \u0441\u043f\u0430\u0432\u043d"
             }
           },
           {
@@ -1732,19 +1742,9 @@
             }
           },
           {
-            "comment": {
-              "value": "выставляем аэродрому состояние 1"
-            }
-          },
-          {
             "varSetInt": {
               "value": 1,
               "var": "@afp_generation_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем тип, чтобы корректно назначить спавн"
             }
           },
           {
@@ -1776,12 +1776,12 @@
         },
         "actions": {
           "comment": {
-            "value": "это ародром"
+            "value": "\u044d\u0442\u043e \u0430\u0440\u043e\u0434\u0440\u043e\u043c"
           }
         },
         "else_actions": {
           "comment": {
-            "value": "это площадка. проверяем армию"
+            "value": "\u044d\u0442\u043e \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0430. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_generation_pad_spawn_army_check"
@@ -1810,7 +1810,7 @@
         },
         "actions": {
           "comment": {
-            "value": "армия 1. назначаем спавн"
+            "value": "\u0430\u0440\u043c\u0438\u044f 1. \u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
           },
           "triggerEnable": {
             "target": "afp_generation_t1_pad_spawn_set"
@@ -1818,7 +1818,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "армия 2. назначаем спавн"
+            "value": "\u0430\u0440\u043c\u0438\u044f 2. \u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
           },
           "triggerEnable": {
             "target": "afp_generation_t2_pad_spawn_set"
@@ -1846,18 +1846,18 @@
         "actions": [
           {
             "comment": {
-              "value": "обнуляем текущий индекс филда"
+              "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u043c\u0435 \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "afp_capture_cur_airfield_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаме ротацию генерации аэродрома"
             }
           },
           {
@@ -1885,18 +1885,18 @@
         "actions": [
           {
             "comment": {
-              "value": "обнуляем текущий индекс филда"
+              "value": "\u043e\u0431\u043d\u0443\u043b\u044f\u0435\u043c \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0438\u043d\u0434\u0435\u043a\u0441 \u0444\u0438\u043b\u0434\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u0443\u0441\u043a\u0430\u043c\u0435 \u0440\u043e\u0442\u0430\u0446\u0438\u044e \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
             "varSetInt": {
               "value": 0,
               "var": "afp_capture_cur_airfield_idx"
-            }
-          },
-          {
-            "comment": {
-              "value": "запускаме ротацию генерации аэродрома"
             }
           },
           {
@@ -1931,12 +1931,32 @@
         "actions": [
           {
             "comment": {
-              "value": "индекс меньше чем количество максимальных"
+              "value": "\u0438\u043d\u0434\u0435\u043a\u0441 \u043c\u0435\u043d\u044c\u0448\u0435 \u0447\u0435\u043c \u043a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u043c\u0430\u043a\u0441\u0438\u043c\u0430\u043b\u044c\u043d\u044b\u0445"
             }
           },
           {
             "comment": {
-              "value": "увеличиваем индекс"
+              "value": "\u0443\u0432\u0435\u043b\u0438\u0447\u0438\u0432\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f dummy"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0437\u0430\u043f\u043e\u043b\u043d\u044f\u0435\u043c \u0438\u043c\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442 \u043b\u0438 \u0442\u0430\u043a\u0438\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u044b"
             }
           },
           {
@@ -1947,44 +1967,15 @@
             }
           },
           {
-            "comment": {
-              "value": "заполняем имя аэродрома"
-            }
-          },
-          {
             "varSetString": {
               "value": "afp_base_",
               "var": "afp_capture_field_name"
             }
           },
           {
-            "varAddString": {
-              "value": "@afp_capture_cur_airfield_idx",
-              "digits": 2,
-              "var": "afp_capture_field_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя dummy"
-            }
-          },
-          {
             "varSetString": {
               "value": "afp_dummy_",
               "var": "afp_capture_dummy_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@afp_capture_cur_airfield_idx",
-              "digits": 2,
-              "var": "afp_capture_dummy_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "заполняем имя зоны"
             }
           },
           {
@@ -1997,12 +1988,21 @@
             "varAddString": {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
-              "var": "afp_capture_zone_name"
+              "var": "afp_capture_field_name"
             }
           },
           {
-            "comment": {
-              "value": "проверяем существуют ли такие объекты"
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_dummy_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_zone_name"
             }
           },
           {
@@ -2013,7 +2013,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "новый цикл"
+            "value": "\u043d\u043e\u0432\u044b\u0439 \u0446\u0438\u043a\u043b"
           },
           "triggerEnable": {
             "target": "afp_capture_restart"
@@ -2056,12 +2056,42 @@
         "actions": [
           {
             "comment": {
-              "value": "все сущности существуют, можно создавать аэродром"
+              "value": "\u0432\u0441\u0435 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0438 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442, \u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
             }
           },
           {
             "comment": {
-              "value": "получаем зону"
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0437\u043e\u043d\u0443"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0438\u043d\u0434\u0435\u043a\u0441 \u0430\u0440\u043c\u0438\u0438 \u0437\u043e\u043d\u044b"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0430\u0440\u043c\u0438\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439, \u0433\u0434\u0435 \u0445\u0440\u0430\u043d\u0438\u0442\u0441\u044f \u0442\u0438\u043f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u043e\u043b\u0443\u0447\u0430\u0435\u043c \u0442\u0438\u043f"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0430\u0440\u043c\u0438\u0438 \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
             }
           },
           {
@@ -2072,11 +2102,6 @@
             }
           },
           {
-            "comment": {
-              "value": "создаем имя переменной, где хранится армия зоны"
-            }
-          },
-          {
             "varSetString": {
               "value": "",
               "var": "afp_capture_own_zone_army_var_name",
@@ -2084,45 +2109,9 @@
             }
           },
           {
-            "varAddString": {
-              "value": "_state",
-              "digits": 0,
-              "var": "afp_capture_own_zone_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "получаем индекс армии зоны"
-            }
-          },
-          {
-            "varSetInt": {
-              "value": 0,
-              "var": "afp_capture_own_zone_army_value",
-              "input_var": "@afp_capture_own_zone_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где хранится армия аэродрома"
-            }
-          },
-          {
             "varSetString": {
               "value": "afp_field_army_",
               "var": "afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "varAddString": {
-              "value": "@afp_capture_cur_airfield_idx",
-              "digits": 2,
-              "var": "afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "создаем имя переменной, где хранится тип аэродрома"
             }
           },
           {
@@ -2133,25 +2122,36 @@
           },
           {
             "varAddString": {
+              "value": "_state",
+              "digits": 0,
+              "var": "afp_capture_own_zone_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
+              "value": "@afp_capture_cur_airfield_idx",
+              "digits": 2,
+              "var": "afp_capture_field_army_var_name"
+            }
+          },
+          {
+            "varAddString": {
               "value": "@afp_capture_cur_airfield_idx",
               "digits": 2,
               "var": "afp_capture_type_var_name"
             }
           },
           {
-            "comment": {
-              "value": "получаем тип"
+            "varSetInt": {
+              "value": 0,
+              "var": "afp_capture_own_zone_army_value",
+              "input_var": "@afp_capture_own_zone_army_var_name"
             }
           },
           {
             "varGetStringValue": {
               "from_var_name": "@afp_capture_type_var_name",
               "var": "afp_capture_type_value"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем значение армии аэродрома"
             }
           },
           {
@@ -2162,7 +2162,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "какой-либо из сущностей не существует. рестартим генерацию"
+            "value": "\u043a\u0430\u043a\u043e\u0439-\u043b\u0438\u0431\u043e \u0438\u0437 \u0441\u0443\u0449\u043d\u043e\u0441\u0442\u0435\u0439 \u043d\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442. \u0440\u0435\u0441\u0442\u0430\u0440\u0442\u0438\u043c \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_capture_rotator"
@@ -2192,7 +2192,7 @@
         },
         "actions": {
           "comment": {
-            "value": "армия аэродрома и зоны не совпадает"
+            "value": "\u0430\u0440\u043c\u0438\u044f \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430 \u0438 \u0437\u043e\u043d\u044b \u043d\u0435 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u0435\u0442"
           },
           "triggerEnable": {
             "target": "afp_capture_fields_num_t1_check"
@@ -2200,7 +2200,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "армии совпадают. идем дальше по циклу"
+            "value": "\u0430\u0440\u043c\u0438\u0438 \u0441\u043e\u0432\u043f\u0430\u0434\u0430\u044e\u0442. \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "afp_capture_rotator"
@@ -2230,18 +2230,23 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем армию 1"
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u044b \u0430\u0440\u043c\u0438\u0438 1"
             }
           },
           {
             "varSetInt": {
               "value": 1,
               "var": "@afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "меняем армию"
             }
           },
           {
@@ -2267,11 +2272,6 @@
             }
           },
           {
-            "comment": {
-              "value": "можно создавать филды армии 1"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "afp_capture_fields_num_t1_wakeup"
             }
@@ -2279,7 +2279,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "проверим армию 2"
+            "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043c \u0430\u0440\u043c\u0438\u044e 2"
           },
           "triggerEnable": {
             "target": "afp_capture_fields_num_t2_check"
@@ -2325,17 +2325,17 @@
         "actions": [
           {
             "comment": {
-              "value": "пробуждаем аэродром"
+              "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u044b \u0430\u0440\u043c\u0438\u0438 1"
             }
           },
           {
             "unitWakeUp": {
               "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "можно создавать филды армии 1"
             }
           },
           {
@@ -2347,17 +2347,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "прячем аэродром"
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u0438\u043c \u0430\u0440\u043c\u0438\u044e 2"
             }
           },
           {
             "unitPutToSleep": {
               "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверим армию 2"
             }
           },
           {
@@ -2390,18 +2390,23 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем армию 2"
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0430\u0440\u043c\u0438\u044e 2"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u0435\u043d\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u044b \u0430\u0440\u043c\u0438\u0438 2"
             }
           },
           {
             "varSetInt": {
               "value": 2,
               "var": "@afp_capture_field_army_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "меняем армию"
             }
           },
           {
@@ -2427,11 +2432,6 @@
             }
           },
           {
-            "comment": {
-              "value": "можно создавать филды армии 2"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "afp_capture_fields_num_t2_wakeup"
             }
@@ -2439,7 +2439,7 @@
         ],
         "else_actions": {
           "comment": {
-            "value": "нельзя создавать филдов. идем дальше по циклу"
+            "value": "\u043d\u0435\u043b\u044c\u0437\u044f \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u043e\u0432. \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
           },
           "triggerEnable": {
             "target": "afp_capture_rotator"
@@ -2485,17 +2485,17 @@
         "actions": [
           {
             "comment": {
-              "value": "пробуждаем аэродром"
+              "value": "\u043f\u0440\u043e\u0431\u0443\u0436\u0434\u0430\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043c\u043e\u0436\u043d\u043e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u044b \u0430\u0440\u043c\u0438\u0438 2"
             }
           },
           {
             "unitWakeUp": {
               "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "можно создавать филды армии 2"
             }
           },
           {
@@ -2507,17 +2507,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "прячем аэродром"
+              "value": "\u043f\u0440\u044f\u0447\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043d\u0435\u043b\u044c\u0437\u044f \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0444\u0438\u043b\u0434\u043e\u0432. \u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
             "unitPutToSleep": {
               "target": "@afp_capture_field_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "нельзя создавать филдов. идем дальше по циклу"
             }
           },
           {
@@ -2550,12 +2550,22 @@
         "actions": [
           {
             "comment": {
-              "value": "аэродромы надо обнаруживать"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u044b \u043d\u0430\u0434\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0432\u0430\u0442\u044c"
             }
           },
           {
             "comment": {
-              "value": "создаем имя переменной с состоянием аэродрома"
+              "value": "\u0441\u043e\u0437\u0434\u0430\u0435\u043c \u0438\u043c\u044f \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u043e\u0439 \u0441 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0430"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 \u0432 0"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -2572,19 +2582,9 @@
             }
           },
           {
-            "comment": {
-              "value": "выставляем состояние в 0"
-            }
-          },
-          {
             "varSetInt": {
               "value": 0,
               "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -2596,7 +2596,17 @@
         "else_actions": [
           {
             "comment": {
-              "value": "аэродромы не надо обнаруживать"
+              "value": "\u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u044b \u043d\u0435 \u043d\u0430\u0434\u043e \u043e\u0431\u043d\u0430\u0440\u0443\u0436\u0438\u0432\u0430\u0442\u044c"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0432\u044b\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u043c \u0430\u044d\u0440\u043e\u0434\u0440\u043e\u043c\u0443 \u0441\u043e\u0441\u0442\u043e\u044f\u043d\u0438\u0435 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0442\u0438\u043f, \u0447\u0442\u043e\u0431\u044b \u043a\u043e\u0440\u0440\u0435\u043a\u0442\u043d\u043e \u043d\u0430\u0437\u043d\u0430\u0447\u0438\u0442\u044c \u0441\u043f\u0430\u0432\u043d"
             }
           },
           {
@@ -2606,19 +2616,9 @@
             }
           },
           {
-            "comment": {
-              "value": "выставляем аэродрому состояние 1"
-            }
-          },
-          {
             "varSetInt": {
               "value": 1,
               "var": "@afp_capture_field_state_var_name"
-            }
-          },
-          {
-            "comment": {
-              "value": "проверяем тип, чтобы корректно назначить спавн"
             }
           },
           {
@@ -2650,12 +2650,12 @@
         },
         "actions": {
           "comment": {
-            "value": "это ародром"
+            "value": "\u044d\u0442\u043e \u0430\u0440\u043e\u0434\u0440\u043e\u043c"
           }
         },
         "else_actions": {
           "comment": {
-            "value": "это площадка. проверяем армию"
+            "value": "\u044d\u0442\u043e \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0430. \u043f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u0430\u0440\u043c\u0438\u044e"
           },
           "triggerEnable": {
             "target": "afp_capture_pad_spawn_army_check"
@@ -2685,7 +2685,12 @@
         "actions": [
           {
             "comment": {
-              "value": "отключаем спавн команды 2"
+              "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b 2"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0430\u0440\u043c\u0438\u044f 1. \u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
             }
           },
           {
@@ -2714,11 +2719,6 @@
             }
           },
           {
-            "comment": {
-              "value": "армия 1. назначаем спавн"
-            }
-          },
-          {
             "triggerEnable": {
               "target": "afp_capture_t1_pad_spawn_set"
             }
@@ -2727,7 +2727,12 @@
         "else_actions": [
           {
             "comment": {
-              "value": "отключаем спавн команды 1"
+              "value": "\u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d \u043a\u043e\u043c\u0430\u043d\u0434\u044b 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0430\u0440\u043c\u0438\u044f 2. \u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d"
             }
           },
           {
@@ -2753,11 +2758,6 @@
               "tags": {
                 "none_can_spawn": true
               }
-            }
-          },
-          {
-            "comment": {
-              "value": "армия 2. назначаем спавн"
             }
           },
           {
@@ -2806,7 +2806,12 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем спавн  команды 1"
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d  \u043a\u043e\u043c\u0430\u043d\u0434\u044b 1"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -2841,11 +2846,6 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {
@@ -2899,7 +2899,12 @@
         "actions": [
           {
             "comment": {
-              "value": "назначаем спавн  команды 2"
+              "value": "\u043d\u0430\u0437\u043d\u0430\u0447\u0430\u0435\u043c \u0441\u043f\u0430\u0432\u043d  \u043a\u043e\u043c\u0430\u043d\u0434\u044b 2"
+            }
+          },
+          {
+            "comment": {
+              "value": "\u0438\u0434\u0435\u043c \u0434\u0430\u043b\u044c\u0448\u0435 \u043f\u043e \u0446\u0438\u043a\u043b\u0443"
             }
           },
           {
@@ -2934,11 +2939,6 @@
                 "artillery": false,
                 "aaa": false
               }
-            }
-          },
-          {
-            "comment": {
-              "value": "идем дальше по циклу"
             }
           },
           {

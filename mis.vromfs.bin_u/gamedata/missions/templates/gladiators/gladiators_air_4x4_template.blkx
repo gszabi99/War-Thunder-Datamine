@@ -633,13 +633,13 @@
           }
         },
         {
-          "missionSetTimeIndicator": {
-            "var": "shooting_timer"
+          "wait": {
+            "time": 2.0
           }
         },
         {
-          "wait": {
-            "time": 2.0
+          "missionSetTimeIndicator": {
+            "var": "shooting_timer"
           }
         },
         {
@@ -1024,11 +1024,6 @@
             }
           },
           {
-            "wait": {
-              "time": 5.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_1000",
@@ -1042,6 +1037,11 @@
               "object_var_comp_op": "equal",
               "object_var_value": 0,
               "shouldBlink": false
+            }
+          },
+          {
+            "wait": {
+              "time": 5.0
             }
           }
         ],
@@ -1080,6 +1080,11 @@
           {
             "wait": {
               "time": 3.0
+            }
+          },
+          {
+            "wait": {
+              "time": 1.0
             }
           },
           {
@@ -1207,11 +1212,6 @@
                 "target": "unit_out_of_area_04"
               }
             ]
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
           },
           {
             "triggerEnable": {
@@ -1765,6 +1765,11 @@
             ]
           },
           {
+            "triggerEnable": {
+              "target": "shooting_enable_timer"
+            }
+          },
+          {
             "missionSetTimeSpeed": {
               "speed": 1.0,
               "realtimeTriggers": false
@@ -1787,16 +1792,6 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "shooting_enable_timer"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_2000",
@@ -1812,11 +1807,6 @@
             }
           },
           {
-            "wait": {
-              "time": 4.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_2000",
@@ -1829,6 +1819,16 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
+            }
+          },
+          {
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "wait": {
+              "time": 4.0
             }
           }
         ],
@@ -1867,6 +1867,11 @@
           {
             "wait": {
               "time": 2.0
+            }
+          },
+          {
+            "wait": {
+              "time": 1.0
             }
           },
           {
@@ -1968,11 +1973,6 @@
                 "target": "unit_out_of_area_04"
               }
             ]
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
           },
           {
             "triggerEnable": {
@@ -2513,6 +2513,11 @@
             ]
           },
           {
+            "triggerEnable": {
+              "target": "shooting_enable_timer"
+            }
+          },
+          {
             "missionSetTimeSpeed": {
               "speed": 1.0,
               "realtimeTriggers": false
@@ -2535,16 +2540,6 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "shooting_enable_timer"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_3000",
@@ -2560,11 +2555,6 @@
             }
           },
           {
-            "wait": {
-              "time": 4.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_3000",
@@ -2577,6 +2567,16 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
+            }
+          },
+          {
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "wait": {
+              "time": 4.0
             }
           }
         ],
@@ -3858,6 +3858,19 @@
             ]
           },
           {
+            "triggerDisable": [
+              {
+                "target": "round_1x1_init"
+              },
+              {
+                "target": "round_2x2_init"
+              },
+              {
+                "target": "round_4x4_init"
+              }
+            ]
+          },
+          {
             "missionMarkAsCaptureZone": {
               "army": 0,
               "timeMultiplier": 0.3,
@@ -4009,6 +4022,11 @@
             ]
           },
           {
+            "triggerEnable": {
+              "target": "shooting_enable_timer"
+            }
+          },
+          {
             "missionSetTimeSpeed": {
               "speed": 1.0,
               "realtimeTriggers": false
@@ -4031,16 +4049,6 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "shooting_enable_timer"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_3000",
@@ -4053,11 +4061,6 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
-            }
-          },
-          {
-            "wait": {
-              "time": 4.0
             }
           },
           {
@@ -4076,17 +4079,14 @@
             }
           },
           {
-            "triggerDisable": [
-              {
-                "target": "round_1x1_init"
-              },
-              {
-                "target": "round_2x2_init"
-              },
-              {
-                "target": "round_4x4_init"
-              }
-            ]
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "wait": {
+              "time": 4.0
+            }
           }
         ],
         "else_actions": []
@@ -4288,6 +4288,19 @@
             ]
           },
           {
+            "triggerDisable": [
+              {
+                "target": "round_1x1_init"
+              },
+              {
+                "target": "round_2x2_init"
+              },
+              {
+                "target": "round_4x4_init"
+              }
+            ]
+          },
+          {
             "missionMarkAsCaptureZone": {
               "army": 0,
               "timeMultiplier": 0.3,
@@ -4395,6 +4408,11 @@
             ]
           },
           {
+            "triggerEnable": {
+              "target": "shooting_enable_timer"
+            }
+          },
+          {
             "missionSetTimeSpeed": {
               "speed": 1.0,
               "realtimeTriggers": false
@@ -4417,16 +4435,6 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "shooting_enable_timer"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_3000",
@@ -4439,11 +4447,6 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
-            }
-          },
-          {
-            "wait": {
-              "time": 4.0
             }
           },
           {
@@ -4462,17 +4465,14 @@
             }
           },
           {
-            "triggerDisable": [
-              {
-                "target": "round_1x1_init"
-              },
-              {
-                "target": "round_2x2_init"
-              },
-              {
-                "target": "round_4x4_init"
-              }
-            ]
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "wait": {
+              "time": 4.0
+            }
           }
         ],
         "else_actions": []
@@ -4677,6 +4677,19 @@
             ]
           },
           {
+            "triggerDisable": [
+              {
+                "target": "round_1x1_init"
+              },
+              {
+                "target": "round_2x2_init"
+              },
+              {
+                "target": "round_4x4_init"
+              }
+            ]
+          },
+          {
             "missionMarkAsCaptureZone": {
               "army": 0,
               "timeMultiplier": 0.3,
@@ -4762,6 +4775,11 @@
             ]
           },
           {
+            "triggerEnable": {
+              "target": "shooting_enable_timer"
+            }
+          },
+          {
             "missionSetTimeSpeed": {
               "speed": 1.0,
               "realtimeTriggers": false
@@ -4784,16 +4802,6 @@
             }
           },
           {
-            "triggerEnable": {
-              "target": "shooting_enable_timer"
-            }
-          },
-          {
-            "wait": {
-              "time": 10.0
-            }
-          },
-          {
             "playHint": {
               "hintType": "standard",
               "name": "hints/duel_battle_cost_3000",
@@ -4806,11 +4814,6 @@
               "object_var_name": "",
               "object_var_comp_op": "equal",
               "object_var_value": 0
-            }
-          },
-          {
-            "wait": {
-              "time": 4.0
             }
           },
           {
@@ -4829,17 +4832,14 @@
             }
           },
           {
-            "triggerDisable": [
-              {
-                "target": "round_1x1_init"
-              },
-              {
-                "target": "round_2x2_init"
-              },
-              {
-                "target": "round_4x4_init"
-              }
-            ]
+            "wait": {
+              "time": 10.0
+            }
+          },
+          {
+            "wait": {
+              "time": 4.0
+            }
           }
         ],
         "else_actions": []
@@ -4862,6 +4862,11 @@
           {
             "wait": {
               "time": 2.0
+            }
+          },
+          {
+            "wait": {
+              "time": 1.0
             }
           },
           {
@@ -4989,11 +4994,6 @@
                 "target": "zone_04_no_one_win"
               }
             ]
-          },
-          {
-            "wait": {
-              "time": 1.0
-            }
           },
           {
             "triggerEnable": [
@@ -8471,6 +8471,52 @@
       }
     },
     {
+      "armada": {
+        "name": "t1_player01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [5183.25,1348.85,4937.65]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": []
+      }
+    },
+    {
       "squad": {
         "name": "all_player_squad",
         "tm": [
@@ -8822,90 +8868,6 @@
       }
     },
     {
-      "armada": {
-        "name": "t1_player01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [5183.25,1348.85,4937.65]
-        ],
-        "unit_class": "a-20g",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "free_distance": 70.0,
-          "floating_distance": 50.0,
-          "minimum_distance_to_earth": 20.0,
-          "altLimit": 6000.0,
-          "attack_type": "fire_at_will",
-          "skill": 4,
-          "plane": {
-            "wing_formation": "Diamond",
-            "row_distances": 3.0,
-            "col_distances": 3.0,
-            "super_formation": "Diamond",
-            "super_row_distances": 1.5,
-            "super_col_distances": 1.5,
-            "ai_skill": "NORMAL",
-            "task": "FLY_WAYPOINT"
-          }
-        },
-        "way": []
-      }
-    },
-    {
-      "structures": {
-        "name": "dummy_01",
-        "tm": [
-          [1.0,0.0,0.0],
-          [0.0,1.0,0.0],
-          [0.0,0.0,1.0],
-          [13715.3,-2000.0,8705.55]
-        ],
-        "unit_class": "dummy",
-        "objLayer": 1,
-        "closed_waypoints": false,
-        "isShipSpline": false,
-        "shipTurnRadius": 100.0,
-        "weapons": "",
-        "bullets0": "",
-        "bullets1": "",
-        "bullets2": "",
-        "bullets3": "",
-        "bulletsCount0": 0,
-        "bulletsCount1": 0,
-        "bulletsCount2": 0,
-        "bulletsCount3": 0,
-        "props": {
-          "army": 2,
-          "count": 1,
-          "formation_type": "rows",
-          "formation_div": 3,
-          "formation_step": [2.5,2.0],
-          "formation_noise": [0.1,0.1],
-          "uniqueName": "",
-          "attack_type": "fire_at_will",
-          "stealthRadius": 0.0,
-          "setStealth": true
-        },
-        "way": []
-      }
-    },
-    {
       "squad": {
         "name": "all_player_squad_alive",
         "tm": [
@@ -9021,6 +8983,44 @@
             "object_type": "isActive"
           }
         ]
+      }
+    },
+    {
+      "structures": {
+        "name": "dummy_01",
+        "tm": [
+          [1.0,0.0,0.0],
+          [0.0,1.0,0.0],
+          [0.0,0.0,1.0],
+          [13715.3,-2000.0,8705.55]
+        ],
+        "unit_class": "dummy",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [2.5,2.0],
+          "formation_noise": [0.1,0.1],
+          "uniqueName": "",
+          "attack_type": "fire_at_will",
+          "stealthRadius": 0.0,
+          "setStealth": true
+        },
+        "way": []
       }
     }
   ],

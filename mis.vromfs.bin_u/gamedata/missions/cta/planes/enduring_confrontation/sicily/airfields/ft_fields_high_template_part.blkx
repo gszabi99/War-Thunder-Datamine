@@ -269,6 +269,40 @@
       }
     },
     {
+      "objectGroups": {
+        "name": "ft_t1_airfield_02_03",
+        "tm": [
+          [0.675591,0.0,0.737277],
+          [0.0,1.0,0.0],
+          [-0.737277,0.0,0.675591],
+          [-11631.6,146.103,21823.8]
+        ],
+        "unit_class": "dynaf_universal_1line_3000_a_big",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": false
+        }
+      }
+    },
+    {
+      "objectGroups": {
+        "name": "ft_t2_airfield_02_03",
+        "tm": [
+          [0.356509,0.0,-0.934291],
+          [0.0,1.0,0.0],
+          [0.934291,0.0,0.356509],
+          [20336.7,593.55,-18913.7]
+        ],
+        "unit_class": "dynaf_universal_1line_3000_a_big",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": false
+        }
+      }
+    },
+    {
       "squad": {
         "name": "ft_t1_airfields_squad",
         "tm": [
@@ -332,6 +366,58 @@
           },
           {
             "squad_members": "ft_t2_airfield_02_03"
+          }
+        ]
+      }
+    },
+    {
+      "squad": {
+        "name": "all_bomb_targets_squad",
+        "tm": [
+          [-2.78181e-08,0.0,1.0],
+          [0.0,1.0,0.0],
+          [-1.0,0.0,-2.78181e-08],
+          [47972.1,90.4971,2859.33]
+        ],
+        "props": [
+          {
+            "object_marking": 0
+          },
+          {
+            "squad_members": "ft_t1_airfield_01_01_bomb_target"
+          },
+          {
+            "squad_members": "ft_t1_airfield_02_01_bomb_target"
+          },
+          {
+            "squad_members": "ft_t1_airfield_01_02_bomb_target"
+          },
+          {
+            "squad_members": "ft_t1_airfield_02_02_bomb_target"
+          },
+          {
+            "squad_members": "ft_t1_airfield_01_03_bomb_target"
+          },
+          {
+            "squad_members": "ft_t1_airfield_02_03_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_01_01_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_02_01_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_01_02_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_02_02_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_01_03_bomb_target"
+          },
+          {
+            "squad_members": "ft_t2_airfield_02_03_bomb_target"
           }
         ]
       }
@@ -757,75 +843,6 @@
       }
     },
     {
-      "squad": {
-        "name": "all_bomb_targets_squad",
-        "tm": [
-          [-2.78181e-08,0.0,1.0],
-          [0.0,1.0,0.0],
-          [-1.0,0.0,-2.78181e-08],
-          [47972.1,90.4971,2859.33]
-        ],
-        "props": [
-          {
-            "object_marking": 0
-          },
-          {
-            "squad_members": "ft_t1_airfield_01_01_bomb_target"
-          },
-          {
-            "squad_members": "ft_t1_airfield_02_01_bomb_target"
-          },
-          {
-            "squad_members": "ft_t1_airfield_01_02_bomb_target"
-          },
-          {
-            "squad_members": "ft_t1_airfield_02_02_bomb_target"
-          },
-          {
-            "squad_members": "ft_t1_airfield_01_03_bomb_target"
-          },
-          {
-            "squad_members": "ft_t1_airfield_02_03_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_01_01_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_02_01_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_01_02_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_02_02_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_01_03_bomb_target"
-          },
-          {
-            "squad_members": "ft_t2_airfield_02_03_bomb_target"
-          }
-        ]
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "ft_t1_airfield_02_03",
-        "tm": [
-          [0.675591,0.0,0.737277],
-          [0.0,1.0,0.0],
-          [-0.737277,0.0,0.675591],
-          [-11631.6,146.103,21823.8]
-        ],
-        "unit_class": "dynaf_universal_1line_3000_a_big",
-        "objLayer": 2,
-        "props": {
-          "army": 1,
-          "active": false
-        }
-      }
-    },
-    {
       "structures": {
         "name": "ft_t1_airfield_02_03_bomb_target",
         "tm": [
@@ -865,23 +882,6 @@
           "targetableByAi": false
         },
         "way": []
-      }
-    },
-    {
-      "objectGroups": {
-        "name": "ft_t2_airfield_02_03",
-        "tm": [
-          [0.356509,0.0,-0.934291],
-          [0.0,1.0,0.0],
-          [0.934291,0.0,0.356509],
-          [20336.7,593.55,-18913.7]
-        ],
-        "unit_class": "dynaf_universal_1line_3000_a_big",
-        "objLayer": 2,
-        "props": {
-          "army": 2,
-          "active": false
-        }
       }
     },
     {
