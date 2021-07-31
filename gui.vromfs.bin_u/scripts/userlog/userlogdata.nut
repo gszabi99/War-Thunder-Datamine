@@ -697,8 +697,9 @@ local logNameByType = {
       if (!curLog?.item && !log?.item)
         curLog.count <- (curLog?.count ?? 1) + (log?.count ?? 1)
     }
-    else
-      logs.append(log)
+    // Changes of current log above will be used for log view only
+    // so no need reduce logs array to avoid differences with blk
+    logs.append(dubIdx != null ? log.__merge({isDubTrophy = true}) : log)
 
     if ("disableVisible" in filter && filter.disableVisible)
     {

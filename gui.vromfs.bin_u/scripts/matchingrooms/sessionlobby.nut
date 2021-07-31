@@ -757,7 +757,10 @@ SessionLobby.getMissionNameLoc <- function getMissionNameLoc(room = null)
 {
   local misData = getMissionData(room)
   if ("name" in misData)
-    return ::get_combine_loc_name_mission(::get_mission_meta_info(misData.name))
+  {
+    local missionMetaInfo = ::get_mission_meta_info(misData.name)
+    return ::get_combine_loc_name_mission(missionMetaInfo ? missionMetaInfo : misData)
+  }
   return ""
 }
 

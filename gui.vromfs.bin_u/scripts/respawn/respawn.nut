@@ -2002,9 +2002,15 @@ class ::gui_handlers.RespawnHandler extends ::gui_handlers.MPStatistics
   function doRespawn()
   {
     dagor.debug("do_respawn_player called")
-    ::before_first_flight_in_session = false;
-    ::do_respawn_player()
-    doRespawnCalled = true
+    ::before_first_flight_in_session = false
+    doRespawnCalled = ::do_respawn_player()
+    if (!doRespawnCalled)
+    {
+      onApply()
+      ::showInfoMsgBox(::loc("msg/something_went_wrong"), "something_went_wrong", true)
+      return
+    }
+
     ::broadcastEvent("PlayerSpawn", lastRequestData)
     if (lastRequestData)
     {

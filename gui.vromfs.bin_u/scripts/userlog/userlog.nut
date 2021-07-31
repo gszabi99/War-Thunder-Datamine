@@ -113,7 +113,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   wndType = handlerType.MODAL
   sceneBlkName = "gui/userlog.blk"
 
-  logs = null
+  fullLogs = null // Pure log with dub instances to match with user log count in blk
+  logs = null // Without dub instances (everyDayLoginAward)
   listObj = null
   curPage = null
 
@@ -193,7 +194,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
     if (!page) return
     curPage = page
 
-    logs = getUserLogsList(curPage);
+    fullLogs = getUserLogsList(curPage)
+    logs = fullLogs.filter(@(p) !p?.isDubTrophy)
     guiScene.replaceContentFromText(listObj, "", 0, this)
     nextLogId = 0
     haveNext = false
@@ -288,8 +290,8 @@ class ::gui_handlers.UserLogHandler extends ::gui_handlers.BaseGuiHandlerWT
   function markCurrentPageSeen()
   {
     local needSave = false
-    if (logs)
-      foreach(log in logs)
+    if (fullLogs)
+      foreach(log in fullLogs)
         if (log.enabled && log.idx >= 0 && log.idx < ::get_user_logs_count())
         {
           if (::disable_user_log_entry(log.idx))

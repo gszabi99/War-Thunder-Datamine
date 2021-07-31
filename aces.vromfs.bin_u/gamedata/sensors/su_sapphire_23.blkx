@@ -88,8 +88,8 @@
       "azimuthLimits": [-52.0,52.0],
       "elevationLimits": [-38.0,43.0],
       "rollStabLimit": 70.0,
-      "period": 1.15,
-      "width": 15.0,
+      "period": 0.3,
+      "width": 4.0,
       "barHeight": 2.0,
       "barsCount": 4,
       "rowMajor": true,
@@ -134,7 +134,7 @@
       "rollStabLimit": 70.0,
       "period": 0.2,
       "centerElevation": -2.0,
-      "width": 7.5,
+      "width": 2.5,
       "barHeight": 2.15,
       "barsCount": 3,
       "rowMajor": true,
@@ -752,11 +752,6 @@
             "setScanPatternSet": []
           },
           {
-            "setScanPattern": {
-              "scanPattern": "designationLock"
-            }
-          },
-          {
             "resetScanPhase": []
           },
           {
@@ -786,8 +781,14 @@
             }
           }
         ],
-        "setBSVDesignationLockMode": {
+        "setDesignationLockModeRadarCommon": {
           "setDesignationLockModeCommon": [],
+          "setScanPattern": {
+            "scanPattern": "designationLock"
+          }
+        },
+        "setBSVDesignationLockMode": {
+          "setDesignationLockModeRadarCommon": [],
           "setPulseTrackModeCommon": [],
           "setHighAltModeCommon": [],
           "setCenterElevation": {
@@ -799,7 +800,7 @@
           }
         },
         "setBSVdHDesignationLockMode": {
-          "setDesignationLockModeCommon": [],
+          "setDesignationLockModeRadarCommon": [],
           "setPulseTrackModeCommon": [],
           "setHighAltModeCommon": [],
           "setCenterElevation": {
@@ -811,7 +812,7 @@
           }
         },
         "setSMVDesignationLockMode": {
-          "setDesignationLockModeCommon": [],
+          "setDesignationLockModeRadarCommon": [],
           "setPulseTrackModeCommon": [],
           "setLowAltModeCommon": [],
           "setCenterElevation": {
@@ -823,7 +824,7 @@
           }
         },
         "setMVDesignationLockMode": {
-          "setDesignationLockModeCommon": [],
+          "setDesignationLockModeRadarCommon": [],
           "setPulseDopplerModeCommon": [],
           "setLowAltModeCommon": [],
           "setCenterElevation": {
@@ -836,11 +837,16 @@
         },
         "setOLSDesignationLockMode": {
           "setDesignationLockModeCommon": [],
+          "setScanPattern": {
+            "scanPattern": "designationLockOLS"
+          },
           "setOlsModeCommon": [],
           "setHighAltModeCommon": [],
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
           "setCenterElevation": {
-            "source": "constant",
-            "value": 0.0
+            "source": "targetDesignation"
           },
           "setModeName": {
             "name": "IRST acquisition"
